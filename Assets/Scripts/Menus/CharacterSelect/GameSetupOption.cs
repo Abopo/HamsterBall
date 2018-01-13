@@ -1,0 +1,112 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class GameSetupOption : MenuOption {
+
+    public GameObject infoBox;
+    public Text infoBoxText;
+    public string infoText;
+    public Transform textPosition;
+    public Transform valuePosition;
+    public Button leftButton;
+    public Button rightButton;
+
+    bool _justMoved;
+    bool _isSelected;
+    bool _justSelected; // use this to stop inputs from flowing over into multiple options.
+
+    public bool IsSelected {
+        get { return _isSelected; }        
+    }
+
+    // Use this for initialization
+    protected override void Start () {
+        base.Start();
+
+        _justMoved = false;
+
+        if(isFirstSelection) {
+            _isHighlighted = true;
+        } else {
+            _isHighlighted = false;
+        }
+	}
+
+    // Update is called once per frame
+    protected override void Update () {
+        CheckInput();
+	}
+
+    void CheckInput() {
+        if (_isHighlighted && !_isSelected) {
+            base.Update();
+        } 
+
+        if(_isSelected && !_justSelected) {
+            // Right
+            if (!_justMoved && InputRight()) {
+                rightButton.onClick.Invoke();
+                _justMoved = true;
+            }
+            // Left
+            if (!_justMoved && InputLeft()) {
+                leftButton.onClick.Invoke();
+                _justMoved = true;
+            }
+            // B
+            if (Input.GetButtonDown("Cancel") || Input.GetButtonDown("Submit")) {
+                Highlight();
+            }
+        }
+
+        if (Input.GetAxis("Horizontal") < 0.3f && Input.GetAxis("Horizontal") > -0.3f &&
+            Input.GetAxis("Vertical") < 0.3f && Input.GetAxis("Vertical") > -0.3f) {
+            _justMoved = false;
+            _justHighlighted = false;
+        }
+
+        _justSelected = false;
+    }
+
+    public override void Highlight() {
+        selector.transform.position = new Vector3(textPosition.position.x,
+                                                   textPosition.position.y,
+                                                   selector.transform.position.z);
+        if (!infoBox.activeSelf) {
+            infoBox.SetActive(true);
+        }
+        infoBox.transform.position = new Vector3(textPosition.position.x - 4.25f,
+                                                  textPosition.position.y,
+                                                  infoBox.transform.position.z);
+        infoBoxText.text = infoText;
+
+        // Play a little sound
+        PlayHighlightSound();
+
+        _justMoved = true;
+        _isHighlighted = true;
+        _justHighlighted = true;
+        _isSelected = false;
+
+        // Make sure it's adjacent options are NOT highlighted
+        DeHighlightAdjOptions();
+    }
+
+    protected override void Select() {
+        selector.transform.position = new Vector3(valuePosition.position.x,
+                                                   valuePosition.position.y,
+                                                   selector.transform.position.z);
+
+        // Play a little sound
+        PlaySelectSound();
+
+        _isSelected = true;
+        _justSelected = true;
+        _isHighlighted = false;
+    }
+
+    void OnMouseEnter() {
+        Highlight();
+    }
+}

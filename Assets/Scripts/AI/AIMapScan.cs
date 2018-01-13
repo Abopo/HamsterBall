@@ -1,0 +1,224 @@
+﻿using UnityEngine;
+using System.Collections;
+
+// This class scans the area around the AI to determine movement options.
+// It does this by casting rays in various directions, to figure out what the
+// nearby level geometry is.
+public class AIMapScan : MonoBehaviour {
+    public LayerMask collisionMask;
+
+    PlayerController _playerController;
+
+    float _leftWallDistance; // Distance to the closest wall to the left of the character.
+    float _rightWallDistance; // Distance to the closest wall to the right of the character.
+    float _leftStepDistance;
+    float _rightStepDistance;
+    float _leftDropDistance; // Distance to the closest dropoff to the left of the character.
+    float _rightDropDistance; // Distance to the closest dropoff to the right of the character.
+    float _leftJumpDistance; // Distance to the closest step up to the left of the character.
+    float _rightJumpDistance; // Distance to the closest step up to the right of the character.
+
+    bool _isUnderCeiling; // If there is a ceiling directly above the character.
+
+    Ray2D _leftWallCheckRay; // Ray for checking distances
+    RaycastHit2D _leftWallCheckHit; // Result of ray checks
+    Ray2D _rightWallCheckRay; // Ray for checking distances
+    RaycastHit2D _rightWallCheckHit; // Result of ray checks
+    Ray2D _stepCheckRay;
+    RaycastHit2D _stepCheckHit;
+    Ray2D _dropCheckRay; // Ray for checking distances
+    RaycastHit2D _dropCheckHit; // Result of ray checks
+    Ray2D _jumpCheckRay; // Ray for checking distances
+    RaycastHit2D _jumpCheckHit; // Result of ray checks
+
+    Vector2 _pos; // Transform position
+    float _scaledRadius;
+
+    public float LeftWallDistance {
+        get { return _leftWallDistance; }
+    }
+    public float RightWallDistance {
+        get { return _rightWallDistance; }
+    }
+    public float LeftDropDistance {
+        get { return _leftDropDistance; }
+    }
+    public float RightDropDistance {
+        get { return _rightDropDistance; }
+    }
+    public float LeftJumpDistance {
+        get { return _leftJumpDistance; }
+    }
+    public float RightJumpDistance {
+        get { return _rightJumpDistance; }
+    }
+    public bool IsUnderCeiling {
+        get { return _isUnderCeiling; }
+    }
+    public float LeftStepDistance {
+        get { return _leftStepDistance; }
+    }
+    public float RightStepDistance {
+        get { return _rightStepDistance; }        
+    }
+
+    // Use this for initialization
+    void Start() {
+        _playerController = GetComponent<PlayerController>();
+        _scaledRadius = Mathf.Abs(GetComponent<CircleCollider2D>().radius * transform.localScale.x);
+    }
+
+    // Update is called once per frame
+    void Update() {
+        CheckDistances();
+    }
+
+    void CheckDistances() {
+        _pos = transform.position;
+        // Wall distances
+        CheckWallDistances();
+        if (_playerController.curState != PLAYER_STATE.JUMP) {
+            CheckJumpDistances();
+        }
+        CheckDropDistances();
+    }
+
+    void CheckWallDistances() {
+        float y = _pos.y + GetComponent<CircleCollider2D>().offset.y + _scaledRadius / 1.5f;
+        // Check Right
+        _rightWallCheckRay = new Ray2D(new Vector2(_pos.x, y), Vector2.right);
+        _rightWallCheckHit = Physics2D.Raycast(_rightWallCheckRay.origin, _rightWallCheckRay.direction, 1000f, collisionMask);
+        Debug.DrawRay(_rightWallCheckRay.origin, _rightWallCheckRay.direction* _rightWallCheckHit.distance);
+        if (_rightWallCheckHit) {
+            _rightWallDistance = _rightWallCheckHit.distance;
+        }
+        // Also check for steps on the right
+        _stepCheckRay = new Ray2D(new Vector2(_pos.x, _pos.y), Vector2.right);
+        _stepCheckHit = Physics2D.Raycast(_stepCheckRay.origin, _stepCheckRay.direction, 5f, collisionMask);
+        Debug.DrawRay(_stepCheckRay.origin, _stepCheckRay.direction * _stepCheckHit.distance);
+        if (_stepCheckHit && _stepCheckHit.distance < _rightWallDistance) {
+           _rightStepDistance  = _stepCheckHit.distance;
+        } else {
+            _rightStepDistance = -1;
+        }
+
+        // Check Left
+        _leftWallCheckRay = new Ray2D(new Vector2(_pos.x, y), Vector2.left);
+        _leftWallCheckHit = Physics2D.Raycast(_leftWallCheckRay.origin, _leftWallCheckRay.direction, 1000f, collisionMask);
+        Debug.DrawRay(_leftWallCheckRay.origin, _leftWallCheckRay.direction* _leftWallCheckHit.distance);
+        if (_leftWallCheckHit) {
+            _leftWallDistance = _leftWallCheckHit.distance;
+        }
+        // Also check for steps on the left
+        _stepCheckRay = new Ray2D(new Vector2(_pos.x, _pos.y), Vector2.left);
+        _stepCheckHit = Physics2D.Raycast(_stepCheckRay.origin, _stepCheckRay.direction, 5f, collisionMask);
+        Debug.DrawRay(_stepCheckRay.origin, _stepCheckRay.direction * _stepCheckHit.distance);
+        if (_stepCheckHit && _stepCheckHit.distance < _leftWallDistance) {
+            _leftStepDistance = _stepCheckHit.distance;
+        } else {
+            _leftStepDistance = -1;
+        }
+    }
+
+    void CheckJumpDistances() {
+        float rayOffsetX = 0;
+        bool prevHitRight = false;
+        bool prevHitLeft = false;
+        _rightJumpDistance = 100f;
+        _leftJumpDistance = 100f;
+
+        // Check at position first to determine what's above.
+        _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
+        _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+        if (_jumpCheckHit) {
+            prevHitRight = true;
+            prevHitLeft = true;
+            _isUnderCeiling = true;
+        } else {
+            _isUnderCeiling = false;
+        }
+
+        // Check Right
+        rayOffsetX = 0.1f;
+        while (rayOffsetX < _rightWallCheckHit.distance) {
+            _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
+            _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+            if(_jumpCheckHit && !prevHitRight) {
+                _rightJumpDistance = rayOffsetX;
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance);
+                break;
+            } else if(_jumpCheckHit.collider == null && prevHitRight) {
+                _rightJumpDistance = rayOffsetX;
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction);
+                break;
+            }
+            rayOffsetX += 0.1f;
+        }
+
+        // Check Left
+        rayOffsetX = 0.1f;
+        while (rayOffsetX < _leftWallCheckHit.distance) {
+            _jumpCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.up);
+            _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+            if (_jumpCheckHit && !prevHitLeft) {
+                _leftJumpDistance = rayOffsetX;
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance);
+                break;
+            } else if (_jumpCheckHit.collider == null && prevHitLeft) {
+                _leftJumpDistance = rayOffsetX;
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction);
+                break;
+            }
+            rayOffsetX += 0.1f;
+        }
+    }
+
+    void CheckDropDistances() {
+        // Check Right
+        float rayOffsetX = 0;
+        bool prevHitRight = false;
+        bool prevHitLeft = false;
+        _rightDropDistance = 10f;
+        _leftDropDistance = 10f;
+
+        // Check at position first to determine what's above.
+        _dropCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
+        _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
+        if (_dropCheckHit) {
+            prevHitRight = true;
+            prevHitLeft = true;
+        }
+        while (rayOffsetX < _rightWallCheckHit.distance) {
+            rayOffsetX += 0.1f;
+            _dropCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
+            _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
+            if (_dropCheckHit && !prevHitRight) {
+                _rightDropDistance = rayOffsetX;
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance);
+                break;
+            } else if (_dropCheckHit.collider == null && prevHitRight) {
+                _rightDropDistance = rayOffsetX;
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction);
+                break;
+            }
+        }
+
+        // Check Left
+        rayOffsetX = 0;
+        while (rayOffsetX < _leftWallCheckHit.distance) {
+            rayOffsetX += 0.1f;
+            _dropCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.down);
+            _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
+            if (_dropCheckHit && !prevHitLeft) {
+                _leftDropDistance = rayOffsetX;
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance);
+                break;
+            } else if (_dropCheckHit.collider == null && prevHitLeft) {
+                _leftDropDistance = rayOffsetX;
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction);
+                break;
+            }
+        }
+
+    }
+}
