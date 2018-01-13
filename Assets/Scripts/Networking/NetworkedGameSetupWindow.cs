@@ -30,8 +30,6 @@ public class NetworkedGameSetupWindow : Photon.MonoBehaviour {
             stream.Serialize(ref dead);
             stream.Serialize(ref gravity);
             stream.Serialize(ref bomb);
-
-            Debug.Log("Writing Game Data");
         } else {
             int lHandi = 0;
             int rHandi = 0;
@@ -56,8 +54,6 @@ public class NetworkedGameSetupWindow : Photon.MonoBehaviour {
             HamsterSpawner.canBeDead = dead;
             HamsterSpawner.canBeGravity = gravity;
             HamsterSpawner.canBeBomb = bomb;
-
-            Debug.Log("Reading Game Data");
         }
     }
 

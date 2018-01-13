@@ -90,6 +90,7 @@ public class PlayerManager : MonoBehaviour {
                 // TODO: Might need to clean up memory here.
                 int i = _players.IndexOf(p);
                 _players[i].team = team;
+                Debug.Log("Player " + playerNum + " added to Team " + team);
             }
         }
     }
@@ -171,6 +172,15 @@ public class PlayerManager : MonoBehaviour {
         if (scene.name == "MainMenu" || scene.name == "CharacterSelect" || scene.name == "NetworkedCharacterSelect") {
             // Clear players
             ClearAllPlayers();
+        }
+
+        // Debugging
+        if(scene.name == "NetworkedMapSelect") {
+            Debug.Log("Current Players:");
+
+            for (int i = 0; i < NumPlayers; ++i) {
+                Debug.Log("Player " + _players[i].playerNum + " on Team " + _players[i].team);
+            }
         }
     }
 }

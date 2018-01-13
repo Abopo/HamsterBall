@@ -226,4 +226,5 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         throwState.aimingArrow.localRotation = arrowRot;
         throwState.Throw();
     }
+
 }

@@ -53,10 +53,11 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
                 newPlayer = PhotonNetwork.Instantiate("Prefabs/Networking/Bub_PUN", spawnPos, Quaternion.identity, 0, new object[] { tempPlayerInfo.playerNum, tempPlayerInfo.team, tempPlayerInfo.controllerNum }).GetComponent<PlayerController>();
                 // Transfer ownership to appropriate player
                 newPlayer.GetComponent<PhotonView>().TransferOwnership(tempPlayerInfo.ownerID);
+                Debug.Log("Spawned player " + tempPlayerInfo.playerNum + "on Team " + tempPlayerInfo.team);
             }
             newPlayer.playerNum = tempPlayerInfo.playerNum;
             newPlayer.team = tempPlayerInfo.team;
-            newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
+            //newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
             newPlayer.GetComponent<Animator>().runtimeAnimatorController = FindAnimatorController(newPlayer.playerNum);
 
             SetupSwitchMeter(newPlayer);
