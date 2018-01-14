@@ -186,7 +186,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         hamsterInfo[2] = _nextHamsterType;
 
         // Use the network instantiate method
-        GameObject hO = PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", _spawnPosition, Quaternion.identity, 0, hamsterInfo) as GameObject;
+        PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", _spawnPosition, Quaternion.identity, 0, hamsterInfo);
     }
 
     public int GetValidType() {

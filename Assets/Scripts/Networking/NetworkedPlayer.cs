@@ -5,10 +5,12 @@ using Photon;
 
 [RequireComponent(typeof(PhotonView))]
 public class NetworkedPlayer : Photon.MonoBehaviour {
+    public Hamster tryingToCatchHamster;
+
     PlayerController _playerController;
     InputState _serializedInput;
-    List<InputState> _writingInputList = new List<InputState>();
-    List<InputState> _readingInputList = new List<InputState>();
+    //List<InputState> _writingInputList = new List<InputState>();
+    //List<InputState> _readingInputList = new List<InputState>();
 
     Vector3 _latestCorrectPos;
     Vector3 _onUpdatePos;
@@ -16,6 +18,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     float _bufferTime = 0.2f;
     float _bufferTimer = 0f;
+
 
     private void Awake() {
         _playerController = GetComponent<PlayerController>();
@@ -115,9 +118,9 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        if(!photonView.isMine && _correctState != (int)_playerController.curState) {
+        if (!photonView.isMine && _correctState != (int)_playerController.curState) {
             _bufferTimer += Time.deltaTime;
-            if(_bufferTimer >= _bufferTime) {
+            if (_bufferTimer >= _bufferTime) {
                 _playerController.ChangeState((PLAYER_STATE)_correctState);
             }
         } else {
@@ -130,10 +133,10 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     void GetOwnerInput() {
-        if(_playerController.inputState.jump.isDown) {
+        if (_playerController.inputState.jump.isDown) {
             _serializedInput.jump.isDown = true;
         }
-        if(_playerController.inputState.jump.isJustReleased) {
+        if (_playerController.inputState.jump.isJustReleased) {
             _serializedInput.jump.isJustReleased = true;
         }
         if (_playerController.inputState.jump.isJustPressed) {
@@ -161,12 +164,12 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             _serializedInput.bubble.isJustPressed = true;
         }
         //stream.Serialize(ref _serializedInput.shift.isDown);
-        if(_playerController.inputState.shift.isJustPressed) {
+        if (_playerController.inputState.shift.isJustPressed) {
             _serializedInput.shift.isJustPressed = true;
         }
         //stream.Serialize(ref _serializedInput.shift.isJustReleased);
         //stream.Serialize(ref _serializedInput.attack.isDown);
-        if(_playerController.inputState.attack.isJustPressed) {
+        if (_playerController.inputState.attack.isJustPressed) {
             _serializedInput.attack.isJustPressed = true;
         }
 
@@ -175,7 +178,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     void ResetInput() {
         _serializedInput = new InputState();
-        _writingInputList.Clear();
+        //_writingInputList.Clear();
     }
 
     void SetAnimatorController() {
@@ -196,7 +199,41 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     [PunRPC]
-    void CatchHamster(int hamsterNum) {
+    void CheckHamster(int hamsterNum) {
+        // Only the master client can check a hamster's state
+        if (PhotonNetwork.isMasterClient) {
+            // find the hamster with the same number
+            HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
+            Hamster hamster = hamsterScan.GetHamster(hamsterNum);
+
+            if (!hamster.wasCaught) {
+                photonView.RPC("HamsterCaught", PhotonTargets.All, hamster.hamsterNum);
+            }
+        }
+    }
+
+    [PunRPC]
+    void HamsterCaught(int hamsterNum) {
+        if(tryingToCatchHamster != null && tryingToCatchHamster.hamsterNum == hamsterNum) {
+            MeCatchHamster();
+        } else {
+            OtherCatchHamster(hamsterNum);
+        }
+    }
+
+    // When this player catches a hamster
+    void MeCatchHamster() {
+        if (_playerController.heldBubble == null) {
+            _playerController.attackBubble.GetComponent<AttackBubble>().CatchHamster(tryingToCatchHamster);
+
+            // For some reason, the client side player will sometimes go straight into the throw state after catching a hamster
+            // Trying to prevent that
+            _playerController.inputState.bubble.isJustPressed = false;
+        }
+    }
+
+    // When another player catches a hamster
+    void OtherCatchHamster(int hamsterNum) {
         // find the hamster with the same number
         HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         Hamster hamster = hamsterScan.GetHamster(hamsterNum);
@@ -217,7 +254,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
         // For now this is only for the AI
         _playerController.significantEvent.Invoke();
-
     }
 
     [PunRPC]

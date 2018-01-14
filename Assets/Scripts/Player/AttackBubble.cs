@@ -20,11 +20,27 @@ public class AttackBubble : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Hamster" && other.GetComponent<Hamster>().exitedPipe &&  _playerController.heldBubble == null &&
-            !(PhotonNetwork.connectedAndReady && _playerController.GetComponent<PhotonView>().owner != PhotonNetwork.player)) {
-            CatchHamster(other.GetComponent<Hamster>());
+		if (other.tag == "Hamster" && other.GetComponent<Hamster>().exitedPipe &&  _playerController.heldBubble == null) {
+            // If we are networked
+            if (PhotonNetwork.connectedAndReady) {
+                // If we are the local client and aren't already trying to catch a hamster
+                if (_playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
+                    if (PhotonNetwork.isMasterClient) {
+                        // The master client is able to immediately catch the hamster because it has the most up to date game state.
+                        CatchHamster(other.GetComponent<Hamster>());
+                        _playerController.GetComponent<PhotonView>().RPC("HamsterCaught", PhotonTargets.Others, other.GetComponent<Hamster>().hamsterNum);
+                    } else {
+                        // Store the hamster we are trying to catch
+                        _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster = other.GetComponent<Hamster>();
+                        // Have the master client check to make sure that hamster is valid
+                        _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, other.GetComponent<Hamster>().hamsterNum);
+                    }
+                }
+            } else {
+                CatchHamster(other.GetComponent<Hamster>());
+            }
         }
-	}
+    }
 
     public void CatchHamster(Hamster hamster) {
         if (PhotonNetwork.connectedAndReady) {
@@ -49,9 +65,9 @@ public class AttackBubble : MonoBehaviour {
         }
 
         // If we are networked, send RPC
-        if(PhotonNetwork.connectedAndReady && _playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player) {
-            _playerController.GetComponent<PhotonView>().RPC("CatchHamster", PhotonTargets.Others, hamster.hamsterNum);
-        }
+        //if(PhotonNetwork.connectedAndReady && _playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player) {
+        //    _playerController.GetComponent<PhotonView>().RPC("CatchHamster", PhotonTargets.Others, hamster.hamsterNum);
+        //}
 
         // The hamster was caught.
         hamster.Caught();
@@ -63,9 +79,10 @@ public class AttackBubble : MonoBehaviour {
     }
 
     void InstantiateNetworkBubble(Hamster hamster) {
-        object[] data = new object[2];
+        object[] data = new object[3];
         data[0] = _playerController.playerNum;
-        data[1] = hamster.hamsterNum;
-        GameObject bubble = PhotonNetwork.Instantiate("Prefabs/Networking/Bubble_PUN", _playerController.transform.position, Quaternion.identity, 0, data);
+        data[1] = hamster.type;
+        data[2] = hamster.isGravity;
+        PhotonNetwork.Instantiate("Prefabs/Networking/Bubble_PUN", _playerController.transform.position, Quaternion.identity, 0, data);
     }
 }

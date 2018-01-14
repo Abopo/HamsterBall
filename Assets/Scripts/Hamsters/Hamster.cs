@@ -8,6 +8,7 @@ public class Hamster : Entity {
     public HAMSTER_TYPES type;
     public int team;
     public int hamsterNum; // just a number specifying each individual hamster
+    public bool wasCaught; // used to prevent the same hamster from being caught twice ont he same frame.
 
 	public GameObject spiralEffectObj;
 	public GameObject spiralEffectInstance;
@@ -22,7 +23,7 @@ public class Hamster : Entity {
     float moveSpeed = 3;
 
     BubbleManager _homeBubbleManager;
-	BubbleManager _enemyBubbleManager;
+	//BubbleManager _enemyBubbleManager;
 
     HamsterSpawner _parentSpawner;
     List<int> _okTypes;
@@ -50,6 +51,8 @@ public class Hamster : Entity {
     protected override void Start () {
 		base.Start ();
 
+        wasCaught = false;
+
         _fallClip = Resources.Load<AudioClip>("Audio/SFX/Hamster_Fall2");
         _deadFallClip = Resources.Load<AudioClip>("Audio/SFX/Dead_Hamster_Fall");
         _audioSource = GetComponent<AudioSource>();
@@ -71,12 +74,12 @@ public class Hamster : Entity {
         HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         if (team == 0) {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
-            _enemyBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+            //_enemyBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
 
             _okTypes = hamsterScan.OkTypesLeft;
         } else if (team == 1) {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
-            _enemyBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            //_enemyBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
 
             _okTypes = hamsterScan.OkTypesRight;
         }
@@ -206,8 +209,14 @@ public class Hamster : Entity {
         // Reduce hamster spawner's hamsterCount
         _parentSpawner.ReduceHamsterCount();
 
+        wasCaught = true;
+
         // Destroy self
-        DestroyObject(this.gameObject);
+        if (PhotonNetwork.connectedAndReady) {
+            PhotonNetwork.Destroy(GetComponent<PhotonView>());
+        } else {
+            DestroyObject(this.gameObject);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
