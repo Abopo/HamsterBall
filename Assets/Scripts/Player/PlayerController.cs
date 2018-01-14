@@ -113,7 +113,6 @@ public class PlayerController : Entity {
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
 
         inputState = new InputState();
-        inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
     }
 
     // Use this for initialization
@@ -161,8 +160,13 @@ public class PlayerController : Entity {
         _states[8] = new AttackState();
     }
 
-	// Update is called once per frame
-	void Update () {
+    public void SetPlayerNum(int pNum) {
+        playerNum = pNum;
+        inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		CheckInput ();
         direction = Animator.GetBool("FacingRight") ? 1 : -1;
 

@@ -5,9 +5,10 @@ using System.Collections.Generic;
 
 public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     public GameObject aiPlayerObj;
-    public SpriteRenderer[] shiftMeterIcons = new SpriteRenderer[4]; // 0 - leftmeter1; 1 - leftmeter2; 2 - rightmeter; 3 - rightmeter2
-    public Image[] shiftMeterFronts = new Image[4];
-    public Image[] shiftMeterBacks = new Image[4];
+    //public SpriteRenderer[] shiftMeterIcons = new SpriteRenderer[4]; // 0 - leftmeter1; 1 - leftmeter2; 2 - rightmeter; 3 - rightmeter2
+    //public Image[] shiftMeterFronts = new Image[4];
+    //public Image[] shiftMeterBacks = new Image[4];
+    public ShiftMeter[] shiftMeters = new ShiftMeter[4];
     int leftMeters = 0;
     int rightMeters = 0;
     Sprite[] bubSprites;
@@ -98,18 +99,18 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
 
     // TODO: this function is a little gross still, fix it up a bit
     public void SetupSwitchMeter(PlayerController player) {
-        if (player.team == 0) {
-            shiftMeterFronts[leftMeters].enabled = true;
-            shiftMeterBacks[leftMeters].enabled = true;
-            player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeterFronts[leftMeters].GetComponent<RectTransform>());
-            shiftMeterIcons[leftMeters].sprite = bubSprites[(player.playerNum - 1) * 12];
-            shiftMeterIcons[leftMeters++].enabled = true;
-        } else if (player.team == 1) {
-            shiftMeterFronts[2 + rightMeters].enabled = true;
-            shiftMeterBacks[2 + rightMeters].enabled = true;
-            player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeterFronts[2 + rightMeters].GetComponent<RectTransform>());
-            shiftMeterIcons[2 + rightMeters].sprite = bubSprites[(player.playerNum - 1) * 12];
-            shiftMeterIcons[2 + rightMeters++].enabled = true;
+        if(player.team == 0) {
+            shiftMeters[leftMeters].GetMeterFront().enabled = true;
+            shiftMeters[leftMeters].GetMeterBack().enabled = true;
+            player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeters[leftMeters].GetMeterFront().GetComponent<RectTransform>());
+            shiftMeters[leftMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1) * 12];
+            shiftMeters[leftMeters++].GetIcon().enabled = true;
+        } else if(player.team == 1) {
+            shiftMeters[2+rightMeters].GetMeterFront().enabled = true;
+            shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
+            player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeters[2+rightMeters].GetMeterFront().GetComponent<RectTransform>());
+            shiftMeters[2+rightMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1) * 12];
+            shiftMeters[2+rightMeters++].GetIcon().enabled = true;
         }
     }
 
