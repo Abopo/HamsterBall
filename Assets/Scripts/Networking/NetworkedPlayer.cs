@@ -263,7 +263,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         // If we were the player to try and catch this bubble
         if (_playerController.heldBubble.GetComponent<PhotonView>().owner == PhotonNetwork.player) { 
             // Destroy the held bubble
-            PhotonView.Destroy(_playerController.heldBubble.gameObject);
+            PhotonNetwork.Destroy(_playerController.heldBubble.gameObject);
         }
     }
 
