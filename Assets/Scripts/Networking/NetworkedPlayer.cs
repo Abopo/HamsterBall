@@ -206,7 +206,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
             Hamster hamster = hamsterScan.GetHamster(hamsterNum);
 
-            if (!hamster.wasCaught) {
+            if (hamster != null && !hamster.wasCaught) {
                 // Tell rest of players that a hamster was caught
                 photonView.RPC("HamsterCaught", PhotonTargets.All, hamster.hamsterNum);
             } else {
