@@ -207,7 +207,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             Hamster hamster = hamsterScan.GetHamster(hamsterNum);
 
             if (!hamster.wasCaught) {
+                // Tell rest of players that a hamster was caught
                 photonView.RPC("HamsterCaught", PhotonTargets.All, hamster.hamsterNum);
+            } else {
+                // Tell original player that they can't catch that hamster
+                photonView.RPC("HamsterMissed", PhotonTargets.All);
             }
         }
     }
@@ -219,12 +223,18 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         } else {
             OtherCatchHamster(hamsterNum);
         }
+
+
+        _playerController.aimCooldownTimer = 0.0f;
+
+        // For now this is only for the AI
+        _playerController.significantEvent.Invoke();
     }
 
     // When this player catches a hamster
     void MeCatchHamster() {
         if (_playerController.heldBubble == null) {
-            _playerController.attackBubble.GetComponent<AttackBubble>().CatchHamster(tryingToCatchHamster);
+            //_playerController.attackBubble.GetComponent<AttackBubble>().CatchHamster(tryingToCatchHamster);
 
             // For some reason, the client side player will sometimes go straight into the throw state after catching a hamster
             // Trying to prevent that
@@ -239,9 +249,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         Hamster hamster = hamsterScan.GetHamster(hamsterNum);
 
         if (hamster != null) {
-            // Now the bubble itself handles most of the instantion and setup so we don't actually need to "catch" the hamster
-            //_playerController.attackBubble.GetComponent<AttackBubble>().CatchHamster(hamster);
-
             // For some reason, the client side player will sometimes go straight into the throw state after catching a hamster
             // Trying to prevent that
             _playerController.inputState.bubble.isJustPressed = false;
@@ -249,11 +256,15 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             // The hamster was caught.
             hamster.Caught();
         }
+    }
 
-        _playerController.aimCooldownTimer = 0.0f;
-
-        // For now this is only for the AI
-        _playerController.significantEvent.Invoke();
+    [PunRPC]
+    void HamsterMissed() {
+        // If we were the player to try and catch this bubble
+        if (_playerController.heldBubble.GetComponent<PhotonView>().owner == PhotonNetwork.player) { 
+            // Destroy the held bubble
+            PhotonView.Destroy(_playerController.heldBubble.gameObject);
+        }
     }
 
     [PunRPC]

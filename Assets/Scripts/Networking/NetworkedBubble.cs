@@ -17,8 +17,6 @@ public class NetworkedBubble : Photon.MonoBehaviour {
         PhotonView photonView = GetComponent<PhotonView>();
         NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();
         PlayerController playerController = playerSpawner.GetPlayer((int)photonView.instantiationData[0]);
-        //HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
-       // Hamster hamster = hamsterScan.GetHamster((int)photonView.instantiationData[1]);
 
         playerController.heldBubble = _bubble;
         playerController.heldBubble.team = playerController.team;
@@ -26,6 +24,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
         playerController.heldBubble.Initialize((HAMSTER_TYPES)photonView.instantiationData[1]);
         playerController.heldBubble.GetComponent<CircleCollider2D>().enabled = false;
 
+        // if it's a gravity hamster
         if ((bool)photonView.instantiationData[2]) {
             playerController.heldBubble.isGravity = true;
             _spiralEffectObj = Resources.Load("Prefabs/Effects/SpiralEffect") as GameObject;

@@ -25,6 +25,7 @@ public class AttackBubble : MonoBehaviour {
             if (PhotonNetwork.connectedAndReady) {
                 // If we are the local client and aren't already trying to catch a hamster
                 if (_playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
+                    /*
                     if (PhotonNetwork.isMasterClient) {
                         // The master client is able to immediately catch the hamster because it has the most up to date game state.
                         CatchHamster(other.GetComponent<Hamster>());
@@ -33,6 +34,17 @@ public class AttackBubble : MonoBehaviour {
                         // Store the hamster we are trying to catch
                         _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster = other.GetComponent<Hamster>();
                         // Have the master client check to make sure that hamster is valid
+                        _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, other.GetComponent<Hamster>().hamsterNum);
+                    }
+                    */
+
+                    // Catch the hamster
+                    CatchHamster(other.GetComponent<Hamster>());
+                    if (PhotonNetwork.isMasterClient) {
+                        // Tell other clients that a hamster was caught
+                        _playerController.GetComponent<PhotonView>().RPC("HamsterCaught", PhotonTargets.All, other.GetComponent<Hamster>().hamsterNum);
+                    } else {
+                        // Have the master client double check that it's ok
                         _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, other.GetComponent<Hamster>().hamsterNum);
                     }
                 }
