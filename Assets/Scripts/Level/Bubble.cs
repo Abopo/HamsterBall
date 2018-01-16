@@ -21,7 +21,6 @@ public class Bubble : MonoBehaviour {
 	public bool checkedForAnchor;
 	public bool foundAnchor = false;
 
-	//public bool leftTeam;
     public int team; // -1 = no team, 0 = left team, 1 = right team
 
     public int is13Edge = 0; // If this bubble is on the edges of a 13 row. -1 = left; 0 = not; 1 = right
@@ -31,8 +30,6 @@ public class Bubble : MonoBehaviour {
 
     private bool _dropCombo;
     private Vector3 _bankedPos; // position where this bubble banked off a wall
-    //bool hasAdjBubbles;
-    //Sprite[] rainbowSprites;
     BubblePopAnimation _popAnimation;
 
 	BubbleManager _homeBubbleManager;
@@ -138,7 +135,6 @@ public class Bubble : MonoBehaviour {
 				}
 			}
 		}
-
 
 		// way too many extra checks to super omega make sure we don't drop when we shouldn't
 		if (IsAnchorPoint ()) {

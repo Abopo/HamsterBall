@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
     public bool testMode;
-    public bool isOnline;
+    public bool isOnline = false;
     public int level;
 
     public int leftTeamHandicap;

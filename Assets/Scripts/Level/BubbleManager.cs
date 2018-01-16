@@ -45,9 +45,12 @@ public class BubbleManager : MonoBehaviour {
 
     //GameObject[] nodes;
     public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 50).ToArray(); // initializes 50 values to -1
+
+    static List<int> _nextLineBubbles = new List<int>();
+    int nextLineIndex = 0; // counts up as new lines are added
     bool _setupDone;
     Bubble[] bubbles;
-    int[] _nextLineBubbles = Enumerable.Repeat<int>(-1, 13).ToArray();
+    //int[] _nextLineBubbles = Enumerable.Repeat<int>(-1, 13).ToArray();
 
     Bubble lastBubbleAdded;
     public Bubble LastBubbleAdded {
@@ -60,10 +63,14 @@ public class BubbleManager : MonoBehaviour {
         get { return _bubbleEffects; }
     }
 
-    public int[] NextLineBubbles {
-        get { return _nextLineBubbles; }
-        set { _nextLineBubbles = value; }
+    public int NextLineIndex {
+        get { return nextLineIndex; }
     }
+
+    //public int[] NextLineBubbles {
+    //    get { return _nextLineBubbles; }
+    //    set { _nextLineBubbles = value; }
+    //}
 
     GameManager _gameManager;
     AudioSource _audioSource;
@@ -95,6 +102,11 @@ public class BubbleManager : MonoBehaviour {
             justAddedBubble = true;
         }
 
+        // Get the next line of bubbles
+        if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
+            SeedNextLineBubbles();
+        }
+
         testMode = _gameManager.testMode;
 
         _audioSource = GetComponent<AudioSource>();
@@ -107,6 +119,11 @@ public class BubbleManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _bubbleEffects = GetComponentInChildren<BubbleEffects>();
+
+        // Send RPC if we are networked
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            GetComponent<PhotonView>().RPC("SyncLineBubbles", PhotonTargets.Others, _nextLineBubbles.ToArray());
+        }
     }
 
     void BuildStartingNodes() {
@@ -237,6 +254,16 @@ public class BubbleManager : MonoBehaviour {
 		bubble.Initialize((HAMSTER_TYPES)Type);
 		bubble.locked = true;
 	}
+
+    void SeedNextLineBubbles() {
+        int[] lineBubbles;
+        for (int i = 0; i < 10; ++i) {
+            lineBubbles = DecideNextLine();
+            foreach (int bub in lineBubbles) {
+                _nextLineBubbles.Add(bub);
+            }
+        }
+    }
 
     void ReadyHamsterMeter() {
         int handicap = 9;
@@ -678,32 +705,42 @@ public class BubbleManager : MonoBehaviour {
 			}
 		}
 
-        // Get the next line of bubbles
-        if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
-            _nextLineBubbles = DecideNextLine();
-        }
-
         // Spawn bubbles on top line
-		for (int i = 0; i < topLineLength; ++i) {
+		for (int i = 0; i < topLineLength; ++i, ++nextLineIndex) {
 			GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
 			Bubble bubble = bub.GetComponent<Bubble>();
             bubble.transform.parent = bubblesParent;
 
             // Init bubble using the types that were decided ahead of time
-            InitBubble(bubble, _nextLineBubbles[i]);
+            InitBubble(bubble, _nextLineBubbles[nextLineIndex]);
 			bubble.node = i;
             nodeList[i].bubble = bubble;
 			bubbles[i] = bubble;
 		}
 
-		UpdateAllAdjBubbles ();
+        // If we've hit the end of the generated line bubbles
+        if(nextLineIndex >= _nextLineBubbles.Count && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
+            // Generate some more!
+            SeedNextLineBubbles();
+            // Send RPC if we are networked
+            if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+                GetComponent<PhotonView>().RPC("SyncLineBubbles", PhotonTargets.Others, _nextLineBubbles);
+            }
+        }
+
+        UpdateAllAdjBubbles ();
 
 		justAddedBubble = true;
 
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
-            GetComponent<PhotonView>().RPC("AddLine", PhotonTargets.Others, _nextLineBubbles);
+            GetComponent<PhotonView>().RPC("AddLine", PhotonTargets.Others/*, _nextLineBubbles*/);
         }
+
+        // Get the next line of bubbles
+        //if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
+         //   _nextLineBubbles = DecideNextLine();
+        //}
 
         // Play sound
         _audioSource.clip = _addLineClip;
@@ -765,4 +802,18 @@ public class BubbleManager : MonoBehaviour {
 			}
 		}
 	}
+
+    public int GetNextLineBubble(int index) {
+        if (index < _nextLineBubbles.Count) {
+            return _nextLineBubbles[index];
+        }
+
+        return -1;
+    }
+    public void SetNextLineBubbles(int[] lineBubbles) {
+        _nextLineBubbles.Clear();
+        foreach (int bub in lineBubbles) {
+            _nextLineBubbles.Add(bub);
+        }
+    }
 }

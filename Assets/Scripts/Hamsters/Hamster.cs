@@ -212,11 +212,7 @@ public class Hamster : Entity {
         wasCaught = true;
 
         // Destroy self
-        if (PhotonNetwork.connectedAndReady) {
-            PhotonNetwork.Destroy(GetComponent<PhotonView>());
-        } else {
-            DestroyObject(this.gameObject);
-        }
+        DestroyObject(this.gameObject);
     }
 
     void OnTriggerEnter2D(Collider2D other) {

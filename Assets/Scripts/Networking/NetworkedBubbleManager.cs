@@ -19,24 +19,26 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
-            for (int i = 0; i < 13; ++i) {
-                //stream.SendNext(_bubbleManager.NextLineBubbles[i]);
-            }
-
+            // For initial setup to be synced.
             if (BubbleManager.startingBubbleTypes[0] != -1) {
                 for(int i = 0; i < 50; ++i) {
                     stream.SendNext(BubbleManager.startingBubbleTypes[i]);
                 }
+
+                //for (int i = 0; i < 13; ++i) {
+                //    stream.SendNext(_bubbleManager.NextLineBubbles[i]);
+                //}
             }
         } else {
-            for (int i = 0; i < 13; ++i) {
-                //_bubbleManager.NextLineBubbles[i] = (int)stream.ReceiveNext();
-            }
-
+            // For initial setup to be synced.
             if (BubbleManager.startingBubbleTypes[0] == -1) {
                 for (int i = 0; i < 50; ++i) {
                     BubbleManager.startingBubbleTypes[i] = (int)stream.ReceiveNext();
                 }
+
+                //for (int i = 0; i < 13; ++i) {
+                //    _bubbleManager.NextLineBubbles[i] = (int)stream.ReceiveNext();
+                //}
 
                 _bubbleManager.SpawnStartingBubbles();
             }
@@ -44,11 +46,22 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     }
 
     [PunRPC]
-    void AddLine(int[] nextLineBubbles) {
-        for (int i = 0; i < 13; ++i) {
-            _bubbleManager.NextLineBubbles[i] = nextLineBubbles[i];
-        }
+    void SyncLineBubbles(int[] lineBubblesList) {
+        _bubbleManager.SetNextLineBubbles(lineBubblesList);
+    }
 
+    [PunRPC]
+    void AddLine(/*int[] nextLineBubbles*/) {
         _bubbleManager.AddLine();
+
+        //for (int i = 0; i < 13; ++i) {
+        //    _bubbleManager.NextLineBubbles[i] = nextLineBubbles[i];
+        //}
+    }
+
+    // Checks to make sure that the board matches the master client's baord.
+    [PunRPC]
+    void BoardLayoutCheck(int[] boardBubbles) {
+
     }
 }

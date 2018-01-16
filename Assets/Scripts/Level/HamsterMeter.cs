@@ -106,7 +106,13 @@ public class HamsterMeter : MonoBehaviour {
     void CreateNewStockSprite() {
         // Create a new stock sprite.
         GameObject newStockSprite = GameObject.Instantiate(hamsterStockSprite);
+
         // Set new stock sprite to correct color.
+        int type = bubbleManager.GetNextLineBubble(bubbleManager.NextLineIndex+curStock-1);
+        Animator[] animators = newStockSprite.GetComponentsInChildren<Animator>();
+        foreach(Animator anim in animators) {
+            anim.SetInteger("Type", type);
+        }
 
         // Add new sprite to the list of stockSprites
         stockSprites.Add(newStockSprite);
