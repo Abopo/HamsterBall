@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public enum HAMSTER_TYPES { NO_TYPE = -1, GREEN = 0, RED, ORANGE, GRAY, BLUE, PINK, NUM_NORM_TYPES,
+public enum HAMSTER_TYPES { NO_TYPE = -1, GREEN = 0, RED, ORANGE, GRAY, BLUE, PINK, PURPLE, NUM_NORM_TYPES,
 						   RAINBOW = 8, DEAD, BOMB, NUM_SPEC_TYPES = 3};
 
 public class Hamster : Entity {
@@ -131,7 +131,7 @@ public class Hamster : Entity {
     int SelectValidNormalType() {
         int validType = 0;
         // If special types are OK, don't include it here.
-        int special = _okTypes.Contains(6) ? 1 : 0;
+        int special = _okTypes.Contains(7) ? 1 : 0;
         int rIndex = Random.Range(0, _okTypes.Count - special);
 
         validType = _okTypes[rIndex];

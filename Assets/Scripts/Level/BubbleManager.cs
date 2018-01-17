@@ -747,7 +747,7 @@ public class BubbleManager : MonoBehaviour {
 
     int[] DecideNextLine() {
         int[] nextLineBubbles = new int[13];
-        int[] typeCounts = new int[6]; // Keeps track of how many of each color has been made
+        int[] typeCounts = new int[7]; // Keeps track of how many of each color has been made
         int tempType = 0;
 
         for (int i = 0; i < topLineLength; ++i) {

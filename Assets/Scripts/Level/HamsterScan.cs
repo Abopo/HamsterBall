@@ -17,7 +17,7 @@ public class HamsterScan : MonoBehaviour {
     List<int> _okTypesLeft = new List<int>();
     List<int> _okTypesRight = new List<int>();
     // Used for counting up numbers of hamster types
-    int[] _typeCounts = new int[7];
+    int[] _typeCounts = new int[8];
 
     /*
     public List<Hamster> AllHamsters {
@@ -144,9 +144,12 @@ public class HamsterScan : MonoBehaviour {
                     case HAMSTER_TYPES.PINK:
                         _typeCounts[5]++;
                         break;
+                    case HAMSTER_TYPES.PURPLE:
+                        _typeCounts[6]++;
+                        break;
                     case HAMSTER_TYPES.RAINBOW:
                     case HAMSTER_TYPES.DEAD:
-                        _typeCounts[6]++;
+                        _typeCounts[7]++;
                         break;
                 }
             }
@@ -177,10 +180,13 @@ public class HamsterScan : MonoBehaviour {
                     case HAMSTER_TYPES.PINK:
                         _typeCounts[5]++;
                         break;
+                    case HAMSTER_TYPES.PURPLE:
+                        _typeCounts[6]++;
+                        break;
                     case HAMSTER_TYPES.RAINBOW:
                     case HAMSTER_TYPES.DEAD:
                     case HAMSTER_TYPES.BOMB:
-                        _typeCounts[6]++;
+                        _typeCounts[7]++;
                         break;
                 }
             }
@@ -189,7 +195,7 @@ public class HamsterScan : MonoBehaviour {
     }
 
     void PopulateOKTypesList(List<int> list) {
-        for (int i = 0; i < 6; ++i) {
+        for (int i = 0; i < 7; ++i) {
             // If there are less than 2 or 3 of a given type, it is OK to spawn as that type
             if (_typeCounts[i] < 3) {
                 list.Add(i);
@@ -200,10 +206,10 @@ public class HamsterScan : MonoBehaviour {
         }
 
         // There can only be one special type on each side at a time.
-        if (_typeCounts[6] < 1) {
-            list.Add(6);
+        if (_typeCounts[7] < 1) {
+            list.Add(7);
         }
-        _typeCounts[6] = 0;
+        _typeCounts[7] = 0;
     }
 
     public Hamster GetHamster(int hamsterNum) {

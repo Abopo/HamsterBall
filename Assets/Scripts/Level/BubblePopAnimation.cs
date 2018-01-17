@@ -47,6 +47,9 @@ public class BubblePopAnimation : MonoBehaviour {
             case HAMSTER_TYPES.BLUE:
                 index = 0;
                 break;
+            case HAMSTER_TYPES.BOMB:
+                index = 4;
+                break;
             case HAMSTER_TYPES.DEAD:
                 index = 8;
                 break;
@@ -62,8 +65,11 @@ public class BubblePopAnimation : MonoBehaviour {
             case HAMSTER_TYPES.PINK:
                 index = 24;
                 break;
-            case HAMSTER_TYPES.RED:
+            case HAMSTER_TYPES.PURPLE:
                 index = 28;
+                break;
+            case HAMSTER_TYPES.RED:
+                index = 32;
                 break;
             case HAMSTER_TYPES.RAINBOW:
                 index = -1;

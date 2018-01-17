@@ -193,7 +193,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         int rType = 0;
 
         // If we can be a special hamster
-        if (_okTypes.Contains(6)) {
+        if (_okTypes.Contains(7)) {
             int special = Random.Range(0, 16);
             if (special == 1) {
                 int sType = Random.Range(0, specialTypes.Count);
@@ -224,7 +224,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     int SelectValidNormalType() {
         int validType = 0;
         // If special types are OK, don't include it here.
-        int special = _okTypes.Contains(6) ? 1 : 0;
+        int special = _okTypes.Contains(7) ? 1 : 0;
         int rIndex = Random.Range(0, _okTypes.Count - special);
 
         validType = _okTypes[rIndex];
