@@ -83,12 +83,17 @@ public class Bubble : MonoBehaviour {
         _dropCombo = false;
         _bankedPos = Vector3.zero;
 
-        GetComponent<Animator> ().SetInteger("Type", (int)type);
-		transform.GetChild(0).GetComponent<Animator>().SetInteger("Type", (int)type);
+        SetType((int)type);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    public void SetType(int inType) {
+        type = (HAMSTER_TYPES)inType;
+        GetComponent<Animator>().SetInteger("Type", inType);
+        transform.GetChild(0).GetComponent<Animator>().SetInteger("Type", inType);
+    }
+
+    // Update is called once per frame
+    void Update () {
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
         }

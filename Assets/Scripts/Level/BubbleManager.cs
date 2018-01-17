@@ -43,14 +43,12 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    //GameObject[] nodes;
     public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 50).ToArray(); // initializes 50 values to -1
 
     static List<int> _nextLineBubbles = new List<int>();
     int nextLineIndex = 0; // counts up as new lines are added
     bool _setupDone;
     Bubble[] bubbles;
-    //int[] _nextLineBubbles = Enumerable.Repeat<int>(-1, 13).ToArray();
 
     Bubble lastBubbleAdded;
     public Bubble LastBubbleAdded {
