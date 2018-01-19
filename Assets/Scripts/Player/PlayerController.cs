@@ -197,6 +197,11 @@ public class PlayerController : Entity {
 		_physics.MoveY (velocity.y * Time.deltaTime);
 
         _justChangedState = false;
+
+        // Failsafe check
+        if(heldBubble != null && heldBubble.locked) {
+            heldBubble = null;
+        }
 	}
 
     void CheckInput() {

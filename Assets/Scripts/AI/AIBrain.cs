@@ -30,6 +30,7 @@ public class AIBrain : MonoBehaviour {
 
     float _doubleCheckTime = 0.5f;
     float _doubleCheckTimer = 0f;
+    int _turnCounter = 0;
 
     List<Hamster> _myHamsters = new List<Hamster>(); // List of Hamster types on the field.
     List<Hamster> _theirHamsters = new List<Hamster>(); // List of Hamster types on the field.
@@ -400,7 +401,7 @@ public class AIBrain : MonoBehaviour {
                     }
                     break;
                 case 3:
-                    // smart AI will only change actions if it is a MUCH better idea.
+                    // smartest AI will only change actions if it is a MUCH better idea.
                     if (choice > action.weight / 10 && curAction != null && action.weight > curAction.weight+5) { // 90% chance to choose this action.
                         curAction = action;
                         return;
@@ -473,15 +474,31 @@ public class AIBrain : MonoBehaviour {
                 offset = -2.4f;
             }
             if (curAction.nodeWant.transform.position.x - transform.position.x < (-2f + offset)) {
+                if(curAction.horWant == 1) {
+                    // We're turning around
+                    _turnCounter++;
+                }
                 curAction.horWant = -1;
             } else if (curAction.nodeWant.transform.position.x - transform.position.x > (2f + offset)) {
+                if (curAction.horWant == -1) {
+                    // We're turning around
+                    _turnCounter++;
+                }
                 curAction.horWant = 1;
             } else {
                 if(CheckForClearThrow()) {
                     // This timer makes the AI check for a clear throw more than once, from slightly different positions
                     // hopefully making throwing slightly more accurate.
                     curAction.horWant = 0;
+                    _turnCounter = 0;
                 }
+            }
+
+            // If we've turned around twice, something is wrong and we can't find the nodeWant
+            if(_turnCounter >= 2) {
+                // So choose a new action
+                ChooseNewAction();
+                _turnCounter = 0;
             }
         }
     }
@@ -528,7 +545,7 @@ public class AIBrain : MonoBehaviour {
                                         curAction.nodeWant.transform.position.y);
             toNode = nodeWantPos - heldBubblePos;
             throwHit = Physics2D.Raycast(heldBubblePos, toNode, 10, throwMask); // 14 is bubble layer
-            //Debug.DrawRay(heldBubblePos, toNode * throwHit.distance);
+            Debug.DrawRay(heldBubblePos, toNode * 10);
             // If our check hits a bubble and that bubble is our bubbleWant
             if (throwHit) {
                 Node hitbubble = throwHit.collider.GetComponent<Node>();
@@ -554,8 +571,7 @@ public class AIBrain : MonoBehaviour {
             }
         }
 
-        return false;
-        
+        return false;        
     }
 
     void DrawDebugInfo() {

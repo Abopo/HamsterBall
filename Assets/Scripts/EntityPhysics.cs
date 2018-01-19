@@ -267,7 +267,7 @@ public class EntityPhysics : MonoBehaviour {
                     break;
                 case 2:
                     float curYPos = transform.position.y - _scaledRadius;
-                    float wantYPos = collider.transform.position.y + (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.localScale.y) / 2;
+                    float wantYPos = collider.transform.position.y + (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.localScale.y) / 1.5f;
                     float yMove = wantYPos - curYPos;
                     if (Mathf.Abs(yMove) > _scaledRadius/4) {
                         MoveY(yMove);

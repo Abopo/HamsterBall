@@ -22,7 +22,7 @@ public class HitState : PlayerState {
         playerController.PlayerAudio.PlayHitClip();
 
         // If the player is holding a hamster, drop it
-        if(playerController.heldBubble != null) {
+        if(playerController.heldBubble != null && !playerController.heldBubble.wasThrown) {
             DropHamster();
         }
 

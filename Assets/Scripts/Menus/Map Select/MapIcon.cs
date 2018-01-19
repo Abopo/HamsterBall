@@ -17,8 +17,8 @@ public class MapIcon : MonoBehaviour {
     float _stopAt;
 
     int _mapIndex;
-    Sprite[] _mapImages = new Sprite[5];
-    string[] _mapNames = new string[5];
+    Sprite[] _mapImages = new Sprite[6];
+    string[] _mapNames = new string[6];
 
     SpriteRenderer _spriteRenderer;
 
@@ -48,12 +48,14 @@ public class MapIcon : MonoBehaviour {
         _mapImages[2] = Resources.Load<Sprite>("Art/UI/TwoTubes - Sewers");
         _mapImages[3] = Resources.Load<Sprite>("Art/UI/TwoTubes - City");
         _mapImages[4] = Resources.Load<Sprite>("Art/UI/OneTube - Fungals");
+        _mapImages[5] = Resources.Load<Sprite>("Art/UI/OneTube - DarkForest");
 
         _mapNames[0] = "OneTube - Forest";
         _mapNames[1] = "TwoTubes - Laboratory";
         _mapNames[2] = "TwoTubes - Sewers";
         _mapNames[3] = "TwoTubes - City";
         _mapNames[4] = "OneTube - Fungals";
+        _mapNames[5] = "OneTube - DarkForest";
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
 	}
@@ -98,7 +100,7 @@ public class MapIcon : MonoBehaviour {
             index = 2;
             icon1.index = 0;
             icon2.index = 1;
-            for(int i = 0; i < 2; ++i) {
+            for(int i = 0; i < 3; ++i) {
                 _mapIndex -= 1;
                 if(_mapIndex < 0) {
                     _mapIndex = _mapImages.Length - 1;
@@ -109,7 +111,7 @@ public class MapIcon : MonoBehaviour {
             index = 0;
             icon1.index = 1;
             icon2.index = 2;
-            for (int i = 0; i < 2; ++i) {
+            for (int i = 0; i < 3; ++i) {
                 _mapIndex += 1;
                 if (_mapIndex > _mapImages.Length - 1) {
                     _mapIndex = 0;

@@ -17,18 +17,20 @@ public class PlayerManager : MonoBehaviour {
 
     public int NumPlayers {
         get {
-            if (backup) {
-                return _backupPlayers.Count;
-            } else {
+            //if (backup) {
+            //    return _backupPlayers.Count;
+            //} else {
                 return _players.Count;
-            }
+            //}
         }
     }
 
     // Use this for initialization
     void Start () {
         DontDestroyOnLoad(transform.gameObject);
-        BackupPlayers();
+        if (backup) {
+            BackupPlayers();
+        }
 
         SceneManager.sceneLoaded += SceneChanged;
         //NumPlayers = 0;
@@ -39,13 +41,13 @@ public class PlayerManager : MonoBehaviour {
         newPlayer.playerNum = 1;
         newPlayer.controllerNum = 1;
         newPlayer.team = 0;
-        _backupPlayers.Add(newPlayer);
+        _players.Add(newPlayer);
 
         PlayerInfo newPlayer2 = new PlayerInfo();
         newPlayer2.playerNum = 2;
         newPlayer2.controllerNum = -1;
         newPlayer2.team = 1;
-        _backupPlayers.Add(newPlayer2);
+        _players.Add(newPlayer2);
     }
 
     // Update is called once per frame
@@ -54,11 +56,11 @@ public class PlayerManager : MonoBehaviour {
 	}
 
     public PlayerInfo GetPlayerByIndex(int index) {
-        if (_players.Count > 0) {
+        //if (_players.Count > 0) {
             return _players[index];
-        } else {
-            return _backupPlayers[index];
-        }
+        //} else {
+        //    return _backupPlayers[index];
+        //}
     }
 
     public PlayerInfo GetPlayerByNum(int playerNum) {
