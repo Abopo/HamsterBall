@@ -10,20 +10,21 @@ public class TextWriter : MonoBehaviour {
     string _textToWrite;
     string _displayString;
     int _index;
+    bool _done;
 
     float _writeDelay = 0.025f;
     float _writeTimer = 0f;
 
 	// Use this for initialization
 	void Start () {
-        done = true;
+        _done = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         CheckInput();
 
-		if(!done) {
+		if(!_done) {
             _writeTimer += Time.deltaTime;
             if(_writeTimer >= _writeDelay) {
                 // Display the next character
@@ -35,18 +36,23 @@ public class TextWriter : MonoBehaviour {
                 _index++;
                 _writeTimer = 0f;
                 if(_displayString == _textToWrite) {
-                    done = true;
+                    _done = true;
                 }
             }
         }
 	}
 
     void CheckInput() {
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Space) && _displayString.Length > 2) {
             // Skip writing
             _displayString = _textToWrite;
             displayText.text = _displayString;
-            done = true;
+            _done = true;
+        }
+        if(Input.GetKeyUp(KeyCode.Space)) {
+            if (_displayString == _textToWrite) {
+                done = true;
+            }
         }
     }
 
@@ -55,6 +61,7 @@ public class TextWriter : MonoBehaviour {
         _displayString = "";
         displayText.text = _displayString;
 
+        _done = false;
         done = false;
         _index = 0;
         _writeTimer = 0f;

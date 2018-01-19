@@ -117,6 +117,11 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
+    public void AddPlayer(PlayerInfo player) {
+        _players.Add(player);
+    }
+
+    // For networking
     public void AddPlayer(int playerNum, int controllerNum, int ownerID) {
         if (playerNum != -1) {
             PlayerInfo newPlayer = new PlayerInfo();
@@ -128,7 +133,6 @@ public class PlayerManager : MonoBehaviour {
             _players.Add(newPlayer);
         }
     }
-
 
     public int RemovePlayerByNum(int playerNum) {
         foreach (PlayerInfo p in _players) {

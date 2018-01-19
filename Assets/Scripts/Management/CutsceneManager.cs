@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System.IO;
 
 public class CutsceneManager : MonoBehaviour {
@@ -45,7 +44,7 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void CheckInput() {
-        if(Input.GetKeyUp(KeyCode.Space) && _ready) {
+        if(Input.GetKeyDown(KeyCode.Space) && _ready) {
             // Move to next thing
             _ready = false;
             ReadEscapeCharacter();
@@ -144,6 +143,6 @@ public class CutsceneManager : MonoBehaviour {
         _reader.Read();
 
         _readText = _reader.ReadLine();
-        SceneManager.LoadScene(_readText);
+        GetComponent<BoardLoader>().ReadBoardSetup(_readText);
     }
 }
