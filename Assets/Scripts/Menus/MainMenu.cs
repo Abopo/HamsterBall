@@ -16,6 +16,10 @@ public class MainMenu : MonoBehaviour {
     void Update () {
     }
 
+    public void LoadStoryMode() {
+        SceneManager.LoadScene("Cutscene");
+    }
+
     public void LoadCharacterSelect() {
         SceneManager.LoadScene("CharacterSelect");
     }

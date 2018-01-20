@@ -36,6 +36,7 @@ public class TextWriter : MonoBehaviour {
                 _index++;
                 _writeTimer = 0f;
                 if(_displayString == _textToWrite) {
+                    done = true;
                     _done = true;
                 }
             }
