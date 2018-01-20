@@ -25,7 +25,7 @@ public class CutsceneManager : MonoBehaviour {
 	void Start () {
         _dialogueText = GetComponent<TextWriter>();
         _audioSource = GetComponent<AudioSource>();
-        _cutscenePath = "Assets/Resources/Text/CutsceneTest.txt";
+        _cutscenePath = "Assets/Resources/Text/OpeningCutscene.txt";
         _reader = new StreamReader(_cutscenePath);
         _ready = true;
         _playedAudio = false;
