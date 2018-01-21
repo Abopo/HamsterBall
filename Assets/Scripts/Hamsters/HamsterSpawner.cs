@@ -195,7 +195,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         // If we can be a special hamster
         if (_okTypes.Contains(7)) {
             int special = Random.Range(0, 16);
-            if (special == 1) {
+            if (special == 1 && specialTypes.Count > 0) {
                 int sType = Random.Range(0, specialTypes.Count);
                 switch (specialTypes[sType]) {
                     case 8: // Rainbow

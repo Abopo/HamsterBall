@@ -44,6 +44,7 @@ public class PlayerSpawner : MonoBehaviour {
             if (tempPlayerInfo.controllerNum < 0) {
                 newPlayer = Instantiate(aiPlayerObj).GetComponent<PlayerController>();
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
+                newPlayer.GetComponent<AIBrain>().characterAI = tempPlayerInfo.characterAI;
             } else {
                 newPlayer = Instantiate(playerObj).GetComponent<PlayerController>();
             }

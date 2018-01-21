@@ -13,6 +13,7 @@ public class AIBrain : MonoBehaviour {
     public int weight;
     public bool requiresShift = false;
     public PlayerController opponent;
+    public CharacterAI characterAI;
 
     public LayerMask throwMask;
 
@@ -142,8 +143,15 @@ public class AIBrain : MonoBehaviour {
         foreach (AIAction action in _actions) {
             if (curAction != null) {
                 curAction.DetermineWeight();
+                if (characterAI != null) {
+                    characterAI.AdjustActionWeight(curAction);
+                }
             }
+
             action.DetermineWeight();
+            if(characterAI != null) {
+                characterAI.AdjustActionWeight(action);
+            }
         }
 
         // If we've shifted, don't look for new actions unless it's necessary, since shift time is very short.
@@ -210,6 +218,11 @@ public class AIBrain : MonoBehaviour {
             // The easiest AI won't ever shift
             if(_difficulty == 0 && action.requiresShift) {
                 return false;
+            }
+
+            // check character specific AI
+            if(characterAI != null) {
+                return characterAI.ActionIsRelevant(action);
             }
         }
 

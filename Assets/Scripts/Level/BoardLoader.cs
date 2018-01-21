@@ -135,13 +135,29 @@ public class BoardLoader : MonoBehaviour {
         player1.team = 0;
         playerManager.AddPlayer(player1);
 
-        _readText = _reader.ReadLine();
+        _readText = _reader.ReadLine(); // read AI difficulty
         PlayerInfo player2 = new PlayerInfo();
         player2.playerNum = 2;
         player2.controllerNum = -1;
         player2.team = 1;
         player2.difficulty = int.Parse(_readText);
+
+        _readText = _reader.ReadLine(); // read AI character script
+        if(_readText != "Standard") {
+            SetCharacterAI(player2, _readText);
+        }
         playerManager.AddPlayer(player2);
+    }
+
+    void SetCharacterAI(PlayerInfo pInfo, string charAI) {
+        GeneralHamAI characterAI = new GeneralHamAI();
+        switch(charAI) {
+            case "GeneralHam":
+                characterAI = new GeneralHamAI();
+                break;
+        }
+
+        pInfo.characterAI = characterAI;
     }
 
     void LoadBoard() {
