@@ -7,6 +7,8 @@ public class Bubble : MonoBehaviour {
 	// Array of 6 adjacent bubbles.
 	// 0 - top left, increases clockwise.
 	public Bubble[] adjBubbles;
+
+    public List<Bubble> matches;
     public int numMatches;
 	public int node = -1;
 	public bool locked;
@@ -104,7 +106,7 @@ public class Bubble : MonoBehaviour {
 			checkedForAnchor = false;
 			foundAnchor = false;
             // TODO: Only run this when the board changes.
-            CanBeHit();
+            // CanBeHit();
 		} else {
             // Move
             //Debug.Log(_rigibody2D.velocity);
@@ -173,7 +175,34 @@ public class Bubble : MonoBehaviour {
 		}
 	}
 
-	public void ClearAdjBubbles() {
+    // This overload is used to check whether or not this bubble can be dropped by popping the excludeBubble
+    public bool CheckForAnchor(List<Bubble> bubbles, List<Bubble> excludedBubbles) {
+        for (int i = 0; i < 6; ++i) {
+            if (adjBubbles[i] != null && !adjBubbles[i].popped && !excludedBubbles.Contains(adjBubbles[i])) {
+                if (!adjBubbles[i].checkedForAnchor && !adjBubbles[i].foundAnchor) {
+                    adjBubbles[i].checkedForAnchor = true;
+                    bubbles.Add(adjBubbles[i]);
+                    if (adjBubbles[i].IsAnchorPoint()) {
+                        foundAnchor = true;
+                        foreach (Bubble b in bubbles) {
+                            b.foundAnchor = true;
+                        }
+                    } else {
+                        adjBubbles[i].CheckForAnchor(bubbles);
+                    }
+                } else if (adjBubbles[i].foundAnchor) {
+                    foundAnchor = true;
+                    foreach (Bubble b in bubbles) {
+                        b.foundAnchor = true;
+                    }
+                }
+            }
+        }
+
+        return foundAnchor;
+    }
+
+    public void ClearAdjBubbles() {
 		for(int i = 0; i < 6; ++i) {
 			adjBubbles[i] = null;
 		}
@@ -254,7 +283,7 @@ public class Bubble : MonoBehaviour {
 
             _homeBubbleManager.BubbleEffects.BombBubbleExplosion(transform.position);
         } else {
-            List<Bubble> matches = new List<Bubble>();
+            matches = new List<Bubble>();
             matches = CheckMatches(matches);
             numMatches = matches.Count;
 
@@ -275,9 +304,10 @@ public class Bubble : MonoBehaviour {
 		List<Bubble> grayMatches = new List<Bubble>();
 		List<Bubble> blueMatches = new List<Bubble>();
 		List<Bubble> pinkMatches = new List<Bubble>();
+        List<Bubble> purpleMatches = new List<Bubble>();
 
-		// Green checks
-		type = HAMSTER_TYPES.GREEN;
+        // Green checks
+        type = HAMSTER_TYPES.GREEN;
 		greenMatches = CheckMatches(greenMatches);
 		checkedForMatches = false;
 		_homeBubbleManager.RefreshRainbowBubbles ();
@@ -306,8 +336,13 @@ public class Bubble : MonoBehaviour {
 		pinkMatches = CheckMatches(pinkMatches);
 		checkedForMatches = false;
 		_homeBubbleManager.RefreshRainbowBubbles ();
-		
-		bool matched = false;
+        // Purple checks
+        type = HAMSTER_TYPES.PURPLE;
+        purpleMatches = CheckMatches(purpleMatches);
+        checkedForMatches = false;
+        _homeBubbleManager.RefreshRainbowBubbles();
+
+        bool matched = false;
 		if (CheckRainbowMatchCount (greenMatches)) {
 			matched = true;
 		}
@@ -326,6 +361,9 @@ public class Bubble : MonoBehaviour {
 		if (CheckRainbowMatchCount (pinkMatches)) {
 			matched = true;
 		}
+        if(CheckRainbowMatchCount (purpleMatches)) {
+            matched = true;
+        }
 
 		if(matched) {
 			Pop();
@@ -364,14 +402,6 @@ public class Bubble : MonoBehaviour {
 		if(matches.Count >= 3) {
 			matched = true;
             HandleMatch(matches);
-            /*
-			enemyBubbleManager.HandleEnemyMatch(matches.Count - 3);
-			foreach(Bubble b in matches) {
-				if(b != this) {
-					b.Pop();
-				}
-			}
-            */
 		}
 
 		return matched;

@@ -53,10 +53,12 @@ public class GameSetupWindow : MonoBehaviour {
     public void OptionsSetup() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
+        _gameManager.leftTeamHandicap = 9;
+        _gameManager.rightTeamHandicap = 9;
         int leftHandicap = 12 - _gameManager.leftTeamHandicap;
         int rightHandicap = 12 - _gameManager.rightTeamHandicap;
-        _gameManager.SetTeamHandicap(0, 12);
-        _gameManager.SetTeamHandicap(1, 12);
+        _gameManager.leftTeamHandicap = 12;
+        _gameManager.rightTeamHandicap = 12;
         for (int i = 0; i < leftHandicap; ++i) {
             teamLeft.DecreaseHandicap();
         }

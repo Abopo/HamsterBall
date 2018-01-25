@@ -184,9 +184,9 @@ public class AIBrain : MonoBehaviour {
             }
             if (action.bubbleWant != null) {
                 // If bubbleWant can't be hit
-                if (!action.bubbleWant.canBeHit) {
-                    return false;
-                }
+                //if (!action.bubbleWant.canBeHit) {
+                //    return false;
+                //}
             } else {
                 // if we don't have a bubbleWant
                 // but we are holding a bubble
@@ -266,9 +266,9 @@ public class AIBrain : MonoBehaviour {
                     foreach (Hamster h in _myHamsters) {
                         // If there is, Want it.
                         AIAction newAction = new AIAction(_playerController, h, b, n, false);
-                        if (!ActionAlreadyMade(newAction)) {
-                            _actions.Add(newAction);
-                        }
+                        //if (!ActionAlreadyMade(newAction)) {
+                        _actions.Add(newAction);
+                        //}
                     }
                 }
                 // if we are able to shift or already shifted, also look at the opponents hamsters
@@ -372,9 +372,7 @@ public class AIBrain : MonoBehaviour {
 
     bool ActionAlreadyMade(AIAction action) {
         foreach(AIAction a in _actions) {
-            if(a.nodeWant != null && action.nodeWant != null && a.bubbleWant != null && action.bubbleWant != null &&
-                (a.nodeWant.number == action.nodeWant.number || a.bubbleWant.node == action.bubbleWant.node)/* && 
-               (action.hamsterWant == null || a.hamsterWant == action.hamsterWant)*/) {
+            if(a.bubbleWant != null && action.bubbleWant != null && a.bubbleWant == action.bubbleWant) {
                 return true;
             }
         }
@@ -393,14 +391,14 @@ public class AIBrain : MonoBehaviour {
             // this check will be against larger numbers as the AI get's less smart?
             switch (_difficulty) {
                 case 0:
-                    if (choice > action.weight / 1.25f && curAction != null && action.weight >= curAction.weight - 20) { // No chance to do best actions, chance to choose an action increases each loop.
+                    if (choice > action.weight / 0.9f && curAction != null && action.weight >= curAction.weight - 20) { // No chance to do best actions, chance to choose an action increases each loop.
                         curAction = action;
                         return;
                     }
                     offset += 2;
                     break;
                 case 1:
-                    if (choice > action.weight / 2f && curAction != null && action.weight >= curAction.weight-5) { // 50% chance to choose this action.
+                    if (choice > action.weight / 1.75f && curAction != null && action.weight >= curAction.weight-5) { // ~50% chance to choose this action.
                         curAction = action;
                         return;
                     }
@@ -408,14 +406,14 @@ public class AIBrain : MonoBehaviour {
                     break;
                 case 2:
                     // smart AI will only change actions if it is a BETTER idea.
-                    if (choice > action.weight / 4 && curAction != null && action.weight > curAction.weight) { // 75% chance to choose this action.
+                    if (choice > action.weight / 4f && curAction != null && action.weight > curAction.weight) { // 75% chance to choose this action.
                         curAction = action;
                         return;
                     }
                     break;
                 case 3:
-                    // smartest AI will only change actions if it is a MUCH better idea.
-                    if (choice > action.weight / 10 && curAction != null && action.weight > curAction.weight+5) { // 90% chance to choose this action.
+                    // smartest AI will only change actions if it is a MUCH better idea. (this saves time from switching back and forth between actions)
+                    if (choice > action.weight / 10 && curAction != null && action.weight > curAction.weight+10) { // 90% chance to choose this action.
                         curAction = action;
                         return;
                     }
@@ -469,16 +467,6 @@ public class AIBrain : MonoBehaviour {
                 HorizontalChase(curAction.opponent.gameObject);
             }
         } else if (_playerController.heldBubble != null && curAction.nodeWant != null) {
-            /*if (_playerController.shifted) {
-                // Run from opponent
-                if (_opponents[0].transform.position.x - transform.position.x < -0.5f) {
-                    curAction.horWant = 1;
-                } else if (_opponents[0].transform.position.x - transform.position.x > 0.5f) {
-                    curAction.horWant = -1;
-                } else {
-                    curAction.horWant = 0;
-                }
-            } else {*/
             // Move to a decent throwing spot
             float offset = 0;
             if (curAction.nodeWant.AdjBubbles[3] != null) {
@@ -486,13 +474,13 @@ public class AIBrain : MonoBehaviour {
             } else if (curAction.nodeWant.AdjBubbles[4] != null) {
                 offset = -2.4f;
             }
-            if (curAction.nodeWant.transform.position.x - transform.position.x < (-2f + offset)) {
+            if (curAction.nodeWant.transform.position.x - transform.position.x < (-2f + offset) || GetComponent<EntityPhysics>().IsTouchingWallRight) {
                 if(curAction.horWant == 1) {
                     // We're turning around
                     _turnCounter++;
                 }
                 curAction.horWant = -1;
-            } else if (curAction.nodeWant.transform.position.x - transform.position.x > (2f + offset)) {
+            } else if (curAction.nodeWant.transform.position.x - transform.position.x > (2f + offset) || GetComponent<EntityPhysics>().IsTouchingWallLeft) {
                 if (curAction.horWant == -1) {
                     // We're turning around
                     _turnCounter++;

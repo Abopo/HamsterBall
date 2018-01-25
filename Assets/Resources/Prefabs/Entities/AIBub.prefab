@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 95000011089543818}
   - component: {fileID: 114000010274121228}
   - component: {fileID: 82000010006431056}
+  - component: {fileID: 50158078898383876}
   m_Layer: 11
   m_Name: AIBub
   m_TagString: Player
@@ -309,6 +310,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!50 &50158078898383876
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013594012978}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!58 &58000011873632114
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -682,6 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0}
   gravity: 20
+  curFacing: 0
   walkForce: 50
   walkSpeed: 5
   jumpForce: 8.2
@@ -700,6 +722,8 @@ MonoBehaviour:
   bubbleCooldownTime: 0.15
   attackCooldownTimer: 0
   attackCooldownTime: 0.15
+  aimCooldownTimer: 0
+  aimCooldownTime: 0.2
   aiControlled: 0
   springing: 0
   significantEvent:

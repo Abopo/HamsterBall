@@ -52,13 +52,13 @@ public class AIBoardScan : MonoBehaviour {
     void ScanBoard() {
         // For now just doing this with our teams board.
         if (_playerController.team == 0) {
-            _availableBubbles = SortBubbles(_bubbleManagerLeft);
-            _opponentBubbles = SortBubbles(_bubbleManagerRight);
+            //_availableBubbles = SortBubbles(_bubbleManagerLeft);
+            //_opponentBubbles = SortBubbles(_bubbleManagerRight);
             _availableNodes = GetNodes(_bubbleManagerLeft);
             _opponentNodes = GetNodes(_bubbleManagerRight);
         } else if(_playerController.team == 1) {
-            _availableBubbles = SortBubbles(_bubbleManagerRight);
-            _opponentBubbles = SortBubbles(_bubbleManagerLeft);
+            //_availableBubbles = SortBubbles(_bubbleManagerRight);
+            //_opponentBubbles = SortBubbles(_bubbleManagerLeft);
             _availableNodes = GetNodes(_bubbleManagerRight);
             _opponentNodes = GetNodes(_bubbleManagerLeft);
         }

@@ -73,8 +73,8 @@ public class GameManager : MonoBehaviour {
     }
 
     void ResetValues() {
-        leftTeamHandicap = 12;
-        rightTeamHandicap = 12;
+        leftTeamHandicap = 9;
+        rightTeamHandicap = 9;
 
         _hamsterSpawnMax = 10;
     }

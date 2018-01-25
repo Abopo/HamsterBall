@@ -231,13 +231,11 @@ public class BubbleManager : MonoBehaviour {
 		UpdateAllAdjBubbles ();
 
         // set starting bubbles matches count
-        List<Bubble> tempBubs = new List<Bubble>();
         for (int i = 0; i < numBubbles; ++i) {
-            tempBubs = bubbles[i].CheckMatches(tempBubs);
-            bubbles[i].numMatches = tempBubs.Count;
+            bubbles[i].matches = bubbles[i].CheckMatches(bubbles[i].matches);
+            bubbles[i].numMatches = bubbles[i].matches.Count;
             
             // Reset for next check
-            tempBubs.Clear();
             for (int j = 0; j < numBubbles; ++j) {
                 bubbles[j].checkedForMatches = false;
             }
