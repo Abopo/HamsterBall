@@ -208,6 +208,16 @@ public class AIController : MonoBehaviour {
             _input.left.isDown = false;
             _input.right.isDown = true;
         }
+
+        // Jump up if passing by a step since being higher is generally better
+        if (_mapScan.LeftJumpDistance < 1f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
+            _input.jump.isDown = true;
+        } else if (_mapScan.RightJumpDistance < 1f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
+            _input.jump.isDown = true;
+        } else {
+            _input.jump.isDown = false;
+        }
+
     }
 
     // Walk based on Wants (generally chasing a hamster).
@@ -240,7 +250,7 @@ public class AIController : MonoBehaviour {
                 _input.left.isDown = false;
                 _input.right.isDown = true;
             }
-            // If we want to go down, find closest drop and move towards it.
+        // If we want to go down, find closest drop and move towards it.
         } else if (_curAction.vertWant == -1) {
             if (_mapScan.LeftDropDistance < _mapScan.RightDropDistance) {
                 _input.left.isDown = true;
@@ -249,7 +259,7 @@ public class AIController : MonoBehaviour {
                 _input.left.isDown = false;
                 _input.right.isDown = true;
             }
-            // If we want to go up, find closest step and move towards it.
+        // If we want to go up, find closest step and move towards it.
         } else if (_curAction.vertWant == 1) {
             if (_mapScan.LeftJumpDistance < _mapScan.RightJumpDistance) {
                 _input.left.isDown = true;
@@ -275,8 +285,7 @@ public class AIController : MonoBehaviour {
 
         // If we are already jumping, go for the highest jump!
         // TODO: Don't do this for small steps
-        if(_playerController.curState == PLAYER_STATE.JUMP)
-        {
+        if(_playerController.curState == PLAYER_STATE.JUMP) {
             _input.jump.isDown = true;
         }
         // If you don't want to go up, don't jump
@@ -284,14 +293,8 @@ public class AIController : MonoBehaviour {
             return;
         }        
         if (_mapScan.LeftJumpDistance < 1.5f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
-            //if(_input.jump.isDown == false) {
-            //    _input.jump.isJustPressed = true;
-            //}
             _input.jump.isDown = true;
         } else if(_mapScan.RightJumpDistance < 1.5f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
-            //if (_input.jump.isDown == false) {
-            //    _input.jump.isJustPressed = true;
-            //}
             _input.jump.isDown = true;
         } else {
             _input.jump.isDown = false;

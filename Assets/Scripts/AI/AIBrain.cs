@@ -177,6 +177,10 @@ public class AIBrain : MonoBehaviour {
                 if (action.hamsterWant.team == _playerController.team && action.requiresShift) {
                     return false;
                 }
+
+                if(!action.hamsterWant.exitedPipe) {
+                    return false;
+                }
             }
             // If we are not chasing a hamster or opponent and are not holding a bubble
             if (action.hamsterWant == null && action.opponent == null && _playerController.heldBubble == null) {
@@ -545,7 +549,7 @@ public class AIBrain : MonoBehaviour {
             nodeWantPos = new Vector3(curAction.nodeWant.transform.position.x + 0.39f * i,
                                         curAction.nodeWant.transform.position.y);
             toNode = nodeWantPos - heldBubblePos;
-            throwHit = Physics2D.Raycast(heldBubblePos, toNode, 10, throwMask); // 14 is bubble layer
+            throwHit = Physics2D.Raycast(heldBubblePos, toNode, 15, throwMask); // 14 is bubble layer
             Debug.DrawRay(heldBubblePos, toNode * 10);
             // If our check hits a bubble and that bubble is our bubbleWant
             if (throwHit) {
