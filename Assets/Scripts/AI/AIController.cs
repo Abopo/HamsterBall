@@ -217,7 +217,6 @@ public class AIController : MonoBehaviour {
         } else {
             _input.jump.isDown = false;
         }
-
     }
 
     // Walk based on Wants (generally chasing a hamster).

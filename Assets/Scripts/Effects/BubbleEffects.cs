@@ -12,6 +12,12 @@ public class BubbleEffects : MonoBehaviour {
     float _teamEffectTime = 1.0f;
     float _teamEffectTimer = 0.0f;
 
+    // Match Combo effects
+    GameObject _comboEffectObj;
+    Sprite[] _matchComboSprites;
+    float _comboEffectTime = 1.0f;
+    float _comboEffectTimer = 0.0f;
+
     // Bank shot effect
     GameObject _bankEffectObj;
 
@@ -44,6 +50,13 @@ public class BubbleEffects : MonoBehaviour {
         _teamComboClip = Resources.Load<AudioClip>("Audio/SFX/TeamCombo");
         _teamDropClip = Resources.Load<AudioClip>("Audio/SFX/TeamDrop");
 
+        // Match Combo effects
+        _comboEffectObj = new GameObject();
+        _comboEffectObj.SetActive(false);
+        _comboEffectObj.AddComponent<SpriteRenderer>();
+        _comboEffectObj.AddComponent<AudioSource>();
+        _matchComboSprites = Resources.LoadAll<Sprite>("Art/Effects/MatchCombo");
+
         // Bank shot effect
         _bankEffectObj = new GameObject();
         _bankEffectObj.SetActive(false);
@@ -70,6 +83,7 @@ public class BubbleEffects : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        // Team effects
 		if(_teamEffectObj.activeSelf) {
             _teamEffectTimer += Time.deltaTime;
             if(_teamEffectTimer >= _teamEffectTime) {
@@ -77,6 +91,15 @@ public class BubbleEffects : MonoBehaviour {
             }
         }
 
+        // Match combo effects
+        if(_comboEffectObj.activeSelf) {
+            _comboEffectTimer += Time.deltaTime;
+            if(_comboEffectTimer >= _comboEffectTime) {
+                _comboEffectObj.SetActive(false);
+            }
+        }
+
+        // bomb effects
         foreach (GameObject bomb in _bombExplosionObjects) {
             if (bomb.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f) {
                 _bombExplosionObjects.Remove(bomb);
@@ -112,6 +135,22 @@ public class BubbleEffects : MonoBehaviour {
             _teamAudioSource.Play();
 
             _teamEffectTimer = 0.0f;
+        }
+    }
+
+    public void MatchComboEffect(Vector2 position, int combo) {
+        if(!_comboEffectObj.activeSelf && combo >= 0) {
+            if(combo > _matchComboSprites.Length-1) {
+                combo = _matchComboSprites.Length - 1;
+            }
+            _comboEffectObj.GetComponent<SpriteRenderer>().sprite = _matchComboSprites[combo];
+            _comboEffectObj.transform.position = new Vector3(position.x, position.y, -6);
+            _comboEffectObj.SetActive(true);
+
+            _teamAudioSource.clip = _teamComboClip;
+            _teamAudioSource.Play();
+
+            _comboEffectTimer = 0.0f;
         }
     }
 

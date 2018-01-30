@@ -501,8 +501,10 @@ public class AIBrain : MonoBehaviour {
 
             // If we've turned around twice, something is wrong and we can't find the nodeWant
             if(_turnCounter >= 2) {
-                // So choose a new action
+                // So choose a new action, but keep the same horWant
+                int horWant = curAction.horWant;
                 ChooseNewAction();
+                curAction.horWant = horWant;
                 _turnCounter = 0;
             }
         }

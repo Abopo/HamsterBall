@@ -48,6 +48,9 @@ public class BubbleManager : MonoBehaviour {
     static List<int> _nextLineBubbles = new List<int>();
     int nextLineIndex = 0; // counts up as new lines are added
     bool _setupDone;
+
+    int _comboCount = 0;
+
     Bubble[] bubbles;
 
     Bubble lastBubbleAdded;
@@ -63,6 +66,10 @@ public class BubbleManager : MonoBehaviour {
 
     public int NextLineIndex {
         get { return nextLineIndex; }
+    }
+
+    public int ComboCount {
+        get { return _comboCount; }
     }
 
     //public int[] NextLineBubbles {
@@ -811,5 +818,17 @@ public class BubbleManager : MonoBehaviour {
         foreach (int bub in lineBubbles) {
             _nextLineBubbles.Add(bub);
         }
+    }
+
+    public void IncreaseComboCounter(Vector3 position) {
+        _comboCount += 1;
+
+        if(_comboCount > 2) {
+            // Show combo graphic
+            _bubbleEffects.MatchComboEffect(position, _comboCount-3);
+        }
+    }
+    public void ResetComboCounter() {
+        _comboCount = 0;
     }
 }

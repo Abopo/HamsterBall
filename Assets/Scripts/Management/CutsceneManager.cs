@@ -12,39 +12,48 @@ public class CutsceneManager : MonoBehaviour {
 
     TextWriter _dialogueText;
     AudioSource _audioSource;
-    string _cutscenePath;
-    StreamReader _reader;
+    TextAsset _textAsset;
 
-    char _escapeChar;
+    string[] _linesFromFile;
+    int _fileIndex;
+    string _escapeChar;
     string _readText;
 
     bool _ready;
     bool _playedAudio;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         _dialogueText = GetComponent<TextWriter>();
         _audioSource = GetComponent<AudioSource>();
-        _cutscenePath = "Assets/Resources/Text/OpeningCutscene.txt";
-        _reader = new StreamReader(_cutscenePath);
+
+        _textAsset = Resources.Load<TextAsset>("Text/OpeningCutscene");
+        _linesFromFile = _textAsset.text.Split("\n"[0]);
+        int i = 0;
+        foreach(string line in _linesFromFile) {
+            _linesFromFile[i] = line.Replace("\r", "");
+            i++;
+        }
+        _fileIndex = 0;
+
         _ready = true;
         _playedAudio = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update() {
         CheckInput();
 
-		if(_playedAudio && !_audioSource.isPlaying) {
+        if (_playedAudio && !_audioSource.isPlaying) {
             _ready = true;
         }
-        if(_dialogueText.done) {
+        if (_dialogueText.done) {
             _ready = true;
         }
     }
 
     void CheckInput() {
-        if(Input.GetKeyDown(KeyCode.Space) && _ready) {
+        if (Input.GetKeyDown(KeyCode.Space) && _ready) {
             // Move to next thing
             _ready = false;
             ReadEscapeCharacter();
@@ -53,65 +62,57 @@ public class CutsceneManager : MonoBehaviour {
 
     void ReadEscapeCharacter() {
         do {
-            _escapeChar = (char)_reader.Read();
-        } while (_escapeChar == '\r' || _escapeChar == '\n');
+            _escapeChar = _linesFromFile[_fileIndex++];
+        } while (_escapeChar == "");
 
         switch (_escapeChar) {
-            case 'T':
+            case "T":
                 ReadTitle();
                 break;
-            case 'L':
+            case "L":
                 ReadLocation();
                 break;
-            case 'C':
+            case "C1":
+            case "C2":
                 ReadCharacter();
                 break;
-            case 'D':
+            case "D":
                 ReadDialogue();
                 break;
-            case 'S':
+            case "S":
                 ReadSound();
                 break;
-            case 'B':
+            case "B":
                 LoadBoard();
                 break;
         }
     }
 
     void ReadTitle() {
-        // Skip over a space
-        _reader.Read();
-
         // Read the title text
-        _readText = _reader.ReadLine();
+        _readText = _linesFromFile[_fileIndex++];
         _titleText.text = _readText;
-        
+
         // Go straight to the next data
         ReadEscapeCharacter();
     }
 
     void ReadLocation() {
-        // Skip over a space
-        _reader.Read();
-
-        _readText = _reader.ReadLine();
+        // Read the image file's path
+        _readText = _linesFromFile[_fileIndex++];
         _backgroundSprite.sprite = Resources.Load<Sprite>("Art/UI/" + _readText);
 
         ReadEscapeCharacter();
     }
 
     void ReadCharacter() {
-        _escapeChar = (char)_reader.Read();
-        
-        // Skip over a space
-        _reader.Read();
-
-        _readText = _reader.ReadLine();
-        if (_escapeChar == '1') {
+        // Read the character's name
+        _readText = _linesFromFile[_fileIndex++];
+        if (_escapeChar == "C1") {
             _rightCharacterSprite.enabled = false;
             _leftCharacterSprite.enabled = true;
             _leftCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
-        } else if(_escapeChar == '2') {
+        } else if(_escapeChar == "C2") {
             _leftCharacterSprite.enabled = false;
             _rightCharacterSprite.enabled = true;
             _rightCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
@@ -121,28 +122,22 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void ReadDialogue() {
-        // Skip over a space
-        _reader.Read();
-
-        _readText = _reader.ReadLine();
+        // Read the dialogue
+        _readText = _linesFromFile[_fileIndex++];
         _dialogueText.StartWriting(_readText);
     }
 
     void ReadSound() {
-        // Skip over a space
-        _reader.Read();
-
-        _readText = _reader.ReadLine();
+        // Read the sound file path
+        _readText = _linesFromFile[_fileIndex++];
         _audioSource.clip = Resources.Load<AudioClip>("Audio/Cutscenes/" + _readText);
         _audioSource.Play();
         _playedAudio = true;
     }
 
     void LoadBoard() {
-        // Skip over a space
-        _reader.Read();
-
-        _readText = _reader.ReadLine();
+        // Read the board file path
+        _readText = _linesFromFile[_fileIndex++];
         GetComponent<BoardLoader>().ReadBoardSetup(_readText);
     }
 }

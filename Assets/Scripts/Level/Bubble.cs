@@ -209,7 +209,7 @@ public class Bubble : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Wall") {
+		if (other.tag == "Wall" && Mathf.Abs(_rigibody2D.velocity.x) > 0.1f) {
             _rigibody2D.velocity = new Vector2(_rigibody2D.velocity.x * -1,
                                                _rigibody2D.velocity.y);
 
@@ -240,13 +240,19 @@ public class Bubble : MonoBehaviour {
         }
         if (other.tag == "Bottom") {
             if(type == HAMSTER_TYPES.DEAD) {
-                //enemyBubbleManager.hamsterMeter.IncreaseStock(1);
+                int inc = 1;
+                // Multiply by the Margin Multiplier
+                inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+
                 // Start stock orb effect
-                _homeBubbleManager.BubbleEffects.StockOrbEffect(1, transform.position);
+                _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
             } else {
-                //enemyBubbleManager.hamsterMeter.IncreaseStock(3 * (dropCombo ? 2 : 1));
+                int inc = 3 * (_dropCombo ? 2 : 1);
+                // Multiply by the Margin Multiplier
+                inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+
                 // Start stock orb effect
-                _homeBubbleManager.BubbleEffects.StockOrbEffect(3 * (_dropCombo ? 2 : 1), transform.position);
+                _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
             }
             _homeBubbleManager.RemoveBubble(node);
             _audioSource.clip = _dropClip;
@@ -288,8 +294,11 @@ public class Bubble : MonoBehaviour {
             numMatches = matches.Count;
 
             if (matches.Count >= 3) {
+                _homeBubbleManager.IncreaseComboCounter(transform.position);
                 HandleMatch(matches);
                 Pop();
+            } else {
+                _homeBubbleManager.ResetComboCounter();
             }
         }
 
@@ -410,11 +419,18 @@ public class Bubble : MonoBehaviour {
     void HandleMatch(List<Bubble> matches) {
         int comboBonus = CheckCombos(matches);
 
-        // Add some counters to opponents bubbleManager
-        int inc = (int)Mathf.Pow((matches.Count - 2), 2);
+        // Calculate amount of garbage to generate
+        int inc = (int)Mathf.Pow((matches.Count - 2), 2); // 3 = 1, 4 = 4, 5 = 9, 6 = 16, 7 = 25, 8 = 36
 
-        //enemyBubbleManager.hamsterMeter.IncreaseStock(inc + comboBonus);
-        //enemyBubbleManager.HandleEnemyMatch(matches.Count, comboBonus);
+        // Multiply by the Margin Multiplier
+        inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+
+        // If the combo count is high enough
+        if (_homeBubbleManager.ComboCount > 2) {
+            // Multiply based on the combo
+            inc += inc * _homeBubbleManager.ComboCount-1;
+            Debug.Log("Comboed " + _homeBubbleManager.ComboCount);
+        }
 
         // Start stock orb effect
         _homeBubbleManager.BubbleEffects.StockOrbEffect(inc + comboBonus, transform.position);

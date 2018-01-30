@@ -298,7 +298,7 @@ public class Hamster : Entity {
 
         if (other.tag == "PipeCorner") {
             // If we're stuck in the collider for some reason, get set back to a good spot
-            transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.1f, transform.position.z);
+            transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.05f, transform.position.z);
 
             // Turn
             if (inRightPipe) {

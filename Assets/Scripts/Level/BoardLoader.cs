@@ -9,13 +9,15 @@ public class BoardLoader : MonoBehaviour {
     StreamReader _reader;
     GameManager _gameManager;
 
+    string[] _linesFromFile;
+    int _fileIndex;
     char _readChar;
     string _readText;
 
     // Use this for initialization
     void Start () {
-        _cutscenePath = "Assets/Resources/Text/BoardSetup.txt";
-        _reader = new StreamReader(_cutscenePath);
+        //_cutscenePath = "Assets/Resources/Text/BoardSetup.txt";
+        //_reader = new StreamReader(_cutscenePath);
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
@@ -25,15 +27,25 @@ public class BoardLoader : MonoBehaviour {
 	}
 
     public void ReadBoardSetup(string path) {
-        _reader = new StreamReader("Assets/Resources/Text/" + path);
-        while(_readText != "Done") {
+        //_reader = new StreamReader("Assets/Resources/Text/" + path);
+        TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
+        _linesFromFile = textAsset.text.Split("\n"[0]);
+        int i = 0;
+        foreach (string line in _linesFromFile) {
+            _linesFromFile[i] = line.Replace("\r", "");
+            i++;
+        }
+        _fileIndex = 0;
+
+        while (_readText != "Done") {
             ReadLine();
         }
     }
 
     void ReadLine() {
         do {
-            _readText = _reader.ReadLine();
+            //_readText = _reader.ReadLine();
+            _readText = _linesFromFile[_fileIndex++];
         } while (_readText == "");
 
         switch(_readText) {
@@ -60,29 +72,38 @@ public class BoardLoader : MonoBehaviour {
 
     void ReadBubbleLayout() {
         int[] bubbles = new int[50];
-        int index = 0;
+        int bubIndex = 0;
+        int stringIndex = 0;
 
-        _readChar = (char)_reader.Read();
+        //_readChar = (char)_reader.Read();
+        _readChar = _linesFromFile[_fileIndex][stringIndex++];
         while (_readChar != 'E') {
-            if (_readChar != '\r' && _readChar != '\n') {
-                bubbles[index] = (int)char.GetNumericValue(_readChar);
-                index++;
+            if (_readChar != ',') {
+                bubbles[bubIndex] = (int)char.GetNumericValue(_readChar);
+                bubIndex++;
+            } else {
+                _fileIndex++;
+                stringIndex = 0;
             }
-            _readChar = (char)_reader.Read();
+            //_readChar = (char)_reader.Read();
+            _readChar = _linesFromFile[_fileIndex][stringIndex++];
         }
 
         BubbleManager.startingBubbleTypes = bubbles;
     }
 
     void ReadHandicaps() {
-        _readText = _reader.ReadLine();
+        //_readText = _reader.ReadLine();
+        _readText = _linesFromFile[_fileIndex++];
         _gameManager.SetTeamHandicap(0, int.Parse(_readText));
-        _readText = _reader.ReadLine();
+        //_readText = _reader.ReadLine();
+        _readText = _linesFromFile[_fileIndex++];
         _gameManager.SetTeamHandicap(1, int.Parse(_readText));
     }
 
     void ReadHamsterSpawnMax() {
-        _readText = _reader.ReadLine();
+        //_readText = _reader.ReadLine();
+        _readText = _linesFromFile[_fileIndex++];
         _gameManager.HamsterSpawnMax = int.Parse(_readText);
     }
 
@@ -90,8 +111,10 @@ public class BoardLoader : MonoBehaviour {
         string hamString;
 
         do {
-            _readText = _reader.ReadLine();
-            hamString = _reader.ReadLine();
+            //_readText = _reader.ReadLine();
+            _readText = _linesFromFile[_fileIndex++];
+            //hamString = _reader.ReadLine();
+            hamString = _linesFromFile[_fileIndex++];
 
             switch(_readText) {
                 case "Rainbow":
@@ -135,15 +158,18 @@ public class BoardLoader : MonoBehaviour {
         player1.team = 0;
         playerManager.AddPlayer(player1);
 
-        _readText = _reader.ReadLine(); // read AI difficulty
+        //_readText = _reader.ReadLine();
+        _readText = _linesFromFile[_fileIndex++]; // read AI difficulty
+
         PlayerInfo player2 = new PlayerInfo();
         player2.playerNum = 2;
         player2.controllerNum = -1;
         player2.team = 1;
         player2.difficulty = int.Parse(_readText);
 
-        _readText = _reader.ReadLine(); // read AI character script
-        if(_readText != "Standard") {
+        //_readText = _reader.ReadLine();
+        _readText = _linesFromFile[_fileIndex++]; // read AI character script
+        if (_readText != "Standard") {
             SetCharacterAI(player2, _readText);
         }
         playerManager.AddPlayer(player2);
@@ -161,7 +187,8 @@ public class BoardLoader : MonoBehaviour {
     }
 
     void LoadBoard() {
-        _readText = _reader.ReadLine();
+        //_readText = _reader.ReadLine();
+        _readText = _linesFromFile[_fileIndex++];
         SceneManager.LoadScene(_readText);
     }
 }
