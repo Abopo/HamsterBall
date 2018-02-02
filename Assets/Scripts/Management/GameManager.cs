@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour {
 
     public int leftTeamHandicap;
     public int rightTeamHandicap;
+
+    public string nextCutscene;
+
     int _hamsterSpawnMax = 1;
 
     public int HamsterSpawnMax {
@@ -105,8 +108,7 @@ public class GameManager : MonoBehaviour {
     public void EndGame(int wonTeam) {
         gameOverEvent.Invoke();
     }
-
-
+    
     // The below functions don't actually affect the Game Manager object's data!!!
     public void PlayAgainButton() {
         Unpause();

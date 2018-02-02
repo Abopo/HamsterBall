@@ -28,8 +28,7 @@ public class AIController : MonoBehaviour {
 
     int dumbFrameCount = 0;
 
-    // Use this for initialization
-    void Start () {
+    private void Awake() {
         _input = new InputState();
         _prevInput = new InputState();
 
@@ -43,6 +42,10 @@ public class AIController : MonoBehaviour {
         SetActionTime();
 
         _playerController.significantEvent.AddListener(SetActionTime);
+    }
+
+    // Use this for initialization
+    void Start () {
 	}
 	
 	// Update is called once per frame

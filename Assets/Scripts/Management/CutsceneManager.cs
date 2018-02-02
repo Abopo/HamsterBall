@@ -5,12 +5,14 @@ using UnityEngine.UI;
 using System.IO;
 
 public class CutsceneManager : MonoBehaviour {
-    public Text _titleText;
-    public Image _leftCharacterSprite;
-    public Image _rightCharacterSprite;
-    public Image _backgroundSprite;
+    public Text titleText;
+    public Image leftCharacterSprite;
+    public Image rightCharacterSprite;
+    public Image backgroundSprite;
+    public Image textBacker;
+    public Text dialoguetext;
 
-    TextWriter _dialogueText;
+    TextWriter _textWriter;
     AudioSource _audioSource;
     TextAsset _textAsset;
 
@@ -21,16 +23,20 @@ public class CutsceneManager : MonoBehaviour {
 
     bool _ready;
     bool _playedAudio;
+    bool _isPlaying;
+
+    GameManager _gameManager;
 
     // Use this for initialization
-    void Start() {
-        _dialogueText = GetComponent<TextWriter>();
+    private void Awake() {
+        _textWriter = GetComponent<TextWriter>();
         _audioSource = GetComponent<AudioSource>();
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         _textAsset = Resources.Load<TextAsset>("Text/OpeningCutscene");
         _linesFromFile = _textAsset.text.Split("\n"[0]);
         int i = 0;
-        foreach(string line in _linesFromFile) {
+        foreach (string line in _linesFromFile) {
             _linesFromFile[i] = line.Replace("\r", "");
             i++;
         }
@@ -38,6 +44,38 @@ public class CutsceneManager : MonoBehaviour {
 
         _ready = true;
         _playedAudio = false;
+        _isPlaying = true;
+    }
+
+    void Start() {
+    }
+
+    public void StartCutscene(string textPath) {
+        // Pause the game for the cutscene
+        _gameManager.Pause();
+
+        // Make sure scene is visible
+        titleText.gameObject.SetActive(true);
+        leftCharacterSprite.gameObject.SetActive(true);
+        rightCharacterSprite.gameObject.SetActive(true);
+        backgroundSprite.gameObject.SetActive(true);
+        textBacker.gameObject.SetActive(true);
+        dialoguetext.gameObject.SetActive(true);
+
+        _textAsset = Resources.Load<TextAsset>("Text/" + textPath);
+        _linesFromFile = _textAsset.text.Split("\n"[0]);
+        int i = 0;
+        foreach (string line in _linesFromFile) {
+            _linesFromFile[i] = line.Replace("\r", "");
+            i++;
+        }
+        _fileIndex = 0;
+
+        _ready = false;
+        _isPlaying = true;
+
+        // Start the cutscene
+        ReadEscapeCharacter();
     }
 
     // Update is called once per frame
@@ -47,13 +85,13 @@ public class CutsceneManager : MonoBehaviour {
         if (_playedAudio && !_audioSource.isPlaying) {
             _ready = true;
         }
-        if (_dialogueText.done) {
+        if (_textWriter.done) {
             _ready = true;
         }
     }
 
     void CheckInput() {
-        if (Input.GetKeyDown(KeyCode.Space) && _ready) {
+        if (Input.GetKeyDown(KeyCode.Space) && _ready && _isPlaying) {
             // Move to next thing
             _ready = false;
             ReadEscapeCharacter();
@@ -85,13 +123,16 @@ public class CutsceneManager : MonoBehaviour {
             case "B":
                 LoadBoard();
                 break;
+            case "E":
+                EndScene();
+                break;
         }
     }
 
     void ReadTitle() {
         // Read the title text
         _readText = _linesFromFile[_fileIndex++];
-        _titleText.text = _readText;
+        titleText.text = _readText;
 
         // Go straight to the next data
         ReadEscapeCharacter();
@@ -100,7 +141,11 @@ public class CutsceneManager : MonoBehaviour {
     void ReadLocation() {
         // Read the image file's path
         _readText = _linesFromFile[_fileIndex++];
-        _backgroundSprite.sprite = Resources.Load<Sprite>("Art/UI/" + _readText);
+        if (_readText == "Blank") {
+            backgroundSprite.gameObject.SetActive(false);
+        } else {
+            backgroundSprite.sprite = Resources.Load<Sprite>("Art/UI/" + _readText);
+        }
 
         ReadEscapeCharacter();
     }
@@ -109,13 +154,13 @@ public class CutsceneManager : MonoBehaviour {
         // Read the character's name
         _readText = _linesFromFile[_fileIndex++];
         if (_escapeChar == "C1") {
-            _rightCharacterSprite.enabled = false;
-            _leftCharacterSprite.enabled = true;
-            _leftCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
+            rightCharacterSprite.enabled = false;
+            leftCharacterSprite.enabled = true;
+            leftCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
         } else if(_escapeChar == "C2") {
-            _leftCharacterSprite.enabled = false;
-            _rightCharacterSprite.enabled = true;
-            _rightCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
+            leftCharacterSprite.enabled = false;
+            rightCharacterSprite.enabled = true;
+            rightCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
         }
 
         ReadEscapeCharacter();
@@ -124,7 +169,7 @@ public class CutsceneManager : MonoBehaviour {
     void ReadDialogue() {
         // Read the dialogue
         _readText = _linesFromFile[_fileIndex++];
-        _dialogueText.StartWriting(_readText);
+        _textWriter.StartWriting(_readText);
     }
 
     void ReadSound() {
@@ -139,5 +184,21 @@ public class CutsceneManager : MonoBehaviour {
         // Read the board file path
         _readText = _linesFromFile[_fileIndex++];
         GetComponent<BoardLoader>().ReadBoardSetup(_readText);
+    }
+
+    void EndScene() {
+        // Unpause the game
+        _gameManager.Unpause();
+
+        // Disable scene UI
+        titleText.gameObject.SetActive(false);
+        leftCharacterSprite.gameObject.SetActive(false);
+        rightCharacterSprite.gameObject.SetActive(false);
+        backgroundSprite.gameObject.SetActive(false);
+        textBacker.gameObject.SetActive(false);
+        dialoguetext.gameObject.SetActive(false);
+
+        _ready = false;
+        _isPlaying = false;
     }
 }

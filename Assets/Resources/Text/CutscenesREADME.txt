@@ -8,3 +8,5 @@ C2 - Character that will say the next line while standing on right side
 D - Dialogue to be said
 S - Sound effect to play
 B - Board to load
+
+A line of dialogue has a maximum of 135 characters.
