@@ -176,8 +176,12 @@ public class PlayerController : Entity {
         attackCooldownTimer += Time.deltaTime;
         aimCooldownTimer += Time.deltaTime;
 
-        // Shift time stuff
-        ShiftUpdates();
+        if (!_gameManager.isSinglePlayer) {
+            // Shift time stuff
+            ShiftUpdates();
+        } else {
+            _canShift = false;
+        }
 
         // Invuln stuff
         if(_isInvuln) {
@@ -254,6 +258,9 @@ public class PlayerController : Entity {
         } else {
             _shiftCooldownTimer += Time.deltaTime;
             if (_shiftCooldownTimer >= _shiftCooldownTime) {
+                if(_canShift == false) {
+                    _playerAudio.PlayShiftReadyClip();
+                }
                 _canShift = true;
                 _shiftCooldownTimer = _shiftCooldownTime;
             }
@@ -279,7 +286,7 @@ public class PlayerController : Entity {
             shifted = false;
         }
 
-        _playerAudio.PlaySwitchClip();
+        //_playerAudio.PlayShiftClip();
 
         _shiftTimer = 0f;
     }

@@ -12,6 +12,8 @@ public class CutsceneManager : MonoBehaviour {
     public Image textBacker;
     public Text dialoguetext;
 
+    static public string fileToLoad;
+
     TextWriter _textWriter;
     AudioSource _audioSource;
     TextAsset _textAsset;
@@ -33,7 +35,10 @@ public class CutsceneManager : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
-        _textAsset = Resources.Load<TextAsset>("Text/OpeningCutscene");
+        StartCutscene(fileToLoad);
+
+        //_textAsset = Resources.Load<TextAsset>("Text/OpeningCutscene");
+        _textAsset = Resources.Load<TextAsset>("Text/" + fileToLoad);
         _linesFromFile = _textAsset.text.Split("\n"[0]);
         int i = 0;
         foreach (string line in _linesFromFile) {
@@ -91,7 +96,7 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void CheckInput() {
-        if (Input.GetKeyDown(KeyCode.Space) && _ready && _isPlaying) {
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0)) && _ready && _isPlaying) {
             // Move to next thing
             _ready = false;
             ReadEscapeCharacter();

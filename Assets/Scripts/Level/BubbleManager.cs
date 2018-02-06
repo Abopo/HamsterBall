@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +10,9 @@ public class BubbleManager : MonoBehaviour {
 	public GameObject NodeLine13;
 	public GameObject NodeLine12;
 	public HamsterMeter hamsterMeter;
-    public ResultsScreen resultsScreen;
+    public ResultsScreen mpResultsScreen;
+    public ResultsScreen spResultsScreen;
+    public Text scoreText;
 
 	//public bool leftTeam;
     public int team; // -1 = no team, 0 = left team, 1 = right team
@@ -49,7 +52,8 @@ public class BubbleManager : MonoBehaviour {
     int nextLineIndex = 0; // counts up as new lines are added
     bool _setupDone;
 
-    int _comboCount = 0;
+    int _comboCount = -1;
+    int _scoreTotal = 0;
 
     Bubble[] bubbles;
 
@@ -124,6 +128,9 @@ public class BubbleManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _bubbleEffects = GetComponentInChildren<BubbleEffects>();
+
+        _scoreTotal = 0;
+        scoreText.text = _scoreTotal.ToString();
 
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
@@ -501,11 +508,6 @@ public class BubbleManager : MonoBehaviour {
 				}
 			}
 
-			if(CheckBottomRow()) {
-                // Show end game screen
-                EndGame();
-			}
-
 			justAddedBubble = false;
 		}
 
@@ -518,6 +520,13 @@ public class BubbleManager : MonoBehaviour {
             CheckInput();
         }
 	}
+
+    private void LateUpdate() {
+        if (CheckWinConditions()) {
+            // Show end game screen
+            EndGame();
+        }
+    }
 
     void CheckInput() {
         if(Input.GetKeyDown(KeyCode.PageUp)) {
@@ -772,17 +781,23 @@ public class BubbleManager : MonoBehaviour {
         return nextLineBubbles;
     }
 
-    public bool CheckBottomRow() {
-		for(int i = bottomRowStart; i < numNodes; ++i) {
-			if(bubbles[i] != null) {
-				return true;
-			}
-		}
+    public bool CheckWinConditions() {
+        // Check single player challenge goals
+        if(_gameManager.isSinglePlayer && _scoreTotal >= _gameManager.goalCount) {
+            return true;
+        }
 
-		return false;
-	}
+        // Check bubble positions
+        for (int i = bottomRowStart; i < numNodes; ++i) {
+            if (bubbles[i] != null) {
+                return true;
+            }
+        }
 
-    void EndGame() {
+        return false;
+    }
+
+    public void EndGame() {
         // Clear out starting bubbles to prepare for next round
         for(int i = 0; i < 50; ++i) {
             startingBubbleTypes[i] = -1;
@@ -793,8 +808,10 @@ public class BubbleManager : MonoBehaviour {
         // Pause the game
         _gameManager.Pause();
 
-        if (resultsScreen != null) {
-            resultsScreen.Activate(team);
+        if (!_gameManager.isSinglePlayer && mpResultsScreen != null) {
+            mpResultsScreen.Activate(team);
+        } else if(_gameManager.isSinglePlayer && spResultsScreen != null) {
+            spResultsScreen.Activate();
         }
     }
 
@@ -823,12 +840,19 @@ public class BubbleManager : MonoBehaviour {
     public void IncreaseComboCounter(Vector3 position) {
         _comboCount += 1;
 
-        if(_comboCount > 2) {
+        if(_comboCount > 0) {
             // Show combo graphic
-            _bubbleEffects.MatchComboEffect(position, _comboCount-3);
+            _bubbleEffects.MatchComboEffect(position, _comboCount-1);
         }
     }
     public void ResetComboCounter() {
-        _comboCount = 0;
+        _comboCount = -1;
+    }
+
+    public void IncreaseScore(int incScore) {
+        _scoreTotal += incScore;
+
+        // change score text
+        scoreText.text = _scoreTotal.ToString();
     }
 }

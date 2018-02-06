@@ -26,9 +26,7 @@ public class TutorialManager : MonoBehaviour {
         // Turn off ai for now
         _aiController.GetComponent<AIController>().enabled = false;
 
-        cutsceneManager.StartCutscene("Tutorials/MovementTutorial");
-        _tutorialIndex++; // 1
-        _tutorialTime = 5f;
+        _tutorialTime = 0.5f;
 	}
 	
 	// Update is called once per frame
@@ -49,11 +47,18 @@ public class TutorialManager : MonoBehaviour {
             ShowNextTutorial();
         } else if (_tutorialIndex == 6 && _playerController.transform.position.x > 0 && _playerController.curState != PLAYER_STATE.SHIFT) {
             ShowNextTutorial();
+        } else if (_tutorialIndex == 7 && _playerController.transform.position.x < 0 && _playerController.curState != PLAYER_STATE.SHIFT) {
+            ShowNextTutorial();
         }
-	}
+    }
 
     void ShowNextTutorial() {
         switch(_tutorialIndex) {
+            case 0:
+                cutsceneManager.StartCutscene("Tutorials/MovementTutorial");
+                _tutorialIndex++; // 1
+                _tutorialTime = 5f;
+                break;
             case 1:
                 cutsceneManager.StartCutscene("Tutorials/BubbleTutorial");
                 _tutorialIndex++; // 2
@@ -62,10 +67,12 @@ public class TutorialManager : MonoBehaviour {
             case 2:
                 cutsceneManager.StartCutscene("Tutorials/AimTutorial");
                 _tutorialIndex++; // 3
+                _tutorialTime = -1;
                 break;
             case 3:
                 cutsceneManager.StartCutscene("Tutorials/ThrowTutorial");
                 _tutorialIndex++; // 4
+                _tutorialTime = -1;
                 break;
             case 4:
                 cutsceneManager.StartCutscene("Tutorials/MatchingTutorial");
@@ -75,10 +82,21 @@ public class TutorialManager : MonoBehaviour {
             case 5:
                 cutsceneManager.StartCutscene("Tutorials/DroppingSwappingTutorial");
                 _tutorialIndex++; // 6
+                _tutorialTime = -1;
                 break;
             case 6:
                 cutsceneManager.StartCutscene("Tutorials/SwappedTutorial");
                 _tutorialIndex++; // 7
+                _tutorialTime = -1;
+                break;
+            case 7:
+                cutsceneManager.StartCutscene("Tutorials/EndTutorial");
+                _tutorialIndex++; // 8
+                _tutorialTime = 0.1f;
+                break;
+            case 8:
+                // End level
+                GameObject.FindObjectOfType<BubbleManager>().EndGame();
                 break;
         }
     }

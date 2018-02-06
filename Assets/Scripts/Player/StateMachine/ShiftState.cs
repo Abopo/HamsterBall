@@ -18,6 +18,8 @@ public class ShiftState : PlayerState {
         _shiftTimer = 0f;
         _oldScale = playerController.transform.localScale;
 
+        playerController.PlayerAudio.PlayShiftClip();
+
         ActivateShiftPortal();
     }
 
@@ -39,7 +41,7 @@ public class ShiftState : PlayerState {
 
         playerController.shiftPortal.Activate(dir);
     }
-
+    
     // Update is called once per frame
     public override void Update() {
         // Slow the player to a stop, even if in midair

@@ -5,7 +5,8 @@ public class PlayerAudio : MonoBehaviour {
     // Sound effects
     AudioClip _jumpClip;
     AudioClip _bubbleClip;
-    AudioClip _switchClip;
+    AudioClip _shiftClip;
+    AudioClip _shiftReadyClip;
     AudioClip _throwClip;
     AudioClip _attackClip;
     AudioClip _hitClip;
@@ -21,7 +22,8 @@ public class PlayerAudio : MonoBehaviour {
     void LoadSFX() {
         _jumpClip = Resources.Load<AudioClip>("Audio/SFX/Jump");
         _bubbleClip = Resources.Load<AudioClip>("Audio/SFX/Bubble");
-        _switchClip = Resources.Load<AudioClip>("Audio/SFX/Teleport");
+        _shiftClip = Resources.Load<AudioClip>("Audio/SFX/Shift");
+        _shiftReadyClip = Resources.Load<AudioClip>("Audio/SFX/ShiftReady");
         _throwClip = Resources.Load<AudioClip>("Audio/SFX/Throw");
         _attackClip = Resources.Load<AudioClip>("Audio/SFX/Punch");
         _hitClip = Resources.Load<AudioClip>("Audio/SFX/Hit_Hurt");
@@ -42,8 +44,13 @@ public class PlayerAudio : MonoBehaviour {
         _audioSource.Play();
     }
 
-    public void PlaySwitchClip() {
-        _audioSource.clip = _switchClip;
+    public void PlayShiftClip() {
+        _audioSource.clip = _shiftClip;
+        _audioSource.Play();
+    }
+
+    public void PlayShiftReadyClip() {
+        _audioSource.clip = _shiftReadyClip;
         _audioSource.Play();
     }
 

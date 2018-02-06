@@ -36,6 +36,7 @@ public class PlayerSpawner : MonoBehaviour {
     }
 
     void SpawnPlayers() {
+        GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         PlayerInfo tempPlayerInfo;
         for(int i = 0; i < _playerManager.NumPlayers; ++i) {
             tempPlayerInfo = _playerManager.GetPlayerByIndex(i);
@@ -55,7 +56,9 @@ public class PlayerSpawner : MonoBehaviour {
             newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
             newPlayer.GetComponent<Animator>().runtimeAnimatorController = FindAnimatorController(newPlayer.playerNum);
 
-            SetupSwitchMeter(newPlayer);
+            if (!gameManager.isSinglePlayer) {
+                SetupSwitchMeter(newPlayer);
+            }
 
             _players.Add(newPlayer);
         }

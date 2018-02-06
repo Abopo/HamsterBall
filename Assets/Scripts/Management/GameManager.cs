@@ -3,10 +3,16 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System.Collections;
 
+public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, MP_VERSUS, NUM_MODES }
+
 public class GameManager : MonoBehaviour {
     public bool testMode;
     public bool isOnline = false;
+    public bool isSinglePlayer = false;
     public int level;
+
+    public GAME_MODE gameMode;
+    public int goalCount; // the number of points or matches to win the level
 
     public int leftTeamHandicap;
     public int rightTeamHandicap;
@@ -108,6 +114,15 @@ public class GameManager : MonoBehaviour {
     public void EndGame(int wonTeam) {
         gameOverEvent.Invoke();
     }
+
+    public void SetGameMode(GAME_MODE mode) {
+        gameMode = mode;
+        if(gameMode == GAME_MODE.MP_VERSUS) {
+            isSinglePlayer = false;
+        } else {
+            isSinglePlayer = true;
+        }
+    }
     
     // The below functions don't actually affect the Game Manager object's data!!!
     public void PlayAgainButton() {
@@ -122,13 +137,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void CharacterSelectButton() {
-        Unpause();
-        // Load character select screen.
-        if (_playerManager == null) {
-            // Must fully find game object for the script because the button stuff is dumb.
-            _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        }
-        _playerManager.ClearAllPlayers();
+        CleanUp();
 
         if (PhotonNetwork.connectedAndReady) {
             PhotonNetwork.LoadLevel("NetworkedCharacterSelect");
@@ -137,14 +146,23 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void StageSelectButton() {
+        CleanUp();
+        SceneManager.LoadScene("StorySelect");
+    }
+
     public void MainMenuButton() {
+        CleanUp();
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    void CleanUp() {
         Unpause();
-        // Load main menu scene
+        // Load character select screen.
         if (_playerManager == null) {
             // Must fully find game object for the script because the button stuff is dumb.
             _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
         }
         _playerManager.ClearAllPlayers();
-        SceneManager.LoadScene("MainMenu");
     }
 }

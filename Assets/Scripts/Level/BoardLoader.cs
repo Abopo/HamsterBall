@@ -64,6 +64,9 @@ public class BoardLoader : MonoBehaviour {
             case "AI":
                 SetupPlayers();
                 break;
+            case "Mode":
+                SetMode();
+                break;
             case "Board":
                 LoadBoard();
                 break;
@@ -160,19 +163,20 @@ public class BoardLoader : MonoBehaviour {
 
         //_readText = _reader.ReadLine();
         _readText = _linesFromFile[_fileIndex++]; // read AI difficulty
+        if (_readText != "None") {
+            PlayerInfo player2 = new PlayerInfo();
+            player2.playerNum = 2;
+            player2.controllerNum = -1;
+            player2.team = 1;
+            player2.difficulty = int.Parse(_readText);
 
-        PlayerInfo player2 = new PlayerInfo();
-        player2.playerNum = 2;
-        player2.controllerNum = -1;
-        player2.team = 1;
-        player2.difficulty = int.Parse(_readText);
-
-        //_readText = _reader.ReadLine();
-        _readText = _linesFromFile[_fileIndex++]; // read AI character script
-        if (_readText != "Standard") {
-            SetCharacterAI(player2, _readText);
+            //_readText = _reader.ReadLine();
+            _readText = _linesFromFile[_fileIndex++]; // read AI character script
+            if (_readText != "Standard") {
+                SetCharacterAI(player2, _readText);
+            }
+            playerManager.AddPlayer(player2);
         }
-        playerManager.AddPlayer(player2);
     }
 
     void SetCharacterAI(PlayerInfo pInfo, string charAI) {
@@ -184,6 +188,23 @@ public class BoardLoader : MonoBehaviour {
         }
 
         pInfo.characterAI = characterAI;
+    }
+
+    void SetMode() {
+        _readText = _linesFromFile[_fileIndex++];
+        switch(_readText) {
+            case "Points":
+                _gameManager.SetGameMode(GAME_MODE.SP_POINTS);
+                _gameManager.goalCount = int.Parse(_linesFromFile[_fileIndex++]);
+                break;
+            case "Matches":
+                _gameManager.SetGameMode(GAME_MODE.SP_MATCH);
+                _gameManager.goalCount = int.Parse(_linesFromFile[_fileIndex++]);
+                break;
+            case "Versus":
+                _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
+                break;
+        }
     }
 
     void LoadBoard() {

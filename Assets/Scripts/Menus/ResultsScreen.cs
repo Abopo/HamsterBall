@@ -10,8 +10,11 @@ public class ResultsScreen : MonoBehaviour {
     float winTime = 1.0f;
     float winTimer = 0.0f;
 
+    GameManager _gameManager;
+
     // Use this for initialization
     void Start () {
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -38,6 +41,15 @@ public class ResultsScreen : MonoBehaviour {
     public void Activate(int team) {
         gameObject.SetActive(true);
         SetWinningTeamText(team);
+        menuOptions = transform.GetComponentsInChildren<MenuOption>();
+        foreach (MenuOption mo in menuOptions) {
+            mo.isReady = false;
+        }
+    }
+
+    public void Activate() {
+        gameObject.SetActive(true);
+        winningTeamText.text = "You did it!";
         menuOptions = transform.GetComponentsInChildren<MenuOption>();
         foreach (MenuOption mo in menuOptions) {
             mo.isReady = false;

@@ -15,9 +15,13 @@ public class LevelManager : MonoBehaviour {
     int _marginIterations = 0;
     int _prevTargetPoints;
 
+
+    GameManager _gameManager;
+
     // Use this for initialization
     void Start () {
         _targetPoints = _initialTargetPoints;
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -27,11 +31,15 @@ public class LevelManager : MonoBehaviour {
             pauseMenu.Activate();
         }
 
-        _marginTimer += Time.deltaTime;
-        if(_marginTimer >= _marginTime && _targetPoints > 1 && _marginIterations < 14) {
-            IncreaseMarginMultiplier();
-            _marginTime = 16f;
-            _marginTimer = 0f;
+        // If we are not in single player
+        if (!_gameManager.isSinglePlayer) {
+            // Update margin stuff
+            _marginTimer += Time.deltaTime;
+            if (_marginTimer >= _marginTime && _targetPoints > 1 && _marginIterations < 14) {
+                IncreaseMarginMultiplier();
+                _marginTime = 16f;
+                _marginTimer = 0f;
+            }
         }
     }
 

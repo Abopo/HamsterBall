@@ -35,7 +35,6 @@ public class Bubble : MonoBehaviour {
     BubblePopAnimation _popAnimation;
 
 	BubbleManager _homeBubbleManager;
-	BubbleManager _enemyBubbleManager;
     Rigidbody2D _rigibody2D;
 
     AudioSource _audioSource;
@@ -64,10 +63,8 @@ public class Bubble : MonoBehaviour {
 
 		if(team == 0) {
 			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager1").GetComponent<BubbleManager>();
-			_enemyBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager2").GetComponent<BubbleManager>();
 		} else if (team == 1) {
 			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager2").GetComponent<BubbleManager>();
-			_enemyBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager1").GetComponent<BubbleManager>();
 		}
 
         _rigibody2D = GetComponent<Rigidbody2D>();
@@ -241,18 +238,34 @@ public class Bubble : MonoBehaviour {
         if (other.tag == "Bottom") {
             if(type == HAMSTER_TYPES.DEAD) {
                 int inc = 1;
-                // Multiply by the Margin Multiplier
-                inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
 
-                // Start stock orb effect
-                _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
+                // Calculate score before the margin multiplier
+                int incScore = inc * 100;
+                _homeBubbleManager.IncreaseScore(incScore);
+
+                // If we are not playing single player
+                if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
+                    // Multiply by the Margin Multiplier
+                    inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+
+                    // Start stock orb effect
+                    _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
+                }
             } else {
                 int inc = 3 * (_dropCombo ? 2 : 1);
-                // Multiply by the Margin Multiplier
-                inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+                
+                // Calculate score before the margin multiplier
+                int incScore = inc * 100;
+                _homeBubbleManager.IncreaseScore(incScore);
 
-                // Start stock orb effect
-                _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
+                // If we are not playing single player
+                if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
+                    // Multiply by the Margin Multiplier
+                    inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+
+                    // Start stock orb effect
+                    _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
+                }
             }
             _homeBubbleManager.RemoveBubble(node);
             _audioSource.clip = _dropClip;
@@ -294,7 +307,7 @@ public class Bubble : MonoBehaviour {
             numMatches = matches.Count;
 
             if (matches.Count >= 3) {
-                _homeBubbleManager.IncreaseComboCounter(transform.position);
+                //_homeBubbleManager.IncreaseComboCounter(transform.position);
                 HandleMatch(matches);
                 Pop();
             } else {
@@ -422,18 +435,26 @@ public class Bubble : MonoBehaviour {
         // Calculate amount of garbage to generate
         int inc = (int)Mathf.Pow((matches.Count - 2), 2); // 3 = 1, 4 = 4, 5 = 9, 6 = 16, 7 = 25, 8 = 36
 
+        // Calculate score before the margin multiplier
+        int incScore = inc * 100;
+        _homeBubbleManager.IncreaseScore(incScore);
+
         // Multiply by the Margin Multiplier
         inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
 
         // If the combo count is high enough
-        if (_homeBubbleManager.ComboCount > 2) {
+        // TODO: Although I like it as an idea, this combo stuff seems way too powerful and easy to do.
+        if (_homeBubbleManager.ComboCount > 0) {
             // Multiply based on the combo
-            inc += inc * _homeBubbleManager.ComboCount-1;
-            Debug.Log("Comboed " + _homeBubbleManager.ComboCount);
+            //inc += 2 * _homeBubbleManager.ComboCount;
+            //Debug.Log("Comboed " + _homeBubbleManager.ComboCount);
         }
 
-        // Start stock orb effect
-        _homeBubbleManager.BubbleEffects.StockOrbEffect(inc + comboBonus, transform.position);
+        // If we are not playing single player
+        if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
+            // Start stock orb effect
+            _homeBubbleManager.BubbleEffects.StockOrbEffect(inc + comboBonus, transform.position);
+        }
 
         // Pop matches
         foreach (Bubble b in matches) {
@@ -503,10 +524,8 @@ public class Bubble : MonoBehaviour {
 
 		if(team == 0) {
 			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager1").GetComponent<BubbleManager>();
-			_enemyBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager2").GetComponent<BubbleManager>();
 		} else if(team == 1) {
 			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager2").GetComponent<BubbleManager>();
-			_enemyBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager1").GetComponent<BubbleManager>();
 		}
 	}
 

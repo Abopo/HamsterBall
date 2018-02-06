@@ -8,7 +8,7 @@ public class TextWriter : MonoBehaviour {
     public bool done;
 
     string _textToWrite;
-    string _displayString;
+    string _displayString = "";
     int _index;
     bool _done;
 
@@ -44,13 +44,13 @@ public class TextWriter : MonoBehaviour {
     }
 
     void CheckInput() {
-        if(Input.GetKeyDown(KeyCode.Space) && _displayString.Length > 2) {
+        if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0)) && _displayString.Length > 2) {
             // Skip writing
             _displayString = _textToWrite;
             displayText.text = _displayString;
             _done = true;
         }
-        if(Input.GetKeyUp(KeyCode.Space)) {
+        if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0))) {
             if (_displayString == _textToWrite) {
                 done = true;
             }
