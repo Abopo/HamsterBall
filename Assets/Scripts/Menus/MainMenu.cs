@@ -10,6 +10,24 @@ public class MainMenu : MonoBehaviour {
 	void Start () {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.isOnline = false;
+
+        InitPlayerPrefs();
+    }
+
+    void InitPlayerPrefs() {
+        // TODO: Remove for final build
+        //PlayerPrefs.SetInt("FirstTimePlaying", 0);
+
+        if(PlayerPrefs.GetInt("FirstTimePlaying") == 0) {
+            // Highscores
+            PlayerPrefs.SetInt("1-1Highscore", 0);
+            PlayerPrefs.SetInt("1-2Highscore", 0);
+            PlayerPrefs.SetInt("1-3Highscore", 0);
+            PlayerPrefs.SetInt("1-4Highscore", 0);
+            PlayerPrefs.SetInt("1-5Highscore", 0);
+
+            PlayerPrefs.SetInt("FirstTimePlaying", 1);
+        }
     }
 
     // Update is called once per frame

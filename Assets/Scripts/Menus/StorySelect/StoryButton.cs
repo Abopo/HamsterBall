@@ -7,6 +7,7 @@ public class StoryButton : MonoBehaviour {
     public bool hasCutscene;
     public string fileToLoad;
 
+    public string sceneNumber;
     public string locationName;
     public GAME_MODE gameType;
     public string winCondition;
@@ -15,8 +16,8 @@ public class StoryButton : MonoBehaviour {
     BoardLoader _boardLoader;
 	// Use this for initialization
 	void Start () {
-        _storySelectMenu = GameObject.FindObjectOfType<StorySelectMenu>();
-        _boardLoader = GameObject.FindObjectOfType<BoardLoader>();
+        _storySelectMenu = FindObjectOfType<StorySelectMenu>();
+        _boardLoader = FindObjectOfType<BoardLoader>();
 	}
 	
 	// Update is called once per frame
@@ -25,6 +26,8 @@ public class StoryButton : MonoBehaviour {
 	}
 
     public void Select() {
+        FindObjectOfType<GameManager>().level = sceneNumber;
+
         if(hasCutscene) {
             // Load a cutscene
             CutsceneManager.fileToLoad = fileToLoad;

@@ -150,6 +150,7 @@ MonoBehaviour:
   location: {fileID: 1629495637}
   locationImage: {fileID: 389981672}
   gameType: {fileID: 1120485500}
+  highscoreHeader: {fileID: 1229218785}
   highscore: {fileID: 620898546}
   winCondition: {fileID: 257433854}
 --- !u!4 &104617425
@@ -553,6 +554,11 @@ Prefab:
       propertyPath: hasCutscene
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
+        type: 2}
+      propertyPath: sceneNumber
+      value: 1-5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22a4d137c3165d4458ba45e8e73cb36b, type: 2}
   m_IsPrefabParent: 0
@@ -777,6 +783,11 @@ Prefab:
         type: 2}
       propertyPath: hasCutscene
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
+        type: 2}
+      propertyPath: sceneNumber
+      value: 1-4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22a4d137c3165d4458ba45e8e73cb36b, type: 2}
@@ -1146,17 +1157,27 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: locationName
-      value: Sewers
+      value: Forest
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: gameType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: winCondition
-      value: Make 10 matches!
+      value: Earn 1000 points!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
+        type: 2}
+      propertyPath: sceneNumber
+      value: 1-2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
+        type: 2}
+      propertyPath: fileToLoad
+      value: SinglePlayerBoardSetup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22a4d137c3165d4458ba45e8e73cb36b, type: 2}
@@ -1834,6 +1855,11 @@ Prefab:
       propertyPath: adjOptions.Array.data[2]
       value: 
       objectReference: {fileID: 736055456}
+    - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
+        type: 2}
+      propertyPath: sceneNumber
+      value: 1-0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22a4d137c3165d4458ba45e8e73cb36b, type: 2}
   m_IsPrefabParent: 0
@@ -2226,6 +2252,11 @@ Prefab:
       propertyPath: hasCutscene
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
+        type: 2}
+      propertyPath: sceneNumber
+      value: 1-3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22a4d137c3165d4458ba45e8e73cb36b, type: 2}
   m_IsPrefabParent: 0
@@ -2384,7 +2415,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: SinglePlayerBoardSetup
+      value: 1-1BoardSetup
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -2399,7 +2430,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: winCondition
-      value: Get 1000 points!
+      value: Beat the opponent!
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -2434,7 +2465,12 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: gameType
-      value: 0
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
+        type: 2}
+      propertyPath: sceneNumber
+      value: 1-1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22a4d137c3165d4458ba45e8e73cb36b, type: 2}

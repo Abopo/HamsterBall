@@ -8,6 +8,7 @@ public class StorySelectMenu : MonoBehaviour {
     public Text location;
     public Image locationImage;
     public Text gameType;
+    public Text highscoreHeader;
     public Text highscore;
     public Text winCondition;
 
@@ -36,12 +37,18 @@ public class StorySelectMenu : MonoBehaviour {
         switch(storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
                 gameType.text = "Versus";
+                highscoreHeader.text = "Highscore";
+                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
                 break;
             case GAME_MODE.SP_POINTS:
                 gameType.text = "Point Challenge";
+                highscoreHeader.text = "Best Time";
+                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString("0:00");
                 break;
             case GAME_MODE.SP_MATCH:
                 gameType.text = "Match Challenge";
+                highscoreHeader.text = "Best Time";
+                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString("0:00");
                 break;
         }
 

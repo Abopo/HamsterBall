@@ -15,13 +15,20 @@ public class LevelManager : MonoBehaviour {
     int _marginIterations = 0;
     int _prevTargetPoints;
 
+    float _levelTimer;
+    bool _gameOver = false;
 
     GameManager _gameManager;
+
+    public float LevelTimer {
+        get { return _levelTimer; }
+    }
 
     // Use this for initialization
     void Start () {
         _targetPoints = _initialTargetPoints;
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager.gameOverEvent.AddListener(GameEnd);
     }
 
     // Update is called once per frame
@@ -31,14 +38,18 @@ public class LevelManager : MonoBehaviour {
             pauseMenu.Activate();
         }
 
-        // If we are not in single player
-        if (!_gameManager.isSinglePlayer) {
-            // Update margin stuff
-            _marginTimer += Time.deltaTime;
-            if (_marginTimer >= _marginTime && _targetPoints > 1 && _marginIterations < 14) {
-                IncreaseMarginMultiplier();
-                _marginTime = 16f;
-                _marginTimer = 0f;
+        if (!_gameOver) {
+            _levelTimer += Time.deltaTime;
+
+            // If we are not in single player
+            if (!_gameManager.isSinglePlayer) {
+                // Update margin stuff
+                _marginTimer += Time.deltaTime;
+                if (_marginTimer >= _marginTime && _targetPoints > 1 && _marginIterations < 14) {
+                    IncreaseMarginMultiplier();
+                    _marginTime = 16f;
+                    _marginTimer = 0f;
+                }
             }
         }
     }
@@ -56,5 +67,17 @@ public class LevelManager : MonoBehaviour {
 
         marginMultiplier = _initialTargetPoints / (float)_targetPoints;
         marginMultiplierText.text = "x" + marginMultiplier.ToString("0.00");
+    }
+
+    void GameEnd() {
+        _gameOver = true;
+
+        // If we won and are in a timed mode, set the time highscore
+        if(_gameManager.gameMode == GAME_MODE.SP_MATCH || _gameManager.gameMode == GAME_MODE.SP_POINTS) {
+            string pref = _gameManager.level + "Highscore";
+            if ((int)_levelTimer < PlayerPrefs.GetInt(pref)) {
+                PlayerPrefs.SetInt(pref, (int)_levelTimer);
+            }
+        }
     }
 }

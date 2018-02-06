@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public bool testMode;
     public bool isOnline = false;
     public bool isSinglePlayer = false;
-    public int level;
+    public string level; // if level is "" it's a local multiplayer match, otherwise it's a story level
 
     public GAME_MODE gameMode;
     public int goalCount; // the number of points or matches to win the level
@@ -111,8 +111,19 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
     }
 
-    public void EndGame(int wonTeam) {
+    public void EndGame(int lostTeam, int winScore) {
         gameOverEvent.Invoke();
+
+        // If we are playing a story level and the left team (player's) won
+        if(IsStoryLevel() && lostTeam == 1) {
+            string pref = level.ToString() + "Highscore";
+
+            // And their new score is better than the old one
+            if (winScore > PlayerPrefs.GetInt(pref)) {
+                // Set their highscore
+                PlayerPrefs.SetInt(pref, winScore);
+            }
+        }
     }
 
     public void SetGameMode(GAME_MODE mode) {
@@ -164,5 +175,13 @@ public class GameManager : MonoBehaviour {
             _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
         }
         _playerManager.ClearAllPlayers();
+    }
+
+    public bool IsStoryLevel() {
+        if(level == "") {
+            return false;
+        }
+
+        return true;
     }
 }

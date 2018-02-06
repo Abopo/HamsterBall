@@ -803,14 +803,14 @@ public class BubbleManager : MonoBehaviour {
             startingBubbleTypes[i] = -1;
         }
 
-        _gameManager.EndGame(team);
+        _gameManager.EndGame(team, _scoreTotal);
 
         // Pause the game
         _gameManager.Pause();
 
-        if (!_gameManager.isSinglePlayer && mpResultsScreen != null) {
+        if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
             mpResultsScreen.Activate(team);
-        } else if(_gameManager.isSinglePlayer && spResultsScreen != null) {
+        } else if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
             spResultsScreen.Activate();
         }
     }
