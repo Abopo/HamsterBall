@@ -34,10 +34,10 @@ public class AudioManager : MonoBehaviour {
 	}
 
     void PlayMusic(Scene scene, LoadSceneMode mode) {
-        if(scene.buildIndex < 7 && _audioSource != null && _audioSource.clip != _backgroundMusic[0]) {
+        if(scene.buildIndex < 8 && _audioSource != null && _audioSource.clip != _backgroundMusic[0]) {
             _audioSource.clip = _backgroundMusic[0];
             _audioSource.Play();
-        } else if (scene.buildIndex > 6 && _audioSource != null) {
+        } else if (scene.buildIndex > 7 && _audioSource != null) {
             _audioSource.clip = _backgroundMusic[1];
             _audioSource.Play();
         }

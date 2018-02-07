@@ -34,24 +34,27 @@ public class Node : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        GetComponentInParent<BubbleManager>().boardChangedEvent.AddListener(CheckCanBeHit);
+        CheckCanBeHit();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        isRelevant = false;
-
-        if (IsRelevant()) {
-            // TODO: Only run this when the board changes.
-            if (CanBeHit()) {
-                isRelevant = true;
-
-                Vector3 end = new Vector3(transform.position.x,
-                                            transform.position.y - 0.1f,
-                                            transform.position.z);
-                Debug.DrawLine(transform.position, end, Color.green);
-            }
+        if(isRelevant) {
+            Vector3 end = new Vector3(transform.position.x,
+                                        transform.position.y - 0.1f,
+                                        transform.position.z);
+            Debug.DrawLine(transform.position, end, Color.green);
         }
-	}
+    }
+
+    void CheckCanBeHit() {
+        if (IsRelevant() && CanBeHit()) {
+            isRelevant = true;
+        } else {
+            isRelevant = false;
+        }
+    }
 
     public bool IsRelevant() {
         int count = 0;
@@ -71,7 +74,7 @@ public class Node : MonoBehaviour {
             }
         }
 
-        // If bubble on opposite sides are there, this node can't be hit
+        // If the adjBubbles close off the node, then it can't be hit
         if((adjBubbles[2] != null && adjBubbles[4] != null) || (adjBubbles[5] != null && adjBubbles[3] != null)) {
             count = 0;
         }
@@ -83,7 +86,7 @@ public class Node : MonoBehaviour {
         }
     }
 
-    // This function scans around the bubble to check whether or not it's possible to be hit by the player.
+    // This function scans around the node to check whether or not it's possible to be hit by the player.
     bool CanBeHit() {
         canBeHit = false;
 

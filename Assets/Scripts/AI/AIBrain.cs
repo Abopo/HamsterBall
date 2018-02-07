@@ -91,6 +91,8 @@ public class AIBrain : MonoBehaviour {
             // Make some Actions
             MakeDecision();
 
+            Debug.Log(_actions.Count);
+
             _decisionTimer = 0;
         }
 
@@ -136,8 +138,8 @@ public class AIBrain : MonoBehaviour {
         // Clear out bad actions
         _actions.RemoveAll(action => !ActionIsRelevant(action));
 
-        MakeSomeRandomActions();
-        _actions.RemoveAll(action => !ActionIsRelevant(action));
+        //MakeSomeRandomActions();
+        //_actions.RemoveAll(action => !ActionIsRelevant(action));
 
         // Determine the weights of the actions
         foreach (AIAction action in _actions) {
@@ -437,6 +439,10 @@ public class AIBrain : MonoBehaviour {
             curAction.CleanUp();
             curAction = null;
         }
+
+        // Clear out bad actions just in case
+        _actions.RemoveAll(action => !ActionIsRelevant(action));
+
         ChooseAction();
     }
 

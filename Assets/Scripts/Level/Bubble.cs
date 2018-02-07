@@ -267,7 +267,7 @@ public class Bubble : MonoBehaviour {
                     _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
                 }
             }
-            _homeBubbleManager.RemoveBubble(node);
+            //_homeBubbleManager.RemoveBubble(node);
             _audioSource.clip = _dropClip;
             _audioSource.Play();
 
@@ -499,8 +499,10 @@ public class Bubble : MonoBehaviour {
         _rigibody2D.velocity = new Vector2 (0.0f, -5f);
 		gameObject.layer = 15; // GhostBubble
 
+        _homeBubbleManager.RemoveBubble(node);
+
         // Check for team drop bonus
-        if(_homeBubbleManager.LastBubbleAdded != null && _homeBubbleManager.LastBubbleAdded.popped && 
+        if (_homeBubbleManager.LastBubbleAdded != null && _homeBubbleManager.LastBubbleAdded.popped && 
             _playerController != null && _homeBubbleManager.LastBubbleAdded.PlayerController != _playerController) {
             _homeBubbleManager.BubbleEffects.TeamDropEffect(transform.position);
             _dropCombo = true;

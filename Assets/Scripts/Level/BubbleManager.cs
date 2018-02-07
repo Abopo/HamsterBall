@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,7 +37,6 @@ public class BubbleManager : MonoBehaviour {
 
 	int numNodes = 150;
 	bool justAddedBubble = false;
-    bool boardChangedFlag = false;
     Transform bubblesParent;
     Transform nodesParent;
     float nodeHeight = 0.67f; // The height of a single node (i.e. how far down lines move)
@@ -81,6 +81,8 @@ public class BubbleManager : MonoBehaviour {
     //    set { _nextLineBubbles = value; }
     //}
 
+    public UnityEvent boardChangedEvent;
+
     GameManager _gameManager;
     AudioSource _audioSource;
     AudioClip _bubblePopClip;
@@ -111,6 +113,8 @@ public class BubbleManager : MonoBehaviour {
             justAddedBubble = true;
         }
 
+        boardChangedEvent.Invoke();
+
         // Get the next line of bubbles
         if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
             SeedNextLineBubbles();
@@ -136,6 +140,8 @@ public class BubbleManager : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             GetComponent<PhotonView>().RPC("SyncLineBubbles", PhotonTargets.Others, _nextLineBubbles.ToArray());
         }
+
+        boardChangedEvent.AddListener(UpdateAllAdjBubbles);
     }
 
     void BuildStartingNodes() {
@@ -508,13 +514,9 @@ public class BubbleManager : MonoBehaviour {
 				}
 			}
 
+            boardChangedEvent.Invoke();
 			justAddedBubble = false;
 		}
-
-        if(boardChangedFlag) {
-            UpdateAllAdjBubbles();
-            boardChangedFlag = false;
-        }
 
         if(testMode) {
             CheckInput();
@@ -561,7 +563,7 @@ public class BubbleManager : MonoBehaviour {
 		UpdateAllAdjBubbles ();
 
 		justAddedBubble = true;
-	}
+    }
 
     public void AddBubble(Bubble newBubble, int node) {
         if (node == -1) {
@@ -650,13 +652,12 @@ public class BubbleManager : MonoBehaviour {
             Debug.Log("Shiiit");
         }
 		bubbles [node] = null;
+        nodeList[node].bubble = null;
 
 		if (!_audioSource.isPlaying) {
             _audioSource.clip = _bubblePopClip;
 			_audioSource.Play();
 		}
-
-        boardChangedFlag = true;
 	}
 
     public void AddLine() {
@@ -743,6 +744,7 @@ public class BubbleManager : MonoBehaviour {
         UpdateAllAdjBubbles ();
 
 		justAddedBubble = true;
+        boardChangedEvent.Invoke();
 
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
