@@ -54,6 +54,7 @@ public class BubbleManager : MonoBehaviour {
 
     int _comboCount = -1;
     int _scoreTotal = 0;
+    public int matchCount = 0;
 
     Bubble[] bubbles;
 
@@ -84,6 +85,7 @@ public class BubbleManager : MonoBehaviour {
     public UnityEvent boardChangedEvent;
 
     GameManager _gameManager;
+    LevelManager _levelManager;
     AudioSource _audioSource;
     AudioClip _bubblePopClip;
     AudioClip _addLineClip;
@@ -92,7 +94,8 @@ public class BubbleManager : MonoBehaviour {
         _setupDone = false;
 
         Time.timeScale = 1;
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
 
         bubblesParent = transform.GetChild(0);
         nodesParent = transform.GetChild(1);
@@ -786,7 +789,23 @@ public class BubbleManager : MonoBehaviour {
     public bool CheckWinConditions() {
         // Check single player challenge goals
         if(_gameManager.isSinglePlayer && _scoreTotal >= _gameManager.goalCount) {
-            return true;
+            switch(_gameManager.gameMode) {
+                case GAME_MODE.SP_POINTS:
+                    if(_scoreTotal >= _gameManager.goalCount) {
+                        return true;
+                    }
+                    break;
+                case GAME_MODE.SP_MATCH:
+                    if(matchCount >= _gameManager.goalCount) {
+                        return true;
+                    }
+                    break;
+            }
+
+            // TODO: This is actually a loss so handle that
+            if(_levelManager.LevelTimer >= _gameManager.timeLimit) {
+                return true;
+            }
         }
 
         // Check bubble positions

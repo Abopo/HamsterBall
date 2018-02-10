@@ -75,7 +75,7 @@ public class LevelManager : MonoBehaviour {
         // If we won and are in a timed mode, set the time highscore
         if(_gameManager.gameMode == GAME_MODE.SP_MATCH || _gameManager.gameMode == GAME_MODE.SP_POINTS) {
             string pref = _gameManager.level + "Highscore";
-            if ((int)_levelTimer < PlayerPrefs.GetInt(pref)) {
+            if ((int)_levelTimer < PlayerPrefs.GetInt(pref) || PlayerPrefs.GetInt(pref) == 0) {
                 PlayerPrefs.SetInt(pref, (int)_levelTimer);
             }
         }

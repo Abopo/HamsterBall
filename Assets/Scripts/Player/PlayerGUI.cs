@@ -68,7 +68,7 @@ public class PlayerGUI : MonoBehaviour {
 	}
 
     public void SetMeterPosition(RectTransform meter) {
-        if (_shiftMeter != null) {
+        if (meter != null) {
             _shiftMeter = meter;
             _shiftMeterWidth = _shiftMeter.sizeDelta.x;
         }

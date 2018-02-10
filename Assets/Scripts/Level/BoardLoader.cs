@@ -196,10 +196,12 @@ public class BoardLoader : MonoBehaviour {
             case "Points":
                 _gameManager.SetGameMode(GAME_MODE.SP_POINTS);
                 _gameManager.goalCount = int.Parse(_linesFromFile[_fileIndex++]);
+                _gameManager.timeLimit = int.Parse(_linesFromFile[_fileIndex++]);
                 break;
             case "Matches":
                 _gameManager.SetGameMode(GAME_MODE.SP_MATCH);
                 _gameManager.goalCount = int.Parse(_linesFromFile[_fileIndex++]);
+                _gameManager.timeLimit = int.Parse(_linesFromFile[_fileIndex++]);
                 break;
             case "Versus":
                 _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
 
     public GAME_MODE gameMode;
     public int goalCount; // the number of points or matches to win the level
+    public int timeLimit; // the time limit to achieve the goal
 
     public int leftTeamHandicap;
     public int rightTeamHandicap;

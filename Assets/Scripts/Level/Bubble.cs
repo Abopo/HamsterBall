@@ -220,6 +220,9 @@ public class Bubble : MonoBehaviour {
                 // Right side
                 _bankedPos.z = 1;
             }
+
+            // Earn some points for a wall bounce
+            _homeBubbleManager.IncreaseScore(20);
 		}
 		if (other.tag == "Bubble") {
 			if(!locked && other.GetComponent<Bubble>().locked) {
@@ -292,6 +295,9 @@ public class Bubble : MonoBehaviour {
             DoCrazyRainbowMatches();
             type = HAMSTER_TYPES.RAINBOW;
         } else if (type == HAMSTER_TYPES.BOMB) {
+            // Add score for how many bubbles were blown up
+            _homeBubbleManager.IncreaseScore(adjBubbles.Length * 50);
+
             // Pop self and all adjBubbles
             foreach(Bubble b in adjBubbles) {
                 if (b != null) {
@@ -309,6 +315,7 @@ public class Bubble : MonoBehaviour {
             if (matches.Count >= 3) {
                 //_homeBubbleManager.IncreaseComboCounter(transform.position);
                 HandleMatch(matches);
+                _homeBubbleManager.matchCount++;
                 Pop();
             } else {
                 _homeBubbleManager.ResetComboCounter();
