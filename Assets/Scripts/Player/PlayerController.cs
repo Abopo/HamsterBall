@@ -225,6 +225,11 @@ public class PlayerController : Entity {
 			}
             ChangeState(PLAYER_STATE.SHIFT);
         }
+
+        if(_physics.IsTouchingFloor && inputState.down.isJustPressed) {
+            // Move player slightly downward to pass through certain platforms
+            transform.Translate(0f, -0.01f, 0f);
+        }
     }
 
 	void UpdateBubbles() {
@@ -363,7 +368,7 @@ public class PlayerController : Entity {
 		}
 	}
 	public override void CollisionResponseY(Collider2D collider) {
-		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
+		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13 || collider.gameObject.layer == 18) {
 			velocity.y = 0.0f;
 		}
 	}

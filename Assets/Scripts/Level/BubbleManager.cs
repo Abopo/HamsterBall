@@ -55,6 +55,7 @@ public class BubbleManager : MonoBehaviour {
     int _comboCount = -1;
     int _scoreTotal = 0;
     public int matchCount = 0;
+    bool _gameOver = false;
 
     Bubble[] bubbles;
 
@@ -527,7 +528,7 @@ public class BubbleManager : MonoBehaviour {
 	}
 
     private void LateUpdate() {
-        if (CheckWinConditions()) {
+        if (CheckWinConditions() && !_gameOver) {
             // Show end game screen
             EndGame();
         }
@@ -819,6 +820,8 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void EndGame() {
+        _gameOver = true;
+
         // Clear out starting bubbles to prepare for next round
         for(int i = 0; i < 50; ++i) {
             startingBubbleTypes[i] = -1;

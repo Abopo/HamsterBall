@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetButtonDown("Pause")) {
+        if (Input.GetButtonDown("Pause") && !_gameManager.isOnline) {
             // Pause the game
             pauseMenu.Activate();
         }

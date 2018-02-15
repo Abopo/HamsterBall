@@ -170,6 +170,7 @@ public class GameManager : MonoBehaviour {
 
     void CleanUp() {
         Unpause();
+
         // Load character select screen.
         if (_playerManager == null) {
             // Must fully find game object for the script because the button stuff is dumb.

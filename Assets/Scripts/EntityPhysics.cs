@@ -95,6 +95,13 @@ public class EntityPhysics : MonoBehaviour {
         float deltaY = inDeltaY;
         _pos = transform.position;
 
+        // If we are moving upward
+        if(inDeltaY > 0) {
+            collisionMask1 = collisionMask1 & ~(1 << 18); // Remove the "Passthrough" layer from the mask
+        } else {
+            collisionMask1 = collisionMask1 | (1 << 18); // Add the "Passthrough" layer to the mask
+        }
+
         for (int i = 0; i < 3; ++i) {
             float dir = Mathf.Sign(inDeltaY);
             float x = (_pos.x + _center.x - _scaledRadius / 2) + _scaledRadius / 2 * i;
@@ -141,7 +148,7 @@ public class EntityPhysics : MonoBehaviour {
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
             Debug.DrawRay(_ray.origin, _ray.direction * 0.05f);
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.05f, collisionMask2);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.05f, collisionMask1);
             if (_hit) {
                 isTouchingFloor = true;
                 entity.Grounded = true;
@@ -269,7 +276,7 @@ public class EntityPhysics : MonoBehaviour {
                     float curYPos = transform.position.y - _scaledRadius;
                     float wantYPos = collider.transform.position.y + (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.localScale.y) / 2f;
                     float yMove = wantYPos - curYPos;
-                    if (Mathf.Abs(yMove) > _scaledRadius/4) {
+                    if (Mathf.Abs(yMove) > _scaledRadius/64) {
                         MoveY(yMove);
                     }
                     break;

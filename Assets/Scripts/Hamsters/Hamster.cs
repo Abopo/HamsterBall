@@ -191,7 +191,7 @@ public class Hamster : Entity {
 		}
 	}
 	public override void CollisionResponseY(Collider2D collider) {
-		if (collider.gameObject.layer == 9) {
+		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 18) {
 			velocity.y = 0.0f;
 		}
 	}
@@ -206,13 +206,15 @@ public class Hamster : Entity {
     }
 
     public void Caught() {
-        // Reduce hamster spawner's hamsterCount
-        _parentSpawner.ReduceHamsterCount();
+        if (!wasCaught) {
+            // Reduce hamster spawner's hamsterCount
+            _parentSpawner.ReduceHamsterCount();
 
-        wasCaught = true;
+            wasCaught = true;
 
-        // Destroy self
-        DestroyObject(this.gameObject);
+            // Destroy self
+            DestroyObject(this.gameObject);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
