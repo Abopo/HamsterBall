@@ -92,6 +92,9 @@ public class AIController : MonoBehaviour {
         _input.right.isDown = false;
         _input.right.isJustPressed = false;
         _input.right.isJustReleased = false;
+        _input.down.isDown = false;
+        _input.down.isJustPressed = false;
+        _input.down.isJustReleased = false;
         _input.bubble.isJustPressed = false;
         _input.shift.isDown = false;
         _input.shift.isJustPressed = false;
@@ -130,6 +133,9 @@ public class AIController : MonoBehaviour {
         _prevInput.right.isDown = _input.right.isDown;
         _prevInput.right.isJustPressed = _input.right.isJustPressed;
         _prevInput.right.isJustReleased = _input.right.isJustReleased;
+        _prevInput.down.isDown = _input.down.isDown;
+        _prevInput.down.isJustPressed = _input.down.isJustPressed;
+        _prevInput.down.isJustReleased = _input.down.isJustReleased;
         _prevInput.bubble.isJustPressed = _input.bubble.isJustPressed;
         _prevInput.shift.isDown = _input.shift.isDown;
         _prevInput.shift.isJustPressed = _input.shift.isJustPressed;
@@ -163,8 +169,6 @@ public class AIController : MonoBehaviour {
     }
 
     void HorizontalMovement() {
-        // TODO: deal with throwing at opponents board
-
         // Once we have a hamster caught, move to under the bubbleWant.
         if (_playerController.heldBubble != null) {
             // if we are shifted with a hamster
@@ -261,6 +265,11 @@ public class AIController : MonoBehaviour {
                 _input.left.isDown = false;
                 _input.right.isDown = true;
             }
+
+            // If we're are standing on a passthrough platform, just press down to fall through
+            if(_mapScan.IsOnPassthrough) {
+                _input.down.isJustPressed = true;
+            }    
         // If we want to go up, find closest step and move towards it.
         } else if (_curAction.vertWant == 1) {
             if (_mapScan.LeftJumpDistance < _mapScan.RightJumpDistance) {

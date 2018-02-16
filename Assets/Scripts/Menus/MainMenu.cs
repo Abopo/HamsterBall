@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void LoadStoryMode() {
+        _gameManager.isOnline = false;
         SceneManager.LoadScene("StorySelect");
     }
 

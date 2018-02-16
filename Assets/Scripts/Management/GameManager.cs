@@ -152,8 +152,10 @@ public class GameManager : MonoBehaviour {
         CleanUp();
 
         if (PhotonNetwork.connectedAndReady) {
+            isOnline = true;
             PhotonNetwork.LoadLevel("NetworkedCharacterSelect");
         } else {
+            isOnline = false;
             SceneManager.LoadScene("CharacterSelect");
         }
     }
@@ -165,6 +167,11 @@ public class GameManager : MonoBehaviour {
 
     public void MainMenuButton() {
         CleanUp();
+
+        if(isOnline) {
+            PhotonNetwork.LeaveRoom();
+        }
+
         SceneManager.LoadScene("MainMenu");
     }
 

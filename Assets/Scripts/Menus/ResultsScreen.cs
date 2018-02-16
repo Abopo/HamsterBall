@@ -3,18 +3,14 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ResultsScreen : MonoBehaviour {
-
     public Text winningTeamText;
     public MenuOption[] menuOptions;
 
     float winTime = 1.0f;
     float winTimer = 0.0f;
 
-    GameManager _gameManager;
-
     // Use this for initialization
     void Start () {
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -45,8 +41,17 @@ public class ResultsScreen : MonoBehaviour {
         foreach (MenuOption mo in menuOptions) {
             mo.isReady = false;
         }
+
+        // If we are online and not the master client
+        if(PhotonNetwork.connectedAndReady && !PhotonNetwork.isMasterClient) {
+            // We shouldn't be able to use any of the buttons here
+            foreach(MenuOption mo in menuOptions) {
+                mo.gameObject.SetActive(false);
+            }
+        }
     }
 
+    // used for single player
     public void Activate() {
         gameObject.SetActive(true);
         winningTeamText.text = "You did it!";

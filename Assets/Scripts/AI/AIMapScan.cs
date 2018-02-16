@@ -19,6 +19,7 @@ public class AIMapScan : MonoBehaviour {
     float _rightJumpDistance; // Distance to the closest step up to the right of the character.
 
     bool _isUnderCeiling; // If there is a ceiling directly above the character.
+    bool _isOnPassthrough; // If AI is standing on a passthrough platform
 
     Ray2D _leftWallCheckRay; // Ray for checking distances
     RaycastHit2D _leftWallCheckHit; // Result of ray checks
@@ -54,6 +55,9 @@ public class AIMapScan : MonoBehaviour {
     }
     public bool IsUnderCeiling {
         get { return _isUnderCeiling; }
+    }
+    public bool IsOnPassthrough {
+        get { return _isOnPassthrough; }
     }
     public float LeftStepDistance {
         get { return _leftStepDistance; }
@@ -130,7 +134,7 @@ public class AIMapScan : MonoBehaviour {
         // Check at position first to determine what's above.
         _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
         _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
-        if (_jumpCheckHit) {
+        if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough")) {
             prevHitRight = true;
             prevHitLeft = true;
             _isUnderCeiling = true;
@@ -138,12 +142,25 @@ public class AIMapScan : MonoBehaviour {
             _isUnderCeiling = false;
         }
 
+        // Also check at position to determine what's below.
+        _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
+        _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+        if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
+            _isOnPassthrough = true;
+        } else {
+            _isOnPassthrough = false;
+        }
+
         // Check Right
         rayOffsetX = 0.1f;
         while (rayOffsetX < _rightWallCheckHit.distance) {
             _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
             _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
-            if(_jumpCheckHit && !prevHitRight) {
+
+            // If the platform above us is a passthrough platform
+            if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
+                _rightJumpDistance = 1.0f;
+            } else if(_jumpCheckHit && !prevHitRight) {
                 _rightJumpDistance = rayOffsetX;
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance);
                 break;
@@ -160,7 +177,10 @@ public class AIMapScan : MonoBehaviour {
         while (rayOffsetX < _leftWallCheckHit.distance) {
             _jumpCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.up);
             _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
-            if (_jumpCheckHit && !prevHitLeft) {
+
+            if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
+                _leftJumpDistance = 1.0f;
+            } else if (_jumpCheckHit && !prevHitLeft) {
                 _leftJumpDistance = rayOffsetX;
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance);
                 break;
