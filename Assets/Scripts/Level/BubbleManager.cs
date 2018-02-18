@@ -140,6 +140,8 @@ public class BubbleManager : MonoBehaviour {
         _scoreTotal = 0;
         scoreText.text = _scoreTotal.ToString();
 
+        _gameOver = false;
+
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             GetComponent<PhotonView>().RPC("SyncLineBubbles", PhotonTargets.Others, _nextLineBubbles.ToArray());
@@ -596,6 +598,8 @@ public class BubbleManager : MonoBehaviour {
     }
 
     int FindClosestNode(Bubble bubble) {
+        // TODO: Maybe make this function just sort all nodes by distance and go down the list until a free one is found.
+
         // find closest node
         int closestNode = -1;
         // Have the main node, and some backup nodes just in case the main node is taken.
@@ -837,6 +841,8 @@ public class BubbleManager : MonoBehaviour {
         } else if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
             spResultsScreen.Activate();
         }
+
+        _gameOver = true;
     }
 
     public void RefreshRainbowBubbles() {

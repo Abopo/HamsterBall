@@ -33,6 +33,7 @@ public class StorySelectMenu : MonoBehaviour {
         location.text = storyButton.locationName;
         locationImage.sprite = locationImages[storyButton.locationName];
 
+        int time = 0;
         // Set game type text
         switch(storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
@@ -43,12 +44,15 @@ public class StorySelectMenu : MonoBehaviour {
             case GAME_MODE.SP_POINTS:
                 gameType.text = "Point Challenge";
                 highscoreHeader.text = "Best Time";
-                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString("0:00");
+                time = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore");
+                highscore.text = string.Format("{0}:{1:00}", (int)time / 60, (int)time % 60);
                 break;
             case GAME_MODE.SP_MATCH:
                 gameType.text = "Match Challenge";
                 highscoreHeader.text = "Best Time";
-                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString("0:00");
+                //highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString("0:00");
+                time = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore");
+                highscore.text = string.Format("{0}:{1:00}", (int)time / 60, (int)time % 60);
                 break;
         }
 

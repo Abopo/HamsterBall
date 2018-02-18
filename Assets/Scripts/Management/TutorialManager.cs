@@ -55,42 +55,42 @@ public class TutorialManager : MonoBehaviour {
     void ShowNextTutorial() {
         switch(_tutorialIndex) {
             case 0:
-                cutsceneManager.StartCutscene("Tutorials/MovementTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MovementTutorial"));
                 _tutorialIndex++; // 1
                 _tutorialTime = 5f;
                 break;
             case 1:
-                cutsceneManager.StartCutscene("Tutorials/BubbleTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/BubbleTutorial"));
                 _tutorialIndex++; // 2
                 _tutorialTime = -1;
                 break;
             case 2:
-                cutsceneManager.StartCutscene("Tutorials/AimTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/AimTutorial"));
                 _tutorialIndex++; // 3
                 _tutorialTime = -1;
                 break;
             case 3:
-                cutsceneManager.StartCutscene("Tutorials/ThrowTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/ThrowTutorial"));
                 _tutorialIndex++; // 4
                 _tutorialTime = -1;
                 break;
             case 4:
-                cutsceneManager.StartCutscene("Tutorials/MatchingTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MatchingTutorial"));
                 _tutorialIndex++; // 5
                 _tutorialTime = 15f;
                 break;
             case 5:
-                cutsceneManager.StartCutscene("Tutorials/DroppingSwappingTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/DroppingSwappingTutorial"));
                 _tutorialIndex++; // 6
                 _tutorialTime = -1;
                 break;
             case 6:
-                cutsceneManager.StartCutscene("Tutorials/SwappedTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/SwappedTutorial"));
                 _tutorialIndex++; // 7
                 _tutorialTime = -1;
                 break;
             case 7:
-                cutsceneManager.StartCutscene("Tutorials/EndTutorial");
+                cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/EndTutorial"));
                 _tutorialIndex++; // 8
                 _tutorialTime = 0.1f;
                 break;
@@ -99,5 +99,13 @@ public class TutorialManager : MonoBehaviour {
                 GameObject.FindObjectOfType<BubbleManager>().EndGame();
                 break;
         }
+    }
+
+    string GetCorrectTutorial(string baseTutorial) {
+        if(Input.GetJoystickNames().Length > 0) {
+            baseTutorial += "Controller";
+        }
+
+        return baseTutorial;
     }
 }

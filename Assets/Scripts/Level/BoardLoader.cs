@@ -157,7 +157,11 @@ public class BoardLoader : MonoBehaviour {
 
         PlayerInfo player1 = new PlayerInfo();
         player1.playerNum = 1;
-        player1.controllerNum = 1;
+        if (Input.GetJoystickNames().Length > 0) {
+            player1.controllerNum = 3;
+        } else {
+            player1.controllerNum = 1;
+        }
         player1.team = 0;
         playerManager.AddPlayer(player1);
 

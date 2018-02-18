@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StoryButton : MonoBehaviour {
+public class StoryButton : MenuOption {
     public bool hasCutscene;
     public string fileToLoad;
 
@@ -15,17 +15,21 @@ public class StoryButton : MonoBehaviour {
     StorySelectMenu _storySelectMenu;
     BoardLoader _boardLoader;
 	// Use this for initialization
-	void Start () {
+	protected override void Start () {
+        base.Start();
+
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
         _boardLoader = FindObjectOfType<BoardLoader>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	protected override void Update () {
+        base.Update();	
 	}
 
-    public void Select() {
+    protected override void Select() {
+        base.Select();
+
         FindObjectOfType<GameManager>().level = sceneNumber;
 
         if(hasCutscene) {
@@ -38,7 +42,9 @@ public class StoryButton : MonoBehaviour {
         }
     }
 
-    public void Highlight() {
+    public override void Highlight() {
+        base.Highlight();
+
         // Change UI to display stuff about this event
         _storySelectMenu.UpdateUI(this);
     }

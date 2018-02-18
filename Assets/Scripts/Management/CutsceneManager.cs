@@ -96,7 +96,8 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void CheckInput() {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0)) && _ready && _isPlaying) {
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Joystick Jump 1")) 
+            && _ready && _isPlaying) {
             // Move to next thing
             _ready = false;
             ReadEscapeCharacter();

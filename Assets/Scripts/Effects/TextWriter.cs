@@ -44,13 +44,14 @@ public class TextWriter : MonoBehaviour {
     }
 
     void CheckInput() {
-        if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0)) && _displayString.Length > 2) {
+        if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Joystick Jump 1")) 
+            && _displayString.Length > 2) {
             // Skip writing
             _displayString = _textToWrite;
             displayText.text = _displayString;
             _done = true;
         }
-        if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0))) {
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Joystick Jump 1")) {
             if (_displayString == _textToWrite) {
                 done = true;
             }
