@@ -118,11 +118,11 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
     }
 
-    public void EndGame(int lostTeam, int winScore) {
+    public void EndGame(int winningTeam, int winScore) {
         gameOverEvent.Invoke();
 
-        // If we are playing a story level and the left team (player's) won
-        if(IsStoryLevel() && lostTeam == 1) {
+        // If we are playing a story level and the player's team won
+        if(IsStoryLevel() && (gameMode == GAME_MODE.MP_VERSUS && winningTeam == 0 || gameMode != GAME_MODE.MP_VERSUS && winningTeam == 1)) {
             string pref = level.ToString() + "Highscore";
 
             // If their new score is better than the old one
@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour {
         } else {
             storyProgress += worldInt.ToString();
             storyProgress += "-";
-            storyProgress += levelInt.ToString();
+            storyProgress += (levelInt+1).ToString();
         }
 
         PlayerPrefs.SetString("StoryProgress", storyProgress);

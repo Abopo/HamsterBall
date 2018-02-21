@@ -835,7 +835,8 @@ public class BubbleManager : MonoBehaviour {
             startingBubbleTypes[i] = -1;
         }
 
-        _gameManager.EndGame(team, _scoreTotal);
+        // Send the winning team to the game manager
+        _gameManager.EndGame(team == 0 ? 1 : 0, _scoreTotal);
 
         // Pause the game
         _gameManager.Pause();

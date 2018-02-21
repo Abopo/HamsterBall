@@ -19,16 +19,18 @@ public class MenuOption : MonoBehaviour {
     AudioClip _highlightClip;
     AudioClip _selectClip;
 
-    // Use this for initialization
-    protected virtual void Start () {
-        //_selectedPos = transform.position;
-        _moved = false;
-
+    private void Awake() {
         if (isFirstSelection) {
             _isHighlighted = true;
         } else {
             _isHighlighted = false;
         }
+    }
+
+    // Use this for initialization
+    protected virtual void Start () {
+        //_selectedPos = transform.position;
+        _moved = false;
 
         _audioSource = GetComponent<AudioSource>();
         _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");

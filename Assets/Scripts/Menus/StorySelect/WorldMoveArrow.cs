@@ -22,12 +22,28 @@ public class WorldMoveArrow : MenuOption {
     protected override void Select() {
         base.Select();
 
-        _storySelectMenu.StartMoveWorlds(dir);
+        TryMoveWorld();
     }
 
     public override void Highlight() {
         //base.Highlight();
 
-        _storySelectMenu.StartMoveWorlds(dir);
+        TryMoveWorld();
+    }
+
+    void TryMoveWorld() {
+        if (dir == 1) {
+            TryMoveRight();
+        } else if (dir == -1) {
+            _storySelectMenu.StartMoveWorlds(dir);
+        }
+    }
+
+    void TryMoveRight() {
+        string storyProgress = PlayerPrefs.GetString("StoryProgress");
+
+        if (_storySelectMenu.CurWorld+1 < int.Parse(storyProgress[0].ToString())) {
+            _storySelectMenu.StartMoveWorlds(dir);
+        }
     }
 }

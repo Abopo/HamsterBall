@@ -23,13 +23,16 @@ public class StorySelectMenu : MonoBehaviour {
 
     Dictionary<string, Sprite> locationImages = new Dictionary<string, Sprite>();
 
+    public int CurWorld {
+        get { return _curWorld; }
+    }
     public int FurthestWorld {
         get { return _furthestWorld; }
     }
-
     public int FurthestLevel {
         get { return _furthestLevel; }
     }
+
 
     // Use this for initialization
     void Start () {
