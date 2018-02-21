@@ -10,7 +10,7 @@ public class MenuOption : MonoBehaviour {
     public bool isFirstSelection;
     public bool isReady = true;
 
-    protected Vector2 _selectedPos;
+    //protected Vector2 _selectedPos;
     protected bool _isHighlighted;
     protected bool _justHighlighted; // use this to stop inputs from flowing over into multiple options.
     bool _moved;
@@ -19,9 +19,15 @@ public class MenuOption : MonoBehaviour {
     AudioClip _highlightClip;
     AudioClip _selectClip;
 
+    private void Awake() {
+        _audioSource = GetComponent<AudioSource>();
+        _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
+        _selectClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
+    }
+
     // Use this for initialization
     protected virtual void Start () {
-        _selectedPos = transform.position;
+        //_selectedPos = transform.position;
         _moved = false;
 
         if (isFirstSelection) {
@@ -29,10 +35,6 @@ public class MenuOption : MonoBehaviour {
         } else {
             _isHighlighted = false;
         }
-
-        _audioSource = GetComponent<AudioSource>();
-        _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
-        _selectClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
     }
 
     // Update is called once per frame
@@ -50,8 +52,8 @@ public class MenuOption : MonoBehaviour {
         if (!_moved && _isHighlighted && !_justHighlighted) {
             // Right
             if (InputRight()) {
-                if (adjOptions[0] != null) {
-                    _isHighlighted = false;
+                if (adjOptions[0] != null && adjOptions[0].isReady) {
+                    //_isHighlighted = false;
                     _moved = true;
                     // move selector to adjOptions[0]
                     adjOptions[0].Highlight();
@@ -59,8 +61,8 @@ public class MenuOption : MonoBehaviour {
             }
             // Left
             if (InputLeft()) {
-                if (adjOptions[2] != null) {
-                    _isHighlighted = false;
+                if (adjOptions[2] != null && adjOptions[2].isReady) {
+                    //_isHighlighted = false;
                     _moved = true;
                     // move selector to adjOptions[2]
                     adjOptions[2].Highlight();
@@ -68,8 +70,8 @@ public class MenuOption : MonoBehaviour {
             }
             // Up
             if (Input.GetAxis("Vertical") < -0.3f || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                if (adjOptions[3] != null) {
-                    _isHighlighted = false;
+                if (adjOptions[3] != null && adjOptions[3].isReady) {
+                    //_isHighlighted = false;
                     _moved = true;
                     // move selector to adjOptions[3]
                     adjOptions[3].Highlight();
@@ -77,8 +79,8 @@ public class MenuOption : MonoBehaviour {
             }
             // Down
             if (Input.GetAxis("Vertical") > 0.3f || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                if (adjOptions[1] != null) {
-                    _isHighlighted = false;
+                if (adjOptions[1] != null && adjOptions[4].isReady) {
+                    //_isHighlighted = false;
                     _moved = true;
                     // move selector to adjOptions[1]
                     adjOptions[1].Highlight();
@@ -95,8 +97,8 @@ public class MenuOption : MonoBehaviour {
 
     public virtual void Highlight() {
         if (selector != null) {
-            selector.transform.position = new Vector3(_selectedPos.x,
-                                                       _selectedPos.y,
+            selector.transform.position = new Vector3(transform.position.x,
+                                                       transform.position.y,
                                                        selector.transform.position.z);
         }
 
@@ -140,13 +142,17 @@ public class MenuOption : MonoBehaviour {
     }
 
     public void PlayHighlightSound() {
-        _audioSource.clip = _highlightClip;
-        _audioSource.Play();
+        if (_audioSource != null) {
+            _audioSource.clip = _highlightClip;
+            _audioSource.Play();
+        }
     }
 
     public void PlaySelectSound() {
-        _audioSource.clip = _selectClip;
-        _audioSource.Play();
+        if (_audioSource != null) {
+            _audioSource.clip = _selectClip;
+            _audioSource.Play();
+        }
     }
 
     void OnMouseEnter() {

@@ -181,11 +181,11 @@ GameObject:
   - component: {fileID: 222382397251168506}
   - component: {fileID: 114318711053231192}
   - component: {fileID: 114157842486764952}
-  - component: {fileID: 114611509213693864}
   - component: {fileID: 82369530506092042}
   - component: {fileID: 114691988216085728}
+  - component: {fileID: 114446371472324568}
   m_Layer: 5
-  m_Name: Play Again Button
+  m_Name: Retry Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -509,7 +509,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 114683930698877636}
   - {fileID: 0}
-  - {fileID: 114611509213693864}
+  - {fileID: 0}
   isFirstSelection: 0
   isReady: 1
 --- !u!114 &114147002515199502
@@ -584,9 +584,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000013504453022, guid: bc1cbe829f701fe4783af52a863f73d7,
-          type: 2}
-        m_MethodName: PlayAgainButton
+      - m_Target: {fileID: 114446371472324568}
+        m_MethodName: PlaySelectSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -596,8 +595,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 114611509213693864}
-        m_MethodName: PlaySelectSound
+      - m_Target: {fileID: 114446371472324568}
+        m_MethodName: Retry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -845,6 +844,25 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114446371472324568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1845753882117486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5cbaf489b3637046b3cee8df8d95c78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selector: {fileID: 1761728995579424}
+  adjOptions:
+  - {fileID: 0}
+  - {fileID: 114047099255186116}
+  - {fileID: 0}
+  - {fileID: 114683930698877636}
+  isFirstSelection: 0
+  isReady: 1
 --- !u!114 &114532682920171782
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -888,25 +906,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winningTeamText: {fileID: 114658054768022906}
   menuOptions: []
---- !u!114 &114611509213693864
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1845753882117486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7cef4a3de88dc54180b2606642a7f8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selector: {fileID: 1761728995579424}
-  adjOptions:
-  - {fileID: 0}
-  - {fileID: 114047099255186116}
-  - {fileID: 0}
-  - {fileID: 114683930698877636}
-  isFirstSelection: 0
-  isReady: 1
 --- !u!114 &114658054768022906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -954,7 +953,7 @@ MonoBehaviour:
   selector: {fileID: 1761728995579424}
   adjOptions:
   - {fileID: 0}
-  - {fileID: 114611509213693864}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 114047099255186116}
   isFirstSelection: 1
@@ -975,7 +974,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114611509213693864}
+        - m_Target: {fileID: 114446371472324568}
           m_MethodName: Highlight
           m_Mode: 1
           m_Arguments:

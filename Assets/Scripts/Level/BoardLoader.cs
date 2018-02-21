@@ -27,7 +27,9 @@ public class BoardLoader : MonoBehaviour {
 	}
 
     public void ReadBoardSetup(string path) {
-        //_reader = new StreamReader("Assets/Resources/Text/" + path);
+        // Save the path to the level data
+        _gameManager.LevelDoc = path;
+
         TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
         _linesFromFile = textAsset.text.Split("\n"[0]);
         int i = 0;
@@ -154,6 +156,7 @@ public class BoardLoader : MonoBehaviour {
 
     void SetupPlayers() {
         PlayerManager playerManager = _gameManager.GetComponent<PlayerManager>();
+        playerManager.ClearAllPlayers();
 
         PlayerInfo player1 = new PlayerInfo();
         player1.playerNum = 1;
@@ -205,6 +208,11 @@ public class BoardLoader : MonoBehaviour {
             case "Matches":
                 _gameManager.SetGameMode(GAME_MODE.SP_MATCH);
                 _gameManager.goalCount = int.Parse(_linesFromFile[_fileIndex++]);
+                _gameManager.timeLimit = int.Parse(_linesFromFile[_fileIndex++]);
+                break;
+            case "Clear":
+                _gameManager.SetGameMode(GAME_MODE.SP_CLEAR);
+                //_gameManager.goalCount = int.Parse(_linesFromFile[_fileIndex++]);
                 _gameManager.timeLimit = int.Parse(_linesFromFile[_fileIndex++]);
                 break;
             case "Versus":

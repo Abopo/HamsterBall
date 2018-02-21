@@ -14,12 +14,15 @@ public class StoryButton : MenuOption {
 
     StorySelectMenu _storySelectMenu;
     BoardLoader _boardLoader;
-	// Use this for initialization
-	protected override void Start () {
-        base.Start();
 
+    private void Awake() {
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
         _boardLoader = FindObjectOfType<BoardLoader>();
+    }
+
+    // Use this for initialization
+    protected override void Start () {
+        base.Start();
 	}
 	
 	// Update is called once per frame

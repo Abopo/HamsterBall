@@ -91,7 +91,7 @@ public class AIBrain : MonoBehaviour {
             // Make some Actions
             MakeDecision();
 
-            Debug.Log(_actions.Count);
+            //Debug.Log(_actions.Count);
 
             _decisionTimer = 0;
         }

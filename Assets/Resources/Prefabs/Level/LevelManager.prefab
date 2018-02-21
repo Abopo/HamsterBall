@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 114000012561913872}
   - component: {fileID: 114000012095549814}
   - component: {fileID: 114000012308250322}
+  - component: {fileID: 114353349752636546}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: LevelManager
@@ -109,7 +110,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013934878294}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -1.59, z: 0}
+  m_LocalPosition: {x: -0.01, y: -1.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000013859134750}
@@ -152,7 +153,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010821046902}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.45, y: -3.61, z: 0}
+  m_LocalPosition: {x: -0.98, y: -3.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4000011977253352}
@@ -170,6 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 0}
+  marginMultiplierText: {fileID: 0}
+  marginMultiplier: 1
 --- !u!114 &114000012308250322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,8 +198,19 @@ MonoBehaviour:
   playerObj: {fileID: 100000, guid: 3621d2a2675edd2408bf2b9c6b84962f, type: 2}
   aiPlayerObj: {fileID: 1000013594012978, guid: 98adb47d5b4952042ba6c85f21e272bb,
     type: 2}
-  switchMeterIcons:
+  shiftMeters:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &114353349752636546
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013934878294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7017a7d6fa094a8418463b6e42cab0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

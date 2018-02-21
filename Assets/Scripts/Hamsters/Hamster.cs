@@ -123,6 +123,9 @@ public class Hamster : Entity {
         }
 
         type = cType;
+        if (_animator == null) {
+            _animator = GetComponent<Animator>();
+        }
         _animator.SetInteger("Type", (int)type);
 
         curMoveSpeed = moveSpeed;

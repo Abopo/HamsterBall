@@ -113,6 +113,10 @@ public class ThrowState : PlayerState {
 	}
 
     public void Throw() {
+        if(playerController.heldBubble == null) {
+            playerController.ChangeState(PLAYER_STATE.IDLE);
+        }
+
         _hasThrown = true;
 
         if (playerController.shifted) {

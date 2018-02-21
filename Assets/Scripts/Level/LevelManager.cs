@@ -47,7 +47,7 @@ public class LevelManager : MonoBehaviour {
                 _marginTimer += Time.deltaTime;
                 if (_marginTimer >= _marginTime && _targetPoints > 1 && _marginIterations < 14) {
                     IncreaseMarginMultiplier();
-                    _marginTime = 16f;
+                    _marginTime = 32f;
                     _marginTimer = 0f;
                 }
             }
@@ -73,7 +73,7 @@ public class LevelManager : MonoBehaviour {
         _gameOver = true;
 
         // If we won and are in a timed mode, set the time highscore
-        if(_gameManager.gameMode == GAME_MODE.SP_MATCH || _gameManager.gameMode == GAME_MODE.SP_POINTS) {
+        if(_gameManager.gameMode == GAME_MODE.SP_MATCH || _gameManager.gameMode == GAME_MODE.SP_POINTS || _gameManager.gameMode == GAME_MODE.SP_CLEAR) {
             string pref = _gameManager.level + "Highscore";
             if ((int)_levelTimer < PlayerPrefs.GetInt(pref) || PlayerPrefs.GetInt(pref) == 0) {
                 PlayerPrefs.SetInt(pref, (int)_levelTimer);

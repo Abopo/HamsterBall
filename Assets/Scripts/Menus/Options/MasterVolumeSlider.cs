@@ -12,7 +12,7 @@ public class MasterVolumeSlider : MenuOption {
     protected override void Start() {
         base.Start();
 
-        _selectedPos = transform.parent.position;
+        //_selectedPos = transform.parent.position;
         _slider = GetComponent<Slider>();
         _slider.value = AudioListener.volume * 100;
     }

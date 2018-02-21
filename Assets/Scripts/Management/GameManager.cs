@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System.Collections;
 
-public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, MP_VERSUS, NUM_MODES }
+public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, NUM_MODES }
 
 public class GameManager : MonoBehaviour {
     public bool testMode;
@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
 
     public string nextCutscene;
 
+    string _levelDoc; // document containing data for a single player level
     int _hamsterSpawnMax = 1;
 
     public int HamsterSpawnMax {
@@ -33,6 +34,11 @@ public class GameManager : MonoBehaviour {
                 _hamsterSpawnMax = 14;
             }
         }
+    }
+
+    public string LevelDoc {
+        get { return _levelDoc; }
+        set { _levelDoc = value; }
     }
 
     public PlayerManager _playerManager;
@@ -119,12 +125,33 @@ public class GameManager : MonoBehaviour {
         if(IsStoryLevel() && lostTeam == 1) {
             string pref = level.ToString() + "Highscore";
 
-            // And their new score is better than the old one
+            // If their new score is better than the old one
             if (winScore > PlayerPrefs.GetInt(pref)) {
                 // Set their highscore
                 PlayerPrefs.SetInt(pref, winScore);
             }
+
+            // Unlock the next level
+            UnlockNextLevel();
         }
+    }
+
+    void UnlockNextLevel() {
+        int worldInt = int.Parse(level[0].ToString());
+        int levelInt = int.Parse(level[2].ToString());
+        string storyProgress = "";
+        if (levelInt == 6) {
+            storyProgress += (worldInt + 1).ToString();
+            storyProgress += "-";
+            storyProgress += "1";
+        } else {
+            storyProgress += worldInt.ToString();
+            storyProgress += "-";
+            storyProgress += levelInt.ToString();
+        }
+
+        PlayerPrefs.SetString("StoryProgress", storyProgress);
+        PlayerPrefs.SetString("StoryPos", storyProgress);
     }
 
     public void SetGameMode(GAME_MODE mode) {

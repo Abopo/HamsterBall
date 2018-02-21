@@ -9,11 +9,13 @@ public class GoalMenu : MonoBehaviour {
     public Text timeLeftText;
 
     GameManager _gameManager;
+    BubbleManager _bubbleManager;
     float _timeLeft;
 
 	// Use this for initialization
 	void Start () {
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _bubbleManager = FindObjectOfType<BubbleManager>();
         _timeLeft = _gameManager.timeLimit;
         
         switch(_gameManager.gameMode) {
@@ -30,6 +32,10 @@ public class GoalMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(_gameManager.gameMode == GAME_MODE.SP_MATCH) {
+            goalRequirement.text = (_gameManager.goalCount - _bubbleManager.matchCount).ToString();
+        }
+
         _timeLeft -= Time.deltaTime;
         timeLeftText.text = string.Format("{0}:{1:00}", (int)_timeLeft / 60, (int)_timeLeft % 60);
 	}

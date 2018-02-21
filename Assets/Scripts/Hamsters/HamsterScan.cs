@@ -19,18 +19,6 @@ public class HamsterScan : MonoBehaviour {
     // Used for counting up numbers of hamster types
     int[] _typeCounts = new int[8];
 
-    /*
-    public List<Hamster> AllHamsters {
-        get { return _allHamsters; }
-    }
-    public List<Hamster> LeftHamsters {
-        get { return _allLeftHamsters; }
-    }
-    public List<Hamster> RightHamsters {
-        get { return _allRightHamsters; }
-    }
-    */
-
     // For AI purposes; only the hamsters that are out of the pipe
     public List<Hamster> AvailableHamsters {
         get { return _availableHamsters; }
@@ -63,7 +51,8 @@ public class HamsterScan : MonoBehaviour {
 	void Update () {
         // TODO: Right now doing this every frame, could optimize to only do on each hamster spawn.
         FindHamsters();
-        UpdateOKTypes();
+
+        //UpdateOKTypes();
 	}
 
     void FindHamsters() {
@@ -194,6 +183,47 @@ public class HamsterScan : MonoBehaviour {
         PopulateOKTypesList(_okTypesRight);
     }
 
+    void UpdateOKTypeList(List<int> list, List<Hamster> hamsters) {
+        // Reset lists
+        list.Clear();
+
+        // Left Update
+        foreach (Hamster hamster in hamsters) {
+            if (hamster.isGravity) {
+                _typeCounts[6]++;
+            } else {
+                switch (hamster.type) {
+                    case HAMSTER_TYPES.GREEN:
+                        _typeCounts[0]++;
+                        break;
+                    case HAMSTER_TYPES.RED:
+                        _typeCounts[1]++;
+                        break;
+                    case HAMSTER_TYPES.ORANGE:
+                        _typeCounts[2]++;
+                        break;
+                    case HAMSTER_TYPES.GRAY:
+                        _typeCounts[3]++;
+                        break;
+                    case HAMSTER_TYPES.BLUE:
+                        _typeCounts[4]++;
+                        break;
+                    case HAMSTER_TYPES.PINK:
+                        _typeCounts[5]++;
+                        break;
+                    case HAMSTER_TYPES.PURPLE:
+                        _typeCounts[6]++;
+                        break;
+                    case HAMSTER_TYPES.RAINBOW:
+                    case HAMSTER_TYPES.DEAD:
+                        _typeCounts[7]++;
+                        break;
+                }
+            }
+        }
+        PopulateOKTypesList(list);
+    }
+
     void PopulateOKTypesList(List<int> list) {
         for (int i = 0; i < 7; ++i) {
             // If there are less than 2 or 3 of a given type, it is OK to spawn as that type
@@ -210,6 +240,14 @@ public class HamsterScan : MonoBehaviour {
             list.Add(7);
         }
         _typeCounts[7] = 0;
+    }
+
+    public void UpdateLeftList() {
+        UpdateOKTypeList(_okTypesLeft, _allLeftHamsters);
+    }
+
+    public void UpdateRightList() {
+        UpdateOKTypeList(_okTypesRight, _allRightHamsters);
     }
 
     public Hamster GetHamster(int hamsterNum) {

@@ -29,10 +29,6 @@ public class BubbleManager : MonoBehaviour {
 		get {return topLineLength;}
 	}
 
-    public Bubble[] Bubbles {
-        get { return bubbles; }
-    }
-
     Vector3 nodeSpawnPos = new Vector3(-5.35f, 5.6f, 0f);
 
 	int numNodes = 150;
@@ -58,6 +54,9 @@ public class BubbleManager : MonoBehaviour {
     bool _gameOver = false;
 
     Bubble[] bubbles;
+    public Bubble[] Bubbles {
+        get { return bubbles; }
+    }
 
     Bubble lastBubbleAdded;
     public Bubble LastBubbleAdded {
@@ -793,15 +792,20 @@ public class BubbleManager : MonoBehaviour {
 
     public bool CheckWinConditions() {
         // Check single player challenge goals
-        if(_gameManager.isSinglePlayer && _scoreTotal >= _gameManager.goalCount) {
-            switch(_gameManager.gameMode) {
+        if(_gameManager.isSinglePlayer) {
+            switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
-                    if(_scoreTotal >= _gameManager.goalCount) {
+                    if (_scoreTotal >= _gameManager.goalCount) {
                         return true;
                     }
                     break;
                 case GAME_MODE.SP_MATCH:
-                    if(matchCount >= _gameManager.goalCount) {
+                    if (matchCount >= _gameManager.goalCount) {
+                        return true;
+                    }
+                    break;
+                case GAME_MODE.SP_CLEAR:
+                    if (IsBoardClear()) {
                         return true;
                     }
                     break;
@@ -852,6 +856,16 @@ public class BubbleManager : MonoBehaviour {
 			}
 		}
 	}
+
+    bool IsBoardClear() {
+        foreach(Bubble b in bubbles) {
+            if(b != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public int GetNextLineBubble(int index) {
         if (index < _nextLineBubbles.Count) {

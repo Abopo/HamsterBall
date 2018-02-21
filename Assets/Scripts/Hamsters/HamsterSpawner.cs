@@ -30,6 +30,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     public static int nextHamsterNum;
 
     GameManager _gameManager;
+    HamsterScan _hamsterScan;
 
     public int NextHamsterType {
         get { return _nextHamsterType; }
@@ -47,11 +48,11 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
         _nextHamsterType = -1;
         SetupSpecialTypes();
-        HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
+        _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         if (team == 0) {
-            _okTypes = hamsterScan.OkTypesLeft;
+            _okTypes = _hamsterScan.OkTypesLeft;
         } else if (team == 1) {
-            _okTypes = hamsterScan.OkTypesRight;
+            _okTypes = _hamsterScan.OkTypesRight;
         }
         _nextHamsterType = GetValidType();
 
@@ -171,7 +172,6 @@ public class HamsterSpawner : Photon.PunBehaviour {
             // Increase hamster count
             hamsterCount++;
         }
-
     }
 
     void InstantiateNetworkHamster() {
@@ -228,6 +228,19 @@ public class HamsterSpawner : Photon.PunBehaviour {
         int rIndex = Random.Range(0, _okTypes.Count - special);
 
         validType = _okTypes[rIndex];
+
+        // Remove chosen type from okTypes
+        _okTypes.RemoveAt(rIndex);
+
+        // If okTypes is empty (excluding specials)
+        if (_okTypes.Count <= special) {
+            // Update okTypes
+            if (team == 0) {
+                _hamsterScan.UpdateLeftList();
+            } else if (team == 1) {
+                _hamsterScan.UpdateRightList();
+            }
+        }
 
         return validType;
     }
