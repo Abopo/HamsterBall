@@ -19,12 +19,6 @@ public class MenuOption : MonoBehaviour {
     AudioClip _highlightClip;
     AudioClip _selectClip;
 
-    private void Awake() {
-        _audioSource = GetComponent<AudioSource>();
-        _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
-        _selectClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
-    }
-
     // Use this for initialization
     protected virtual void Start () {
         //_selectedPos = transform.position;
@@ -35,6 +29,10 @@ public class MenuOption : MonoBehaviour {
         } else {
             _isHighlighted = false;
         }
+
+        _audioSource = GetComponent<AudioSource>();
+        _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
+        _selectClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
     }
 
     // Update is called once per frame

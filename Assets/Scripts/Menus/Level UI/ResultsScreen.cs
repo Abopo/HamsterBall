@@ -4,7 +4,8 @@ using System.Collections;
 
 public class ResultsScreen : MonoBehaviour {
     public Text winningTeamText;
-    public MenuOption[] menuOptions;
+
+    MenuOption[] _menuOptions;
 
     float winTime = 1.0f;
     float winTimer = 0.0f;
@@ -18,7 +19,7 @@ public class ResultsScreen : MonoBehaviour {
         // Game is paused here, so just use a fake delta time
         winTimer += 0.03f;
         if(winTimer > winTime) {
-            foreach (MenuOption mo in menuOptions) {
+            foreach (MenuOption mo in _menuOptions) {
                 mo.isReady = true;
             }
         }
@@ -37,15 +38,15 @@ public class ResultsScreen : MonoBehaviour {
     public void Activate(int team) {
         gameObject.SetActive(true);
         SetWinningTeamText(team);
-        menuOptions = transform.GetComponentsInChildren<MenuOption>();
-        foreach (MenuOption mo in menuOptions) {
+        _menuOptions = transform.GetComponentsInChildren<MenuOption>();
+        foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;
         }
 
         // If we are online and not the master client
         if(PhotonNetwork.connectedAndReady && !PhotonNetwork.isMasterClient) {
             // We shouldn't be able to use any of the buttons here
-            foreach(MenuOption mo in menuOptions) {
+            foreach(MenuOption mo in _menuOptions) {
                 mo.gameObject.SetActive(false);
             }
         }
@@ -55,8 +56,8 @@ public class ResultsScreen : MonoBehaviour {
     public void Activate() {
         gameObject.SetActive(true);
         winningTeamText.text = "You did it!";
-        menuOptions = transform.GetComponentsInChildren<MenuOption>();
-        foreach (MenuOption mo in menuOptions) {
+        _menuOptions = transform.GetComponentsInChildren<MenuOption>();
+        foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;
         }
     }
