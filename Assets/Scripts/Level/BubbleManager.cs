@@ -42,7 +42,7 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 50).ToArray(); // initializes 50 values to -1
+    public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 100).ToArray(); // initializes 50 values to -1
 
     static List<int> _nextLineBubbles = new List<int>();
     int nextLineIndex = 0; // counts up as new lines are added
@@ -238,17 +238,20 @@ public class BubbleManager : MonoBehaviour {
                 }
             }
         } else { // If this rounds starting bubbles have already been decided
-            for (int i = 0; i < numBubbles; ++i) {
-                // Create a new bubble
-                GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
-                Bubble bubble = bub.GetComponent<Bubble>();
-                bubble.transform.parent = bubblesParent;
-                // Set it to the corresponding type of the decided starting bubbles
-                int type = startingBubbleTypes[i];
-                InitBubble(bubble, type);
-                bubble.node = i;
-                nodeList[i].bubble = bubble;
-                bubbles[i] = bubble;
+            for (int i = 0; i < startingBubbleTypes.Length; ++i) {
+                // If this node is not supposed to be empty
+                if (startingBubbleTypes[i] != -2) {
+                    // Create a new bubble
+                    GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
+                    Bubble bubble = bub.GetComponent<Bubble>();
+                    bubble.transform.parent = bubblesParent;
+                    // Set it to the corresponding type of the decided starting bubbles
+                    int type = startingBubbleTypes[i];
+                    InitBubble(bubble, type);
+                    bubble.node = i;
+                    nodeList[i].bubble = bubble;
+                    bubbles[i] = bubble;
+                }
             }
         }
 
@@ -257,12 +260,16 @@ public class BubbleManager : MonoBehaviour {
 
         // set starting bubbles matches count
         for (int i = 0; i < numBubbles; ++i) {
-            bubbles[i].matches = bubbles[i].CheckMatches(bubbles[i].matches);
-            bubbles[i].numMatches = bubbles[i].matches.Count;
-            
-            // Reset for next check
-            for (int j = 0; j < numBubbles; ++j) {
-                bubbles[j].checkedForMatches = false;
+            if (bubbles[i] != null) {
+                bubbles[i].matches = bubbles[i].CheckMatches(bubbles[i].matches);
+                bubbles[i].numMatches = bubbles[i].matches.Count;
+
+                // Reset for next check
+                for (int j = 0; j < numBubbles; ++j) {
+                    if (bubbles[j] != null) {
+                        bubbles[j].checkedForMatches = false;
+                    }
+                }
             }
         }
 

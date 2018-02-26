@@ -55,7 +55,7 @@ public class StorySelectMenu : MonoBehaviour {
 
         // Unlock all the fully unlocked worlds
         for (int i = 1; i < _furthestWorld; ++i) {
-            worlds[i-1].Unlock(5);
+            worlds[i-1].Unlock(6);
         }
         // Unlock the partially completed world
         worlds[_furthestWorld-1].Unlock(_furthestLevel);

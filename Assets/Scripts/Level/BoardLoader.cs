@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
+using System.Linq;
 
 public class BoardLoader : MonoBehaviour {
     string _cutscenePath;
-    StreamReader _reader;
     GameManager _gameManager;
 
     string[] _linesFromFile;
@@ -76,7 +75,7 @@ public class BoardLoader : MonoBehaviour {
     }
 
     void ReadBubbleLayout() {
-        int[] bubbles = new int[50];
+        int[] bubbles = Enumerable.Repeat<int>(-2, 100).ToArray(); // initializes 50 values to -1
         int bubIndex = 0;
         int stringIndex = 0;
 
@@ -84,7 +83,29 @@ public class BoardLoader : MonoBehaviour {
         _readChar = _linesFromFile[_fileIndex][stringIndex++];
         while (_readChar != 'E') {
             if (_readChar != ',') {
-                bubbles[bubIndex] = (int)char.GetNumericValue(_readChar);
+                switch(_readChar) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                        bubbles[bubIndex] = (int)char.GetNumericValue(_readChar);
+                        break;
+                    case 'D': // Dead
+                        bubbles[bubIndex] = (int)HAMSTER_TYPES.DEAD;
+                        break;
+                    case 'R': // Rainbow
+                        bubbles[bubIndex] = (int)HAMSTER_TYPES.RAINBOW;
+                        break;
+                    case 'G': // Gravity
+                        break;
+                    case 'N': // None
+                        bubbles[bubIndex] = -2;
+                        break;
+
+                }
                 bubIndex++;
             } else {
                 _fileIndex++;
