@@ -75,7 +75,7 @@ public class BoardLoader : MonoBehaviour {
     }
 
     void ReadBubbleLayout() {
-        int[] bubbles = Enumerable.Repeat<int>(-2, 100).ToArray(); // initializes 50 values to -1
+        int[] bubbles = Enumerable.Repeat<int>(-2, 125).ToArray(); // initializes 125 values to -1
         int bubIndex = 0;
         int stringIndex = 0;
 
@@ -98,6 +98,9 @@ public class BoardLoader : MonoBehaviour {
                         break;
                     case 'R': // Rainbow
                         bubbles[bubIndex] = (int)HAMSTER_TYPES.RAINBOW;
+                        break;
+                    case 'B': // Bomb
+                        bubbles[bubIndex] = (int)HAMSTER_TYPES.BOMB;
                         break;
                     case 'G': // Gravity
                         break;

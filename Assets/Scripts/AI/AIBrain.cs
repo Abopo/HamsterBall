@@ -132,7 +132,6 @@ public class AIBrain : MonoBehaviour {
             }
         }
 
-        //CreateHamsterAndBubbleActions();
         CreateHamsterAndNodeActions();
 
         // Clear out bad actions

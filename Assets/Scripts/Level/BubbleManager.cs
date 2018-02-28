@@ -42,7 +42,7 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 100).ToArray(); // initializes 50 values to -1
+    public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 125).ToArray(); // initializes 50 values to -1
 
     static List<int> _nextLineBubbles = new List<int>();
     int nextLineIndex = 0; // counts up as new lines are added

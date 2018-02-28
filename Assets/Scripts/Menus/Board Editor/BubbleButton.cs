@@ -21,5 +21,6 @@ public class BubbleButton : MonoBehaviour {
         // Create a bubble sprite obj
         GameObject bSprite = GameObject.Instantiate(hamsterSpriteObj, transform.position, Quaternion.identity);
         bSprite.GetComponent<BubbleSprite>().SetType(type);
+        bSprite.GetComponent<BubbleSprite>().isHeld = true;
     }
 }

@@ -295,22 +295,20 @@ public class Bubble : MonoBehaviour {
             DoCrazyRainbowMatches();
             type = HAMSTER_TYPES.RAINBOW;
         } else if (type == HAMSTER_TYPES.BOMB) {
-            // Add score for how many bubbles were blown up
-            _homeBubbleManager.IncreaseScore(adjBubbles.Length * 50);
-
-            // Pop self and all adjBubbles
-            foreach(Bubble b in adjBubbles) {
-                if (b != null) {
-                    b.Pop();
-                }
-            }
-            Pop();
-
-            _homeBubbleManager.BubbleEffects.BombBubbleExplosion(transform.position);
+            // Explode
+            BombExplode();
         } else {
             matches = new List<Bubble>();
             matches = CheckMatches(matches);
             numMatches = matches.Count;
+
+            // After matches are calculated, but before anything is popped,
+            // check if any adjBubbles are a bomb
+            for(int i = 0; i < 6; ++i) {
+                if(adjBubbles[i] != null && adjBubbles[i].type == HAMSTER_TYPES.BOMB) {
+                    adjBubbles[i].BombExplode();
+                }
+            }
 
             if (matches.Count >= 3) {
                 //_homeBubbleManager.IncreaseComboCounter(transform.position);
@@ -402,7 +400,7 @@ public class Bubble : MonoBehaviour {
 	public List<Bubble> CheckMatches(List<Bubble> matches) {
 		for (int i = 0; i < 6; ++i) {
 			if(adjBubbles[i] != null && adjBubbles[i].type != HAMSTER_TYPES.DEAD) {
-				if(adjBubbles[i].type == type) {
+                if (adjBubbles[i].type == type) {
 					if(!adjBubbles[i].checkedForMatches) {
 						adjBubbles[i].checkedForMatches = true;
 						matches.Add(adjBubbles[i]);
@@ -524,7 +522,22 @@ public class Bubble : MonoBehaviour {
 		return false;
 	}
 
-	public void SwitchTeams() {
+    public void BombExplode() {
+        // Add score for how many bubbles were blown up
+        _homeBubbleManager.IncreaseScore(adjBubbles.Length * 50);
+
+        // Pop self and all adjBubbles
+        foreach (Bubble b in adjBubbles) {
+            if (b != null) {
+                b.Pop();
+            }
+        }
+        Pop();
+
+        _homeBubbleManager.BubbleEffects.BombBubbleExplosion(transform.position);
+    }
+
+    public void SwitchTeams() {
         if(team == 0) {
             team = 1;
         } else if(team == 1) {

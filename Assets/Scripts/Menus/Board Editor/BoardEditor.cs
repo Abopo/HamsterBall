@@ -1,12 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEditor;
 using System.IO;
 
 public class BoardEditor : MonoBehaviour {
+    public InputField fileNameField;
+    public Text warningText;
+    public GameObject hamsterSpriteObj;
+    public GameObject filePicker;
 
     List<EditorNode> nodes = new List<EditorNode>();
     Rect boundingRect;
+    string fileName;
 
     // Use this for initialization
     void Start () {
@@ -28,6 +35,8 @@ public class BoardEditor : MonoBehaviour {
         width = boxCollider.bounds.max.x - x;
         height = boxCollider.bounds.max.y - y;
         boundingRect = new Rect(x, y, width, height);
+
+        fileName = "";
     }
 
     // Update is called once per frame
@@ -94,11 +103,16 @@ public class BoardEditor : MonoBehaviour {
     }
 
     public void SaveBoard() {
-        string fileName = "Assets/Resources/Text/Created Boards/SavedBoard.txt";
-        FileStream file = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        if(fileName == "") {
+            DisplayWarningText("No filename chosen.");
+            return;
+        }
+
+        string fullFileName = "Assets/Resources/Text/Created Boards/" + fileName + ".txt";
+        FileStream file = File.Open(fullFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
         StreamWriter streamWriter = new StreamWriter(file);
 
-        streamWriter.WriteLine("Bubble Layout");
+        streamWriter.WriteLine(fileName);
 
         HAMSTER_TYPES tempType;
         string tempLine = "";
@@ -145,6 +159,9 @@ public class BoardEditor : MonoBehaviour {
                         case HAMSTER_TYPES.RAINBOW:
                             tempLine += "R";
                             break;
+                        case HAMSTER_TYPES.BOMB:
+                            tempLine += "B";
+                            break;
                     }
                 } else {
                     tempLine += "N";
@@ -157,8 +174,97 @@ public class BoardEditor : MonoBehaviour {
             tempLine = "";
         }
 
+        // End the file with an escape character
+        tempLine = "E";
+        streamWriter.WriteLine(tempLine);
 
         streamWriter.Close();
+
+        AssetDatabase.Refresh();
+    }
+
+    public void LoadBoard(string path) {
+        int nodeIndex = 0;
+        int stringIndex = 0;
+        int fileIndex = 1;
+
+        // Clear the board of current bubbles
+        ClearBoard();
+
+        // Fill the name in
+        fileNameField.text = path;
+
+        TextAsset textAsset = Resources.Load<TextAsset>("Text/Created Boards/" + path);
+        string[] _linesFromFile = textAsset.text.Split("\n"[0]);
+        int i = 0;
+        foreach (string line in _linesFromFile) {
+            _linesFromFile[i] = line.Replace("\r", "");
+            i++;
+        }
+
+        //_readChar = (char)_reader.Read();
+        char _readChar = _linesFromFile[fileIndex][stringIndex++];
+        while (_readChar != 'E') {
+            if (_readChar != ',') {
+                switch (_readChar) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                        CreateBubbleSprite((HAMSTER_TYPES)char.GetNumericValue(_readChar), nodeIndex);
+                        break;
+                    case 'D': // Dead
+                        CreateBubbleSprite(HAMSTER_TYPES.DEAD, nodeIndex);
+                        break;
+                    case 'R': // Rainbow
+                        CreateBubbleSprite(HAMSTER_TYPES.RAINBOW, nodeIndex);
+                        break;
+                    case 'B': // Bomb
+                        CreateBubbleSprite(HAMSTER_TYPES.BOMB, nodeIndex);
+                        break;
+                    case 'G': // Gravity
+                        break;
+                    case 'N': // None
+                        break;
+
+                }
+                nodeIndex++;
+            } else {
+                fileIndex++;
+                stringIndex = 0;
+            }
+            //_readChar = (char)_reader.Read();
+            _readChar = _linesFromFile[fileIndex][stringIndex++];
+        }
+    }
+
+    public void ClearBoard() {
+        // Delete all of the bubble sprites currently on the board
+        BubbleSprite[] bSprites = FindObjectsOfType<BubbleSprite>();
+        foreach(BubbleSprite bS in bSprites) {
+            DestroyObject(bS.gameObject);
+        }
+    }
+
+    void CreateBubbleSprite(HAMSTER_TYPES type, int node) {
+        GameObject bSpriteObj = GameObject.Instantiate(hamsterSpriteObj, transform.position, Quaternion.identity);
+        BubbleSprite bSprite = bSpriteObj.GetComponent<BubbleSprite>();
+        bSprite.SetType(type);
+        bSprite.node = node;
+        bSprite.transform.position = (Vector2)nodes[node].nPosition;
+        nodes[node].bubble = bSprite;
+    }
+
+    public void DisplayWarningText(string text) {
+        warningText.text = text;
+        warningText.gameObject.SetActive(true);
+    }
+
+    public void HideWarningText() {
+        warningText.gameObject.SetActive(false);
     }
 
     public EditorNode GetNode(int i) {
@@ -167,5 +273,9 @@ public class BoardEditor : MonoBehaviour {
         }
 
         return null;
+    }
+
+    public void ChangeFileName() {
+        fileName = fileNameField.text;
     }
 }

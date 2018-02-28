@@ -19,8 +19,8 @@ public class MainMenu : MonoBehaviour {
         PlayerPrefs.SetInt("FirstTimePlaying", 0);
 
         if(PlayerPrefs.GetInt("FirstTimePlaying") == 0) {
-            PlayerPrefs.SetString("StoryProgress", "1-1"); // How far into the story the player is (used to lock/unlock story levels)
-            PlayerPrefs.SetString("StoryPos", "1-1"); // Last place in the story the player was on (used to position the selector in the story select scene)
+            PlayerPrefs.SetString("StoryProgress", "2-3"); // How far into the story the player is (used to lock/unlock story levels)
+            PlayerPrefs.SetString("StoryPos", "2-3"); // Last place in the story the player was on (used to position the selector in the story select scene)
 
             // Highscores
 
@@ -59,6 +59,10 @@ public class MainMenu : MonoBehaviour {
     public void LoadOnline() {
         _gameManager.isOnline = true;
         SceneManager.LoadScene("OnlineLobby");
+    }
+
+    public void LoadBoardEditor() {
+        SceneManager.LoadScene("BoardEditor");
     }
 
     public void LoadOptions() {

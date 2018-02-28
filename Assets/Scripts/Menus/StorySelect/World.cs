@@ -41,7 +41,7 @@ public class World : MonoBehaviour {
             _storyButtons[i].isReady = true;
         }
 
-        _storyButtons[level].Highlight();
+        _storyButtons[level-1].Highlight();
     }
 
     public void Deactivate() {

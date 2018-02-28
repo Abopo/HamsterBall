@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BubbleSprite : MonoBehaviour {
 
-    public bool isHeld;
+    public bool isHeld = false;
+    public int node = -1;
 
     HAMSTER_TYPES type;
-    int node = -1;
 
     BoardEditor _boardEditor;
 
@@ -18,7 +18,6 @@ public class BubbleSprite : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _boardEditor = FindObjectOfType<BoardEditor>();
-        isHeld = true;
 
         transform.position = new Vector3(transform.position.x, transform.position.y, -5f);
 	}
@@ -29,6 +28,15 @@ public class BubbleSprite : MonoBehaviour {
         if (isHeld) {
             // Follow the mouse
             transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            if (Input.GetMouseButtonUp(0)) {
+                if (_boardEditor.IsWithinBounds(transform.position)) {
+                    DropOntoBoard();
+                } else {
+                    // Destroy this
+                    DestroyObject(this.gameObject);
+                }
+            }
         }
 
         // Stay forward
@@ -55,27 +63,31 @@ public class BubbleSprite : MonoBehaviour {
     private void OnMouseUp() {
         // If dropped in valid space
         if (_boardEditor.IsWithinBounds(transform.position)) {
-            // Find closest node and drop there
-            int closestNode = _boardEditor.FindClosestNode(transform.position);
-            
-            // If a valid node was found
-            if(closestNode != -1) {
-                // Set node
-                node = closestNode;
-                EditorNode n = _boardEditor.GetNode(closestNode);
-                if (n != null) {
-                    n.bubble = this;
-                }
-
-                // Drop on that position
-                transform.position = (Vector2)_boardEditor.GetNode(closestNode).nPosition;
-
-                // Stop being held
-                isHeld = false;
-            }
+            DropOntoBoard();
         } else {
             // Destroy this
             DestroyObject(this.gameObject);
+        }
+    }
+
+    void DropOntoBoard() {
+        // Find closest node and drop there
+        int closestNode = _boardEditor.FindClosestNode(transform.position);
+
+        // If a valid node was found
+        if (closestNode != -1) {
+            // Set node
+            node = closestNode;
+            EditorNode n = _boardEditor.GetNode(closestNode);
+            if (n != null) {
+                n.bubble = this;
+            }
+
+            // Drop on that position
+            transform.position = (Vector2)_boardEditor.GetNode(closestNode).nPosition;
+
+            // Stop being held
+            isHeld = false;
         }
     }
 }
