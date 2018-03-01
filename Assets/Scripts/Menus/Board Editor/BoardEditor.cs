@@ -9,7 +9,7 @@ public class BoardEditor : MonoBehaviour {
     public InputField fileNameField;
     public Text warningText;
     public GameObject hamsterSpriteObj;
-    public GameObject filePicker;
+    public GameObject levelObj;
 
     List<EditorNode> nodes = new List<EditorNode>();
     Rect boundingRect;
@@ -256,6 +256,11 @@ public class BoardEditor : MonoBehaviour {
         bSprite.node = node;
         bSprite.transform.position = (Vector2)nodes[node].nPosition;
         nodes[node].bubble = bSprite;
+    }
+
+    public void ChangeLevel(GameObject newLevel) {
+        DestroyObject(levelObj);
+        levelObj = newLevel;
     }
 
     public void DisplayWarningText(string text) {
