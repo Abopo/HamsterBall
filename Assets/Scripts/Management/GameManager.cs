@@ -4,12 +4,16 @@ using UnityEngine.Events;
 using System.Collections;
 
 public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, NUM_MODES }
+public enum MENU { STORY = 0, VERSUS, EDITOR };
 
 public class GameManager : MonoBehaviour {
     public bool testMode;
     public bool isOnline = false;
     public bool isSinglePlayer = false;
     public string level; // if level is "" it's a local multiplayer match, otherwise it's a story level
+
+    public MENU prevMenu; // Keeps track of the last menu we were in so we can return after a level is finished
+    public string prevBoard; // Holds onto the previous board if there was one
 
     public GAME_MODE gameMode;
     public int goalCount; // the number of points or matches to win the level
@@ -79,6 +83,8 @@ public class GameManager : MonoBehaviour {
         Random.InitState(System.Environment.TickCount);
 
         PhotonNetwork.automaticallySyncScene = true;
+
+        prevBoard = "";
     }
 
     void SingletonCheck() {
@@ -195,11 +201,19 @@ public class GameManager : MonoBehaviour {
     public void MainMenuButton() {
         CleanUp();
 
+        prevBoard = "";
+
         if(isOnline) {
             PhotonNetwork.LeaveRoom();
         }
 
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void BoardEditorButton() {
+        CleanUp();
+
+        SceneManager.LoadScene("BoardEditor");
     }
 
     void CleanUp() {

@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 82870386660339598}
   - component: {fileID: 114003493308034492}
   m_Layer: 5
-  m_Name: Stage Select Button
+  m_Name: Previous Menu Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,8 +203,8 @@ Transform:
   m_Children:
   - {fileID: 224739536678590996}
   - {fileID: 224441957119019970}
-  - {fileID: 224015155947690900}
   - {fileID: 224581313507341786}
+  - {fileID: 224015155947690900}
   - {fileID: 224331369594399442}
   - {fileID: 4137664449905306}
   m_Father: {fileID: 0}
@@ -507,9 +507,9 @@ MonoBehaviour:
   selector: {fileID: 1761728995579424}
   adjOptions:
   - {fileID: 0}
+  - {fileID: 114446371472324568}
+  - {fileID: 0}
   - {fileID: 114683930698877636}
-  - {fileID: 0}
-  - {fileID: 0}
   isFirstSelection: 0
   isReady: 1
 --- !u!114 &114147002515199502
@@ -647,9 +647,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114000013504453022, guid: bc1cbe829f701fe4783af52a863f73d7,
-          type: 2}
-        m_MethodName: StageSelectButton
+      - m_Target: {fileID: 114557908402845572}
+        m_MethodName: ReturnToPreviousScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -858,10 +857,10 @@ MonoBehaviour:
   selector: {fileID: 1761728995579424}
   adjOptions:
   - {fileID: 0}
-  - {fileID: 114047099255186116}
-  - {fileID: 0}
   - {fileID: 114683930698877636}
-  isFirstSelection: 0
+  - {fileID: 0}
+  - {fileID: 114047099255186116}
+  isFirstSelection: 1
   isReady: 1
 --- !u!114 &114532682920171782
 MonoBehaviour:
@@ -905,7 +904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winningTeamText: {fileID: 114658054768022906}
-  menuOptions: []
+  previousMenuButton: {fileID: 114197293963616270}
 --- !u!114 &114658054768022906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -953,10 +952,10 @@ MonoBehaviour:
   selector: {fileID: 1761728995579424}
   adjOptions:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 114047099255186116}
-  isFirstSelection: 1
+  - {fileID: 0}
+  - {fileID: 114446371472324568}
+  isFirstSelection: 0
   isReady: 1
 --- !u!114 &114691988216085728
 MonoBehaviour:
@@ -1157,11 +1156,11 @@ RectTransform:
   m_Children:
   - {fileID: 224489139406373828}
   m_Father: {fileID: 4005883659327518}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.97}
+  m_AnchoredPosition: {x: 0, y: -0.61}
   m_SizeDelta: {x: 128.2, y: 23.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224331369594399442
@@ -1249,11 +1248,11 @@ RectTransform:
   m_Children:
   - {fileID: 224873971210429190}
   m_Father: {fileID: 4005883659327518}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.04, y: -0.61}
+  m_AnchoredPosition: {x: -0.04, y: 0.94}
   m_SizeDelta: {x: 128.2, y: 23.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224739536678590996

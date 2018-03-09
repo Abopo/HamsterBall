@@ -7,8 +7,8 @@ public class BubbleButton : MonoBehaviour {
     public HAMSTER_TYPES type;
     public GameObject hamsterSpriteObj;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -18,9 +18,21 @@ public class BubbleButton : MonoBehaviour {
 	}
 
     private void OnMouseDown() {
-        // Create a bubble sprite obj
-        GameObject bSprite = GameObject.Instantiate(hamsterSpriteObj, transform.position, Quaternion.identity);
-        bSprite.GetComponent<BubbleSprite>().SetType(type);
-        bSprite.GetComponent<BubbleSprite>().isHeld = true;
+    }
+
+    private void OnMouseOver() {
+        if(Input.GetMouseButtonDown(0)) {
+            // Create a bubble sprite obj
+            GameObject bSprite = GameObject.Instantiate(hamsterSpriteObj, transform.position, Quaternion.identity);
+            bSprite.GetComponent<BubbleSprite>().SetType((int)type);
+            //bSprite.GetComponent<BubbleSprite>().SetIsGravity(false);
+            bSprite.GetComponent<BubbleSprite>().isHeld = true;
+        } else if(Input.GetMouseButtonDown(1)) {
+            // Create a gravity bubble sprite obj
+            GameObject bSprite = GameObject.Instantiate(hamsterSpriteObj, transform.position, Quaternion.identity);
+            bSprite.GetComponent<BubbleSprite>().SetType((int)type + 11);
+            //bSprite.GetComponent<BubbleSprite>().SetIsGravity(true);
+            bSprite.GetComponent<BubbleSprite>().isHeld = true;
+        }
     }
 }

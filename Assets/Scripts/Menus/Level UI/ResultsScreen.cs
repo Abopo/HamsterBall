@@ -1,17 +1,34 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
 public class ResultsScreen : MonoBehaviour {
     public Text winningTeamText;
+    public Button previousMenuButton;
 
     MenuOption[] _menuOptions;
 
     float winTime = 1.0f;
     float winTimer = 0.0f;
 
+    GameManager _gameManager;
+    
     // Use this for initialization
     void Start () {
+        // Set the text of the previousMenuButton to a proper text
+        _gameManager = FindObjectOfType<GameManager>();
+        switch (_gameManager.prevMenu) {
+            case MENU.STORY:
+                previousMenuButton.GetComponentInChildren<Text>().text = "Story Select";
+                break;
+            case MENU.VERSUS:
+                previousMenuButton.GetComponentInChildren<Text>().text = "Character Select";
+                break;
+            case MENU.EDITOR:
+                previousMenuButton.GetComponentInChildren<Text>().text = "Board Editor";
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -59,6 +76,22 @@ public class ResultsScreen : MonoBehaviour {
         _menuOptions = transform.GetComponentsInChildren<MenuOption>();
         foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;
+        }
+    }
+
+
+    public void ReturnToPreviousScene() {
+        // Return to the scene before this one
+        switch (_gameManager.prevMenu) {
+            case MENU.STORY:
+                _gameManager.StageSelectButton();
+                break;
+            case MENU.VERSUS:
+                _gameManager.CharacterSelectButton();
+                break;
+            case MENU.EDITOR:
+                _gameManager.BoardEditorButton();
+                break;
         }
     }
 }

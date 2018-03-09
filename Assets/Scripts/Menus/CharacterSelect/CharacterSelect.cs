@@ -40,6 +40,7 @@ public class CharacterSelect : MonoBehaviour {
         _assignedPlayers = 0;
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager.prevMenu = MENU.VERSUS;
 
         _isActive = true;
 

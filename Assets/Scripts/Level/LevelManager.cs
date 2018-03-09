@@ -16,6 +16,8 @@ public class LevelManager : MonoBehaviour {
     int _prevTargetPoints;
 
     float _levelTimer;
+    float _pushTimer; // timer for pushing the board down in single player
+    float _pushTime = 30;
     bool _gameOver = false;
 
     GameManager _gameManager;
@@ -49,6 +51,16 @@ public class LevelManager : MonoBehaviour {
                     IncreaseMarginMultiplier();
                     _marginTime = 32f;
                     _marginTimer = 0f;
+                }
+            } else {
+                if (_gameManager.timeLimit == 0) {
+                    _pushTimer += Time.deltaTime;
+                    if (_pushTimer > _pushTime) {
+                        // push down the board
+                        FindObjectOfType<BubbleManager>().PushBoardDown();
+
+                        _pushTimer = 0;
+                    }
                 }
             }
         }

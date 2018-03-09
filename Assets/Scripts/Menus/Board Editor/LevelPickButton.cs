@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelPickButton : MonoBehaviour {
 
     public GameObject levelObject;
+    public string levelName;
 
     BoardEditor _boardEditor;
 
@@ -27,7 +28,7 @@ public class LevelPickButton : MonoBehaviour {
         }
 
         // Delete and replace the old level
-        _boardEditor.ChangeLevel(newLevel);
+        _boardEditor.ChangeLevel(newLevel, levelObject.name, levelName);
 
         // Close the picker
         GetComponentInParent<LevelPicker>().Close();

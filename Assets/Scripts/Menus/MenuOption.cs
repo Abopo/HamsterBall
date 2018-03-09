@@ -79,7 +79,7 @@ public class MenuOption : MonoBehaviour {
             }
             // Down
             if (Input.GetAxis("Vertical") > 0.3f || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                if (adjOptions[1] != null && adjOptions[4].isReady) {
+                if (adjOptions[1] != null && adjOptions[1].isReady) {
                     //_isHighlighted = false;
                     _moved = true;
                     // move selector to adjOptions[1]

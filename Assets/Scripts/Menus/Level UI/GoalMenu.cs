@@ -36,7 +36,12 @@ public class GoalMenu : MonoBehaviour {
             goalRequirement.text = (_gameManager.goalCount - _bubbleManager.matchCount).ToString();
         }
 
-        _timeLeft -= Time.deltaTime;
+        if (_gameManager.timeLimit > 0) {
+            _timeLeft -= Time.deltaTime;
+        } else {
+            _timeLeft += Time.deltaTime;
+        }
+
         timeLeftText.text = string.Format("{0}:{1:00}", (int)_timeLeft / 60, (int)_timeLeft % 60);
-	}
+    }
 }

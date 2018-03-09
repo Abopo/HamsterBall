@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
@@ -43,6 +44,37 @@ public class BoardLoader : MonoBehaviour {
         }
     }
 
+    public void ReadCreatedBoard(string path) {
+        // Save the path to the level data
+        _gameManager.LevelDoc = path;
+
+#if UNITY_EDITOR
+        TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
+        _linesFromFile = textAsset.text.Split("\n"[0]);
+        _fileIndex = 0;
+#else
+        string allText = "";
+        if (File.Exists(Application.dataPath + "/Created Boards/" + path + ".txt")) {
+            Debug.Log("File exists!");
+            allText = File.ReadAllText(Application.dataPath + "/Created Boards/" + path + ".txt");
+        } else {
+            Debug.Log("File does not exist!");
+            Debug.Log("File name: " + Application.dataPath + "/Created Boards/" + path + ".txt");
+        }
+        _linesFromFile = allText.Split("\n"[0]);
+#endif
+
+        int i = 0;
+        foreach (string line in _linesFromFile) {
+            _linesFromFile[i] = line.Replace("\r", "");
+            i++;
+        }
+
+        while (_readText != "Done") {
+            ReadLine();
+        }
+    }
+
     void ReadLine() {
         do {
             //_readText = _reader.ReadLine();
@@ -75,7 +107,8 @@ public class BoardLoader : MonoBehaviour {
     }
 
     void ReadBubbleLayout() {
-        int[] bubbles = Enumerable.Repeat<int>(-2, 125).ToArray(); // initializes 125 values to -1
+        int[] bubbles = Enumerable.Repeat<int>(-2, 125).ToArray(); // initializes 125 values to -2
+        bubbles[0] = -1;
         int bubIndex = 0;
         int stringIndex = 0;
 
@@ -103,6 +136,8 @@ public class BoardLoader : MonoBehaviour {
                         bubbles[bubIndex] = (int)HAMSTER_TYPES.BOMB;
                         break;
                     case 'G': // Gravity
+                        _readChar = _linesFromFile[_fileIndex][stringIndex++];
+                        bubbles[bubIndex] = (int)char.GetNumericValue(_readChar) + 11;
                         break;
                     case 'N': // None
                         bubbles[bubIndex] = -2;

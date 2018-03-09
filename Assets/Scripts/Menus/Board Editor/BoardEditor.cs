@@ -1,31 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
 using UnityEditor;
-using System.IO;
+#endif
 
 public class BoardEditor : MonoBehaviour {
     public InputField fileNameField;
+    public InputField timeLimitField;
     public Text warningText;
     public GameObject hamsterSpriteObj;
     public GameObject levelObj;
 
-    List<EditorNode> nodes = new List<EditorNode>();
-    Rect boundingRect;
-    string fileName;
+    List<EditorNode> _nodes = new List<EditorNode>();
+    Rect _boundingRect;
+    string _fileName;
+    int _timeLimit = 0;
+
+    string _levelScene;
+    string _levelPrefab;
+
+    GameManager _gameManager;
 
     // Use this for initialization
     void Start () {
         GameObject[] nodeObjs = GameObject.FindGameObjectsWithTag("Node1");
         int i = 0;
         foreach(GameObject nO in nodeObjs) {
-            nodes.Add(nO.GetComponent<EditorNode>());
+            _nodes.Add(nO.GetComponent<EditorNode>());
             ++i;
         }
 
         // Sort nodes by node number (ascending).
-        nodes.Sort((a, b) => a.nodeNum.CompareTo(b.nodeNum));
+        _nodes.Sort((a, b) => a.nodeNum.CompareTo(b.nodeNum));
 
         // Create the boundingRect
         BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
@@ -34,9 +43,17 @@ public class BoardEditor : MonoBehaviour {
         y = boxCollider.bounds.min.y;
         width = boxCollider.bounds.max.x - x;
         height = boxCollider.bounds.max.y - y;
-        boundingRect = new Rect(x, y, width, height);
+        _boundingRect = new Rect(x, y, width, height);
 
-        fileName = "";
+        _levelScene = "Laboratory - SinglePlayer";
+        _levelPrefab = "LaboratoryBoardSP";
+        _fileName = "";
+
+        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager.prevMenu = MENU.EDITOR;
+        if (_gameManager.prevBoard != "") {
+            LoadBoard(_gameManager.prevBoard);
+        }
     }
 
     // Update is called once per frame
@@ -63,8 +80,8 @@ public class BoardEditor : MonoBehaviour {
         int node1 = -1, node2 = -1, node3 = -1;
         float dist1 = 1000000, dist2 = 2000000, dist3 = 3000000;
         float tempDist = 0;
-        for (int i = 0; i < nodes.Count; ++i) {
-            tempDist = Vector2.Distance(nodes[i].transform.position, pos);
+        for (int i = 0; i < _nodes.Count; ++i) {
+            tempDist = Vector2.Distance(_nodes[i].transform.position, pos);
             if (tempDist < dist1) {
                 dist3 = dist2;
                 dist2 = dist1;
@@ -95,7 +112,7 @@ public class BoardEditor : MonoBehaviour {
     }
 
     public bool IsWithinBounds(Vector3 pos) {
-        if(boundingRect.Contains(pos)) {
+        if(_boundingRect.Contains(pos)) {
             return true;
         }
 
@@ -103,19 +120,29 @@ public class BoardEditor : MonoBehaviour {
     }
 
     public void SaveBoard() {
-        if(fileName == "") {
+        if(_fileName == "") {
             DisplayWarningText("No filename chosen.");
             return;
         }
 
-        string fullFileName = "Assets/Resources/Text/Created Boards/" + fileName + ".txt";
+#if UNITY_EDITOR
+        string fullFileName = "Assets/Resources/Text/Created Boards/" + _fileName + ".txt";
+#else
+        string fullFileName = Application.dataPath + "/Created Boards/" + _fileName + ".txt";
+#endif
         FileStream file = File.Open(fullFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
         StreamWriter streamWriter = new StreamWriter(file);
 
-        streamWriter.WriteLine(fileName);
+        // Save the filename
+        streamWriter.WriteLine(_fileName);
+
+        // Save the bubble layout
+        string tempLine = "";
+        tempLine = "Bubble Layout";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "";
 
         HAMSTER_TYPES tempType;
-        string tempLine = "";
         bool longLine = true;
         int lineLength = 0;
         int index = 0;
@@ -129,8 +156,11 @@ public class BoardEditor : MonoBehaviour {
             }
 
             for(int j = index; j < lineLength; ++j, ++index) {
-                if (nodes[j].bubble != null) {
-                    tempType = nodes[j].bubble.Type;
+                if (_nodes[j].bubble != null) {
+                    tempType = _nodes[j].bubble.Type;
+                    if(_nodes[j].bubble.isGravity) {
+                        tempLine += "G";
+                    }
                     switch (tempType) {
                         case HAMSTER_TYPES.GREEN:
                             tempLine += "0";
@@ -174,13 +204,100 @@ public class BoardEditor : MonoBehaviour {
             tempLine = "";
         }
 
-        // End the file with an escape character
+        // End the bubble layout with an escape character
         tempLine = "E";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "";
+        streamWriter.WriteLine(tempLine);
+
+
+        // Gotta write out all the data so the board can be tested
+
+        // Handicaps
+        tempLine = "Handicaps";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "9";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "9";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "";
+        streamWriter.WriteLine(tempLine);
+
+        // Spawn Rate
+        tempLine = "HSM";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "6";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "";
+        streamWriter.WriteLine(tempLine);
+
+        //Special Hamsters
+        tempLine = "Special Hamsters";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "Rainbow";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "N";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "Dead";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "N";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "Gravity";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "N";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "Bomb";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "N";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "End";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "";
+        streamWriter.WriteLine(tempLine);
+
+        //AI
+        //None
+        tempLine = "AI";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "None";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "";
+        streamWriter.WriteLine(tempLine);
+
+        //Mode
+        //Clear
+        //120
+        tempLine = "Mode";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "Clear";
+        streamWriter.WriteLine(tempLine);
+        tempLine = _timeLimit.ToString();
+        streamWriter.WriteLine(tempLine);
+        tempLine = "";
+        streamWriter.WriteLine(tempLine);
+
+        // Save the board
+        tempLine = "Board";
+        streamWriter.WriteLine(tempLine);
+        streamWriter.Write(_levelScene);
+        tempLine = "\n";
+        streamWriter.WriteLine(tempLine);
+
+        // Save the level
+        tempLine = "Level";
+        streamWriter.WriteLine(tempLine);
+        streamWriter.Write(_levelPrefab);
+
+        tempLine = "\n";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "Done";
         streamWriter.WriteLine(tempLine);
 
         streamWriter.Close();
 
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
     }
 
     public void LoadBoard(string path) {
@@ -194,15 +311,32 @@ public class BoardEditor : MonoBehaviour {
         // Fill the name in
         fileNameField.text = path;
 
+        string[] _linesFromFile;
+
+#if UNITY_EDITOR
         TextAsset textAsset = Resources.Load<TextAsset>("Text/Created Boards/" + path);
-        string[] _linesFromFile = textAsset.text.Split("\n"[0]);
+        _linesFromFile = textAsset.text.Split("\n"[0]);
+#else
+        string allText = "";
+        if (File.Exists(Application.dataPath + "/Created Boards/" + path + ".txt")) {
+            Debug.Log("File exists!");
+            allText = File.ReadAllText(Application.dataPath + "/Created Boards/" + path + ".txt");
+        } else {
+            Debug.Log("File does not exist!");
+        }
+        _linesFromFile = allText.Split("\n"[0]);
+#endif
+
         int i = 0;
         foreach (string line in _linesFromFile) {
             _linesFromFile[i] = line.Replace("\r", "");
+            Debug.Log(_linesFromFile[i]);
             i++;
         }
 
+        
         //_readChar = (char)_reader.Read();
+        fileIndex++;
         char _readChar = _linesFromFile[fileIndex][stringIndex++];
         while (_readChar != 'E') {
             if (_readChar != ',') {
@@ -214,18 +348,21 @@ public class BoardEditor : MonoBehaviour {
                     case '4':
                     case '5':
                     case '6':
-                        CreateBubbleSprite((HAMSTER_TYPES)char.GetNumericValue(_readChar), nodeIndex);
+                        CreateBubbleSprite((int)char.GetNumericValue(_readChar), nodeIndex);
                         break;
                     case 'D': // Dead
-                        CreateBubbleSprite(HAMSTER_TYPES.DEAD, nodeIndex);
+                        CreateBubbleSprite((int)HAMSTER_TYPES.DEAD, nodeIndex);
                         break;
                     case 'R': // Rainbow
-                        CreateBubbleSprite(HAMSTER_TYPES.RAINBOW, nodeIndex);
+                        CreateBubbleSprite((int)HAMSTER_TYPES.RAINBOW, nodeIndex);
                         break;
                     case 'B': // Bomb
-                        CreateBubbleSprite(HAMSTER_TYPES.BOMB, nodeIndex);
+                        CreateBubbleSprite((int)HAMSTER_TYPES.BOMB, nodeIndex);
                         break;
                     case 'G': // Gravity
+                        // Get the next char for the type
+                        _readChar = _linesFromFile[fileIndex][stringIndex++];
+                        CreateBubbleSprite((int)char.GetNumericValue(_readChar) + 11, nodeIndex);
                         break;
                     case 'N': // None
                         break;
@@ -239,6 +376,42 @@ public class BoardEditor : MonoBehaviour {
             //_readChar = (char)_reader.Read();
             _readChar = _linesFromFile[fileIndex][stringIndex++];
         }
+
+        // Load the time limit
+        string _readLine = _linesFromFile[fileIndex];
+        while(_readLine != "Mode") {
+            _readLine = _linesFromFile[fileIndex++];
+        }
+        // Skip over an extra line
+        fileIndex++;
+        _readLine = _linesFromFile[fileIndex++];
+        _timeLimit = int.Parse(_readLine);
+        timeLimitField.text = _readLine;
+
+        // Load the level
+        _readLine = _linesFromFile[fileIndex];
+        while(_readLine != "Board") {
+            _readLine = _linesFromFile[fileIndex++];
+        }
+
+        // Get the scene name
+        _readLine = _linesFromFile[fileIndex++];
+        string newScene = _readLine;
+
+        // Load in the level geometry for this level
+        while (_readLine != "Level") {
+            _readLine = _linesFromFile[fileIndex++];
+        }
+        _readLine = _linesFromFile[fileIndex];
+        GameObject levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/SinglePlayer/" + _readLine);
+        GameObject newLevel = GameObject.Instantiate(levelPrefab, new Vector3(-1.3f, 0, -0.5f), Quaternion.identity);
+        HamsterSpawner[] spawners = newLevel.GetComponentsInChildren<HamsterSpawner>();
+        foreach (HamsterSpawner hS in spawners) {
+            hS.enabled = false;
+        }
+
+        // Delete and replace the old level
+        ChangeLevel(newLevel, _readLine, newScene);
     }
 
     public void ClearBoard() {
@@ -249,18 +422,20 @@ public class BoardEditor : MonoBehaviour {
         }
     }
 
-    void CreateBubbleSprite(HAMSTER_TYPES type, int node) {
+    void CreateBubbleSprite(int type, int node) {
         GameObject bSpriteObj = GameObject.Instantiate(hamsterSpriteObj, transform.position, Quaternion.identity);
         BubbleSprite bSprite = bSpriteObj.GetComponent<BubbleSprite>();
         bSprite.SetType(type);
         bSprite.node = node;
-        bSprite.transform.position = (Vector2)nodes[node].nPosition;
-        nodes[node].bubble = bSprite;
+        bSprite.transform.position = (Vector2)_nodes[node].nPosition;
+        _nodes[node].bubble = bSprite;
     }
 
-    public void ChangeLevel(GameObject newLevel) {
+    public void ChangeLevel(GameObject newLevel, string levelPrefab, string levelScene) {
         DestroyObject(levelObj);
         levelObj = newLevel;
+        _levelScene = levelScene;
+        _levelPrefab = levelPrefab;
     }
 
     public void DisplayWarningText(string text) {
@@ -273,14 +448,28 @@ public class BoardEditor : MonoBehaviour {
     }
 
     public EditorNode GetNode(int i) {
-        if (i >= 0 && i < nodes.Count) {
-            return nodes[i];
+        if (i >= 0 && i < _nodes.Count) {
+            return _nodes[i];
         }
 
         return null;
     }
 
     public void ChangeFileName() {
-        fileName = fileNameField.text;
+        _fileName = fileNameField.text;
+    }
+
+    public void ChangeTimeLimit() {
+        _timeLimit = int.Parse(timeLimitField.text);
+    }
+
+    public void TestLevel() {
+        if (_fileName != "") {
+            _gameManager.prevBoard = _fileName;
+            SaveBoard();
+            GetComponent<BoardLoader>().ReadCreatedBoard(_fileName);
+        } else {
+            DisplayWarningText("No filename chosen.");
+        }
     }
 }

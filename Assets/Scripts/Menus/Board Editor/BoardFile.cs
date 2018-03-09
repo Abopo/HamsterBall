@@ -22,19 +22,19 @@ public class BoardFile : MonoBehaviour {
         Highlight();
     }
 
-    void Highlight() {
+    public void Highlight() {
         // De-highlight all the other files
         BoardFile[] boardFiles = FindObjectsOfType<BoardFile>();
         foreach (BoardFile bF in boardFiles) {
             bF.Unhighlight();
         }
 
-        highlightImage.gameObject.SetActive(true);
+        highlightImage.enabled = true;
         isHighlighted = true;
     }
 
     public void Unhighlight() {
         isHighlighted = false;
-        highlightImage.gameObject.SetActive(false);
+        highlightImage.enabled = false;
     }
 }

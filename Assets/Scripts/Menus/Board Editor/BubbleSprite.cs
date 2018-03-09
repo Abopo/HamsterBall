@@ -7,6 +7,10 @@ public class BubbleSprite : MonoBehaviour {
     public bool isHeld = false;
     public int node = -1;
 
+    public GameObject spiralEffectObj;
+    public GameObject spiralEffectInstance;
+    public bool isGravity;
+
     HAMSTER_TYPES type;
 
     BoardEditor _boardEditor;
@@ -29,7 +33,7 @@ public class BubbleSprite : MonoBehaviour {
             // Follow the mouse
             transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            if (Input.GetMouseButtonUp(0)) {
+            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) {
                 if (_boardEditor.IsWithinBounds(transform.position)) {
                     DropOntoBoard();
                 } else {
@@ -43,10 +47,26 @@ public class BubbleSprite : MonoBehaviour {
         transform.position = new Vector3(transform.position.x, transform.position.y, -5f);
     }
 
-    public void SetType(HAMSTER_TYPES inType) {
-        type = inType;
+    public void SetType(int inType) {
+        // If this should be gravity
+        if (inType >= 11) {
+            inType -= 11;
+            SetIsGravity(true);
+        }
+        type = (HAMSTER_TYPES)inType;
         GetComponent<Animator>().SetInteger("Type", (int)inType);
         transform.GetChild(0).GetComponent<Animator>().SetInteger("Type", (int)inType);
+    }
+
+    public void SetIsGravity(bool isGrav) {
+        if(isGrav) {
+            isGravity = true;
+            spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
+            spiralEffectInstance.transform.parent = transform;
+            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+        } else {
+            isGravity = false;
+        }
     }
 
     private void OnMouseDown() {

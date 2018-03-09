@@ -32,10 +32,12 @@ public class StorySelectMenu : MonoBehaviour {
     public int FurthestLevel {
         get { return _furthestLevel; }
     }
-
-
+    
     // Use this for initialization
     void Start () {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        gameManager.prevMenu = MENU.STORY;
+
 		locationImages["Forest"] = Resources.Load<Sprite>("Art/UI/OneTube - Forest");
         locationImages["Laboratory"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Laboratory");
         locationImages["Sewers"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Sewers");

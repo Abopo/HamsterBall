@@ -20,6 +20,8 @@ public class BubbleManager : MonoBehaviour {
 	public int bubbleStock; // counts up to 12 then adds a line.
     public bool testMode;
 
+    public Transform ceiling;
+
     // 10 rows
     // alternating between 13 and 12 columns
     // should specify top and bottom rows
@@ -31,14 +33,13 @@ public class BubbleManager : MonoBehaviour {
 
     Vector3 nodeSpawnPos = new Vector3(-5.35f, 5.6f, 0f);
 
-	int numNodes = 150;
 	bool justAddedBubble = false;
     Transform bubblesParent;
     Transform nodesParent;
     float nodeHeight = 0.67f; // The height of a single node (i.e. how far down lines move)
     int bottomRowStart {
         get {
-            return numNodes - 25 + topLineLength;
+            return nodeList.Count - 25 + topLineLength;
         }
     }
 
@@ -100,7 +101,7 @@ public class BubbleManager : MonoBehaviour {
         bubblesParent = transform.GetChild(0);
         nodesParent = transform.GetChild(1);
 
-        bubbles = new Bubble[numNodes];
+        bubbles = new Bubble[150];
         BuildStartingNodes();
 
         // If we are networked
@@ -247,6 +248,7 @@ public class BubbleManager : MonoBehaviour {
                     bubble.transform.parent = bubblesParent;
                     // Set it to the corresponding type of the decided starting bubbles
                     int type = startingBubbleTypes[i];
+
                     InitBubble(bubble, type);
                     bubble.node = i;
                     nodeList[i].bubble = bubble;
@@ -308,7 +310,7 @@ public class BubbleManager : MonoBehaviour {
 
     // Assign adjBubbles for each bubble and empty node
     void UpdateAllAdjBubbles() {
-		for(int i = 0; i < numNodes; ++i) {
+		for(int i = 0; i < nodeList.Count; ++i) {
 			if(bubbles[i] != null) {
 				bubbles[i].ClearAdjBubbles();
 				AssignAdjBubbles(bubbles[i], i);
@@ -484,7 +486,7 @@ public class BubbleManager : MonoBehaviour {
         }
 	}
 	void GetMiddleRight(Bubble bubble, int node) {
-		if (node + 1 < numNodes) {
+		if (node + 1 < nodeList.Count) {
             if (bubble != null) {
                 bubble.adjBubbles[2] = bubbles[node + 1]; // middle right
             } else {
@@ -493,7 +495,7 @@ public class BubbleManager : MonoBehaviour {
         }
 	}
 	void GetBottomLeft(Bubble bubble, int node) {
-		if (node + 12 < numNodes) {
+		if (node + 12 < nodeList.Count) {
             if (bubble != null) {
                 bubble.adjBubbles[4] = bubbles[node + 12]; // bottom left
             } else {
@@ -502,7 +504,7 @@ public class BubbleManager : MonoBehaviour {
 		}
 	}
 	void GetBottomRight(Bubble bubble, int node) {
-		if (node + 13 < numNodes) {
+		if (node + 13 < nodeList.Count) {
             if (bubble != null) {
                 bubble.adjBubbles[3] = bubbles[node + 13]; // bottom right
             } else {
@@ -613,7 +615,7 @@ public class BubbleManager : MonoBehaviour {
         int node1 = -1, node2 = -1, node3 = -1;
         float dist1 = 1000000, dist2 = 2000000, dist3 = 3000000;
         float tempDist = 0;
-        for (int i = 0; i < numNodes; ++i) {
+        for (int i = 0; i < nodeList.Count; ++i) {
             tempDist = Vector2.Distance(nodeList[i].nPosition, bubble.transform.position);
             if (tempDist < dist1) {
                 dist3 = dist2;
@@ -716,12 +718,12 @@ public class BubbleManager : MonoBehaviour {
 			topLineLength = 12;
 		}
 
-		// Move bubbles to nodes
-		Bubble[] tempBubbles = new Bubble[numNodes];
-		for (int i = 0; i < numNodes; ++i) {
+        // Move bubbles down one line
+        Bubble[] tempBubbles = new Bubble[nodeList.Count];
+		for (int i = 0; i < nodeList.Count; ++i) {
 			tempBubbles[i] = bubbles[i];
 		}
-		bubbles = new Bubble[numNodes];
+		bubbles = new Bubble[nodeList.Count];
 		List<Bubble> testList = new List<Bubble> ();
 		foreach (Bubble b in tempBubbles) {
 			if(b != null) {
@@ -775,6 +777,34 @@ public class BubbleManager : MonoBehaviour {
         _audioSource.Play();
 	}
 
+    // Used in single player puzzle boards. Pushes the board down one line, but covers the top line with a wall instead of bubbles.
+    public void PushBoardDown() {
+        int tempBottomRowStart = bottomRowStart;
+        for (int i = 0; i < nodeList.Count; ++i) {
+            // Delete bottom line nodes
+            if (i >= tempBottomRowStart) {
+                DestroyObject(nodeList[i].gameObject);
+            }
+        }
+
+        // Remove the deleted nodes from the nodeList
+        nodeList.RemoveRange(tempBottomRowStart, (topLineLength == 13 ? 12 : 13));
+
+        // Move the entire bubble manager down one line
+        transform.Translate(0f, -0.67f, 0f, Space.World);
+
+        // Spawn/push down the ceiling
+        ceiling.Translate(0f, -0.67f, 0f, Space.World);
+
+        UpdateAllAdjBubbles();
+
+        boardChangedEvent.Invoke();
+
+        // Play sound
+        _audioSource.clip = _addLineClip;
+        _audioSource.Play();
+    }
+
     int[] DecideNextLine() {
         int[] nextLineBubbles = new int[13];
         int[] typeCounts = new int[7]; // Keeps track of how many of each color has been made
@@ -818,14 +848,15 @@ public class BubbleManager : MonoBehaviour {
                     break;
             }
 
+            // If there is a timeLimit and we have passed it
             // TODO: This is actually a loss so handle that
-            if(_levelManager.LevelTimer >= _gameManager.timeLimit) {
+            if(_gameManager.timeLimit > 0 && _levelManager.LevelTimer >= _gameManager.timeLimit) {
                 return true;
             }
         }
 
         // Check bubble positions
-        for (int i = bottomRowStart; i < numNodes; ++i) {
+        for (int i = bottomRowStart; i < nodeList.Count; ++i) {
             if (bubbles[i] != null) {
                 return true;
             }
@@ -858,7 +889,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void RefreshRainbowBubbles() {
-		for (int i = 0; i < numNodes; ++i) {
+		for (int i = 0; i < nodeList.Count; ++i) {
 			if(bubbles[i] != null && bubbles[i].type == HAMSTER_TYPES.RAINBOW) {
 				bubbles[i].checkedForMatches = false;
 			}

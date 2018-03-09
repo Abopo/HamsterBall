@@ -15,6 +15,7 @@ public class Bubble : MonoBehaviour {
     public bool wasThrown;
 	public bool popped;
 	public bool isGravity;
+    public GameObject spiralEffectObj;
 
     public LayerMask checkMask;
     public bool canBeHit;
@@ -71,8 +72,17 @@ public class Bubble : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         _dropClip = Resources.Load<AudioClip>("Audio/SFX/Hamster_Fall2");
 
-		type = inType;
-		locked = false;
+        // If the type says this should be a gravity
+        if ((int)inType >= 11) {
+            type = inType - 11;
+            isGravity = true;
+            GameObject spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
+            spiralEffectInstance.transform.parent = transform;
+            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+        } else {
+		    type = inType;
+        }
+        locked = false;
         wasThrown = false;
 		popped = false;
 		checkedForMatches = false;
@@ -464,7 +474,11 @@ public class Bubble : MonoBehaviour {
         // Pop matches
         foreach (Bubble b in matches) {
             if (b != this) {
-                b.Pop();
+                if (b.type == HAMSTER_TYPES.BOMB && !b.popped) {
+                    b.BombExplode();
+                } else {
+                    b.Pop();
+                }
             }
         }
     }
@@ -527,12 +541,16 @@ public class Bubble : MonoBehaviour {
         _homeBubbleManager.IncreaseScore(adjBubbles.Length * 50);
 
         // Pop self and all adjBubbles
+        Pop();
         foreach (Bubble b in adjBubbles) {
             if (b != null) {
-                b.Pop();
+                if (b.type == HAMSTER_TYPES.BOMB && !b.popped) {
+                    b.BombExplode();
+                } else {
+                    b.Pop();
+                }
             }
         }
-        Pop();
 
         _homeBubbleManager.BubbleEffects.BombBubbleExplosion(transform.position);
     }
