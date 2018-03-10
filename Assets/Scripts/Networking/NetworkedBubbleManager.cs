@@ -20,6 +20,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         if (PhotonNetwork.isMasterClient) {
             _boardCheckTimer += Time.deltaTime;
             if (_boardCheckTimer >= _boardCheckTime) {
+                //SendBoardLayoutCheck();
             }
         }
 	}

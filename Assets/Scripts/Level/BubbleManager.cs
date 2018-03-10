@@ -241,7 +241,7 @@ public class BubbleManager : MonoBehaviour {
         } else { // If this rounds starting bubbles have already been decided
             for (int i = 0; i < startingBubbleTypes.Length; ++i) {
                 // If this node is not supposed to be empty
-                if (startingBubbleTypes[i] != -2) {
+                if (startingBubbleTypes[i] >= 0) {
                     // Create a new bubble
                     GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
                     Bubble bubble = bub.GetComponent<Bubble>();

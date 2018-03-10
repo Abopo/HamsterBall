@@ -89,15 +89,21 @@ public class ThrowState : PlayerState {
             // Networking
             if (PhotonNetwork.connectedAndReady) {
                 if(playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player) {
-                    playerController.GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.Others, aimingArrow.localRotation);
-                } else {
-                    return;
+                    // If we are the master client
+                    if (PhotonNetwork.isMasterClient) {
+                        // Just go ahead and throw
+                        playerController.GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.Others, aimingArrow.localRotation);
+                        Throw();
+                    } else {
+                        // Check with the master client to see if we are ok to throw
+                        playerController.GetComponent<PhotonView>().RPC("TryThrowBubble", PhotonTargets.MasterClient, aimingArrow.localRotation);
+                    }
                 }
+            } else {
+                // Throw bubble!
+                Throw();
             }
-
-            // Throw bubble!
-            Throw();
-		}
+        }
 
 		if (inputState.left.isDown) {
 			aimingArrow.Rotate(Vector3.forward, rotateSpeed*Time.deltaTime/* * _direction*/);
