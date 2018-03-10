@@ -176,14 +176,16 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     void InstantiateNetworkHamster() {
         // Set up instantiation data
-        object[] hamsterInfo = new object[3];
+        object[] hamsterInfo = new object[5];
+        hamsterInfo[0] = false; // has exitedPipe
         if (rightSidePipe) {
-            hamsterInfo[0] = true; // hamster.inRightPipe
+            hamsterInfo[1] = true; // hamster.inRightPipe
         } else {
-            hamsterInfo[0] = false;
+            hamsterInfo[1] = false;
         }
-        hamsterInfo[1] = team;
-        hamsterInfo[2] = _nextHamsterType;
+        hamsterInfo[2] = team;
+        hamsterInfo[3] = _nextHamsterType;
+        hamsterInfo[4] = false; // isGravity
 
         // Use the network instantiate method
         PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", _spawnPosition, Quaternion.identity, 0, hamsterInfo);

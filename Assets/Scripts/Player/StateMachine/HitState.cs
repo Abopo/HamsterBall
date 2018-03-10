@@ -23,7 +23,16 @@ public class HitState : PlayerState {
 
         // If the player is holding a hamster, drop it
         if(playerController.heldBubble != null && !playerController.heldBubble.wasThrown) {
-            DropHamster();
+            if (PhotonNetwork.connectedAndReady) {
+                if (PhotonNetwork.isMasterClient) {
+                    DropNetworkHamster();
+                }
+            } else {
+                DropHamster();
+            }
+
+            // Destroy the held bubble
+            GameObject.Destroy(playerController.heldBubble.gameObject);
         }
 
         //hitTime = 3.0f;
@@ -63,9 +72,31 @@ public class HitState : PlayerState {
         if(Random.Range(0, 11) > 5) {
             hamster.Flip();
         }
+    }
 
-        // Destroy the held bubble
-        GameObject.Destroy(playerController.heldBubble.gameObject);
+    void DropNetworkHamster() {
+        // Set up instantiation data
+        object[] hamsterInfo = new object[5];
+        hamsterInfo[0] = true; // has exited pipe
+        hamsterInfo[1] = false; // inRightPipe (doesn't matter here)
+        
+        // Set the proper team
+        if (playerController.shifted) {
+            hamsterInfo[2] = (playerController.team == 1) ? 0 : 1;
+        } else {
+            hamsterInfo[2] = playerController.team;
+        }
+
+        // Set the correct type
+        hamsterInfo[3] = playerController.heldBubble.type;
+        if (playerController.heldBubble.isGravity) {
+            hamsterInfo[4] = true; // isGravity
+        } else {
+            hamsterInfo[4] = false; // isGravity
+        }
+
+        // Use the network instantiate method
+        PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", playerController.heldBubble.transform.position, Quaternion.identity, 0, hamsterInfo);
     }
 
     // Update is called once per frame
