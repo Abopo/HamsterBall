@@ -57,7 +57,7 @@ public class StorySelectMenu : MonoBehaviour {
 
         // Unlock all the fully unlocked worlds
         for (int i = 1; i < _furthestWorld; ++i) {
-            worlds[i-1].Unlock(6);
+            worlds[i-1].Unlock(9);
         }
         // Unlock the partially completed world
         worlds[_furthestWorld-1].Unlock(_furthestLevel);
@@ -121,7 +121,8 @@ public class StorySelectMenu : MonoBehaviour {
             case GAME_MODE.SP_CLEAR:
                 gameType.text = "Clear Challenge";
                 highscoreHeader.text = "Best Time";
-                time = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore");
+                string pref = storyButton.sceneNumber.ToString() + "Highscore";
+                time = PlayerPrefs.GetInt(pref);
                 highscore.text = string.Format("{0}:{1:00}", (int)time / 60, (int)time % 60);
                 break;
         }

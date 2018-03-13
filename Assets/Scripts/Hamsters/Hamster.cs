@@ -143,7 +143,9 @@ public class Hamster : Entity {
     }
 
     // Update is called once per frame
-    void Update () {
+    protected override void Update () {
+        base.Update();
+
         // Wait until SFX is done to destroy
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
@@ -182,9 +184,9 @@ public class Hamster : Entity {
 
 	void UpdateVelocity() {
 		if (facingRight) {
-			velocity.x = curMoveSpeed;
+			velocity.x = curMoveSpeed * (exitedPipe ? WaterMultiplier : 1);
 		} else {
-			velocity.x = -curMoveSpeed;
+			velocity.x = -curMoveSpeed * (exitedPipe ? WaterMultiplier : 1);
 		}
 	}
 

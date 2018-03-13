@@ -166,7 +166,9 @@ public class PlayerController : Entity {
     }
 
     // Update is called once per frame
-    void Update () {
+    protected override void Update () {
+        base.Update();
+
 		CheckInput ();
         direction = Animator.GetBool("FacingRight") ? 1 : -1;
 
@@ -228,7 +230,7 @@ public class PlayerController : Entity {
 
         if(_physics.IsTouchingFloor && inputState.down.isJustPressed) {
             // Move player slightly downward to pass through certain platforms
-            transform.Translate(0f, -0.01f, 0f);
+            transform.Translate(0f, -0.03f, 0f);
         }
     }
 

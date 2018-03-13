@@ -5,8 +5,10 @@ using System.Collections;
 public class Entity : MonoBehaviour {
 	public Vector2 velocity;
 	public float gravity;
-	
-	protected bool grounded;
+
+    private float _waterMultiplier; // Adjusts movement when in water
+    private float _waterGravMultiplier; // Adjusts gravity when in water
+    protected bool grounded;
     protected bool facingRight = true;
 
     protected EntityPhysics _physics;
@@ -28,8 +30,15 @@ public class Entity : MonoBehaviour {
         set { facingRight = value;}
     }
 
+    public float WaterMultiplier {
+        get {
+            return _waterMultiplier;
+        }
+    }
 
     public int curFacing; // 0 - Right, 1 - Down, 2 - Left, 3 - Up (usually only used for networking info)
+
+    private WaterController _waterController;
 
     // Use this for initialization
     protected virtual void Start () {
@@ -37,15 +46,28 @@ public class Entity : MonoBehaviour {
 		
 		velocity = Vector2.zero;
 		_physics = GetComponent<EntityPhysics>();
+
+        _waterMultiplier = 1f;
+        _waterGravMultiplier = 1f;
+        _waterController = FindObjectOfType<WaterController>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	protected virtual void Update () {
+	    if(_waterController != null) {
+            if(transform.position.y < _waterController.WaterHeight && _waterMultiplier == 1f) {
+                _waterMultiplier = 0.55f;
+                _waterGravMultiplier = 0.1f;
+                velocity.y = velocity.y * 0.25f;
+            } else if(transform.position.y > _waterController.WaterHeight && _waterMultiplier == 0.55f) {
+                _waterMultiplier = 1f;
+                _waterGravMultiplier = 1f;
+            }
+        }
 	}
 
 	public void ApplyGravity() {
-		velocity.y -= gravity * Time.deltaTime;
+		velocity.y -= gravity * _waterGravMultiplier * Time.deltaTime;
 	}
 	
 	public void Flip ()

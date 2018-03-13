@@ -102,7 +102,13 @@ public class FilePicker : MonoBehaviour {
     }
 
     public void DeleteHighlightedFile() {
+
+#if UNITY_EDITOR
         string fullFileName = "Assets/Resources/Text/Created Boards/";
+#else
+        string fullFileName = Application.dataPath + "/Created Boards/";
+#endif
+
         BoardFile[] boardFiles = FindObjectsOfType<BoardFile>();
 
         foreach (BoardFile bF in boardFiles) {
@@ -112,7 +118,6 @@ public class FilePicker : MonoBehaviour {
                 break;
             }
         }
-
         // Delete the file
         File.Delete(fullFileName);
 

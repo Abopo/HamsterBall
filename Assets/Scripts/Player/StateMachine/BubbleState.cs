@@ -27,12 +27,8 @@ public class BubbleState : PlayerState {
 			playerController.ChangeState(PLAYER_STATE.IDLE);
 		}
 
-		if(playerController.velocity.x >= playerController.jumpMoveMax) {
-			playerController.velocity.x = playerController.jumpMoveMax;
-		} else if(playerController.velocity.x <= -playerController.jumpMoveMax) {
-			playerController.velocity.x = -playerController.jumpMoveMax;
-		}
-		
+        JumpMaxCheck();
+        
 		// Fall
 		playerController.ApplyGravity();
 	}
@@ -41,21 +37,9 @@ public class BubbleState : PlayerState {
 		if(inputState.jump.isJustReleased) {
 			playerController.velocity.y /= 2;
 		}
-		
-		if (inputState.right.isDown) {
-			if(_direction < 0) {
-				_direction = 1;
-			}
-			playerController.velocity.x += playerController.jumpMoveForce * Time.deltaTime * _direction;
-		} else if(inputState.left.isDown) {
-			if(_direction > 0) {
-				_direction = -1;
-			}
-			playerController.velocity.x += playerController.jumpMoveForce * Time.deltaTime * _direction;
-		} else {
-			playerController.velocity.x /= 1.05f;
-		}
-	}
+
+        LockedJumpMovement(inputState);
+    }
 
 	// returns the PLAYER_STATE that represents this state
 	public override PLAYER_STATE getStateType(){

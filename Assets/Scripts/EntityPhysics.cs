@@ -203,8 +203,8 @@ public class EntityPhysics : MonoBehaviour {
     }
 
     void OnTriggerStay2D(Collider2D collider) {
-        // If we are in a wall (layer 9)
-        if (collider.gameObject.layer == 9) {
+        // If we are in a wall (layer 9) with a box collider
+        if (collider.gameObject.layer == 9 && collider.GetComponent<BoxCollider2D>() != null) {
             // Figure out from which direction we are colliding
             int tempLayer = gameObject.layer;
             gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");

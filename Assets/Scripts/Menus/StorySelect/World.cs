@@ -24,7 +24,7 @@ public class World : MonoBehaviour {
 
     // Unlocks levels up to the passed level
     public void Unlock(int level) {
-        for(int i = 0; i < level; ++i) {
+        for(int i = 0; i <= level; ++i) {
             _storyButtons[i].GetComponentInChildren<SpriteRenderer>().enabled = false;
         }
     }
@@ -37,11 +37,11 @@ public class World : MonoBehaviour {
             l = _storyButtons.Length;
         }
 
-        for(int i = 0; i < l; ++i) {
+        for(int i = 0; i <= l; ++i) {
             _storyButtons[i].isReady = true;
         }
 
-        _storyButtons[level-1].Highlight();
+        _storyButtons[level].Highlight();
     }
 
     public void Deactivate() {

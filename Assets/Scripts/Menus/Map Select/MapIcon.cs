@@ -17,8 +17,8 @@ public class MapIcon : MonoBehaviour {
     float _stopAt;
 
     int _mapIndex;
-    Sprite[] _mapImages = new Sprite[9];
-    string[] _mapNames = new string[9];
+    Sprite[] _mapImages = new Sprite[10];
+    string[] _mapNames = new string[10];
 
     SpriteRenderer _spriteRenderer;
 
@@ -49,9 +49,10 @@ public class MapIcon : MonoBehaviour {
         _mapImages[3] = Resources.Load<Sprite>("Art/UI/TwoTubes - City");
         _mapImages[4] = Resources.Load<Sprite>("Art/UI/TwoTubes - City2");
         _mapImages[5] = Resources.Load<Sprite>("Art/UI/TwoTubes - Mountain");
-        _mapImages[6] = Resources.Load<Sprite>("Art/UI/OneTube - Fungals");
-        _mapImages[7] = Resources.Load<Sprite>("Art/UI/TwoTubes - Space");
-        _mapImages[8] = Resources.Load<Sprite>("Art/UI/OneTube - DarkForest");
+        _mapImages[6] = Resources.Load<Sprite>("Art/UI/TwoTubes - Beach");
+        _mapImages[7] = Resources.Load<Sprite>("Art/UI/OneTube - Fungals");
+        _mapImages[8] = Resources.Load<Sprite>("Art/UI/TwoTubes - Space");
+        _mapImages[9] = Resources.Load<Sprite>("Art/UI/OneTube - DarkForest");
 
         _mapNames[0] = "OneTube - Forest";
         _mapNames[1] = "TwoTubes - Laboratory";
@@ -59,9 +60,10 @@ public class MapIcon : MonoBehaviour {
         _mapNames[3] = "TwoTubes - City";
         _mapNames[4] = "TwoTubes - City2";
         _mapNames[5] = "TwoTubes - Mountain";
-        _mapNames[6] = "OneTube - Fungals";
-        _mapNames[7] = "TwoTubes - Space";
-        _mapNames[8] = "OneTube - DarkForest";
+        _mapNames[6] = "TwoTubes - Beach";
+        _mapNames[7] = "OneTube - Fungals";
+        _mapNames[8] = "TwoTubes - Space";
+        _mapNames[9] = "OneTube - DarkForest";
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
 	}

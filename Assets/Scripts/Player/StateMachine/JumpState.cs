@@ -14,11 +14,7 @@ public class JumpState : PlayerState {
 
 	// Update is called once per frame
 	public override void Update(){
-		if(playerController.velocity.x >= playerController.jumpMoveMax) {
-			playerController.velocity.x = playerController.jumpMoveMax;
-		} else if(playerController.velocity.x <= -playerController.jumpMoveMax) {
-			playerController.velocity.x = -playerController.jumpMoveMax;
-		}
+        JumpMaxCheck();
 		
 		// Fall
 		playerController.ApplyGravity();
@@ -53,25 +49,11 @@ public class JumpState : PlayerState {
             playerController.ChangeState(PLAYER_STATE.ATTACK);
         }
 
-        if (inputState.right.isDown) {
-			if(_direction < 0) {
-				_direction = 1;
-				playerController.Flip();
-			}
-			playerController.velocity.x += playerController.jumpMoveForce * Time.deltaTime * _direction;
-		} else if(inputState.left.isDown) {
-			if(_direction > 0) {
-				_direction = -1;
-				playerController.Flip();
-			}
-			playerController.velocity.x += playerController.jumpMoveForce * Time.deltaTime * _direction;
-		} else {
-			playerController.velocity.x /= 1.05f;
-		}
-	}
+        BaseJumpMovement(inputState);
+    }
 
-	// returns the PLAYER_STATE that represents this state
-	public override PLAYER_STATE getStateType(){
+    // returns the PLAYER_STATE that represents this state
+    public override PLAYER_STATE getStateType(){
 		return PLAYER_STATE.JUMP;
 	}
 
