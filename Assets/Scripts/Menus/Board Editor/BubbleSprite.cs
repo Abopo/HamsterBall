@@ -7,9 +7,11 @@ public class BubbleSprite : MonoBehaviour {
     public bool isHeld = false;
     public int node = -1;
 
+    public bool isGravity;
     public GameObject spiralEffectObj;
     public GameObject spiralEffectInstance;
-    public bool isGravity;
+    public bool isIce;
+    public SpriteRenderer iceSprite;
 
     HAMSTER_TYPES type;
 
@@ -69,6 +71,11 @@ public class BubbleSprite : MonoBehaviour {
         }
     }
 
+    public void SetIsIce(bool iced) {
+        isIce = iced;
+        iceSprite.enabled = iced;
+    }
+
     private void OnMouseDown() {
         // Become held
         isHeld = true;
@@ -92,7 +99,7 @@ public class BubbleSprite : MonoBehaviour {
 
     void DropOntoBoard() {
         // Find closest node and drop there
-        int closestNode = _boardEditor.FindClosestNode(transform.position);
+        int closestNode = _boardEditor.FindClosestFreeNode(transform.position);
 
         // If a valid node was found
         if (closestNode != -1) {

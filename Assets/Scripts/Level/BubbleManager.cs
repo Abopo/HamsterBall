@@ -5,6 +5,13 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
 
+public struct BubbleInfo {
+    public bool isSet;
+    public HAMSTER_TYPES type;
+    public bool isGravity;
+    public bool isIce;
+}
+
 public class BubbleManager : MonoBehaviour {
 
 	public GameObject bubbleObj;
@@ -43,7 +50,8 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 125).ToArray(); // initializes 50 values to -1
+    public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 125).ToArray(); // initializes 125 values to -1
+    public static BubbleInfo[] startingBubbleInfo = new BubbleInfo[125];
 
     static List<int> _nextLineBubbles = new List<int>();
     int nextLineIndex = 0; // counts up as new lines are added
@@ -111,9 +119,12 @@ public class BubbleManager : MonoBehaviour {
                 // Go ahead and make the starting bubbles
                 SpawnStartingBubbles();
                 justAddedBubble = true;
+            } else {
+                SpawnStartingBubbles();
+                justAddedBubble = true;
             }
         } else {
-            SpawnStartingBubbles();
+            SpawnStartingBubblesInfo();
             justAddedBubble = true;
         }
 
@@ -278,7 +289,110 @@ public class BubbleManager : MonoBehaviour {
         _setupDone = true;
 	}
 
-	void InitBubble(Bubble bubble, int Type) {
+    public void SpawnStartingBubblesInfo() {
+        int numBubbles = 50;
+
+        // If the starting bubbles have not been built yet
+        if (!startingBubbleInfo[0].isSet) {
+            int tempType = 0;
+            List<Bubble> tempMatches = new List<Bubble>();
+            List<int> okTypes = new List<int>();
+            for (int i = 0; i < 50; ++i) {
+                // Create and initialize a new bubble
+                GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
+                Bubble bubble = bub.GetComponent<Bubble>();
+                bubble.transform.parent = bubblesParent;
+                bubble.node = i;
+                // Add the new bubble to necessary lists
+                nodeList[i].bubble = bubble;
+                bubbles[i] = bubble;
+
+                // Temporarily initialize new bubble as a Dead bubble to prevent inaccurate match calculations.
+                InitBubble(bubble, (int)HAMSTER_TYPES.DEAD);
+
+                // Update the adjacent bubbles
+                UpdateAllAdjBubbles();
+
+                // Reinitialize okTypes
+                okTypes.Clear();
+                for (int j = 0; j < (int)HAMSTER_TYPES.NUM_NORM_TYPES; ++j) {
+                    okTypes.Add(j);
+                }
+                // Check adjacent bubbles for matches
+                foreach (Bubble b in bubble.adjBubbles) {
+                    if (b != null) {
+                        // Get the matches for each adjacent bubble
+                        tempMatches = b.CheckMatches(tempMatches);
+                        // If a bubble has more that 3 matches already
+                        if (tempMatches.Count > 3) {
+                            // Don't make another bubble of that type,
+                            // Remove that type from the okTypes list.
+                            okTypes.Remove((int)b.type);
+                        }
+
+                        tempMatches.Clear();
+                    }
+                }
+
+                // Randomly choose type for the new bubble based on available types
+                tempType = Random.Range(0, okTypes.Count);
+                startingBubbleInfo[i].isSet = true;
+                startingBubbleInfo[i].type = (HAMSTER_TYPES)okTypes[tempType];
+
+                InitBubble(bubble, okTypes[tempType]);
+
+                // Reset for next check
+                for (int j = 0; j < numBubbles; ++j) {
+                    if (bubbles[j] != null) {
+                        bubbles[j].checkedForMatches = false;
+                    } else { // Break out at the first null bubble since there won't be any after
+                        break;
+                    }
+                }
+            }
+        } else { // If this rounds starting bubbles have already been decided
+            for (int i = 0; i < startingBubbleInfo.Length; ++i) {
+                // If this node is not supposed to be empty
+                if (startingBubbleInfo[i].isSet && startingBubbleInfo[i].type >= 0) {
+                    // Create a new bubble
+                    GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
+                    Bubble bubble = bub.GetComponent<Bubble>();
+                    bubble.transform.parent = bubblesParent;
+                    // Set it to the corresponding type of the decided starting bubbles
+                    HAMSTER_TYPES type = startingBubbleInfo[i].type;
+
+                    InitBubble(bubble, (int)type);
+                    bubble.SetGravity(startingBubbleInfo[i].isGravity);
+                    bubble.SetIce(startingBubbleInfo[i].isIce);
+                    bubble.node = i;
+                    nodeList[i].bubble = bubble;
+                    bubbles[i] = bubble;
+                }
+            }
+        }
+
+        // assign adj bubbles for each starting bubble and empty node
+        UpdateAllAdjBubbles();
+
+        // set starting bubbles matches count
+        for (int i = 0; i < numBubbles; ++i) {
+            if (bubbles[i] != null) {
+                bubbles[i].matches = bubbles[i].CheckMatches(bubbles[i].matches);
+                bubbles[i].numMatches = bubbles[i].matches.Count;
+
+                // Reset for next check
+                for (int j = 0; j < numBubbles; ++j) {
+                    if (bubbles[j] != null) {
+                        bubbles[j].checkedForMatches = false;
+                    }
+                }
+            }
+        }
+
+        _setupDone = true;
+    }
+
+    void InitBubble(Bubble bubble, int Type) {
 		//bubble.leftTeam = leftTeam;
         bubble.team = team;
 		bubble.Initialize((HAMSTER_TYPES)Type);
@@ -670,10 +784,12 @@ public class BubbleManager : MonoBehaviour {
 		bubbles [node] = null;
         nodeList[node].bubble = null;
 
+        /*
 		if (!_audioSource.isPlaying) {
             _audioSource.clip = _bubblePopClip;
 			_audioSource.Play();
 		}
+        */
 	}
 
     public void AddLine() {

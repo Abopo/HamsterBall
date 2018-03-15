@@ -49,7 +49,7 @@ public class BoardLoader : MonoBehaviour {
         _gameManager.LevelDoc = path;
 
 #if UNITY_EDITOR
-        TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
+        TextAsset textAsset = Resources.Load<TextAsset>("Text/Created Boards/" + path);
         _linesFromFile = textAsset.text.Split("\n"[0]);
         _fileIndex = 0;
 #else
@@ -83,7 +83,7 @@ public class BoardLoader : MonoBehaviour {
 
         switch(_readText) {
             case "Bubble Layout":
-                ReadBubbleLayout();
+                ReadBubbleInfo();
                 break;
             case "Handicaps":
                 ReadHandicaps();
@@ -142,7 +142,6 @@ public class BoardLoader : MonoBehaviour {
                     case 'N': // None
                         bubbles[bubIndex] = -2;
                         break;
-
                 }
                 bubIndex++;
             } else {
@@ -154,6 +153,60 @@ public class BoardLoader : MonoBehaviour {
         }
 
         BubbleManager.startingBubbleTypes = bubbles;
+    }
+
+    void ReadBubbleInfo() {
+        BubbleInfo[] bubbles = new BubbleInfo[125];
+        int bubIndex = 0;
+        int stringIndex = 0;
+
+        //_readChar = (char)_reader.Read();
+        _readChar = _linesFromFile[_fileIndex][stringIndex++];
+        while (_readChar != 'E') {
+            if (_readChar != ',') {
+                switch (_readChar) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                        bubbles[bubIndex].type = (HAMSTER_TYPES)char.GetNumericValue(_readChar);
+                        break;
+                    case 'D': // Dead
+                        bubbles[bubIndex].type = HAMSTER_TYPES.DEAD;
+                        break;
+                    case 'R': // Rainbow
+                        bubbles[bubIndex].type = HAMSTER_TYPES.RAINBOW;
+                        break;
+                    case 'B': // Bomb
+                        bubbles[bubIndex].type = HAMSTER_TYPES.BOMB;
+                        break;
+                    case 'G': // Gravity
+                        _readChar = _linesFromFile[_fileIndex][stringIndex++];
+                        bubbles[bubIndex].type = (HAMSTER_TYPES)char.GetNumericValue(_readChar);
+                        bubbles[bubIndex].isGravity = true;
+                        break;
+                    case 'I': // Ice
+                        // Set the previous bubble to be ice
+                        bubbles[--bubIndex].isIce = true;
+                        break;
+                    case 'N': // None
+                        bubbles[bubIndex].type = HAMSTER_TYPES.NO_TYPE;
+                        break;
+                }
+                bubbles[bubIndex].isSet = true;
+                bubIndex++;
+            } else {
+                _fileIndex++;
+                stringIndex = 0;
+            }
+            //_readChar = (char)_reader.Read();
+            _readChar = _linesFromFile[_fileIndex][stringIndex++];
+        }
+
+        BubbleManager.startingBubbleInfo = bubbles;
     }
 
     void ReadHandicaps() {

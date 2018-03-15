@@ -16,6 +16,8 @@ public class Bubble : MonoBehaviour {
 	public bool popped;
 	public bool isGravity;
     public GameObject spiralEffectObj;
+    public bool isIce;
+    public SpriteRenderer iceSprite;
 
     public LayerMask checkMask;
     public bool canBeHit;
@@ -35,11 +37,15 @@ public class Bubble : MonoBehaviour {
     private Vector3 _bankedPos; // position where this bubble banked off a wall
     BubblePopAnimation _popAnimation;
 
+
 	BubbleManager _homeBubbleManager;
     Rigidbody2D _rigibody2D;
 
     AudioSource _audioSource;
+    AudioClip _popClip;
     AudioClip _dropClip;
+    AudioClip _iceClip;
+
     bool _destroy = false;
 
     PlayerController _playerController;
@@ -70,15 +76,14 @@ public class Bubble : MonoBehaviour {
 
         _rigibody2D = GetComponent<Rigidbody2D>();
         _audioSource = GetComponent<AudioSource>();
+        _popClip = Resources.Load<AudioClip>("Audio/SFX/Pop");
         _dropClip = Resources.Load<AudioClip>("Audio/SFX/Hamster_Fall2");
+        _iceClip = Resources.Load<AudioClip>("Audio/SFX/IceBreak");
 
         // If the type says this should be a gravity
         if ((int)inType >= 11) {
             type = inType - 11;
-            isGravity = true;
-            GameObject spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-            spiralEffectInstance.transform.parent = transform;
-            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+            SetGravity(true);
         } else {
 		    type = inType;
         }
@@ -99,6 +104,22 @@ public class Bubble : MonoBehaviour {
         type = (HAMSTER_TYPES)inType;
         GetComponent<Animator>().SetInteger("Type", inType);
         transform.GetChild(0).GetComponent<Animator>().SetInteger("Type", inType);
+    }
+
+    public void SetGravity(bool gravity) {
+        if (gravity && !isGravity) {
+            isGravity = true;
+            GameObject spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
+            spiralEffectInstance.transform.parent = transform;
+            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+        } else {
+            isGravity = false;
+        }
+    }
+
+    public void SetIce(bool iced) {
+        isIce = iced;
+        iceSprite.enabled = iced;
     }
 
     // Update is called once per frame
@@ -281,8 +302,7 @@ public class Bubble : MonoBehaviour {
                 }
             }
             //_homeBubbleManager.RemoveBubble(node);
-            _audioSource.clip = _dropClip;
-            _audioSource.Play();
+            PlayDropClip();
 
             _destroy = true;
 		}
@@ -409,7 +429,7 @@ public class Bubble : MonoBehaviour {
 
 	public List<Bubble> CheckMatches(List<Bubble> matches) {
 		for (int i = 0; i < 6; ++i) {
-			if(adjBubbles[i] != null && adjBubbles[i].type != HAMSTER_TYPES.DEAD) {
+			if(adjBubbles[i] != null && adjBubbles[i].type != HAMSTER_TYPES.DEAD && !adjBubbles[i].isIce) {
                 if (adjBubbles[i].type == type) {
 					if(!adjBubbles[i].checkedForMatches) {
 						adjBubbles[i].checkedForMatches = true;
@@ -510,6 +530,16 @@ public class Bubble : MonoBehaviour {
 
         // Instaed of destroying, do a nice animation of the bubble opening.
         _popAnimation.Pop();
+
+        // Check if any adjBubbles are iced, and if so break them
+        foreach(Bubble b in adjBubbles) {
+            if(b != null && b.isIce) {
+                b.BreakIce();
+            }
+        }
+
+        PlayPopClip();
+
 		//DestroyObject (this.gameObject);
 	}
 
@@ -540,19 +570,43 @@ public class Bubble : MonoBehaviour {
         // Add score for how many bubbles were blown up
         _homeBubbleManager.IncreaseScore(adjBubbles.Length * 50);
 
+        // Get the iced data from the adjBubbles before exploding
+        bool[] icedBubbles = new bool[6];
+        for(int i = 0; i < 6; ++i) {
+            if(adjBubbles[i] != null) {
+                icedBubbles[i] = adjBubbles[i].isIce;
+            }
+        }
+
         // Pop self and all adjBubbles
-        Pop();
-        foreach (Bubble b in adjBubbles) {
-            if (b != null) {
-                if (b.type == HAMSTER_TYPES.BOMB && !b.popped) {
-                    b.BombExplode();
+        for(int i = 0; i < 6; ++i) {
+            if (adjBubbles[i] != null) {
+                // If this bubble was iced before this
+                if (icedBubbles[i]) {
+                    // Break the ice
+                    BreakIce();
+                } else if (adjBubbles[i].type == HAMSTER_TYPES.BOMB && !adjBubbles[i].popped) {
+                    adjBubbles[i].BombExplode();
                 } else {
-                    b.Pop();
+                    adjBubbles[i].Pop();
                 }
             }
         }
 
+        Pop();
+
         _homeBubbleManager.BubbleEffects.BombBubbleExplosion(transform.position);
+    }
+
+    public void BreakIce() {
+        if (isIce) {
+            // TODO: Some ice breaking animation
+
+            // Play sound effect
+            PlayIceClip();
+
+            SetIce(false);
+        }
     }
 
     public void SwitchTeams() {
@@ -600,6 +654,27 @@ public class Bubble : MonoBehaviour {
         }
 
         gameObject.layer = LayerMask.NameToLayer("SolidBubble");
+    }
+
+    void PlayDropClip() {
+        if (!_audioSource.isPlaying) {
+            _audioSource.clip = _dropClip;
+            _audioSource.Play();
+        }
+    }
+
+    void PlayPopClip() {
+        if (!_audioSource.isPlaying) {
+            _audioSource.clip = _popClip;
+            _audioSource.Play();
+        }
+    }
+
+    void PlayIceClip() {
+        if (!_audioSource.isPlaying) {
+            _audioSource.clip = _iceClip;
+            _audioSource.Play();
+        }
     }
 
     public bool IsSpecialType() {

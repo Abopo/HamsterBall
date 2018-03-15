@@ -72,6 +72,22 @@ public class BoardEditor : MonoBehaviour {
     }
 
     public int FindClosestNode(Vector3 pos) {
+        int closestNode = -1;
+
+        float bestDist = 1000, tempDist = 0;
+        for (int i = 0; i < _nodes.Count; ++i) {
+            tempDist = Vector2.Distance(_nodes[i].transform.position, pos);
+
+            if(tempDist < bestDist) {
+                closestNode = i;
+                bestDist = tempDist;
+            }
+        }
+
+        return closestNode;
+    }
+
+    public int FindClosestFreeNode(Vector3 pos) {
         // find closest node
         int closestNode = -1;
 
@@ -136,6 +152,7 @@ public class BoardEditor : MonoBehaviour {
         // Save the filename
         streamWriter.WriteLine(_fileName);
 
+    #region Save Layout
         // Save the bubble layout
         string tempLine = "";
         tempLine = "Bubble Layout";
@@ -193,6 +210,9 @@ public class BoardEditor : MonoBehaviour {
                             tempLine += "B";
                             break;
                     }
+                    if(_nodes[j].bubble.isIce) {
+                        tempLine += "I";
+                    }
                 } else {
                     tempLine += "N";
                 }
@@ -203,7 +223,9 @@ public class BoardEditor : MonoBehaviour {
 
             tempLine = "";
         }
+#endregion
 
+    #region Save data
         // End the bubble layout with an escape character
         tempLine = "E";
         streamWriter.WriteLine(tempLine);
@@ -287,6 +309,7 @@ public class BoardEditor : MonoBehaviour {
         tempLine = "Level";
         streamWriter.WriteLine(tempLine);
         streamWriter.Write(_levelPrefab);
+    #endregion
 
         tempLine = "\n";
         streamWriter.WriteLine(tempLine);
@@ -334,7 +357,6 @@ public class BoardEditor : MonoBehaviour {
             i++;
         }
 
-        
         //_readChar = (char)_reader.Read();
         fileIndex++;
         char _readChar = _linesFromFile[fileIndex][stringIndex++];
@@ -363,6 +385,10 @@ public class BoardEditor : MonoBehaviour {
                         // Get the next char for the type
                         _readChar = _linesFromFile[fileIndex][stringIndex++];
                         CreateBubbleSprite((int)char.GetNumericValue(_readChar) + 11, nodeIndex);
+                        break;
+                    case 'I': // Ice
+                        // Set the previous sprite to be ice
+                        _nodes[--nodeIndex].bubble.SetIsIce(true);
                         break;
                     case 'N': // None
                         break;
