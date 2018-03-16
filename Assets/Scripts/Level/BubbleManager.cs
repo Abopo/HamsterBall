@@ -86,12 +86,12 @@ public class BubbleManager : MonoBehaviour {
         get { return _comboCount; }
     }
 
-    //public int[] NextLineBubbles {
-    //    get { return _nextLineBubbles; }
-    //    set { _nextLineBubbles = value; }
-    //}
-
     public UnityEvent boardChangedEvent;
+
+    Vector3 _initialPos;
+    bool _isShaking;
+    float _shakeTime = 0.1f;
+    float _shakeTimer = 0f;
 
     GameManager _gameManager;
     LevelManager _levelManager;
@@ -142,6 +142,8 @@ public class BubbleManager : MonoBehaviour {
         _addLineClip = Resources.Load<AudioClip>("Audio/SFX/Add_Line");
 
         ReadyHamsterMeter();
+
+        _initialPos = transform.position;
     }
 
     // Use this for initialization
@@ -632,6 +634,7 @@ public class BubbleManager : MonoBehaviour {
         if(startingBubbleTypes[0] != -1 && !_setupDone) {
             SpawnStartingBubbles();
         }
+
         if (justAddedBubble) {
 			// Check for anchor points
 			List<Bubble> anchorBubbles = new List<Bubble>();
@@ -645,6 +648,14 @@ public class BubbleManager : MonoBehaviour {
             boardChangedEvent.Invoke();
 			justAddedBubble = false;
 		}
+
+        if(_isShaking) {
+            _shakeTimer += Time.deltaTime;
+            if (_shakeTimer >= _shakeTime) {
+                ShakeMovement();
+                _shakeTimer = 0f;
+            }
+        }
 
         if(testMode) {
             CheckInput();
@@ -992,9 +1003,6 @@ public class BubbleManager : MonoBehaviour {
         // Send the winning team to the game manager
         _gameManager.EndGame(team == 0 ? 1 : 0, _scoreTotal);
 
-        // Pause the game
-        _gameManager.Pause();
-
         if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
             mpResultsScreen.Activate(team);
         } else if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
@@ -1053,5 +1061,23 @@ public class BubbleManager : MonoBehaviour {
 
         // change score text
         scoreText.text = _scoreTotal.ToString();
+    }
+
+    public void StartShaking() {
+        if (!_isShaking) {
+            _isShaking = true;
+            transform.Translate(-0.05f, 0f, 0f, Space.World);
+        }
+    }
+    public void StopShaking() {
+        _isShaking = false;
+        transform.position = _initialPos;
+    }
+    void ShakeMovement() {
+        if (transform.position.x < _initialPos.x) {
+            transform.Translate(0.1f, 0f, 0f, Space.World);
+        } else if(transform.position.x > _initialPos.x) {
+            transform.Translate(-0.1f, 0f, 0f, Space.World);
+        }
     }
 }

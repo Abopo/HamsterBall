@@ -579,7 +579,9 @@ public class Bubble : MonoBehaviour {
         }
 
         // Pop self and all adjBubbles
-        for(int i = 0; i < 6; ++i) {
+        Pop();
+
+        for (int i = 0; i < 6; ++i) {
             if (adjBubbles[i] != null) {
                 // If this bubble was iced before this
                 if (icedBubbles[i]) {
@@ -593,7 +595,6 @@ public class Bubble : MonoBehaviour {
             }
         }
 
-        Pop();
 
         _homeBubbleManager.BubbleEffects.BombBubbleExplosion(transform.position);
     }

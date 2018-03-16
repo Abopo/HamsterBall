@@ -46,6 +46,8 @@ public class Hamster : Entity {
     public bool Destroy1 {
         get { return _destroy; }
     }
+
+    GameManager _gameManager;
     
     // Use this for initialization
     protected override void Start () {
@@ -64,6 +66,8 @@ public class Hamster : Entity {
                 SetType(11, (HAMSTER_TYPES)SelectValidNormalType());
             }
         }
+
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         UpdateVelocity();
 	}
@@ -87,7 +91,7 @@ public class Hamster : Entity {
         exitedPipe = false;
     }
 
-    /// If setType is -1, will randomly generate a type.
+    // If setType is -1, will randomly generate a type.
     public void SetType(int setType) {
         if(setType == (int)HAMSTER_TYPES.RAINBOW) {
             moveSpeed = rainbowMoveSpeed;
@@ -146,8 +150,13 @@ public class Hamster : Entity {
     protected override void Update () {
         base.Update();
 
+        // Don't update if the game is over
+        if (_gameManager.gameIsOver) {
+            return;
+        }
+
         // Wait until SFX is done to destroy
-        if(_destroy && !_audioSource.isPlaying) {
+        if (_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
         }
 

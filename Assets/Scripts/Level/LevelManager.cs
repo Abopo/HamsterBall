@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour {
     bool _gameOver = false;
 
     GameManager _gameManager;
+    BubbleManager _bubbleManager;
 
     public float LevelTimer {
         get { return _levelTimer; }
@@ -31,6 +32,10 @@ public class LevelManager : MonoBehaviour {
         _targetPoints = _initialTargetPoints;
         _gameManager = FindObjectOfType<GameManager>();
         _gameManager.gameOverEvent.AddListener(GameEnd);
+
+        if(_gameManager.isSinglePlayer) {
+            _bubbleManager = FindObjectOfType<BubbleManager>();
+        }
     }
 
     // Update is called once per frame
@@ -56,10 +61,17 @@ public class LevelManager : MonoBehaviour {
                 if (_gameManager.timeLimit == 0) {
                     _pushTimer += Time.deltaTime;
                     if (_pushTimer > _pushTime) {
+                        // Stop shaking
+                        _bubbleManager.StopShaking();
+
                         // push down the board
-                        FindObjectOfType<BubbleManager>().PushBoardDown();
+                        _bubbleManager.PushBoardDown();
+
 
                         _pushTimer = 0;
+                    } else if(_pushTime - _pushTimer < 5) {
+                        // Shake the bubble manager
+                        _bubbleManager.StartShaking();
                     }
                 }
             }

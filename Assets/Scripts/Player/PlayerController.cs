@@ -169,6 +169,11 @@ public class PlayerController : Entity {
     protected override void Update () {
         base.Update();
 
+        // Don't update if the game is over
+        if(_gameManager.gameIsOver) {
+            return;
+        }
+
 		CheckInput ();
         direction = Animator.GetBool("FacingRight") ? 1 : -1;
 

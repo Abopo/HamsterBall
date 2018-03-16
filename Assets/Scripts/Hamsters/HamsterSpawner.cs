@@ -91,7 +91,12 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     // Update is called once per frame
     void Update () {
-		_spawnTimer += Time.deltaTime;
+        // Don't update if the game is over
+        if (_gameManager.gameIsOver) {
+            return;
+        }
+
+        _spawnTimer += Time.deltaTime;
 		if (_spawnTimer >= _spawnTime && hamsterCount < maxHamsterCount) {
 			SpawnHamster();
             // Choose the next hamster type right now

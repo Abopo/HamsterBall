@@ -57,7 +57,7 @@ public class CutsceneManager : MonoBehaviour {
 
     public void StartCutscene(string textPath) {
         // Pause the game for the cutscene
-        _gameManager.Pause();
+        _gameManager.FullPause();
 
         // Make sure scene is visible
         titleText.gameObject.SetActive(true);

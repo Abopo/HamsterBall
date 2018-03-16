@@ -18,16 +18,23 @@ public class WaterController : MonoBehaviour {
     float _moveSpeed = 1f;
 
     EdgeCollider2D[] _floatingObjects;
+    GameManager _gameManager;
 
     // Use this for initialization
     void Start () {
         _floatingObjects = GetComponentsInChildren<EdgeCollider2D>();
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         TurnOffFloatingObjects();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        // Don't update if the game is over
+        if (_gameManager.gameIsOver) {
+            return;
+        }
+
         _moveTimer += Time.deltaTime;
         if(_moveTimer >= _moveTime && _moveDir == 0) {
             // Change position

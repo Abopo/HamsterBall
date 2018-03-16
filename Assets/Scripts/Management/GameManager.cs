@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
     public bool testMode;
     public bool isOnline = false;
     public bool isSinglePlayer = false;
+    public bool gameIsOver = false;
     public string level; // if level is "" it's a local multiplayer match, otherwise it's a story level
 
     public MENU prevMenu; // Keeps track of the last menu we were in so we can return after a level is finished
@@ -114,8 +115,8 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void Pause() {
-        // Pause the game
+    public void FullPause() {
+        // Pause the game via timeScale
         Time.timeScale = 0;
     }
 
@@ -127,8 +128,13 @@ public class GameManager : MonoBehaviour {
     public void EndGame(int winningTeam, int winScore) {
         gameOverEvent.Invoke();
 
+        // Pause the game
+        // FullPause();
+
+        gameIsOver = true;
+
         // If we are playing a story level and the player's team won
-        if(IsStoryLevel() && (gameMode == GAME_MODE.MP_VERSUS && winningTeam == 0)) {
+        if (IsStoryLevel() && (gameMode == GAME_MODE.MP_VERSUS && winningTeam == 0)) {
             string pref = level.ToString() + "Highscore";
 
             // If their new score is better than the old one
