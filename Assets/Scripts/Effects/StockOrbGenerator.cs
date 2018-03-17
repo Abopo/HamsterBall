@@ -14,14 +14,22 @@ public class StockOrbGenerator : MonoBehaviour {
     float _spawnTime = 0.25f;
     float _spawnTimer = 0.0f;
 
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    GameManager _gameManager;
+
+    // Use this for initialization
+    void Start () {
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    }
+
+    // Update is called once per frame
+    void Update () {
+        // Don't update if the game is over
+        if (_gameManager.gameIsOver) {
+            return;
+        }
+
         //if (_spawning) {
-            _spawnTimer += Time.deltaTime;
+        _spawnTimer += Time.deltaTime;
             if (_spawnTimer > _spawnTime) {
                 SpawnStockOrb();
                 _spawnTimer = 0.0f;

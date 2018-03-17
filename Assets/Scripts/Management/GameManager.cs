@@ -222,8 +222,10 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene("BoardEditor");
     }
 
-    void CleanUp() {
+    public void CleanUp() {
         Unpause();
+
+        gameIsOver = false;
 
         // Load character select screen.
         if (_playerManager == null) {

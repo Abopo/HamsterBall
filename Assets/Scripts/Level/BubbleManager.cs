@@ -50,7 +50,6 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    public static int[] startingBubbleTypes = Enumerable.Repeat<int>(-1, 125).ToArray(); // initializes 125 values to -1
     public static BubbleInfo[] startingBubbleInfo = new BubbleInfo[125];
 
     static List<int> _nextLineBubbles = new List<int>();
@@ -86,6 +85,10 @@ public class BubbleManager : MonoBehaviour {
         get { return _comboCount; }
     }
 
+    public bool SetupDone {
+        get { return _setupDone; }
+    }
+
     public UnityEvent boardChangedEvent;
 
     Vector3 _initialPos;
@@ -117,10 +120,7 @@ public class BubbleManager : MonoBehaviour {
             // If we are the master client
             if(PhotonNetwork.isMasterClient) {
                 // Go ahead and make the starting bubbles
-                SpawnStartingBubbles();
-                justAddedBubble = true;
-            } else {
-                SpawnStartingBubbles();
+                SpawnStartingBubblesInfo();
                 justAddedBubble = true;
             }
         } else {
@@ -189,106 +189,6 @@ public class BubbleManager : MonoBehaviour {
 		}
 
 		nodeSpawnPos = new Vector3(transform.position.x, (transform.position.y + 2.9f), 0f);
-	}
-
-    public void SpawnStartingBubbles() {
-        int numBubbles = 50;
-
-        // If the starting bubbles have not been built yet
-        if (startingBubbleTypes[0] == -1) {
-            int tempType = 0;
-            List<Bubble> tempMatches = new List<Bubble>();
-            List<int> okTypes = new List<int>();
-            for (int i = 0; i < numBubbles; ++i) {
-                // Create and initialize a new bubble
-                GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
-                Bubble bubble = bub.GetComponent<Bubble>();
-                bubble.transform.parent = bubblesParent;
-                bubble.node = i;
-                // Add the new bubble to necessary lists
-                nodeList[i].bubble = bubble;
-                bubbles[i] = bubble;
-
-                // Temporarily initialize new bubble as a Dead bubble to prevent inaccurate match calculations.
-                InitBubble(bubble, (int)HAMSTER_TYPES.DEAD);
-
-                // Update the adjacent bubbles
-                UpdateAllAdjBubbles();
-
-                // Reinitialize okTypes
-                okTypes.Clear();
-                for (int j = 0; j < (int)HAMSTER_TYPES.NUM_NORM_TYPES; ++j) {
-                    okTypes.Add(j);
-                }
-                // Check adjacent bubbles for matches
-                foreach (Bubble b in bubble.adjBubbles) {
-                    if (b != null) {
-                        // Get the matches for each adjacent bubble
-                        tempMatches = b.CheckMatches(tempMatches);
-                        // If a bubble has more that 3 matches already
-                        if (tempMatches.Count > 3) {
-                            // Don't make another bubble of that type,
-                            // Remove that type from the okTypes list.
-                            okTypes.Remove((int)b.type);
-                        }
-
-                        tempMatches.Clear();
-                    }
-                }
-
-                // Randomly choose type for the new bubble based on available types
-                tempType = Random.Range(0, okTypes.Count);
-                startingBubbleTypes[i] = okTypes[tempType];
-
-                InitBubble(bubble, okTypes[tempType]);
-
-                // Reset for next check
-                for (int j = 0; j < numBubbles; ++j) {
-                    if (bubbles[j] != null) {
-                        bubbles[j].checkedForMatches = false;
-                    } else { // Break out at the first null bubble since there won't be any after
-                        break;
-                    }
-                }
-            }
-        } else { // If this rounds starting bubbles have already been decided
-            for (int i = 0; i < startingBubbleTypes.Length; ++i) {
-                // If this node is not supposed to be empty
-                if (startingBubbleTypes[i] >= 0) {
-                    // Create a new bubble
-                    GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
-                    Bubble bubble = bub.GetComponent<Bubble>();
-                    bubble.transform.parent = bubblesParent;
-                    // Set it to the corresponding type of the decided starting bubbles
-                    int type = startingBubbleTypes[i];
-
-                    InitBubble(bubble, type);
-                    bubble.node = i;
-                    nodeList[i].bubble = bubble;
-                    bubbles[i] = bubble;
-                }
-            }
-        }
-
-		// assign adj bubbles for each starting bubble and empty node
-		UpdateAllAdjBubbles ();
-
-        // set starting bubbles matches count
-        for (int i = 0; i < numBubbles; ++i) {
-            if (bubbles[i] != null) {
-                bubbles[i].matches = bubbles[i].CheckMatches(bubbles[i].matches);
-                bubbles[i].numMatches = bubbles[i].matches.Count;
-
-                // Reset for next check
-                for (int j = 0; j < numBubbles; ++j) {
-                    if (bubbles[j] != null) {
-                        bubbles[j].checkedForMatches = false;
-                    }
-                }
-            }
-        }
-
-        _setupDone = true;
 	}
 
     public void SpawnStartingBubblesInfo() {
@@ -631,8 +531,9 @@ public class BubbleManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if(startingBubbleTypes[0] != -1 && !_setupDone) {
-            SpawnStartingBubbles();
+        // If for some reason the bubble haven't been setup yet
+        if(!startingBubbleInfo[0].isSet && !_setupDone) {
+            SpawnStartingBubblesInfo();
         }
 
         if (justAddedBubble) {
@@ -996,8 +897,8 @@ public class BubbleManager : MonoBehaviour {
         _gameOver = true;
 
         // Clear out starting bubbles to prepare for next round
-        for(int i = 0; i < 50; ++i) {
-            startingBubbleTypes[i] = -1;
+        for(int i = 0; i < startingBubbleInfo.Length; ++i) {
+            startingBubbleInfo[i].isSet = false;
         }
 
         // Send the winning team to the game manager
@@ -1071,7 +972,7 @@ public class BubbleManager : MonoBehaviour {
     }
     public void StopShaking() {
         _isShaking = false;
-        transform.position = _initialPos;
+        transform.position = new Vector3(_initialPos.x, transform.position.y, transform.position.z);
     }
     void ShakeMovement() {
         if (transform.position.x < _initialPos.x) {

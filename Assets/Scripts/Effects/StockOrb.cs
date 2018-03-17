@@ -13,6 +13,7 @@ public class StockOrb : MonoBehaviour {
     float moveSpeed = 20.0f;
 
     Rigidbody2D _rigidbody;
+    GameManager _gameManager;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +23,7 @@ public class StockOrb : MonoBehaviour {
 	
     public void Initialize() {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     public void Launch(Transform target)
@@ -35,6 +37,11 @@ public class StockOrb : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        // Don't update if the game is over
+        if (_gameManager.gameIsOver) {
+            return;
+        }
+
         _delayTimer += Time.deltaTime;
 		if(_delayTimer >= _delayTime) {
             // Head towards target

@@ -106,55 +106,6 @@ public class BoardLoader : MonoBehaviour {
         }
     }
 
-    void ReadBubbleLayout() {
-        int[] bubbles = Enumerable.Repeat<int>(-2, 125).ToArray(); // initializes 125 values to -2
-        bubbles[0] = -1;
-        int bubIndex = 0;
-        int stringIndex = 0;
-
-        //_readChar = (char)_reader.Read();
-        _readChar = _linesFromFile[_fileIndex][stringIndex++];
-        while (_readChar != 'E') {
-            if (_readChar != ',') {
-                switch(_readChar) {
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                        bubbles[bubIndex] = (int)char.GetNumericValue(_readChar);
-                        break;
-                    case 'D': // Dead
-                        bubbles[bubIndex] = (int)HAMSTER_TYPES.DEAD;
-                        break;
-                    case 'R': // Rainbow
-                        bubbles[bubIndex] = (int)HAMSTER_TYPES.RAINBOW;
-                        break;
-                    case 'B': // Bomb
-                        bubbles[bubIndex] = (int)HAMSTER_TYPES.BOMB;
-                        break;
-                    case 'G': // Gravity
-                        _readChar = _linesFromFile[_fileIndex][stringIndex++];
-                        bubbles[bubIndex] = (int)char.GetNumericValue(_readChar) + 11;
-                        break;
-                    case 'N': // None
-                        bubbles[bubIndex] = -2;
-                        break;
-                }
-                bubIndex++;
-            } else {
-                _fileIndex++;
-                stringIndex = 0;
-            }
-            //_readChar = (char)_reader.Read();
-            _readChar = _linesFromFile[_fileIndex][stringIndex++];
-        }
-
-        BubbleManager.startingBubbleTypes = bubbles;
-    }
-
     void ReadBubbleInfo() {
         BubbleInfo[] bubbles = new BubbleInfo[125];
         int bubIndex = 0;

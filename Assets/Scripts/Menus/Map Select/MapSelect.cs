@@ -12,10 +12,24 @@ public class MapSelect : MonoBehaviour {
 
     bool _justMoved;
 
+    // Networking
+    int _masterClientID;
+
     // Use this for initialization
     void Start() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _audioSource = GetComponent<AudioSource>();
+
+        FindMasterClient();
+    }
+
+    void FindMasterClient() {
+        foreach (PhotonPlayer pp in PhotonNetwork.playerList) {
+            if (pp.IsMasterClient) {
+                _masterClientID = pp.ID;
+                Debug.Log("Master Client ID: " + _masterClientID);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -35,9 +49,6 @@ public class MapSelect : MonoBehaviour {
             _justMoved = false;
         }
 
-        //if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Return)) {
-        //   selectButton.onClick.Invoke();
-        //}
         if (Input.GetButtonDown("Cancel")) {
             _audioSource.Play();
             LoadCharacterSelect();
@@ -79,6 +90,29 @@ public class MapSelect : MonoBehaviour {
             return true;
         } else {
             return false;
+        }
+    }
+
+    // Networking 
+    public void LoadNetworkedCharacterSelect() {
+        PhotonNetwork.LoadLevel("NetworkedCharacterSelect");
+    }
+
+    // TODO: put this function in a place that makes more sense
+    public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer) {
+        Debug.Log("Player disconnected, ID: " + otherPlayer.ID);
+
+        // If the disconnected player was the master client
+        if (otherPlayer.ID == _masterClientID) {
+            // TODO: throw up a message saying the host disconnected
+
+            // Leave the room
+            PhotonNetwork.LeaveRoom();
+            SceneManager.LoadScene("OnlineLobby");
+        } else if(PhotonNetwork.playerList.Length < 2) {
+            // TODO: this will cause issues if there's a team of 2 and the other team disconnects
+
+            LoadNetworkedCharacterSelect();
         }
     }
 }

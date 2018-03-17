@@ -26,6 +26,10 @@ public class MapIcon : MonoBehaviour {
         get { return _moving; }
     }
 
+    public int MapIndex {
+        get { return _mapIndex; }
+    }
+
     // Use this for initialization
     void Start () {
         switch(index) {
@@ -99,7 +103,6 @@ public class MapIcon : MonoBehaviour {
                 curMapText.text = mapName;
             }
         }
-
 	}
 
     void Transition() {
@@ -178,6 +181,13 @@ public class MapIcon : MonoBehaviour {
                     break;
             }
         }
+    }
 
+    public void SetMap(int mIndex, int inIndex) {
+        _mapIndex = mIndex;
+        _spriteRenderer.sprite = _mapImages[mIndex];
+        mapName = _mapNames[mIndex];
+
+        index = inIndex;
     }
 }

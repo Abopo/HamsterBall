@@ -266,7 +266,7 @@ public class Bubble : MonoBehaviour {
                 }
             }
 		}
-        if(other.tag == "Ceiling") {
+        if(other.tag == "Ceiling" && !locked) {
             CollisionWithBoard();
         }
         if (other.tag == "Bottom") {

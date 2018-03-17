@@ -28,27 +28,22 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
             // For initial setup to be synced.
-            if (BubbleManager.startingBubbleTypes[0] != -1) {
+            if (BubbleManager.startingBubbleInfo[0].isSet) {
                 for(int i = 0; i < 50; ++i) {
-                    stream.SendNext(BubbleManager.startingBubbleTypes[i]);
+                    stream.SendNext(BubbleManager.startingBubbleInfo[i].type);
                 }
-
-                //for (int i = 0; i < 13; ++i) {
-                //    stream.SendNext(_bubbleManager.NextLineBubbles[i]);
-                //}
             }
         } else {
             // For initial setup to be synced.
-            if (BubbleManager.startingBubbleTypes[0] == -1) {
+            if (!BubbleManager.startingBubbleInfo[0].isSet) {
                 for (int i = 0; i < 50; ++i) {
-                    BubbleManager.startingBubbleTypes[i] = (int)stream.ReceiveNext();
+                    BubbleManager.startingBubbleInfo[i].type = (HAMSTER_TYPES)stream.ReceiveNext();
+                    BubbleManager.startingBubbleInfo[i].isSet = true;
                 }
+            }
 
-                //for (int i = 0; i < 13; ++i) {
-                //    _bubbleManager.NextLineBubbles[i] = (int)stream.ReceiveNext();
-                //}
-
-                _bubbleManager.SpawnStartingBubbles();
+            if (!_bubbleManager.SetupDone) {
+                _bubbleManager.SpawnStartingBubblesInfo();
             }
         }
     }
