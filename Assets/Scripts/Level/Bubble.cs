@@ -37,6 +37,7 @@ public class Bubble : MonoBehaviour {
     private Vector3 _bankedPos; // position where this bubble banked off a wall
     BubblePopAnimation _popAnimation;
 
+    public int dropPotential; // A count of how many bubbles will be dropped if this bubble is matched
 
 	BubbleManager _homeBubbleManager;
     Rigidbody2D _rigibody2D;
@@ -47,6 +48,7 @@ public class Bubble : MonoBehaviour {
     AudioClip _iceClip;
 
     bool _destroy = false;
+    bool _boardChanged = false;
 
     PlayerController _playerController;
     public PlayerController PlayerController {
@@ -73,6 +75,8 @@ public class Bubble : MonoBehaviour {
 		} else if (team == 1) {
 			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager2").GetComponent<BubbleManager>();
 		}
+
+        _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
 
         _rigibody2D = GetComponent<Rigidbody2D>();
         _audioSource = GetComponent<AudioSource>();
@@ -133,8 +137,16 @@ public class Bubble : MonoBehaviour {
 			checkedForMatches = false;
 			checkedForAnchor = false;
 			foundAnchor = false;
-            // TODO: Only run this when the board changes.
-            // CanBeHit();
+
+            // Sync drop potential between matched bubbles
+            if(_boardChanged) {
+                foreach(Bubble b in matches) {
+                    if(b != null && b.dropPotential > dropPotential) {
+                        dropPotential = b.dropPotential;
+                    }
+                }
+                _boardChanged = false;
+            }
 		} else {
             // Move
             //Debug.Log(_rigibody2D.velocity);
@@ -145,6 +157,10 @@ public class Bubble : MonoBehaviour {
             } else {
                 _rigibody2D = GetComponent<Rigidbody2D>();
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.U)) {
+            BoardChanged();
         }
 	}
 
@@ -216,7 +232,7 @@ public class Bubble : MonoBehaviour {
                             b.foundAnchor = true;
                         }
                     } else {
-                        adjBubbles[i].CheckForAnchor(bubbles);
+                        adjBubbles[i].CheckForAnchor(bubbles, excludedBubbles);
                     }
                 } else if (adjBubbles[i].foundAnchor) {
                     foundAnchor = true;
@@ -531,10 +547,20 @@ public class Bubble : MonoBehaviour {
         // Instaed of destroying, do a nice animation of the bubble opening.
         _popAnimation.Pop();
 
-        // Check if any adjBubbles are iced, and if so break them
+        // Run through adjBubbles
         foreach(Bubble b in adjBubbles) {
-            if(b != null && b.isIce) {
-                b.BreakIce();
+            if (b != null) {
+                // Remove self from their adjBubbles
+                for(int i = 0; i < 6; ++i) {
+                    if(b.adjBubbles[i] == this) {
+                        b.adjBubbles[i] = null;
+                    }
+                }
+
+                // If iced, break
+                if (b.isIce) {
+                    b.BreakIce();
+                }
             }
         }
 
@@ -624,8 +650,19 @@ public class Bubble : MonoBehaviour {
 		}
 	}
 
+    // Is called when the board is changed
+    void BoardChanged() {
+        if (CouldMaybeBeHit()) {
+            CheckDropPotential();
+        } else {
+            dropPotential = 0;
+        }
+
+        _boardChanged = true;
+    }
+
     // This function scans around the bubble to check whether or not it's possible to be hit by the player.
-    void CanBeHit() {
+    bool CanBeHit() {
         canBeHit = false;
 
         RaycastHit2D hit;
@@ -644,7 +681,7 @@ public class Bubble : MonoBehaviour {
                 hit = Physics2D.Raycast(origin, rayDir, 10f, checkMask);
                 if (hit && hit.transform.tag == "Platform") {
                     hitCount++;
-                    //Debug.DrawRay(origin, rayDir * hit.distance);
+                    Debug.DrawRay(origin, rayDir * hit.distance);
                 }
             }
 
@@ -655,6 +692,73 @@ public class Bubble : MonoBehaviour {
         }
 
         gameObject.layer = LayerMask.NameToLayer("SolidBubble");
+
+        return canBeHit;
+    }
+
+    // This is just used to reduce the number of bubbles that go through the DropPotential Check,
+    // it's not designed to be perfectly accurate
+    bool CouldMaybeBeHit() {
+        foreach(Bubble b in adjBubbles) {
+            if(b == null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void CheckDropPotential() {
+        dropPotential = 0;
+        // Make sure matches at least contains self
+        if (matches.Count == 0) {
+            matches.Add(this);
+        }
+
+        List<Bubble> bubbles = new List<Bubble>();
+        foreach (Bubble b in adjBubbles) {
+            // Reset variables for next bubble
+            foreach (Bubble lB in bubbles) {
+                lB.checkedForAnchor = false;
+                lB.foundAnchor = false;
+                lB.checkedForMatches = false;
+            }
+            bubbles.Clear();
+
+            // If a bubble can't find an anchor without the matchedBubbles
+            // matches aren't set up for inital bubbles
+            if (b != null && !matches.Contains(b)) {
+                b.foundAnchor = false;
+                foreach (Bubble b2 in b.adjBubbles) {
+                    if (b2 != null) {
+                        b2.checkedForAnchor = false;
+                        b2.foundAnchor = false;
+                        b2.checkedForMatches = false;
+                    }
+                }
+
+                if (!b.CheckForAnchor(bubbles, matches)) {
+                    // Then add weight based on how many bubbles would be dropped
+                    dropPotential = DropCount(b, matches);
+                }
+            }
+        }
+    }
+
+    // Counts how many bubbles will be dropped along with the inBubble
+    int DropCount(Bubble bub, List<Bubble> matchedBubbles) {
+        int dropCount = 1;
+        bub.checkedForMatches = true;
+
+        foreach (Bubble b in bub.adjBubbles) {
+            if (b != null && !b.checkedForMatches && !matchedBubbles.Contains(b)) {
+                //dropCount++;
+                b.checkedForMatches = true;
+                dropCount += DropCount(b, matchedBubbles);
+            }
+        }
+
+        return dropCount;
     }
 
     void PlayDropClip() {

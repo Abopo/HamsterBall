@@ -62,7 +62,7 @@ public class AIAction {
         // if we are chasing a hamster
         if (hamsterWant != null) {
             if (hamsterWant.type == HAMSTER_TYPES.RAINBOW) {
-                weight += 10;
+                weight += 20;
             }
 
             // Increase weight based on distance from player, the closer the better.
@@ -125,8 +125,8 @@ public class AIAction {
                 addWeight += bubbleWant.numMatches >= 2 ? 50 : -80;
             }
 
-            // Check for any potential drops from this match
-            addWeight += DropChecks();
+            // Add weight based on potential drops of the bubbleWant
+            addWeight += bubbleWant.dropPotential * 30;
 
             // if we want a bubble on our board and we've want/have a bomb hamster
         } else if (bubbleWant != null && bubbleWant.team == _playerController.team && type == HAMSTER_TYPES.BOMB) {
@@ -246,51 +246,6 @@ public class AIAction {
         }
 
         return addWeight;
-    }
-
-    int DropChecks() {
-        int addWeight = 0;
-
-        List<Bubble> bubbles = new List<Bubble>();
-        foreach (Bubble b in bubbleWant.adjBubbles) {
-            // Reset variables for next bubble
-            foreach (Bubble lB in bubbles) {
-                lB.checkedForAnchor = false;
-                lB.foundAnchor = false;
-                lB.checkedForMatches = false;
-            }
-            bubbles.Clear();
-
-            // Make sure the bubbleWant's match list is up to date
-            if(bubbleWant.matches.Count == 0) {
-                bubbleWant.matches = bubbleWant.CheckMatches(bubbleWant.matches);
-            }
-            // If a bubble can't find an anchor without the matchedBubbles
-            // matches aren't set up for inital bubbles
-            if (b != null && !b.CheckForAnchor(bubbles, bubbleWant.matches)) {
-                // Then add weight based on how many bubbles would be dropped
-                int dropCount = DropCount(b, bubbleWant.matches);
-                addWeight += 30 * dropCount;
-                //Debug.Log("Potential Drop of: " + dropCount);
-            }
-        }
-
-        return addWeight;
-    }
-
-    // Counts how many bubbles will be dropped along with the inBubble
-    int DropCount(Bubble bub, List<Bubble> matchedBubbles) {
-        int dropCount = 1;
-
-        foreach(Bubble b in bub.adjBubbles) {
-            if (b != null && !b.checkedForMatches && !matchedBubbles.Contains(b)) {
-                dropCount++;
-                b.checkedForMatches = true;
-                dropCount += DropCount(b, matchedBubbles);
-            }
-        }
-
-        return dropCount;
     }
 
     // Use this for any cleanup neede when choosing a new action.

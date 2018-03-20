@@ -336,7 +336,7 @@ public class AIController : MonoBehaviour {
         // If we are aiming at the node
         } else if(_actionTimer > _actionTime) {
             // Throw
-            dumbFrameCount++;
+            dumbFrameCount++; // Waits for 20 frames to make sure aim is on point
             if (dumbFrameCount > 20) {
                 dumbFrameCount = 0;
                 _input.bubble.isJustPressed = true;

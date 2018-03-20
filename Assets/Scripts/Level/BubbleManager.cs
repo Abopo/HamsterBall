@@ -826,6 +826,7 @@ public class BubbleManager : MonoBehaviour {
 
         UpdateAllAdjBubbles();
 
+        // TODO: this might be unnecessary
         boardChangedEvent.Invoke();
 
         // Play sound

@@ -91,8 +91,6 @@ public class AIBrain : MonoBehaviour {
             // Make some Actions
             MakeDecision();
 
-            //Debug.Log(_actions.Count);
-
             _decisionTimer = 0;
         }
 
@@ -144,7 +142,10 @@ public class AIBrain : MonoBehaviour {
         foreach (AIAction action in _actions) {
             if (curAction != null) {
                 curAction.DetermineWeight();
+
+                // If this AI has a characteristic
                 if (characterAI != null) {
+                    // Adjust the weight based on it
                     characterAI.AdjustActionWeight(curAction);
                 }
             }
@@ -252,11 +253,6 @@ public class AIBrain : MonoBehaviour {
         } else {
             MakeHaveHamsterActions();
         }
-
-        // Make some random actions for good measure   
-        //if (_myHamsters.Count > 0) {
-        //    MakeSomeRandomActions();
-        //}
     }
 
     void MakeNeedHamsterActions() {
@@ -284,9 +280,9 @@ public class AIBrain : MonoBehaviour {
                         if ((b != null && b.type == h.type) || h.type == HAMSTER_TYPES.RAINBOW || h.type == HAMSTER_TYPES.DEAD) {
                             // basically, only actions involving the opponents board "requires shift"
                             AIAction newAction = new AIAction(_playerController, h, b, n, _playerController.shifted ? false : true);
-                            if (!ActionAlreadyMade(newAction)) {
+                            //if (!ActionAlreadyMade(newAction)) {
                                 _actions.Add(newAction);
-                            }
+                            //}
                         }
                     }
                 }
@@ -304,9 +300,9 @@ public class AIBrain : MonoBehaviour {
                     if (_hamsterScan.AvailableHamsters[r] != null) {
                         AIAction newAction = new AIAction(_playerController, _hamsterScan.AvailableHamsters[r], ob, n, true);
                         //newAction.requiresSwitch = true;
-                        if (!ActionAlreadyMade(newAction)) {
+                        //if (!ActionAlreadyMade(newAction)) {
                             _actions.Add(newAction);
-                        }
+                        //}
                     }
                 }
             }
@@ -320,9 +316,9 @@ public class AIBrain : MonoBehaviour {
                 // Check if the types match with the bubble we've got
                 if ((b != null /*&& b.type == _playerController.heldBubble.type) || _playerController.heldBubble.type == HAMSTER_TYPES.RAINBOW*/)) {
                     AIAction newAction = new AIAction(_playerController, null, b, n, false);
-                    if (!ActionAlreadyMade(newAction)) {
+                    //if (!ActionAlreadyMade(newAction)) {
                         _actions.Add(newAction);
-                    }
+                    //}
                     //return;
                 }
             }
@@ -336,9 +332,9 @@ public class AIBrain : MonoBehaviour {
                     }
                     if (ob.type != _playerController.heldBubble.type || _playerController.heldBubble.type == HAMSTER_TYPES.DEAD) {
                         AIAction newAction = new AIAction(_playerController, null, ob, n, true);
-                        if (!ActionAlreadyMade(newAction)) {
+                        //if (!ActionAlreadyMade(newAction)) {
                             _actions.Add(newAction);
-                        }
+                        //}
                     }
                 }
             }

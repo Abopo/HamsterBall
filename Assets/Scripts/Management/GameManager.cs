@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour {
 
         ResetValues();
 
+        SceneManager.sceneLoaded += SceneLoad;
+
         _playerManager = GetComponent<PlayerManager>();
 
         Random.InitState(System.Environment.TickCount);
@@ -100,6 +102,10 @@ public class GameManager : MonoBehaviour {
         rightTeamHandicap = 9;
 
         _hamsterSpawnMax = 10;
+    }
+
+    void SceneLoad(Scene scene, LoadSceneMode mode) {
+        gameIsOver = false;
     }
 
     // Update is called once per frame
@@ -126,6 +132,10 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EndGame(int winningTeam, int winScore) {
+        if(gameIsOver) {
+            return;
+        }
+
         gameOverEvent.Invoke();
 
         // Pause the game
