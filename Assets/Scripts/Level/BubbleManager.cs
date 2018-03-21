@@ -564,9 +564,8 @@ public class BubbleManager : MonoBehaviour {
 	}
 
     private void LateUpdate() {
-        if (CheckWinConditions() && !_gameOver) {
-            // Show end game screen
-            EndGame();
+        if (!_gameOver) {
+            CheckWinConditions();
         }
     }
 
@@ -856,23 +855,26 @@ public class BubbleManager : MonoBehaviour {
         return nextLineBubbles;
     }
 
-    public bool CheckWinConditions() {
+    public void CheckWinConditions() {
         // Check single player challenge goals
         if(_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
                     if (_scoreTotal >= _gameManager.goalCount) {
-                        return true;
+                        EndGame(true);
+                        return;
                     }
                     break;
                 case GAME_MODE.SP_MATCH:
                     if (matchCount >= _gameManager.goalCount) {
-                        return true;
+                        EndGame(true);
+                        return;
                     }
                     break;
                 case GAME_MODE.SP_CLEAR:
                     if (IsBoardClear()) {
-                        return true;
+                        EndGame(true);
+                        return;
                     }
                     break;
             }
@@ -880,21 +882,21 @@ public class BubbleManager : MonoBehaviour {
             // If there is a timeLimit and we have passed it
             // TODO: This is actually a loss so handle that
             if(_gameManager.timeLimit > 0 && _levelManager.LevelTimer >= _gameManager.timeLimit) {
-                return true;
+                EndGame(false);
+                return;
             }
         }
 
         // Check bubble positions
         for (int i = bottomRowStart; i < nodeList.Count; ++i) {
             if (bubbles[i] != null) {
-                return true;
+                EndGame(false);
+                return;
             }
         }
-
-        return false;
     }
 
-    public void EndGame() {
+    public void EndGame(bool won) {
         _gameOver = true;
 
         // Clear out starting bubbles to prepare for next round
@@ -903,12 +905,16 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Send the winning team to the game manager
-        _gameManager.EndGame(team == 0 ? 1 : 0, _scoreTotal);
+        if (won) {
+            _gameManager.EndGame(team, _scoreTotal);
+        } else {
+            _gameManager.EndGame(team == 0 ? 1 : 0, _scoreTotal);
+        }
 
         if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
             mpResultsScreen.Activate(team);
         } else if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
-            spResultsScreen.Activate();
+            spResultsScreen.Activate(won);
         }
 
         _gameOver = true;

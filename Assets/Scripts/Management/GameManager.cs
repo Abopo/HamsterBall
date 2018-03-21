@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
 
     public int leftTeamHandicap;
     public int rightTeamHandicap;
+    public bool aimAssist;
 
     public string nextCutscene;
 
@@ -101,6 +102,8 @@ public class GameManager : MonoBehaviour {
         leftTeamHandicap = 9;
         rightTeamHandicap = 9;
 
+        aimAssist = false;
+
         _hamsterSpawnMax = 10;
     }
 
@@ -143,18 +146,28 @@ public class GameManager : MonoBehaviour {
 
         gameIsOver = true;
 
-        // If we are playing a story level and the player's team won
-        if (IsStoryLevel() && (gameMode == GAME_MODE.MP_VERSUS && winningTeam == 0)) {
-            string pref = level.ToString() + "Highscore";
+        // If we are playing a story level 
+        if (IsStoryLevel()) {
+            // and the player's team won
+            if(winningTeam == 0) {
+                if (gameMode == GAME_MODE.MP_VERSUS) {
+                    string pref = level.ToString() + "Highscore";
 
-            // If their new score is better than the old one
-            if (winScore > PlayerPrefs.GetInt(pref)) {
-                // Set their highscore
-                PlayerPrefs.SetInt(pref, winScore);
+                    // If their new score is better than the old one
+                    if (winScore > PlayerPrefs.GetInt(pref)) {
+                        // Set their highscore
+                        PlayerPrefs.SetInt(pref, winScore);
+                    }
+
+                    // Unlock the next level
+                    UnlockNextLevel();
+                }
+
+                aimAssist = false;
+            } else {
+                // If the player lost, turn on aimAssist
+                aimAssist = true;
             }
-
-            // Unlock the next level
-            UnlockNextLevel();
         }
     }
 

@@ -18,6 +18,7 @@ public class PlayerController : Entity {
     public AttackObject attackObj;
     public ShiftPortal shiftPortal;
     public int direction;
+    public bool aimAssist;
     
 	//public bool isLeftTeam;
     public int team; // -1 = no team, 0 = left team, 1 = right team

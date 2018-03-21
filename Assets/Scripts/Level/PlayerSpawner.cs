@@ -42,6 +42,7 @@ public class PlayerSpawner : MonoBehaviour {
             tempPlayerInfo = _playerManager.GetPlayerByIndex(i);
 
             PlayerController newPlayer;
+            // If the player should be an AI
             if (tempPlayerInfo.controllerNum < 0) {
                 newPlayer = Instantiate(aiPlayerObj).GetComponent<PlayerController>();
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
@@ -58,6 +59,9 @@ public class PlayerSpawner : MonoBehaviour {
 
             if (!gameManager.isSinglePlayer) {
                 SetupSwitchMeter(newPlayer);
+                newPlayer.aimAssist = tempPlayerInfo.aimAssist;
+            } else {
+                newPlayer.aimAssist = gameManager.aimAssist;
             }
 
             _players.Add(newPlayer);

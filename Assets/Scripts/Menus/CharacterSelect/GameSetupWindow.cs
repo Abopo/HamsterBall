@@ -10,6 +10,7 @@ public class GameSetupWindow : MonoBehaviour {
 
     public Text lthNumberText;
     public Text rthNumberText;
+    public Text aaText;
     public Text hsrText;
     public Text rainbowText;
     public Text deadText;
@@ -18,10 +19,12 @@ public class GameSetupWindow : MonoBehaviour {
     public CharacterSelect charSelect;
     public AISetupWindow aiSetupWindow;
 
+    bool _aimAssist;
+
     GameManager _gameManager;
 
     //string[] hsrTexts = new string[3];
-    GameSetupOption[] _options = new GameSetupOption[7];
+    GameSetupOption[] _options = new GameSetupOption[8];
 
     public void Initialize() {
         gameObject.SetActive(true);
@@ -67,6 +70,9 @@ public class GameSetupWindow : MonoBehaviour {
         }
         lthNumberText.text = teamLeft.handicap.ToString();
         rthNumberText.text = teamRight.handicap.ToString();
+
+        _aimAssist = false;
+        aaText.text = "Off";
 
         hsrText.text = _gameManager.HamsterSpawnMax.ToString();
 
@@ -145,6 +151,16 @@ public class GameSetupWindow : MonoBehaviour {
         teamRight.DecreaseHandicap();
         teamRight.FailCheckHandicap();
         rthNumberText.text = teamRight.handicap.ToString();
+    }
+
+    public void AimAssistButton() {
+        _aimAssist = !_aimAssist;
+        if(_aimAssist) {
+            aaText.text = "On";
+        } else {
+            aaText.text = "Off";
+        }
+        _gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
     }
 
     // Decrease the Hamster Spawn Rate

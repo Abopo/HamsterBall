@@ -14,6 +14,8 @@ public class ThrowState : PlayerState {
 
     bool _hasThrown;
 
+    AimingLine _aimingLine;
+
     public Vector2 AimDirection {
         get {
             return aimingArrow.GetChild(0).transform.position - aimingArrow.position;
@@ -30,8 +32,13 @@ public class ThrowState : PlayerState {
 		aimingArrow = playerIn.transform.GetChild (1);
 		aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 90.0f);
 		aimingArrow.gameObject.SetActive (true);
-	
-		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
+
+        _aimingLine = aimingArrow.GetComponent<AimingLine>();
+        if (_aimingLine != null && playerController.aimAssist) {
+            _aimingLine.Begin();
+        }
+
+        _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
         _hasThrown = false;
 
         // For now this is only for the AI
@@ -85,7 +92,25 @@ public class ThrowState : PlayerState {
             return;
         }
 
-		if(inputState.bubble.isJustPressed && throwTimer >= throwTime) {
+        if (inputState.left.isDown) {
+            aimingArrow.Rotate(Vector3.forward, rotateSpeed * Time.deltaTime/* * _direction*/);
+            if (_aimingLine != null) {
+                _aimingLine.Stop();
+            }
+        } else if (inputState.right.isDown) {
+            aimingArrow.Rotate(Vector3.forward, -rotateSpeed * Time.deltaTime/* * _direction*/);
+            if (_aimingLine != null) {
+                _aimingLine.Stop();
+            }
+        } else if (playerController.aimAssist) {
+            if (_aimingLine != null) {
+                _aimingLine.Begin();
+            }
+        }
+
+        LimitArrowRotation();
+
+        if (inputState.bubble.isJustPressed && throwTimer >= throwTime) {
             // Networking
             if (PhotonNetwork.connectedAndReady) {
                 if(playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player) {
@@ -104,19 +129,16 @@ public class ThrowState : PlayerState {
                 Throw();
             }
         }
-
-		if (inputState.left.isDown) {
-			aimingArrow.Rotate(Vector3.forward, rotateSpeed*Time.deltaTime/* * _direction*/);
-		} else if(inputState.right.isDown) {
-			aimingArrow.Rotate(Vector3.forward, -rotateSpeed*Time.deltaTime/* * _direction*/);
-		}
-		if(aimingArrow.localEulerAngles.z < 45) {
-			aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 45f);
-		}
-		if(aimingArrow.localEulerAngles.z > 135) {
-			aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 135f);
-		}
 	}
+
+    void LimitArrowRotation() {
+        if (aimingArrow.localEulerAngles.z < 45) {
+            aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 45f);
+        }
+        if (aimingArrow.localEulerAngles.z > 135) {
+            aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 135f);
+        }
+    }
 
     public void Throw() {
         if(playerController.heldBubble == null) {
@@ -136,6 +158,10 @@ public class ThrowState : PlayerState {
         playerController.heldBubble.wasThrown = true;
 
         playerController.PlayerAudio.PlayThrowClip();
+
+        if (_aimingLine != null) {
+            _aimingLine.Stop();
+        }
 
         // For now this is only for the AI
         playerController.significantEvent.Invoke();

@@ -48,7 +48,7 @@ public class Node : MonoBehaviour {
         }
     }
 
-    public void CheckCanBeHit() {
+    void CheckCanBeHit() {
         if (IsRelevant() && CanBeHit()) {
             isRelevant = true;
         } else {

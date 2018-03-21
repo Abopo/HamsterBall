@@ -6,6 +6,7 @@ public class PlayerInfo {
     public int playerNum;
     public int controllerNum;
     public int team; // -1 == none; 0 == left; 1 == right
+    public bool aimAssist;
     public int difficulty; // Only used for AI, 0-3: easy-expert
     public CharacterAI characterAI; // Only used for AI
     public int ownerID; // used for networking
@@ -168,6 +169,12 @@ public class PlayerManager : MonoBehaviour {
             }
         }
         return -1;
+    }
+
+    public void SetAimAssist(bool on) {
+        foreach(PlayerInfo p in _players) {
+            p.aimAssist = on;
+        }
     }
 
     public void ClearAllPlayers() {

@@ -70,9 +70,13 @@ public class ResultsScreen : MonoBehaviour {
     }
 
     // used for single player
-    public void Activate() {
+    public void Activate(bool won) {
         gameObject.SetActive(true);
-        winningTeamText.text = "You did it!";
+        if (won) {
+            winningTeamText.text = "You did it!";
+        } else {
+            winningTeamText.text = "You failed...";
+        }
         _menuOptions = transform.GetComponentsInChildren<MenuOption>();
         foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;
