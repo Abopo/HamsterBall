@@ -37,7 +37,9 @@ public class ResultsScreen : MonoBehaviour {
         winTimer += 0.03f;
         if(winTimer > winTime) {
             foreach (MenuOption mo in _menuOptions) {
-                mo.isReady = true;
+                if (mo != null) {
+                    mo.isReady = true;
+                }
             }
         }
     }
@@ -82,7 +84,6 @@ public class ResultsScreen : MonoBehaviour {
             mo.isReady = false;
         }
     }
-
 
     public void ReturnToPreviousScene() {
         // Return to the scene before this one

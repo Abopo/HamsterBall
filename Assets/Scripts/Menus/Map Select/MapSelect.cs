@@ -70,7 +70,7 @@ public class MapSelect : MonoBehaviour {
     public void LoadSelectedMap() {
         for (int i = 0; i < 3; ++i) {
             if (_mapIcons[i].index == 1) {
-                _gameManager.level = "";
+                _gameManager.stage = "";
                 string levelName = "";
                 if(_gameManager.isOnline) {
                     levelName = "Networked ";

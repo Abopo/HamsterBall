@@ -3,9 +3,13 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class LevelManager : MonoBehaviour {
+    public ResultsScreen mpResultsScreen;
+    public ResultsScreen spResultsScreen;
+    public ResultsScreen spContinueScreen;
     public PauseMenu pauseMenu;
     public Text marginMultiplierText;
 
+    public bool continueLevel;
     public float marginMultiplier = 1.00f;
 
     float _marginTimer = 0;
@@ -35,6 +39,12 @@ public class LevelManager : MonoBehaviour {
 
         if(_gameManager.isSinglePlayer) {
             _bubbleManager = FindObjectOfType<BubbleManager>();
+
+            if(_gameManager.nextLevel != "") {
+                continueLevel = true;
+            } else {
+                continueLevel = false;
+            }
         }
     }
 
@@ -98,10 +108,27 @@ public class LevelManager : MonoBehaviour {
 
         // If we won and are in a timed mode, set the time highscore
         if(_gameManager.gameMode == GAME_MODE.SP_MATCH || _gameManager.gameMode == GAME_MODE.SP_POINTS || _gameManager.gameMode == GAME_MODE.SP_CLEAR) {
-            string pref = _gameManager.level + "Highscore";
+            string pref = _gameManager.stage + "Highscore";
             if ((int)_levelTimer < PlayerPrefs.GetInt(pref) || PlayerPrefs.GetInt(pref) == 0) {
                 PlayerPrefs.SetInt(pref, (int)_levelTimer);
             }
         }
+    }
+
+    public void ActivateResultsScreen(int team, bool won) {
+        if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
+            mpResultsScreen.Activate(team);
+        } else if (_gameManager.IsStoryLevel() && spResultsScreen != null) {
+            if (won && continueLevel) {
+                spContinueScreen.Activate(won);
+            } else {
+                spResultsScreen.Activate(won);
+            }
+        }
+    }
+
+    public void ContinueToNextLevel() {
+        _gameManager.Unpause();
+        GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
     }
 }

@@ -18,8 +18,6 @@ public class BubbleManager : MonoBehaviour {
 	public GameObject NodeLine13;
 	public GameObject NodeLine12;
 	public HamsterMeter hamsterMeter;
-    public ResultsScreen mpResultsScreen;
-    public ResultsScreen spResultsScreen;
     public Text scoreText;
 
 	//public bool leftTeam;
@@ -539,7 +537,14 @@ public class BubbleManager : MonoBehaviour {
         if (justAddedBubble) {
 			// Check for anchor points
 			List<Bubble> anchorBubbles = new List<Bubble>();
-			foreach(Bubble b in bubbles) {
+            foreach (Bubble b in bubbles) {
+                if (b != null) {
+                    b.checkedForAnchor = false;
+                    b.foundAnchor = false;
+                    b.checkedForMatches = false;
+                }
+            }
+            foreach (Bubble b in bubbles) {
 				if(b != null) {
 					anchorBubbles.Clear();
 					b.CheckForAnchor(anchorBubbles);
@@ -911,11 +916,7 @@ public class BubbleManager : MonoBehaviour {
             _gameManager.EndGame(team == 0 ? 1 : 0, _scoreTotal);
         }
 
-        if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
-            mpResultsScreen.Activate(team);
-        } else if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
-            spResultsScreen.Activate(won);
-        }
+        _levelManager.ActivateResultsScreen(team, won);
 
         _gameOver = true;
     }
@@ -986,6 +987,16 @@ public class BubbleManager : MonoBehaviour {
             transform.Translate(0.1f, 0f, 0f, Space.World);
         } else if(transform.position.x > _initialPos.x) {
             transform.Translate(-0.1f, 0f, 0f, Space.World);
+        }
+    }
+
+    private void OnDestroy() {
+    }
+
+    public static void ClearStartingBubbles() {
+        // Clear out starting bubbles to prepare for next round
+        for (int i = 0; i < startingBubbleInfo.Length; ++i) {
+            startingBubbleInfo[i].isSet = false;
         }
     }
 }

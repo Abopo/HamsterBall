@@ -33,7 +33,7 @@ public class StoryButton : MenuOption {
     protected override void Select() {
         base.Select();
 
-        FindObjectOfType<GameManager>().level = sceneNumber;
+        FindObjectOfType<GameManager>().stage = sceneNumber;
 
         if(hasCutscene) {
             // Load a cutscene

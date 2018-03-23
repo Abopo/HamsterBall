@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour {
     public bool isOnline = false;
     public bool isSinglePlayer = false;
     public bool gameIsOver = false;
-    public string level; // if level is "" it's a local multiplayer match, otherwise it's a story level
+    public string stage; // if level is "" it's a local multiplayer match, otherwise it's a story level
+    public string nextLevel; // level to load next
 
     public MENU prevMenu; // Keeps track of the last menu we were in so we can return after a level is finished
     public string prevBoard; // Holds onto the previous board if there was one
@@ -151,7 +152,7 @@ public class GameManager : MonoBehaviour {
             // and the player's team won
             if(winningTeam == 0) {
                 if (gameMode == GAME_MODE.MP_VERSUS) {
-                    string pref = level.ToString() + "Highscore";
+                    string pref = stage.ToString() + "Highscore";
 
                     // If their new score is better than the old one
                     if (winScore > PlayerPrefs.GetInt(pref)) {
@@ -172,8 +173,8 @@ public class GameManager : MonoBehaviour {
     }
 
     void UnlockNextLevel() {
-        int worldInt = int.Parse(level[0].ToString());
-        int levelInt = int.Parse(level[2].ToString());
+        int worldInt = int.Parse(stage[0].ToString());
+        int levelInt = int.Parse(stage[2].ToString());
         string storyProgress = "";
         if (levelInt == 6) {
             storyProgress += (worldInt + 1).ToString();
@@ -256,10 +257,12 @@ public class GameManager : MonoBehaviour {
             _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
         }
         _playerManager.ClearAllPlayers();
+
+        BubbleManager.ClearStartingBubbles();
     }
 
     public bool IsStoryLevel() {
-        if(level == "") {
+        if(stage == "") {
             return false;
         }
 

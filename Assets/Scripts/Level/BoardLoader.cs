@@ -29,6 +29,7 @@ public class BoardLoader : MonoBehaviour {
     public void ReadBoardSetup(string path) {
         // Save the path to the level data
         _gameManager.LevelDoc = path;
+        _gameManager.nextLevel = "";
 
         TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
         _linesFromFile = textAsset.text.Split("\n"[0]);
@@ -99,6 +100,9 @@ public class BoardLoader : MonoBehaviour {
                 break;
             case "Mode":
                 SetMode();
+                break;
+            case "Next":
+                ReadNextLevel();
                 break;
             case "Board":
                 LoadBoard();
@@ -282,6 +286,11 @@ public class BoardLoader : MonoBehaviour {
                 _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
                 break;
         }
+    }
+
+    void ReadNextLevel() {
+        _readText = _linesFromFile[_fileIndex++];
+        _gameManager.nextLevel = _readText;
     }
 
     void LoadBoard() {

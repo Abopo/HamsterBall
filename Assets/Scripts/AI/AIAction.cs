@@ -212,7 +212,7 @@ public class AIAction {
             // if we have already shifted
             if (_playerController.shifted) {
                 // Then actions on this side are good to do. (should only shift back if it's an extra good idea)
-                addWeight += 30;
+                addWeight += 50;
 
                 // aim for closer bubbles when throwing to opponents board because there is limited time.
                 float distanceX = bubbleWant.transform.position.x - _playerController.transform.position.x;
@@ -225,9 +225,9 @@ public class AIAction {
         }
 
         // If the bubble is on the bottom most lines 
-        addWeight += bubbleWant.node > 100 ? 30 : 0;
+        addWeight += nodeWant.number >= 100 ? 30 : 0;
         // Add even more if the node is in the kill line
-        addWeight += bubbleWant.node > 138 ? 100 : 0;
+        addWeight += nodeWant.number >= 138 ? 100 : 0;
 
         return addWeight;
     }
