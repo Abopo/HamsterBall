@@ -31,7 +31,7 @@ public class StoryButton : MenuOption {
 	}
 
     protected override void Select() {
-        base.Select();
+        //base.Select();
 
         FindObjectOfType<GameManager>().stage = sceneNumber;
 

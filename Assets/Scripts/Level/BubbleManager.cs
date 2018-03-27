@@ -25,7 +25,7 @@ public class BubbleManager : MonoBehaviour {
 	public int bubbleStock; // counts up to 12 then adds a line.
     public bool testMode;
 
-    public Transform ceiling;
+    Transform _ceiling;
 
     // 10 rows
     // alternating between 13 and 12 columns
@@ -157,6 +157,8 @@ public class BubbleManager : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             GetComponent<PhotonView>().RPC("SyncLineBubbles", PhotonTargets.Others, _nextLineBubbles.ToArray());
         }
+
+        _ceiling = GameObject.FindGameObjectWithTag("Ceiling").transform;
 
         boardChangedEvent.AddListener(UpdateAllAdjBubbles);
     }
@@ -826,7 +828,7 @@ public class BubbleManager : MonoBehaviour {
         transform.Translate(0f, -0.67f, 0f, Space.World);
 
         // Spawn/push down the ceiling
-        ceiling.Translate(0f, -0.67f, 0f, Space.World);
+        _ceiling.Translate(0f, -0.67f, 0f, Space.World);
 
         UpdateAllAdjBubbles();
 

@@ -32,6 +32,10 @@ public class GoalMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(_gameManager.gameIsOver) {
+            return;
+        }
+
         if(_gameManager.gameMode == GAME_MODE.SP_MATCH) {
             goalRequirement.text = (_gameManager.goalCount - _bubbleManager.matchCount).ToString();
         }

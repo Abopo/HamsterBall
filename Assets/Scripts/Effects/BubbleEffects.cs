@@ -12,6 +12,13 @@ public class BubbleEffects : MonoBehaviour {
     float _teamEffectTime = 1.0f;
     float _teamEffectTimer = 0.0f;
 
+    // Counter effects
+    GameObject _counterEffectObj;
+    Sprite _counterMatchSprite;
+    Sprite _counterDropSprite;
+    float _counterEffectTime = 1.0f;
+    float _counterEffectTimer = 0f;
+
     // Match Combo effects
     GameObject _comboEffectObj;
     Sprite[] _matchComboSprites;
@@ -49,6 +56,14 @@ public class BubbleEffects : MonoBehaviour {
         _teamAudioSource.volume = 0.5f;
         _teamComboClip = Resources.Load<AudioClip>("Audio/SFX/TeamCombo");
         _teamDropClip = Resources.Load<AudioClip>("Audio/SFX/TeamDrop");
+
+        // Counter effects
+        _counterEffectObj = new GameObject();
+        _counterEffectObj.SetActive(false);
+        _counterEffectObj.AddComponent<SpriteRenderer>();
+        _counterEffectObj.AddComponent<AudioSource>();
+        _counterMatchSprite = Resources.Load<Sprite>("Art/Effects/CounterMatch");
+        _counterDropSprite = Resources.Load<Sprite>("Art/Effects/CounterDrop");
 
         // Match Combo effects
         _comboEffectObj = new GameObject();
@@ -91,6 +106,14 @@ public class BubbleEffects : MonoBehaviour {
             }
         }
 
+        // Counter effects
+        if(_counterEffectObj.activeSelf) {
+            _counterEffectTimer += Time.deltaTime;
+            if(_counterEffectTimer >= _counterEffectTime) {
+                _counterEffectObj.SetActive(false);
+            }
+        }
+
         // Match combo effects
         if(_comboEffectObj.activeSelf) {
             _comboEffectTimer += Time.deltaTime;
@@ -125,8 +148,7 @@ public class BubbleEffects : MonoBehaviour {
 
     public void TeamDropEffect(Vector2 position)
     {
-        if (!_teamEffectObj.activeSelf)
-        {
+        if (!_teamEffectObj.activeSelf) {
             _teamEffectObj.GetComponent<SpriteRenderer>().sprite = _teamDropSprite;
             _teamEffectObj.transform.position = new Vector3(position.x, position.y, -6);
             _teamEffectObj.SetActive(true);
@@ -135,6 +157,32 @@ public class BubbleEffects : MonoBehaviour {
             _teamAudioSource.Play();
 
             _teamEffectTimer = 0.0f;
+        }
+    }
+
+    public void CounterMatchEffect(Vector2 position) {
+        if (!_counterEffectObj.activeSelf) {
+            _counterEffectObj.GetComponent<SpriteRenderer>().sprite = _counterMatchSprite;
+            _counterEffectObj.transform.position = new Vector3(position.x, position.y, -6);
+            _counterEffectObj.SetActive(true);
+
+            _teamAudioSource.clip = _teamComboClip;
+            _teamAudioSource.Play();
+
+            _counterEffectTimer = 0.0f;
+        }
+    }
+
+    public void CounterDropEffect(Vector2 position) {
+        if (!_counterEffectObj.activeSelf) {
+            _counterEffectObj.GetComponent<SpriteRenderer>().sprite = _counterDropSprite;
+            _counterEffectObj.transform.position = new Vector3(position.x, position.y, -6);
+            _counterEffectObj.SetActive(true);
+
+            _teamAudioSource.clip = _teamDropClip;
+            _teamAudioSource.Play();
+
+            _counterEffectTimer = 0.0f;
         }
     }
 

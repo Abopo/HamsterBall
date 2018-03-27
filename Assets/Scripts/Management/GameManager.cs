@@ -176,10 +176,10 @@ public class GameManager : MonoBehaviour {
         int worldInt = int.Parse(stage[0].ToString());
         int levelInt = int.Parse(stage[2].ToString());
         string storyProgress = "";
-        if (levelInt == 6) {
+        if (levelInt == 9) {
             storyProgress += (worldInt + 1).ToString();
             storyProgress += "-";
-            storyProgress += "1";
+            storyProgress += "0";
         } else {
             storyProgress += worldInt.ToString();
             storyProgress += "-";

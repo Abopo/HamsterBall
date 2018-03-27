@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StorySelectMenu : MonoBehaviour {
+    public Text chapter;
     public Text location;
     public Image locationImage;
     public Text gameType;
@@ -93,6 +94,10 @@ public class StorySelectMenu : MonoBehaviour {
 	}
 
     public void UpdateUI(StoryButton storyButton) {
+        // Set chapter number
+        int world = storyButton.GetComponentInParent<World>().worldNum;
+        chapter.text = "Chapter " + world;
+
         // Set location name and image
         location.text = storyButton.locationName;
         locationImage.sprite = locationImages[storyButton.locationName];
@@ -101,7 +106,7 @@ public class StorySelectMenu : MonoBehaviour {
         // Set game type text
         switch(storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
-                gameType.text = "Versus";
+                gameType.text = "Versus Stage";
                 highscoreHeader.text = "Highscore";
                 highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
                 break;
@@ -119,7 +124,7 @@ public class StorySelectMenu : MonoBehaviour {
                 highscore.text = string.Format("{0}:{1:00}", (int)time / 60, (int)time % 60);
                 break;
             case GAME_MODE.SP_CLEAR:
-                gameType.text = "Clear Challenge";
+                gameType.text = "Puzzle Stage";
                 highscoreHeader.text = "Best Time";
                 string pref = storyButton.sceneNumber.ToString() + "Highscore";
                 time = PlayerPrefs.GetInt(pref);

@@ -57,7 +57,7 @@ public class Entity : MonoBehaviour {
 	    if(_waterController != null) {
             if(transform.position.y < _waterController.WaterHeight && _waterMultiplier == 1f) {
                 _waterMultiplier = 0.55f;
-                _waterGravMultiplier = 0.1f;
+                _waterGravMultiplier = 0.3f;
                 velocity.y = velocity.y * 0.25f;
             } else if(transform.position.y > _waterController.WaterHeight && _waterMultiplier == 0.55f) {
                 _waterMultiplier = 1f;

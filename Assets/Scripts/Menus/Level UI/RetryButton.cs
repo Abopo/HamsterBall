@@ -20,7 +20,7 @@ public class RetryButton : MenuOption {
     }
 
     protected override void Select() {
-        base.Select();
+        //base.Select();
 
         Retry();
     }

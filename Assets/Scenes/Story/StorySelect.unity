@@ -386,6 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 575450ea46f96bf49bae07340b9c8d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chapter: {fileID: 198315276}
   location: {fileID: 1629495637}
   locationImage: {fileID: 389981672}
   gameType: {fileID: 1120485500}
@@ -409,6 +410,80 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &198315274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 198315275}
+  - component: {fileID: 198315277}
+  - component: {fileID: 198315276}
+  m_Layer: 5
+  m_Name: Chapter Number
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &198315275
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 198315274}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.046776313, y: 0.046776313, z: 0.046776313}
+  m_Children: []
+  m_Father: {fileID: 314818186}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 6.4399996}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &198315276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 198315274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 7e76e2a1c5f3dac49bb51589200818f4, type: 3}
+    m_FontSize: 24
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 300
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Chapter 1
+--- !u!222 &198315277
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 198315274}
 --- !u!1001 &231927900
 Prefab:
   m_ObjectHideFlags: 0
@@ -729,6 +804,8 @@ Transform:
   - {fileID: 870254048}
   - {fileID: 1325479641}
   - {fileID: 257433853}
+  - {fileID: 398103916}
+  - {fileID: 198315275}
   m_Father: {fileID: 1438889344}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1233,7 +1310,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/Clear - Fork in the Road
+      value: World1/1-8/Fence
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -1264,6 +1341,74 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 390851483}
   m_Script: {fileID: 11500000, guid: 605f9ca49d26078489cfdc0eba049299, type: 3}
+--- !u!1 &398103915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 398103916}
+  - component: {fileID: 398103918}
+  - component: {fileID: 398103917}
+  m_Layer: 5
+  m_Name: Image (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &398103916
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 398103915}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.046776313, y: 0.046776313, z: 0.046776313}
+  m_Children: []
+  m_Father: {fileID: 314818186}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 6.44}
+  m_SizeDelta: {x: 160, y: 30.001}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &398103917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 398103915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 1, b: 0.21568628, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &398103918
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 398103915}
 --- !u!1001 &406166093
 Prefab:
   m_ObjectHideFlags: 0
@@ -1619,7 +1764,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/1-6BoardSetup
+      value: World1/1-5/ForestLackeyFight
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -1881,7 +2026,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/Clear - Sharp Lines
+      value: World1/1-4/Meshed
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: adjOptions.Array.data[1]
@@ -2233,7 +2378,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/Clear - Color Bridge
+      value: World1/1-7/HoldingOn
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -2481,7 +2626,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/Clear - Waves
+      value: World1/1-2/Clear - Waves
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -4055,7 +4200,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/OpeningCutscene
+      value: World1/1-0/OpeningCutscene
       objectReference: {fileID: 0}
     - target: {fileID: 114537154200007044, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -5327,7 +5472,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/Clear - Icicles
+      value: World1/1-3/Clear - Sharp Lines
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: adjOptions.Array.data[1]
@@ -5513,7 +5658,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/1-1BoardSetup
+      value: World1/1-1/1-1BoardSetup
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
@@ -6242,7 +6387,7 @@ Prefab:
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}
       propertyPath: fileToLoad
-      value: World1/Clear - Meshed
+      value: World1/1-6/Rangs
       objectReference: {fileID: 0}
     - target: {fileID: 114601363199372830, guid: 22a4d137c3165d4458ba45e8e73cb36b,
         type: 2}

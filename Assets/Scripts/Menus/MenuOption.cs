@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 // A base class for all menu options, i.e. buttons, sliders, etc.
@@ -114,7 +115,8 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected virtual void Select() {
-        PlaySelectSound();
+        //PlaySelectSound();
+        GetComponent<Button>().onClick.Invoke();
     }
 
     protected void DeHighlightAdjOptions() {

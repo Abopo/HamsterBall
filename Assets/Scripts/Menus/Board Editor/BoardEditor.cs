@@ -353,7 +353,7 @@ public class BoardEditor : MonoBehaviour {
         int i = 0;
         foreach (string line in _linesFromFile) {
             _linesFromFile[i] = line.Replace("\r", "");
-            Debug.Log(_linesFromFile[i]);
+            //Debug.Log(_linesFromFile[i]);
             i++;
         }
 

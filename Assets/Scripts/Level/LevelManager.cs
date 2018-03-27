@@ -122,7 +122,12 @@ public class LevelManager : MonoBehaviour {
             if (won && continueLevel) {
                 spContinueScreen.Activate(won);
             } else {
-                spResultsScreen.Activate(won);
+                // If it's the player
+                if (team == 0) {
+                    spResultsScreen.Activate(won);
+                } else {
+                    spResultsScreen.Activate(!won);
+                }
             }
         }
     }
