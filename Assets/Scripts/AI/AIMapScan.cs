@@ -31,6 +31,7 @@ public class AIMapScan : MonoBehaviour {
     RaycastHit2D _dropCheckHit; // Result of ray checks
     Ray2D _jumpCheckRay; // Ray for checking distances
     RaycastHit2D _jumpCheckHit; // Result of ray checks
+    RaycastHit2D _jumpCheckHit2; // Result of ray checks
 
     Vector2 _pos; // Transform position
     float _scaledRadius;
@@ -81,8 +82,8 @@ public class AIMapScan : MonoBehaviour {
         _pos = transform.position;
         // Wall distances
         CheckWallDistances();
-        if (_playerController.curState != PLAYER_STATE.JUMP) {
-            CheckJumpDistances();
+        if (_playerController.curState != PLAYER_STATE.JUMP && _playerController.curState != PLAYER_STATE.FALL) {
+            CheckJumpDistancesNew();
         }
         CheckDropDistances();
     }
@@ -124,31 +125,24 @@ public class AIMapScan : MonoBehaviour {
         }
     }
 
-    void CheckJumpDistances() {
+    void CheckJumpDistancesNew() {
         float rayOffsetX = 0;
-        bool prevHitRight = false;
-        bool prevHitLeft = false;
         _rightJumpDistance = 100f;
         _leftJumpDistance = 100f;
 
-        // Check at position first to determine what's above.
+        // Check if there's a ceiling above
+        rayOffsetX = 0.5f;
         _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
         _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
-        if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough")) {
-            prevHitRight = true;
-            prevHitLeft = true;
+        rayOffsetX = -0.5f;
+        _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
+        _jumpCheckHit2 = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+        // If there is a ceiling above
+        if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough") ||
+            _jumpCheckHit2 && _jumpCheckHit2.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough")) {
             _isUnderCeiling = true;
         } else {
             _isUnderCeiling = false;
-        }
-
-        // Also check at position to determine what's below.
-        _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
-        _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
-        if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
-            _isOnPassthrough = true;
-        } else {
-            _isOnPassthrough = false;
         }
 
         // Check Right
@@ -159,14 +153,12 @@ public class AIMapScan : MonoBehaviour {
 
             // If the platform above us is a passthrough platform
             if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
-                _rightJumpDistance = 1.0f;
-            } else if(_jumpCheckHit && !prevHitRight) {
-                _rightJumpDistance = rayOffsetX;
-                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance);
+                _rightJumpDistance = Mathf.Max(rayOffsetX, 0.5f);
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
-            } else if(_jumpCheckHit.collider == null && prevHitRight) {
+            } else if (_jumpCheckHit && _jumpCheckHit.collider.tag == "Platform End Cap") {
                 _rightJumpDistance = rayOffsetX;
-                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction);
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             }
             rayOffsetX += 0.1f;
@@ -176,17 +168,15 @@ public class AIMapScan : MonoBehaviour {
         rayOffsetX = 0.1f;
         while (rayOffsetX < _leftWallCheckHit.distance) {
             _jumpCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.up);
-            _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+            _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 3f, collisionMask);
 
             if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
-                _leftJumpDistance = 1.0f;
-            } else if (_jumpCheckHit && !prevHitLeft) {
-                _leftJumpDistance = rayOffsetX;
-                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance);
+                _leftJumpDistance = Mathf.Max(rayOffsetX, 0.5f);
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
-            } else if (_jumpCheckHit.collider == null && prevHitLeft) {
+            } else if (_jumpCheckHit && _jumpCheckHit.collider.tag == "Platform End Cap") {
                 _leftJumpDistance = rayOffsetX;
-                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction);
+                Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             }
             rayOffsetX += 0.1f;
@@ -201,24 +191,32 @@ public class AIMapScan : MonoBehaviour {
         _rightDropDistance = 10f;
         _leftDropDistance = 10f;
 
-        // Check at position first to determine what's above.
+        // Check at position first to determine what's below.
         _dropCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
         _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
         if (_dropCheckHit) {
             prevHitRight = true;
             prevHitLeft = true;
+
+            // If we are standing on a passthrough platform
+            if(_dropCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
+                _isOnPassthrough = true;
+            } else {
+                _isOnPassthrough = false;
+            }
         }
+
         while (rayOffsetX < _rightWallCheckHit.distance) {
             rayOffsetX += 0.1f;
             _dropCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
             _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
             if (_dropCheckHit && !prevHitRight) {
                 _rightDropDistance = rayOffsetX;
-                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance);
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
                 break;
             } else if (_dropCheckHit.collider == null && prevHitRight) {
                 _rightDropDistance = rayOffsetX;
-                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction);
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction, Color.blue);
                 break;
             }
         }
@@ -231,11 +229,11 @@ public class AIMapScan : MonoBehaviour {
             _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
             if (_dropCheckHit && !prevHitLeft) {
                 _leftDropDistance = rayOffsetX;
-                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance);
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
                 break;
             } else if (_dropCheckHit.collider == null && prevHitLeft) {
                 _leftDropDistance = rayOffsetX;
-                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction);
+                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction, Color.blue);
                 break;
             }
         }

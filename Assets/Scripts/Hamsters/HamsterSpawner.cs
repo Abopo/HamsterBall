@@ -201,8 +201,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
         // If we can be a special hamster
         if (_okTypes.Contains(7)) {
+            // Decide if this hamster will be special
             int special = Random.Range(0, 16);
             if (special == 1 && specialTypes.Count > 0) {
+                // Choose which special hamster it will be
                 int sType = Random.Range(0, specialTypes.Count);
                 switch (specialTypes[sType]) {
                     case 8: // Rainbow
@@ -218,6 +220,9 @@ public class HamsterSpawner : Photon.PunBehaviour {
                         rType = 11;
                         break;
                 }
+
+                // Remove specials from okTypes list
+                _okTypes.Remove(7);
             } else {
                 rType = SelectValidNormalType();
             }

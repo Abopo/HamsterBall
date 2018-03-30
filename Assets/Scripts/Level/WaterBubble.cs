@@ -16,8 +16,16 @@ public class WaterBubble : MonoBehaviour {
     float _xMoveTimer = 0.5f;
     float _xMoveDir = 0.5f;
 
-	// Use this for initialization
-	void Start () {
+    public Bubble CaughtBubble {
+        get  {return _caughtBubble; }
+    }
+
+    public bool IsSpawning {
+        get { return _isSpawning; }
+    }
+
+    // Use this for initialization
+    void Start () {
         _circleCollider = GetComponent<CircleCollider2D>();
         _isSpawning = true;
 	}
@@ -50,15 +58,12 @@ public class WaterBubble : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Hamster" && other.GetComponent<Hamster>().exitedPipe && _caughtBubble == null) {
             CatchHamster(other.GetComponent<Hamster>());
-        } else if (other.tag == "Bubble" || other.tag == "Ceiling") {
-            if (_caughtBubble != null) {
-                // Collide bubble with board
-                _caughtBubble.GetComponent<CircleCollider2D>().enabled = true;
-                _caughtBubble.CollisionWithBoard();
+        } else if (other.tag == "Bubble") {
+            if (other.GetComponent<Bubble>().locked) {
+                BoardCollide();
             }
-
-            // Destroy self
-            DestroyObject(this.gameObject);
+        } else if (other.tag == "Ceiling") {
+            BoardCollide();
         } else if (other.tag == "Attack") {
             if (_caughtBubble != null) {
                 // Drop the caught bubble
@@ -95,6 +100,17 @@ public class WaterBubble : MonoBehaviour {
 
         // The hamster was caught.
         hamster.Caught();
+    }
+
+    void BoardCollide() {
+        if (_caughtBubble != null) {
+            // Collide bubble with board
+            _caughtBubble.GetComponent<CircleCollider2D>().enabled = true;
+            _caughtBubble.CollisionWithBoard();
+        }
+
+        // Destroy self
+        DestroyObject(this.gameObject);
     }
 
     void DropHamster() {

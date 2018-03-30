@@ -26,6 +26,12 @@ public class AIController : MonoBehaviour {
     float _actionTime = 0f; 
     float _actionTimer = 0f;
 
+    bool _changingDirection = false;
+    bool _isMovingUp = false;
+    int _moveDir = 0;
+
+    float _aimTime = 5.0f;
+    float _aimTimer = 0f;
     int dumbFrameCount = 0;
 
     private void Awake() {
@@ -184,6 +190,8 @@ public class AIController : MonoBehaviour {
                 ChaseMovement(_curAction.hamsterWant.gameObject);
             } else if (_curAction.opponent != null) {
                 ChaseMovement(_curAction.opponent.gameObject);
+            } else if (_curAction.waterBubble != null) {
+                ChaseMovement(_curAction.waterBubble.gameObject);
             }
         }
     }
@@ -230,6 +238,7 @@ public class AIController : MonoBehaviour {
     void ChaseMovement(GameObject chaseObj) {
         // If we don't want to go anywhere don't move.
         if (_curAction.vertWant == 0) {
+            _isMovingUp = false;
             _input.left.isDown = false;
             _input.right.isDown = false;
             // If we are here, there's probably a hamster we want on this level
@@ -244,8 +253,25 @@ public class AIController : MonoBehaviour {
                     _aiBrain.MakeDecision();
                 // If we are chasing an opponent
                 } else if (_curAction.opponent != null) {
+                    // If the opponent is above us
+                    if(_curAction.opponent.transform.position.y > transform.position.y) {
+                        // Jump to hit them
+                        _input.jump.isJustPressed = true;
+                    }
                     // Punch 'em!
                     _input.attack.isJustPressed = true;
+
+                    // Make new decision
+                    _aiBrain.MakeDecision();
+                } else if(_curAction.waterBubble != null) {
+                    // If the bubble is above us
+                    if (_curAction.waterBubble.transform.position.y > transform.position.y) {
+                        // Jump to hit it
+                        _input.jump.isJustPressed = true;
+                    }
+                    // Punch 'em!
+                    _input.attack.isJustPressed = true;
+
                     // Make new decision
                     _aiBrain.MakeDecision();
                 }
@@ -258,6 +284,8 @@ public class AIController : MonoBehaviour {
             }
         // If we want to go down, find closest drop and move towards it.
         } else if (_curAction.vertWant == -1) {
+            _isMovingUp = false;
+
             if (_mapScan.LeftDropDistance < _mapScan.RightDropDistance) {
                 _input.left.isDown = true;
                 _input.right.isDown = false;
@@ -272,12 +300,44 @@ public class AIController : MonoBehaviour {
             }    
         // If we want to go up, find closest step and move towards it.
         } else if (_curAction.vertWant == 1) {
-            if (_mapScan.LeftJumpDistance < _mapScan.RightJumpDistance) {
-                _input.left.isDown = true;
-                _input.right.isDown = false;
+            // if we're not already moving
+            if(!_isMovingUp) {
+                // move towards the closest jump
+                if (_mapScan.LeftJumpDistance < _mapScan.RightJumpDistance) {
+                    _input.left.isDown = true;
+                    _input.right.isDown = false;
+                    _moveDir = -1;
+                } else {
+                    _input.left.isDown = false;
+                    _input.right.isDown = true;
+                    _moveDir = 1;
+                }
+
+                _isMovingUp = true;
+            // If we're already moving
             } else {
-                _input.left.isDown = false;
-                _input.right.isDown = true;
+                // and we need to change direction
+                // only change direction if we are not under a ceiling (or if we are touching a wall)
+                if ((_moveDir == 1 && _mapScan.LeftJumpDistance < _mapScan.RightJumpDistance &&
+                    !_mapScan.IsUnderCeiling) || GetComponent<EntityPhysics>().IsTouchingWallRight) {
+                    _input.left.isDown = true;
+                    _input.right.isDown = false;
+                    _moveDir = -1;
+                } else if ((_moveDir == -1 && _mapScan.RightJumpDistance < _mapScan.LeftJumpDistance &&
+                           !_mapScan.IsUnderCeiling) || GetComponent<EntityPhysics>().IsTouchingWallLeft) {
+                    _input.left.isDown = false;
+                    _input.right.isDown = true;
+                    _moveDir = 1;
+                } else {
+                    // Keep moving the same direction
+                    if(_moveDir == -1) {
+                        _input.left.isDown = true;
+                        _input.right.isDown = false;
+                    } else if(_moveDir == 1) {
+                        _input.left.isDown = false;
+                        _input.right.isDown = true;
+                    }
+                }
             }
         }
     }
@@ -319,12 +379,18 @@ public class AIController : MonoBehaviour {
             return;
         }
 
-        // TODO: Based on where the AI wants to throw, adjust the throw angle until it is lined up.
         // If we're not yet aiming at nodeWant
         Vector2 aimDirection = ((ThrowState)_playerController.currentState).AimDirection;
         float dot = Vector2.Dot(aimDirection.normalized, _toNodeWant.normalized);
         if (dot < 0.9999f) {
             // Rotate towards the node
+
+            // If we've been aiming for too long, just go ahead and throw
+            _aimTimer += Time.deltaTime;
+            if(_aimTimer >= _aimTime) {
+                _aimTime = 0f;
+                _input.bubble.isJustPressed = true;
+            }
 
             // If bubble is on the right
             if (AngleDir(_toNodeWant.normalized, aimDirection.normalized) < 0) {
@@ -339,9 +405,24 @@ public class AIController : MonoBehaviour {
             dumbFrameCount++; // Waits for 20 frames to make sure aim is on point
             if (dumbFrameCount > 20) {
                 dumbFrameCount = 0;
+                _aimTime = 0f;
                 _input.bubble.isJustPressed = true;
             }
         }
+    }
+
+    // This is used in an attempt to improve corner jumping around platforms
+    // By waiting a small amount before turning around, it makes sure the the AI has walked far enough to make the jump back without hitting the ceiling
+    IEnumerator ChangeDirection(bool left) {
+        yield return new WaitForSeconds(0.05f);
+
+        if (left) {
+            _moveDir = -1;
+        } else {
+            _moveDir = 1;
+        }
+
+        _changingDirection = false;
     }
 
     // This returns a negative number if B is left of A, positive if right of A, or 0 if they are perfectly aligned.

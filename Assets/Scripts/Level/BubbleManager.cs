@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,7 +52,7 @@ public class BubbleManager : MonoBehaviour {
     public static BubbleInfo[] startingBubbleInfo = new BubbleInfo[125];
 
     static List<int> _nextLineBubbles = new List<int>();
-    int nextLineIndex = 0; // counts up as new lines are added
+    int _nextLineIndex = 0; // counts up as new lines are added
     bool _setupDone;
 
     int _comboCount = -1;
@@ -59,9 +60,9 @@ public class BubbleManager : MonoBehaviour {
     public int matchCount = 0;
     bool _gameOver = false;
 
-    Bubble[] bubbles;
+    Bubble[] _bubbles;
     public Bubble[] Bubbles {
-        get { return bubbles; }
+        get { return _bubbles; }
     }
 
     Bubble lastBubbleAdded;
@@ -76,7 +77,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public int NextLineIndex {
-        get { return nextLineIndex; }
+        get { return _nextLineIndex; }
     }
 
     public int ComboCount {
@@ -110,7 +111,7 @@ public class BubbleManager : MonoBehaviour {
         bubblesParent = transform.GetChild(0);
         nodesParent = transform.GetChild(1);
 
-        bubbles = new Bubble[150];
+        _bubbles = new Bubble[150];
         BuildStartingNodes();
 
         // If we are networked
@@ -161,6 +162,7 @@ public class BubbleManager : MonoBehaviour {
         _ceiling = GameObject.FindGameObjectWithTag("Ceiling").transform;
 
         boardChangedEvent.AddListener(UpdateAllAdjBubbles);
+        boardChangedEvent.AddListener(OnBoardChanged);
     }
 
     void BuildStartingNodes() {
@@ -207,7 +209,7 @@ public class BubbleManager : MonoBehaviour {
                 bubble.node = i;
                 // Add the new bubble to necessary lists
                 nodeList[i].bubble = bubble;
-                bubbles[i] = bubble;
+                _bubbles[i] = bubble;
 
                 // Temporarily initialize new bubble as a Dead bubble to prevent inaccurate match calculations.
                 InitBubble(bubble, (int)HAMSTER_TYPES.DEAD);
@@ -245,8 +247,8 @@ public class BubbleManager : MonoBehaviour {
 
                 // Reset for next check
                 for (int j = 0; j < numBubbles; ++j) {
-                    if (bubbles[j] != null) {
-                        bubbles[j].checkedForMatches = false;
+                    if (_bubbles[j] != null) {
+                        _bubbles[j].checkedForMatches = false;
                     } else { // Break out at the first null bubble since there won't be any after
                         break;
                     }
@@ -268,7 +270,7 @@ public class BubbleManager : MonoBehaviour {
                     bubble.SetIce(startingBubbleInfo[i].isIce);
                     bubble.node = i;
                     nodeList[i].bubble = bubble;
-                    bubbles[i] = bubble;
+                    _bubbles[i] = bubble;
                 }
             }
         }
@@ -278,14 +280,14 @@ public class BubbleManager : MonoBehaviour {
 
         // set starting bubbles matches count
         for (int i = 0; i < numBubbles; ++i) {
-            if (bubbles[i] != null) {
-                bubbles[i].matches = bubbles[i].CheckMatches(bubbles[i].matches);
-                bubbles[i].numMatches = bubbles[i].matches.Count;
+            if (_bubbles[i] != null) {
+                _bubbles[i].matches = _bubbles[i].CheckMatches(_bubbles[i].matches);
+                _bubbles[i].numMatches = _bubbles[i].matches.Count;
 
                 // Reset for next check
                 for (int j = 0; j < numBubbles; ++j) {
-                    if (bubbles[j] != null) {
-                        bubbles[j].checkedForMatches = false;
+                    if (_bubbles[j] != null) {
+                        _bubbles[j].checkedForMatches = false;
                     }
                 }
             }
@@ -327,9 +329,9 @@ public class BubbleManager : MonoBehaviour {
     // Assign adjBubbles for each bubble and empty node
     void UpdateAllAdjBubbles() {
 		for(int i = 0; i < nodeList.Count; ++i) {
-			if(bubbles[i] != null) {
-				bubbles[i].ClearAdjBubbles();
-				AssignAdjBubbles(bubbles[i], i);
+			if(_bubbles[i] != null) {
+				_bubbles[i].ClearAdjBubbles();
+				AssignAdjBubbles(_bubbles[i], i);
 			}
             if(nodeList[i].bubble == null) {
                 nodeList[i].ClearAdjBubbles();
@@ -477,54 +479,54 @@ public class BubbleManager : MonoBehaviour {
 	void GetTopLeft(Bubble bubble, int node) {
 		if (node - 13 >= 0) {
             if (bubble != null) {
-                bubble.adjBubbles[0] = bubbles[node - 13]; // top left
+                bubble.adjBubbles[0] = _bubbles[node - 13]; // top left
             } else {
-                nodeList[node].AdjBubbles[0] = bubbles[node - 13];
+                nodeList[node].AdjBubbles[0] = _bubbles[node - 13];
             }
 		}
 	}
 	void GetTopRight(Bubble bubble, int node) {
 		if (node - 12 >= 0) {
             if (bubble != null) {
-                bubble.adjBubbles[1] = bubbles[node - 12]; // top right
+                bubble.adjBubbles[1] = _bubbles[node - 12]; // top right
             } else {
-                nodeList[node].AdjBubbles[1] = bubbles[node - 12];
+                nodeList[node].AdjBubbles[1] = _bubbles[node - 12];
             }
         }
 	}
 	void GetMiddleLeft(Bubble bubble, int node) {
 		if (node - 1 >= 0) {
             if (bubble != null) {
-                bubble.adjBubbles[5] = bubbles[node - 1]; // middle left
+                bubble.adjBubbles[5] = _bubbles[node - 1]; // middle left
             } else {
-                nodeList[node].AdjBubbles[5] = bubbles[node - 1];
+                nodeList[node].AdjBubbles[5] = _bubbles[node - 1];
             }
         }
 	}
 	void GetMiddleRight(Bubble bubble, int node) {
 		if (node + 1 < nodeList.Count) {
             if (bubble != null) {
-                bubble.adjBubbles[2] = bubbles[node + 1]; // middle right
+                bubble.adjBubbles[2] = _bubbles[node + 1]; // middle right
             } else {
-                nodeList[node].AdjBubbles[2] = bubbles[node + 1];
+                nodeList[node].AdjBubbles[2] = _bubbles[node + 1];
             }
         }
 	}
 	void GetBottomLeft(Bubble bubble, int node) {
 		if (node + 12 < nodeList.Count) {
             if (bubble != null) {
-                bubble.adjBubbles[4] = bubbles[node + 12]; // bottom left
+                bubble.adjBubbles[4] = _bubbles[node + 12]; // bottom left
             } else {
-                nodeList[node].AdjBubbles[4] = bubbles[node + 12];
+                nodeList[node].AdjBubbles[4] = _bubbles[node + 12];
             }
 		}
 	}
 	void GetBottomRight(Bubble bubble, int node) {
 		if (node + 13 < nodeList.Count) {
             if (bubble != null) {
-                bubble.adjBubbles[3] = bubbles[node + 13]; // bottom right
+                bubble.adjBubbles[3] = _bubbles[node + 13]; // bottom right
             } else {
-                nodeList[node].AdjBubbles[3] = bubbles[node + 13];
+                nodeList[node].AdjBubbles[3] = _bubbles[node + 13];
             }
 		}
 	}
@@ -539,14 +541,14 @@ public class BubbleManager : MonoBehaviour {
         if (justAddedBubble) {
 			// Check for anchor points
 			List<Bubble> anchorBubbles = new List<Bubble>();
-            foreach (Bubble b in bubbles) {
+            foreach (Bubble b in _bubbles) {
                 if (b != null) {
                     b.checkedForAnchor = false;
                     b.foundAnchor = false;
                     b.checkedForMatches = false;
                 }
             }
-            foreach (Bubble b in bubbles) {
+            foreach (Bubble b in _bubbles) {
 				if(b != null) {
 					anchorBubbles.Clear();
 					b.CheckForAnchor(anchorBubbles);
@@ -603,7 +605,7 @@ public class BubbleManager : MonoBehaviour {
         newBubble.transform.parent = bubblesParent;
 
         // add to list
-        bubbles [newBubble.node] = newBubble;
+        _bubbles [newBubble.node] = newBubble;
         nodeList[newBubble.node].bubble = newBubble;
 
 		UpdateAllAdjBubbles ();
@@ -629,7 +631,7 @@ public class BubbleManager : MonoBehaviour {
         newBubble.transform.parent = bubblesParent;
 
         // add to list
-        bubbles[newBubble.node] = newBubble;
+        _bubbles[newBubble.node] = newBubble;
         nodeList[newBubble.node].bubble = newBubble;
 
         UpdateAllAdjBubbles();
@@ -668,17 +670,17 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Check if node1 is taken
-        for (int i = 0; i < bubbles.Length - 1; ++i) {
-            if (bubbles[i] == null) {
+        for (int i = 0; i < _bubbles.Length - 1; ++i) {
+            if (_bubbles[i] == null) {
                 continue;
             }
-            if (bubbles[i].node == node1) {
+            if (_bubbles[i].node == node1) {
                 // Already a bubble in that node, eliminate it
                 node1 = -1;
-            } else if (bubbles[i].node == node2) {
+            } else if (_bubbles[i].node == node2) {
                 // Already a bubble in that node, eliminate it
                 node2 = -1;
-            } else if (bubbles[i].node == node3) {
+            } else if (_bubbles[i].node == node3) {
                 // Already a bubble in that node, eliminate it
                 node3 = -1;
             }
@@ -699,7 +701,7 @@ public class BubbleManager : MonoBehaviour {
         if(node == -1) {
             Debug.Log("Shiiit");
         }
-		bubbles [node] = null;
+		_bubbles [node] = null;
         nodeList[node].bubble = null;
 
         /*
@@ -755,34 +757,34 @@ public class BubbleManager : MonoBehaviour {
         // Move bubbles down one line
         Bubble[] tempBubbles = new Bubble[nodeList.Count];
 		for (int i = 0; i < nodeList.Count; ++i) {
-			tempBubbles[i] = bubbles[i];
+			tempBubbles[i] = _bubbles[i];
 		}
-		bubbles = new Bubble[nodeList.Count];
+		_bubbles = new Bubble[nodeList.Count];
 		List<Bubble> testList = new List<Bubble> ();
 		foreach (Bubble b in tempBubbles) {
 			if(b != null) {
 				b.node += topLineLength;
 				b.transform.position = nodeList[b.node].nPosition;
-				bubbles[b.node] = b;
+				_bubbles[b.node] = b;
 				testList.Add(b);
 			}
 		}
 
         // Spawn bubbles on top line
-		for (int i = 0; i < topLineLength; ++i, ++nextLineIndex) {
+		for (int i = 0; i < topLineLength; ++i, ++_nextLineIndex) {
 			GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
 			Bubble bubble = bub.GetComponent<Bubble>();
             bubble.transform.parent = bubblesParent;
 
             // Init bubble using the types that were decided ahead of time
-            InitBubble(bubble, _nextLineBubbles[nextLineIndex]);
+            InitBubble(bubble, _nextLineBubbles[_nextLineIndex]);
 			bubble.node = i;
             nodeList[i].bubble = bubble;
-			bubbles[i] = bubble;
+			_bubbles[i] = bubble;
 		}
 
         // If we've hit the end of the generated line bubbles
-        if(nextLineIndex >= _nextLineBubbles.Count && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
+        if(_nextLineIndex >= _nextLineBubbles.Count && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
             // Generate some more!
             SeedNextLineBubbles();
             // Send RPC if we are networked
@@ -896,7 +898,7 @@ public class BubbleManager : MonoBehaviour {
 
         // Check bubble positions
         for (int i = bottomRowStart; i < nodeList.Count; ++i) {
-            if (bubbles[i] != null) {
+            if (_bubbles[i] != null) {
                 EndGame(false);
                 return;
             }
@@ -923,16 +925,32 @@ public class BubbleManager : MonoBehaviour {
         _gameOver = true;
     }
 
+    void OnBoardChanged() {
+        StopCoroutine(CheckBubbleDropPotentials());
+        StartCoroutine(CheckBubbleDropPotentials());
+    }
+
+    // Drop potentials are used by the AI to determine how many bubbles will drop if a particular bubble is popped.
+    IEnumerator CheckBubbleDropPotentials() {
+        foreach(Bubble b in _bubbles) {
+            if(b != null && b.CouldMaybeBeHit()) {
+                b.CheckDropPotential();
+                yield return null;
+            }
+        }
+
+    }
+
     public void RefreshRainbowBubbles() {
 		for (int i = 0; i < nodeList.Count; ++i) {
-			if(bubbles[i] != null && bubbles[i].type == HAMSTER_TYPES.RAINBOW) {
-				bubbles[i].checkedForMatches = false;
+			if(_bubbles[i] != null && _bubbles[i].type == HAMSTER_TYPES.RAINBOW) {
+				_bubbles[i].checkedForMatches = false;
 			}
 		}
 	}
 
     bool IsBoardClear() {
-        foreach(Bubble b in bubbles) {
+        foreach(Bubble b in _bubbles) {
             if(b != null) {
                 return false;
             }

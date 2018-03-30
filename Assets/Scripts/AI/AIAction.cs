@@ -12,8 +12,7 @@ public class AIAction {
     public int weight;
     public bool requiresShift = false;
     public PlayerController opponent;
-
-    // TODO: Add variables for switching
+    public WaterBubble waterBubble;
 
     PlayerController _playerController;
 
@@ -84,6 +83,8 @@ public class AIAction {
             }
         } else if(opponent != null) {
             weight += OpponentChecks();
+        } else if(waterBubble != null) {
+            weight += WaterBubbleChecks();
         }
     }
 
@@ -109,6 +110,14 @@ public class AIAction {
                     // obviously if we can't switch, don't do this action
                     addWeight += _playerController.CanShift ? 5 : -100;
                 }
+
+                // If the hamster we want is DEAD, it's best to use it in a switch
+                addWeight += type == HAMSTER_TYPES.DEAD ? 20 : 0;
+
+            // If this action doesn't require a shift and the hamster we want is DEAD
+            } else if (type == HAMSTER_TYPES.DEAD) {
+                // Reduce the weight a bit since we don't want to throw dead hamsters at our board
+                addWeight -= 30;
             }
 
             // If any adjBubbles is a Dead bubble (try to match and drop it)
@@ -242,6 +251,24 @@ public class AIAction {
             // If the opponent is holding a bubble, try to stop them before they throw it!
             if(opponent.heldBubble != null) {
                 addWeight += 35;
+            }
+        }
+
+        return addWeight;
+    }
+
+    int WaterBubbleChecks() {
+        int addWeight = 0;
+
+        // If the bubble has fully spawned and is below the center line
+        if (!waterBubble.IsSpawning && waterBubble.transform.position.y < 0f) {
+
+            // Water bubbles are dangerous, so it's not a bad idea to get rid of them even if it hasn't caught a hamster yet
+            addWeight += 50;
+
+            // If the water bubble has caught a bubble, definitely try to pop it
+            if (waterBubble.CaughtBubble != null) {
+                addWeight += 100;
             }
         }
 

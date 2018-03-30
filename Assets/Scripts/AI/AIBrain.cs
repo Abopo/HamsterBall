@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 // This class will handle making the main decisions of the AI.
@@ -132,6 +133,12 @@ public class AIBrain : MonoBehaviour {
 
         CreateHamsterAndNodeActions();
 
+        // If we're in the beach level
+        if(SceneManager.GetActiveScene().name.Contains("Beach")) {
+            // Make some actions regarding water bubbles
+            MakeWaterBubbleActions();
+        }
+
         // Clear out bad actions
         _actions.RemoveAll(action => !ActionIsRelevant(action));
 
@@ -185,7 +192,7 @@ public class AIBrain : MonoBehaviour {
                 }
             }
             // If we are not chasing a hamster or opponent and are not holding a bubble
-            if (action.hamsterWant == null && action.opponent == null && _playerController.heldBubble == null) {
+            if (action.hamsterWant == null && action.opponent == null && _playerController.heldBubble == null && action.waterBubble == null) {
                 return false;
             }
             if (action.bubbleWant != null) {
@@ -371,6 +378,18 @@ public class AIBrain : MonoBehaviour {
         }
     }
 
+    void MakeWaterBubbleActions() {
+        WaterBubble[] waterBubbles = FindObjectsOfType<WaterBubble>();
+        foreach(WaterBubble wB in waterBubbles) {
+            // If this water bubble is on our side
+            if (wB.team == _playerController.team) {
+                AIAction newAction = new AIAction(_playerController);
+                newAction.waterBubble = wB;
+                _actions.Add(newAction);
+            }
+        }
+    }
+
     bool ActionAlreadyMade(AIAction action) {
         foreach(AIAction a in _actions) {
             if(a.bubbleWant != null && action.bubbleWant != null && a.bubbleWant == action.bubbleWant) {
@@ -442,24 +461,23 @@ public class AIBrain : MonoBehaviour {
     }
 
     void DecideVertWant() {
-        //_vertWant = Random.Range(-1, 2);
-        //foreach (AIAction action in _actions) {
-            if (_playerController.heldBubble == null) {
-                if (curAction.hamsterWant != null) {
-                    VerticalChase(curAction.hamsterWant.gameObject);
-                } else if (curAction.opponent != null) {
-                    VerticalChase(curAction.opponent.gameObject);
-                }
-            } else if(_playerController.heldBubble != null && _playerController.shifted) {
-                if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
-                    curAction.vertWant = -1;
-                } else if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
-                    curAction.vertWant = 1;
-                } else {
-                    curAction.vertWant = 0;
-                }
+        if (_playerController.heldBubble == null) {
+            if (curAction.hamsterWant != null) {
+                VerticalChase(curAction.hamsterWant.gameObject);
+            } else if (curAction.opponent != null) {
+                VerticalChase(curAction.opponent.gameObject);
+            } else if(curAction.waterBubble != null) {
+                VerticalChase(curAction.waterBubble.gameObject);
             }
-       //}
+        } else if(_playerController.heldBubble != null && _playerController.shifted) {
+            if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
+                curAction.vertWant = -1;
+            } else if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
+                curAction.vertWant = 1;
+            } else {
+                curAction.vertWant = 0;
+            }
+        }
     }
 
     void DecideHorWant() {
@@ -470,7 +488,10 @@ public class AIBrain : MonoBehaviour {
                 HorizontalChase(curAction.hamsterWant.gameObject);
             } else if(curAction.opponent != null) {
                 HorizontalChase(curAction.opponent.gameObject);
+            } else if(curAction.waterBubble != null) {
+                HorizontalChase(curAction.waterBubble.gameObject);
             }
+        // If we've got a bubble and are looking to throw it
         } else if (_playerController.heldBubble != null && curAction.nodeWant != null) {
             // Move to a decent throwing spot
             float offset = 0;

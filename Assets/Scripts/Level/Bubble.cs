@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class Bubble : MonoBehaviour {
@@ -529,6 +530,11 @@ public class Bubble : MonoBehaviour {
         int comboBonus = 0;
         // Check combo stuff
         foreach (Bubble b in matches) {
+            // if either bubble is missing it's player controller, move on to the next one.
+            if(_playerController == null || b.PlayerController == null) {
+                continue;
+            }
+
             // If the last bubble added has matched and wasn't thrown by our thrower
             if (_homeBubbleManager.team == _playerController.team && b.canCombo && b == _homeBubbleManager.LastBubbleAdded && b.PlayerController != _playerController) {
                 // If a different team threw the bubble
@@ -589,19 +595,22 @@ public class Bubble : MonoBehaviour {
 
         _homeBubbleManager.RemoveBubble(node);
 
-        // Check for drop combos
-        // If this bubble can combo, a local player threw the bubble, the bubble causing the drop was the last bubble thrown, and it was thrown by a different player
-        if (canCombo && _homeBubbleManager.LastBubbleAdded.PlayerController.team == _homeBubbleManager.team && _homeBubbleManager.LastBubbleAdded != null && 
-            _homeBubbleManager.LastBubbleAdded.popped && _playerController != null && _homeBubbleManager.LastBubbleAdded.PlayerController != _playerController) {
-            // If a different team threw the last bubble
-            if (_homeBubbleManager.LastBubbleAdded.PlayerController.team != _playerController.team) {
-                // Then it's a counter!
-                _homeBubbleManager.BubbleEffects.CounterDropEffect(transform.position);
-                _dropCombo = true;
-            } else {
-                // It's a combo
-                _homeBubbleManager.BubbleEffects.TeamDropEffect(transform.position);
-                _dropCombo = true;
+        // If both bubbles player controllers exist
+        if (_playerController != null && _homeBubbleManager.LastBubbleAdded.PlayerController != null) {
+            // Check for drop combos
+            // If this bubble can combo, a local player threw the bubble, the bubble causing the drop was the last bubble thrown, and it was thrown by a different player
+            if (canCombo && _homeBubbleManager.LastBubbleAdded.PlayerController.team == _homeBubbleManager.team && _homeBubbleManager.LastBubbleAdded != null &&
+                _homeBubbleManager.LastBubbleAdded.popped && _playerController != null && _homeBubbleManager.LastBubbleAdded.PlayerController != _playerController) {
+                // If a different team threw the last bubble
+                if (_homeBubbleManager.LastBubbleAdded.PlayerController.team != _playerController.team) {
+                    // Then it's a counter!
+                    _homeBubbleManager.BubbleEffects.CounterDropEffect(transform.position);
+                    _dropCombo = true;
+                } else {
+                    // It's a combo
+                    _homeBubbleManager.BubbleEffects.TeamDropEffect(transform.position);
+                    _dropCombo = true;
+                }
             }
         }
 	}
@@ -674,11 +683,15 @@ public class Bubble : MonoBehaviour {
 
     // Is called when the board is changed
     void BoardChanged() {
+        /*
         if (CouldMaybeBeHit()) {
-            CheckDropPotential();
+            StartCoroutine(CheckDropPotential());
+            //CheckDropPotential();
         } else {
             dropPotential = 0;
         }
+        */
+        dropPotential = 0;
 
         canCombo = false;
 
@@ -720,19 +733,18 @@ public class Bubble : MonoBehaviour {
         return canBeHit;
     }
 
-    // This is just used to reduce the number of bubbles that go through the DropPotential Check,
+    // This is just used to reduce the number of bubbles that go through the dropPotential check,
     // it's not designed to be perfectly accurate
-    bool CouldMaybeBeHit() {
-        foreach(Bubble b in adjBubbles) {
-            if(b == null) {
-                return true;
-            }
+    public bool CouldMaybeBeHit() {
+        if(adjBubbles[2] == null || adjBubbles[3] == null || adjBubbles[4] == null || adjBubbles[5] == null) {
+            return true;
         }
 
         return false;
     }
 
-    void CheckDropPotential() {
+    public void CheckDropPotential() {
+        //yield return new WaitForSeconds(0.25f);
         dropPotential = 0;
         // Make sure matches at least contains self
         if (matches.Count == 0) {
@@ -742,16 +754,20 @@ public class Bubble : MonoBehaviour {
         List<Bubble> bubbles = new List<Bubble>();
         foreach (Bubble b in adjBubbles) {
             // Reset variables for next bubble
-            foreach (Bubble lB in bubbles) {
-                lB.checkedForAnchor = false;
-                lB.foundAnchor = false;
-                lB.checkedForMatches = false;
+            // TODO: This is super inefficient, but so far is the only way to be 100% accurate
+            foreach (Bubble lB in _homeBubbleManager.Bubbles) {
+                if (lB != null) {
+                    lB.checkedForAnchor = false;
+                    lB.foundAnchor = false;
+                    lB.checkedForMatches = false;
+                }
             }
             bubbles.Clear();
 
             // If a bubble can't find an anchor without the matchedBubbles
             // matches aren't set up for inital bubbles
             if (b != null && !matches.Contains(b)) {
+                /*
                 b.foundAnchor = false;
                 foreach (Bubble b2 in b.adjBubbles) {
                     if (b2 != null) {
@@ -760,6 +776,7 @@ public class Bubble : MonoBehaviour {
                         b2.checkedForMatches = false;
                     }
                 }
+                */
 
                 if (!b.CheckForAnchor(bubbles, matches)) {
                     // Then add weight based on how many bubbles would be dropped

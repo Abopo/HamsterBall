@@ -183,14 +183,21 @@ public class HamsterScan : MonoBehaviour {
         PopulateOKTypesList(_okTypesRight);
     }
 
+    public void UpdateLeftList() {
+        UpdateOKTypeList(_okTypesLeft, _allLeftHamsters);
+    }
+
+    public void UpdateRightList() {
+        UpdateOKTypeList(_okTypesRight, _allRightHamsters);
+    }
+
     void UpdateOKTypeList(List<int> list, List<Hamster> hamsters) {
         // Reset lists
         list.Clear();
 
-        // Left Update
         foreach (Hamster hamster in hamsters) {
             if (hamster.isGravity) {
-                _typeCounts[6]++;
+                _typeCounts[7]++;
             } else {
                 switch (hamster.type) {
                     case HAMSTER_TYPES.GREEN:
@@ -216,6 +223,7 @@ public class HamsterScan : MonoBehaviour {
                         break;
                     case HAMSTER_TYPES.RAINBOW:
                     case HAMSTER_TYPES.DEAD:
+                    case HAMSTER_TYPES.BOMB:
                         _typeCounts[7]++;
                         break;
                 }
@@ -240,14 +248,6 @@ public class HamsterScan : MonoBehaviour {
             list.Add(7);
         }
         _typeCounts[7] = 0;
-    }
-
-    public void UpdateLeftList() {
-        UpdateOKTypeList(_okTypesLeft, _allLeftHamsters);
-    }
-
-    public void UpdateRightList() {
-        UpdateOKTypeList(_okTypesRight, _allRightHamsters);
     }
 
     public Hamster GetHamster(int hamsterNum) {
