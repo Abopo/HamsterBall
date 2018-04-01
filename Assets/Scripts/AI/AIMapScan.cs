@@ -133,10 +133,10 @@ public class AIMapScan : MonoBehaviour {
         // Check if there's a ceiling above
         rayOffsetX = 0.5f;
         _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
-        _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+        _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1f, collisionMask);
         rayOffsetX = -0.5f;
         _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
-        _jumpCheckHit2 = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
+        _jumpCheckHit2 = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1f, collisionMask);
         // If there is a ceiling above
         if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough") ||
             _jumpCheckHit2 && _jumpCheckHit2.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough")) {
@@ -161,6 +161,7 @@ public class AIMapScan : MonoBehaviour {
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             }
+
             rayOffsetX += 0.1f;
         }
 
@@ -179,6 +180,7 @@ public class AIMapScan : MonoBehaviour {
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             }
+
             rayOffsetX += 0.1f;
         }
     }
@@ -186,8 +188,6 @@ public class AIMapScan : MonoBehaviour {
     void CheckDropDistances() {
         // Check Right
         float rayOffsetX = 0;
-        bool prevHitRight = false;
-        bool prevHitLeft = false;
         _rightDropDistance = 10f;
         _leftDropDistance = 10f;
 
@@ -195,9 +195,6 @@ public class AIMapScan : MonoBehaviour {
         _dropCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
         _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
         if (_dropCheckHit) {
-            prevHitRight = true;
-            prevHitLeft = true;
-
             // If we are standing on a passthrough platform
             if(_dropCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
                 _isOnPassthrough = true;
@@ -206,36 +203,42 @@ public class AIMapScan : MonoBehaviour {
             }
         }
 
+        // Check right
+        rayOffsetX = 0.1f;
         while (rayOffsetX < _rightWallCheckHit.distance) {
-            rayOffsetX += 0.1f;
             _dropCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.down);
             _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
-            if (_dropCheckHit && !prevHitRight) {
+
+            // If there is a passthrough platform nearby
+            if (_dropCheckHit && _dropCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
                 _rightDropDistance = rayOffsetX;
                 Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
                 break;
-            } else if (_dropCheckHit.collider == null && prevHitRight) {
+            } else if (_dropCheckHit && _dropCheckHit.collider.tag == "Platform End Cap") {
                 _rightDropDistance = rayOffsetX;
                 Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction, Color.blue);
                 break;
             }
+
+            rayOffsetX += 0.1f;
         }
 
         // Check Left
-        rayOffsetX = 0;
+        rayOffsetX = 0.1f;
         while (rayOffsetX < _leftWallCheckHit.distance) {
-            rayOffsetX += 0.1f;
             _dropCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.down);
             _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
-            if (_dropCheckHit && !prevHitLeft) {
+            if (_dropCheckHit && _dropCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
                 _leftDropDistance = rayOffsetX;
                 Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
                 break;
-            } else if (_dropCheckHit.collider == null && prevHitLeft) {
+            } else if (_dropCheckHit && _dropCheckHit.collider.tag == "Platform End Cap") {
                 _leftDropDistance = rayOffsetX;
                 Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction, Color.blue);
                 break;
             }
+
+            rayOffsetX += 0.1f;
         }
 
     }

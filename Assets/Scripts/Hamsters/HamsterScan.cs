@@ -1,6 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+public class HamsterInfo {
+    int specialSpawnOffset;
+    List<int> okTypes;
+
+    public int SpecialSpawnOffset {
+        get { return specialSpawnOffset; }
+        set { specialSpawnOffset = value; }
+    }
+    public List<int> OkTypes {
+        get { return okTypes; }
+        set { okTypes = value; }
+    }
+}
+
 // This script scans the map (both sides) for hamsters and puts them in
 // a list for the AI to access and make decisions with.
 public class HamsterScan : MonoBehaviour {
@@ -30,21 +44,30 @@ public class HamsterScan : MonoBehaviour {
         get { return _availableRightHamsters; }
     }
 
+    public HamsterInfo leftHamsterInfo = new HamsterInfo();
+    public HamsterInfo rightHamsterInfo = new HamsterInfo();
+
+    public int specialSpawnOffsetLeft;
     public List<int> OkTypesLeft {
         get { return _okTypesLeft; }
     }
+    public int specialSpawnOffsetRight;
     public List<int> OkTypesRight {
         get { return _okTypesRight; }
     }
 
     private void Awake() {
+        leftHamsterInfo.SpecialSpawnOffset = -6;
+        leftHamsterInfo.OkTypes = _okTypesLeft;
+        rightHamsterInfo.SpecialSpawnOffset = -6;
+        rightHamsterInfo.OkTypes = _okTypesRight;
+
         FindHamsters();
         UpdateOKTypes();
     }
 
     // Use this for initialization
     void Start () {
-	
 	}
 	
 	// Update is called once per frame

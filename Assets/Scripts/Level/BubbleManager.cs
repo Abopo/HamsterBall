@@ -228,7 +228,7 @@ public class BubbleManager : MonoBehaviour {
                         // Get the matches for each adjacent bubble
                         tempMatches = b.CheckMatches(tempMatches);
                         // If a bubble has more that 3 matches already
-                        if (tempMatches.Count > 3) {
+                        if (tempMatches.Count > 2) {
                             // Don't make another bubble of that type,
                             // Remove that type from the okTypes list.
                             okTypes.Remove((int)b.type);
@@ -802,11 +802,6 @@ public class BubbleManager : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             GetComponent<PhotonView>().RPC("AddLine", PhotonTargets.Others/*, _nextLineBubbles*/);
         }
-
-        // Get the next line of bubbles
-        //if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
-         //   _nextLineBubbles = DecideNextLine();
-        //}
 
         // Play sound
         _audioSource.clip = _addLineClip;

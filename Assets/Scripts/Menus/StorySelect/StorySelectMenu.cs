@@ -40,6 +40,7 @@ public class StorySelectMenu : MonoBehaviour {
         gameManager.prevMenu = MENU.STORY;
 
 		locationImages["Forest"] = Resources.Load<Sprite>("Art/UI/OneTube - Forest");
+        locationImages["Mountain"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Mountain");
         locationImages["Laboratory"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Laboratory");
         locationImages["Sewers"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Sewers");
         locationImages["City"] = Resources.Load<Sprite>("Art/UI/TwoTubes - City");

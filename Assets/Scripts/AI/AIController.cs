@@ -317,17 +317,23 @@ public class AIController : MonoBehaviour {
             // If we're already moving
             } else {
                 // and we need to change direction
-                // only change direction if we are not under a ceiling (or if we are touching a wall)
+                // only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
                 if ((_moveDir == 1 && _mapScan.LeftJumpDistance < _mapScan.RightJumpDistance &&
-                    !_mapScan.IsUnderCeiling) || GetComponent<EntityPhysics>().IsTouchingWallRight) {
+                    (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP)) 
+                    || GetComponent<EntityPhysics>().IsTouchingWallRight) {
+                    // Change direction
                     _input.left.isDown = true;
                     _input.right.isDown = false;
                     _moveDir = -1;
+
                 } else if ((_moveDir == -1 && _mapScan.RightJumpDistance < _mapScan.LeftJumpDistance &&
-                           !_mapScan.IsUnderCeiling) || GetComponent<EntityPhysics>().IsTouchingWallLeft) {
+                           (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP)) 
+                           || GetComponent<EntityPhysics>().IsTouchingWallLeft) {
+                    // Change direction
                     _input.left.isDown = false;
                     _input.right.isDown = true;
                     _moveDir = 1;
+
                 } else {
                     // Keep moving the same direction
                     if(_moveDir == -1) {
@@ -367,9 +373,9 @@ public class AIController : MonoBehaviour {
             _input.jump.isDown = true;
         } else if(_mapScan.RightJumpDistance < 1.5f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
             _input.jump.isDown = true;
-        } else {
+        }/* else {
             _input.jump.isDown = false;
-        }
+        }*/
     }
 
     void AimThrow() {
@@ -388,7 +394,7 @@ public class AIController : MonoBehaviour {
             // If we've been aiming for too long, just go ahead and throw
             _aimTimer += Time.deltaTime;
             if(_aimTimer >= _aimTime) {
-                _aimTime = 0f;
+                _aimTimer = 0f;
                 _input.bubble.isJustPressed = true;
             }
 
@@ -405,7 +411,7 @@ public class AIController : MonoBehaviour {
             dumbFrameCount++; // Waits for 20 frames to make sure aim is on point
             if (dumbFrameCount > 20) {
                 dumbFrameCount = 0;
-                _aimTime = 0f;
+                _aimTimer = 0f;
                 _input.bubble.isJustPressed = true;
             }
         }

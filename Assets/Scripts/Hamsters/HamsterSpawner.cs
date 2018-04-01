@@ -19,7 +19,9 @@ public class HamsterSpawner : Photon.PunBehaviour {
     Vector3 _spawnPosition;
 
     int _nextHamsterType;
-    List<int> _okTypes;
+    HamsterInfo _hamsterInfo;
+    //List<int> _okTypes;
+    //public int _specialSpawnOffset;
 
     public static bool canBeRainbow = true;
     public static bool canBeDead = true;
@@ -50,9 +52,12 @@ public class HamsterSpawner : Photon.PunBehaviour {
         SetupSpecialTypes();
         _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         if (team == 0) {
-            _okTypes = _hamsterScan.OkTypesLeft;
+            _hamsterInfo = _hamsterScan.leftHamsterInfo;
+            //_okTypes = _hamsterScan.OkTypesLeft;
+            //_specialSpawnOffset = _hamsterScan.specialSpawnOffsetLeft;
         } else if (team == 1) {
-            _okTypes = _hamsterScan.OkTypesRight;
+            _hamsterInfo = _hamsterScan.rightHamsterInfo;
+            //_okTypes = _hamsterScan.OkTypesRight;
         }
         _nextHamsterType = GetValidType();
 
@@ -65,6 +70,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
     }
 
     void SetupSpecialTypes() {
+        //_specialSpawnOffset = -6;
+
         if (canBeDead) {
             specialTypes.Add((int)HAMSTER_TYPES.DEAD);
         }
@@ -200,32 +207,40 @@ public class HamsterSpawner : Photon.PunBehaviour {
         int rType = 0;
 
         // If we can be a special hamster
-        if (_okTypes.Contains(7)) {
-            // Decide if this hamster will be special
-            int special = Random.Range(0, 16);
-            if (special == 1 && specialTypes.Count > 0) {
-                // Choose which special hamster it will be
-                int sType = Random.Range(0, specialTypes.Count);
-                switch (specialTypes[sType]) {
-                    case 8: // Rainbow
-                        rType = (int)HAMSTER_TYPES.RAINBOW;
-                        break;
-                    case 9: // Dead
-                        rType = (int)HAMSTER_TYPES.DEAD;
-                        break;
-                    case 10: // Bomb
-                        rType = (int)HAMSTER_TYPES.BOMB;
-                        break;
-                    case 0: // Gravity
-                        rType = 11;
-                        break;
-                }
+        if (_hamsterInfo.OkTypes.Contains(7)) {
+            if (_hamsterInfo.SpecialSpawnOffset >= 0) {
+                // Decide if this hamster will be special
+                int special = Random.Range(_hamsterInfo.SpecialSpawnOffset, 16);
+                if (special == 15 && specialTypes.Count > 0) {
+                    // Choose which special hamster it will be
+                    int sType = Random.Range(0, specialTypes.Count);
+                    switch (specialTypes[sType]) {
+                        case 8: // Rainbow
+                            rType = (int)HAMSTER_TYPES.RAINBOW;
+                            break;
+                        case 9: // Dead
+                            rType = (int)HAMSTER_TYPES.DEAD;
+                            break;
+                        case 10: // Bomb
+                            rType = (int)HAMSTER_TYPES.BOMB;
+                            break;
+                        case 0: // Gravity
+                            rType = 11;
+                            break;
+                    }
 
-                // Remove specials from okTypes list
-                _okTypes.Remove(7);
+                    // Remove specials from okTypes list
+                    _hamsterInfo.OkTypes.Remove(7);
+                    _hamsterInfo.SpecialSpawnOffset = -6;
+                } else {
+                    rType = SelectValidNormalType();
+                }
             } else {
                 rType = SelectValidNormalType();
             }
+
+            // Increase the special spawn offset
+            _hamsterInfo.SpecialSpawnOffset += 1;
         } else {
             rType = SelectValidNormalType();
         }
@@ -236,16 +251,16 @@ public class HamsterSpawner : Photon.PunBehaviour {
     int SelectValidNormalType() {
         int validType = 0;
         // If special types are OK, don't include it here.
-        int special = _okTypes.Contains(7) ? 1 : 0;
-        int rIndex = Random.Range(0, _okTypes.Count - special);
+        int special = _hamsterInfo.OkTypes.Contains(7) ? 1 : 0;
+        int rIndex = Random.Range(0, _hamsterInfo.OkTypes.Count - special);
 
-        validType = _okTypes[rIndex];
+        validType = _hamsterInfo.OkTypes[rIndex];
 
         // Remove chosen type from okTypes
-        _okTypes.RemoveAt(rIndex);
+        _hamsterInfo.OkTypes.RemoveAt(rIndex);
 
         // If okTypes is empty (excluding specials)
-        if (_okTypes.Count <= special) {
+        if (_hamsterInfo.OkTypes.Count <= special) {
             // Update okTypes
             if (team == 0) {
                 _hamsterScan.UpdateLeftList();
