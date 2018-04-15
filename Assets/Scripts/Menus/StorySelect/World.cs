@@ -34,7 +34,7 @@ public class World : MonoBehaviour {
         if (worldNum == _storySelectMenu.FurthestWorld) {
             l = _storySelectMenu.FurthestLevel;
         } else {
-            l = _storyButtons.Length;
+            l = _storyButtons.Length-1;
         }
 
         for(int i = 0; i <= l; ++i) {

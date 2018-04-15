@@ -33,6 +33,10 @@ public class HamsterScan : MonoBehaviour {
     // Used for counting up numbers of hamster types
     int[] _typeCounts = new int[8];
 
+
+    public List<Hamster> AllLeftHamsters {
+        get { return _allLeftHamsters; }
+    }
     // For AI purposes; only the hamsters that are out of the pipe
     public List<Hamster> AvailableHamsters {
         get { return _availableHamsters; }
@@ -55,6 +59,7 @@ public class HamsterScan : MonoBehaviour {
     public List<int> OkTypesRight {
         get { return _okTypesRight; }
     }
+
 
     private void Awake() {
         leftHamsterInfo.SpecialSpawnOffset = -6;

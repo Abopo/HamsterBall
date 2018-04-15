@@ -19,6 +19,7 @@ public class PlayerController : Entity {
     public ShiftPortal shiftPortal;
     public int direction;
     public bool aimAssist;
+    public bool canBeHit;
     
 	//public bool isLeftTeam;
     public int team; // -1 = no team, 0 = left team, 1 = right team
@@ -104,13 +105,14 @@ public class PlayerController : Entity {
         get { return _homeBubbleManager; }
     }
 
-
     bool _justChangedState; // Can only change state once per frame
 
     // Events
     public UnityEvent significantEvent;
 
     private void Awake() {
+        canBeHit = true;
+
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
 
         inputState = new InputState();
@@ -355,7 +357,7 @@ public class PlayerController : Entity {
     }
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		if (collider.gameObject.layer == 12 && team != collider.GetComponent<AttackObject>().team/* && shifted */&& !_isInvuln && curState != PLAYER_STATE.SHIFT) {
+		if (collider.gameObject.layer == 12 && team != collider.GetComponent<AttackObject>().team/* && shifted */&& !_isInvuln && curState != PLAYER_STATE.SHIFT && canBeHit) {
 			ChangeState(PLAYER_STATE.HIT);
             ((HitState)currentState).Knockback((int)Mathf.Sign(transform.position.x - collider.transform.position.x));
             

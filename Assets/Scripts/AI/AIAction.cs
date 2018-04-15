@@ -73,7 +73,7 @@ public class AIAction {
             } else {
                 weight += MyBoardChecks(hamsterWant.type);
             }
-            // if we already have a hamster
+        // if we already have a hamster
         } else if (_playerController.heldBubble != null) {
             // if the bubble is on the opponents board
             if (bubbleWant != null && bubbleWant.team != _playerController.team) {

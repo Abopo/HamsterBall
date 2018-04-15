@@ -46,6 +46,7 @@ public class StorySelectMenu : MonoBehaviour {
         locationImages["City"] = Resources.Load<Sprite>("Art/UI/TwoTubes - City");
         locationImages["Fungals"] = Resources.Load<Sprite>("Art/UI/OneTube - Fungals");
         locationImages["DarkForest"] = Resources.Load<Sprite>("Art/UI/OneTube - DarkForest");
+        locationImages["Beach"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Beach");
 
         // Load saved world
         LoadSaveData();

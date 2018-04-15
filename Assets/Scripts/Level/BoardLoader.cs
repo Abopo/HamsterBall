@@ -246,23 +246,38 @@ public class BoardLoader : MonoBehaviour {
 
             //_readText = _reader.ReadLine();
             _readText = _linesFromFile[_fileIndex++]; // read AI character script
+            player2.characterAI = _readText;
+            /*
             if (_readText != "Standard") {
                 SetCharacterAI(player2, _readText);
             }
+            */
             playerManager.AddPlayer(player2);
         }
     }
 
+    /*
     void SetCharacterAI(PlayerInfo pInfo, string charAI) {
-        GeneralHamAI characterAI = new GeneralHamAI();
+
+        CharacterAI characterAI = new CharacterAI();
         switch(charAI) {
             case "GeneralHam":
                 characterAI = new GeneralHamAI();
                 break;
+            case "MountainGoat":
+                characterAI = new MountainGoatAI();
+                break;
+            case "Snail":
+                characterAI = new SnailAI();
+                break;
+            case "Rooster":
+                characterAI = new RoosterAI();
+                break;
         }
 
-        pInfo.characterAI = characterAI;
+        //pInfo.characterAI = characterAI;
     }
+    */
 
     void SetMode() {
         _readText = _linesFromFile[_fileIndex++];

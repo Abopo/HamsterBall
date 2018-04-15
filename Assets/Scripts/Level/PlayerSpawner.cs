@@ -46,13 +46,11 @@ public class PlayerSpawner : MonoBehaviour {
             if (tempPlayerInfo.controllerNum < 0) {
                 newPlayer = Instantiate(aiPlayerObj).GetComponent<PlayerController>();
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
-                newPlayer.GetComponent<AIBrain>().characterAI = tempPlayerInfo.characterAI;
+                SetCharacterAI(tempPlayerInfo.characterAI, newPlayer);
             } else {
                 newPlayer = Instantiate(playerObj).GetComponent<PlayerController>();
             }
             newPlayer.SetPlayerNum(tempPlayerInfo.playerNum);
-            //newPlayer.inputState.controllerNum = tempPlayerInfo.joystickNum;
-            //newPlayer.isLeftTeam = (tempPlayerInfo.team == 0 ? true : false);
             newPlayer.team = tempPlayerInfo.team;
             newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
             newPlayer.GetComponent<Animator>().runtimeAnimatorController = FindAnimatorController(newPlayer.playerNum);
@@ -65,6 +63,26 @@ public class PlayerSpawner : MonoBehaviour {
             }
 
             _players.Add(newPlayer);
+        }
+    }
+
+    void SetCharacterAI(string character, PlayerController player) {
+        switch (character) {
+            case "GeneralHam":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<GeneralHamAI>();
+                break;
+            case "MountainGoat":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<MountainGoatAI>();
+                break;
+            case "Snail":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<SnailAI>();
+                break;
+            case "Rooster":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<RoosterAI>();
+                break;
+            case "Slime":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<SlimeAI>();
+                break;
         }
     }
 
