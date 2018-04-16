@@ -33,11 +33,13 @@ public class HamsterScan : MonoBehaviour {
     // Used for counting up numbers of hamster types
     int[] _typeCounts = new int[8];
 
-
+    // For AI purposes
     public List<Hamster> AllLeftHamsters {
         get { return _allLeftHamsters; }
     }
-    // For AI purposes; only the hamsters that are out of the pipe
+    public List<Hamster> AllRightHamsters {
+        get { return _allRightHamsters; }
+    }
     public List<Hamster> AvailableHamsters {
         get { return _availableHamsters; }
     }

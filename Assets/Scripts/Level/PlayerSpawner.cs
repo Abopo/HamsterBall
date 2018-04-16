@@ -71,6 +71,9 @@ public class PlayerSpawner : MonoBehaviour {
             case "GeneralHam":
                 player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<GeneralHamAI>();
                 break;
+            case "Owl":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<OwlAI>();
+                break;
             case "MountainGoat":
                 player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<MountainGoatAI>();
                 break;
