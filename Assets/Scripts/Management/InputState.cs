@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class InputState {
 	
@@ -19,10 +18,12 @@ public class InputState {
 	public button	bubble;
     public button   attack;
     public button	shift;
-    public bool     upJustPressed;
-    public bool     downJustPressed;
-    public bool     leftJustPressed;
-    public bool     rightJustPressed;
+
+    // Used within the class to keep track of joystick inputs
+    bool upJustPressed;
+    bool downJustPressed;
+    bool leftJustPressed;
+    bool rightJustPressed;
 
     public int controllerNum; // 0-1 keyboard, 2-5 joysticks
 
@@ -250,6 +251,39 @@ public class InputState {
 
 		return currInput;
 	}
+
+    public static bool GetAnyButtonDown(int controllerNum) {
+        bool anyButtonDown = false;
+
+        switch(controllerNum) {
+            case 1:
+            case 2:
+                if (Input.GetButtonDown("Up " + (controllerNum)) ||
+                   Input.GetButtonDown("Down " + (controllerNum)) ||
+                   Input.GetButtonDown("Left " + (controllerNum)) ||
+                   Input.GetButtonDown("Right " + (controllerNum)) ||
+                   Input.GetButtonDown("Jump " + (controllerNum)) ||
+                   Input.GetButtonDown("Bubble " + (controllerNum)) ||
+                   Input.GetButtonDown("Attack " + (controllerNum)) ||
+                   Input.GetButtonDown("Shift " + (controllerNum))) {
+                    anyButtonDown = true;
+                }
+                break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                if (Input.GetButtonDown("Joystick Jump " + (controllerNum - 2)) ||
+                   Input.GetButtonDown("Joystick Bubble " + (controllerNum - 2)) ||
+                   Input.GetButtonDown("Joystick Attack " + (controllerNum - 2)) ||
+                   Input.GetButtonDown("Joystick Shift " + (controllerNum - 2))) {
+                    anyButtonDown = true;
+                }
+                break;
+        }
+
+        return anyButtonDown;
+    }
 
     static InputState GetUp(InputState currInput) {
         currInput.up.isDown = true;

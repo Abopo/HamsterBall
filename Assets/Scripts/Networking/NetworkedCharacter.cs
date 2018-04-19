@@ -28,6 +28,10 @@ public class NetworkedCharacter : Photon.MonoBehaviour {
             int team = _character.Team;
             stream.Serialize(ref team);
 
+            // Character
+            int characterName = (int)_character.CharacterName;
+            stream.Serialize(ref characterName);
+
             // Input
             stream.Serialize(ref _serializedInput.left.isDown);
             stream.Serialize(ref _serializedInput.left.isJustPressed);
@@ -42,6 +46,11 @@ public class NetworkedCharacter : Photon.MonoBehaviour {
             if(team != _character.Team) {
                 SyncTeam(team);
             }
+
+            // Character
+            int characterName = 0;
+            stream.Serialize(ref characterName);
+            _character.SetCharacter((CHARACTERNAMES)characterName);
 
             // Input
             stream.Serialize(ref _serializedInput.left.isDown);

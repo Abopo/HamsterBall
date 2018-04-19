@@ -41,7 +41,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             _playerController.inputState.controllerNum = controllerNum;
         }
 
-        SetAnimatorController();
+        SetAnimatorController((CHARACTERNAMES)photonView.instantiationData[3]);
 
         // Make sure our player spawner has us in its list
         NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();
@@ -181,19 +181,22 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         //_writingInputList.Clear();
     }
 
-    void SetAnimatorController() {
-        switch (_playerController.playerNum) {
-            case 1:
+    void SetAnimatorController(CHARACTERNAMES charaName) {
+        switch (charaName) {
+            case CHARACTERNAMES.BUB:
                 _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
                 break;
-            case 2:
+            case CHARACTERNAMES.NEGABUB:
                 _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
                 break;
-            case 3:
+            case CHARACTERNAMES.BOB:
                 _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
                 break;
-            case 4:
+            case CHARACTERNAMES.NEGABOB:
                 _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.PEPSIMAN:
+                _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
                 break;
         }
     }

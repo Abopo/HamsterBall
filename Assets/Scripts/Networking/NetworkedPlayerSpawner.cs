@@ -51,7 +51,8 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
             } else {
                 Vector2 spawnPos = FindSpawnPosition(tempPlayerInfo.team);
-                newPlayer = PhotonNetwork.Instantiate("Prefabs/Networking/Bub_PUN", spawnPos, Quaternion.identity, 0, new object[] { tempPlayerInfo.playerNum, tempPlayerInfo.team, tempPlayerInfo.controllerNum }).GetComponent<PlayerController>();
+                newPlayer = PhotonNetwork.Instantiate("Prefabs/Networking/Bub_PUN", spawnPos, Quaternion.identity, 0, 
+                                                      new object[] { tempPlayerInfo.playerNum, tempPlayerInfo.team, tempPlayerInfo.controllerNum, tempPlayerInfo.characterName }).GetComponent<PlayerController>();
                 // Transfer ownership to appropriate player
                 newPlayer.GetComponent<PhotonView>().TransferOwnership(tempPlayerInfo.ownerID);
                 Debug.Log("Spawned player " + tempPlayerInfo.playerNum + "on Team " + tempPlayerInfo.team);
@@ -59,7 +60,7 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
             newPlayer.playerNum = tempPlayerInfo.playerNum;
             newPlayer.team = tempPlayerInfo.team;
             //newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
-            newPlayer.GetComponent<Animator>().runtimeAnimatorController = FindAnimatorController(newPlayer.playerNum);
+            newPlayer.GetComponent<Animator>().runtimeAnimatorController = FindAnimatorController(tempPlayerInfo.characterName);
 
             SetupSwitchMeter(newPlayer);
 
@@ -77,20 +78,23 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
         }
     }
 
-    RuntimeAnimatorController FindAnimatorController(int playerNum) {
+    RuntimeAnimatorController FindAnimatorController(CHARACTERNAMES character) {
         RuntimeAnimatorController controller = null;
-        switch (playerNum) {
-            case 1:
+        switch (character) {
+            case CHARACTERNAMES.BUB:
                 controller = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
                 break;
-            case 2:
+            case CHARACTERNAMES.NEGABUB:
                 controller = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
                 break;
-            case 3:
+            case CHARACTERNAMES.BOB:
                 controller = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
                 break;
-            case 4:
+            case CHARACTERNAMES.NEGABOB:
                 controller = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.PEPSIMAN:
+                controller = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
                 break;
         }
 

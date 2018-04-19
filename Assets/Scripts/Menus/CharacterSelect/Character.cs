@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+public enum CHARACTERNAMES { BUB = 0, NEGABUB, BOB, NEGABOB, PEPSIMAN, NUM_CHARACTERS};
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
@@ -8,9 +9,10 @@ public class Character : MonoBehaviour {
     public bool takeInput;
     //public Character aiChild;
     public Stack<Character> aiChildren = new Stack<Character>();
-    Character humanParent;
+    Character humanParent; // the player controlling this ai character
 
     int _playerNum;
+    CHARACTERNAMES _characterName;
     int _team; // -1 = no team, 0 = left team, 1 = right team
     bool _active;
 
@@ -23,6 +25,8 @@ public class Character : MonoBehaviour {
         }
     }
 
+    Animator _animator;
+
     PlayerManager _playerManager;
     SpriteRenderer _spriteRenderer;
     AudioSource _audioSource;
@@ -33,6 +37,8 @@ public class Character : MonoBehaviour {
 
     TeamSelectArrow _leftArrow;
     TeamSelectArrow _rightArrow;
+    CharacterChangeArrow _upArrow;
+    CharacterChangeArrow _downArrow;
 
     // Networking stuff
     PhotonView _photonView;
@@ -46,6 +52,9 @@ public class Character : MonoBehaviour {
     }
     public int JoystickNum {
         get { return _inputState.controllerNum; }
+    }
+    public CHARACTERNAMES CharacterName {
+        get { return _characterName; }
     }
     public bool Active {
         get { return _active; }
@@ -76,6 +85,7 @@ public class Character : MonoBehaviour {
         _active = false;
 
         _initialPos = transform.position;
+        _animator = GetComponent<Animator>();
 
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
         _inputState = new InputState();
@@ -94,18 +104,31 @@ public class Character : MonoBehaviour {
     }
 
     void GetArrows() {
-        // Get arrows
-        TeamSelectArrow[] arrows = transform.GetComponentsInChildren<TeamSelectArrow>();
-        if (arrows[0].side == 0) {
-            _leftArrow = arrows[0];
-            _rightArrow = arrows[1];
+        // Get team select arrows
+        TeamSelectArrow[] sideArrows = transform.GetComponentsInChildren<TeamSelectArrow>();
+        if (sideArrows[0].side == 0) {
+            _leftArrow = sideArrows[0];
+            _rightArrow = sideArrows[1];
         } else {
-            _rightArrow = arrows[0];
-            _leftArrow = arrows[1];
+            _rightArrow = sideArrows[0];
+            _leftArrow = sideArrows[1];
         }
 
         _leftArrow.transform.parent = null;
         _rightArrow.transform.parent = null;
+
+        // Get character change arrows
+        CharacterChangeArrow[] charaArrows = transform.GetComponentsInChildren<CharacterChangeArrow>();
+        if (charaArrows[0].side == 0) {
+            _upArrow = charaArrows[0];
+            _downArrow = charaArrows[1];
+        } else {
+            _downArrow = charaArrows[0];
+            _upArrow = charaArrows[1];
+        }
+
+        _upArrow.transform.parent = null;
+        _downArrow.transform.parent = null;
     }
 
     // Update is called once per frame
@@ -119,6 +142,7 @@ public class Character : MonoBehaviour {
         if (isLocal) {
             _inputState = InputState.GetInput(_inputState);
         }
+        // Changing teams
         if (_inputState.left.isJustPressed && !isAI) {
             if (TopAIChild != null) {
                 TopAIChild.MoveLeft();
@@ -134,8 +158,23 @@ public class Character : MonoBehaviour {
             }
         }
 
+        // Changing Characters
+        if (_inputState.up.isJustPressed && !isAI) {
+            if (TopAIChild != null) {
+                TopAIChild.ChangeCharacterUp();
+            } else {
+                ChangeCharacterUp();
+            }
+        } else if (_inputState.down.isJustPressed && !isAI) {
+            if (TopAIChild != null) {
+                TopAIChild.ChangeCharacterDown();
+            } else {
+                ChangeCharacterDown();
+            }
+        }
+
         // Reset the input for networked instances
-        if(_photonView != null && _photonView.owner != PhotonNetwork.player) {
+        if (_photonView != null && _photonView.owner != PhotonNetwork.player) {
             _inputState = InputState.ResetInput(_inputState);
         }
     }
@@ -178,6 +217,11 @@ public class Character : MonoBehaviour {
 
         _leftArrow.transform.position = new Vector3(transform.position.x - 1f, transform.position.y, 0);
         _rightArrow.transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
+
+        _upArrow.Activate();
+        _downArrow.Activate();
+        _upArrow.transform.position = new Vector3(transform.position.x, transform.position.y+0.65f, 0);
+        _downArrow.transform.position = new Vector3(transform.position.x, transform.position.y-0.7f, 0);
     }
 
     public void MoveLeft() {
@@ -234,6 +278,10 @@ public class Character : MonoBehaviour {
         UpdateArrows();
         isAI = false;
 
+        // Get character from player manager
+        _characterName = _playerManager.GetPlayerByNum(_playerNum).characterName;
+        SetAnimator();
+
         // If we are networked,
         // Send event that we've been activated
         if (_photonView != null) {
@@ -263,6 +311,10 @@ public class Character : MonoBehaviour {
         humanParent = parent;
         parent.aiChildren.Push(this);
 
+        // Get character from player manager
+        _characterName = _playerManager.GetPlayerByNum(_playerNum).characterName;
+        SetAnimator();
+
         PlayActivateClip();
     }
 
@@ -287,8 +339,12 @@ public class Character : MonoBehaviour {
             MoveLeft();
         }
 
-        _leftArrow.GetComponent<SpriteRenderer>().enabled = false;
-        _rightArrow.GetComponent<SpriteRenderer>().enabled = false;
+        //_leftArrow.GetComponent<SpriteRenderer>().enabled = false;
+        //_rightArrow.GetComponent<SpriteRenderer>().enabled = false;
+        _leftArrow.Deactivate();
+        _rightArrow.Deactivate();
+        _upArrow.Deactivate();
+        _downArrow.Deactivate();
 
         if (isAI && humanParent != null) {
             humanParent = null;
@@ -298,7 +354,40 @@ public class Character : MonoBehaviour {
         PlayDeactivateClip();
     }
 
-    public bool AllAIAssigned() {
+    public void SetCharacter(CHARACTERNAMES charaName) {
+        _characterName = charaName;
+        SetAnimator();
+        
+        // Update player info in player manager
+        _playerManager.GetPlayerByNum(_playerNum).characterName = _characterName;
+    }
+
+    // Sets the sprite based on the current character
+    void SetAnimator() {
+        switch(_characterName) {
+            case CHARACTERNAMES.BUB:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.NEGABUB:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOB:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.NEGABOB:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.PEPSIMAN:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
+                break;
+        }
+
+        // Play idle animation
+        _animator.SetInteger("PlayerState", 0);
+        _animator.speed = 1;
+    }
+
+    public bool AllAIAssignedToTeam() {
         for(int i = 0; i < aiChildren.Count; ++i) {
             if (aiChildren.ToArray()[i]._team == -1) {
                 return false;
@@ -312,6 +401,25 @@ public class Character : MonoBehaviour {
         int conNum = _inputState.controllerNum;
         _inputState = input;
         _inputState.controllerNum = conNum;
+    }
+
+    public void ChangeCharacterUp() {
+        // Get the next available character
+        _characterName = _playerManager.GetNextAvailableCharacterUp(_characterName);
+        // Update player info in player manager
+        _playerManager.GetPlayerByNum(_playerNum).characterName = _characterName;
+
+        // Change sprite new character
+        SetAnimator();
+    }
+    public void ChangeCharacterDown() {
+        // Get the next available character
+        _characterName = _playerManager.GetNextAvailableCharacterDown(_characterName);
+        // Update player info in player manager
+        _playerManager.GetPlayerByNum(_playerNum).characterName = _characterName;
+
+        // Change sprite new character
+        SetAnimator();
     }
 
     // Only for networking use

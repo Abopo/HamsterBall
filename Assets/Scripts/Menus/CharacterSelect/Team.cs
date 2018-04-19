@@ -76,7 +76,24 @@ public class Team : MonoBehaviour {
                 rText.text = "P" + chara.PlayerNum + " Ready!\nV";
             }
         }
+
+        // Set proper button prompt
+        Text addAIText = rText.transform.GetChild(0).GetComponent<Text>();
+        // If using keyboard
+        if(chara.ControllerNum == 1) {
+            addAIText.text = "V Key\nAdd AI Player";
+        } else if(chara.ControllerNum == 2) {
+            addAIText.text = "0 Key\nAdd AI Player";
+        } else {
+            addAIText.text = "X BUTTON\nAdd AI Player";
+        }
+
         rText.gameObject.SetActive(true);
+        if(chara.isAI) {
+            rText.transform.GetChild(0).gameObject.SetActive(false);
+        } else {
+            rText.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 
     public void LoseCharacter(Character character) {

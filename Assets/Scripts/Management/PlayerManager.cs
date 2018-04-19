@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class PlayerInfo {
     public int playerNum;
+    public CHARACTERNAMES characterName;
     public int controllerNum;
     public int team; // -1 == none; 0 == left; 1 == right
     public bool aimAssist;
@@ -94,7 +95,7 @@ public class PlayerManager : MonoBehaviour {
                 // TODO: Might need to clean up memory here.
                 int i = _players.IndexOf(p);
                 _players[i].team = team;
-                Debug.Log("Player " + playerNum + " added to Team " + team);
+                //Debug.Log("Player " + playerNum + " added to Team " + team);
             }
         }
     }
@@ -103,6 +104,7 @@ public class PlayerManager : MonoBehaviour {
         PlayerInfo newPlayer = new PlayerInfo();
         newPlayer.playerNum = _players.Count+1;
         newPlayer.controllerNum = -1;
+        newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BUB);
         newPlayer.team = -1;
         newPlayer.difficulty = 0;
         _players.Add(newPlayer);
@@ -113,6 +115,7 @@ public class PlayerManager : MonoBehaviour {
             PlayerInfo newPlayer = new PlayerInfo();
             newPlayer.playerNum = playerNum;
             newPlayer.controllerNum = controllerNum;
+            newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BUB);
             newPlayer.team = -1;
             newPlayer.difficulty = 0;
             _players.Add(newPlayer);
@@ -169,6 +172,41 @@ public class PlayerManager : MonoBehaviour {
             }
         }
         return -1;
+    }
+
+    public CHARACTERNAMES GetNextAvailableCharacterUp(CHARACTERNAMES startChara) {
+        CHARACTERNAMES character = startChara;
+
+        while (IsCharacterTaken(character)) {
+            character = character + 1;
+            if(character >= CHARACTERNAMES.NUM_CHARACTERS) {
+                character = 0;
+            }
+        }
+
+        return character;
+    }
+    public CHARACTERNAMES GetNextAvailableCharacterDown(CHARACTERNAMES startChara) {
+        CHARACTERNAMES character = startChara;
+
+        while (IsCharacterTaken(character)) {
+            character = character - 1;
+            if (character < 0) {
+                character = CHARACTERNAMES.NUM_CHARACTERS-1;
+            }
+        }
+
+        return character;
+    }
+
+    public bool IsCharacterTaken(CHARACTERNAMES chara) {
+        foreach (PlayerInfo p in _players) {
+            if(p.characterName == chara) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void SetAimAssist(bool on) {

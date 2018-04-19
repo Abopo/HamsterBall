@@ -74,13 +74,6 @@ public class CharacterSelect : MonoBehaviour {
                 // Look for input to start game
                 if (Input.GetButtonDown("Start")) {
                     OpenSetupMenu();
-                    /*
-                    if (_gameManager.level == 1) {
-                        SceneManager.LoadScene("Multiplayer");
-                    } else {
-                        SceneManager.LoadScene("Multiplayer2");
-                    }
-                    */
                 }
             }
 
@@ -90,85 +83,93 @@ public class CharacterSelect : MonoBehaviour {
 
     void ListenForInput() {
         // Keyboard 1
-        if (Input.GetButtonDown("Jump 1")) {
+        if (!_assignedController1 && InputState.GetAnyButtonDown(1)) {
             if (!_assignedController1) {
                 AddCharacter(1);
-            } else if(GetCharacterByController(1).AllAIAssigned()) {
+            }
+        } else if (_assignedController1) {
+            if (Input.GetButtonDown("Bubble 1") && GetCharacterByController(1).AllAIAssignedToTeam()) {
                 // Add AI character
                 AddAICharacter(1);
+            } else if (Input.GetButtonDown("Attack 1")) {
+                RemoveCharacter(1);
             }
-        } else if(Input.GetButtonDown("Bubble 1") && _assignedController1) {
-            RemoveCharacter(1);
         }
         // Keyboard 2
-        if (Input.GetButtonDown("Jump 2")) {
+        if (!_assignedController2 && InputState.GetAnyButtonDown(2)) {
             if (!_assignedController2) {
                 AddCharacter(2);
-            } else if (GetCharacterByController(2).AllAIAssigned()) {
+            }
+        } else if (_assignedController2) {
+            if (Input.GetButtonDown("Bubble 2") && GetCharacterByController(2).AllAIAssignedToTeam()) {
                 // Add AI character
                 AddAICharacter(2);
+            } else if (Input.GetButtonDown("Attack 2")) {
+                RemoveCharacter(2);
             }
-        } else if (Input.GetButtonDown("Bubble 2") && _assignedController2) {
-            RemoveCharacter(2);
         }
+
         // Joystick 1
-        if (Input.GetButtonDown("Joystick Jump 1")) {
-            if (!_assignedController3) {
+        if (!_assignedController3) {
+            if (Input.GetButtonDown("Joystick Attack 1")) {
+                BackToMainMenu();
+            } else if (InputState.GetAnyButtonDown(3)) {
                 AddCharacter(3);
-            } else if (GetCharacterByController(3).AllAIAssigned()) {
+            }
+        } else if (_assignedController3) {
+            if (Input.GetButtonDown("Joystick Bubble 1") && GetCharacterByController(3).AllAIAssignedToTeam()) {
                 // Add AI character
                 AddAICharacter(3);
-            }
-        } else if (Input.GetButtonDown("Joystick Attack 1")) {
-            if (_assignedController3) {
+            } else if (Input.GetButtonDown("Joystick Attack 1")) {
                 RemoveCharacter(3);
-            } else {
-                BackToMainMenu();
             }
         }
+
         // Joystick 2
-        if (Input.GetButtonDown("Joystick Jump 2")) {
-            if (!_assignedController4) {
+        if (!_assignedController4) {
+            if (Input.GetButtonDown("Joystick Attack 2")) {
+                BackToMainMenu();
+            } else if (InputState.GetAnyButtonDown(4)) {
                 AddCharacter(4);
-            } else if (GetCharacterByController(4).AllAIAssigned()) {
+            }
+        } else if (_assignedController4) {
+            if (Input.GetButtonDown("Joystick Bubble 2") && GetCharacterByController(4).AllAIAssignedToTeam()) {
                 // Add AI character
                 AddAICharacter(4);
-            }
-        } else if (Input.GetButtonDown("Joystick Attack 2")) {
-            if (_assignedController4) {
+            } else if (Input.GetButtonDown("Joystick Attack 2")) {
                 RemoveCharacter(4);
-            } else {
-                BackToMainMenu();
             }
         }
+
         // Joystick 3
-        if (Input.GetButtonDown("Joystick Jump 3")) {
-            if (!_assignedController2) {
+        if (!_assignedController5) {
+            if (Input.GetButtonDown("Joystick Attack 3")) {
+                BackToMainMenu();
+            } else if (InputState.GetAnyButtonDown(5)) {
                 AddCharacter(5);
-            } else if (GetCharacterByController(5).AllAIAssigned()) {
+            }
+        } else if (_assignedController5) {
+            if (Input.GetButtonDown("Joystick Bubble 3") && GetCharacterByController(5).AllAIAssignedToTeam()) {
                 // Add AI character
                 AddAICharacter(5);
-            }
-        } else if (Input.GetButtonDown("Joystick Attack 3")) {
-            if (_assignedController5) {
+            } else if (Input.GetButtonDown("Joystick Attack 3")) {
                 RemoveCharacter(5);
-            } else {
-                BackToMainMenu();
             }
         }
+
         // Joystick 4
-        if (Input.GetButtonDown("Joystick Jump 4")) {
-            if (!_assignedController6) {
+        if (!_assignedController6) {
+            if (Input.GetButtonDown("Joystick Attack 4")) {
+                BackToMainMenu();
+            } else if (InputState.GetAnyButtonDown(6)) {
                 AddCharacter(6);
-            } else if (GetCharacterByController(6).AllAIAssigned()) {
+            }
+        } else if (_assignedController6) {
+            if (Input.GetButtonDown("Joystick Bubble 4") && GetCharacterByController(6).AllAIAssignedToTeam()) {
                 // Add AI character
                 AddAICharacter(6);
-            }
-        } else if (Input.GetButtonDown("Joystick Attack 4")) {
-            if (_assignedController6) {
+            } else if (Input.GetButtonDown("Joystick Attack 4")) {
                 RemoveCharacter(6);
-            } else {
-                BackToMainMenu();
             }
         }
     }
