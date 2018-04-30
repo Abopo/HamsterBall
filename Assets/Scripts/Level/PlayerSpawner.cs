@@ -86,6 +86,9 @@ public class PlayerSpawner : MonoBehaviour {
             case "Slime":
                 player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<SlimeAI>();
                 break;
+            case "City":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<CityCharaAI>();
+                break;
         }
     }
 

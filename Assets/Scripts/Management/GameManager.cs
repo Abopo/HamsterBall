@@ -151,6 +151,7 @@ public class GameManager : MonoBehaviour {
         if (IsStoryLevel()) {
             // and the player's team won
             if(winningTeam == 0) {
+                // For versus mode
                 if (gameMode == GAME_MODE.MP_VERSUS) {
                     string pref = stage.ToString() + "Highscore";
 
@@ -160,6 +161,10 @@ public class GameManager : MonoBehaviour {
                         PlayerPrefs.SetInt(pref, winScore);
                     }
 
+                    // Unlock the next level
+                    UnlockNextLevel();
+                // If last board of a clear level
+                } else if(gameMode == GAME_MODE.SP_CLEAR && nextLevel == "") {
                     // Unlock the next level
                     UnlockNextLevel();
                 }
@@ -175,19 +180,29 @@ public class GameManager : MonoBehaviour {
     void UnlockNextLevel() {
         int worldInt = int.Parse(stage[0].ToString());
         int levelInt = int.Parse(stage[2].ToString());
-        string storyProgress = "";
+        string newStoryPos = "";
         if (levelInt == 9) {
-            storyProgress += (worldInt + 1).ToString();
-            storyProgress += "-";
-            storyProgress += "0";
+            newStoryPos += (worldInt + 1).ToString();
+            newStoryPos += "-";
+            newStoryPos += "0";
         } else {
-            storyProgress += worldInt.ToString();
-            storyProgress += "-";
-            storyProgress += (levelInt+1).ToString();
+            newStoryPos += worldInt.ToString();
+            newStoryPos += "-";
+            newStoryPos += (levelInt+1).ToString();
         }
 
-        PlayerPrefs.SetString("StoryProgress", storyProgress);
-        PlayerPrefs.SetString("StoryPos", storyProgress);
+        // Load the furthest the player has gotten
+        string storyProgress = PlayerPrefs.GetString("StoryProgress");
+        int furthestWorld = int.Parse(storyProgress[0].ToString());
+        int furthestLevel = int.Parse(storyProgress[2].ToString());
+
+        // If the new position is further than the player has gotten so far
+        if((levelInt >= furthestLevel && worldInt >= furthestWorld) || (worldInt > furthestWorld)) {
+            // Update the story progress
+            PlayerPrefs.SetString("StoryProgress", newStoryPos);
+        }
+
+        PlayerPrefs.SetString("StoryPos", newStoryPos);
     }
 
     public void SetGameMode(GAME_MODE mode) {
