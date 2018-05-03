@@ -409,6 +409,10 @@ public class PlayerController : Entity {
         inputState = input;
     }
 
+    public void ResetShiftTimer() {
+        _shiftTimer = 0f;
+    }
+
     void GameEnded() {
         ChangeState(PLAYER_STATE.IDLE);
         // Do a win/lose animation here or something

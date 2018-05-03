@@ -89,6 +89,12 @@ public class PlayerSpawner : MonoBehaviour {
             case "City":
                 player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<CityCharaAI>();
                 break;
+            case "Bat":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<BatAI>();
+                break;
+            case "Villain":
+                player.GetComponent<AIBrain>().characterAI = player.gameObject.AddComponent<VillainAI>();
+                break;
         }
     }
 

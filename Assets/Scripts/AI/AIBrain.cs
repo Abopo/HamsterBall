@@ -216,9 +216,9 @@ public class AIBrain : MonoBehaviour {
                 return false;
             }
             // If we have already shifted, but the action is back on our side of the field
-            if(!action.requiresShift && _playerController.shifted) {
-                return false;
-            }
+            //if(!action.requiresShift && _playerController.shifted) {
+            //    return false;
+            //}
             // If nodeWant is in the bottom row of our board it'll kill us!
             if(action.nodeWant != null) {
                 if (action.nodeWant.number > 137 && !action.requiresShift && action.bubbleWant.numMatches < 2) {
@@ -274,22 +274,17 @@ public class AIBrain : MonoBehaviour {
                     foreach (Hamster h in _myHamsters) {
                         // If there is, Want it.
                         AIAction newAction = new AIAction(_playerController, h, b, n, false);
-                        //if (!ActionAlreadyMade(newAction)) {
                         _actions.Add(newAction);
-                        //}
                     }
                 }
                 // if we are able to shift or already shifted, also look at the opponents hamsters
-            } else if (_playerController.CanShift) {
+            } else if (_playerController.CanShift || _playerController.shifted) {
                 foreach (Bubble b in n.AdjBubbles) {
                     // Other side's hamsters
                     foreach (Hamster h in _theirHamsters) {
                         if ((b != null && b.type == h.type) || h.type == HAMSTER_TYPES.RAINBOW || h.type == HAMSTER_TYPES.DEAD) {
-                            // basically, only actions involving the opponents board "requires shift"
                             AIAction newAction = new AIAction(_playerController, h, b, n, _playerController.shifted ? false : true);
-                            //if (!ActionAlreadyMade(newAction)) {
-                                _actions.Add(newAction);
-                            //}
+                            _actions.Add(newAction);
                         }
                     }
                 }
@@ -298,6 +293,7 @@ public class AIBrain : MonoBehaviour {
         if (_playerController.CanShift || _playerController.shifted) {
             // These are actions that involving throwing hamster at the opponents board.
             int r = 0;
+            bool requiresShift = false;
             foreach (Node n in _boardScan.OpponentNodes) {
                 foreach (Bubble ob in n.AdjBubbles) {
                     if (ob == null) {
@@ -305,11 +301,15 @@ public class AIBrain : MonoBehaviour {
                     }
                     r = Random.Range(0, _hamsterScan.AvailableHamsters.Count - 1);
                     if (_hamsterScan.AvailableHamsters[r] != null) {
-                        AIAction newAction = new AIAction(_playerController, _hamsterScan.AvailableHamsters[r], ob, n, true);
-                        //newAction.requiresSwitch = true;
-                        //if (!ActionAlreadyMade(newAction)) {
-                            _actions.Add(newAction);
-                        //}
+                        // Figure out if this action will require a shift
+                        if(!_playerController.shifted) {
+                            requiresShift = true;
+                        } else if(_playerController.shifted && _hamsterScan.AvailableHamsters[r].team == 0) {
+                            requiresShift = false;
+                        }
+
+                        AIAction newAction = new AIAction(_playerController, _hamsterScan.AvailableHamsters[r], ob, n, requiresShift);
+                        _actions.Add(newAction);
                     }
                 }
             }
@@ -322,11 +322,8 @@ public class AIBrain : MonoBehaviour {
             foreach (Bubble b in n.AdjBubbles) {
                 // Check if the types match with the bubble we've got
                 if ((b != null /*&& b.type == _playerController.heldBubble.type) || _playerController.heldBubble.type == HAMSTER_TYPES.RAINBOW*/)) {
-                    AIAction newAction = new AIAction(_playerController, null, b, n, false);
-                    //if (!ActionAlreadyMade(newAction)) {
-                        _actions.Add(newAction);
-                    //}
-                    //return;
+                    AIAction newAction = new AIAction(_playerController, null, b, n, _playerController.shifted ? true : false);
+                    _actions.Add(newAction);
                 }
             }
         }
@@ -338,10 +335,8 @@ public class AIBrain : MonoBehaviour {
                         continue;
                     }
                     if (ob.type != _playerController.heldBubble.type || _playerController.heldBubble.type == HAMSTER_TYPES.DEAD) {
-                        AIAction newAction = new AIAction(_playerController, null, ob, n, true);
-                        //if (!ActionAlreadyMade(newAction)) {
-                            _actions.Add(newAction);
-                        //}
+                        AIAction newAction = new AIAction(_playerController, null, ob, n, _playerController.shifted ? false : true);
+                        _actions.Add(newAction);
                     }
                 }
             }

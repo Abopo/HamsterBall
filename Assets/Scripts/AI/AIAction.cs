@@ -50,6 +50,17 @@ public class AIAction {
                 }
             }
         }
+
+        // also keep track of if an action requires a shift
+        if(nodeWant != null) {
+            // As long as the player and the node we want are on the same side of the stage, it doesn't require a shift
+            if((nodeWant.transform.position.x > 0 && _playerController.transform.position.x > 0) || 
+                (nodeWant.transform.position.x < 0 && _playerController.transform.position.x < 0)) {
+                requiresShift = false;
+            } else {
+                requiresShift = true;
+            }
+        }
     }
 
     // Determine this Action's weight
@@ -104,20 +115,26 @@ public class AIAction {
                 // if we have already shifted
                 if (_playerController.shifted) {
                     // attempt to only do shifted actions.
-                    addWeight += 100;
+                    addWeight -= 100;
                 } else {
                     // and we have the ability to shift
                     // obviously if we can't switch, don't do this action
                     addWeight += _playerController.CanShift ? 5 : -100;
                 }
 
-                // If the hamster we want is DEAD, it's best to use it in a switch
-                addWeight += type == HAMSTER_TYPES.DEAD ? 20 : 0;
+                // If the hamster we want/have is DEAD, it's best to use it in a switch
+                //addWeight += type == HAMSTER_TYPES.DEAD ? 20 : 0;
 
-            // If this action doesn't require a shift and the hamster we want is DEAD
+            // If this action doesn't require a shift and the hamster we want/have is DEAD
             } else if (type == HAMSTER_TYPES.DEAD) {
-                // Reduce the weight a bit since we don't want to throw dead hamsters at our board
-                addWeight -= 30;
+                // If we're on the opponent's side
+                if (_playerController.shifted) {
+                    // We wanna throw that dead hamster
+                    addWeight += 30;
+                } else {
+                    // We don't want to throw dead hamsters at our board
+                    addWeight -= 30;
+                }
             }
 
             // If any adjBubbles is a Dead bubble (try to match and drop it)
@@ -216,8 +233,8 @@ public class AIAction {
             addWeight -= 100;
         }
 
-        // If this action requires a shift
-        if (requiresShift) {
+        // If this action doesn't require a shift
+        if (!requiresShift) {
             // if we have already shifted
             if (_playerController.shifted) {
                 // Then actions on this side are good to do. (should only shift back if it's an extra good idea)
@@ -229,8 +246,11 @@ public class AIAction {
             } else {
                 // and we have the ability to shift
                 // obviously if we can't switch, don't do this action
-                addWeight += _playerController.CanShift ? 5 : -100;
+                //addWeight += _playerController.CanShift ? 5 : -100;
             }
+        // If it requires a shift and we haven't shifted
+        } else if(!_playerController.shifted) {
+            addWeight += _playerController.CanShift ? 5 : -100;
         }
 
         // If the bubble is on the bottom most lines 
