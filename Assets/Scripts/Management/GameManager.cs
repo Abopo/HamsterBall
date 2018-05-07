@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour {
                     // Unlock the next level
                     UnlockNextLevel();
                 // If last board of a clear level
-                } else if(gameMode == GAME_MODE.SP_CLEAR && nextLevel == "") {
+                } else if((gameMode == GAME_MODE.SP_CLEAR || gameMode == GAME_MODE.SP_POINTS) && nextLevel == "") {
                     // Unlock the next level
                     UnlockNextLevel();
                 }
