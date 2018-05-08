@@ -5,7 +5,7 @@ public class HitState : PlayerState {
     //SpriteRenderer bubbleSprite;
     GameObject _hamsterObj;
 
-	float _hitTime;
+    float _hitTime;
 	float _hitTimer;
 
 	// Use this for initialization
@@ -36,8 +36,8 @@ public class HitState : PlayerState {
         }
 
         //hitTime = 3.0f;
-        _hitTime = 0.1f;
-        _hitTimer = 0;
+        _hitTime = 0.25f;
+        _hitTimer = 0f;
 	}
 
     void DropHamster() {
@@ -58,6 +58,7 @@ public class HitState : PlayerState {
             if (s.GetComponent<HamsterSpawner>().team == hamster.team) {
                 hamster.ParentSpawner = s.GetComponent<HamsterSpawner>();
                 s.GetComponent<HamsterSpawner>().hamsterCount++;
+                break;
             }
         }
 
@@ -101,7 +102,10 @@ public class HitState : PlayerState {
 
     // Update is called once per frame
     public override void Update() {
-		_hitTimer += Time.deltaTime;
+        // Fall
+        playerController.ApplyGravity();
+
+        _hitTimer += Time.deltaTime;
 		if (_hitTimer >= _hitTime) {
 			playerController.ChangeState(PLAYER_STATE.IDLE);
 		}
@@ -125,6 +129,7 @@ public class HitState : PlayerState {
 
     public void Knockback(int hitDirection) {
         // Knock the player back
-        playerController.velocity = new Vector2(10f * hitDirection, 1f);
+        // TODO: adjust this to feel better
+        playerController.velocity = new Vector2(3f * hitDirection, 3f);
     }
 }

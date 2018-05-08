@@ -83,7 +83,7 @@ public class PlayerController : Entity {
     // The grace period time after getting hit
     bool _isInvuln;
     float _invulnTimer;
-    float _invulnTime = 1.0f;
+    float _invulnTime = 1.15f;
     bool _blinked;
     float _blinkTimer;
     float _blinkTime = 0.1f;

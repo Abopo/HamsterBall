@@ -127,6 +127,7 @@ public class WaterBubble : MonoBehaviour {
             if (s.GetComponent<HamsterSpawner>().team == hamster.team) {
                 hamster.ParentSpawner = s.GetComponent<HamsterSpawner>();
                 s.GetComponent<HamsterSpawner>().hamsterCount++;
+                break;
             }
         }
 
