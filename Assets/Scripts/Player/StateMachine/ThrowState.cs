@@ -157,6 +157,13 @@ public class ThrowState : PlayerState {
         playerController.heldBubble.GetComponent<CircleCollider2D>().enabled = true;
         playerController.heldBubble.wasThrown = true;
 
+        // Increase score a little
+        if (playerController.heldBubble.type < HAMSTER_TYPES.NUM_NORM_TYPES) {
+            playerController.HomeBubbleManager.IncreaseScore(10);
+        } else {
+            playerController.HomeBubbleManager.IncreaseScore(20);
+        }
+
         playerController.PlayerAudio.PlayThrowClip();
 
         if (_aimingLine != null) {

@@ -39,11 +39,11 @@ public class BatAI : CharacterAI {
     }
 
     void SetSpawnPositions() {
-        _spawnPositions[0] = new Vector3(-6.1f, -3.5f, -5f);
-        _spawnPositions[1] = new Vector3(-4.35f, -3.0f, -5f);
-        _spawnPositions[2] = new Vector3(-7.85f, -3.0f, -5f);
-        _spawnPositions[3] = new Vector3(-2.6f, -3.5f, -5f);
-        _spawnPositions[4] = new Vector3(-9.6f, -3.5f, -5f);
+        _spawnPositions[0] = new Vector3(6.1f, -3.5f, -5f);
+        _spawnPositions[1] = new Vector3(4.35f, -3.0f, -5f);
+        _spawnPositions[2] = new Vector3(7.85f, -3.0f, -5f);
+        _spawnPositions[3] = new Vector3(2.6f, -3.5f, -5f);
+        _spawnPositions[4] = new Vector3(9.6f, -3.5f, -5f);
     }
 
     protected override void Update() {
@@ -112,18 +112,15 @@ public class BatAI : CharacterAI {
     }
 
     void SpawnBombBubble() {
-        // Spawn a rainbow bubble
+        // Spawn a bomb bubble
         GameObject newBubble = GameObject.Instantiate(_bubbleObj);
-        Bubble gravBubble = newBubble.GetComponent<Bubble>();
-        gravBubble.team = 0;
-
-        // Randomely choose color
-        int color = Random.Range(0, 7);
-        gravBubble.Initialize((HAMSTER_TYPES)11 + color);
-        _generatedBombBubbles.Add(gravBubble);
+        Bubble bombBubble = newBubble.GetComponent<Bubble>();
+        bombBubble.team = 1;
+        bombBubble.Initialize(HAMSTER_TYPES.BOMB);
+        _generatedBombBubbles.Add(bombBubble);
 
         // Place it in a position
-        gravBubble.transform.position = _spawnPositions[_bubblesSpawned];
+        bombBubble.transform.position = _spawnPositions[_bubblesSpawned];
 
         // Play a spawn sound
 
@@ -133,12 +130,12 @@ public class BatAI : CharacterAI {
     }
 
     void ThrowNextBubble() {
-        Bubble gravBubble = _generatedBombBubbles[_bubblesThrown];
+        Bubble bombBubble = _generatedBombBubbles[_bubblesThrown];
 
         // Throw it at the board
-        gravBubble.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 7f);
-        gravBubble.GetComponent<CircleCollider2D>().enabled = true;
-        gravBubble.wasThrown = true;
+        bombBubble.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 7f);
+        bombBubble.GetComponent<CircleCollider2D>().enabled = true;
+        bombBubble.wasThrown = true;
 
         // Play a throw sound
 

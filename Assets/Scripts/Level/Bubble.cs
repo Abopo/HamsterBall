@@ -22,12 +22,14 @@ public class Bubble : MonoBehaviour {
 
     public LayerMask checkMask;
     public bool canBeHit;
+    public bool canCombo = true;
 
-	public bool checkedForMatches;
+    public bool checkedForMatches;
 	public bool checkedForAnchor;
 	public bool foundAnchor = false;
 
     public int team; // -1 = no team, 0 = left team, 1 = right team
+    public int dropPotential; // A count of how many bubbles will be dropped if this bubble is matched
 
     public int is13Edge = 0; // If this bubble is on the edges of a 13 row. -1 = left; 0 = not; 1 = right
 
@@ -38,9 +40,9 @@ public class Bubble : MonoBehaviour {
     private Vector3 _bankedPos; // position where this bubble banked off a wall
     BubblePopAnimation _popAnimation;
 
-    public int dropPotential; // A count of how many bubbles will be dropped if this bubble is matched
+    float _airTime = 0f; // Time the bubble is in the air before hitting the board
 
-	BubbleManager _homeBubbleManager;
+    BubbleManager _homeBubbleManager;
     Rigidbody2D _rigibody2D;
 
     AudioSource _audioSource;
@@ -48,7 +50,6 @@ public class Bubble : MonoBehaviour {
     AudioClip _dropClip;
     AudioClip _iceClip;
 
-    public bool canCombo = true;
     bool _destroy = false;
     bool _boardChanged = false;
 
@@ -61,6 +62,7 @@ public class Bubble : MonoBehaviour {
     public BubbleManager HomeBubbleManager {
         get { return _homeBubbleManager; }
     }
+
 
     // Use this for initialization
     void Start () {
@@ -159,6 +161,11 @@ public class Bubble : MonoBehaviour {
                 transform.Translate(_deltaX, _deltaY, 0.0f);
             } else {
                 _rigibody2D = GetComponent<Rigidbody2D>();
+            }
+
+            // Count time from throw to land
+            if(wasThrown) {
+                _airTime += Time.deltaTime;
             }
         }
 
@@ -272,7 +279,7 @@ public class Bubble : MonoBehaviour {
             }
 
             // Earn some points for a wall bounce
-            _homeBubbleManager.IncreaseScore(20);
+            _playerController.HomeBubbleManager.IncreaseScore(20);
 		}
 		if (other.tag == "Bubble") {
 			if(!locked && other.GetComponent<Bubble>().locked) {
@@ -341,6 +348,15 @@ public class Bubble : MonoBehaviour {
         } else if (GetComponent<PhotonView>().owner == PhotonNetwork.player) { // if we own this bubble
             _homeBubbleManager.AddBubble(this);
             GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, node);
+        }
+
+        // Check if was a LongShot
+        Debug.Log(_airTime);
+        if(_airTime > 0.76f) {
+            // Increase score
+            _playerController.HomeBubbleManager.IncreaseScore(200);
+
+            // Show longshot effect
         }
 
         // Check Matches
@@ -452,7 +468,7 @@ public class Bubble : MonoBehaviour {
 
 	public List<Bubble> CheckMatches(List<Bubble> matches) {
 		for (int i = 0; i < 6; ++i) {
-			if(adjBubbles[i] != null && adjBubbles[i].type != HAMSTER_TYPES.DEAD && !adjBubbles[i].isIce) {
+			if(adjBubbles[i] != null && adjBubbles[i].type != HAMSTER_TYPES.DEAD &&adjBubbles[i].type != HAMSTER_TYPES.BOMB && !adjBubbles[i].isIce) {
                 if (adjBubbles[i].type == type) {
 					if(!adjBubbles[i].checkedForMatches) {
 						adjBubbles[i].checkedForMatches = true;
@@ -625,7 +641,7 @@ public class Bubble : MonoBehaviour {
 
     public void BombExplode() {
         // Add score for how many bubbles were blown up
-        _homeBubbleManager.IncreaseScore(adjBubbles.Length * 50);
+        _homeBubbleManager.IncreaseScore(adjBubbles.Length * 120);
 
         // Get the iced data from the adjBubbles before exploding
         bool[] icedBubbles = new bool[6];
