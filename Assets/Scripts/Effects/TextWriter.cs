@@ -60,12 +60,16 @@ public class TextWriter : MonoBehaviour {
 
     public void StartWriting(string text) {
         _textToWrite = text;
-        _displayString = "";
-        displayText.text = _displayString;
+        ClearText();
 
         _done = false;
         done = false;
         _index = 0;
         _writeTimer = 0f;
+    }
+
+    public void ClearText() {
+        _displayString = "";
+        displayText.text = _displayString;
     }
 }

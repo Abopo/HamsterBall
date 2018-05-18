@@ -6,8 +6,12 @@ using System.IO;
 
 public class CutsceneManager : MonoBehaviour {
     public Text titleText;
-    public Image leftCharacterSprite;
-    public Image rightCharacterSprite;
+
+    public CutsceneCharacter leftChara1;
+    public CutsceneCharacter leftChara2;
+    public CutsceneCharacter rightChara1;
+    public CutsceneCharacter rightChara2;
+
     public Image backgroundSprite;
     public Image textBacker;
     public Text dialoguetext;
@@ -35,24 +39,34 @@ public class CutsceneManager : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
-        StartCutscene(fileToLoad);
-
-        //_textAsset = Resources.Load<TextAsset>("Text/OpeningCutscene");
-        _textAsset = Resources.Load<TextAsset>("Text/" + fileToLoad);
-        _linesFromFile = _textAsset.text.Split("\n"[0]);
-        int i = 0;
-        foreach (string line in _linesFromFile) {
-            _linesFromFile[i] = line.Replace("\r", "");
-            i++;
-        }
         _fileIndex = 0;
 
         _ready = true;
         _playedAudio = false;
         _isPlaying = true;
+
+        CharaSetup();
+    }
+
+    void CharaSetup() {
+        leftChara1.screenPos = -105f;
+        leftChara1.offScreenPos = -500f;
+        leftChara1.side = -1;
+        leftChara2.screenPos = -290f;
+        leftChara2.offScreenPos = -500f;
+        leftChara2.side = -1;
+        rightChara1.screenPos = 105f;
+        rightChara1.offScreenPos = 500;
+        rightChara1.side = 1;
+        rightChara2.screenPos = 290f;
+        rightChara2.offScreenPos = 500;
+        rightChara2.side = 1;
     }
 
     void Start() {
+        if (fileToLoad != "") {
+            StartCutscene(fileToLoad);
+        }
     }
 
     public void StartCutscene(string textPath) {
@@ -61,8 +75,10 @@ public class CutsceneManager : MonoBehaviour {
 
         // Make sure scene is visible
         titleText.gameObject.SetActive(true);
-        leftCharacterSprite.gameObject.SetActive(true);
-        rightCharacterSprite.gameObject.SetActive(true);
+        leftChara1.gameObject.SetActive(true);
+        leftChara2.gameObject.SetActive(true);
+        rightChara1.gameObject.SetActive(true);
+        rightChara2.gameObject.SetActive(true);
         backgroundSprite.gameObject.SetActive(true);
         textBacker.gameObject.SetActive(true);
         dialoguetext.gameObject.SetActive(true);
@@ -85,6 +101,11 @@ public class CutsceneManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        // If a character is sliding, wait for them to finish
+        if (leftChara1.IsSliding || leftChara2.IsSliding || rightChara1.IsSliding || rightChara2.IsSliding) {
+            return;
+        }
+
         CheckInput();
 
         if (_playedAudio && !_audioSource.isPlaying) {
@@ -104,7 +125,7 @@ public class CutsceneManager : MonoBehaviour {
         }
     }
 
-    void ReadEscapeCharacter() {
+    public void ReadEscapeCharacter() {
         do {
             _escapeChar = _linesFromFile[_fileIndex++];
         } while (_escapeChar == "");
@@ -116,9 +137,11 @@ public class CutsceneManager : MonoBehaviour {
             case "L":
                 ReadLocation();
                 break;
-            case "C1":
-            case "C2":
-                ReadCharacter();
+            case "CL1":
+            case "CL2":
+            case "CR1":
+            case "CR2":
+                ReadCharacters();
                 break;
             case "D":
                 ReadDialogue();
@@ -150,29 +173,87 @@ public class CutsceneManager : MonoBehaviour {
         if (_readText == "Blank") {
             backgroundSprite.gameObject.SetActive(false);
         } else {
-            backgroundSprite.sprite = Resources.Load<Sprite>("Art/UI/" + _readText);
+            backgroundSprite.sprite = Resources.Load<Sprite>("Art/Levels/" + _readText);
         }
 
         ReadEscapeCharacter();
     }
 
-    void ReadCharacter() {
+    void ReadCharacters() {
         // Read the character's name
         _readText = _linesFromFile[_fileIndex++];
-        if (_escapeChar == "C1") {
-            rightCharacterSprite.enabled = false;
-            leftCharacterSprite.enabled = true;
-            leftCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
-        } else if(_escapeChar == "C2") {
-            leftCharacterSprite.enabled = false;
-            rightCharacterSprite.enabled = true;
-            rightCharacterSprite.sprite = Resources.Load<Sprite>("Art/Characters/" + _readText);
+        switch(_escapeChar) {
+            case "CL1":
+                SetCharacter(leftChara1);
+                break;
+            case "CL2":
+                SetCharacter(leftChara2);
+                break;
+            case "CR1":
+                SetCharacter(rightChara1);
+                break;
+            case "CR2":
+                SetCharacter(rightChara2);
+                break;
         }
+    }
 
-        ReadEscapeCharacter();
+    void SetCharacter(CutsceneCharacter character) {
+        // Read in the character's expression
+        string expressionText = _linesFromFile[_fileIndex++];
+
+        if (_readText == "Clear") {
+            // Move off screen
+            character.SlideOut();
+        } else {
+            // If already in place
+            if (character.onScreen) {
+                // and we need to change character
+                if (character.curCharacter != _readText) {
+                    // Set the new character
+                    character.charaToChangeTo = _readText;
+                    character.expressionToChangeTo = expressionText;
+
+                    // And slide out to change off screen
+                    character.SlideOut();
+                    // If the expression needs to change
+                } else if (character.curExpression != expressionText) {
+                    // Change expressions
+                    character.SetExpression(expressionText);
+
+                    ReadFacing(character);
+
+                    // Go ahead and continue the cutscene
+                    ReadEscapeCharacter();
+                }
+
+                ReadFacing(character);
+
+                // else, slide into place
+            } else {
+                // Set the character
+                character.SetCharacter(_readText, expressionText);
+                // Slide in
+                character.SlideIn();
+            }
+        }
+    }
+
+    void ReadFacing(CutsceneCharacter character) {
+        // Read and set facing
+        string facingText = _linesFromFile[_fileIndex];
+        if (facingText == "Left") {
+            character.SetFacing(-1);
+            _fileIndex++;
+        } else if (facingText == "Right") {
+            character.SetFacing(1);
+            _fileIndex++;
+        }
     }
 
     void ReadDialogue() {
+        _ready = false;
+
         // Read the dialogue
         _readText = _linesFromFile[_fileIndex++];
         _textWriter.StartWriting(_readText);
@@ -187,9 +268,16 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void LoadBoard() {
+        // Since we are about to leave, clean up
+        CleanUp();
+
         // Read the board file path
         _readText = _linesFromFile[_fileIndex++];
         GetComponent<BoardLoader>().ReadBoardSetup(_readText);
+    }
+
+    void CleanUp() {
+        fileToLoad = "";
     }
 
     void EndScene() {
@@ -198,8 +286,10 @@ public class CutsceneManager : MonoBehaviour {
 
         // Disable scene UI
         titleText.gameObject.SetActive(false);
-        leftCharacterSprite.gameObject.SetActive(false);
-        rightCharacterSprite.gameObject.SetActive(false);
+        leftChara1.gameObject.SetActive(false);
+        leftChara2.gameObject.SetActive(false);
+        rightChara1.gameObject.SetActive(false);
+        rightChara2.gameObject.SetActive(false);
         backgroundSprite.gameObject.SetActive(false);
         textBacker.gameObject.SetActive(false);
         dialoguetext.gameObject.SetActive(false);
