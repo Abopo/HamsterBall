@@ -2,14 +2,13 @@ Thank you for trying out Hamster Ball!
 
 OVERVIEW
 
-Hamster Ball is a new take on classic arcade vs puzzle games. Think of it as a fusion
-of Puzzle Bobble and the original Mario Bros. The level is made up of 2 halves: The top
+Hamster Ball is a new take on classic arcade VS Puzzle games. Think of it as a fusion
+of Puzzle Bobble and the original Mario Bros. A stage is made up of 2 halves: The top
 half is a matching-puzzle game board, while the bottom half is a simple platformer area.
 
-You play as Bub from Puzzle Bobble because I'm not an artist. As you play, various 
-colored hamsters will spawn from the top of the level and walk about the are from top 
-to bottom. Your goal is to catch these hamsters in bubbles, and throw them to the top 
-of the level to make matches of 3 or more.
+Players will control their characters around the bottom half of the level with standard platforming controls. As they play, various colored hamsters will spawn from the top of the level and walk about the area from top to bottom. Their goal is to catch these hamsters, and throw them at the puzzle board at the top of the level to make matches of 3 or more. Making matches adds hamsters to the opponents board, pushing it downward. If a player's board reaches too low, they lose.
+
+To make the game more interesting, players have a limited ability to teleport to their opponents field to directly disrupt them by doing actions such as: Stealing hamsters, throwing hamsters at the opponents board, attacking the opponent, etc.
 
 Up to 4 players can play at a time, on teams of 2 (also possible to play 1v2). 
 

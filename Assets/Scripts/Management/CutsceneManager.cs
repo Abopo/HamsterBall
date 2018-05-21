@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.IO;
 
 public class CutsceneManager : MonoBehaviour {
@@ -155,6 +156,9 @@ public class CutsceneManager : MonoBehaviour {
             case "E":
                 EndScene();
                 break;
+            case "Done":
+                ReturnToStorySelect();
+                break;
         }
     }
 
@@ -296,5 +300,9 @@ public class CutsceneManager : MonoBehaviour {
 
         _ready = false;
         _isPlaying = false;
+    }
+
+    void ReturnToStorySelect() {
+        SceneManager.LoadScene("StorySelect");
     }
 }

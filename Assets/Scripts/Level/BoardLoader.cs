@@ -30,6 +30,7 @@ public class BoardLoader : MonoBehaviour {
         // Save the path to the level data
         _gameManager.LevelDoc = path;
         _gameManager.nextLevel = "";
+        _gameManager.nextCutscene = "";
 
         TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
         _linesFromFile = textAsset.text.Split("\n"[0]);
@@ -305,7 +306,12 @@ public class BoardLoader : MonoBehaviour {
 
     void ReadNextLevel() {
         _readText = _linesFromFile[_fileIndex++];
-        _gameManager.nextLevel = _readText;
+        if(_readText == "Cutscene") {
+            _readText = _linesFromFile[_fileIndex++];
+            _gameManager.nextCutscene = _readText;
+        } else {
+            _gameManager.nextLevel = _readText;
+        }
     }
 
     void LoadBoard() {

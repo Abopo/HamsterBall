@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class LevelManager : MonoBehaviour {
@@ -39,12 +40,11 @@ public class LevelManager : MonoBehaviour {
 
         if(_gameManager.isSinglePlayer) {
             _bubbleManager = FindObjectOfType<BubbleManager>();
-
-            if(_gameManager.nextLevel != "") {
-                continueLevel = true;
-            } else {
-                continueLevel = false;
-            }
+        }
+        if (_gameManager.nextLevel != "" || _gameManager.nextCutscene != "") {
+            continueLevel = true;
+        } else {
+            continueLevel = false;
         }
     }
 
@@ -76,7 +76,6 @@ public class LevelManager : MonoBehaviour {
 
                         // push down the board
                         _bubbleManager.PushBoardDown();
-
 
                         _pushTimer = 0;
                     } else if(_pushTime - _pushTimer < 5) {
@@ -119,8 +118,13 @@ public class LevelManager : MonoBehaviour {
         if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
             mpResultsScreen.Activate(team);
         } else if (_gameManager.IsStoryLevel() && spResultsScreen != null) {
-            if (won && continueLevel) {
-                spContinueScreen.Activate(won);
+            if (continueLevel) {
+                // If it's the player
+                if (team == 0) {
+                    spContinueScreen.Activate(won);
+                } else {
+                    spContinueScreen.Activate(!won);
+                }
             } else {
                 // If it's the player
                 if (team == 0) {
@@ -134,6 +138,12 @@ public class LevelManager : MonoBehaviour {
 
     public void ContinueToNextLevel() {
         _gameManager.Unpause();
-        GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
+        if (_gameManager.nextLevel != "") {
+            GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
+        } else if(_gameManager.nextCutscene != "") {
+            // Load a cutscene
+            CutsceneManager.fileToLoad = _gameManager.nextCutscene;
+            SceneManager.LoadScene("Cutscene");
+        }
     }
 }

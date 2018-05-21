@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public bool gameIsOver = false;
     public string stage; // if level is "" it's a local multiplayer match, otherwise it's a story level
     public string nextLevel; // level to load next
+    public string nextCutscene; // cutscene to load next
 
     public MENU prevMenu; // Keeps track of the last menu we were in so we can return after a level is finished
     public string prevBoard; // Holds onto the previous board if there was one
@@ -25,7 +26,6 @@ public class GameManager : MonoBehaviour {
     public int rightTeamHandicap;
     public bool aimAssist;
 
-    public string nextCutscene;
 
     string _levelDoc; // document containing data for a single player level
     int _hamsterSpawnMax = 1;
