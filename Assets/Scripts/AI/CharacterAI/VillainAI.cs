@@ -46,7 +46,7 @@ public class VillainAI : CharacterAI {
         _spawnedLackey = Instantiate(lackeyObj);
 
         // Set difficulty (Lackey's aren't super smart)
-        GetComponent<AIBrain>().Difficulty = 2;
+        GetComponent<AIBrain>().Difficulty = 5;
 
         // Set up rest of player info
         PlayerController lackeyPC = _spawnedLackey.GetComponent<PlayerController>();

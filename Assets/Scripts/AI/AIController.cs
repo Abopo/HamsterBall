@@ -437,7 +437,7 @@ public class AIController : MonoBehaviour {
     }
 
     void SetActionTime() {
-        _actionTime = (1f - 0.25f * (_aiBrain.Difficulty)) + Random.Range(-0.5f, 0.5f);
+        _actionTime = (1f - 0.1f * (_aiBrain.Difficulty)) + Random.Range(-0.5f, 0.5f);
         if(_playerController.shifted) {
             _actionTime = 0;
         }

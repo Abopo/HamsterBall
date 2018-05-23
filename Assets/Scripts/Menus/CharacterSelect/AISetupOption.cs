@@ -50,8 +50,8 @@ public class AISetupOption : MenuOption {
 
     public void IncreaseAIDifficulty() {
         aiInfo.difficulty++;
-        if (aiInfo.difficulty == 4) {
-            aiInfo.difficulty = 0;
+        if (aiInfo.difficulty > 10) {
+            aiInfo.difficulty = 1;
         }
 
         PlaySelectSound();
@@ -61,8 +61,8 @@ public class AISetupOption : MenuOption {
 
     public void DecreaseAIDifficulty() {
         aiInfo.difficulty--;
-        if (aiInfo.difficulty == -1) {
-            aiInfo.difficulty = 3;
+        if (aiInfo.difficulty < 1) {
+            aiInfo.difficulty = 10;
         }
 
         PlaySelectSound();
@@ -71,21 +71,28 @@ public class AISetupOption : MenuOption {
     }
 
     void UpdateText() {
+        aiDifficultyText.text = aiInfo.difficulty.ToString();
         switch (aiInfo.difficulty) {
-            case 0:
-                aiDifficultyText.text = "Easy";
+            case 1:
+            case 2:
+            case 3:
+                //aiDifficultyText.text = "Easy";
                 aiDifficultyText.color = Color.blue;
                 break;
-            case 1:
-                aiDifficultyText.text = "Medium";
+            case 4:
+            case 5:
+            case 6:
+                //aiDifficultyText.text = "Medium";
                 aiDifficultyText.color = Color.green;
                 break;
-            case 2:
-                aiDifficultyText.text = "Hard";
+            case 7:
+            case 8:
+            case 9:
+                //aiDifficultyText.text = "Hard";
                 aiDifficultyText.color = Color.yellow;
                 break;
-            case 3:
-                aiDifficultyText.text = "Expert";
+            case 10:
+                //aiDifficultyText.text = "Expert";
                 aiDifficultyText.color = Color.red;
                 break;
         }

@@ -57,6 +57,8 @@ public class AIBrain : MonoBehaviour {
     }
 
     void SetupDifficultySettings() {
+        _decisionTime = 0.5f - (0.045f * _difficulty);
+        /*
         switch (_difficulty) {
             case 0:
                 _decisionTime = 0.5f;
@@ -71,6 +73,7 @@ public class AIBrain : MonoBehaviour {
                 _decisionTime = 0.1f;
                 break;
         }
+        */
     }
 
     void GetOpponents() {
@@ -228,8 +231,9 @@ public class AIBrain : MonoBehaviour {
                     return false;
                 }
             }
+
             // The easiest AI won't ever shift
-            if(_difficulty == 0 && action.requiresShift) {
+            if(_difficulty < 3 && action.requiresShift) {
                 return false;
             }
 
@@ -400,24 +404,37 @@ public class AIBrain : MonoBehaviour {
         _actions.Sort((x, y) => y.weight.CompareTo(x.weight));
 
         int choice;
-        int offset = 0; // this slightly increases the chance of choosing each subsequent action.
+        int choiceOffset = 0; // this slightly increases the chance of choosing each subsequent action.
+        int weightOffset = -17 + (_difficulty * 3); // this makes it easier/harder to change actions
+
         foreach (AIAction action in _actions) {
-            choice = Random.Range(0, action.weight+offset);
-            // this check will be against larger numbers as the AI get's less smart?
+            choice = Random.Range(0, action.weight+choiceOffset);
+
+            // The higher the difficulty, the higher chance to pick early options in the _actions list
+            // and the harder it is to change the AI's mind about their current action
+            if(choice > action.weight / _difficulty && curAction != null && action.weight >= curAction.weight - weightOffset) {
+                curAction = action;
+                return;
+            }
+
+            // Chance to choose an action increases each loop
+            choiceOffset += 5 / _difficulty;
+
+            /*
             switch (_difficulty) {
                 case 0:
                     if (choice > action.weight / 0.9f && curAction != null && action.weight >= curAction.weight - 20) { // No chance to do best actions, chance to choose an action increases each loop.
                         curAction = action;
                         return;
                     }
-                    offset += 2;
+                    choiceOffset += 2;
                     break;
                 case 1:
                     if (choice > action.weight / 1.75f && curAction != null && action.weight >= curAction.weight-5) { // ~50% chance to choose this action.
                         curAction = action;
                         return;
                     }
-                    offset += 3;
+                    choiceOffset += 3;
                     break;
                 case 2:
                     // smart AI will only change actions if it is a BETTER idea.
@@ -433,7 +450,8 @@ public class AIBrain : MonoBehaviour {
                         return;
                     }
                     break;
-            }
+                }
+                */
         }
 
         // If we get all the way through withough picking any actions, pick one at random
