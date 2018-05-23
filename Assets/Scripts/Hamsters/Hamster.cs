@@ -272,14 +272,12 @@ public class Hamster : Entity {
             ReenterPipe(other.transform);
         }
 
-        if (!exitedPipe) {
-            if (other.tag == "PipeCorner") {
-                // Turn
-                if (inRightPipe) {
-                    FaceLeft();
-                } else {
-                    FaceRight();
-                }
+        //if (!exitedPipe) {
+            if(other.tag == "PipeCornerLeft") {
+                FaceRight();
+                exitedPipe = true;
+            } else if(other.tag == "PipeCornerRight") {
+                FaceLeft();
                 exitedPipe = true;
             } else if(other.tag == "Pipe Turn 1") {
                 // Turn into connecting pipe
@@ -295,7 +293,7 @@ public class Hamster : Entity {
 
                 UpdateVelocity();
             }
-        }
+        //}
 	}
 
     void OnTriggerStay2D(Collider2D other) {

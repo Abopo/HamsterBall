@@ -91,6 +91,11 @@ public class PlayerController : Entity {
         get { return _isInvuln; }
     }
 
+    float _traction = 1.0f;
+    public float Traction {
+        get { return _traction; }
+    }
+
     public bool aiControlled;
     public bool springing;
 
@@ -365,6 +370,10 @@ public class PlayerController : Entity {
 			//_shiftCooldownTimer = 0;
 		}
 
+        if(collider.name == "Ice Platform") {
+            _traction = 0.2f;
+        }
+
         // If we somehow go out of bounds
         if(collider.gameObject.tag == "KillPlane") {
             // Reset to spawn position
@@ -372,7 +381,13 @@ public class PlayerController : Entity {
         }
 	}
 
-	public override void CollisionResponseX(Collider2D collider) {
+    private void OnTriggerExit2D(Collider2D collider) {
+        if (collider.name == "Ice Platform") {
+            _traction = 1.0f;
+        }
+    }
+
+    public override void CollisionResponseX(Collider2D collider) {
 		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
 			velocity.x = 0.0f;
 		}

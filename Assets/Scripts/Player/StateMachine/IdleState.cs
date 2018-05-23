@@ -19,7 +19,7 @@ public class IdleState : PlayerState {
 		// Just kidding, slow the player to a stop
 		if (Mathf.Abs (playerController.velocity.x) > 0.5f) {
             sign = Mathf.Sign(playerController.velocity.x);
-            playerController.velocity.x -= sign * (playerController.walkForce/1.5f) * Time.deltaTime;
+            playerController.velocity.x -= sign * (playerController.walkForce/1.5f) * playerController.Traction * Time.deltaTime;
             if(sign > 0 && playerController.velocity.x < 0 ||
                 sign < 0 && playerController.velocity.x > 0) {
                 playerController.velocity.x = 0;
