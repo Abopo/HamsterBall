@@ -110,6 +110,12 @@ public class AIAction {
             addWeight += 5 * bubbleWant.numMatches;
             addWeight += bubbleWant.numMatches > 3 ? 30 : 0;
 
+            // If bubbleWant was thrown by our teammate and can match/combo
+            if(bubbleWant.numMatches > 1 && bubbleWant.canCombo && bubbleWant.PlayerController != _playerController) {
+                // Go for a team combo!
+                addWeight += 50;
+            }
+
             // If this action requires a shift
             if (requiresShift) {
                 // if we have already shifted
@@ -154,7 +160,7 @@ public class AIAction {
             // Add weight based on potential drops of the bubbleWant
             addWeight += bubbleWant.dropPotential * 30;
 
-            // if we want a bubble on our board and we've want/have a bomb hamster
+            // if we want a bubble on our board and we want/have a bomb hamster
         } else if (bubbleWant != null && bubbleWant.team == _playerController.team && type == HAMSTER_TYPES.BOMB) {
             // We don't want to blow up matches, so reduce weight for each match
             addWeight += bubbleWant.numMatches * -20;

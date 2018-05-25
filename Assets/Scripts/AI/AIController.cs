@@ -72,7 +72,7 @@ public class AIController : MonoBehaviour {
                 HorizontalMovement();
                 Jumping();
             }
-        } else {
+        } else if(_playerController.curState == PLAYER_STATE.THROW) {
             if (_curAction.nodeWant != null) {
                 _toNodeWant = _curAction.nodeWant.transform.position - transform.position;
             }
@@ -199,39 +199,6 @@ public class AIController : MonoBehaviour {
     // Run away from opposing player
     void RunMovement() {
 
-    }
-
-    // Move to a good position to throw a bubble.
-    void ThrowMovement() {
-        if(_curAction.requiresShift && _playerController.heldBubble.type == HAMSTER_TYPES.RAINBOW) {
-            // don't fucking throw a rainbow to the opponent you fucking jackass goddamnit
-            _aiBrain.ChooseNewAction();
-            return;
-        }
-
-        // We are in position to throw.
-        if(_curAction.horWant == 0) {
-            _input.left.isDown = false;
-            _input.right.isDown = false;
-            if (_actionTimer > _actionTime) {
-                AimThrow();
-            }
-        } else if(_curAction.horWant == -1) {
-            _input.left.isDown = true;
-            _input.right.isDown = false;
-        } else if(_curAction.horWant == 1) {
-            _input.left.isDown = false;
-            _input.right.isDown = true;
-        }
-
-        // Jump up if passing by a step since being higher is generally better
-        if (_mapScan.LeftJumpDistance < 1f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
-            _input.jump.isDown = true;
-        } else if (_mapScan.RightJumpDistance < 1f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
-            _input.jump.isDown = true;
-        } else {
-            _input.jump.isDown = false;
-        }
     }
 
     // Walk based on Wants (generally chasing a hamster).
@@ -378,6 +345,39 @@ public class AIController : MonoBehaviour {
         }*/
     }
 
+    // Move to a good position to throw a bubble.
+    void ThrowMovement() {
+        if (_curAction.requiresShift && _playerController.heldBubble.type == HAMSTER_TYPES.RAINBOW) {
+            // don't fucking throw a rainbow to the opponent you fucking jackass goddamnit
+            _aiBrain.ChooseNewAction();
+            return;
+        }
+
+        // We are in position to throw.
+        if (_curAction.horWant == 0) {
+            _input.left.isDown = false;
+            _input.right.isDown = false;
+            if (_actionTimer > _actionTime) {
+                AimThrow();
+            }
+        } else if (_curAction.horWant == -1) {
+            _input.left.isDown = true;
+            _input.right.isDown = false;
+        } else if (_curAction.horWant == 1) {
+            _input.left.isDown = false;
+            _input.right.isDown = true;
+        }
+
+        // Jump up if passing by a step since being higher is generally better
+        if (_mapScan.LeftJumpDistance < 1f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
+            _input.jump.isDown = true;
+        } else if (_mapScan.RightJumpDistance < 1f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
+            _input.jump.isDown = true;
+        } else {
+            _input.jump.isDown = false;
+        }
+    }
+
     void AimThrow() {
         // First put the player into throw state if not already there.
         if(_playerController.curState != PLAYER_STATE.THROW) {
@@ -388,7 +388,7 @@ public class AIController : MonoBehaviour {
         // If we're not yet aiming at nodeWant
         Vector2 aimDirection = ((ThrowState)_playerController.currentState).AimDirection;
         float dot = Vector2.Dot(aimDirection.normalized, _toNodeWant.normalized);
-        if (dot < 0.9999f) {
+        if (dot < 0.9999f && dumbFrameCount < 20) {
             // Rotate towards the node
 
             // If we've been aiming for too long, just go ahead and throw
@@ -410,9 +410,26 @@ public class AIController : MonoBehaviour {
             // Throw
             dumbFrameCount++; // Waits for 20 frames to make sure aim is on point
             if (dumbFrameCount > 20) {
-                dumbFrameCount = 0;
-                _aimTimer = 0f;
-                _input.bubble.isJustPressed = true;
+                OffsetAim();
+
+                if (dumbFrameCount > 30) {
+                    dumbFrameCount = 0;
+                    _aimTimer = 0f;
+
+                    _input.bubble.isJustPressed = true;
+                }
+            }
+        }
+    }
+
+    void OffsetAim() {
+        // Randomly offset aim depending on how stupid the AI is
+        int chanceToOffset = _aiBrain.Difficulty * 10;
+        if (Random.Range(0, 100) > chanceToOffset) {
+            if (Random.Range(0, 2) == 1) {
+                _input.right.isDown = true;
+            } else {
+                _input.left.isDown = true;
             }
         }
     }

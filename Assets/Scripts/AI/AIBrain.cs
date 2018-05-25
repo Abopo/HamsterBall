@@ -145,9 +145,6 @@ public class AIBrain : MonoBehaviour {
         // Clear out bad actions
         _actions.RemoveAll(action => !ActionIsRelevant(action));
 
-        //MakeSomeRandomActions();
-        //_actions.RemoveAll(action => !ActionIsRelevant(action));
-
         // Determine the weights of the actions
         foreach (AIAction action in _actions) {
             if (curAction != null) {
@@ -413,52 +410,30 @@ public class AIBrain : MonoBehaviour {
             // The higher the difficulty, the higher chance to pick early options in the _actions list
             // and the harder it is to change the AI's mind about their current action
             if(choice > action.weight / _difficulty && curAction != null && action.weight >= curAction.weight - weightOffset) {
-                curAction = action;
+                //curAction = action;
+                ChangeAction(action);
                 return;
             }
 
             // Chance to choose an action increases each loop
             choiceOffset += 5 / _difficulty;
-
-            /*
-            switch (_difficulty) {
-                case 0:
-                    if (choice > action.weight / 0.9f && curAction != null && action.weight >= curAction.weight - 20) { // No chance to do best actions, chance to choose an action increases each loop.
-                        curAction = action;
-                        return;
-                    }
-                    choiceOffset += 2;
-                    break;
-                case 1:
-                    if (choice > action.weight / 1.75f && curAction != null && action.weight >= curAction.weight-5) { // ~50% chance to choose this action.
-                        curAction = action;
-                        return;
-                    }
-                    choiceOffset += 3;
-                    break;
-                case 2:
-                    // smart AI will only change actions if it is a BETTER idea.
-                    if (choice > action.weight / 4f && curAction != null && action.weight > curAction.weight) { // 75% chance to choose this action.
-                        curAction = action;
-                        return;
-                    }
-                    break;
-                case 3:
-                    // smartest AI will only change actions if it is a MUCH better idea. (this saves time from switching back and forth between actions)
-                    if (choice > action.weight / 10 && curAction != null && action.weight > curAction.weight+10) { // 90% chance to choose this action.
-                        curAction = action;
-                        return;
-                    }
-                    break;
-                }
-                */
         }
 
         // If we get all the way through withough picking any actions, pick one at random
         if (curAction == null && _actions.Count > 0) {
             choice = Random.Range(0, _actions.Count);
-            curAction = _actions[choice];
+            //curAction = _actions[choice];
+            ChangeAction(_actions[choice]);
         }
+    }
+
+    void ChangeAction(AIAction action) {
+        if (curAction != null) {
+            // Keep the wants consistent until they can be reevaluated
+            action.horWant = curAction.horWant;
+            action.vertWant = curAction.vertWant;
+        }
+        curAction = action;
     }
 
     public void ChooseNewAction() {
@@ -611,6 +586,8 @@ public class AIBrain : MonoBehaviour {
                 _doubleCheckTimer = 0;
                 return true;
             }
+        } else {
+            _doubleCheckTimer = 0f;
         }
 
         return false;        

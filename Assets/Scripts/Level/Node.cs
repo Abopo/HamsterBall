@@ -45,7 +45,10 @@ public class Node : MonoBehaviour {
                                         transform.position.y - 0.1f,
                                         transform.position.z);
             Debug.DrawLine(transform.position, end, Color.green);
+
+            //CanBeHit();
         }
+
     }
 
     void CheckCanBeHit() {
@@ -104,9 +107,11 @@ public class Node : MonoBehaviour {
                 rayDir = new Vector2(-1 + (i * 0.45f) + j / 2, -1);
                 origin = new Vector2(transform.position.x + j, transform.position.y);
                 hit = Physics2D.Raycast(origin, rayDir, 10f, checkMask);
-                if (hit && hit.transform.tag == "Platform") {
-                    hitCount++;
-                    //Debug.DrawRay(origin, rayDir * hit.distance);
+                if (hit) {
+                    if (hit.transform.tag == "Platform") {
+                        hitCount++;
+                        Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
+                    }
                 }
             }
 

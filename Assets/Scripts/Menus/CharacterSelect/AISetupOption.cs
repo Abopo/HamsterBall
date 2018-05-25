@@ -17,6 +17,7 @@ public class AISetupOption : MenuOption {
 
     public void Initialize(PlayerInfo pI) {
         aiInfo = pI;
+        aiInfo.difficulty = 1;
         UpdateText();
         gameObject.SetActive(true);
     }

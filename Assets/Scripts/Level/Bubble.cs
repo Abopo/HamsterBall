@@ -22,7 +22,7 @@ public class Bubble : MonoBehaviour {
 
     public LayerMask checkMask;
     public bool canBeHit;
-    public bool canCombo = true;
+    public bool canCombo = true; // if this bubble can be part of a team combo
 
     public bool checkedForMatches;
 	public bool checkedForAnchor;
