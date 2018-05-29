@@ -20,6 +20,8 @@ public class MenuOption : MonoBehaviour {
     AudioClip _highlightClip;
     AudioClip _selectClip;
 
+    MenuOption[] _allOtherOptions;
+
     private void Awake() {
         if (isFirstSelection) {
             _isHighlighted = true;
@@ -36,6 +38,8 @@ public class MenuOption : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
         _selectClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
+
+        _allOtherOptions = FindObjectsOfType<MenuOption>();
     }
 
     // Update is called once per frame
@@ -111,7 +115,8 @@ public class MenuOption : MonoBehaviour {
         _justHighlighted = true;
 
         // Make sure it's adjacent options are NOT highlighted
-        DeHighlightAdjOptions();
+        //DeHighlightAdjOptions();
+        DeHighlightOtherOptions();
     }
 
     protected virtual void Select() {
@@ -123,6 +128,16 @@ public class MenuOption : MonoBehaviour {
         for (int i = 0; i < 4; ++i) {
             if (adjOptions[i] != null) {
                 adjOptions[i]._isHighlighted = false;
+            }
+        }
+    }
+
+    protected void DeHighlightOtherOptions() {
+        if (_allOtherOptions != null) {
+            foreach (MenuOption mO in _allOtherOptions) {
+                if (mO != this) {
+                    mO._isHighlighted = false;
+                }
             }
         }
     }

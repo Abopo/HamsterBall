@@ -170,7 +170,7 @@ public class StorySelectMenu : MonoBehaviour {
         if (_worldDif > 0) {
             worlds[_curWorld + _worldDif].Activate(0);
         } else {
-            worlds[_curWorld + _worldDif].Activate(5);
+            worlds[_curWorld + _worldDif].Activate(9);
         }
 
         // Set curWorld to new world

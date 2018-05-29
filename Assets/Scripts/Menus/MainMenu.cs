@@ -24,8 +24,8 @@ public class MainMenu : MonoBehaviour {
         //PlayerPrefs.SetInt("FirstTimePlaying", 0);
 
         if (PlayerPrefs.GetInt("FirstTimePlaying", 0) == 0) {
-            PlayerPrefs.SetString("StoryProgress", "2-6"); // How far into the story the player is (used to lock/unlock story levels)-
-            PlayerPrefs.SetString("StoryPos", "2-6"); // Last place in the story the player was on (used to position the selector in the story select scene)
+            PlayerPrefs.SetString("StoryProgress", "1-0"); // How far into the story the player is (used to lock/unlock story levels)-
+            PlayerPrefs.SetString("StoryPos", "1-0"); // Last place in the story the player was on (used to position the selector in the story select scene)
 
             // Highscores
 
