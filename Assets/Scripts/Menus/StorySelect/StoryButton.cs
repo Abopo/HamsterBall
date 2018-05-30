@@ -32,6 +32,10 @@ public class StoryButton : MenuOption {
 
     protected override void Select() {
         //base.Select();
+        if(!isReady) {
+            // TODO: Play some sound to indicate the stage is locked
+            return;
+        }
 
         FindObjectOfType<GameManager>().stage = sceneNumber;
 
