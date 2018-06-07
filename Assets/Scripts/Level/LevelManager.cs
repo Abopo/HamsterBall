@@ -50,13 +50,14 @@ public class LevelManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetButtonDown("Pause") && !_gameManager.isOnline) {
-            // Pause the game
-            pauseMenu.Activate();
-        }
-
         if (!_gameOver) {
             _levelTimer += Time.deltaTime;
+
+            // Check for pausing
+            if (Input.GetButtonDown("Pause") && !_gameManager.isPaused && !_gameManager.isOnline) {
+                // Pause the game
+                pauseMenu.Activate();
+            }
 
             // If we are not in single player
             if (!_gameManager.isSinglePlayer) {

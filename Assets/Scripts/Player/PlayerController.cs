@@ -182,40 +182,43 @@ public class PlayerController : Entity {
             return;
         }
 
-		CheckInput ();
-        direction = Animator.GetBool("FacingRight") ? 1 : -1;
+        // Don't do any of this stuff if the game is paused
+        if (!_gameManager.isPaused) {
+            CheckInput();
+            direction = Animator.GetBool("FacingRight") ? 1 : -1;
 
-        UpdateBubbles();
+            UpdateBubbles();
 
-        bubbleCooldownTimer += Time.deltaTime;
-        attackCooldownTimer += Time.deltaTime;
-        aimCooldownTimer += Time.deltaTime;
+            bubbleCooldownTimer += Time.deltaTime;
+            attackCooldownTimer += Time.deltaTime;
+            aimCooldownTimer += Time.deltaTime;
 
-        if (!_gameManager.isSinglePlayer) {
-            // Shift time stuff
-            ShiftUpdates();
-        } else {
-            _canShift = false;
+            if (!_gameManager.isSinglePlayer) {
+                // Shift time stuff
+                ShiftUpdates();
+            } else {
+                _canShift = false;
+            }
+
+            // Invuln stuff
+            if (_isInvuln) {
+                // Be invulnerable
+                InvulnerabilityState();
+            }
+
+            // State update stuff
+            if (currentState != null) {
+                currentState.CheckInput(inputState);
+                currentState.Update();
+            } else {
+                ChangeState(PLAYER_STATE.IDLE);
+            }
+
+            _physics.MoveX(velocity.x * Time.deltaTime);
+            _physics.MoveY(velocity.y * Time.deltaTime);
+
+            _justChangedState = false;
         }
-
-        // Invuln stuff
-        if(_isInvuln) {
-            // Be invulnerable
-            InvulnerabilityState();
-        }
-
-        // State update stuff
-		if (currentState != null) {
-			currentState.CheckInput(inputState);
-			currentState.Update ();
-		} else {
-			ChangeState(PLAYER_STATE.IDLE);
-		}
-
-		_physics.MoveX (velocity.x * Time.deltaTime);
-		_physics.MoveY (velocity.y * Time.deltaTime);
-
-        _justChangedState = false;
 
         // Failsafe check
         if(heldBubble != null && heldBubble.locked) {

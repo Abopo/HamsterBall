@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     public int rightTeamHandicap;
     public bool aimAssist;
 
+    public bool isPaused;
 
     string _levelDoc; // document containing data for a single player level
     int _hamsterSpawnMax = 1;
@@ -79,6 +80,8 @@ public class GameManager : MonoBehaviour {
     void Start () {
         DontDestroyOnLoad(transform.gameObject);
 
+        SetScreenResolution();
+
         ResetValues();
 
         SceneManager.sceneLoaded += SceneLoad;
@@ -90,6 +93,8 @@ public class GameManager : MonoBehaviour {
         PhotonNetwork.automaticallySyncScene = true;
 
         prevBoard = "";
+
+        isPaused = false;
     }
 
     void SingletonCheck() {
@@ -98,6 +103,20 @@ public class GameManager : MonoBehaviour {
             DestroyImmediate(this.gameObject);
         }
     }
+
+    void SetScreenResolution() {
+        Resolution[] resolutions = Screen.resolutions;
+
+        if (resolutions.Length > 0) {
+            int width, height;
+            height = resolutions[resolutions.Length - 1].height;
+            width = resolutions[resolutions.Length - 1].width;
+            //width = (int)(height * 0.625f); // 10:16 ratio
+
+            Screen.SetResolution(width, height, true);
+        }
+    }
+
 
     void ResetValues() {
         leftTeamHandicap = 9;
@@ -128,11 +147,15 @@ public class GameManager : MonoBehaviour {
     public void FullPause() {
         // Pause the game via timeScale
         Time.timeScale = 0;
+
+        isPaused = true;
     }
 
     public void Unpause() {
         // Unpause the game
         Time.timeScale = 1;
+
+        isPaused = false;
     }
 
     public void EndGame(int winningTeam, int winScore) {

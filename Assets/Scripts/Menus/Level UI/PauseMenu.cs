@@ -6,12 +6,20 @@ using System.Collections;
 public class PauseMenu : MonoBehaviour {
 
     public Button previousMenuButton;
+    public GameObject optionsMenu;
+
+    MenuButton[] _buttons;
     GameManager _gameManager;
+
+    private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+
+        _buttons = GetComponentsInChildren<MenuButton>();
+    }
 
     // Use this for initialization
     void Start() {
         // Set the text of the previousMenuButton to a proper text
-        _gameManager = FindObjectOfType<GameManager>();
         switch(_gameManager.prevMenu) {
             case MENU.STORY:
                 previousMenuButton.GetComponentInChildren<Text>().text = "Story Select";
@@ -31,7 +39,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void ResumeButton() {
-        Time.timeScale = 1;
+        _gameManager.Unpause();
         gameObject.SetActive(false);
     }
 
@@ -39,7 +47,7 @@ public class PauseMenu : MonoBehaviour {
         gameObject.SetActive(true);
 
         // Pause the game
-        Time.timeScale = 0;
+        _gameManager.FullPause();
     }
 
     public void ReturnToPreviousScene() {
@@ -55,5 +63,25 @@ public class PauseMenu : MonoBehaviour {
                 _gameManager.BoardEditorButton();
                 break;
         }
+    }
+
+    public void OpenOptionsMenu() {
+        // Turn off buttons on pause menu
+        foreach(MenuButton mB in _buttons) {
+            mB.isReady = false;
+        }
+
+        // Enable options menu
+        optionsMenu.SetActive(true);
+    }
+
+    public void CloseOptionsMenu() {
+        // Turn on buttons on pause menu
+        foreach (MenuButton mB in _buttons) {
+            mB.isReady = true;
+        }
+
+        // Disable options menu
+        optionsMenu.SetActive(false);
     }
 }

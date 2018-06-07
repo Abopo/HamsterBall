@@ -16,8 +16,10 @@ public class MenuButton : MenuOption {
 	}
 
     protected override void Select() {
-        base.Select();
+        if (isReady) {
+            base.Select();
 
-        GetComponent<Button>().onClick.Invoke();
+            GetComponent<Button>().onClick.Invoke();
+        }
     }
 }
