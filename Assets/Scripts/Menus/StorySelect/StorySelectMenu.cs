@@ -39,15 +39,15 @@ public class StorySelectMenu : MonoBehaviour {
         GameManager gameManager = FindObjectOfType<GameManager>();
         gameManager.prevMenu = MENU.STORY;
 
-		locationImages["Forest"] = Resources.Load<Sprite>("Art/UI/OneTube - Forest");
-        locationImages["Mountain"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Mountain");
-        locationImages["Laboratory"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Laboratory");
-        locationImages["Sewers"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Sewers");
-        locationImages["City"] = Resources.Load<Sprite>("Art/UI/TwoTubes - City");
-        locationImages["Fungals"] = Resources.Load<Sprite>("Art/UI/OneTube - Fungals");
-        locationImages["DarkForest"] = Resources.Load<Sprite>("Art/UI/OneTube - DarkForest");
-        locationImages["Beach"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Beach");
-        locationImages["Space"] = Resources.Load<Sprite>("Art/UI/TwoTubes - Space");
+		locationImages["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Forest");
+        locationImages["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Mountain");
+        locationImages["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");
+        locationImages["Sewers"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Sewers");
+        locationImages["City"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City");
+        locationImages["Fungals"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
+        locationImages["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
+        locationImages["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
+        locationImages["Space"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
 
         // Load saved world
         LoadSaveData();

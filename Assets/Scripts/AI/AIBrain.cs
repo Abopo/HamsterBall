@@ -221,7 +221,7 @@ public class AIBrain : MonoBehaviour {
             //}
             // If nodeWant is in the bottom row of our board it'll kill us!
             if(action.nodeWant != null) {
-                if (action.nodeWant.number > 137 && !action.requiresShift && action.bubbleWant.numMatches < 2) {
+                if (action.nodeWant.number > 137 && !action.requiresShift && (action.bubbleWant == null || action.bubbleWant.numMatches < 2)) {
                     return false;
                 }
                 if(!action.nodeWant.isRelevant) {

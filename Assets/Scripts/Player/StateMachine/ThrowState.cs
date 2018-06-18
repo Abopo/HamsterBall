@@ -172,6 +172,8 @@ public class ThrowState : PlayerState {
 
         // For now this is only for the AI
         playerController.significantEvent.Invoke();
+
+        PlayerController.totalThrowCount++;
     }
 
     // returns the PLAYER_STATE that represents this state

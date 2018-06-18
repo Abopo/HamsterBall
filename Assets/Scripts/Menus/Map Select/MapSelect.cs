@@ -76,6 +76,11 @@ public class MapSelect : MonoBehaviour {
                     levelName = "Networked ";
                 }
                 levelName += _mapIcons[i].mapName;
+
+                if(_gameManager.isSinglePlayer) {
+                    levelName += " - SinglePlayer";
+                }
+
                 SceneManager.LoadScene(levelName);
             }
         }

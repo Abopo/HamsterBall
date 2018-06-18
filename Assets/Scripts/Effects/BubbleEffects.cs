@@ -25,6 +25,9 @@ public class BubbleEffects : MonoBehaviour {
     float _comboEffectTime = 1.0f;
     float _comboEffectTimer = 0.0f;
 
+    // Multi Match effects
+    GameObject _multiMatchEffectObj;
+
     // Bank shot effect
     GameObject _bankEffectObj;
 
@@ -64,6 +67,15 @@ public class BubbleEffects : MonoBehaviour {
         _counterEffectObj.AddComponent<AudioSource>();
         _counterMatchSprite = Resources.Load<Sprite>("Art/Effects/CounterMatch");
         _counterDropSprite = Resources.Load<Sprite>("Art/Effects/CounterDrop");
+
+        // Multi Match effects
+        _multiMatchEffectObj = new GameObject();
+        _multiMatchEffectObj.SetActive(false);
+        _multiMatchEffectObj.AddComponent<SpriteRenderer>();
+        _multiMatchEffectObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Art/Effects/MultiMatch");
+        _multiMatchEffectObj.AddComponent<AudioSource>();
+        _multiMatchEffectObj.GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Audio/SFX/BankShot");
+        _multiMatchEffectObj.AddComponent<DestroyTimer>();
 
         // Match Combo effects
         _comboEffectObj = new GameObject();
@@ -173,10 +185,10 @@ public class BubbleEffects : MonoBehaviour {
         }
     }
 
-    public void CounterDropEffect(Vector2 position) {
+    public void CounterDropEffect(Vector2 pos) {
         if (!_counterEffectObj.activeSelf) {
             _counterEffectObj.GetComponent<SpriteRenderer>().sprite = _counterDropSprite;
-            _counterEffectObj.transform.position = new Vector3(position.x, position.y, -6);
+            _counterEffectObj.transform.position = new Vector3(pos.x, pos.y, -6);
             _counterEffectObj.SetActive(true);
 
             _teamAudioSource.clip = _teamDropClip;
@@ -186,13 +198,21 @@ public class BubbleEffects : MonoBehaviour {
         }
     }
 
-    public void MatchComboEffect(Vector2 position, int combo) {
+    public void MultiMatchEffect(Vector2 pos) {
+        Vector3 position = new Vector3(pos.x, pos.y, -5);
+        GameObject mMatch = GameObject.Instantiate(_multiMatchEffectObj, position, Quaternion.identity);
+        mMatch.SetActive(true);
+
+        _multiMatchEffectObj.GetComponent<AudioSource>().Play();
+    }
+
+    public void MatchComboEffect(Vector2 pos, int combo) {
         if(!_comboEffectObj.activeSelf && combo >= 0) {
             if(combo > _matchComboSprites.Length-1) {
                 combo = _matchComboSprites.Length - 1;
             }
             _comboEffectObj.GetComponent<SpriteRenderer>().sprite = _matchComboSprites[combo];
-            _comboEffectObj.transform.position = new Vector3(position.x, position.y, -6);
+            _comboEffectObj.transform.position = new Vector3(pos.x, pos.y, -6);
             _comboEffectObj.SetActive(true);
 
             _teamAudioSource.clip = _teamComboClip;
@@ -217,9 +237,9 @@ public class BubbleEffects : MonoBehaviour {
         _bankEffectObj.GetComponent<AudioSource>().Play();
     }
 
-    public void StockOrbEffect(int spawnAmount, Vector3 position) {
+    public void StockOrbEffect(int spawnAmount, Vector3 pos) {
         // Create new StockOrbGenerator
-        GameObject stockOrbGenerator = GameObject.Instantiate(stockOrbGeneratorObj, position, Quaternion.identity);
+        GameObject stockOrbGenerator = GameObject.Instantiate(stockOrbGeneratorObj, pos, Quaternion.identity);
         StockOrbGenerator soGenerator = stockOrbGenerator.GetComponent<StockOrbGenerator>();
         soGenerator.team = transform.parent.GetComponent<BubbleManager>().team;
         soGenerator.bubbleEffects = this;
@@ -229,7 +249,7 @@ public class BubbleEffects : MonoBehaviour {
             _hamsterMeter = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>().hamsterMeter;
         }
 
-        soGenerator.BeginSpawning(spawnAmount, position);
+        soGenerator.BeginSpawning(spawnAmount, pos);
     }
 
     public void BombBubbleExplosion(Vector3 pos) {

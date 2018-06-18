@@ -6,21 +6,34 @@ using UnityEngine.UI;
 public class GoalMenu : MonoBehaviour {
     public Text goalText;
     public Text goalRequirement;
-    public Text timeLeftText;
+    public Text conditionText;
+    public Text conditionLeftText;
 
     GameManager _gameManager;
     BubbleManager _bubbleManager;
-    float _timeLeft;
+    float _conditionLeft;
 
-	// Use this for initialization
-	void Start () {
+    PlayerController[] pCons;
+
+    // Use this for initialization
+    void Start () {
         _gameManager = FindObjectOfType<GameManager>();
         _bubbleManager = FindObjectOfType<BubbleManager>();
-        _timeLeft = _gameManager.timeLimit;
-        
-        switch(_gameManager.gameMode) {
+        _conditionLeft = _gameManager.conditionLimit;
+        conditionLeftText.text = _gameManager.conditionLimit.ToString();
+
+        switch (_gameManager.gameMode) {
+            case GAME_MODE.SP_CLEAR:
+                // No goal text for this mode
+                goalText.enabled = false;
+                goalRequirement.enabled = false;
+                conditionText.text = "Time";
+                break;
             case GAME_MODE.SP_POINTS:
                 goalText.text = "Score\n       Needed";
+                conditionText.text = "Throws";
+                // Get throw events from players
+                pCons = FindObjectsOfType<PlayerController>();
                 break;
             case GAME_MODE.SP_MATCH:
                 goalText.text = "Matches\n       Needed";
@@ -36,16 +49,25 @@ public class GoalMenu : MonoBehaviour {
             return;
         }
 
-        if(_gameManager.gameMode == GAME_MODE.SP_MATCH) {
-            goalRequirement.text = (_gameManager.goalCount - _bubbleManager.matchCount).ToString();
+        switch(_gameManager.gameMode) {
+            case GAME_MODE.SP_CLEAR:
+                if (_gameManager.conditionLimit > 0) {
+                    _conditionLeft -= Time.deltaTime;
+                } else {
+                    _conditionLeft += Time.deltaTime;
+                }
+
+                conditionLeftText.text = string.Format("{0}:{1:00}", (int)_conditionLeft / 60, (int)_conditionLeft % 60);
+                break;
+            case GAME_MODE.SP_POINTS:
+                _conditionLeft = _gameManager.conditionLimit - PlayerController.totalThrowCount;
+                conditionLeftText.text = _conditionLeft.ToString();
+                break;
+            case GAME_MODE.SP_MATCH:
+                goalRequirement.text = (_gameManager.goalCount - _bubbleManager.matchCount).ToString();
+                break;
         }
 
-        if (_gameManager.timeLimit > 0) {
-            _timeLeft -= Time.deltaTime;
-        } else {
-            _timeLeft += Time.deltaTime;
-        }
-
-        timeLeftText.text = string.Format("{0}:{1:00}", (int)_timeLeft / 60, (int)_timeLeft % 60);
     }
+
 }

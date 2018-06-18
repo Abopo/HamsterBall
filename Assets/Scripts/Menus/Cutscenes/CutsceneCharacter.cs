@@ -31,14 +31,20 @@ public class CutsceneCharacter : MonoBehaviour {
     bool _slidingIn = false;
     bool _slidingOut = false;
 
+    bool _isSpeaking;
+
     Image _image;
+    SpriteRenderer _speakerArrow;
     RectTransform _rectTransform;
     CutsceneManager _cutsceneManager;
 
     private void Awake() {
         _image = GetComponent<Image>();
+        _speakerArrow = transform.GetChild(0).GetComponent<SpriteRenderer>();
         _rectTransform = GetComponent<RectTransform>();
         _cutsceneManager = FindObjectOfType<CutsceneManager>();
+
+        SetIsSpeaking(false);
     }
 
     // Use this for initialization
@@ -48,8 +54,10 @@ public class CutsceneCharacter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(_slidingIn) {
+            _speakerArrow.enabled = false;
             SlidingIn();
         } else if (_slidingOut) {
+            _speakerArrow.enabled = false;
             SlidingOut();
         }
     }
@@ -72,6 +80,12 @@ public class CutsceneCharacter : MonoBehaviour {
         _rectTransform.localPosition = new Vector3(screenPos, _rectTransform.localPosition.y, _rectTransform.localPosition.z);
         _slidingIn = false;
         onScreen = true;
+
+        if(_isSpeaking) {
+            // Show the speaker arrow
+            _speakerArrow.enabled = true;
+        }
+
         // Continue the cutscene
         _cutsceneManager.ReadEscapeCharacter();
     }
@@ -146,5 +160,15 @@ public class CutsceneCharacter : MonoBehaviour {
 
     public void SetFacing(int facing) {
         _rectTransform.localScale = new Vector3(facing, _rectTransform.localScale.y, _rectTransform.localScale.z);
+    }
+
+    public void SetIsSpeaking(bool speaking) {
+        _isSpeaking = speaking;
+
+        if(_isSpeaking) {
+            _speakerArrow.enabled = true;
+        } else {
+            _speakerArrow.enabled = false;
+        }
     }
 }

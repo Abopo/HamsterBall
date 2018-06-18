@@ -12,7 +12,7 @@ public class CharacterSelect : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
 
-    public Text NumPlayersText;
+    public Text gameModeText;
     public GameObject PressStartText;
 
     public AISetupWindow aiSetupWindow;
@@ -62,7 +62,21 @@ public class CharacterSelect : MonoBehaviour {
 
     void SetupUI() {
         PressStartText.SetActive(false);
-        //NumPlayersText.text = _playerManager.NumPlayers + " Players!";
+
+        switch(_gameManager.gameMode) {
+            case GAME_MODE.MP_VERSUS:
+                gameModeText.text = "VERSUS";
+                break;
+            case GAME_MODE.MP_PARTY:
+                gameModeText.text = "PARTY";
+                break;
+            case GAME_MODE.SURVIVAL:
+                gameModeText.text = "SURVIVAL";
+                break;
+            case GAME_MODE.SP_CLEAR:
+                gameModeText.text = "PUZZLE CHALLENGE";
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -381,21 +395,29 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     void UpdateUI() {
-        // When all players have been assigned to a team,
+        // When enough players have been assigned to a team,
         // show the press start screen.
-        if (_playerManager.NumPlayers != 0 &&
-            teamLeft.numPlayers != 0 && teamRight.numPlayers != 0 &&
-            teamLeft.numPlayers + teamRight.numPlayers == _playerManager.NumPlayers) {
-            if(PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
-                PressStartText.SetActive(true);
-            } else if(!PhotonNetwork.connectedAndReady) {
-                PressStartText.SetActive(true);
+        if (_gameManager.gameMode == GAME_MODE.MP_VERSUS || _gameManager.gameMode == GAME_MODE.MP_PARTY) {
+            if (_playerManager.NumPlayers != 0 &&
+                teamLeft.numPlayers != 0 && teamRight.numPlayers != 0 &&
+                teamLeft.numPlayers + teamRight.numPlayers == _playerManager.NumPlayers) {
+                if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+                    PressStartText.SetActive(true);
+                } else if (!PhotonNetwork.connectedAndReady) {
+                    PressStartText.SetActive(true);
+                }
+            } else {
+                PressStartText.SetActive(false);
             }
-        } else {
-            PressStartText.SetActive(false);
+        } else if(_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            if(_playerManager.NumPlayers != 0 && 
+                (teamLeft.numPlayers != 0 || teamRight.numPlayers != 0) &&
+                teamLeft.numPlayers + teamRight.numPlayers == _playerManager.NumPlayers) {
+                PressStartText.SetActive(true);
+            } else {
+                PressStartText.SetActive(false);
+            }
         }
-
-        //NumPlayersText.text = _playerManager.NumPlayers + " Players!";
     }
 
     public bool AnyAICharacters() {

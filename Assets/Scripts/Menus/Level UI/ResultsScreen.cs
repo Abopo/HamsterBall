@@ -44,16 +44,17 @@ public class ResultsScreen : MonoBehaviour {
         }
     }
 
-    public void SetWinningTeamText(int lostTeam) {
-        if(lostTeam == 1) {
+    public void SetWinningTeamText(int winTeam) {
+        if(winTeam == 0) {
             winningTeamText.text = "Left Team Wins";
-        } else if(lostTeam == 0) {
+        } else if(winTeam == 1) {
             winningTeamText.text = "Right Team Wins";
         } else {
-            winningTeamText.text = "What happened? No team was given.";
+            winningTeamText.text = "Draw";
         }
     }
 
+    // team = the winning team
     public void Activate(int team) {
         gameObject.SetActive(true);
         SetWinningTeamText(team);

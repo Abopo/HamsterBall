@@ -115,6 +115,8 @@ public class PlayerController : Entity {
     // Events
     public UnityEvent significantEvent;
 
+    public static int totalThrowCount;
+
     private void Awake() {
         canBeHit = true;
 
@@ -151,6 +153,8 @@ public class PlayerController : Entity {
         }
 
         InitStates();
+
+        totalThrowCount = 0;
 
         //	start in idle
         ChangeState (PLAYER_STATE.IDLE);

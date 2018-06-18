@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour {
 
     GameManager _gameManager;
     BubbleManager _bubbleManager;
+    LevelUI _levelUI;
 
     public float LevelTimer {
         get { return _levelTimer; }
@@ -46,6 +47,8 @@ public class LevelManager : MonoBehaviour {
         } else {
             continueLevel = false;
         }
+
+        _levelUI = GetComponentInChildren<LevelUI>();
     }
 
     // Update is called once per frame
@@ -59,8 +62,8 @@ public class LevelManager : MonoBehaviour {
                 pauseMenu.Activate();
             }
 
-            // If we are not in single player
-            if (!_gameManager.isSinglePlayer) {
+            // If we are playing versus
+            if (_gameManager.gameMode == GAME_MODE.MP_VERSUS) {
                 // Update margin stuff
                 _marginTimer += Time.deltaTime;
                 if (_marginTimer >= _marginTime && _targetPoints > 1 && _marginIterations < 14) {
@@ -68,8 +71,10 @@ public class LevelManager : MonoBehaviour {
                     _marginTime = 32f;
                     _marginTimer = 0f;
                 }
-            } else {
-                if (_gameManager.timeLimit == 0) {
+            // If we are playing the single player Clear mode
+            } else if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+                // Update pushing down the board stuff
+                if (_gameManager.conditionLimit == 0) {
                     _pushTimer += Time.deltaTime;
                     if (_pushTimer > _pushTime) {
                         // Stop shaking
@@ -112,27 +117,110 @@ public class LevelManager : MonoBehaviour {
             if ((int)_levelTimer < PlayerPrefs.GetInt(pref) || PlayerPrefs.GetInt(pref) == 0) {
                 PlayerPrefs.SetInt(pref, (int)_levelTimer);
             }
+        } else if(_gameManager.gameMode == GAME_MODE.SURVIVAL) {
+            // Add the time survived to the player's score
+            BubbleManager[] _bManagers = FindObjectsOfType<BubbleManager>();
+            foreach(BubbleManager _bM in _bManagers) {
+                _bM.IncreaseScore(50 * (int)_levelTimer);
+            }
         }
     }
 
-    public void ActivateResultsScreen(int team, bool won) {
-        if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
-            mpResultsScreen.Activate(team);
-        } else if (_gameManager.IsStoryLevel() && spResultsScreen != null) {
-            if (continueLevel) {
-                // If it's the player
-                if (team == 0) {
-                    spContinueScreen.Activate(won);
-                } else {
-                    spContinueScreen.Activate(!won);
+    // result: -1 = loss, 0 = draw, 1 = win
+    public void ActivateResultsScreen(int team, int result) {
+        // If this was a versus match
+        if (!_gameManager.isSinglePlayer) {
+            // Deal with best 2/3 stuff
+            
+            // Draw
+            if (result == 0) {
+                IncreaseLeftTeamGames();
+                IncreaseRightTeamGames();
+                if(_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
+                    // the whole set was a draw
+                    // So replay?
+                    // TODO: figure out what to do here
+                } else if(_gameManager.leftTeamGames >= 2) {
+                    // Left team has won the set
+                    // Activate final results screen
+                    ActivateFinalResultsScreen(team, result);
+                } else if(_gameManager.rightTeamGames >= 2) {
+                    // Right team has won the set
+                    // Activate final results screen
+                    ActivateFinalResultsScreen(team, result);
                 }
             } else {
+                // If Left team wins
+                if (team == 0 && result == 1 || team == 1 && result == -1) {
+                    IncreaseLeftTeamGames();
+                    if (_gameManager.leftTeamGames >= 2) {
+                        // Left team has won the set
+                        // Activate final results screen with left team winning
+                        ActivateFinalResultsScreen(0, 1);
+                    } else {
+                        // Set still not won
+                        // Activate Continue screen
+                        ActivateContinueScreen(0, 1);
+                    }
+                // If Right team wins
+                } else if (team == 1 && result == 1 || team == 0 && result == -1) {
+                    IncreaseRightTeamGames();
+                    if (_gameManager.rightTeamGames >= 2) {
+                        // Right team has won the set
+                        // Activate final results screen with right team winning
+                        ActivateFinalResultsScreen(1, 1);
+                    } else {
+                        // Set still not won
+                        // Activate Continue screen
+                        ActivateContinueScreen(1, 1);
+                    }
+                }
+            }
+        // If this was a single player level
+        } else {
+            if(continueLevel) {
+                ActivateContinueScreen(team, result);
+            } else {
+                ActivateFinalResultsScreen(team, result);
+            }
+        }
+    }
+
+    void ActivateContinueScreen(int team, int result) {
+        if(spContinueScreen != null) {
+            if(_gameManager.IsStoryLevel()) {
                 // If it's the player
                 if (team == 0) {
-                    spResultsScreen.Activate(won);
+                    spContinueScreen.Activate(result == 1);
+
+                // If it's the enemy
                 } else {
-                    spResultsScreen.Activate(!won);
+                    spContinueScreen.Activate(result == -1);
                 }
+            } else {
+                if (result == 1) {
+                    spContinueScreen.Activate(team);
+                } else if(result == -1) {
+                    // The other team won so send that team
+                    spContinueScreen.Activate(team == 1 ? 0 : 1);
+                }
+            }
+        }
+    }
+
+    void ActivateFinalResultsScreen(int team, int result) {
+        if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
+            // If it's the player
+            if (team == 0) {
+                spResultsScreen.Activate(result == 1);
+            } else {
+                spResultsScreen.Activate(result == -1);
+            }
+        } else if(!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
+            if (result != 0) {
+                mpResultsScreen.Activate(team);
+            } else {
+                mpResultsScreen.Activate(-1);
             }
         }
     }
@@ -140,11 +228,36 @@ public class LevelManager : MonoBehaviour {
     public void ContinueToNextLevel() {
         _gameManager.Unpause();
         if (_gameManager.nextLevel != "") {
+            // Load the next level
             GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
         } else if(_gameManager.nextCutscene != "") {
             // Load a cutscene
             CutsceneManager.fileToLoad = _gameManager.nextCutscene;
             SceneManager.LoadScene("Cutscene");
+        } else {
+            // It's probably a versus match so
+            // Replay the current level
+            NextGame();
         }
+    }
+
+    void NextGame() {
+        if (_gameManager.LevelDoc != null) {
+            _gameManager.CleanUp(false);
+            BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
+            boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
+        } else {
+            _gameManager.ContinueLevel();
+        }
+    }
+
+    void IncreaseLeftTeamGames() {
+        _gameManager.leftTeamGames++;
+        _levelUI.FillInGameMarker(0);
+    }
+
+    void IncreaseRightTeamGames() {
+        _gameManager.rightTeamGames++;
+        _levelUI.FillInGameMarker(1);
     }
 }

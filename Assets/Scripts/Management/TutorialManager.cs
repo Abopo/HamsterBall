@@ -96,7 +96,7 @@ public class TutorialManager : MonoBehaviour {
                 break;
             case 8:
                 // End level
-                GameObject.FindObjectOfType<BubbleManager>().EndGame(true);
+                GameObject.FindObjectOfType<BubbleManager>().EndGame(1);
                 break;
         }
     }

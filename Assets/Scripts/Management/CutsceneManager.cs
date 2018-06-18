@@ -121,15 +121,30 @@ public class CutsceneManager : MonoBehaviour {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Joystick Jump 1")) 
             && _ready && _isPlaying) {
             // Move to next thing
-            _ready = false;
+            //_ready = false;
+            //Reset();
             ReadEscapeCharacter();
         }
     }
 
+    private void Reset() {
+        _ready = false;
+        leftChara1.SetIsSpeaking(false);
+        leftChara2.SetIsSpeaking(false);
+        rightChara1.SetIsSpeaking(false);
+        rightChara2.SetIsSpeaking(false);
+    }
+
     public void ReadEscapeCharacter() {
-        do {
+        //do {
+        //    _escapeChar = _linesFromFile[_fileIndex++];
+        //} while (_escapeChar == "");
+
+        _escapeChar = _linesFromFile[_fileIndex++];
+        while(_escapeChar == "") {
+            Reset();
             _escapeChar = _linesFromFile[_fileIndex++];
-        } while (_escapeChar == "");
+        }
 
         switch (_escapeChar) {
             case "T":
@@ -210,6 +225,8 @@ public class CutsceneManager : MonoBehaviour {
             // Move off screen
             character.SlideOut();
         } else {
+            character.SetIsSpeaking(true);
+
             // If already in place
             if (character.onScreen) {
                 // and we need to change character

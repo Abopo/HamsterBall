@@ -34,40 +34,40 @@ public class MapIcon : MonoBehaviour {
     void Start () {
         switch(index) {
             case 0:
-                mapName = "OneTube - DarkForest";
+                mapName = "DarkForest";
                 _mapIndex = 9;
                 break;
             case 1:
-                mapName = "OneTube - Forest";
+                mapName = "Forest";
                 _mapIndex = 0;
                 break;
             case 2:
-                mapName = "TwoTubes - Mountain";
+                mapName = "Mountain";
                 _mapIndex = 1;
                 break;
         }
 
-        _mapImages[0] = Resources.Load<Sprite>("Art/UI/OneTube - Forest");
-        _mapImages[1] = Resources.Load<Sprite>("Art/UI/TwoTubes - Mountain");
-        _mapImages[2] = Resources.Load<Sprite>("Art/UI/TwoTubes - Sewers");
-        _mapImages[3] = Resources.Load<Sprite>("Art/UI/TwoTubes - Beach");
-        _mapImages[4] = Resources.Load<Sprite>("Art/UI/TwoTubes - City");
-        _mapImages[5] = Resources.Load<Sprite>("Art/UI/TwoTubes - City2");
-        _mapImages[6] = Resources.Load<Sprite>("Art/UI/TwoTubes - Laboratory");
-        _mapImages[7] = Resources.Load<Sprite>("Art/UI/OneTube - Fungals");
-        _mapImages[8] = Resources.Load<Sprite>("Art/UI/TwoTubes - Space");
-        _mapImages[9] = Resources.Load<Sprite>("Art/UI/OneTube - DarkForest");
+        _mapImages[0] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Forest");
+        _mapImages[1] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Mountain");
+        _mapImages[2] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Sewers");
+        _mapImages[3] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
+        _mapImages[4] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City");
+        _mapImages[5] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City2");
+        _mapImages[6] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");
+        _mapImages[7] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
+        _mapImages[8] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
+        _mapImages[9] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
 
-        _mapNames[0] = "OneTube - Forest";
-        _mapNames[1] = "TwoTubes - Mountain";
-        _mapNames[2] = "TwoTubes - Sewers";
-        _mapNames[3] = "TwoTubes - Beach";
-        _mapNames[4] = "TwoTubes - City";
-        _mapNames[5] = "TwoTubes - City2";
-        _mapNames[6] = "TwoTubes - Laboratory";
-        _mapNames[7] = "OneTube - Fungals";
-        _mapNames[8] = "TwoTubes - Space";
-        _mapNames[9] = "OneTube - DarkForest";
+        _mapNames[0] = "Forest";
+        _mapNames[1] = "Mountain";
+        _mapNames[2] = "Sewers";
+        _mapNames[3] = "Beach";
+        _mapNames[4] = "City";
+        _mapNames[5] = "City2";
+        _mapNames[6] = "Laboratory";
+        _mapNames[7] = "Fungals";
+        _mapNames[8] = "Space";
+        _mapNames[9] = "DarkForest";
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
 	}

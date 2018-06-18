@@ -69,6 +69,10 @@ public class MainMenu : MonoBehaviour {
         SceneManager.LoadScene("StorySelect");
     }
 
+    public void LoadLocalMultiplayer() {
+        SceneManager.LoadScene("LocalPlay");
+    }
+
     public void LoadCharacterSelect() {
         SceneManager.LoadScene("CharacterSelect");
     }

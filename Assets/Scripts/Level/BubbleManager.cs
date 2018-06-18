@@ -95,6 +95,7 @@ public class BubbleManager : MonoBehaviour {
     float _shakeTime = 0.1f;
     float _shakeTimer = 0f;
 
+    BubbleManager _enemyBubbleManager;
     GameManager _gameManager;
     LevelManager _levelManager;
     AudioSource _audioSource;
@@ -154,6 +155,15 @@ public class BubbleManager : MonoBehaviour {
 
         _gameOver = false;
 
+        // Get enemy bubble manager
+        BubbleManager[] bManagers = FindObjectsOfType<BubbleManager>();
+        foreach(BubbleManager bM in bManagers) {
+            if(bM != this) {
+                _enemyBubbleManager = bM;
+                break;
+            }
+        }
+
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             GetComponent<PhotonView>().RPC("SyncLineBubbles", PhotonTargets.Others, _nextLineBubbles.ToArray());
@@ -163,6 +173,10 @@ public class BubbleManager : MonoBehaviour {
 
         boardChangedEvent.AddListener(UpdateAllAdjBubbles);
         boardChangedEvent.AddListener(OnBoardChanged);
+
+        if(_gameManager.gameMode == GAME_MODE.SURVIVAL) {
+            transform.gameObject.AddComponent<SurvivalManager>();
+        }
     }
 
     void BuildStartingNodes() {
@@ -783,8 +797,8 @@ public class BubbleManager : MonoBehaviour {
 			_bubbles[i] = bubble;
 		}
 
-        // If we've hit the end of the generated line bubbles
-        if(_nextLineIndex >= _nextLineBubbles.Count && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
+        // If we're near the end of the generated line bubbles
+        if(_nextLineIndex >= _nextLineBubbles.Count-26 && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
             // Generate some more!
             SeedNextLineBubbles();
             // Send RPC if we are networked
@@ -859,48 +873,71 @@ public class BubbleManager : MonoBehaviour {
         return nextLineBubbles;
     }
 
+    // TODO: move this to the level manager?
     public void CheckWinConditions() {
         // Check single player challenge goals
         if(_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
-                    if (_scoreTotal >= _gameManager.goalCount) {
-                        EndGame(true);
+                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit) {
+                        if(_scoreTotal >= _gameManager.goalCount) {
+                            EndGame(1);
+                        } else {
+                            EndGame(-1);
+                        }
                         return;
                     }
                     break;
                 case GAME_MODE.SP_MATCH:
                     if (matchCount >= _gameManager.goalCount) {
-                        EndGame(true);
+                        EndGame(1);
                         return;
                     }
                     break;
                 case GAME_MODE.SP_CLEAR:
                     if (IsBoardClear()) {
-                        EndGame(true);
+                        EndGame(1);
                         return;
                     }
                     break;
             }
 
             // If there is a timeLimit and we have passed it
-            // TODO: This is actually a loss so handle that
-            if(_gameManager.timeLimit > 0 && _levelManager.LevelTimer >= _gameManager.timeLimit) {
-                EndGame(false);
+            if(_gameManager.gameMode == GAME_MODE.SP_CLEAR && _gameManager.conditionLimit > 0 && _levelManager.LevelTimer >= _gameManager.conditionLimit) {
+                // This is actually a loss so handle that
+                EndGame(-1);
                 return;
             }
         }
 
-        // Check bubble positions
-        for (int i = bottomRowStart; i < nodeList.Count; ++i) {
-            if (_bubbles[i] != null) {
-                EndGame(false);
-                return;
+        // If there's a bubble on the bottom line
+        if(CheckBottomLine()) {
+            // Check for a tie
+            if(_enemyBubbleManager != null && _enemyBubbleManager.CheckBottomLine()) {
+                // It's a tie!
+                EndGame(0);
+            } else {
+                // We lost :(
+                EndGame(-1);
             }
         }
     }
 
-    public void EndGame(bool won) {
+    public bool CheckBottomLine() {
+        bool bubbleOnBottomLine = false;
+
+        for (int i = bottomRowStart; i < nodeList.Count; ++i) {
+            if (_bubbles[i] != null) {
+                bubbleOnBottomLine = true;
+            }
+        }
+
+        return bubbleOnBottomLine;
+    }
+
+    // TODO: Move this to the level manager?
+    // result - -1 = lost; 0 = tied; 1 = won
+    public void EndGame(int result) {
         _gameOver = true;
 
         // Clear out starting bubbles to prepare for next round
@@ -909,13 +946,15 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Send the winning team to the game manager
-        if (won) {
+        if (result == 1) {
             _gameManager.EndGame(team, _scoreTotal);
-        } else {
+        } else if(result == -1){
             _gameManager.EndGame(team == 0 ? 1 : 0, _scoreTotal);
+        } else if(result == 0) {
+            _gameManager.EndGame(-1, 0);
         }
 
-        _levelManager.ActivateResultsScreen(team, won);
+        _levelManager.ActivateResultsScreen(team, result);
 
         _gameOver = true;
     }

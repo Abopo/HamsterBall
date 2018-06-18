@@ -29,6 +29,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
     public static bool canBeBomb = true;
     List<int> specialTypes = new List<int>();
 
+    System.Random _random;
+    public static int spawnSeed;
     public static int nextHamsterNum;
 
     GameManager _gameManager;
@@ -44,6 +46,13 @@ public class HamsterSpawner : Photon.PunBehaviour {
     void Start() {
         //_spawnTime = 4;
         _spawnTimer = 0;
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        if (_gameManager.gameMode == GAME_MODE.SP_POINTS) {
+            // Score attack stages have set spawn sequences
+            _random = new System.Random(spawnSeed);
+        } else {
+            _random = new System.Random((int)Time.realtimeSinceStartup);
+        }
 
         Transform spawnPoint = transform.GetChild(0);
         _spawnPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z + 5f);
@@ -61,12 +70,12 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
         _nextHamsterType = GetValidType();
 
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         SetSpawnMax();
 
         testMode = _gameManager.testMode;
 
         nextHamsterNum = 0;
+
     }
 
     void SetupSpecialTypes() {
@@ -210,10 +219,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
         if (_hamsterInfo.OkTypes.Contains(7)) {
             if (_hamsterInfo.SpecialSpawnOffset >= 0) {
                 // Decide if this hamster will be special
-                int special = Random.Range(_hamsterInfo.SpecialSpawnOffset, 16);
+                int special = _random.Next(_hamsterInfo.SpecialSpawnOffset, 16);
                 if (special == 15 && specialTypes.Count > 0) {
                     // Choose which special hamster it will be
-                    int sType = Random.Range(0, specialTypes.Count);
+                    int sType = _random.Next(0, specialTypes.Count);
                     switch (specialTypes[sType]) {
                         case 8: // Rainbow
                             rType = (int)HAMSTER_TYPES.RAINBOW;
@@ -241,6 +250,9 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
             // Increase the special spawn offset
             _hamsterInfo.SpecialSpawnOffset += 1;
+            if(_hamsterInfo.SpecialSpawnOffset > 15) {
+                _hamsterInfo.SpecialSpawnOffset = 15;
+            }
         } else {
             rType = SelectValidNormalType();
         }
@@ -252,7 +264,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         int validType = 0;
         // If special types are OK, don't include it here.
         int special = _hamsterInfo.OkTypes.Contains(7) ? 1 : 0;
-        int rIndex = Random.Range(0, _hamsterInfo.OkTypes.Count - special);
+        int rIndex = _random.Next(0, _hamsterInfo.OkTypes.Count - special);
 
         validType = _hamsterInfo.OkTypes[rIndex];
 
@@ -279,4 +291,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
         hamsterCount--;
     }
+
+    private void OnDestroy() {
+        // Reset spawn seed to true random
+        //spawnSeed = (int)Time.realtimeSinceStartup;
+    }
+
 }

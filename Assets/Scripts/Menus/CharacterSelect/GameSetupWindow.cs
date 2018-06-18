@@ -213,6 +213,11 @@ public class GameSetupWindow : MonoBehaviour {
     }
 
     public void LoadNextScene() {
+        // If either team has no players, we should load single player levels
+        if(teamLeft.numPlayers == 0 || teamRight.numPlayers == 0) {
+            _gameManager.isSinglePlayer = true;
+        }
+
         if (_gameManager.isOnline) {
             PhotonNetwork.LoadLevel("NetworkedMapSelect");
         } else {

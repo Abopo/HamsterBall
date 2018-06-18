@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System.Collections;
 
-public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, NUM_MODES }
+public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, MP_PARTY, SURVIVAL, NUM_MODES }
 public enum MENU { STORY = 0, VERSUS, EDITOR };
 
 public class GameManager : MonoBehaviour {
@@ -20,7 +20,11 @@ public class GameManager : MonoBehaviour {
 
     public GAME_MODE gameMode;
     public int goalCount; // the number of points or matches to win the level
-    public int timeLimit; // the time limit to achieve the goal
+    public int conditionLimit; // the condition limit to achieve the goal i.e. time limit, throw limit, etc.
+
+    // How many games each team has won
+    public int leftTeamGames = 0;
+    public int rightTeamGames = 0;
 
     public int leftTeamHandicap;
     public int rightTeamHandicap;
@@ -230,16 +234,19 @@ public class GameManager : MonoBehaviour {
 
     public void SetGameMode(GAME_MODE mode) {
         gameMode = mode;
-        if(gameMode == GAME_MODE.MP_VERSUS) {
-            isSinglePlayer = false;
-        } else {
+        if(gameMode == GAME_MODE.SP_CLEAR || gameMode == GAME_MODE.SP_POINTS) {
             isSinglePlayer = true;
+        } else {
+            isSinglePlayer = false;
         }
     }
     
-    // The below functions don't actually affect the Game Manager object's data!!!
+    // The below functions won't actually affect the Game Manager object's data!!!
+    // Since they are generally called by button events and those don't use the instantiated Game Manager
     public void PlayAgainButton() {
         Unpause();
+
+        ResetGames();
 
         if (PhotonNetwork.connectedAndReady) {
             PhotonNetwork.LoadLevel("NetworkedMapSelect");
@@ -250,7 +257,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void CharacterSelectButton() {
-        CleanUp();
+        CleanUp(true);
 
         if (PhotonNetwork.connectedAndReady) {
             isOnline = true;
@@ -262,12 +269,12 @@ public class GameManager : MonoBehaviour {
     }
 
     public void StageSelectButton() {
-        CleanUp();
+        CleanUp(true);
         SceneManager.LoadScene("StorySelect");
     }
 
     public void MainMenuButton() {
-        CleanUp();
+        CleanUp(true);
 
         prevBoard = "";
 
@@ -279,12 +286,23 @@ public class GameManager : MonoBehaviour {
     }
 
     public void BoardEditorButton() {
-        CleanUp();
+        CleanUp(true);
 
         SceneManager.LoadScene("BoardEditor");
     }
 
-    public void CleanUp() {
+    public void ContinueLevel() {
+        Unpause();
+
+        if (PhotonNetwork.connectedAndReady) {
+            PhotonNetwork.LoadLevel("NetworkedMapSelect");
+        } else {
+            // Reload current scene.
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
+    public void CleanUp(bool full) {
         Unpause();
 
         gameIsOver = false;
@@ -297,6 +315,16 @@ public class GameManager : MonoBehaviour {
         _playerManager.ClearAllPlayers();
 
         BubbleManager.ClearStartingBubbles();
+
+        if(full) {
+            ResetGames();
+        }
+    }
+
+    private void ResetGames() {
+        GameManager gM = FindObjectOfType<GameManager>();
+        gM.leftTeamGames = 0;
+        gM.rightTeamGames = 0;
     }
 
     public bool IsStoryLevel() {

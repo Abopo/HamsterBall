@@ -29,10 +29,15 @@ public class PlayerSpawner : MonoBehaviour {
     }
 
     void GetSpawnLocations() {
-        spawns[0] = transform.GetChild(0);
-        spawns[1] = transform.GetChild(1);
-        spawns[2] = transform.GetChild(2);
-        spawns[3] = transform.GetChild(3);
+        SpawnPoint[] spawnPoints = GetComponentsInChildren<SpawnPoint>();
+        spawns[0] = spawnPoints[0].transform;
+        spawns[1] = spawnPoints[1].transform;
+        spawns[2] = spawnPoints[2].transform;
+        spawns[3] = spawnPoints[3].transform;
+        //spawns[0] = transform.GetChild(0);
+        //spawns[1] = transform.GetChild(1);
+        //spawns[2] = transform.GetChild(2);
+        //spawns[3] = transform.GetChild(3);
     }
 
     void SpawnPlayers() {
