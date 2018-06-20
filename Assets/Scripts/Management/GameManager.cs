@@ -295,7 +295,8 @@ public class GameManager : MonoBehaviour {
         Unpause();
 
         if (PhotonNetwork.connectedAndReady) {
-            PhotonNetwork.LoadLevel("NetworkedMapSelect");
+            //PhotonNetwork.LoadLevel("NetworkedMapSelect");
+            PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().name);
         } else {
             // Reload current scene.
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

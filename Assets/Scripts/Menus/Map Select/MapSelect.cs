@@ -81,7 +81,11 @@ public class MapSelect : MonoBehaviour {
                     levelName += " - SinglePlayer";
                 }
 
-                SceneManager.LoadScene(levelName);
+                if (_gameManager.isOnline && PhotonNetwork.connectedAndReady) {
+                    PhotonNetwork.LoadLevel(levelName);
+                } else {
+                    SceneManager.LoadScene(levelName);
+                }
             }
         }
     }

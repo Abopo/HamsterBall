@@ -19,7 +19,7 @@ public class BubbleManager : MonoBehaviour {
 	public GameObject NodeLine13;
 	public GameObject NodeLine12;
 	public HamsterMeter hamsterMeter;
-    public Text scoreText;
+    //public Text scoreText;
 
 	//public bool leftTeam;
     public int team; // -1 = no team, 0 = left team, 1 = right team
@@ -56,7 +56,7 @@ public class BubbleManager : MonoBehaviour {
     bool _setupDone;
 
     int _comboCount = -1;
-    int _scoreTotal = 0;
+    //int _scoreTotal = 0;
     public int matchCount = 0;
     bool _gameOver = false;
 
@@ -95,6 +95,8 @@ public class BubbleManager : MonoBehaviour {
     float _shakeTime = 0.1f;
     float _shakeTimer = 0f;
 
+    ScoreManager _scoreManager;
+
     BubbleManager _enemyBubbleManager;
     GameManager _gameManager;
     LevelManager _levelManager;
@@ -106,6 +108,16 @@ public class BubbleManager : MonoBehaviour {
         _setupDone = false;
 
         Time.timeScale = 1;
+
+        // Get the right score manager
+        ScoreManager[] scoreMans = FindObjectsOfType<ScoreManager>();
+        foreach(ScoreManager sM in scoreMans) {
+            if(sM.team == team) {
+                _scoreManager = sM;
+                break;
+            }
+        }
+
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
 
@@ -150,8 +162,8 @@ public class BubbleManager : MonoBehaviour {
     void Start () {
         _bubbleEffects = GetComponentInChildren<BubbleEffects>();
 
-        _scoreTotal = 0;
-        scoreText.text = _scoreTotal.ToString();
+        //_scoreTotal = 0;
+        //scoreText.text = _scoreTotal.ToString();
 
         _gameOver = false;
 
@@ -880,7 +892,7 @@ public class BubbleManager : MonoBehaviour {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
                     if (PlayerController.totalThrowCount >= _gameManager.conditionLimit) {
-                        if(_scoreTotal >= _gameManager.goalCount) {
+                        if(_scoreManager.TotalScore >= _gameManager.goalCount) {
                             EndGame(1);
                         } else {
                             EndGame(-1);
@@ -947,9 +959,9 @@ public class BubbleManager : MonoBehaviour {
 
         // Send the winning team to the game manager
         if (result == 1) {
-            _gameManager.EndGame(team, _scoreTotal);
+            _gameManager.EndGame(team, _scoreManager.TotalScore);
         } else if(result == -1){
-            _gameManager.EndGame(team == 0 ? 1 : 0, _scoreTotal);
+            _gameManager.EndGame(team == 0 ? 1 : 0, _scoreManager.TotalScore);
         } else if(result == 0) {
             _gameManager.EndGame(-1, 0);
         }
@@ -1020,10 +1032,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void IncreaseScore(int incScore) {
-        _scoreTotal += incScore;
-
-        // change score text
-        scoreText.text = _scoreTotal.ToString();
+        _scoreManager.IncreaseScore(incScore);
     }
 
     public void StartShaking() {

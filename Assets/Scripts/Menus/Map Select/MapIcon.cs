@@ -32,20 +32,6 @@ public class MapIcon : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        switch(index) {
-            case 0:
-                mapName = "DarkForest";
-                _mapIndex = 9;
-                break;
-            case 1:
-                mapName = "Forest";
-                _mapIndex = 0;
-                break;
-            case 2:
-                mapName = "Mountain";
-                _mapIndex = 1;
-                break;
-        }
 
         _mapImages[0] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Forest");
         _mapImages[1] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Mountain");
@@ -70,10 +56,28 @@ public class MapIcon : MonoBehaviour {
         _mapNames[9] = "DarkForest";
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+        switch (index) {
+            case 0:
+                //mapName = "DarkForest";
+                _mapIndex = 9;
+                SetMap(_mapIndex, 0);
+                break;
+            case 1:
+                //mapName = "Forest";
+                _mapIndex = 0;
+                SetMap(_mapIndex, 1);
+                break;
+            case 2:
+                //mapName = "Mountain";
+                _mapIndex = 1;
+                SetMap(_mapIndex, 2);
+                break;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 	    if(_moving) {
             transform.Translate(_moveVelocity*Time.deltaTime, 0f, 0f);
 

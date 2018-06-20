@@ -79,6 +79,7 @@ public class MainMenu : MonoBehaviour {
 
     public void LoadOnline() {
         _gameManager.isOnline = true;
+        _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
         SceneManager.LoadScene("OnlineLobby");
     }
 

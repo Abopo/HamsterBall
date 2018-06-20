@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelUI : MonoBehaviour {
 
-    GameMarker[] gameMarkers;
+    GameMarker[] _gameMarkers;
 
     GameManager _gameManager;
 
@@ -16,13 +16,19 @@ public class LevelUI : MonoBehaviour {
 	}
 
     void SetupGameMarkers() {
-        gameMarkers = GetComponentsInChildren<GameMarker>();
+        _gameMarkers = GetComponentsInChildren<GameMarker>();
 
-        if(_gameManager.leftTeamGames > 0) {
-            FillInGameMarker(0);
-        }
-        if(_gameManager.rightTeamGames > 0) {
-            FillInGameMarker(1);
+        if (_gameManager.isSinglePlayer) {
+            foreach(GameMarker gM in _gameMarkers) {
+                gM.gameObject.SetActive(false);
+            }
+        } else {
+            if (_gameManager.leftTeamGames > 0) {
+                FillInGameMarker(0);
+            }
+            if (_gameManager.rightTeamGames > 0) {
+                FillInGameMarker(1);
+            }
         }
     }
 	
@@ -32,7 +38,7 @@ public class LevelUI : MonoBehaviour {
 	}
 
     public void FillInGameMarker(int team) {
-        foreach(GameMarker gM in gameMarkers) {
+        foreach(GameMarker gM in _gameMarkers) {
             if(gM.team == team && !gM.isFilledIn) {
                 gM.FillIn();
                 break;

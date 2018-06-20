@@ -33,10 +33,11 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     }
 
     void GetSpawnLocations() {
-        spawns[0] = transform.GetChild(0);
-        spawns[1] = transform.GetChild(1);
-        spawns[2] = transform.GetChild(2);
-        spawns[3] = transform.GetChild(3);
+        SpawnPoint[] spawnPoints = GetComponentsInChildren<SpawnPoint>();
+        spawns[0] = spawnPoints[0].transform;
+        spawns[1] = spawnPoints[1].transform;
+        spawns[2] = spawnPoints[2].transform;
+        spawns[3] = spawnPoints[3].transform;
     }
 
     void SpawnPlayers() {
@@ -116,6 +117,9 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
             shiftMeters[2+rightMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1) * 12];
             shiftMeters[2+rightMeters++].GetIcon().enabled = true;
         }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
     }
 
     // Update is called once per frame

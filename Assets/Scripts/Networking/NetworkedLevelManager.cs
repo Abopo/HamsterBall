@@ -20,9 +20,12 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
             }
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -38,5 +41,11 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
             PhotonNetwork.LeaveRoom();
             SceneManager.LoadScene("OnlineLobby");
         }
+    }
+
+    // RPC to reload the current level
+    [PunRPC]
+    void ReloadCurrentLevel() {
+        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().name);
     }
 }

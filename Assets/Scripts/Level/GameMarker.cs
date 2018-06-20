@@ -10,12 +10,14 @@ public class GameMarker : MonoBehaviour {
 
     SpriteRenderer _spriteRenderer;
 
+    private void Awake() {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     // Use this for initialization
     void Start () {
         isFilledIn = false;
         _filledInSprite = Resources.Load<Sprite>("Art/UI/Level UI/GameMarkerRed");
-
-        _spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame

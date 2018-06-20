@@ -225,32 +225,6 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public void ContinueToNextLevel() {
-        _gameManager.Unpause();
-        if (_gameManager.nextLevel != "") {
-            // Load the next level
-            GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
-        } else if(_gameManager.nextCutscene != "") {
-            // Load a cutscene
-            CutsceneManager.fileToLoad = _gameManager.nextCutscene;
-            SceneManager.LoadScene("Cutscene");
-        } else {
-            // It's probably a versus match so
-            // Replay the current level
-            NextGame();
-        }
-    }
-
-    void NextGame() {
-        if (_gameManager.LevelDoc != null) {
-            _gameManager.CleanUp(false);
-            BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
-            boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
-        } else {
-            _gameManager.ContinueLevel();
-        }
-    }
-
     void IncreaseLeftTeamGames() {
         _gameManager.leftTeamGames++;
         _levelUI.FillInGameMarker(0);
@@ -259,5 +233,17 @@ public class LevelManager : MonoBehaviour {
     void IncreaseRightTeamGames() {
         _gameManager.rightTeamGames++;
         _levelUI.FillInGameMarker(1);
+    }
+
+    public void NextGame() {
+        if (_gameManager.LevelDoc != null) {
+            _gameManager.CleanUp(false);
+            BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
+            boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
+        } else if(!_gameManager.isOnline) {
+            _gameManager.ContinueLevel();
+        } else if(PhotonNetwork.connectedAndReady) {
+            PhotonNetwork.RPC(GetComponent<PhotonView>(), "ReloadCurrentLevel", PhotonTargets.All, false);
+        }
     }
 }
