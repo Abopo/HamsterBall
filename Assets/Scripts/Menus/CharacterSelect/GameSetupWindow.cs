@@ -221,7 +221,7 @@ public class GameSetupWindow : MonoBehaviour {
         if (_gameManager.isOnline) {
             PhotonNetwork.LoadLevel("NetworkedMapSelect");
         } else {
-            SceneManager.LoadScene("MapSelect2");
+            SceneManager.LoadScene("MapSelect3");
         }
     }
 }
