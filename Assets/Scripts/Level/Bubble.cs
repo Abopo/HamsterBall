@@ -305,11 +305,7 @@ public class Bubble : MonoBehaviour {
 
                 // If we are not playing single player
                 if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
-                    // Multiply by the Margin Multiplier
-                    inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
-
-                    // Start stock orb effect
-                    _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
+                    GenerateDropJunk(inc);
                 }
             } else {
                 int inc = 3 * (_dropCombo ? 2 : 1);
@@ -320,11 +316,7 @@ public class Bubble : MonoBehaviour {
 
                 // If we are not playing single player
                 if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
-                    // Multiply by the Margin Multiplier
-                    inc = (int)(inc * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
-
-                    // Start stock orb effect
-                    _homeBubbleManager.BubbleEffects.StockOrbEffect(inc, transform.position);
+                    GenerateDropJunk(inc);
                 }
             }
             //_homeBubbleManager.RemoveBubble(node);
@@ -333,6 +325,19 @@ public class Bubble : MonoBehaviour {
             _destroy = true;
 		}
 	}
+
+    void GenerateDropJunk(int amount) {
+        // Multiply by the Margin Multiplier
+        amount = (int)(amount * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+
+        if (_playerController != null) {
+            // Add the player's atk modifier
+            amount = (amount + _playerController.atkModifier);
+        }
+
+        // Start stock orb effect
+        _homeBubbleManager.BubbleEffects.StockOrbEffect(amount, transform.position);
+    }
 
     public void CollisionWithBoard() {
         // Stop moving and sit in place.
@@ -555,13 +560,15 @@ public class Bubble : MonoBehaviour {
 
         // Multiply by the Margin Multiplier
         garbageCount = (int)((garbageCount + comboBonus) * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+        // Multiply by the player's atk multiplier
+        garbageCount = (garbageCount + _playerController.atkModifier);
 
         // If the combo count is high enough
         // TODO: Although I like it as an idea, this combo stuff seems way too powerful and easy to do.
         //if (_homeBubbleManager.ComboCount > 0) {
-            // Multiply based on the combo
-            //garbageCount += 2 * _homeBubbleManager.ComboCount;
-            //Debug.Log("Comboed " + _homeBubbleManager.ComboCount);
+        // Multiply based on the combo
+        //garbageCount += 2 * _homeBubbleManager.ComboCount;
+        //Debug.Log("Comboed " + _homeBubbleManager.ComboCount);
         //}
 
         // If we are not playing single player

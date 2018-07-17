@@ -20,7 +20,10 @@ public class Hamster : Entity {
     public bool inRightPipe;
 
     public float curMoveSpeed; //  base - 3, rainbow - 4, dead - 2, gravity - 3.5
+    public float moveSpeedModifier; // Is added to the move speed
     float moveSpeed = 3;
+
+    int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
 
     BubbleManager _homeBubbleManager;
 	//BubbleManager _enemyBubbleManager;
@@ -33,7 +36,6 @@ public class Hamster : Entity {
     AudioSource _audioSource;
 
     bool _destroy;
-    bool _springing;
 
     float rainbowMoveSpeed = 4f;
     float deadMoveSpeed = 2.25f;
@@ -67,7 +69,12 @@ public class Hamster : Entity {
             }
         }
 
+        _curState = 1;
+        _animator.SetInteger("State", _curState);
+
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        moveSpeedModifier = 0;
 
         UpdateVelocity();
 	}
@@ -165,7 +172,10 @@ public class Hamster : Entity {
 
         if (exitedPipe) {
             if (!_physics.IsTouchingFloor) {
+                _curState = 2;
                 ApplyGravity();
+            } else {
+                _curState = 1;
             }
 
             // Wall flips
@@ -181,7 +191,11 @@ public class Hamster : Entity {
                 _springing = false;
                 UpdateVelocity();
             }
+        } else {
+            _curState = 1;
         }
+
+        _animator.SetInteger("State", _curState);
 
         if (!_springing) {
             UpdateVelocity();
@@ -193,9 +207,9 @@ public class Hamster : Entity {
 
 	void UpdateVelocity() {
 		if (facingRight) {
-			velocity.x = curMoveSpeed * (exitedPipe ? WaterMultiplier : 1);
+			velocity.x = curMoveSpeed * (exitedPipe ? WaterMultiplier : 1) + moveSpeedModifier;
 		} else {
-			velocity.x = -curMoveSpeed * (exitedPipe ? WaterMultiplier : 1);
+			velocity.x = -curMoveSpeed * (exitedPipe ? WaterMultiplier : 1) - moveSpeedModifier;
 		}
 	}
 
@@ -232,26 +246,6 @@ public class Hamster : Entity {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Bottom") {
-			if(type == HAMSTER_TYPES.DEAD && !testMode) {
-				//_homeBubbleManager.IncreaseStock(5);
-                // Add heavy sound effect to indicate something bad happened.
-                _audioSource.clip = _deadFallClip;
-                _audioSource.Play();
-
-                // maybe some screen shake too.
-                // make it OBVIOUS what happened.
-            } else if (!testMode) {
-                // _homeBubbleManager.IncreaseStock(1);
-                _audioSource.clip = _fallClip;
-                // Increase pitch of death sound based on how full the hamster meter is
-                _audioSource.pitch = 1 + 0.1f * _homeBubbleManager.bubbleStock;
-                _audioSource.Play();
-			}
-
-            _destroy = true;
-		}
-
         // Pipe traversal
         if (other.tag == "Pipe Entrance Left") {
             inRightPipe = false;

@@ -18,6 +18,8 @@ public class AISetupWindow : MonoBehaviour {
 
     int _numAIs;
 
+    Sprite[] characterSprites = new Sprite[5];
+
     Sprite[] bubSprites;
 
     PlayerManager _playerManager;
@@ -30,6 +32,12 @@ public class AISetupWindow : MonoBehaviour {
         gameObject.SetActive(true);
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
         bubSprites = Resources.LoadAll<Sprite>("Art/Hamsters_and_Bubbles/Bub_Sheet");
+
+        characterSprites[0] = bubSprites[0];
+        characterSprites[1] = bubSprites[12];
+        characterSprites[2] = bubSprites[24];
+        characterSprites[3] = bubSprites[36];
+        characterSprites[4] = Resources.Load<Sprite>("Art/Animations/Player/PepsiMan/PepsiManSheet");
 
         GetAIPlayerInfo();
         MenuMovementSetup();
@@ -95,20 +103,26 @@ public class AISetupWindow : MonoBehaviour {
     }
 
     void SetPlayerSprites(PlayerInfo pi, SpriteRenderer sr) {
-        switch(pi.playerNum) {
-            case 1:
-                sr.sprite = bubSprites[0];
+        sr.sprite = characterSprites[(int)pi.characterName];
+        /*
+        switch(pi.characterName) {
+            case CHARACTERNAMES.BOB:
+                sr.sprite = characterSprites[0];
                 break;
-            case 2:
-                sr.sprite = bubSprites[12];
+            case CHARACTERNAMES.BUB:
+                sr.sprite = characterSprites[1];
                 break;
-            case 3:
-                sr.sprite = bubSprites[24];
+            case CHARACTERNAMES.NEGABOB:
+                sr.sprite = characterSprites[2];
                 break;
-            case 4:
-                sr.sprite = bubSprites[36];
+            case CHARACTERNAMES.NEGABUB:
+                sr.sprite = characterSprites[3];
+                break;
+            case CHARACTERNAMES.PEPSIMAN:
+                sr.sprite = characterSprites[4];
                 break;
         }
+        */
     }
 	
 	// Update is called once per frame

@@ -219,9 +219,10 @@ public class GameSetupWindow : MonoBehaviour {
         }
 
         if (_gameManager.isOnline) {
-            PhotonNetwork.LoadLevel("NetworkedMapSelect");
+            //PhotonNetwork.LoadLevel("NetworkedMapSelect");
+            PhotonNetwork.LoadLevel("NetworkedMapSelectWheel");
         } else {
-            SceneManager.LoadScene("MapSelect3");
+            SceneManager.LoadScene("MapSelectWheel");
         }
     }
 }

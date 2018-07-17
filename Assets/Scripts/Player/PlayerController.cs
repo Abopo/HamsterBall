@@ -6,11 +6,12 @@ using System.Collections;
 [RequireComponent (typeof(EntityPhysics))]
 [RequireComponent (typeof(Animator))]
 public class PlayerController : Entity {
-	public float walkForce;
-	public float walkSpeed;
-	public float jumpForce;
-	public float jumpMoveForce;
-	public float jumpMoveMax;
+	public float walkForce; // 50
+	public float walkSpeed; // 5
+    public float speedModifier = 1.0f;
+	public float jumpForce; // 8.2
+	public float jumpMoveForce; // 50
+	public float jumpMoveMax; // 5
 	public PlayerState currentState;
 	public PLAYER_STATE curState;
 	public GameObject attackBubble;
@@ -26,6 +27,8 @@ public class PlayerController : Entity {
     public int playerNum;
 	public InputState inputState;
 
+    public int atkModifier; // Modifies the amount of junk generated when making matches
+
 	bool _canShift;
     public bool CanShift {
         get { return _canShift; }
@@ -37,11 +40,16 @@ public class PlayerController : Entity {
 	float _shiftCooldownTimer;
 	public float ShiftCooldownTimer {
 		get {return _shiftCooldownTimer;	}
+        set { _shiftCooldownTimer = value; }
 	}
 
 	public bool shifted;
 	float _shiftTime;
 	float _shiftTimer;
+    public float ShiftTimer {
+        get { return _shiftTimer; }
+        set { _shiftTimer = value; }
+    }
 
     public float bubbleCooldownTimer;
     public float bubbleCooldownTime = 0.15f;

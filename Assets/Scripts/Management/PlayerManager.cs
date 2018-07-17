@@ -227,7 +227,7 @@ public class PlayerManager : MonoBehaviour {
         }
 
         // Debugging
-        if(scene.name == "NetworkedMapSelect") {
+        if(scene.name == "NetworkedMapSelectWheel") {
             Debug.Log("Current Players:");
 
             for (int i = 0; i < NumPlayers; ++i) {

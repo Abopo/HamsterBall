@@ -30,42 +30,44 @@ public class PlayerState {
 	public virtual void End() {}
 
     protected void JumpMaxCheck() {
-        if (playerController.velocity.x >= playerController.jumpMoveMax * playerController.WaterMultiplier) {
-            playerController.velocity.x = playerController.jumpMoveMax * playerController.WaterMultiplier;
-        } else if (playerController.velocity.x <= -playerController.jumpMoveMax * playerController.WaterMultiplier) {
-            playerController.velocity.x = -playerController.jumpMoveMax * playerController.WaterMultiplier;
+        if (playerController.velocity.x >= playerController.jumpMoveMax * playerController.WaterMultiplier * playerController.speedModifier) {
+            playerController.velocity.x = playerController.jumpMoveMax * playerController.WaterMultiplier * playerController.speedModifier;
+        } else if (playerController.velocity.x <= -playerController.jumpMoveMax * playerController.WaterMultiplier * playerController.speedModifier) {
+            playerController.velocity.x = -playerController.jumpMoveMax * playerController.WaterMultiplier * playerController.speedModifier;
         }
     }
 
+    // Player will change direction here
     protected void BaseJumpMovement(InputState inputState) {
         if (inputState.right.isDown) {
             if (_direction < 0) {
                 _direction = 1;
                 playerController.Flip();
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * Time.deltaTime * _direction;
+            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
         } else if (inputState.left.isDown) {
             if (_direction > 0) {
                 _direction = -1;
                 playerController.Flip();
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * Time.deltaTime * _direction;
+            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
         } else {
             playerController.velocity.x /= 1.05f;
         }
     }
 
+    // Player won't change direction here
     protected void LockedJumpMovement(InputState inputState) {
         if (inputState.right.isDown) {
             if (_direction < 0) {
                 _direction = 1;
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * Time.deltaTime * _direction;
+            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
         } else if (inputState.left.isDown) {
             if (_direction > 0) {
                 _direction = -1;
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * Time.deltaTime * _direction;
+            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
         } else {
             playerController.velocity.x /= 1.05f;
         }

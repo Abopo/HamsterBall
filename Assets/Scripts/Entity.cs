@@ -4,12 +4,13 @@ using System.Collections;
 [RequireComponent(typeof(EntityPhysics))]
 public class Entity : MonoBehaviour {
 	public Vector2 velocity;
-	public float gravity;
+	public float gravity = 20;
 
     private float _waterMultiplier; // Adjusts movement when in water
     private float _waterGravMultiplier; // Adjusts gravity when in water
     protected bool grounded;
     protected bool facingRight = true;
+    protected bool _springing;
 
     protected EntityPhysics _physics;
 	public EntityPhysics Physics {
@@ -114,10 +115,15 @@ public class Entity : MonoBehaviour {
 
 	}
 	public virtual void CollisionResponseY(Collider2D collider) {
-		
-	}
+        if (collider.gameObject.layer == 9 || collider.gameObject.layer == 18) {
+            velocity.y = 0.0f;
+        }
+    }
 
     public virtual void Spring(float springForce) {
-
+        velocity.y = springForce;
+        _springing = true;
+        // Restrict x velocity while rising
+        velocity.x = 0;
     }
 }

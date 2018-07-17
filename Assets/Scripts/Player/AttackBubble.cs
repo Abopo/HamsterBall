@@ -39,6 +39,10 @@ public class AttackBubble : MonoBehaviour {
                 CatchHamster(other.GetComponent<Hamster>());
             }
         }
+        if(other.tag == "PowerUp"/* && other.GetComponent<PowerUp>().exitedPipe*/) {
+            PowerUp pUp = other.GetComponent<PowerUp>();
+            other.GetComponent<PowerUp>().Caught(_playerController);
+        }
     }
 
     public void CatchHamster(Hamster hamster) {

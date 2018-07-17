@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 
 public class HamsterMeter : MonoBehaviour {
+    public int shields; // Shields block orbs from adding to the meter
+
     public GameObject hamsterStockSprite;
     public BubbleManager bubbleManager;
     public GameObject hamsterTallyObj;
@@ -11,6 +13,8 @@ public class HamsterMeter : MonoBehaviour {
     List<Transform> stockTallies = new List<Transform>();
     List<GameObject> stockSprites = new List<GameObject>();
 
+    int _nextTallyIndex;
+
     public int CurStock {
         get { return curStock; }
     }
@@ -18,11 +22,18 @@ public class HamsterMeter : MonoBehaviour {
         get { return stockTallies; }
     }
 
+    GameObject _shieldSpriteObj;
+    GameObject[] _shieldSprites = new GameObject[6];
+
     // Use this for initialization
     void Start () {
         curStock = 0;
         meterSize = transform.childCount;
         GetChildren();
+
+        _nextTallyIndex = 0;
+
+        _shieldSpriteObj = Resources.Load<GameObject>("Prefabs/Effects/ShieldSprite");
 	}
 	
     void GetChildren() {
@@ -33,7 +44,29 @@ public class HamsterMeter : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+	    if(shields > 0) {
+            // If there are no stock orbs in play
+            if(FindObjectOfType<StockOrb>() == null) {
+                // Find out how many shields are missing
+                int count = 0;
+                while (_shieldSprites[count] == null) {
+                    count++;
+                }
+
+                if (count > 0) {
+                    // Move remaining shields down
+                    for (int i = 0; i < _shieldSprites.Length; ++i) {
+                        if (_shieldSprites[i] != null) {
+                            _shieldSprites[i].transform.position = new Vector3(_shieldSprites[i].transform.position.x,
+                                                                                _shieldSprites[i].transform.position.y - (1f * count),
+                                                                                _shieldSprites[i].transform.position.z);
+                            _shieldSprites[i - count] = _shieldSprites[i];
+                            _shieldSprites[i] = null;
+                        }
+                    }
+                }
+            }
+        }
 	}
 
     public void Initialize(int handicap) {
@@ -64,7 +97,16 @@ public class HamsterMeter : MonoBehaviour {
         }
     }
 
+    // so far in all cases inc is going to be 1
     public void IncreaseStock(int inc) {
+        // Block a point of junk with a shield if any are left
+        while (inc != 0 && shields != 0) {
+            inc -= 1;
+            //shields -= 1;
+            _nextTallyIndex -= 1;
+            LoseShield();
+        }
+
         curStock += inc;
         // If we've filled the entire meter
         if(curStock >= meterSize) {
@@ -105,7 +147,7 @@ public class HamsterMeter : MonoBehaviour {
 
     void CreateNewStockSprite() {
         // Create a new stock sprite.
-        GameObject newStockSprite = GameObject.Instantiate(hamsterStockSprite);
+        GameObject newStockSprite = GameObject.Instantiate(hamsterStockSprite, transform);
 
         // Set new stock sprite to correct color.
         int type = bubbleManager.GetNextLineBubble(bubbleManager.NextLineIndex+curStock-1);
@@ -128,6 +170,50 @@ public class HamsterMeter : MonoBehaviour {
                                                              stockTallies[i].position.z - 1);
             }
             ++i;
+        }
+    }
+
+    public Transform GetNextTalleyPosition() {
+        Transform t;
+
+        t = StockTallies[_nextTallyIndex];
+
+        _nextTallyIndex++;
+        if (_nextTallyIndex >= StockTallies.Count) {
+            _nextTallyIndex = curStock;
+        }
+
+        return t;
+    }
+
+    public void GainShields(int amount) {
+        shields = amount;
+
+        Vector3 position;
+        for(int i = 0; i < shields; ++i) {
+            position = new Vector3(stockTallies[i].transform.position.x, stockTallies[i].transform.position.y, stockTallies[i].transform.position.z - 5);
+            _shieldSprites[i] = Instantiate(_shieldSpriteObj, position, Quaternion.identity, transform);
+        }
+    }
+
+    public void LoseShield() {
+        shields -= 1;
+
+        // Find the lowest shield and destroy it
+        int index = 0;
+        while(_shieldSprites[index] == null) {
+            index++;
+        }
+        DestroyObject(_shieldSprites[index]);
+    }
+
+    public void LoseAllShields() {
+        shields = 0;
+
+        for(int i = 0; i < _shieldSprites.Length; ++i) {
+            if(_shieldSprites[i] != null) {
+                DestroyObject(_shieldSprites[i]);
+            }
         }
     }
 }

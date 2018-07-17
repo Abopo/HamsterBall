@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour {
     void Start () {
         DontDestroyOnLoad(transform.gameObject);
 
-        SetScreenResolution();
+        //SetScreenResolution();
 
         ResetValues();
 
@@ -249,7 +249,8 @@ public class GameManager : MonoBehaviour {
         ResetGames();
 
         if (PhotonNetwork.connectedAndReady) {
-            PhotonNetwork.LoadLevel("NetworkedMapSelect");
+            //PhotonNetwork.LoadLevel("NetworkedMapSelect");
+            PhotonNetwork.LoadLevel("NetworkedMapSelectWheel");
         } else {
             // Reload current scene.
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

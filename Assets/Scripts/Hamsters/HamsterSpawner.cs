@@ -46,12 +46,18 @@ public class HamsterSpawner : Photon.PunBehaviour {
     void Start() {
         //_spawnTime = 4;
         _spawnTimer = 0;
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
         if (_gameManager.gameMode == GAME_MODE.SP_POINTS) {
             // Score attack stages have set spawn sequences
             _random = new System.Random(spawnSeed);
         } else {
             _random = new System.Random((int)Time.realtimeSinceStartup);
+        }
+
+        // If we are in Party mode
+        if(_gameManager.gameMode == GAME_MODE.MP_PARTY) {
+            // Add the power up spawner
+            gameObject.AddComponent<PowerUpSpawner>();
         }
 
         Transform spawnPoint = transform.GetChild(0);
@@ -75,7 +81,6 @@ public class HamsterSpawner : Photon.PunBehaviour {
         testMode = _gameManager.testMode;
 
         nextHamsterNum = 0;
-
     }
 
     void SetupSpecialTypes() {

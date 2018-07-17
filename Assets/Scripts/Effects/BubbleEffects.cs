@@ -260,6 +260,7 @@ public class BubbleEffects : MonoBehaviour {
     }
 
     public Transform GetNextTallyPosition() {
+        /*
         Transform t;
 
         t = _hamsterMeter.StockTallies[_index];
@@ -270,6 +271,9 @@ public class BubbleEffects : MonoBehaviour {
         }
 
         return t;
+        */
+
+        return _hamsterMeter.GetNextTalleyPosition();
     }
 
 }

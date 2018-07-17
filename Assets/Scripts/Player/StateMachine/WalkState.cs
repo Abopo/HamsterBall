@@ -10,12 +10,12 @@ public class WalkState : PlayerState {
 
 	// Update is called once per frame
 	public override void Update(){
-		playerController.velocity.x += playerController.walkForce * playerController.WaterMultiplier * playerController.Traction * Time.deltaTime * _direction;
+		playerController.velocity.x += playerController.walkForce * playerController.WaterMultiplier * playerController.Traction * playerController.speedModifier * Time.deltaTime * _direction;
 		
-		if(playerController.velocity.x >= playerController.walkSpeed * playerController.WaterMultiplier) {
-			playerController.velocity.x = playerController.walkSpeed * playerController.WaterMultiplier;
-		} else if(playerController.velocity.x <= -playerController.walkSpeed * playerController.WaterMultiplier) {
-			playerController.velocity.x = -playerController.walkSpeed * playerController.WaterMultiplier;
+		if(playerController.velocity.x >= playerController.walkSpeed * playerController.WaterMultiplier * playerController.speedModifier) {
+			playerController.velocity.x = playerController.walkSpeed * playerController.WaterMultiplier * playerController.speedModifier;
+		} else if(playerController.velocity.x <= -playerController.walkSpeed * playerController.WaterMultiplier * playerController.speedModifier) {
+			playerController.velocity.x = -playerController.walkSpeed * playerController.WaterMultiplier * playerController.speedModifier;
 		}
 		
 		// Check below the player to make sure they 

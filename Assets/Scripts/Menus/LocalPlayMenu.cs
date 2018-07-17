@@ -22,6 +22,11 @@ public class LocalPlayMenu : MonoBehaviour {
         SceneManager.LoadScene("CharacterSelect");
     }
 
+    public void PartyVersus() {
+        _gameManager.SetGameMode(GAME_MODE.MP_PARTY);
+        SceneManager.LoadScene("CharacterSelect");
+    }
+
     public void Survival() {
         _gameManager.SetGameMode(GAME_MODE.SURVIVAL);
         SceneManager.LoadScene("CharacterSelect");

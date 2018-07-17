@@ -20,6 +20,13 @@ public class HamsterWheel : MonoBehaviour {
     GameManager _gameManager;
     AudioSource _audioSource;
 
+    PhotonView _photonView;
+
+    public int Index {
+        get { return _index; }
+        set { _index = value; }
+    }
+
     // Use this for initialization
     void Start () {
         _mapNames[0] = "Forest";
@@ -34,11 +41,14 @@ public class HamsterWheel : MonoBehaviour {
         curMapText.text = _mapNames[_index];
 
         // TODO: set random hamster
-        hamster.SetInteger("Type", 0);
+        int type = Random.Range(0, 3);
+        hamster.SetInteger("Type", type);
         hamster.SetInteger("State", 0);
 
         _gameManager = FindObjectOfType<GameManager>();
         _audioSource = GetComponent<AudioSource>();
+
+        _photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -58,12 +68,10 @@ public class HamsterWheel : MonoBehaviour {
     void CheckInput() {
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) ||
             (Input.GetAxis("Horizontal") < -0.3f)) {
-            RotateRight();
-            _audioSource.Play();
+            RotateLeft();
         } else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) ||
             (Input.GetAxis("Horizontal") > 0.3f)) {
-            RotateLeft();
-            _audioSource.Play();
+            RotateRight();
         }
 
         if (Input.GetButtonDown("Cancel")) {
@@ -76,6 +84,7 @@ public class HamsterWheel : MonoBehaviour {
         if(_rotating) {
             return;
         }
+        _audioSource.Play();
 
         _curRotSpeed = -baseRotSpeed;
         _desiredRotation = transform.eulerAngles.z - 45f;
@@ -91,6 +100,10 @@ public class HamsterWheel : MonoBehaviour {
         hamster.SetInteger("State", 1);
         FlipHamster(true);
 
+        if(_photonView != null && PhotonNetwork.connectedAndReady) {
+            _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, false);
+        }
+
         _rotating = true;
     }
 
@@ -98,6 +111,7 @@ public class HamsterWheel : MonoBehaviour {
         if (_rotating) {
             return;
         }
+        _audioSource.Play();
 
         _curRotSpeed = baseRotSpeed;
         _desiredRotation = transform.eulerAngles.z + 45f;
@@ -112,6 +126,10 @@ public class HamsterWheel : MonoBehaviour {
 
         hamster.SetInteger("State", 1);
         FlipHamster(false);
+
+        if (_photonView != null && PhotonNetwork.connectedAndReady) {
+            _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, true);
+        }
 
         _rotating = true;
     }
@@ -161,4 +179,12 @@ public class HamsterWheel : MonoBehaviour {
         }
     }
 
+    [PunRPC]
+    void RotateWheel(bool left) {
+        if (left) {
+            RotateLeft();
+        } else {
+            RotateRight();
+        }
+    }
 }
