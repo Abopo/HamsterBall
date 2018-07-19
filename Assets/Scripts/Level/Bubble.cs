@@ -379,7 +379,7 @@ public class Bubble : MonoBehaviour {
             // After matches are calculated, but before anything is popped,
             // check if any adjBubbles are a bomb
             for(int i = 0; i < 6; ++i) {
-                if(adjBubbles[i] != null && adjBubbles[i].type == HAMSTER_TYPES.BOMB) {
+                if(adjBubbles[i] != null && adjBubbles[i].type == HAMSTER_TYPES.BOMB && !adjBubbles[i].isIce) {
                     adjBubbles[i].BombExplode();
                 }
             }
@@ -878,6 +878,19 @@ public class Bubble : MonoBehaviour {
     public bool IsSpecialType() {
         if(type == HAMSTER_TYPES.DEAD || type == HAMSTER_TYPES.RAINBOW) {
             return true;
+        }
+
+        return false;
+    }
+
+    public static bool AreThereBubblesMidAir() {
+        Bubble[] allBubbles = FindObjectsOfType<Bubble>();
+        foreach(Bubble b in allBubbles) {
+            // If a bubble was thrown but hasn't locked with the board yet
+            if(b.wasThrown && !b.locked) {
+                // It's still mid-throw
+                return true;
+            }
         }
 
         return false;

@@ -891,7 +891,7 @@ public class BubbleManager : MonoBehaviour {
         if(_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
-                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit) {
+                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && !Bubble.AreThereBubblesMidAir()) {
                         if(_scoreManager.TotalScore >= _gameManager.goalCount) {
                             EndGame(1);
                         } else {
