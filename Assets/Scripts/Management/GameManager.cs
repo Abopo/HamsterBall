@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
-using System.Collections;
+using System.Collections.Generic;
 
 public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, MP_PARTY, SURVIVAL, NUM_MODES }
 public enum MENU { STORY = 0, VERSUS, EDITOR };
@@ -26,11 +26,15 @@ public class GameManager : MonoBehaviour {
     public int leftTeamGames = 0;
     public int rightTeamGames = 0;
 
-    public int leftTeamHandicap;
-    public int rightTeamHandicap;
+    public int leftTeamHandicap = 9;
+    public int rightTeamHandicap = 9;
     public bool aimAssist;
 
     public bool isPaused;
+
+    public bool demoMode;
+
+    public List<string> prevPuzzles = new List<string>(); // A list of the puzzles already played on in a puzzle challenge
 
     string _levelDoc; // document containing data for a single player level
     int _hamsterSpawnMax = 1;
@@ -304,12 +308,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    // A "full" clean up is used when a set of games is over
     public void CleanUp(bool full) {
         Unpause();
 
         gameIsOver = false;
 
-        // Load character select screen.
         if (_playerManager == null) {
             // Must fully find game object for the script because the button stuff is dumb.
             _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
@@ -320,6 +324,7 @@ public class GameManager : MonoBehaviour {
 
         if(full) {
             ResetGames();
+            prevPuzzles.Clear();
         }
     }
 
@@ -335,5 +340,20 @@ public class GameManager : MonoBehaviour {
         }
 
         return true;
+    }
+
+    public void LoadPuzzleChallenge() {
+        string nextLevel = "";
+        TextAsset[] levels = Resources.LoadAll<TextAsset>("Text/Puzzle Challenge/Forest");
+        int i = Random.Range(0, levels.Length);
+
+        // Get a puzzle that hasn't been played on yet
+        while(prevPuzzles.Contains(levels[i].name)) {
+            i = Random.Range(0, levels.Length);
+        }
+
+        nextLevel = levels[i].name;
+        prevPuzzles.Add(nextLevel);
+        GetComponent<BoardLoader>().ReadBoardSetup("Puzzle Challenge/Forest/" + nextLevel);
     }
 }

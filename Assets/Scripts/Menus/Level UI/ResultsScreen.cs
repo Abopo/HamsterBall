@@ -6,6 +6,7 @@ using System.Collections;
 public class ResultsScreen : MonoBehaviour {
     public Text winningTeamText;
     public Button previousMenuButton;
+    public MenuButton mainMenuButton;
 
     MenuOption[] _menuOptions;
 
@@ -41,6 +42,12 @@ public class ResultsScreen : MonoBehaviour {
                     mo.isReady = true;
                 }
             }
+        }
+
+        // Don't allow players to return to the main menu in demo mode
+        if (mainMenuButton != null && _gameManager.demoMode) {
+            mainMenuButton.isReady = false;
+            mainMenuButton.gameObject.SetActive(false);
         }
     }
 

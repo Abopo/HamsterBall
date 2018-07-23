@@ -31,6 +31,7 @@ public class BoardLoader : MonoBehaviour {
         _gameManager.LevelDoc = path;
         _gameManager.nextLevel = "";
         _gameManager.nextCutscene = "";
+        _readText = "";
 
         TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
         _linesFromFile = textAsset.text.Split("\n"[0]);
@@ -313,12 +314,16 @@ public class BoardLoader : MonoBehaviour {
     }
 
     void ReadNextLevel() {
-        _readText = _linesFromFile[_fileIndex++];
-        if(_readText == "Cutscene") {
-            _readText = _linesFromFile[_fileIndex++];
-            _gameManager.nextCutscene = _readText;
+        if (_gameManager.prevPuzzles.Count >= 3) {
+            _gameManager.nextLevel = "";
         } else {
-            _gameManager.nextLevel = _readText;
+            _readText = _linesFromFile[_fileIndex++];
+            if (_readText == "Cutscene") {
+                _readText = _linesFromFile[_fileIndex++];
+                _gameManager.nextCutscene = _readText;
+            } else {
+                _gameManager.nextLevel = _readText;
+            }
         }
     }
 

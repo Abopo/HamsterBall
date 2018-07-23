@@ -56,8 +56,8 @@ public class GameSetupWindow : MonoBehaviour {
     public void OptionsSetup() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
-        _gameManager.leftTeamHandicap = 9;
-        _gameManager.rightTeamHandicap = 9;
+        //_gameManager.leftTeamHandicap = 9;
+        //S_gameManager.rightTeamHandicap = 9;
         int leftHandicap = 12 - _gameManager.leftTeamHandicap;
         int rightHandicap = 12 - _gameManager.rightTeamHandicap;
         _gameManager.leftTeamHandicap = 12;
@@ -213,9 +213,24 @@ public class GameSetupWindow : MonoBehaviour {
     }
 
     public void LoadNextScene() {
+        if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            _gameManager.LoadPuzzleChallenge();
+            return;
+        }
+
         // If either team has no players, we should load single player levels
         if(teamLeft.numPlayers == 0 || teamRight.numPlayers == 0) {
             _gameManager.isSinglePlayer = true;
+        }
+
+        if(_gameManager.demoMode) {
+            if(_gameManager.isSinglePlayer) {
+                SceneManager.LoadScene("Forest - SinglePlayer");
+            } else {
+                SceneManager.LoadScene("Forest");
+            }
+
+            return;
         }
 
         if (_gameManager.isOnline) {
