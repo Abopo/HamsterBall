@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour {
     void Start () {
         DontDestroyOnLoad(transform.gameObject);
 
-        //SetScreenResolution();
+        SetScreenResolution();
 
         ResetValues();
 

@@ -38,6 +38,10 @@ public class GoalMenu : MonoBehaviour {
             case GAME_MODE.SP_MATCH:
                 goalText.text = "Matches\n       Needed";
                 break;
+            case GAME_MODE.SURVIVAL:
+                goalText.text = "";
+                conditionText.text = "Time";
+                break;
         }
 
         goalRequirement.text = _gameManager.goalCount.ToString();
@@ -51,6 +55,7 @@ public class GoalMenu : MonoBehaviour {
 
         switch(_gameManager.gameMode) {
             case GAME_MODE.SP_CLEAR:
+            case GAME_MODE.SURVIVAL:
                 if (_gameManager.conditionLimit > 0) {
                     _conditionLeft -= Time.deltaTime;
                 } else {

@@ -42,6 +42,11 @@ public class Bubble : MonoBehaviour {
 
     float _airTime = 0f; // Time the bubble is in the air before hitting the board
 
+    bool _popping = false;
+    float _popTimer = 0f;
+    float _popDelay = 0f; // Time to wait before popping
+    int _popType; // Type of pop to do (normal, bomb, ice)
+
     BubbleManager _homeBubbleManager;
     Rigidbody2D _rigibody2D;
 
@@ -135,6 +140,20 @@ public class Bubble : MonoBehaviour {
     void Update () {
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
+        }
+
+        if(_popping) {
+            _popTimer += Time.deltaTime;
+            if(_popTimer >= _popDelay) {
+                switch(_popType) {
+                    case 0:
+                        Pop();
+                        break;
+                    case 1:
+                        BombExplode();
+                        break;
+                }
+            }
         }
 
         if (locked) {
@@ -539,14 +558,18 @@ public class Bubble : MonoBehaviour {
         GenerateGarbage(matches.Count, comboBonus);
 
         // Pop matches
+        float pDelay = 0.1f;
         foreach (Bubble b in matches) {
             if (b != this) {
                 if (b.type == HAMSTER_TYPES.BOMB && !b.popped) {
-                    b.BombExplode();
+                    //b.BombExplode();
+                    b.StartPop(pDelay, 1);
                 } else {
-                    b.Pop();
+                    //b.Pop();
+                    b.StartPop(pDelay, 0);
                 }
             }
+            pDelay += 0.1f;
         }
     }
 
@@ -560,8 +583,12 @@ public class Bubble : MonoBehaviour {
 
         // Multiply by the Margin Multiplier
         garbageCount = (int)((garbageCount + comboBonus) * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
-        // Multiply by the player's atk multiplier
-        garbageCount = (garbageCount + _playerController.atkModifier);
+
+        // If this bubble was thrown by a player
+        if (_playerController != null) {
+            // Multiply by the player's atk multiplier
+            garbageCount = (garbageCount + _playerController.atkModifier);
+        }
 
         // If the combo count is high enough
         // TODO: Although I like it as an idea, this combo stuff seems way too powerful and easy to do.
@@ -611,9 +638,16 @@ public class Bubble : MonoBehaviour {
         return comboBonus;
     }
 
+    public void StartPop(float pDelay, int pType) {
+        _popDelay = pDelay;
+        _popType = pType;
+        _popping = true;
+    }
+
     public void Pop() {
 		_homeBubbleManager.RemoveBubble (node);
 		popped = true;
+        _popping = false;
 
         // Instaed of destroying, do a nice animation of the bubble opening.
         _popAnimation.Pop();
@@ -697,7 +731,8 @@ public class Bubble : MonoBehaviour {
                     // Break the ice
                     BreakIce();
                 } else if (adjBubbles[i].type == HAMSTER_TYPES.BOMB && !adjBubbles[i].popped) {
-                    adjBubbles[i].BombExplode();
+                    //adjBubbles[i].BombExplode();
+                    adjBubbles[i].StartPop(0.1f, 1);
                 } else {
                     adjBubbles[i].Pop();
                 }

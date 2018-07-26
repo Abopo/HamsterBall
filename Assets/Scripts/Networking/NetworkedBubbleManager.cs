@@ -70,7 +70,8 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
     [PunRPC]
     void AddLine(/*int[] nextLineBubbles*/) {
-        _bubbleManager.AddLine();
+        //_bubbleManager.AddLine();
+        _bubbleManager.TryAddLine();
 
         //for (int i = 0; i < 13; ++i) {
         //    _bubbleManager.NextLineBubbles[i] = nextLineBubbles[i];

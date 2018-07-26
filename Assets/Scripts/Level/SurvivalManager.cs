@@ -32,7 +32,8 @@ public class SurvivalManager : MonoBehaviour {
             _addLineTimer = 0f;
             _linesAdded++;
 
-            _bubbleManager.AddLine();
+            //_bubbleManager.AddLine();
+            _bubbleManager.TryAddLine();
             _bubbleManager.StopShaking();
 
             if (_linesAdded >= 4) {

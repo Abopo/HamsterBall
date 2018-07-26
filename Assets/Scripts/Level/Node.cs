@@ -34,7 +34,7 @@ public class Node : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        GetComponentInParent<BubbleManager>().boardChangedEvent.AddListener(CheckCanBeHit);
+        //GetComponentInParent<BubbleManager>().boardChangedEvent.AddListener(CheckCanBeHit);
         CheckCanBeHit();
 	}
 	
@@ -51,7 +51,7 @@ public class Node : MonoBehaviour {
 
     }
 
-    void CheckCanBeHit() {
+    public void CheckCanBeHit() {
         if (IsRelevant() && CanBeHit()) {
             isRelevant = true;
         } else {

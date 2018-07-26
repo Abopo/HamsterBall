@@ -122,7 +122,8 @@ public class HamsterMeter : MonoBehaviour {
 
                 // Add line to bubble manager
                 if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
-                    bubbleManager.AddLine();
+                    //bubbleManager.AddLine();
+                    bubbleManager.TryAddLine();
                 }
 
                 // Add new stock sprites if we need to
