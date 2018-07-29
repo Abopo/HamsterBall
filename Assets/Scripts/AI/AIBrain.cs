@@ -556,9 +556,9 @@ public class AIBrain : MonoBehaviour {
 
         // TODO: Something is happening here where some of the rays won't hit ANYTHING somehow.
         for (int i = -1; i < 2; ++i) {
-            heldBubblePos = new Vector3(_playerController.heldBubble.transform.position.x + 0.39f * i, 
+            heldBubblePos = new Vector3(_playerController.heldBubble.transform.position.x + 0.41f * i, 
                                         _playerController.heldBubble.transform.position.y);
-            nodeWantPos = new Vector3(curAction.nodeWant.transform.position.x + 0.39f * i,
+            nodeWantPos = new Vector3(curAction.nodeWant.transform.position.x + 0.32f * i,
                                         curAction.nodeWant.transform.position.y);
             toNode = nodeWantPos - heldBubblePos;
             throwHit = Physics2D.Raycast(heldBubblePos, toNode, 15, throwMask); // 14 is bubble layer

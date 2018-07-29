@@ -197,7 +197,7 @@ public class AIAction {
             addWeight += 20 * matchCount;
         } else {
             // reduce weight based on any same colored bubbles adj to nodeWant;
-            addWeight -= 20 * matchCount;
+            addWeight -= 50 * matchCount;
         }
 
         // if the type is different from the node's relevant adjBubbles

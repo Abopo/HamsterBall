@@ -179,9 +179,11 @@ public class HamsterMeter : MonoBehaviour {
 
         t = StockTallies[_nextTallyIndex];
 
-        _nextTallyIndex++;
-        if (_nextTallyIndex >= StockTallies.Count) {
-            _nextTallyIndex = curStock;
+        if(shields == 0) {
+            _nextTallyIndex++;
+            if (_nextTallyIndex >= StockTallies.Count) {
+                _nextTallyIndex = 0;
+            }
         }
 
         return t;

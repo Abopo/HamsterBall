@@ -98,6 +98,9 @@ public class BubbleManager : MonoBehaviour {
     float _shakeTime = 0.1f;
     float _shakeTimer = 0f;
 
+    Coroutine _checkbubbleDropPotentials;
+    Coroutine _checkNodesCanBeHit;
+
     ScoreManager _scoreManager;
 
     BubbleManager _enemyBubbleManager;
@@ -760,7 +763,7 @@ public class BubbleManager : MonoBehaviour {
 
     public void AddLine() {
         // We're gonna modify the nodesList so we should stop this coroutine in case it's mid-stuff
-        StopCoroutine(CheckNodesCanBeHit());
+        StopCoroutine(_checkNodesCanBeHit);
 
 		for (int i = 0; i < nodeList.Count; ++i) {
 			// Delete bottom line
@@ -995,11 +998,15 @@ public class BubbleManager : MonoBehaviour {
     }
 
     void OnBoardChanged() {
-        StopCoroutine(CheckBubbleDropPotentials());
-        StartCoroutine(CheckBubbleDropPotentials());
+        if (_checkbubbleDropPotentials != null) {
+            StopCoroutine(_checkbubbleDropPotentials);
+        }
+        _checkbubbleDropPotentials = StartCoroutine(CheckBubbleDropPotentials());
 
-        StopCoroutine(CheckNodesCanBeHit());
-        StartCoroutine(CheckNodesCanBeHit());
+        if (_checkNodesCanBeHit != null) {
+            StopCoroutine(_checkNodesCanBeHit);
+        }
+        _checkNodesCanBeHit = StartCoroutine(CheckNodesCanBeHit());
     }
 
     // Drop potentials are used by the AI to determine how many bubbles will drop if a particular bubble is popped.

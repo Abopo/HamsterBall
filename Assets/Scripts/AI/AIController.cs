@@ -388,13 +388,14 @@ public class AIController : MonoBehaviour {
         // If we're not yet aiming at nodeWant
         Vector2 aimDirection = ((ThrowState)_playerController.currentState).AimDirection;
         float dot = Vector2.Dot(aimDirection.normalized, _toNodeWant.normalized);
-        if (dot < 0.9999f && dumbFrameCount < 20) {
+        if (dot < 0.9999f && dumbFrameCount < 30) {
             // Rotate towards the node
 
             // If we've been aiming for too long, just go ahead and throw
             _aimTimer += Time.deltaTime;
             if(_aimTimer >= _aimTime) {
                 _aimTimer = 0f;
+                dumbFrameCount = 0;
                 _input.bubble.isJustPressed = true;
             }
 
@@ -405,7 +406,8 @@ public class AIController : MonoBehaviour {
             } else if (AngleDir(_toNodeWant.normalized, aimDirection.normalized) > 0) {
                 _input.left.isDown = true;
             }
-        // If we are aiming at the node
+
+            // If we are aiming at the node
         } else if(_actionTimer > _actionTime) {
             // Throw
             dumbFrameCount++; // Waits for 20 frames to make sure aim is on point
@@ -425,7 +427,7 @@ public class AIController : MonoBehaviour {
     void OffsetAim() {
         // Randomly offset aim depending on how stupid the AI is
         int chanceToOffset = _aiBrain.Difficulty * 10;
-        if (Random.Range(0, 100) > chanceToOffset) {
+        if (Random.Range(0, 80) > chanceToOffset) {
             if (Random.Range(0, 2) == 1) {
                 _input.right.isDown = true;
             } else {
