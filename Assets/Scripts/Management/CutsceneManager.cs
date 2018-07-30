@@ -118,7 +118,7 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void CheckInput() {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Joystick Jump 1")) 
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Submit")) 
             && _ready && _isPlaying) {
             // Move to next thing
             //_ready = false;
@@ -139,6 +139,9 @@ public class CutsceneManager : MonoBehaviour {
         //do {
         //    _escapeChar = _linesFromFile[_fileIndex++];
         //} while (_escapeChar == "");
+        if (_linesFromFile == null || _linesFromFile.Length == 0) {
+            return;
+        }
 
         _escapeChar = _linesFromFile[_fileIndex++];
         while(_escapeChar == "") {

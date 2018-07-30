@@ -13,6 +13,9 @@ public class HamsterWheel : MonoBehaviour {
     float _curRotSpeed;
     float _desiredRotation;
     bool _rotating = false;
+    public bool Rotating {
+        get { return _rotating; }
+    }
 
     int _index = 0;
     string[] _mapNames = new string[8];
@@ -26,6 +29,7 @@ public class HamsterWheel : MonoBehaviour {
         get { return _index; }
         set { _index = value; }
     }
+
 
     // Use this for initialization
     void Start () {

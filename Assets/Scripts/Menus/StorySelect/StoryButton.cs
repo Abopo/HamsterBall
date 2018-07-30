@@ -7,6 +7,8 @@ public class StoryButton : MenuOption {
     public bool hasCutscene;
     public string fileToLoad;
 
+    public bool isLocked = true;
+
     public string sceneNumber;
     public string locationName;
     public GAME_MODE gameType;
@@ -27,7 +29,14 @@ public class StoryButton : MenuOption {
 	
 	// Update is called once per frame
 	protected override void Update () {
-        base.Update();	
+        base.Update();
+
+        // Don't move to this button if it's locked
+        if (isLocked) {
+            isReady = false;
+        } else {
+            isReady = true;
+        }
 	}
 
     protected override void Select() {
@@ -50,9 +59,16 @@ public class StoryButton : MenuOption {
     }
 
     public override void Highlight() {
-        base.Highlight();
+        if(isReady) {
+            base.Highlight();
 
-        // Change UI to display stuff about this event
-        _storySelectMenu.UpdateUI(this);
+            // Change UI to display stuff about this event
+            _storySelectMenu.UpdateUI(this);
+        }
+    }
+
+    public void Unlock() {
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
+        isLocked = false;
     }
 }

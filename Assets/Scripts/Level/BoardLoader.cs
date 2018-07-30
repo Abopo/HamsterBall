@@ -232,11 +232,20 @@ public class BoardLoader : MonoBehaviour {
 
         PlayerInfo player1 = new PlayerInfo();
         player1.playerNum = 1;
+        int joystick = InputState.GetValidJoystick();
+        if (joystick > 0) {
+            player1.controllerNum = joystick;
+        } else {
+            player1.controllerNum = 1;
+        }
+
+        /*
         if (Input.GetJoystickNames().Length > 0) {
             player1.controllerNum = 3;
         } else {
             player1.controllerNum = 1;
         }
+        */
         player1.team = 0;
         playerManager.AddPlayer(player1);
 

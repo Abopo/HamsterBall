@@ -33,7 +33,10 @@ public class StorySelectMenu : MonoBehaviour {
     public int FurthestLevel {
         get { return _furthestLevel; }
     }
-    
+    public bool MovingWorld {
+        get { return _movingWorld; }
+    }
+
     // Use this for initialization
     void Start () {
         GameManager gameManager = FindObjectOfType<GameManager>();

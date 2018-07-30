@@ -592,9 +592,17 @@ public class BubbleManager : MonoBehaviour {
             _justRemovedBubble = false;
 		}
 
-        if(linesToAdd > 0 && !Bubble.AreThereBubblesMidAir()) {
-            --linesToAdd;
-            AddLine();
+        // If the board is waiting to add a line
+        if(linesToAdd > 0) {
+            // Shake the board
+            StartShaking();
+
+            // Once the board is stable
+            if (IsBoardStable()) {
+                --linesToAdd;
+                AddLine();
+                StopShaking();
+            }
         }
 
         if(_isShaking) {
@@ -611,7 +619,7 @@ public class BubbleManager : MonoBehaviour {
 	}
 
     private void LateUpdate() {
-        if (!_gameOver) {
+        if (!_gameOver && IsBoardStable()) {
             CheckWinConditions();
         }
     }
@@ -754,7 +762,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void TryAddLine() {
-        if (Bubble.AreThereBubblesMidAir()) {
+        if (!IsBoardStable()) {
             ++linesToAdd;
         } else {
             AddLine();
@@ -917,7 +925,7 @@ public class BubbleManager : MonoBehaviour {
         if(_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
-                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && !Bubble.AreThereBubblesMidAir()) {
+                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && IsBoardStable()) {
                         if(_scoreManager.TotalScore >= _gameManager.goalCount) {
                             EndGame(1);
                         } else {
@@ -1110,5 +1118,13 @@ public class BubbleManager : MonoBehaviour {
         for (int i = 0; i < startingBubbleInfo.Length; ++i) {
             startingBubbleInfo[i].isSet = false;
         }
+    }
+
+    bool IsBoardStable() {
+        if(Bubble.AreThereBubblesMidAir() || Bubble.AreThereBubblesPopping()) {
+            return false;
+        }
+
+        return true;
     }
 }

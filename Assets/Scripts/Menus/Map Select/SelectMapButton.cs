@@ -4,11 +4,13 @@ using System.Collections;
 
 [RequireComponent(typeof(Button))]
 public class SelectMapButton : MenuOption {
-    public MapSelect mapSelect;
+    HamsterWheel _hamWheel;
 
     // Use this for initialization
     protected override void Start() {
         base.Start();
+
+        _hamWheel = FindObjectOfType<HamsterWheel>();
 
         // If we are online and not the master client, don't show the select button
         if(PhotonNetwork.connectedAndReady && !PhotonNetwork.isMasterClient) {
@@ -25,7 +27,7 @@ public class SelectMapButton : MenuOption {
         base.Select();
 
         // If the map selection is rotating, don't select yet
-        if(!mapSelect.IsRotating()) {
+        if(!_hamWheel.Rotating) {
             GetComponent<Button>().onClick.Invoke();
         }
     }

@@ -138,14 +138,16 @@ public class PlayerSpawner : MonoBehaviour {
     // TODO: this function is a little gross still, fix it up a bit
     public void SetupSwitchMeter(PlayerController player) {
         if(player.team == 0) {
-            shiftMeters[leftMeters].GetMeterFront().enabled = true;
-            shiftMeters[leftMeters].GetMeterBack().enabled = true;
+            shiftMeters[leftMeters].gameObject.SetActive(true);
+            //shiftMeters[leftMeters].GetMeterFront().enabled = true;
+            //shiftMeters[leftMeters].GetMeterBack().enabled = true;
             player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeters[leftMeters].GetMeterFront().GetComponent<RectTransform>());
             shiftMeters[leftMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1)*12];
             shiftMeters[leftMeters++].GetIcon().enabled = true;
         } else if(player.team == 1) {
-            shiftMeters[2+rightMeters].GetMeterFront().enabled = true;
-            shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
+            shiftMeters[2 + rightMeters].gameObject.SetActive(true);
+            //shiftMeters[2+rightMeters].GetMeterFront().enabled = true;
+            //shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
             player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeters[2+rightMeters].GetMeterFront().GetComponent<RectTransform>());
             shiftMeters[2+rightMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1)*12];
             shiftMeters[2+rightMeters++].GetIcon().enabled = true;

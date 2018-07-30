@@ -102,7 +102,7 @@ public class TutorialManager : MonoBehaviour {
     }
 
     string GetCorrectTutorial(string baseTutorial) {
-        if(Input.GetJoystickNames().Length > 0) {
+        if(InputState.GetValidJoystick() > 0) {
             baseTutorial += "Controller";
         }
 

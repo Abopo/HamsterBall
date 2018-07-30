@@ -930,4 +930,15 @@ public class Bubble : MonoBehaviour {
 
         return false;
     }
+
+    public static bool AreThereBubblesPopping() {
+        Bubble[] allBubbles = FindObjectsOfType<Bubble>();
+        foreach(Bubble b in allBubbles) {
+            if(b._popping) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

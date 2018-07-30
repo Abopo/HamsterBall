@@ -48,6 +48,20 @@ public class InputState {
 		keyboardTaken = 0;
 	}
 
+    public static int GetValidJoystick() {
+        int joystick = 0;
+        string[] joystickNames = Input.GetJoystickNames();
+
+        for (int i = 0; i < joystickNames.Length; ++i) {
+            if (joystickNames[i] != "") {
+                joystick = i + 2;
+                break;
+            }
+        }
+
+        return joystick;
+    }
+
 	void GetJoysticks() {
 		//string[] joysticks = Input.GetJoystickNames ();
 		//joystickNum = joysticks.Length;

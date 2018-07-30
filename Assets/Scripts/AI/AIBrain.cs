@@ -301,7 +301,7 @@ public class AIBrain : MonoBehaviour {
                         continue;
                     }
                     r = Random.Range(0, _hamsterScan.AvailableHamsters.Count - 1);
-                    if (_hamsterScan.AvailableHamsters[r] != null) {
+                    if (_hamsterScan.AvailableHamsters.Count > 0 && _hamsterScan.AvailableHamsters[r] != null) {
                         // Figure out if this action will require a shift
                         if(!_playerController.shifted) {
                             requiresShift = true;

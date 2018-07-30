@@ -173,7 +173,9 @@ public class MenuOption : MonoBehaviour {
     }
 
     void OnMouseEnter() {
-        Highlight();
+        if (isReady) {
+            Highlight();
+        }
     }
 
 }

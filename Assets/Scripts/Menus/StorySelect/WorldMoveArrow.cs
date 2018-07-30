@@ -32,10 +32,12 @@ public class WorldMoveArrow : MenuOption {
     }
 
     void TryMoveWorld() {
-        if (dir == 1) {
-            TryMoveRight();
-        } else if (dir == -1) {
-            _storySelectMenu.StartMoveWorlds(dir);
+        if(!_storySelectMenu.MovingWorld) {
+            if (dir == 1) {
+                TryMoveRight();
+            } else if (dir == -1) {
+                _storySelectMenu.StartMoveWorlds(dir);
+            }
         }
     }
 
