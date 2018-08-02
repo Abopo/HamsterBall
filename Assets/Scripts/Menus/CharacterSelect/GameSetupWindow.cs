@@ -240,4 +240,20 @@ public class GameSetupWindow : MonoBehaviour {
             SceneManager.LoadScene("MapSelectWheel");
         }
     }
+
+    // Sets the game up for demo mode and skips this menu
+    public void DemoSetup() {
+        _gameManager.GetComponent<PlayerManager>().SetAimAssist(false);
+        _gameManager.HamsterSpawnMax = 10;
+        HamsterSpawner.canBeRainbow = true;
+        HamsterSpawner.canBeDead = false;
+        HamsterSpawner.canBeBomb = false;
+        HamsterSpawner.canBeGravity = false;
+
+        if (_gameManager.isSinglePlayer) {
+            SceneManager.LoadScene("Forest - SinglePlayer");
+        } else {
+            SceneManager.LoadScene("Forest");
+        }
+    }
 }

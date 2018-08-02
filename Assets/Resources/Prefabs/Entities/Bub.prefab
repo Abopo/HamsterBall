@@ -98,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.872953, y: -1.5267922, z: -3}
+  m_LocalPosition: {x: -3.6434202, y: -3.6477482, z: 0}
   m_LocalScale: {x: 0.59110194, y: 0.5911014, z: 0.5911014}
   m_Children:
   - {fileID: 400002}
@@ -129,7 +129,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.030634126, y: 0.49466795, z: -5.0000005}
+  m_LocalPosition: {x: 0.030634126, y: 0.49466795, z: -10}
   m_LocalScale: {x: 0.4501595, y: 0.4501595, z: 0.4501595}
   m_Children:
   - {fileID: 400006}
@@ -325,6 +325,7 @@ MonoBehaviour:
   curFacing: 0
   walkForce: 50
   walkSpeed: 5
+  speedModifier: 1
   jumpForce: 8.2
   jumpMoveForce: 50
   jumpMoveMax: 5
@@ -335,13 +336,15 @@ MonoBehaviour:
   shiftPortal: {fileID: 114000011952293922}
   direction: 0
   aimAssist: 0
+  canBeHit: 0
   team: 0
   playerNum: 1
+  atkModifier: 0
   shifted: 0
   bubbleCooldownTimer: 0
   bubbleCooldownTime: 0.15
   attackCooldownTimer: 0
-  attackCooldownTime: 0.15
+  attackCooldownTime: 0.3
   aimCooldownTimer: 0
   aimCooldownTime: 0.2
   aiControlled: 0
@@ -789,7 +792,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012748765596}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -0.12, z: -10.41488}
+  m_LocalPosition: {x: 0.686, y: -0.12, z: -5}
   m_LocalScale: {x: 1.2688167, y: 1.2688178, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -847,7 +850,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000023488282, y: -0.0020840722}
+  m_Offset: {x: -0.13314426, y: 0.03324008}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -858,7 +861,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5116211, y: 0.50745463}
+  m_Size: {x: 0.77790916, y: 0.76287305}
   m_EdgeRadius: 0
 --- !u!95 &95000013033491584
 Animator:
@@ -911,7 +914,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012748765596}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2745ed2280c83be46870e4abac2bce54, type: 3}
   m_Name: 

@@ -227,7 +227,9 @@ public class HamsterSpawner : Photon.PunBehaviour {
                 int special = _random.Next(_hamsterInfo.SpecialSpawnOffset, 16);
                 if (special == 15 && specialTypes.Count > 0) {
                     // Choose which special hamster it will be
-                    int sType = _random.Next(0, specialTypes.Count);
+                    //int sType = _random.Next(0, specialTypes.Count);
+                    // We don't use the set _random variable because we want players to get different special types
+                    int sType = Random.Range(0, specialTypes.Count);
                     switch (specialTypes[sType]) {
                         case 8: // Rainbow
                             rType = (int)HAMSTER_TYPES.RAINBOW;

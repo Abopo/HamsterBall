@@ -57,21 +57,6 @@ public class PauseMenu : MonoBehaviour {
         _gameManager.FullPause();
     }
 
-    public void ReturnToPreviousScene() {
-        // Return to the scene before this one
-        switch (_gameManager.prevMenu) {
-            case MENU.STORY:
-                _gameManager.StageSelectButton();
-                break;
-            case MENU.VERSUS:
-                _gameManager.CharacterSelectButton();
-                break;
-            case MENU.EDITOR:
-                _gameManager.BoardEditorButton();
-                break;
-        }
-    }
-
     public void OpenOptionsMenu() {
         // Turn off buttons on pause menu
         foreach(MenuButton mB in _buttons) {
@@ -90,5 +75,24 @@ public class PauseMenu : MonoBehaviour {
 
         // Disable options menu
         optionsMenu.SetActive(false);
+    }
+
+    public void ReturnToPreviousScene() {
+        // Return to the scene before this one
+        switch (_gameManager.prevMenu) {
+            case MENU.STORY:
+                _gameManager.StageSelectButton();
+                break;
+            case MENU.VERSUS:
+                _gameManager.CharacterSelectButton();
+                break;
+            case MENU.EDITOR:
+                _gameManager.BoardEditorButton();
+                break;
+        }
+    }
+
+    public void ReturnToMainMenu() {
+        _gameManager.MainMenuButton();
     }
 }

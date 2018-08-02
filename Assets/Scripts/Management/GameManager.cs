@@ -137,6 +137,7 @@ public class GameManager : MonoBehaviour {
 
     void SceneLoad(Scene scene, LoadSceneMode mode) {
         gameIsOver = false;
+        isPaused = false;
     }
 
     // Update is called once per frame
@@ -155,6 +156,7 @@ public class GameManager : MonoBehaviour {
     public void FullPause() {
         // Pause the game via timeScale
         Time.timeScale = 0;
+
 
         isPaused = true;
     }

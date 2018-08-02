@@ -2,6 +2,11 @@
 using System.Collections;
 
 public class AttackState : PlayerState {
+
+    float _attackSpeed = 10f;
+    float _attackTime = 0.1f;
+    float _attackTimer = 0;
+
     // Use this for initialization
     public override void Initialize(PlayerController playerIn) {
         base.Initialize(playerIn);
@@ -10,30 +15,44 @@ public class AttackState : PlayerState {
 
         _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
 
+        _attackTimer = 0f;
+
         // Activate attack animation thingy
-        playerController.attackObj.Attack();
-        playerController.velocity.x = 0f;
+        playerController.attackObj.gameObject.SetActive(true);
+        playerController.velocity.x = _attackSpeed * _direction;
+        playerController.velocity.y = 0f;
         playerController.attackCooldownTimer = 0;
     }
 
     // Update is called once per frame
     public override void Update() {
-        if (!playerController.attackObj.IsAttacking) {
-            playerController.ChangeState(PLAYER_STATE.IDLE);
+        //if (!playerController.attackObj.IsAttacking) {
+        //    playerController.ChangeState(PLAYER_STATE.IDLE);
+        //}
+
+        _attackTimer += Time.deltaTime;
+        if(_attackTimer >= _attackTime) {
+            EndAttack();
         }
 
-        JumpMaxCheck();
+        //JumpMaxCheck();
 
         // Fall
-        playerController.ApplyGravity();
+        //playerController.ApplyGravity();
     }
 
     public override void CheckInput(InputState inputState) {
-        if (inputState.jump.isJustReleased) {
-            playerController.velocity.y /= 2;
-        }
+        //if (inputState.jump.isJustReleased) {
+        //    playerController.velocity.y /= 2;
+        //}
 
-        LockedJumpMovement(inputState);
+        //LockedJumpMovement(inputState);
+    }
+
+    void EndAttack() {
+        playerController.attackObj.gameObject.SetActive(false);
+        playerController.attackCooldownTimer = 0;
+        playerController.ChangeState(PLAYER_STATE.IDLE);
     }
 
     // returns the PLAYER_STATE that represents this state

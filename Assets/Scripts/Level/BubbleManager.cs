@@ -570,7 +570,7 @@ public class BubbleManager : MonoBehaviour {
             SpawnStartingBubblesInfo();
         }
 
-        if (_justAddedBubble || _justRemovedBubble) {
+        if ((_justAddedBubble || _justRemovedBubble) && IsBoardStable()) {
 			// Check for anchor points
 			List<Bubble> anchorBubbles = new List<Bubble>();
             foreach (Bubble b in _bubbles) {
@@ -750,7 +750,7 @@ public class BubbleManager : MonoBehaviour {
 		_bubbles [node] = null;
         nodeList[node].bubble = null;
 
-        boardChangedEvent.Invoke();
+        //boardChangedEvent.Invoke();
         _justRemovedBubble = true;
 
         /*
@@ -856,7 +856,7 @@ public class BubbleManager : MonoBehaviour {
         UpdateAllAdjBubbles ();
 
 		_justAddedBubble = true;
-        boardChangedEvent.Invoke();
+        //boardChangedEvent.Invoke();
 
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
@@ -1006,6 +1006,8 @@ public class BubbleManager : MonoBehaviour {
     }
 
     void OnBoardChanged() {
+        //Debug.Log("Board has changed");
+
         if (_checkbubbleDropPotentials != null) {
             StopCoroutine(_checkbubbleDropPotentials);
         }
@@ -1029,17 +1031,14 @@ public class BubbleManager : MonoBehaviour {
     }
     // Nodes will check if they can be hit by a player, which is used by the AI to determine which nodes to aim at.
     IEnumerator CheckNodesCanBeHit() {
-        //for(int i = 0; i < nodeList.Count; ++i) {
-        //    if(nodeList[i] != null) {
-        //        nodeList[i].CheckCanBeHit();
-        //        yield return null;
-        //    }
-        //}
-
+        bool isRelevant = false;
         foreach(Node n in nodeList.ToArray()) {
             if(n != null) {
-                n.CheckCanBeHit();
-                yield return null;
+                isRelevant = n.CheckRelevancy();
+                // We want to get to the relevant nodes quickly, so only yield when we get to one
+                if (isRelevant) {
+                    yield return null;
+                }
             }
         }
     }
@@ -1121,10 +1120,37 @@ public class BubbleManager : MonoBehaviour {
     }
 
     bool IsBoardStable() {
-        if(Bubble.AreThereBubblesMidAir() || Bubble.AreThereBubblesPopping()) {
+        if(AreThereBubblesMidAir() || AreThereBusyBubbles()) {
             return false;
         }
 
         return true;
+    }
+
+    bool AreThereBubblesMidAir() {
+        PlayerController[] players = FindObjectsOfType<PlayerController>();
+        foreach (PlayerController p in players) {
+            // If the player is on our side
+            if(p.team == team && !p.shifted || p.team != team && p.shifted) {
+                // If the player's bubble was thrown but hasn't locked with the board yet
+                if (p.heldBubble != null && p.heldBubble.wasThrown && !p.heldBubble.locked) {
+                    // It's still mid-throw
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    bool AreThereBusyBubbles() {
+        foreach (Bubble b in _bubbles) {
+            // If a bubble is popping or dropping
+            if (b != null && (b.Popping || !b.locked)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

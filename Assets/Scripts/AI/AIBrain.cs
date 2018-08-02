@@ -145,18 +145,19 @@ public class AIBrain : MonoBehaviour {
         // Clear out bad actions
         _actions.RemoveAll(action => !ActionIsRelevant(action));
 
+        // Update curAction's weight to be accurate
+        if (curAction != null) {
+            curAction.DetermineWeight();
+
+            // If this AI has a characteristic
+            if (characterAI != null) {
+                // Adjust the weight based on it
+                characterAI.AdjustActionWeight(curAction);
+            }
+        }
+
         // Determine the weights of the actions
         foreach (AIAction action in _actions) {
-            if (curAction != null) {
-                curAction.DetermineWeight();
-
-                // If this AI has a characteristic
-                if (characterAI != null) {
-                    // Adjust the weight based on it
-                    characterAI.AdjustActionWeight(curAction);
-                }
-            }
-
             action.DetermineWeight();
             if(characterAI != null) {
                 characterAI.AdjustActionWeight(action);
@@ -164,7 +165,7 @@ public class AIBrain : MonoBehaviour {
         }
 
         // If we've shifted, don't look for new actions unless it's necessary, since shift time is very short.
-        if (_actions.Count > 0 && !(_playerController.shifted && curAction != null && curAction.requiresShift && ActionIsRelevant(curAction))) {
+        if (_actions.Count > 0 /*&& !(_playerController.shifted && curAction != null && ActionIsRelevant(curAction))*/) {
             ChooseAction();
         }
     }
@@ -187,6 +188,13 @@ public class AIBrain : MonoBehaviour {
                     return false;
                 }
 
+                if (action.bubbleWant != null) {
+                    // If we have shifted, and the bubbleWant is on the opponent's board, but the hamsterWant is back on our side
+                    if (_playerController.shifted && action.bubbleWant.team != _playerController.team && action.hamsterWant.team == _playerController.team) {
+                        return false;
+                    }
+                }
+
                 if(!action.hamsterWant.exitedPipe) {
                     return false;
                 }
@@ -207,18 +215,15 @@ public class AIBrain : MonoBehaviour {
                     return false;
                 }
             }
-            // If we are trying to chase an opponent but they have not shifted
-            if (action.opponent != null && !action.opponent.GetComponent<PlayerController>().shifted) {
+            // If we are trying to chase an opponent but they are not on the same side
+            if (action.opponent != null && action.opponent.GetComponent<PlayerController>().shifted == _playerController.shifted) {
                 return false;
             }
             // If this action requires a switch but we can't right now
             if(action.requiresShift && !_playerController.CanShift) {
                 return false;
             }
-            // If we have already shifted, but the action is back on our side of the field
-            //if(!action.requiresShift && _playerController.shifted) {
-            //    return false;
-            //}
+
             // If nodeWant is in the bottom row of our board it'll kill us!
             if(action.nodeWant != null) {
                 if (action.nodeWant.number > 137 && !action.requiresShift && (action.bubbleWant == null || action.bubbleWant.numMatches < 2)) {

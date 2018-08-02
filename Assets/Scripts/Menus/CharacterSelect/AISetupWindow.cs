@@ -143,9 +143,13 @@ public class AISetupWindow : MonoBehaviour {
 
     public void OpenGameSetup() {
         //SceneManager.LoadScene("MapSelect2");
-        // Turn on GameSetupWindow
-        gameSetupWindow.Initialize();
-        gameObject.SetActive(false);
+        if (FindObjectOfType<GameManager>().demoMode) {
+            gameSetupWindow.DemoSetup();
+        } else {
+            // Turn on GameSetupWindow
+            gameSetupWindow.Initialize();
+            gameObject.SetActive(false);
+        }
     }
 
     void UpdateText(PlayerInfo pInfo, Text text) {

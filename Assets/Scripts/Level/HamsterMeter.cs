@@ -37,8 +37,12 @@ public class HamsterMeter : MonoBehaviour {
 	}
 	
     void GetChildren() {
+        Transform tally;
         for(int i = 0; i < transform.childCount; ++i) {
-            stockTallies.Add(transform.GetChild(i));
+            tally = transform.GetChild(i);
+            if (tally.tag == "Tally") {
+                stockTallies.Add(tally);
+            }
         }
     }
 

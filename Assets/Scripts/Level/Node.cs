@@ -35,7 +35,7 @@ public class Node : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //GetComponentInParent<BubbleManager>().boardChangedEvent.AddListener(CheckCanBeHit);
-        CheckCanBeHit();
+        CheckRelevancy();
 	}
 	
 	// Update is called once per frame
@@ -51,16 +51,23 @@ public class Node : MonoBehaviour {
 
     }
 
-    public void CheckCanBeHit() {
+    public bool CheckRelevancy() {
         if (IsRelevant() && CanBeHit()) {
             isRelevant = true;
         } else {
             isRelevant = false;
         }
+
+        return isRelevant;
     }
 
     public bool IsRelevant() {
         int count = 0;
+
+        // If this node already has a bubble, it is not relevant
+        if(bubble != null) {
+            return false;
+        }
         
         // If the node has any bubbles above it, it has a chance to be hit.
         for (int i = 0; i < 2; ++i) {

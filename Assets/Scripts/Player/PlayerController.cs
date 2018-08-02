@@ -52,7 +52,7 @@ public class PlayerController : Entity {
     }
 
     public float bubbleCooldownTimer;
-    public float bubbleCooldownTime = 0.15f;
+    public float bubbleCooldownTime; // 0.15f
     public bool CanBubble {
         get {
             if(bubbleCooldownTimer >= bubbleCooldownTime) {
@@ -62,17 +62,17 @@ public class PlayerController : Entity {
         }
     }
     public float attackCooldownTimer;
-    public float attackCooldownTime = 0.15f;
+    public float attackCooldownTime; // 0.3f
     public bool CanAttack {
         get {
-            if (attackCooldownTimer >= attackCooldownTime) {
+            if (attackCooldownTimer >= attackCooldownTime && !_isInvuln) {
                 return true;
             }
             return false;
         }
     }
     public float aimCooldownTimer;
-    public float aimCooldownTime = 0.2f;
+    public float aimCooldownTime; //0.2f
     public bool CanAim {
         get {
             if (aimCooldownTimer >= aimCooldownTime) {
@@ -273,7 +273,7 @@ public class PlayerController : Entity {
 			jumpMoveMax = 2;
 			heldBubble.transform.position = new Vector3 (transform.position.x,
 			                                             transform.position.y + 0.5f,
-			                                             transform.position.z-3);
+			                                             transform.position.z-5);
 		} else {
 			walkSpeed = 5;
 			jumpMoveMax = 5;

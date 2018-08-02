@@ -49,7 +49,7 @@ public class IdleState : PlayerState {
 			} else if (playerController.CanAim) {
                 playerController.ChangeState(PLAYER_STATE.THROW);
 			}
-		} else if (inputState.attack.isJustPressed && playerController.heldBubble == null) {
+		} else if (inputState.attack.isJustPressed && playerController.CanAttack && playerController.heldBubble == null) {
             playerController.ChangeState(PLAYER_STATE.ATTACK);
         }
 	}

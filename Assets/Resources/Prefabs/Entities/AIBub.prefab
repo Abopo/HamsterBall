@@ -706,6 +706,7 @@ MonoBehaviour:
   curFacing: 0
   walkForce: 50
   walkSpeed: 5
+  speedModifier: 1
   jumpForce: 8.2
   jumpMoveForce: 50
   jumpMoveMax: 5
@@ -716,13 +717,15 @@ MonoBehaviour:
   shiftPortal: {fileID: 114000013651031820}
   direction: 0
   aimAssist: 0
+  canBeHit: 0
   team: 0
   playerNum: 1
+  atkModifier: 0
   shifted: 0
   bubbleCooldownTimer: 0
   bubbleCooldownTime: 0.15
   attackCooldownTimer: 0
-  attackCooldownTime: 0.15
+  attackCooldownTime: 0.3
   aimCooldownTimer: 0
   aimCooldownTime: 0.2
   aiControlled: 0
@@ -774,9 +777,20 @@ MonoBehaviour:
   weight: 0
   requiresShift: 0
   opponent: {fileID: 0}
+  characterAI: {fileID: 0}
   throwMask:
     serializedVersion: 2
     m_Bits: 81920
+  curAction:
+    vertWant: 0
+    horWant: 0
+    hamsterWant: {fileID: 0}
+    bubbleWant: {fileID: 0}
+    nodeWant: {fileID: 0}
+    weight: 0
+    requiresShift: 0
+    opponent: {fileID: 0}
+    waterBubble: {fileID: 0}
 --- !u!114 &114000012868662364
 MonoBehaviour:
   m_ObjectHideFlags: 1

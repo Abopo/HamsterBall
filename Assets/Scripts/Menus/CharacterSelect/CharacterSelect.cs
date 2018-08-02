@@ -197,9 +197,13 @@ public class CharacterSelect : MonoBehaviour {
         }
         // Otherwise, activate the Game Setup Windows
         else {
-            gameSetupWindow.Initialize();
-            _isActive = false;
-            TurnOffCharacters();
+            if (_gameManager.demoMode) {
+                gameSetupWindow.DemoSetup();
+            } else {
+                gameSetupWindow.Initialize();
+                _isActive = false;
+                TurnOffCharacters();
+            }
         }
     }
 

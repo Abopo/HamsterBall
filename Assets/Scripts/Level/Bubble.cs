@@ -46,6 +46,9 @@ public class Bubble : MonoBehaviour {
     float _popTimer = 0f;
     float _popDelay = 0f; // Time to wait before popping
     int _popType; // Type of pop to do (normal, bomb, ice)
+    public bool Popping {
+        get { return _popping; }
+    }
 
     BubbleManager _homeBubbleManager;
     Rigidbody2D _rigibody2D;
@@ -918,27 +921,4 @@ public class Bubble : MonoBehaviour {
         return false;
     }
 
-    public static bool AreThereBubblesMidAir() {
-        Bubble[] allBubbles = FindObjectsOfType<Bubble>();
-        foreach(Bubble b in allBubbles) {
-            // If a bubble was thrown but hasn't locked with the board yet
-            if(b.wasThrown && !b.locked) {
-                // It's still mid-throw
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static bool AreThereBubblesPopping() {
-        Bubble[] allBubbles = FindObjectsOfType<Bubble>();
-        foreach(Bubble b in allBubbles) {
-            if(b._popping) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

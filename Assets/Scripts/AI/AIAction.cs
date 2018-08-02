@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 // An Action is a combination of Wants that the AI will have.
 // If a given Action is chosen, the AI will act according to that Action's Wants.
+[System.Serializable]
 public class AIAction {
     public int vertWant;
     public int horWant;
@@ -76,16 +77,18 @@ public class AIAction {
             }
 
             // Increase weight based on distance from player, the closer the better.
-            weight += (int)(20 / ((Vector2)(hamsterWant.transform.position - _playerController.transform.position)).magnitude);
+            int distanceX = Mathf.CeilToInt(((Vector2)(hamsterWant.transform.position - _playerController.transform.position)).magnitude);
 
             // if the bubble is on the opponents board
             if (bubbleWant != null && bubbleWant.team != _playerController.team) {
+                weight += 30 / distanceX;
                 weight += OpponentBoardChecks(hamsterWant.type);
             } else {
+                weight += 5 / distanceX;
                 weight += MyBoardChecks(hamsterWant.type);
             }
         // if we already have a hamster
-        } else if (_playerController.heldBubble != null) {
+        } else if (_playerController != null && _playerController.heldBubble != null) {
             // if the bubble is on the opponents board
             if (bubbleWant != null && bubbleWant.team != _playerController.team) {
                 weight += OpponentBoardChecks(_playerController.heldBubble.type);
@@ -160,14 +163,17 @@ public class AIAction {
             // Add weight based on potential drops of the bubbleWant
             addWeight += bubbleWant.dropPotential * 30;
 
-            // if we want a bubble on our board and we want/have a bomb hamster
+        // if we want a bubble on our board and we want/have a bomb hamster
         } else if (bubbleWant != null && bubbleWant.team == _playerController.team && type == HAMSTER_TYPES.BOMB) {
             // We don't want to blow up matches, so reduce weight for each match
             addWeight += bubbleWant.numMatches * -20;
 
             // Increase weight for each adjacent bubble
-            addWeight += nodeWant.AdjBubbles.Length * 20;
-
+            foreach(Bubble b in nodeWant.AdjBubbles) {
+                if(b != null) {
+                    addWeight += 20;
+                }
+            }
         // if we want a bubble on our board that doesn't match the hamster we want/have.
         } else if (bubbleWant != null && bubbleWant.team == _playerController.team) {
             // if the bubble isn't near the bottom
@@ -187,35 +193,32 @@ public class AIAction {
     int OpponentBoardChecks(HAMSTER_TYPES type) {
         int addWeight = 0;
 
-        int matchCount = 0;
-        foreach(Bubble b in nodeWant.AdjBubbles) {
-            if(b != null && type == b.type) {
-                matchCount++;
-            }
-        }
         if (type == HAMSTER_TYPES.BOMB) {
-            addWeight += 20 * matchCount;
+            // Increase weight by how many bubbles we can blow up
+            addWeight += 20 * nodeWant.AdjBubbles.Length;
         } else {
+            int matchCount = 0;
+            foreach (Bubble b in nodeWant.AdjBubbles) {
+                if (b != null && type == b.type) {
+                    matchCount++;
+                }
+            }
+
             // reduce weight based on any same colored bubbles adj to nodeWant;
             addWeight -= 50 * matchCount;
         }
 
         // if the type is different from the node's relevant adjBubbles
         bool nonMatched = false;
-        // This check is a bit annoying, if *either* of the relevent adjBubbles
+        // This check is a bit annoying, if *any* of the adjBubbles
         // both *exist and match* the type, then it's bad
-        if(nodeWant.AdjBubbles[0] != null) {
-            if (type != nodeWant.AdjBubbles[0].type) {
-                nonMatched = true;
-            } else {
-                nonMatched = false;
-            }
-        }
-        if (nodeWant.AdjBubbles[1] != null) {
-            if (type != nodeWant.AdjBubbles[1].type) {
-                nonMatched = true;
-            } else {
-                nonMatched = false;
+        foreach(Bubble b in nodeWant.AdjBubbles) {
+            if(b != null) {
+                if(type != b.type) {
+                    nonMatched = true;
+                } else {
+                    nonMatched = false;
+                }
             }
         }
 
@@ -225,16 +228,16 @@ public class AIAction {
                 addWeight -= 500;
             } else if (type == HAMSTER_TYPES.DEAD) {
                 // increase weight based on how many matches the bubble currently has
-                addWeight += (6 * bubbleWant.numMatches);
-                addWeight += bubbleWant.numMatches > 5 ? 8 : 0;
+                addWeight += (10 * bubbleWant.numMatches);
+                addWeight += bubbleWant.numMatches > 5 ? 20 : 0;
                 // If we're already shifted, highly consider throwing the dead hamster.
-                addWeight += _playerController.shifted ? 30 : 0;
+                addWeight += _playerController.shifted ? 50 : 0;
             } else {
                 // increase weight based on how many matches the bubble currently has
-                addWeight += 3 * bubbleWant.numMatches;
-                addWeight += bubbleWant.numMatches > 5 ? 8 : 0;
+                addWeight += 5 * bubbleWant.numMatches;
+                addWeight += bubbleWant.numMatches > 5 ? 10 : 0;
             }
-            // if it's the same type, probably don't throw at it!
+        // if it's the same type, probably don't throw at it!
         } else {
             addWeight -= 100;
         }
@@ -247,8 +250,8 @@ public class AIAction {
                 addWeight += 50;
 
                 // aim for closer bubbles when throwing to opponents board because there is limited time.
-                float distanceX = bubbleWant.transform.position.x - _playerController.transform.position.x;
-                addWeight += (int)(60 / distanceX);
+                int distanceX = Mathf.CeilToInt(Mathf.Abs(bubbleWant.transform.position.x - _playerController.transform.position.x));
+                addWeight += 60 / distanceX;
             } else {
                 // and we have the ability to shift
                 // obviously if we can't switch, don't do this action
@@ -256,7 +259,7 @@ public class AIAction {
             }
         // If it requires a shift and we haven't shifted
         } else if(!_playerController.shifted) {
-            addWeight += _playerController.CanShift ? 5 : -100;
+            addWeight += _playerController.CanShift ? 25 : -100;
         }
 
         // If the bubble is on the bottom most lines 
@@ -270,13 +273,28 @@ public class AIAction {
     int OpponentChecks() {
         int addWeight = 0;
 
-        // If the player hasn't been punched yet
-        if(opponent.curState != PLAYER_STATE.HIT) {
-            addWeight += 20;
+        // If we are on their board
+        if(_playerController.shifted == true) {
+            // If the player hasn't been punched yet
+            if (opponent.curState != PLAYER_STATE.HIT) {
+                addWeight += 20;
 
-            // If the opponent is holding a bubble, try to stop them before they throw it!
-            if(opponent.heldBubble != null) {
-                addWeight += 35;
+                // If the opponent is holding a bubble, try to stop them before they throw it!
+                if (opponent.heldBubble != null) {
+                    addWeight += 50;
+                }
+            }
+
+        // If they are on our board
+        } else {
+            // If the player hasn't been punched yet
+            if (opponent.curState != PLAYER_STATE.HIT) {
+                addWeight += 75;
+
+                // If the opponent is holding a bubble, try to stop them before they throw it!
+                if (opponent.heldBubble != null) {
+                    addWeight += 50;
+                }
             }
         }
 
