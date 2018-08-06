@@ -2,10 +2,15 @@
 using System.Collections;
 
 public class AttackState : PlayerState {
+    float sign;
 
+    bool _isAttacking = true;
     float _attackSpeed = 10f;
     float _attackTime = 0.1f;
     float _attackTimer = 0;
+
+    float _cooldownTime = 0.3f;
+    float _cooldownTimer = 0.0f;
 
     // Use this for initialization
     public override void Initialize(PlayerController playerIn) {
@@ -15,7 +20,9 @@ public class AttackState : PlayerState {
 
         _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
 
+        _isAttacking = true;
         _attackTimer = 0f;
+        _cooldownTimer = 0f;
 
         // Activate attack animation thingy
         playerController.attackObj.gameObject.SetActive(true);
@@ -30,9 +37,32 @@ public class AttackState : PlayerState {
         //    playerController.ChangeState(PLAYER_STATE.IDLE);
         //}
 
-        _attackTimer += Time.deltaTime;
-        if(_attackTimer >= _attackTime) {
-            EndAttack();
+        if (_isAttacking) {
+            _attackTimer += Time.deltaTime;
+            if (_attackTimer >= _attackTime) {
+                EndAttack();
+            }
+        } else {
+            if (Mathf.Abs(playerController.velocity.x) > 0.5f) {
+                sign = Mathf.Sign(playerController.velocity.x);
+                playerController.velocity.x -= sign * 50 * playerController.Traction * Time.deltaTime;
+                if (sign > 0 && playerController.velocity.x < 0 ||
+                    sign < 0 && playerController.velocity.x > 0) {
+                    playerController.velocity.x = 0;
+                }
+            } else {
+                playerController.velocity.x = 0;
+            }
+
+            if (Mathf.Abs(playerController.velocity.x) < 10f) {
+                // Fall
+                playerController.ApplyGravity();
+            }
+
+            _cooldownTimer += Time.deltaTime;
+            if(_cooldownTimer >= _cooldownTime) {
+                ExitAttack();
+            }
         }
 
         //JumpMaxCheck();
@@ -50,6 +80,11 @@ public class AttackState : PlayerState {
     }
 
     void EndAttack() {
+        playerController.attackObj.gameObject.SetActive(false);
+        _isAttacking = false;
+    }
+
+    void ExitAttack() {
         playerController.attackObj.gameObject.SetActive(false);
         playerController.attackCooldownTimer = 0;
         playerController.ChangeState(PLAYER_STATE.IDLE);
