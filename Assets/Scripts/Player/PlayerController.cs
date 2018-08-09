@@ -391,8 +391,7 @@ public class PlayerController : Entity {
 
         // If we somehow go out of bounds
         if(collider.gameObject.tag == "KillPlane") {
-            // Reset to spawn position
-            transform.position = _spawnPos;
+            Respawn();
         }
 	}
 
@@ -441,6 +440,20 @@ public class PlayerController : Entity {
 
     public void ResetShiftTimer() {
         _shiftTimer = 0f;
+    }
+
+    public override void Respawn() {
+        base.Respawn();
+
+        // Reset to a spawn pos on the correct side of the stage
+        if (!shifted) {
+            // Reset to spawn position
+            transform.position = _spawnPos;
+        } else {
+            transform.position = new Vector3(_spawnPos.x + ((team == 0 ? 1 : -1) * 12.5f),
+                                            _spawnPos.y,
+                                            _spawnPos.z);
+        }
     }
 
     void GameEnded() {

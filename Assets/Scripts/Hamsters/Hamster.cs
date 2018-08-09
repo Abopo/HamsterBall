@@ -348,4 +348,13 @@ public class Hamster : Entity {
         moveSpeed = mSpeed;
         curMoveSpeed = moveSpeed;
     }
+
+    public override void Respawn() {
+        base.Respawn();
+
+        // Respawn into the hamster pipe
+        transform.position = _parentSpawner.SpawnPosition;
+        exitedPipe = false;
+        FaceUp();
+    }
 }

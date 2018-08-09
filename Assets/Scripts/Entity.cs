@@ -110,7 +110,6 @@ public class Entity : MonoBehaviour {
         curFacing = 0;
     }
 
-
     public virtual void CollisionResponseX(Collider2D collider) {
 
 	}
@@ -125,5 +124,9 @@ public class Entity : MonoBehaviour {
         _springing = true;
         // Restrict x velocity while rising
         velocity.x = 0;
+    }
+
+    public virtual void Respawn() {
+
     }
 }

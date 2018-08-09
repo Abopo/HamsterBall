@@ -42,6 +42,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
         set { _nextHamsterType = value; }
     }
 
+    public Vector3 SpawnPosition {
+        get { return _spawnPosition; }
+    }
+
     // Use this for initialization
     void Start() {
         //_spawnTime = 4;
