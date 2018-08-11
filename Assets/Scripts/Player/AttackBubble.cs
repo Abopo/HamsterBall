@@ -77,6 +77,9 @@ public class AttackBubble : MonoBehaviour {
 
         _playerController.aimCooldownTimer = 0.0f;
 
+        // Tell animator we've got a bubble
+        _playerController.Animator.SetBool("HoldingBall", true);
+
         // For now this is only for the AI
         _playerController.significantEvent.Invoke();
     }

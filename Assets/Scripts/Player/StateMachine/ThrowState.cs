@@ -29,7 +29,8 @@ public class ThrowState : PlayerState {
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 
-		aimingArrow = playerIn.transform.GetChild (1);
+        aimingArrow = playerIn.transform.GetComponentInChildren<AimingLine>(true).transform;
+		//aimingArrow = playerIn.transform.GetChild (3);
 		aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 90.0f);
 		aimingArrow.gameObject.SetActive (true);
 
@@ -52,8 +53,13 @@ public class ThrowState : PlayerState {
 
         throwTimer += Time.deltaTime;
 
+        // Make sure the aiming arrow is in the right position
+        aimingArrow.transform.position = new Vector3(playerController.bubblePosition.position.x,
+                                                    playerController.bubblePosition.position.y,
+                                                    -10);
+
         // If we've thrown the bubble and it has locked onto the board
-        if(_hasThrown && playerController.heldBubble.locked) {
+        if (_hasThrown && playerController.heldBubble.locked) {
             playerController.heldBubble = null;
             
             // Leave the Throw state
@@ -125,8 +131,12 @@ public class ThrowState : PlayerState {
                     }
                 }
             } else {
+                // TODO: Wait until the right frame of the throw animation to actually throw the bubble.
+                // Tell the animator we don't have a bubble anymore
+                playerController.Animator.SetBool("HoldingBall", false);
+
                 // Throw bubble!
-                Throw();
+                // Throw();
             }
         }
 	}

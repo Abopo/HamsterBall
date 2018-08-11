@@ -104,7 +104,7 @@ public class PlayerManager : MonoBehaviour {
         PlayerInfo newPlayer = new PlayerInfo();
         newPlayer.playerNum = _players.Count+1;
         newPlayer.controllerNum = -1;
-        newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BUB);
+        newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BOY1);
         newPlayer.team = -1;
         newPlayer.difficulty = 0;
         _players.Add(newPlayer);
@@ -115,7 +115,7 @@ public class PlayerManager : MonoBehaviour {
             PlayerInfo newPlayer = new PlayerInfo();
             newPlayer.playerNum = playerNum;
             newPlayer.controllerNum = controllerNum;
-            newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BUB);
+            newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BOY1);
             newPlayer.team = -1;
             newPlayer.difficulty = 0;
             _players.Add(newPlayer);
@@ -177,10 +177,19 @@ public class PlayerManager : MonoBehaviour {
     public CHARACTERNAMES GetNextAvailableCharacterUp(CHARACTERNAMES startChara) {
         CHARACTERNAMES character = startChara;
 
+        int counter = 0;
         while (IsCharacterTaken(character)) {
             character = character + 1;
             if(character >= CHARACTERNAMES.NUM_CHARACTERS) {
                 character = 0;
+            }
+
+            // If we've looped through the whole thing and haven't found an open slot
+            counter++;
+            if(counter >= (int)CHARACTERNAMES.NUM_CHARACTERS) {
+                // Leave and return the starting character
+                character = startChara;
+                break;
             }
         }
 
@@ -189,10 +198,19 @@ public class PlayerManager : MonoBehaviour {
     public CHARACTERNAMES GetNextAvailableCharacterDown(CHARACTERNAMES startChara) {
         CHARACTERNAMES character = startChara;
 
+        int counter = 0;
         while (IsCharacterTaken(character)) {
             character = character - 1;
             if (character < 0) {
                 character = CHARACTERNAMES.NUM_CHARACTERS-1;
+            }
+
+            // If we've looped through the whole thing and haven't found an open slot
+            counter++;
+            if (counter >= (int)CHARACTERNAMES.NUM_CHARACTERS) {
+                // Leave and return the starting character
+                character = startChara;
+                break;
             }
         }
 

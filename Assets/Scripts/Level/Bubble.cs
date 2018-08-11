@@ -286,23 +286,28 @@ public class Bubble : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Wall" && Mathf.Abs(_rigibody2D.velocity.x) > 0.1f) {
-            _rigibody2D.velocity = new Vector2(_rigibody2D.velocity.x * -1,
-                                               _rigibody2D.velocity.y);
+            // Make sure bubbles only bounce off of walls they are moving towards
+            if(_rigibody2D.velocity.x > 0 && other.transform.position.x > transform.position.x || 
+                _rigibody2D.velocity.x < 0 && other.transform.position.x < transform.position.x) {
+                // Bounce the bubble the opposite direction
+                _rigibody2D.velocity = new Vector2(_rigibody2D.velocity.x * -1,
+                                                   _rigibody2D.velocity.y);
 
-            // Banked combo effect stuff
-            _bankedPos = transform.position;
-            // Check which side we collided on
-            if (other.transform.position.x < transform.position.x) {
-                // Left side
-                _bankedPos.z = -1;
-            } else /*if(other.transform.position.x > transform.position.x)*/ {
-                // Right side
-                _bankedPos.z = 1;
+                // Banked combo effect stuff
+                _bankedPos = transform.position;
+                // Check which side we collided on
+                if (other.transform.position.x < transform.position.x) {
+                    // Left side
+                    _bankedPos.z = -1;
+                } else /*if(other.transform.position.x > transform.position.x)*/ {
+                    // Right side
+                    _bankedPos.z = 1;
+                }
+
+                // Earn some points for a wall bounce
+                _playerController.HomeBubbleManager.IncreaseScore(20);
             }
-
-            // Earn some points for a wall bounce
-            _playerController.HomeBubbleManager.IncreaseScore(20);
-		}
+        }
 		if (other.tag == "Bubble") {
 			if(!locked && other.GetComponent<Bubble>().locked) {
                 if (!PhotonNetwork.connectedAndReady || (GetComponent<PhotonView>().owner == PhotonNetwork.player)) {

@@ -20,6 +20,9 @@ public class EntityPhysics : MonoBehaviour {
     private Ray2D _ray;
     private RaycastHit2D _hit;
 
+    private float _stuckTimer = 0;
+    private float _stuckTime = 0.5f;
+
     private bool isTouchingCeiling;
     private int ceilingHitCount; // this is a counter for how much of the top of the player is colliding
     private bool isTouchingFloor;
@@ -148,7 +151,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = _pos.y + _center.y + _scaledRadius * -1;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
-            Debug.DrawRay(_ray.origin, _ray.direction * 0.05f);
+            //Debug.DrawRay(_ray.origin, _ray.direction * 0.05f);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.05f, collisionMask1);
             if (_hit) {
                 isTouchingFloor = true;
@@ -206,6 +209,11 @@ public class EntityPhysics : MonoBehaviour {
     void OnTriggerStay2D(Collider2D collider) {
         // If we are in a wall (layer 9) with a box collider
         if (collider.gameObject.layer == 9 && collider.GetComponent<BoxCollider2D>() != null) {
+            _stuckTimer += Time.deltaTime;
+            if(_stuckTimer < _stuckTime) {
+                return;
+            }
+
             // Figure out from which direction we are colliding
             int tempLayer = gameObject.layer;
             gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
@@ -289,6 +297,8 @@ public class EntityPhysics : MonoBehaviour {
                         break;
                 }
             }
+        } else {
+            _stuckTimer = 0f;
         }
     }
 }

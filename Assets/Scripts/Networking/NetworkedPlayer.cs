@@ -183,20 +183,34 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     void SetAnimatorController(CHARACTERNAMES charaName) {
         switch (charaName) {
+            /*
             case CHARACTERNAMES.BUB:
-                _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
                 break;
             case CHARACTERNAMES.NEGABUB:
-                _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
                 break;
             case CHARACTERNAMES.BOB:
-                _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
                 break;
             case CHARACTERNAMES.NEGABOB:
-                _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
                 break;
             case CHARACTERNAMES.PEPSIMAN:
-                _playerController.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
+                break;
+            */
+            case CHARACTERNAMES.BOY1:
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY2:
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY3:
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY4:
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
                 break;
         }
     }

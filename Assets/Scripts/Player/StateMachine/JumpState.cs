@@ -2,29 +2,43 @@
 using System.Collections;
 
 public class JumpState : PlayerState {
+    bool _jumped = false;
+    float _jumpForce;
+
 	// Use this for initialization
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 
+        _jumped = false;
+        _jumpForce = playerController.jumpForce;
+
         playerController.PlayerAudio.PlayJumpClip();
 
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
-		playerController.velocity = new Vector2(playerController.velocity.x, playerController.jumpForce);
 	}
 
 	// Update is called once per frame
 	public override void Update(){
+        if (!_jumped) {
+            // TODO: This can potentially get very ugly, look into a better way to check which animation the player is in
+            if (playerController.Animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jump") ||
+                playerController.Animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jump_Ball")) {
+                playerController.velocity = new Vector2(playerController.velocity.x, _jumpForce);
+                _jumped = true;
+            }
+        } else {
+            // Fall
+            playerController.ApplyGravity();
+
+            if (playerController.velocity.y < 0) {
+                playerController.ChangeState(PLAYER_STATE.FALL);
+            }
+        }
+
         JumpMaxCheck();
-		
-		// Fall
-		playerController.ApplyGravity();
+    }
 
-		if (playerController.velocity.y < 0) {
-			playerController.ChangeState(PLAYER_STATE.FALL);
-		}
-	}
-
-	public override void CheckInput(InputState inputState) {
+    public override void CheckInput(InputState inputState) {
         if(playerController.springing) {
             if (playerController.velocity.y <= 1) {
                 playerController.springing = false;
@@ -35,6 +49,7 @@ public class JumpState : PlayerState {
 
 		if(inputState.jump.isJustReleased) {
 			playerController.velocity.y /= 2;
+            _jumpForce /= 2;
 		}
 
 		if(inputState.bubble.isJustPressed && !playerController.IsInvuln) {

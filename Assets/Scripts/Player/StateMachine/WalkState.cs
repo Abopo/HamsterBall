@@ -44,7 +44,7 @@ public class WalkState : PlayerState {
         }
 
         if (inputState.right.isDown) {
-			if(_direction < 0) {
+            if (_direction < 0) {
 				_direction = 1;
 				playerController.Flip();
 			}

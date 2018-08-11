@@ -25,7 +25,6 @@ public class BubblePopAnimation : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
         _hamsterSprite = transform.GetChild(0).GetComponent<Rigidbody2D>();
         _popped = false;
     }
@@ -123,6 +122,7 @@ public class BubblePopAnimation : MonoBehaviour {
         _hamsterSprite.velocity = new Vector2(1f + rX, 4f + rY);
         _hamsterSprite.gravityScale = 2;
         _hamsterSprite.isKinematic = false;
+        _hamsterSprite.GetComponent<Animator>().SetInteger("State", 1);
 
         // Turn off normal bubble sprite and collision
         GetComponent<SpriteRenderer>().enabled = false;

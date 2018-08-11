@@ -48,16 +48,16 @@ public class PlayerSpawner : MonoBehaviour {
             PlayerController newPlayer;
             // If the player should be an AI
             if (tempPlayerInfo.controllerNum < 0) {
-                newPlayer = Instantiate(aiPlayerObj).GetComponent<PlayerController>();
+                newPlayer = Instantiate(aiPlayerObj).GetComponentInChildren<PlayerController>();
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
                 SetCharacterAI(tempPlayerInfo.characterAI, newPlayer);
             } else {
-                newPlayer = Instantiate(playerObj).GetComponent<PlayerController>();
+                newPlayer = Instantiate(playerObj).GetComponentInChildren<PlayerController>();
             }
             newPlayer.SetPlayerNum(tempPlayerInfo.playerNum);
             newPlayer.team = tempPlayerInfo.team;
             newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
-            newPlayer.GetComponent<Animator>().runtimeAnimatorController = FindAnimatorController(tempPlayerInfo.characterName);
+            newPlayer.GetComponentInChildren<Animator>().runtimeAnimatorController = FindAnimatorController(tempPlayerInfo.characterName);
 
             if (!gameManager.isSinglePlayer) {
                 SetupSwitchMeter(newPlayer);
@@ -115,6 +115,7 @@ public class PlayerSpawner : MonoBehaviour {
     RuntimeAnimatorController FindAnimatorController(CHARACTERNAMES character) {
         RuntimeAnimatorController controller = null;
         switch(character) {
+            /*
             case CHARACTERNAMES.BUB:
                 controller = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
                 break;
@@ -129,6 +130,19 @@ public class PlayerSpawner : MonoBehaviour {
                 break;
             case CHARACTERNAMES.PEPSIMAN:
                 controller = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
+                break;
+            */
+            case CHARACTERNAMES.BOY1:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY2:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY3:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY4:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
                 break;
         }
 

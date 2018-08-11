@@ -61,7 +61,7 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
             newPlayer.playerNum = tempPlayerInfo.playerNum;
             newPlayer.team = tempPlayerInfo.team;
             //newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
-            newPlayer.GetComponent<Animator>().runtimeAnimatorController = FindAnimatorController(tempPlayerInfo.characterName);
+            newPlayer.GetComponentInChildren<Animator>().runtimeAnimatorController = FindAnimatorController(tempPlayerInfo.characterName);
 
             SetupSwitchMeter(newPlayer);
 
@@ -82,6 +82,7 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     RuntimeAnimatorController FindAnimatorController(CHARACTERNAMES character) {
         RuntimeAnimatorController controller = null;
         switch (character) {
+            /*
             case CHARACTERNAMES.BUB:
                 controller = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
                 break;
@@ -96,6 +97,19 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
                 break;
             case CHARACTERNAMES.PEPSIMAN:
                 controller = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
+                break;
+            */
+            case CHARACTERNAMES.BOY1:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY2:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY3:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY4:
+                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
                 break;
         }
 

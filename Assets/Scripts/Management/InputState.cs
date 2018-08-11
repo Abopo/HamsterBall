@@ -144,7 +144,7 @@ public class InputState {
             }
             // Get horizontal input, turn it into button format.
             float hor = Input.GetAxis("Horizontal 1");
-			if(hor < -0.1f) {
+            if (hor < -0.1f) {
 				currInput = GetLeft(currInput);
 			} else if(hor > 0.1f) {
 				currInput = GetRight(currInput);
@@ -370,7 +370,8 @@ public class InputState {
 			currInput.left.isJustPressed = false;
 		}
 		currInput.left.isJustReleased = false;
-		
+
+        currInput.right.isDown = false;
 		if(!currInput.right.isJustReleased) {
 			currInput.right.isJustReleased = true;
             currInput.rightJustPressed = false;
@@ -378,7 +379,7 @@ public class InputState {
 			currInput.right.isJustReleased = false;
 		}
 
-		return currInput;
+        return currInput;
 	}
 
 	static InputState GetRight(InputState currInput) {
@@ -390,7 +391,8 @@ public class InputState {
 			currInput.right.isJustPressed = false;
 		}
 		currInput.right.isJustReleased = false;
-		
+
+        currInput.left.isDown = false;
 		if(!currInput.left.isJustReleased) {
 			currInput.left.isJustReleased = true;
             currInput.leftJustPressed = false;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public enum CHARACTERNAMES { BUB = 0, NEGABUB, BOB, NEGABOB, PEPSIMAN, NUM_CHARACTERS};
+public enum CHARACTERNAMES { /*BUB = 0, NEGABUB, BOB, NEGABOB, PEPSIMAN,*/ BOY1 = 0, BOY2, BOY3, BOY4, NUM_CHARACTERS};
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
@@ -85,14 +85,14 @@ public class Character : MonoBehaviour {
         _active = false;
 
         _initialPos = transform.position;
-        _animator = GetComponent<Animator>();
 
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
         _inputState = new InputState();
 
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _audioSource = GetComponent<AudioSource>();
+        _animator = GetComponentInChildren<Animator>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
+        _audioSource = GetComponent<AudioSource>();
         _activateClip = Resources.Load<AudioClip>("Audio/SFX/Activate_Character");
         _deactivateClip = Resources.Load<AudioClip>("Audio/SFX/Deactivate_Character");
         _moveClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
@@ -365,6 +365,7 @@ public class Character : MonoBehaviour {
     // Sets the sprite based on the current character
     void SetAnimator() {
         switch(_characterName) {
+            /*
             case CHARACTERNAMES.BUB:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
                 break;
@@ -379,6 +380,19 @@ public class Character : MonoBehaviour {
                 break;
             case CHARACTERNAMES.PEPSIMAN:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
+                break;
+            */
+            case CHARACTERNAMES.BOY1:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY2:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY3:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY4:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
                 break;
         }
 

@@ -73,6 +73,9 @@ public class HitState : PlayerState {
         if(Random.Range(0, 11) > 5) {
             hamster.Flip();
         }
+
+        // Tell the animator we don't have a bubble anymore
+        playerController.Animator.SetBool("HoldingBall", false);
     }
 
     void DropNetworkHamster() {
@@ -98,6 +101,9 @@ public class HitState : PlayerState {
 
         // Use the network instantiate method
         PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", playerController.heldBubble.transform.position, Quaternion.identity, 0, hamsterInfo);
+
+        // Tell the animator we don't have a bubble anymore
+        playerController.Animator.SetBool("HoldingBall", false);
     }
 
     // Update is called once per frame

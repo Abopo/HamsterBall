@@ -4,7 +4,6 @@ using Photon;
 using System.Collections;
 
 [RequireComponent (typeof(EntityPhysics))]
-[RequireComponent (typeof(Animator))]
 public class PlayerController : Entity {
 	public float walkForce; // 50
 	public float walkSpeed; // 5
@@ -15,6 +14,7 @@ public class PlayerController : Entity {
 	public PlayerState currentState;
 	public PLAYER_STATE curState;
 	public GameObject attackBubble;
+    public Transform bubblePosition;
 	public Bubble heldBubble;
     public AttackObject attackObj;
     public ShiftPortal shiftPortal;
@@ -107,9 +107,9 @@ public class PlayerController : Entity {
     public bool aiControlled;
     public bool springing;
 
+    public SpriteRenderer spriteRenderer;
     PlayerManager _playerManager;
     GameManager _gameManager;
-    SpriteRenderer _spriteRenderer;
     PlayerAudio _playerAudio;
     BubbleManager _homeBubbleManager;
     Vector3 _spawnPos;
@@ -139,8 +139,8 @@ public class PlayerController : Entity {
 
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.gameOverEvent.AddListener(GameEnded);
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerAudio = GetComponent<PlayerAudio>();
+        _animator = GetComponentInChildren<Animator>();
 
         _spawnPos = transform.position;
 
@@ -271,9 +271,10 @@ public class PlayerController : Entity {
 		if (heldBubble != null && !heldBubble.wasThrown) {
 			walkSpeed = 2;
 			jumpMoveMax = 2;
-			heldBubble.transform.position = new Vector3 (transform.position.x,
-			                                             transform.position.y + 0.5f,
-			                                             transform.position.z-5);
+			heldBubble.transform.position = new Vector3 (bubblePosition.position.x,
+                                                         bubblePosition.position.y,
+                                                         bubblePosition.position.z-5);
+            
 		} else {
 			walkSpeed = 5;
 			jumpMoveMax = 5;
@@ -331,10 +332,10 @@ public class PlayerController : Entity {
         if (_blinkTimer > _blinkTime) {
             // Blink sprite
             if (_blinked) {
-                _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
                 _blinked = false;
             } else {
-                _spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
                 _blinked = true;
             }
             _blinkTimer = 0f;
@@ -344,7 +345,7 @@ public class PlayerController : Entity {
         if (_invulnTimer >= _invulnTime) {
             // Stop invuln time
             _isInvuln = false;
-            _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         }
     }
 
@@ -456,8 +457,12 @@ public class PlayerController : Entity {
         }
     }
 
+
     void GameEnded() {
         ChangeState(PLAYER_STATE.IDLE);
         // Do a win/lose animation here or something
+
+        //_animator.SetBool("Won Game", true);
+        //_animator.SetInteger("PlayerState", 9);
     }
 }
