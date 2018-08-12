@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013890957008}
   - component: {fileID: 212000013370802308}
+  - component: {fileID: 114671548659744038}
   m_Layer: 0
   m_Name: AimingArrow
   m_TagString: Untagged
@@ -115,22 +116,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!1 &1000013513010898
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4000012607297920}
-  - component: {fileID: 212000010954691406}
-  m_Layer: 0
-  m_Name: TrapBubbleSprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1000013594012978
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,6 +152,7 @@ GameObject:
   - component: {fileID: 4756504335171006}
   - component: {fileID: 212622639856712046}
   - component: {fileID: 95320067421082528}
+  - component: {fileID: 114352491722543578}
   m_Layer: 11
   m_Name: Sprite
   m_TagString: Untagged
@@ -215,20 +201,7 @@ Transform:
   m_Children:
   - {fileID: 4000014033851250}
   m_Father: {fileID: 4000014043268224}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4000012607297920
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013513010898}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.055951342, y: -0.083926685, z: -1}
-  m_LocalScale: {x: 2.093174, y: 2.0931761, z: 2.0931761}
-  m_Children: []
-  m_Father: {fileID: 4000014043268224}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000013877970040
 Transform:
@@ -277,13 +250,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013594012978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.913576, y: -0.7940938, z: -3}
+  m_LocalPosition: {x: 7.7313604, y: -2.4958959, z: -3}
   m_LocalScale: {x: 0.59110194, y: 0.5911014, z: 0.5911014}
   m_Children:
   - {fileID: 4756504335171006}
   - {fileID: 4000010637442850}
   - {fileID: 4000013890957008}
-  - {fileID: 4000012607297920}
   - {fileID: 4000014252540040}
   - {fileID: 4000011581673038}
   m_Father: {fileID: 0}
@@ -300,7 +272,7 @@ Transform:
   m_LocalScale: {x: 1.268817, y: 1.268817, z: 1}
   m_Children: []
   m_Father: {fileID: 4000014043268224}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4169671524289446
 Transform:
@@ -401,9 +373,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.18}
   serializedVersion: 2
-  m_Radius: 0.5104412
+  m_Radius: 0.54
 --- !u!58 &58000013240367062
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -637,7 +609,7 @@ MonoBehaviour:
   jumpMoveMax: 5
   curState: 0
   attackBubble: {fileID: 1000011817201432}
-  bubblePosition: {fileID: 0}
+  bubblePosition: {fileID: 4169671524289446}
   heldBubble: {fileID: 0}
   attackObj: {fileID: 114000012992898616}
   shiftPortal: {fileID: 114000013651031820}
@@ -649,13 +621,14 @@ MonoBehaviour:
   atkModifier: 0
   shifted: 0
   bubbleCooldownTimer: 0
-  bubbleCooldownTime: 0.15
+  bubbleCooldownTime: 0.25
   attackCooldownTimer: 0
   attackCooldownTime: 0.3
   aimCooldownTimer: 0
   aimCooldownTime: 0.2
   aiControlled: 0
   springing: 0
+  spriteRenderer: {fileID: 212622639856712046}
   significantEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -767,13 +740,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76f72c30cbf86449a72722ec6627d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114352491722543578
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1056040014052552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44600fb06a5ad474aaea757cd6fae9d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114671548659744038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010318516620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e1afd85839fd947be992dfe3425257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212000010554698640
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011817201432}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_MotionVectors: 1
@@ -841,47 +836,6 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 864f22377c72cee4faa7bc813f9d0f8c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
---- !u!212 &212000010954691406
-SpriteRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013513010898}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d5ce140d24ecfa6488b1ec1894f3c05e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -19,7 +19,11 @@ public class LocalPlayMenu : MonoBehaviour {
 
     public void StandardVersus() {
         _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
-        SceneManager.LoadScene("CharacterSelect");
+        //if (_gameManager.demoMode) {
+            SceneManager.LoadScene("DemoCharacterSelect");
+        //} else {
+        //    SceneManager.LoadScene("CharacterSelect");
+        //}
     }
 
     public void PartyVersus() {

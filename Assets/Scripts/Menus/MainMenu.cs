@@ -73,10 +73,6 @@ public class MainMenu : MonoBehaviour {
         SceneManager.LoadScene("LocalPlay");
     }
 
-    public void LoadCharacterSelect() {
-        SceneManager.LoadScene("CharacterSelect");
-    }
-
     public void LoadOnline() {
         _gameManager.isOnline = true;
         _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);

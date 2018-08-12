@@ -23,8 +23,8 @@ public class JumpState : PlayerState {
             // TODO: This can potentially get very ugly, look into a better way to check which animation the player is in
             if (playerController.Animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jump") ||
                 playerController.Animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jump_Ball")) {
-                playerController.velocity = new Vector2(playerController.velocity.x, _jumpForce);
-                _jumped = true;
+
+                Jump();
             }
         } else {
             // Fall
@@ -67,6 +67,11 @@ public class JumpState : PlayerState {
         BaseJumpMovement(inputState);
     }
 
+    void Jump() {
+        playerController.velocity = new Vector2(playerController.velocity.x, _jumpForce);
+        _jumped = true;
+    }
+
     // returns the PLAYER_STATE that represents this state
     public override PLAYER_STATE getStateType(){
 		return PLAYER_STATE.JUMP;
@@ -74,5 +79,8 @@ public class JumpState : PlayerState {
 
 	//	use this for destruction
 	public override void End(){
-	}
+        if(!_jumped) {
+            Jump();
+        }
+    }
 }

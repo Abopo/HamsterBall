@@ -5,6 +5,8 @@ public class BubbleState : PlayerState {
 	float attackTime;
 	float attackTimer;
 
+    bool _swingDone;
+
 	// Use this for initialization
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
@@ -15,17 +17,17 @@ public class BubbleState : PlayerState {
 
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
 
-		playerController.attackBubble.SetActive (true);
-        playerController.velocity.x = 0f;
         playerController.bubbleCooldownTimer = 0;
+
+        _swingDone = false;
     }
 
-	// Update is called once per frame
-	public override void Update(){
-		attackTimer += Time.deltaTime;
-		if (attackTimer > attackTime) {
-			playerController.ChangeState(PLAYER_STATE.IDLE);
-		}
+    // Update is called once per frame
+    public override void Update(){
+		//attackTimer += Time.deltaTime;
+		//if (attackTimer > attackTime) {
+		//	playerController.ChangeState(PLAYER_STATE.IDLE);
+		//}
 
         JumpMaxCheck();
         
@@ -38,11 +40,35 @@ public class BubbleState : PlayerState {
 			playerController.velocity.y /= 2;
 		}
 
-        LockedJumpMovement(inputState);
+        BaseJumpMovement(inputState);
+
+        if(_swingDone) {
+            if(inputState.jump.isJustPressed) {
+                playerController.ChangeState(PLAYER_STATE.JUMP);
+            } else if(inputState.attack.isJustPressed) {
+                playerController.ChangeState(PLAYER_STATE.ATTACK);
+            } else if(inputState.shift.isJustPressed) {
+                playerController.ChangeState(PLAYER_STATE.SHIFT);
+            }
+        }
     }
 
-	// returns the PLAYER_STATE that represents this state
-	public override PLAYER_STATE getStateType(){
+    public void Activate() {
+        playerController.attackBubble.SetActive(true);
+        playerController.velocity.x = 0f;
+    }
+
+    public void Deactivate() {
+        playerController.attackBubble.SetActive(false);
+        _swingDone = true;
+    }
+
+    public void Finish() {
+        playerController.ChangeState(PLAYER_STATE.IDLE);
+    }
+
+    // returns the PLAYER_STATE that represents this state
+    public override PLAYER_STATE getStateType(){
 		return PLAYER_STATE.BUBBLE;
 	}
 

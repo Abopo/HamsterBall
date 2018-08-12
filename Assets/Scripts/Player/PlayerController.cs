@@ -31,7 +31,7 @@ public class PlayerController : Entity {
 
 	bool _canShift;
     public bool CanShift {
-        get { return _canShift; }
+        get { return (_canShift && curState != PLAYER_STATE.HIT && curState != PLAYER_STATE.SHIFT && curState != PLAYER_STATE.THROW); }
     }
     float _shiftCooldownTime;
 	public float ShiftCooldownTime {
@@ -243,7 +243,7 @@ public class PlayerController : Entity {
             inputState = InputState.GetInput(inputState);
         }
 
-        if (inputState.shift.isJustPressed && _canShift && curState != PLAYER_STATE.HIT && curState != PLAYER_STATE.SHIFT) {
+        if (inputState.shift.isJustPressed && CanShift) {
 			// Shift to opposite field.
 			if(shifted) {
                 _shiftCooldownTimer = 0f;

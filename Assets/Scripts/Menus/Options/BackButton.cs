@@ -5,10 +5,13 @@ using System.Collections;
 
 [RequireComponent(typeof(Button))]
 public class BackButton : MenuOption {
+    Image _image;
 
     // Use this for initialization
     protected override void Start () {
         base.Start();
+
+        _image = GetComponent<Image>();
 
         if(SceneManager.GetActiveScene().name == "CharacterSelect" && FindObjectOfType<GameManager>().demoMode) {
             gameObject.SetActive(false);
@@ -24,6 +27,10 @@ public class BackButton : MenuOption {
         base.Select();
 
         GetComponent<Button>().onClick.Invoke();
+    }
+
+    public void Press() {
+
     }
 
     public void BackToMainMenu() {

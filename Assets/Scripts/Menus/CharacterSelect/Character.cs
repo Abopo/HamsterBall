@@ -220,8 +220,8 @@ public class Character : MonoBehaviour {
 
         _upArrow.Activate();
         _downArrow.Activate();
-        _upArrow.transform.position = new Vector3(transform.position.x, transform.position.y+0.65f, 0);
-        _downArrow.transform.position = new Vector3(transform.position.x, transform.position.y-0.7f, 0);
+        _upArrow.transform.position = new Vector3(transform.position.x, transform.position.y+ 1.14f, 0);
+        _downArrow.transform.position = new Vector3(transform.position.x, transform.position.y-1.3f, 0);
     }
 
     public void MoveLeft() {

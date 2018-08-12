@@ -271,7 +271,7 @@ public class GameManager : MonoBehaviour {
             PhotonNetwork.LoadLevel("NetworkedCharacterSelect");
         } else {
             isOnline = false;
-            SceneManager.LoadScene("CharacterSelect");
+            SceneManager.LoadScene("DemoCharacterSelect");
         }
     }
 

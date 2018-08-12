@@ -272,11 +272,7 @@ public class InputState {
         switch(controllerNum) {
             case 1:
             case 2:
-                if (Input.GetButtonDown("Up " + (controllerNum)) ||
-                   Input.GetButtonDown("Down " + (controllerNum)) ||
-                   Input.GetButtonDown("Left " + (controllerNum)) ||
-                   Input.GetButtonDown("Right " + (controllerNum)) ||
-                   Input.GetButtonDown("Jump " + (controllerNum)) ||
+                if (Input.GetButtonDown("Jump " + (controllerNum)) ||
                    Input.GetButtonDown("Bubble " + (controllerNum)) ||
                    Input.GetButtonDown("Attack " + (controllerNum)) ||
                    Input.GetButtonDown("Shift " + (controllerNum))) {

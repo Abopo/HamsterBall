@@ -5,6 +5,11 @@ using System.Collections;
 public class Team : MonoBehaviour {
     public Text readyText1;
     public Text readyText2;
+    public SpriteRenderer readySprite1;
+    public SpriteRenderer readySprite2;
+    public Sprite[] readyPSprites = new Sprite[4];
+    public Sprite[] readyCSprites = new Sprite[4];
+
     public GameObject hamsterMeter;
     public GameObject hamsterTallyObj;
 
@@ -26,8 +31,10 @@ public class Team : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        readyText1.gameObject.SetActive(false);
-        readyText2.gameObject.SetActive(false);
+        //readyText1.gameObject.SetActive(false);
+        //readyText2.gameObject.SetActive(false);
+        readySprite1.gameObject.SetActive(false);
+        readySprite2.gameObject.SetActive(false);
 
         numPlayers = 0;
 
@@ -54,19 +61,22 @@ public class Team : MonoBehaviour {
             _character1 = character;
             // Move character sprite to corresponding position
             _character1.transform.position = _char1Pos;
-            SetReadyText(readyText1, character);
+            //SetReadyText(readyText1, character);
+            SetReadyText(readySprite1, character);
             numPlayers++;
         } else if(_character2 == null) {
             _character2 = character;
             // Move character sprite to corresponding position
             _character2.transform.position = _char2Pos;
-            SetReadyText(readyText2, character);
+            //SetReadyText(readyText2, character);
+            SetReadyText(readySprite2, character);
             numPlayers++;
         }
     }
 
-    void SetReadyText(Text rText, Character chara) {
+    void SetReadyText(SpriteRenderer rSprite, Character chara) {
         // Show Ready Text
+        /*
         if (chara.isAI) {
             rText.text = "C" + chara.PlayerNum + " Ready!\nV";
         } else {
@@ -76,9 +86,16 @@ public class Team : MonoBehaviour {
                 rText.text = "P" + chara.PlayerNum + " Ready!\nV";
             }
         }
+        */
+
+        if (chara.isAI) {
+            rSprite.sprite = readyCSprites[chara.PlayerNum - 1];
+        } else {
+            rSprite.sprite = readyPSprites[chara.PlayerNum - 1];
+        }
 
         // Set proper button prompt
-        Text addAIText = rText.transform.GetChild(0).GetComponent<Text>();
+        Text addAIText = rSprite.transform.GetChild(0).GetComponent<Text>();
         // If using keyboard
         if(chara.ControllerNum == 1) {
             addAIText.text = "V Key\nAdd AI Player";
@@ -88,11 +105,11 @@ public class Team : MonoBehaviour {
             addAIText.text = "X BUTTON\nAdd AI Player";
         }
 
-        rText.gameObject.SetActive(true);
+        rSprite.gameObject.SetActive(true);
         if(chara.isAI) {
-            rText.transform.GetChild(0).gameObject.SetActive(false);
+            rSprite.transform.GetChild(0).gameObject.SetActive(false);
         } else {
-            rText.transform.GetChild(0).gameObject.SetActive(true);
+            rSprite.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 
@@ -100,11 +117,13 @@ public class Team : MonoBehaviour {
         character.transform.localScale = new Vector3(1f, 1f, 1f);
         if (_character1 == character) {
             _character1 = null;
-            readyText1.gameObject.SetActive(false);
+            //readyText1.gameObject.SetActive(false);
+            readySprite1.gameObject.SetActive(false);
             numPlayers--;
         } else if(_character2 == character) {
             _character2 = null;
-            readyText2.gameObject.SetActive(false);
+            //readyText2.gameObject.SetActive(false);
+            readySprite2.gameObject.SetActive(false);
             numPlayers--;
         }
     }

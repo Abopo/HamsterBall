@@ -18,6 +18,9 @@ public class ShiftState : PlayerState {
         _shiftTimer = 0f;
         _oldScale = playerController.transform.localScale;
 
+        // Slow the player to a stop, even if in midair
+        StopPlayerMovement();
+
         playerController.PlayerAudio.PlayShiftClip();
 
         ActivateShiftPortal();
@@ -44,8 +47,6 @@ public class ShiftState : PlayerState {
     
     // Update is called once per frame
     public override void Update() {
-        // Slow the player to a stop, even if in midair
-        StopPlayerMovement();
 
         _shiftTimer += Time.deltaTime;
         if(_shiftTimer >= _shiftTime/2) {
@@ -76,16 +77,16 @@ public class ShiftState : PlayerState {
     }
 
     void StopPlayerMovement() {
-        if (Mathf.Abs(playerController.velocity.x) > 0.5f) {
-            playerController.velocity.x -= Mathf.Sign(playerController.velocity.x) * playerController.walkForce * 1.5f * Time.deltaTime;
-        } else {
+        //if (Mathf.Abs(playerController.velocity.x) > 0.5f) {
+        //    playerController.velocity.x -= Mathf.Sign(playerController.velocity.x) * playerController.walkForce * 1.5f * Time.deltaTime;
+        //} else {
             playerController.velocity.x = 0;
-        }
-        if (Mathf.Abs(playerController.velocity.y) > 0.5f) {
-            playerController.velocity.y -= Mathf.Sign(playerController.velocity.y) * playerController.jumpForce * 5f * Time.deltaTime;
-        } else {
+        //}
+        //if (Mathf.Abs(playerController.velocity.y) > 0.5f) {
+        //    playerController.velocity.y -= Mathf.Sign(playerController.velocity.y) * playerController.jumpForce * 5f * Time.deltaTime;
+        //} else {
             playerController.velocity.y = 0;
-        }
+        //}
     }
 
     // returns the PLAYER_STATE that represents this state

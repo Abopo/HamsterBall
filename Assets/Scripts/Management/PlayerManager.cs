@@ -239,7 +239,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void SceneChanged(Scene scene, LoadSceneMode mode) {
         // If we've gone back to the main menu or reloaded the character select screen
-        if (scene.name == "MainMenu" || scene.name == "CharacterSelect" || scene.name == "NetworkedCharacterSelect") {
+        if (scene.name == "MainMenu" || scene.name == "CharacterSelect" || scene.name == "DemoCharacterSelect" || scene.name == "NetworkedCharacterSelect") {
             // Clear players
             ClearAllPlayers();
         }

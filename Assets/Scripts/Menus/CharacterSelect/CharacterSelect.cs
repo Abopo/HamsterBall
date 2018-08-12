@@ -125,8 +125,8 @@ public class CharacterSelect : MonoBehaviour {
 
         // Joystick 1
         if (!_assignedController3) {
-            if (Input.GetButtonDown("Joystick Attack 1")) {
-                BackToMainMenu();
+            if (Input.GetButtonDown("Joystick Attack 1") && !_gameManager.demoMode) {
+                BackToPreviousMenu();
             } else if (InputState.GetAnyButtonDown(3)) {
                 AddCharacter(3);
             }
@@ -141,8 +141,8 @@ public class CharacterSelect : MonoBehaviour {
 
         // Joystick 2
         if (!_assignedController4) {
-            if (Input.GetButtonDown("Joystick Attack 2")) {
-                BackToMainMenu();
+            if (Input.GetButtonDown("Joystick Attack 2") && !_gameManager.demoMode) {
+                BackToPreviousMenu();
             } else if (InputState.GetAnyButtonDown(4)) {
                 AddCharacter(4);
             }
@@ -157,8 +157,8 @@ public class CharacterSelect : MonoBehaviour {
 
         // Joystick 3
         if (!_assignedController5) {
-            if (Input.GetButtonDown("Joystick Attack 3")) {
-                BackToMainMenu();
+            if (Input.GetButtonDown("Joystick Attack 3") && !_gameManager.demoMode) {
+                BackToPreviousMenu();
             } else if (InputState.GetAnyButtonDown(5)) {
                 AddCharacter(5);
             }
@@ -173,8 +173,8 @@ public class CharacterSelect : MonoBehaviour {
 
         // Joystick 4
         if (!_assignedController6) {
-            if (Input.GetButtonDown("Joystick Attack 4")) {
-                BackToMainMenu();
+            if (Input.GetButtonDown("Joystick Attack 4") && !_gameManager.demoMode) {
+                BackToPreviousMenu();
             } else if (InputState.GetAnyButtonDown(6)) {
                 AddCharacter(6);
             }
@@ -474,7 +474,7 @@ public class CharacterSelect : MonoBehaviour {
         }
     }
 
-    public void BackToMainMenu() {
-        SceneManager.LoadScene("MainMenu");
+    public void BackToPreviousMenu() {
+        SceneManager.LoadScene("LocalPlay");
     }
 }
