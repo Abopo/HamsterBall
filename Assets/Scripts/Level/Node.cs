@@ -113,7 +113,7 @@ public class Node : MonoBehaviour {
             for (float j = -0.2f; j < 0.4f; j += 0.2f) {
                 rayDir = new Vector2(-1 + (i * 0.45f) + j / 2, -1);
                 origin = new Vector2(transform.position.x + j, transform.position.y);
-                hit = Physics2D.Raycast(origin, rayDir, 10f, checkMask);
+                hit = Physics2D.Raycast(origin, rayDir, 50f, checkMask);
                 if (hit) {
                     if (hit.transform.tag == "Platform") {
                         hitCount++;

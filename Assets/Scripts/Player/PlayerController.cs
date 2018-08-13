@@ -380,7 +380,7 @@ public class PlayerController : Entity {
 	void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.gameObject.layer == 12 && team != collider.GetComponent<AttackObject>().team/* && shifted */&& !_isInvuln && curState != PLAYER_STATE.SHIFT && canBeHit) {
 			ChangeState(PLAYER_STATE.HIT);
-            ((HitState)currentState).Knockback((int)Mathf.Sign(transform.position.x - collider.transform.position.x));
+            ((HitState)GetPlayerState(PLAYER_STATE.HIT)).Knockback((int)Mathf.Sign(transform.position.x - collider.transform.position.x));
             
             //_canShift = false;
 			//_shiftCooldownTimer = 0;

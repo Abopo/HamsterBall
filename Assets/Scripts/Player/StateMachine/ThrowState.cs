@@ -59,11 +59,14 @@ public class ThrowState : PlayerState {
                                                     -10);
 
         // If we've thrown the bubble and it has locked onto the board
-        if (_hasThrown && playerController.heldBubble.locked) {
+        if (_hasThrown && (playerController.heldBubble == null || playerController.heldBubble.locked)) {
             playerController.heldBubble = null;
             
             // Leave the Throw state
             playerController.ChangeState(PLAYER_STATE.IDLE);
+        } else if(!_hasThrown && playerController.heldBubble != null) {
+            // Make sure the player can't get stuck in the aim state befor throwing
+            playerController.Animator.SetBool("HoldingBall", true);
         }
     }
 
@@ -131,10 +134,10 @@ public class ThrowState : PlayerState {
                     }
                 }
             } else {
-                // TODO: Wait until the right frame of the throw animation to actually throw the bubble.
                 // Tell the animator we don't have a bubble anymore
                 playerController.Animator.SetBool("HoldingBall", false);
 
+                _hasThrown = true;
                 // Throw bubble!
                 // Throw();
             }
@@ -154,8 +157,6 @@ public class ThrowState : PlayerState {
         if(playerController.heldBubble == null) {
             playerController.ChangeState(PLAYER_STATE.IDLE);
         }
-
-        _hasThrown = true;
 
         if (playerController.shifted) {
             // If you are on the opponent side, make the bubble work on their board.
