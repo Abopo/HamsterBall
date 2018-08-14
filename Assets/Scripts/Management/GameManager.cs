@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour {
         PlayerPrefSetup();
 
         //QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 200;
+        Application.targetFrameRate = 200;
     }
 
     void PlayerPrefSetup() {
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour {
     void Start () {
         DontDestroyOnLoad(transform.gameObject);
 
-        SetScreenResolution();
+        //SetScreenResolution();
 
         ResetValues();
 

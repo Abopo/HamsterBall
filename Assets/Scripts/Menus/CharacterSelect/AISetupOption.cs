@@ -46,7 +46,7 @@ public class AISetupOption : MenuOption {
     }
 
     protected override void Select() {
-        base.Select();
+        //base.Select();
     }
 
     public void IncreaseAIDifficulty() {
