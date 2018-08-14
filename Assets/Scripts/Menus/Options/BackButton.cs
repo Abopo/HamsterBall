@@ -13,7 +13,7 @@ public class BackButton : MenuOption {
 
         _image = GetComponent<Image>();
 
-        if(SceneManager.GetActiveScene().name == "CharacterSelect" && FindObjectOfType<GameManager>().demoMode) {
+        if(SceneManager.GetActiveScene().name == "DemoCharacterSelect" && FindObjectOfType<GameManager>().demoMode) {
             gameObject.SetActive(false);
         }
 	}

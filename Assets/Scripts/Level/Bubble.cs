@@ -371,6 +371,9 @@ public class Bubble : MonoBehaviour {
         _rigibody2D.velocity = Vector2.zero;
         locked = true;
 
+        // Remove the held bubble of the player controller
+        _playerController.heldBubble = null;
+
         if (_homeBubbleManager.LastBubbleAdded != null) {
             _homeBubbleManager.LastBubbleAdded.canCombo = true;
         }

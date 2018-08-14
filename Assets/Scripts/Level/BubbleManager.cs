@@ -59,6 +59,7 @@ public class BubbleManager : MonoBehaviour {
     int _comboCount = -1;
     //int _scoreTotal = 0;
     public int matchCount = 0;
+    public bool wonGame;
     bool _gameOver = false;
 
     Bubble[] _bubbles;
@@ -986,8 +987,16 @@ public class BubbleManager : MonoBehaviour {
     public void EndGame(int result) {
         _gameOver = true;
 
+        if(result == 0 || result == 1) {
+            wonGame = true;
+            _enemyBubbleManager.wonGame = false;
+        } else {
+            wonGame = false;
+            _enemyBubbleManager.wonGame = true;
+        }
+
         // Clear out starting bubbles to prepare for next round
-        for(int i = 0; i < startingBubbleInfo.Length; ++i) {
+        for (int i = 0; i < startingBubbleInfo.Length; ++i) {
             startingBubbleInfo[i].isSet = false;
         }
 

@@ -45,7 +45,7 @@ public class BubbleState : PlayerState {
         if(_swingDone) {
             if(inputState.jump.isJustPressed) {
                 playerController.ChangeState(PLAYER_STATE.JUMP);
-            } else if(inputState.attack.isJustPressed) {
+            } else if(inputState.attack.isJustPressed && playerController.heldBubble == null) {
                 playerController.ChangeState(PLAYER_STATE.ATTACK);
             } else if(inputState.shift.isJustPressed) {
                 playerController.ChangeState(PLAYER_STATE.SHIFT);

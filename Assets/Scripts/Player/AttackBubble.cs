@@ -20,23 +20,28 @@ public class AttackBubble : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Hamster" && other.GetComponent<Hamster>().exitedPipe &&  _playerController.heldBubble == null) {
-            // If we are networked
-            if (PhotonNetwork.connectedAndReady) {
-                // If we are the local client and aren't already trying to catch a hamster
-                if (_playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
-                    // Catch the hamster
-                    CatchHamster(other.GetComponent<Hamster>());
-                    if (PhotonNetwork.isMasterClient) {
-                        // Tell other clients that a hamster was caught
-                        _playerController.GetComponent<PhotonView>().RPC("HamsterCaught", PhotonTargets.All, other.GetComponent<Hamster>().hamsterNum);
-                    } else {
-                        // Have the master client double check that it's ok
-                        _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, other.GetComponent<Hamster>().hamsterNum);
+		if (other.tag == "Hamster" && _playerController.heldBubble == null) {
+            // && other.GetComponent<Hamster>().exitedPipe && 
+            Hamster hamster = other.GetComponent<Hamster>();
+
+            if (hamster.exitedPipe && !hamster.wasCaught) {
+                // If we are networked
+                if (PhotonNetwork.connectedAndReady) {
+                    // If we are the local client and aren't already trying to catch a hamster
+                    if (_playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
+                        // Catch the hamster
+                        CatchHamster(hamster);
+                        if (PhotonNetwork.isMasterClient) {
+                            // Tell other clients that a hamster was caught
+                            _playerController.GetComponent<PhotonView>().RPC("HamsterCaught", PhotonTargets.All, hamster.hamsterNum);
+                        } else {
+                            // Have the master client double check that it's ok
+                            _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, hamster.hamsterNum);
+                        }
                     }
+                } else {
+                    CatchHamster(hamster);
                 }
-            } else {
-                CatchHamster(other.GetComponent<Hamster>());
             }
         }
         if(other.tag == "PowerUp"/* && other.GetComponent<PowerUp>().exitedPipe*/) {

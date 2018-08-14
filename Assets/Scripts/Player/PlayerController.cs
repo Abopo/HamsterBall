@@ -15,9 +15,9 @@ public class PlayerController : Entity {
 	public PLAYER_STATE curState;
 	public GameObject attackBubble;
     public Transform bubblePosition;
-	public Bubble heldBubble;
     public AttackObject attackObj;
     public ShiftPortal shiftPortal;
+	public Bubble heldBubble;
     public int direction;
     public bool aimAssist;
     public bool canBeHit;
@@ -86,7 +86,7 @@ public class PlayerController : Entity {
         get { return _playerAudio; }
     }
 
-    PlayerState[] _states = new PlayerState[9];
+    PlayerState[] _states = new PlayerState[10];
 
     // The grace period time after getting hit
     bool _isInvuln;
@@ -107,7 +107,9 @@ public class PlayerController : Entity {
     public bool aiControlled;
     public bool springing;
 
-    public SpriteRenderer spriteRenderer;
+    SpriteRenderer _targetArrow; // an arrow that appears when shifted
+
+    SpriteRenderer _spriteRenderer;
     PlayerManager _playerManager;
     GameManager _gameManager;
     PlayerAudio _playerAudio;
@@ -137,6 +139,8 @@ public class PlayerController : Entity {
     protected override void Start () {
 		base.Start ();
 
+
+        _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.gameOverEvent.AddListener(GameEnded);
         _playerAudio = GetComponent<PlayerAudio>();
@@ -144,10 +148,14 @@ public class PlayerController : Entity {
 
         _spawnPos = transform.position;
 
-		attackBubble.SetActive (false);
+        attackBubble = transform.Find("AttackBubble").gameObject;
+        attackBubble.SetActive (false);
         attackObj.team = team;
 
-		_canShift = false;
+        _targetArrow = transform.Find("Target Arrow").GetComponent<SpriteRenderer>();
+        _targetArrow.enabled = false;
+
+        _canShift = false;
 		_shiftCooldownTime = 12.0f;
 		_shiftCooldownTimer = 0;
 		_shiftTime = 6.0f;
@@ -160,9 +168,11 @@ public class PlayerController : Entity {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
         }
 
+
         InitStates();
 
         totalThrowCount = 0;
+
 
         //	start in idle
         ChangeState (PLAYER_STATE.IDLE);
@@ -178,6 +188,7 @@ public class PlayerController : Entity {
         _states[6] = new HitState();
         _states[7] = new ShiftState();
         _states[8] = new AttackState();
+        _states[9] = new GameOverState();
     }
 
     public void SetPlayerNum(int pNum) {
@@ -191,6 +202,13 @@ public class PlayerController : Entity {
 
         // Don't update if the game is over
         if(_gameManager.gameIsOver) {
+            currentState.CheckInput(inputState);
+            currentState.Update();
+
+            // Allow player to slow movement/fall to ground
+            _physics.MoveX(velocity.x * Time.deltaTime);
+            _physics.MoveY(velocity.y * Time.deltaTime);
+
             return;
         }
 
@@ -269,8 +287,8 @@ public class PlayerController : Entity {
 		                                               transform.position.z);
 
 		if (heldBubble != null && !heldBubble.wasThrown) {
-			walkSpeed = 2;
-			jumpMoveMax = 2;
+			walkSpeed = 3;
+			jumpMoveMax = 3;
 			heldBubble.transform.position = new Vector3 (bubblePosition.position.x,
                                                          bubblePosition.position.y,
                                                          bubblePosition.position.z-5);
@@ -312,6 +330,7 @@ public class PlayerController : Entity {
             }
             //transform.Translate (10.5f * direction * (isLeftTeam ? 1 : -1), 0.0f, 0.0f);
             shifted = true;
+            _targetArrow.enabled = true;
         } else {
             if (team == 0) {
                 transform.Translate(-12.5f /* * direction * -1*/, 0.0f, 0.0f);
@@ -320,7 +339,9 @@ public class PlayerController : Entity {
             }
             //transform.Translate (10.5f * direction * (isLeftTeam ? -1 : 1), 0.0f, 0.0f);
             shifted = false;
+            _targetArrow.enabled = false;
         }
+
 
         //_playerAudio.PlayShiftClip();
 
@@ -332,10 +353,10 @@ public class PlayerController : Entity {
         if (_blinkTimer > _blinkTime) {
             // Blink sprite
             if (_blinked) {
-                spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+                _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
                 _blinked = false;
             } else {
-                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+                _spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
                 _blinked = true;
             }
             _blinkTimer = 0f;
@@ -345,7 +366,7 @@ public class PlayerController : Entity {
         if (_invulnTimer >= _invulnTime) {
             // Stop invuln time
             _isInvuln = false;
-            spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         }
     }
 
@@ -457,12 +478,10 @@ public class PlayerController : Entity {
         }
     }
 
-
     void GameEnded() {
-        ChangeState(PLAYER_STATE.IDLE);
-        // Do a win/lose animation here or something
+        _animator.SetBool("Won Game", _homeBubbleManager.wonGame);
 
-        //_animator.SetBool("Won Game", true);
-        //_animator.SetInteger("PlayerState", 9);
+        // Do a win/lose animation here or something
+        ChangeState(PLAYER_STATE.GAMEOVER);
     }
 }
