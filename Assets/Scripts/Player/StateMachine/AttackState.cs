@@ -5,11 +5,11 @@ public class AttackState : PlayerState {
     float sign;
 
     bool _isAttacking = true;
-    float _attackSpeed = 10f;
-    float _attackTime = 0.1f;
+    float _attackSpeed = 8f;
+    float _attackTime = 0.2f;
     float _attackTimer = 0;
 
-    float _cooldownTime = 0.3f;
+    float _cooldownTime = 0.35f;
     float _cooldownTimer = 0.0f;
 
     // Use this for initialization
