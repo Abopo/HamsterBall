@@ -53,7 +53,8 @@ public class ShiftState : PlayerState {
             if (!_shifted) {
                 Vector3 tempScale = playerController.transform.localScale;
                 playerController.transform.rotation = Quaternion.identity;
-                playerController.Shift();
+                //playerController.Shift();
+                playerController.MirrorShift();
                 _shifted = true;
                 playerController.transform.localScale = tempScale;
             } else {

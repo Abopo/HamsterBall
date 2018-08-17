@@ -275,8 +275,9 @@ public class PlayerController : Entity {
         }
 
         if(_physics.IsTouchingFloor && inputState.down.isJustPressed) {
+            // TODO: Make this better and not push players into floors that aren't fallthrough
             // Move player slightly downward to pass through certain platforms
-            transform.Translate(0f, -0.03f, 0f);
+            //transform.Translate(0f, -0.03f, 0f);
         }
     }
 
@@ -291,7 +292,7 @@ public class PlayerController : Entity {
 			jumpMoveMax = 3;
 			heldBubble.transform.position = new Vector3 (bubblePosition.position.x,
                                                          bubblePosition.position.y,
-                                                         bubblePosition.position.z-5);
+                                                         bubblePosition.position.z-8);
             
 		} else {
 			walkSpeed = 5;
@@ -346,6 +347,33 @@ public class PlayerController : Entity {
         //_playerAudio.PlayShiftClip();
 
         _shiftTimer = 0f;
+    }
+
+    // This shift is used on mirrored stages to help keep players out of level collision
+    public void MirrorShift() {
+        float shiftDistance = Mathf.Abs(transform.position.x) * 2;
+
+        if (!shifted) {
+            if (team == 0) {
+                transform.Translate(shiftDistance, 0.0f, 0.0f);
+            } else if (team == 1) {
+                transform.Translate(-shiftDistance, 0.0f, 0.0f);
+            }
+            shifted = true;
+            _targetArrow.enabled = true;
+        } else {
+            if (team == 0) {
+                transform.Translate(-shiftDistance, 0.0f, 0.0f);
+            } else if (team == 1) {
+                transform.Translate(shiftDistance, 0.0f, 0.0f);
+            }
+            shifted = false;
+            _targetArrow.enabled = false;
+        }
+
+
+        _shiftTimer = 0f;
+
     }
 
     void InvulnerabilityState() {

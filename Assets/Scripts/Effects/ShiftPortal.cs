@@ -28,7 +28,12 @@ public class ShiftPortal : MonoBehaviour {
         // Detach from the parent to prevent transformations
         transform.parent = null;
         _exitPortal.gameObject.SetActive(true);
-        _exitPortal.transform.Translate(12.5f * dir, 0f, 0f, Space.World);
+
+
+        // TODO: Do whichever shift is appropriate for the current stage
+        //_exitPortal.transform.Translate(12.5f * dir, 0f, 0f, Space.World);
+        float shiftDistance = Mathf.Abs(_playerController.transform.position.x) * 2;
+        _exitPortal.transform.Translate(shiftDistance * dir, 0f, 0f, Space.World);
 
         // Animate both portals
         _animator.Play("Portal_CW");
