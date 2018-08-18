@@ -21,6 +21,7 @@ public class PauseMenu : MonoBehaviour {
     // Use this for initialization
     void Start() {
         // Set the text of the previousMenuButton to a proper text
+        /*
         switch(_gameManager.prevMenu) {
             case MENU.STORY:
                 previousMenuButton.GetComponentInChildren<Text>().text = "Story Select";
@@ -32,6 +33,7 @@ public class PauseMenu : MonoBehaviour {
                 previousMenuButton.GetComponentInChildren<Text>().text = "Board Editor";
                 break;
         }
+        */
 
         // Don't allow players to return to the main menu in demo mode
         if(mainMenuButton != null && _gameManager.demoMode) {

@@ -18,9 +18,7 @@ public class AISetupWindow : MonoBehaviour {
 
     int _numAIs;
 
-    Sprite[] characterSprites = new Sprite[5];
-
-    Sprite[] bubSprites;
+    Sprite[] characterSprites = new Sprite[4];
 
     PlayerManager _playerManager;
 
@@ -31,13 +29,12 @@ public class AISetupWindow : MonoBehaviour {
     public void Initialize() {
         gameObject.SetActive(true);
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        bubSprites = Resources.LoadAll<Sprite>("Art/Hamsters_and_Bubbles/Bub_Sheet");
+        Sprite[] charaSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
 
-        characterSprites[0] = bubSprites[0];
-        characterSprites[1] = bubSprites[12];
-        characterSprites[2] = bubSprites[24];
-        characterSprites[3] = bubSprites[36];
-        characterSprites[4] = Resources.Load<Sprite>("Art/Animations/Player/PepsiMan/PepsiManSheet");
+        characterSprites[0] = charaSprites[0];
+        characterSprites[1] = charaSprites[1];
+        characterSprites[2] = charaSprites[2];
+        characterSprites[3] = charaSprites[3];
 
         GetAIPlayerInfo();
         MenuMovementSetup();

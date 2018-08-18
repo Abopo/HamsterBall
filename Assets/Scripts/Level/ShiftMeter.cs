@@ -15,4 +15,8 @@ public class ShiftMeter : MonoBehaviour {
     public Image GetMeterFront() {
         return transform.GetChild(2).GetComponent<Image>();
     }
+
+    public SpriteRenderer GetMeterEnd() {
+        return transform.GetChild(3).GetComponent<SpriteRenderer>();
+    }
 }

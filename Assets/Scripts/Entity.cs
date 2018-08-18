@@ -43,8 +43,10 @@ public class Entity : MonoBehaviour {
 
     // Use this for initialization
     protected virtual void Start () {
-		_animator = GetComponent<Animator> ();
-		
+        if (_animator == null) {
+            _animator = GetComponentInChildren<Animator>();
+        }
+
 		velocity = Vector2.zero;
 		_physics = GetComponent<EntityPhysics>();
 

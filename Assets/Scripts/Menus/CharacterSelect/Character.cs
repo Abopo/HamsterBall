@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public enum CHARACTERNAMES { /*BUB = 0, NEGABUB, BOB, NEGABOB, PEPSIMAN,*/ BOY1 = 0, BOY2, BOY3, BOY4, NUM_CHARACTERS};
+public enum CHARACTERNAMES { BOY1 = 0, BOY2, BOY3, BOY4, NUM_CHARACTERS};
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;

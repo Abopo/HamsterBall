@@ -107,6 +107,11 @@ public class PlayerController : Entity {
     public bool aiControlled;
     public bool springing;
 
+    CHARACTERNAMES _characterName;
+    public CHARACTERNAMES CharacterName {
+        get { return _characterName; }
+    }
+
     SpriteRenderer _targetArrow; // an arrow that appears when shifted
 
     SpriteRenderer _spriteRenderer;
@@ -115,6 +120,7 @@ public class PlayerController : Entity {
     PlayerAudio _playerAudio;
     BubbleManager _homeBubbleManager;
     Vector3 _spawnPos;
+    Animator blahblahblah;
 
     public BubbleManager HomeBubbleManager {
         get { return _homeBubbleManager; }
@@ -131,6 +137,12 @@ public class PlayerController : Entity {
         canBeHit = true;
 
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
+        _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager.gameOverEvent.AddListener(GameEnded);
+        _playerAudio = GetComponent<PlayerAudio>();
+        _animator = GetComponentInChildren<Animator>();
+        blahblahblah = GetComponentInChildren<Animator>();
 
         inputState = new InputState();
     }
@@ -138,13 +150,6 @@ public class PlayerController : Entity {
     // Use this for initialization
     protected override void Start () {
 		base.Start ();
-
-
-        _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        _gameManager.gameOverEvent.AddListener(GameEnded);
-        _playerAudio = GetComponent<PlayerAudio>();
-        _animator = GetComponentInChildren<Animator>();
 
         _spawnPos = transform.position;
 
@@ -160,7 +165,7 @@ public class PlayerController : Entity {
 		_shiftCooldownTimer = 0;
 		_shiftTime = 6.0f;
 		_shiftTimer = 0;
-        direction = Animator.GetBool("FacingRight") ? 1 : -1;
+        direction = _animator.GetBool("FacingRight") ? 1 : -1;
 
         if (team == 0) {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
@@ -168,11 +173,9 @@ public class PlayerController : Entity {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
         }
 
-
         InitStates();
 
         totalThrowCount = 0;
-
 
         //	start in idle
         ChangeState (PLAYER_STATE.IDLE);
@@ -196,6 +199,26 @@ public class PlayerController : Entity {
         inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
     }
 
+    public void SetCharacterName(CHARACTERNAMES charaName) {
+        _characterName = charaName;
+
+        switch (charaName) {
+            case CHARACTERNAMES.BOY1:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY2:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY3:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.BOY4:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
+                break;
+        }
+
+    }
+
     // Update is called once per frame
     protected override void Update () {
         base.Update();
@@ -215,7 +238,7 @@ public class PlayerController : Entity {
         // Don't do any of this stuff if the game is paused
         if (!_gameManager.isPaused) {
             CheckInput();
-            direction = Animator.GetBool("FacingRight") ? 1 : -1;
+            direction = _animator.GetBool("FacingRight") ? 1 : -1;
 
             UpdateBubbles();
 

@@ -5,9 +5,12 @@ using System.Collections;
 public class PlayerGUI : MonoBehaviour {
 	PlayerController _playerController;
 
-    RectTransform _shiftMeter;
+    ShiftMeter _shiftMeter;
     Material _meterMaterial;
-    float _shiftMeterWidth;
+    SpriteRenderer _shiftMeterEnd;
+
+    Sprite _fullSprite;
+    Sprite _emptySprite;
 
     bool _topPlayer;
     static int teamLeftPlayers;
@@ -38,21 +41,30 @@ public class PlayerGUI : MonoBehaviour {
             }
         }
 
-        _meterMaterial = _shiftMeter.GetComponent<Image>().material;
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        _fullSprite = sprites[6];
+        _emptySprite = sprites[5];
+
+        _meterMaterial = _shiftMeter.GetMeterFront().GetComponent<Image>().material;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (_shiftMeter != null) {
-            //_shiftMeter.sizeDelta = new Vector2(_shiftMeterWidth * (_playerController.ShiftCooldownTimer / _playerController.ShiftCooldownTime), _shiftMeter.sizeDelta.y);
             _meterMaterial.SetFloat("_Cutoff", (_playerController.ShiftCooldownTimer / _playerController.ShiftCooldownTime));
+
+            if(_playerController.ShiftCooldownTimer >= _playerController.ShiftCooldownTime) {
+                _shiftMeterEnd.sprite = _fullSprite;
+            } else {
+                _shiftMeterEnd.sprite = _emptySprite;
+            }
         }
 	}
 	
-    public void SetMeterPosition(RectTransform meter) {
+    public void SetMeter(ShiftMeter meter) {
         if (meter != null) {
             _shiftMeter = meter;
-            _shiftMeterWidth = _shiftMeter.sizeDelta.x;
+            _shiftMeterEnd = meter.GetMeterEnd();
         }
     }
 }

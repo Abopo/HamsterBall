@@ -5,13 +5,10 @@ using System.Collections.Generic;
 public class PlayerSpawner : MonoBehaviour {
     public GameObject playerObj;
     public GameObject aiPlayerObj;
-    //public SpriteRenderer[] shiftMeterIcons = new SpriteRenderer[4]; // 0 - leftmeter1; 1 - leftmeter2; 2 - rightmeter; 3 - rightmeter2
-    //public Image[] shiftMeterFronts = new Image[4];
-    //public Image[] shiftMeterBacks = new Image[4];
     public ShiftMeter[] shiftMeters = new ShiftMeter[4];
     int leftMeters = 0;
     int rightMeters = 0;
-    Sprite[] bubSprites;
+    Sprite[] playerIcons = new Sprite[4];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -23,7 +20,14 @@ public class PlayerSpawner : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        bubSprites = Resources.LoadAll<Sprite>("Art/Hamsters_and_Bubbles/Bub_Sheet");
+
+        // Get sprites
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        playerIcons[0] = sprites[0];
+        playerIcons[1] = sprites[1];
+        playerIcons[2] = sprites[2];
+        playerIcons[3] = sprites[3];
+
         GetSpawnLocations();
         SpawnPlayers();
     }
@@ -57,7 +61,7 @@ public class PlayerSpawner : MonoBehaviour {
             newPlayer.SetPlayerNum(tempPlayerInfo.playerNum);
             newPlayer.team = tempPlayerInfo.team;
             newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
-            newPlayer.GetComponentInChildren<Animator>().runtimeAnimatorController = FindAnimatorController(tempPlayerInfo.characterName);
+            newPlayer.SetCharacterName(tempPlayerInfo.characterName);
 
             if (!gameManager.isSinglePlayer) {
                 SetupSwitchMeter(newPlayer);
@@ -112,58 +116,21 @@ public class PlayerSpawner : MonoBehaviour {
         }
     }
 
-    RuntimeAnimatorController FindAnimatorController(CHARACTERNAMES character) {
-        RuntimeAnimatorController controller = null;
-        switch(character) {
-            /*
-            case CHARACTERNAMES.BUB:
-                controller = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABUB:
-                controller = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOB:
-                controller = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABOB:
-                controller = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.PEPSIMAN:
-                controller = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
-                break;
-            */
-            case CHARACTERNAMES.BOY1:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY2:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY3:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY4:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
-                break;
-        }
-
-        return controller;
-    }
-
     // TODO: this function is a little gross still, fix it up a bit
     public void SetupSwitchMeter(PlayerController player) {
         if(player.team == 0) {
             shiftMeters[leftMeters].gameObject.SetActive(true);
             //shiftMeters[leftMeters].GetMeterFront().enabled = true;
             //shiftMeters[leftMeters].GetMeterBack().enabled = true;
-            player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeters[leftMeters].GetMeterFront().GetComponent<RectTransform>());
-            shiftMeters[leftMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1)*12];
+            player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
+            shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharacterName];
             shiftMeters[leftMeters++].GetIcon().enabled = true;
         } else if(player.team == 1) {
             shiftMeters[2 + rightMeters].gameObject.SetActive(true);
             //shiftMeters[2+rightMeters].GetMeterFront().enabled = true;
             //shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
-            player.GetComponent<PlayerGUI>().SetMeterPosition(shiftMeters[2+rightMeters].GetMeterFront().GetComponent<RectTransform>());
-            shiftMeters[2+rightMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1)*12];
+            player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2+rightMeters]);
+            shiftMeters[2+rightMeters].GetIcon().sprite = playerIcons[(int)player.CharacterName];
             shiftMeters[2+rightMeters++].GetIcon().enabled = true;
         }
     }

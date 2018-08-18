@@ -77,23 +77,19 @@ public class AISetupOption : MenuOption {
             case 1:
             case 2:
             case 3:
-                //aiDifficultyText.text = "Easy";
                 aiDifficultyText.color = Color.blue;
                 break;
             case 4:
             case 5:
             case 6:
-                //aiDifficultyText.text = "Medium";
                 aiDifficultyText.color = Color.green;
                 break;
             case 7:
             case 8:
             case 9:
-                //aiDifficultyText.text = "Hard";
                 aiDifficultyText.color = Color.yellow;
                 break;
             case 10:
-                //aiDifficultyText.text = "Expert";
                 aiDifficultyText.color = Color.red;
                 break;
         }
