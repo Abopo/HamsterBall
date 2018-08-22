@@ -989,10 +989,12 @@ public class BubbleManager : MonoBehaviour {
 
         if(result == 0 || result == 1) {
             wonGame = true;
-            _enemyBubbleManager.wonGame = false;
         } else {
             wonGame = false;
-            _enemyBubbleManager.wonGame = true;
+        }
+
+        if (_enemyBubbleManager != null) {
+            _enemyBubbleManager.wonGame = !wonGame;
         }
 
         // Clear out starting bubbles to prepare for next round

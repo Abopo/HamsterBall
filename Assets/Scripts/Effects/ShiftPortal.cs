@@ -14,10 +14,11 @@ public class ShiftPortal : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        _exitPortal.transform.parent = null;
+    }
+
+    // Update is called once per frame
+    void Update () {
 	
 	}
 
@@ -33,11 +34,14 @@ public class ShiftPortal : MonoBehaviour {
         // TODO: Do whichever shift is appropriate for the current stage
         //_exitPortal.transform.Translate(12.5f * dir, 0f, 0f, Space.World);
         float shiftDistance = Mathf.Abs(_playerController.transform.position.x) * 2;
+        _exitPortal.transform.position = transform.position;
         _exitPortal.transform.Translate(shiftDistance * dir, 0f, 0f, Space.World);
 
         // Animate both portals
-        _animator.Play("Portal_CW");
-        _exitPortal.Play("Portal_CCW");
+        //_animator.Play("Portal_CW");
+        //_exitPortal.Play("Portal_CCW");
+        _animator.Play("PortalSpinCCW");
+        _exitPortal.Play("PortalSpinCW");
     }
 
     public void Deactivate() {

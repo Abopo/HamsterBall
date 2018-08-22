@@ -60,12 +60,14 @@ public class ShiftState : PlayerState {
             } else {
                 // Undo Rotate/Scale from before
                 playerController.transform.Rotate(0f, 0f, -720f * Time.deltaTime);
-                playerController.transform.localScale = new Vector3(playerController.transform.localScale.x * 1.1f, playerController.transform.localScale.y * 1.1f, _oldScale.z);
+                playerController.transform.localScale = new Vector3(playerController.transform.localScale.x + (1.0f * Time.deltaTime), 
+                                                                    playerController.transform.localScale.y + (1.0f * Time.deltaTime), _oldScale.z);
             }
         } else {
             // Rotate/Scale player for little teleport animation
             playerController.transform.Rotate(0f, 0f, 720f * Time.deltaTime);
-            playerController.transform.localScale = new Vector3(playerController.transform.localScale.x*0.9f, playerController.transform.localScale.y*0.9f, _oldScale.z);
+            playerController.transform.localScale = new Vector3(playerController.transform.localScale.x - (1.0f * Time.deltaTime), 
+                                                                playerController.transform.localScale.y - (1.0f * Time.deltaTime), _oldScale.z);
         }
 
         if (_shiftTimer >= _shiftTime) {
