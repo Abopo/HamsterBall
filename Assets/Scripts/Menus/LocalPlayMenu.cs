@@ -28,16 +28,16 @@ public class LocalPlayMenu : MonoBehaviour {
 
     public void PartyVersus() {
         _gameManager.SetGameMode(GAME_MODE.MP_PARTY);
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("DemoCharacterSelect");
     }
 
     public void Survival() {
         _gameManager.SetGameMode(GAME_MODE.SURVIVAL);
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("DemoCharacterSelect");
     }
 
     public void PuzzleChallenge() {
         _gameManager.SetGameMode(GAME_MODE.SP_CLEAR);
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("DemoCharacterSelect");
     }
 }

@@ -61,6 +61,7 @@ public class Bubble : MonoBehaviour {
     bool _destroy = false;
     bool _boardChanged = false;
 
+
     PlayerController _playerController;
     public PlayerController PlayerController {
         get { return _playerController; }
@@ -74,9 +75,9 @@ public class Bubble : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	}
-	
-	public void Initialize(HAMSTER_TYPES inType) {
+    }
+
+    public void Initialize(HAMSTER_TYPES inType) {
 		adjBubbles = new Bubble[6];
 
         _popAnimation = GetComponent<BubblePopAnimation>();
@@ -335,7 +336,7 @@ public class Bubble : MonoBehaviour {
                     GenerateDropJunk(inc);
                 }
             } else {
-                int inc = 3 * (_dropCombo ? 2 : 1);
+                int inc = 2 * (_dropCombo ? 2 : 1);
                 
                 // Calculate score before the margin multiplier
                 int incScore = inc * 100;

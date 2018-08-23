@@ -102,6 +102,8 @@ public class BubbleManager : MonoBehaviour {
     Coroutine _checkbubbleDropPotentials;
     Coroutine _checkNodesCanBeHit;
 
+    DividerFlash _divider;
+
     ScoreManager _scoreManager;
 
     BubbleManager _enemyBubbleManager;
@@ -195,6 +197,15 @@ public class BubbleManager : MonoBehaviour {
 
         if(_gameManager.gameMode == GAME_MODE.SURVIVAL) {
             transform.gameObject.AddComponent<SurvivalManager>();
+        }
+
+        // Get divider
+        DividerFlash[] dividers = FindObjectsOfType<DividerFlash>();
+        foreach (DividerFlash df in dividers) {
+            if (df.team == team) {
+                _divider = df;
+                break;
+            }
         }
     }
 
@@ -1028,6 +1039,8 @@ public class BubbleManager : MonoBehaviour {
             StopCoroutine(_checkNodesCanBeHit);
         }
         _checkNodesCanBeHit = StartCoroutine(CheckNodesCanBeHit());
+
+        CheckSecondToLastRow();
     }
 
     // Drop potentials are used by the AI to determine how many bubbles will drop if a particular bubble is popped.
@@ -1052,6 +1065,18 @@ public class BubbleManager : MonoBehaviour {
                 }
             }
         }
+    }
+
+    void CheckSecondToLastRow() {
+        int firstNode = nodeList.Count - 37 + _topLineLength;
+        foreach(Bubble b in _bubbles) {
+            if(b != null && b.node >= firstNode) {
+                _divider.StartFlashing();
+                return;
+            }
+        }
+
+        _divider.StopFlashing();
     }
 
     public void RefreshRainbowBubbles() {

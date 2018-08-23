@@ -74,7 +74,7 @@ public class MenuOption : MonoBehaviour {
                 }
             }
             // Up
-            if (Input.GetAxis("Vertical") < -0.3f || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            if (InputUp()) {
                 if (adjOptions[3] != null && adjOptions[3].isReady) {
                     //_isHighlighted = false;
                     _moved = true;
@@ -83,7 +83,7 @@ public class MenuOption : MonoBehaviour {
                 }
             }
             // Down
-            if (Input.GetAxis("Vertical") > 0.3f || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+            if (InputDown()) {
                 if (adjOptions[1] != null && adjOptions[1].isReady) {
                     //_isHighlighted = false;
                     _moved = true;
@@ -92,8 +92,7 @@ public class MenuOption : MonoBehaviour {
                 }
             }
         } else {
-            if (Input.GetAxis("Horizontal") < 0.3f && Input.GetAxis("Horizontal") > -0.3f &&
-                Input.GetAxis("Vertical") < 0.3f && Input.GetAxis("Vertical") > -0.3f) {
+            if (InputReset()) {
                 _moved = false;
                 _justHighlighted = false;
             }
@@ -143,7 +142,8 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected bool InputRight() {
-        if (Input.GetAxis("Horizontal") > 0.3f || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+        if (Input.GetAxis("Horizontal") > 0.3f || Input.GetAxis("Horizontal DPad") > 0.3f || 
+            Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
             return true;
         }
 
@@ -151,7 +151,37 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected bool InputLeft() {
-        if (Input.GetAxis("Horizontal") < -0.3f || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+        if (Input.GetAxis("Horizontal") < -0.3f || Input.GetAxis("Horizontal DPad") < -0.3f || 
+            Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected bool InputUp() {
+        if(Input.GetAxis("Vertical") < -0.3f || Input.GetAxis("Vertical DPad") > 0.3f || 
+            Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected bool InputDown() {
+        if (Input.GetAxis("Vertical") > 0.3f || Input.GetAxis("Vertical DPad") < -0.3f ||
+            Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected bool InputReset() {
+        if(Input.GetAxis("Horizontal") < 0.3f && Input.GetAxis("Horizontal") > -0.3f &&
+                Input.GetAxis("Vertical") < 0.3f && Input.GetAxis("Vertical") > -0.3f &&
+                Input.GetAxis("Horizontal DPad") < 0.3f && Input.GetAxis("Horizontal DPad") > -0.3f &&
+                Input.GetAxis("Vertical DPad") < 0.3f && Input.GetAxis("Vertical DPad") > -0.3f) {
             return true;
         }
 

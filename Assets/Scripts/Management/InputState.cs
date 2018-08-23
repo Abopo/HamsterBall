@@ -134,19 +134,21 @@ public class InputState {
 			// Joystick 1
 		} else if(currInput.controllerNum == 3) {
             // Get vertical input, turn it into button format.
-            float vert = Input.GetAxis("Vertical 1");
-            if (vert < -0.1f) {
+            float vertStick = Input.GetAxis("Vertical 1");
+            float vertPad = Input.GetAxis("D-Pad Y 1");
+            if (vertStick < -0.1f || vertPad < -0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vert > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad > 0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);
             }
             // Get horizontal input, turn it into button format.
-            float hor = Input.GetAxis("Horizontal 1");
-            if (hor < -0.1f) {
+            float horStick = Input.GetAxis("Horizontal 1");
+            float horPad = Input.GetAxis("D-Pad X 1");
+            if (horStick < -0.1f || horPad < -0.1f) {
 				currInput = GetLeft(currInput);
-			} else if(hor > 0.1f) {
+			} else if(horStick > 0.1f || horPad > 0.1f) {
 				currInput = GetRight(currInput);
 			} else {
 				currInput = GetIdleHorizontal(currInput);

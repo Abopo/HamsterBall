@@ -16,7 +16,6 @@ public class PlayerState {
 	// Use this for initialization
 	public virtual void Initialize(PlayerController playerIn) {
 		playerController = playerIn;
-
 	}
     // Update is called once per frame
     public virtual void Update(){}

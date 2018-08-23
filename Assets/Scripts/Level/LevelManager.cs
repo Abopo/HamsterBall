@@ -11,10 +11,10 @@ public class LevelManager : MonoBehaviour {
     public Text marginMultiplierText;
 
     public bool continueLevel;
-    public float marginMultiplier = 1.00f;
+    public int marginMultiplier = 1;
 
     float _marginTimer = 0;
-    float _marginTime = 96f;
+    float _marginTime = 10f;
     int _initialTargetPoints = 120;
     int _targetPoints;
     int _marginIterations = 0;
@@ -94,6 +94,7 @@ public class LevelManager : MonoBehaviour {
     }
 
     void IncreaseMarginMultiplier() {
+        /*
         int curTargetPoints = _targetPoints;
         if(_marginIterations == 0) {
             _targetPoints = (int)(_initialTargetPoints * 0.75f);
@@ -106,6 +107,44 @@ public class LevelManager : MonoBehaviour {
 
         marginMultiplier = _initialTargetPoints / (float)_targetPoints;
         marginMultiplierText.text = "x" + marginMultiplier.ToString("0.00");
+        */
+
+        marginMultiplier += 1;
+        if(marginMultiplier > 9) {
+            marginMultiplier = 9;
+        }
+        
+        marginMultiplierText.text = "x" + marginMultiplier.ToString();
+        marginMultiplierText.fontSize = 10 + 2 * marginMultiplier;
+        switch(marginMultiplier) {
+            case 1:
+                marginMultiplierText.color = Color.black;
+                break;
+            case 2:
+                marginMultiplierText.color = Color.blue;
+                break;
+            case 3:
+                marginMultiplierText.color = Color.cyan;
+                break;
+            case 4:
+                marginMultiplierText.color = Color.green;
+                break;
+            case 5:
+                marginMultiplierText.color = Color.magenta;
+                break;
+            case 6:
+                marginMultiplierText.color = Color.yellow;
+                break;
+            case 7:
+                marginMultiplierText.color = Color.red;
+                break;
+            case 8:
+                marginMultiplierText.color = Color.red;
+                break;
+            case 9:
+                marginMultiplierText.color = Color.red;
+                break;
+        }
     }
 
     void GameEnd() {

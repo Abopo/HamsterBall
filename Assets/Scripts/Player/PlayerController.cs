@@ -273,9 +273,12 @@ public class PlayerController : Entity {
             _justChangedState = false;
         }
 
-        // Failsafe check
+        // Failsafe checks
         if(heldBubble != null && heldBubble.locked) {
             heldBubble = null;
+        }
+        if(curState != PLAYER_STATE.ATTACK && attackObj.gameObject.activeSelf) {
+            attackObj.gameObject.SetActive(false);
         }
 	}
 
@@ -393,7 +396,6 @@ public class PlayerController : Entity {
             shifted = false;
             _targetArrow.enabled = false;
         }
-
 
         _shiftTimer = 0f;
 

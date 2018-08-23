@@ -60,8 +60,7 @@ public class GameSetupOption : MenuOption {
             }
         }
 
-        if (Input.GetAxis("Horizontal") < 0.3f && Input.GetAxis("Horizontal") > -0.3f &&
-            Input.GetAxis("Vertical") < 0.3f && Input.GetAxis("Vertical") > -0.3f) {
+        if (InputReset()) {
             _justMoved = false;
             _justHighlighted = false;
         }

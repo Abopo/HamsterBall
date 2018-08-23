@@ -65,7 +65,7 @@ public class ThrowState : PlayerState {
             // Leave the Throw state
             playerController.ChangeState(PLAYER_STATE.IDLE);
         } else if(!_hasThrown && playerController.heldBubble != null) {
-            // Make sure the player can't get stuck in the aim state befor throwing
+            // Make sure the player can't get stuck in the aim state before throwing
             playerController.Animator.SetBool("HoldingBall", true);
         }
     }
@@ -142,6 +142,13 @@ public class ThrowState : PlayerState {
                 // Throw();
             }
         }
+
+        if(inputState.attack.isJustPressed) {
+            // Reset aim cooldown
+            playerController.aimCooldownTimer = 0f;
+
+            playerController.ChangeState(PLAYER_STATE.IDLE);
+        }
 	}
 
     void LimitArrowRotation() {
@@ -196,5 +203,9 @@ public class ThrowState : PlayerState {
 	public override void End(){
         aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 90.01f);
         aimingArrow.gameObject.SetActive (false);
-	}
+
+        if (_aimingLine != null) {
+            _aimingLine.Stop();
+        }
+    }
 }

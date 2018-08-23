@@ -71,10 +71,10 @@ public class HamsterWheel : MonoBehaviour {
 
     void CheckInput() {
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) ||
-            (Input.GetAxis("Horizontal") < -0.3f)) {
+            (Input.GetAxis("Horizontal") < -0.3f) || Input.GetAxis("Horizontal DPad") < -0.3f) {
             RotateLeft();
         } else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) ||
-            (Input.GetAxis("Horizontal") > 0.3f)) {
+            (Input.GetAxis("Horizontal") > 0.3f) || Input.GetAxis("Horizontal DPad") > 0.3f) {
             RotateRight();
         }
 

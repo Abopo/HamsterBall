@@ -5,7 +5,7 @@ public class ShiftState : PlayerState {
 
     bool _shifted = false;
     float _shiftTimer = 0;
-    float _shiftTime = 1f;
+    float _shiftTime = 0.65f;
     Vector3 _oldScale = new Vector3();
 
     void Start() {
@@ -47,7 +47,6 @@ public class ShiftState : PlayerState {
     
     // Update is called once per frame
     public override void Update() {
-
         _shiftTimer += Time.deltaTime;
         if(_shiftTimer >= _shiftTime/2) {
             if (!_shifted) {
@@ -59,15 +58,15 @@ public class ShiftState : PlayerState {
                 playerController.transform.localScale = tempScale;
             } else {
                 // Undo Rotate/Scale from before
-                playerController.transform.Rotate(0f, 0f, -720f * Time.deltaTime);
-                playerController.transform.localScale = new Vector3(playerController.transform.localScale.x + (1.0f * Time.deltaTime), 
-                                                                    playerController.transform.localScale.y + (1.0f * Time.deltaTime), _oldScale.z);
+                playerController.transform.Rotate(0f, 0f, -520f * Time.deltaTime);
+                playerController.transform.localScale = new Vector3(playerController.transform.localScale.x + (1f * Time.deltaTime), 
+                                                                    playerController.transform.localScale.y + (1f * Time.deltaTime), _oldScale.z);
             }
         } else {
             // Rotate/Scale player for little teleport animation
-            playerController.transform.Rotate(0f, 0f, 720f * Time.deltaTime);
-            playerController.transform.localScale = new Vector3(playerController.transform.localScale.x - (1.0f * Time.deltaTime), 
-                                                                playerController.transform.localScale.y - (1.0f * Time.deltaTime), _oldScale.z);
+            playerController.transform.Rotate(0f, 0f, 520f * Time.deltaTime);
+            playerController.transform.localScale = new Vector3(playerController.transform.localScale.x - (1f * Time.deltaTime), 
+                                                                playerController.transform.localScale.y - (1f * Time.deltaTime), _oldScale.z);
         }
 
         if (_shiftTimer >= _shiftTime) {
