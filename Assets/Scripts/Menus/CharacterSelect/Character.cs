@@ -31,14 +31,10 @@ public class Character : MonoBehaviour {
     SpriteRenderer _spriteRenderer;
     AudioSource _audioSource;
 
-    AudioClip _activateClip;
-    AudioClip _deactivateClip;
     AudioClip _moveClip;
 
     TeamSelectArrow _leftArrow;
     TeamSelectArrow _rightArrow;
-    CharacterChangeArrow _upArrow;
-    CharacterChangeArrow _downArrow;
 
     // Networking stuff
     PhotonView _photonView;
@@ -76,14 +72,7 @@ public class Character : MonoBehaviour {
         }    
     }
 
-    // Use this for initialization
-    void Start () {
-        isAI = false;
-        takeInput = true;
-
-        _team = -1;
-        _active = false;
-
+    private void Awake() {
         _initialPos = transform.position;
 
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
@@ -93,14 +82,33 @@ public class Character : MonoBehaviour {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         _audioSource = GetComponent<AudioSource>();
-        _activateClip = Resources.Load<AudioClip>("Audio/SFX/Activate_Character");
-        _deactivateClip = Resources.Load<AudioClip>("Audio/SFX/Deactivate_Character");
         _moveClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
+
+        GetArrows();
+    }
+
+    // Use this for initialization
+    void Start () {
+        isAI = false;
+        takeInput = true;
+
+        _active = true;
 
         _photonView = GetComponent<PhotonView>();
         isLocal = true;
+    }
 
-        GetArrows();
+    public void Initialize(PlayerInfo pInfo) {
+        _team = -1;
+
+        _inputState.controllerNum = pInfo.controllerNum;
+        _playerNum = pInfo.playerNum;
+        SetCharacter(pInfo.characterName);
+        if (pInfo.team == 0) {
+            MoveLeft();
+        } else {
+            MoveRight();
+        }
     }
 
     void GetArrows() {
@@ -114,21 +122,8 @@ public class Character : MonoBehaviour {
             _leftArrow = sideArrows[1];
         }
 
-        _leftArrow.transform.parent = null;
-        _rightArrow.transform.parent = null;
-
-        // Get character change arrows
-        CharacterChangeArrow[] charaArrows = transform.GetComponentsInChildren<CharacterChangeArrow>();
-        if (charaArrows[0].side == 0) {
-            _upArrow = charaArrows[0];
-            _downArrow = charaArrows[1];
-        } else {
-            _downArrow = charaArrows[0];
-            _upArrow = charaArrows[1];
-        }
-
-        _upArrow.transform.parent = null;
-        _downArrow.transform.parent = null;
+        //_leftArrow.transform.parent = null;
+        //_rightArrow.transform.parent = null;
     }
 
     // Update is called once per frame
@@ -158,35 +153,10 @@ public class Character : MonoBehaviour {
             }
         }
 
-        // Changing Characters
-        if (_inputState.up.isJustPressed && !isAI) {
-            if (TopAIChild != null) {
-                TopAIChild.ChangeCharacterUp();
-            } else {
-                ChangeCharacterUp();
-            }
-        } else if (_inputState.down.isJustPressed && !isAI) {
-            if (TopAIChild != null) {
-                TopAIChild.ChangeCharacterDown();
-            } else {
-                ChangeCharacterDown();
-            }
-        }
-
         // Reset the input for networked instances
         if (_photonView != null && _photonView.owner != PhotonNetwork.player) {
             _inputState = InputState.ResetInput(_inputState);
         }
-    }
-
-    void PlayActivateClip() {
-        _audioSource.clip = _activateClip;
-        _audioSource.Play();
-    }
-
-    void PlayDeactivateClip() {
-        _audioSource.clip = _deactivateClip;
-        _audioSource.Play();
     }
 
     void PlayMoveClip() {
@@ -207,21 +177,19 @@ public class Character : MonoBehaviour {
             } else {
                 _rightArrow.Deactivate();
             }
-        } else if(_team == 0) {
+        } else {
+            _leftArrow.Deactivate();
+            _rightArrow.Activate();
+        } /*else if (_team == 0) {
             _leftArrow.Deactivate();
             _rightArrow.Activate();
         } else if(_team == 1) {
             _leftArrow.Activate();
             _rightArrow.Deactivate();
-        }
+        }*/
 
-        _leftArrow.transform.position = new Vector3(transform.position.x - 1f, transform.position.y, 0);
-        _rightArrow.transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
-
-        _upArrow.Activate();
-        _downArrow.Activate();
-        _upArrow.transform.position = new Vector3(transform.position.x, transform.position.y+ 1.14f, 0);
-        _downArrow.transform.position = new Vector3(transform.position.x, transform.position.y-1.3f, 0);
+        //_leftArrow.transform.position = new Vector3(transform.position.x - 1f, transform.position.y, 0);
+        //_rightArrow.transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
     }
 
     public void MoveLeft() {
@@ -255,7 +223,7 @@ public class Character : MonoBehaviour {
                 // in the next open slot.
                 teamRight.TakeCharacter(this);
                 // Turn character around to face center
-                transform.localScale = new Vector3(-1f, 1f, 1f);
+                transform.localScale = new Vector3(transform.localScale.x * -1f, transform.localScale.y, transform.localScale.z);
                 _team = 1;
             }
             // If already assigned to left team,
@@ -270,90 +238,6 @@ public class Character : MonoBehaviour {
         PlayMoveClip();
     }
 
-    public void Activate(int playerNum) {
-        _active = true;
-        _playerNum = playerNum;
-        _inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
-        _spriteRenderer.enabled = true;
-        UpdateArrows();
-        isAI = false;
-
-        // Get character from player manager
-        _characterName = _playerManager.GetPlayerByNum(_playerNum).characterName;
-        SetAnimator();
-
-        // If we are networked,
-        // Send event that we've been activated
-        if (_photonView != null) {
-            if (isLocal) {
-                // Take ownership of this character
-                _photonView.TransferOwnership(PhotonNetwork.player);
-                 
-                // Add the player id to controllerNum in order to differentiate a networked character
-                _photonView.RPC("ActivateCharacter", PhotonTargets.Others, _inputState.controllerNum + 4 + _photonView.ownerId, _photonView.ownerId);
-            } 
-            if (PhotonNetwork.isMasterClient) {
-                // Set owner id of playerinfo
-                _playerManager.GetPlayerByNum(playerNum).ownerID = _photonView.ownerId;
-            }
-        }
-
-        PlayActivateClip();
-    }
-
-    public void ActivateAI(int playerNum, Character parent) {
-        isAI = true;
-        _active = true;
-        _playerNum = playerNum;
-        _inputState.controllerNum = -parent.ControllerNum;
-        _spriteRenderer.enabled = true;
-        UpdateArrows();
-        humanParent = parent;
-        parent.aiChildren.Push(this);
-
-        // Get character from player manager
-        _characterName = _playerManager.GetPlayerByNum(_playerNum).characterName;
-        SetAnimator();
-
-        PlayActivateClip();
-    }
-
-    public void Deactivate() {
-        if(aiChildren.Count > 0) {
-            aiChildren.Pop().Deactivate();
-            return;
-        }
-
-        // If we are networked,
-        // Send event that we've been deactivated
-        if (_photonView != null && _photonView.owner == PhotonNetwork.player) {
-            _photonView.RPC("DeactivateCharacter", PhotonTargets.Others, _inputState.controllerNum, _photonView.ownerId);
-        }
-
-        _active = false;
-        _inputState.controllerNum = -1;
-        _spriteRenderer.enabled = false;
-        if (_team == 0) {
-            MoveRight();
-        } else if(_team == 1) {
-            MoveLeft();
-        }
-
-        //_leftArrow.GetComponent<SpriteRenderer>().enabled = false;
-        //_rightArrow.GetComponent<SpriteRenderer>().enabled = false;
-        _leftArrow.Deactivate();
-        _rightArrow.Deactivate();
-        _upArrow.Deactivate();
-        _downArrow.Deactivate();
-
-        if (isAI && humanParent != null) {
-            humanParent = null;
-        }
-
-
-        PlayDeactivateClip();
-    }
-
     public void SetCharacter(CHARACTERNAMES charaName) {
         _characterName = charaName;
         SetAnimator();
@@ -365,23 +249,6 @@ public class Character : MonoBehaviour {
     // Sets the sprite based on the current character
     void SetAnimator() {
         switch(_characterName) {
-            /*
-            case CHARACTERNAMES.BUB:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABUB:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOB:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABOB:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.PEPSIMAN:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
-                break;
-            */
             case CHARACTERNAMES.BOY1:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
                 break;
@@ -417,25 +284,6 @@ public class Character : MonoBehaviour {
         _inputState.controllerNum = conNum;
     }
 
-    public void ChangeCharacterUp() {
-        // Get the next available character
-        _characterName = _playerManager.GetNextAvailableCharacterUp(_characterName);
-        // Update player info in player manager
-        _playerManager.GetPlayerByNum(_playerNum).characterName = _characterName;
-
-        // Change sprite new character
-        SetAnimator();
-    }
-    public void ChangeCharacterDown() {
-        // Get the next available character
-        _characterName = _playerManager.GetNextAvailableCharacterDown(_characterName);
-        // Update player info in player manager
-        _playerManager.GetPlayerByNum(_playerNum).characterName = _characterName;
-
-        // Change sprite new character
-        SetAnimator();
-    }
-
     // Only for networking use
     public string GetNickname() {
         if(PhotonNetwork.connectedAndReady) {
@@ -447,5 +295,17 @@ public class Character : MonoBehaviour {
         }
 
         return "";
+    }
+
+    public void Activate(int i) {
+
+    }
+
+    public void ActivateAI() {
+
+    }
+
+    public void Deactivate() {
+        gameObject.SetActive(false);
     }
 }

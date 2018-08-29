@@ -119,7 +119,7 @@ public class ThrowState : PlayerState {
 
         LimitArrowRotation();
 
-        if (inputState.bubble.isJustPressed && throwTimer >= throwTime) {
+        if (inputState.swing.isJustPressed && throwTimer >= throwTime) {
             // Networking
             if (PhotonNetwork.connectedAndReady) {
                 if(playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player) {

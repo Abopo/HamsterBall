@@ -108,6 +108,7 @@ public class PlayerManager : MonoBehaviour {
         newPlayer.team = -1;
         newPlayer.difficulty = 0;
         _players.Add(newPlayer);
+        _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
     }
 
     public void AddPlayer(int playerNum, int controllerNum) {
@@ -119,11 +120,26 @@ public class PlayerManager : MonoBehaviour {
             newPlayer.team = -1;
             newPlayer.difficulty = 0;
             _players.Add(newPlayer);
+            _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
+        }
+    }
+
+    public void AddPlayer(int playerNum, int controllerNum, CHARACTERNAMES charaName) {
+        if (playerNum != -1) {
+            PlayerInfo newPlayer = new PlayerInfo();
+            newPlayer.playerNum = playerNum;
+            newPlayer.controllerNum = controllerNum;
+            newPlayer.characterName = charaName;
+            newPlayer.team = -1;
+            newPlayer.difficulty = 0;
+            _players.Add(newPlayer);
+            _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
         }
     }
 
     public void AddPlayer(PlayerInfo player) {
         _players.Add(player);
+        _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
     }
 
     // For networking
@@ -136,6 +152,7 @@ public class PlayerManager : MonoBehaviour {
             newPlayer.difficulty = 0;
             newPlayer.ownerID = ownerID;
             _players.Add(newPlayer);
+            _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
         }
     }
 

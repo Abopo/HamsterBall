@@ -21,8 +21,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.jump.isDown);
             stream.Serialize(ref _serializedInput.jump.isJustReleased);
             stream.Serialize(ref _serializedInput.jump.isJustPressed);
-            stream.Serialize(ref _serializedInput.bubble.isDown);
-            stream.Serialize(ref _serializedInput.bubble.isJustPressed);
+            stream.Serialize(ref _serializedInput.swing.isDown);
+            stream.Serialize(ref _serializedInput.swing.isJustPressed);
             stream.Serialize(ref _serializedInput.attack.isDown);
             stream.Serialize(ref _serializedInput.attack.isJustPressed);
             stream.Serialize(ref _serializedInput.attack.isJustReleased);
@@ -33,8 +33,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.jump.isDown);
             stream.Serialize(ref _serializedInput.jump.isJustReleased);
             stream.Serialize(ref _serializedInput.jump.isJustPressed);
-            stream.Serialize(ref _serializedInput.bubble.isDown);
-            stream.Serialize(ref _serializedInput.bubble.isJustPressed);
+            stream.Serialize(ref _serializedInput.swing.isDown);
+            stream.Serialize(ref _serializedInput.swing.isJustPressed);
             stream.Serialize(ref _serializedInput.attack.isDown);
             stream.Serialize(ref _serializedInput.attack.isJustPressed);
             stream.Serialize(ref _serializedInput.attack.isJustReleased);
@@ -78,8 +78,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
         if (_playerController.inputState.right.isJustReleased) {
             _serializedInput.right.isJustReleased = true;
         }
-        if (_playerController.inputState.bubble.isJustPressed) {
-            _serializedInput.bubble.isJustPressed = true;
+        if (_playerController.inputState.swing.isJustPressed) {
+            _serializedInput.swing.isJustPressed = true;
         }
         //stream.Serialize(ref _serializedInput.shift.isDown);
         if (_playerController.inputState.shift.isJustPressed) {

@@ -41,6 +41,10 @@ public class BackButton : MenuOption {
         SceneManager.LoadScene("LocalPlay");
     }
 
+    public void BackToCharacterSelect() {
+        SceneManager.LoadScene("NewCharacterSelect");
+    }
+
     public void DisconnectFromRoom() {
         PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene("OnlineLobby");

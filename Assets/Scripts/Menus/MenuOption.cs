@@ -7,14 +7,14 @@ using System.Collections;
 [RequireComponent (typeof(AudioSource))]
 public class MenuOption : MonoBehaviour {
     public GameObject selector;
-    public MenuOption[] adjOptions = new MenuOption[4];
+    public MenuOption[] adjOptions = new MenuOption[4]; // 0 - right, 1 - down, 2 - left, 3 - up
     public bool isFirstSelection;
     public bool isReady = true;
 
     //protected Vector2 _selectedPos;
     protected bool _isHighlighted;
     protected bool _justHighlighted; // use this to stop inputs from flowing over into multiple options.
-    bool _moved;
+    protected bool _moved;
 
     protected AudioSource _audioSource;
     AudioClip _highlightClip;
@@ -23,15 +23,16 @@ public class MenuOption : MonoBehaviour {
     MenuOption[] _allOtherOptions;
 
     private void Awake() {
+    }
+
+    // Use this for initialization
+    protected virtual void Start () {
         if (isFirstSelection) {
             _isHighlighted = true;
         } else {
             _isHighlighted = false;
         }
-    }
 
-    // Use this for initialization
-    protected virtual void Start () {
         //_selectedPos = transform.position;
         _moved = false;
 
@@ -134,7 +135,7 @@ public class MenuOption : MonoBehaviour {
     protected void DeHighlightOtherOptions() {
         if (_allOtherOptions != null) {
             foreach (MenuOption mO in _allOtherOptions) {
-                if (mO != this) {
+                if (mO != this && mO.isReady) {
                     mO._isHighlighted = false;
                 }
             }
@@ -170,7 +171,7 @@ public class MenuOption : MonoBehaviour {
 
     protected bool InputDown() {
         if (Input.GetAxis("Vertical") > 0.3f || Input.GetAxis("Vertical DPad") < -0.3f ||
-            Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
             return true;
         }
 

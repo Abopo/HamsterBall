@@ -41,7 +41,7 @@ public class IdleState : PlayerState {
 		} else if (inputState.left.isDown || inputState.right.isDown) {
 			playerController.ChangeState (PLAYER_STATE.WALK);
 			return;
-		} else if (inputState.bubble.isJustPressed && !playerController.IsInvuln) {
+		} else if (inputState.swing.isJustPressed && !playerController.IsInvuln) {
 			if(playerController.heldBubble == null) {
                 if (playerController.CanBubble) {
                     playerController.ChangeState(PLAYER_STATE.BUBBLE);

@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class LocalPlayMenu : MonoBehaviour {
 
+    public PlayerCountSelectMenu pcsMenu;
+
+    public MenuOption[] buttons;
+
     GameManager _gameManager;
 
 	// Use this for initialization
@@ -19,8 +23,10 @@ public class LocalPlayMenu : MonoBehaviour {
 
     public void StandardVersus() {
         _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
+
+        OpenPlayerCountSelectMenu(4, 2);
         //if (_gameManager.demoMode) {
-            SceneManager.LoadScene("DemoCharacterSelect");
+            //SceneManager.LoadScene("DemoCharacterSelect");
         //} else {
         //    SceneManager.LoadScene("CharacterSelect");
         //}
@@ -28,16 +34,37 @@ public class LocalPlayMenu : MonoBehaviour {
 
     public void PartyVersus() {
         _gameManager.SetGameMode(GAME_MODE.MP_PARTY);
-        SceneManager.LoadScene("DemoCharacterSelect");
+        OpenPlayerCountSelectMenu(4, 2);
+        //SceneManager.LoadScene("DemoCharacterSelect");
     }
 
     public void Survival() {
         _gameManager.SetGameMode(GAME_MODE.SURVIVAL);
-        SceneManager.LoadScene("DemoCharacterSelect");
+        OpenPlayerCountSelectMenu(2, 1);
+        //SceneManager.LoadScene("DemoCharacterSelect");
     }
 
     public void PuzzleChallenge() {
         _gameManager.SetGameMode(GAME_MODE.SP_CLEAR);
-        SceneManager.LoadScene("DemoCharacterSelect");
+        OpenPlayerCountSelectMenu(2, 1);
+        //SceneManager.LoadScene("DemoCharacterSelect");
+    }
+
+    public void OpenPlayerCountSelectMenu(int maxPlayers, int minPlayers) {
+        pcsMenu.Activate(maxPlayers, minPlayers);
+        Deactivate();
+    }
+
+    public void Activate() {
+        // Turn on buttons
+        foreach(MenuOption mb in buttons) {
+            mb.isReady = true;
+        }
+    }
+    void Deactivate() {
+        // Turn off buttons
+        foreach (MenuOption mb in buttons) {
+            mb.isReady = false;
+        }
     }
 }

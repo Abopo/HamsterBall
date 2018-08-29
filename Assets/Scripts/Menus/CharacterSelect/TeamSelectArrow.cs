@@ -10,9 +10,12 @@ public class TeamSelectArrow : MonoBehaviour {
     float _moveTime = 0.5f;
     float _moveTimer;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    // Use this for initialization
+    void Start () {
 	}
 	
 	// Update is called once per frame
@@ -24,6 +27,7 @@ public class TeamSelectArrow : MonoBehaviour {
             moveSpeed = -moveSpeed;
             _moveTimer = 0f;
         }
+
         transform.Translate(moveSpeed * Time.deltaTime, 0f, 0f);
 	}
 

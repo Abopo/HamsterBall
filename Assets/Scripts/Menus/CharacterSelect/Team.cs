@@ -3,12 +3,6 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Team : MonoBehaviour {
-    public Text readyText1;
-    public Text readyText2;
-    public SpriteRenderer readySprite1;
-    public SpriteRenderer readySprite2;
-    public Sprite[] readyPSprites = new Sprite[4];
-    public Sprite[] readyCSprites = new Sprite[4];
 
     public GameObject hamsterMeter;
     public GameObject hamsterTallyObj;
@@ -27,19 +21,17 @@ public class Team : MonoBehaviour {
 
     private void Awake() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-    }
-
-    // Use this for initialization
-    void Start () {
-        //readyText1.gameObject.SetActive(false);
-        //readyText2.gameObject.SetActive(false);
-        readySprite1.gameObject.SetActive(false);
-        readySprite2.gameObject.SetActive(false);
 
         numPlayers = 0;
 
         _char1Pos = transform.GetChild(0).position;
         _char2Pos = transform.GetChild(1).position;
+    }
+
+    // Use this for initialization
+    void Start () {
+        //readySprite1.gameObject.SetActive(false);
+        //readySprite2.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -61,15 +53,13 @@ public class Team : MonoBehaviour {
             _character1 = character;
             // Move character sprite to corresponding position
             _character1.transform.position = _char1Pos;
-            //SetReadyText(readyText1, character);
-            SetReadyText(readySprite1, character);
+            //SetReadyText(readySprite1, character);
             numPlayers++;
         } else if(_character2 == null) {
             _character2 = character;
             // Move character sprite to corresponding position
             _character2.transform.position = _char2Pos;
-            //SetReadyText(readyText2, character);
-            SetReadyText(readySprite2, character);
+            //SetReadyText(readySprite2, character);
             numPlayers++;
         }
     }
@@ -78,21 +68,12 @@ public class Team : MonoBehaviour {
         // Show Ready Text
         /*
         if (chara.isAI) {
-            rText.text = "C" + chara.PlayerNum + " Ready!\nV";
-        } else {
-            if (PhotonNetwork.connectedAndReady && chara.GetComponent<PhotonView>().owner.NickName != "") {
-                rText.text = chara.GetComponent<PhotonView>().owner.NickName + " Ready!\nV";
-            } else {
-                rText.text = "P" + chara.PlayerNum + " Ready!\nV";
-            }
-        }
-        */
-
-        if (chara.isAI) {
             rSprite.sprite = readyCSprites[chara.PlayerNum - 1];
         } else {
             rSprite.sprite = readyPSprites[chara.PlayerNum - 1];
         }
+        */
+
 
         // Set proper button prompt
         Text addAIText = rSprite.transform.GetChild(0).GetComponent<Text>();
@@ -114,16 +95,14 @@ public class Team : MonoBehaviour {
     }
 
     public void LoseCharacter(Character character) {
-        character.transform.localScale = new Vector3(1f, 1f, 1f);
+        character.transform.localScale = new Vector3(Mathf.Abs(character.transform.localScale.x), character.transform.localScale.y, character.transform.localScale.z);
         if (_character1 == character) {
             _character1 = null;
-            //readyText1.gameObject.SetActive(false);
-            readySprite1.gameObject.SetActive(false);
+            //readySprite1.gameObject.SetActive(false);
             numPlayers--;
         } else if(_character2 == character) {
             _character2 = null;
-            //readyText2.gameObject.SetActive(false);
-            readySprite2.gameObject.SetActive(false);
+            //readySprite2.gameObject.SetActive(false);
             numPlayers--;
         }
     }
@@ -184,9 +163,9 @@ public class Team : MonoBehaviour {
     public string GetCharacterName(Character chara) {
         string nickName = "";
         if(_character1 = chara) {
-            nickName =  readyText1.text;
+            //nickName =  readyText1.text;
         } else if(_character2 == chara) {
-            return readyText2.text;
+            //return readyText2.text;
         }
 
         return nickName; 

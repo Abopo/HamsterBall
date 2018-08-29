@@ -31,7 +31,7 @@ public class AimingLine : MonoBehaviour {
     void GenerateAimDot() {
         GameObject aimDot = Instantiate(_aimDotObj, transform);
         aimDot.transform.localPosition = new Vector3(0.5f, 0f, -1f);
-        aimDot.transform.localScale = new Vector3(2f, 2f, 2f);
+        aimDot.transform.localScale = new Vector3(1f, 1f, 1f);
         _aimDots.Add(aimDot);
     }
 

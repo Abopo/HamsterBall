@@ -120,13 +120,13 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     public void SetupSwitchMeter(PlayerController player) {
         if(player.team == 0) {
             shiftMeters[leftMeters].GetMeterFront().enabled = true;
-            shiftMeters[leftMeters].GetMeterBack().enabled = true;
+            //shiftMeters[leftMeters].GetMeterBack().enabled = true;
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
             shiftMeters[leftMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1) * 12];
             shiftMeters[leftMeters++].GetIcon().enabled = true;
         } else if(player.team == 1) {
             shiftMeters[2+rightMeters].GetMeterFront().enabled = true;
-            shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
+            //shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2+rightMeters]);
             shiftMeters[2+rightMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1) * 12];
             shiftMeters[2+rightMeters++].GetIcon().enabled = true;

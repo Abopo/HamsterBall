@@ -52,7 +52,7 @@ public class JumpState : PlayerState {
             _jumpForce /= 2;
 		}
 
-		if(inputState.bubble.isJustPressed && !playerController.IsInvuln) {
+		if(inputState.swing.isJustPressed && !playerController.IsInvuln) {
 			if(playerController.heldBubble == null) {
                 if (playerController.CanBubble) {
                     playerController.ChangeState(PLAYER_STATE.BUBBLE);

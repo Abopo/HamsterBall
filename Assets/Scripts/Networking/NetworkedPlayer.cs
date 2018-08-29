@@ -70,7 +70,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.right.isDown);
             stream.Serialize(ref _serializedInput.right.isJustPressed);
             stream.Serialize(ref _serializedInput.right.isJustReleased);
-            stream.Serialize(ref _serializedInput.bubble.isJustPressed);
+            stream.Serialize(ref _serializedInput.swing.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isDown);
             stream.Serialize(ref _serializedInput.shift.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isJustReleased);
@@ -102,7 +102,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.right.isDown);
             stream.Serialize(ref _serializedInput.right.isJustPressed);
             stream.Serialize(ref _serializedInput.right.isJustReleased);
-            stream.Serialize(ref _serializedInput.bubble.isJustPressed);
+            stream.Serialize(ref _serializedInput.swing.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isDown);
             stream.Serialize(ref _serializedInput.shift.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isJustReleased);
@@ -160,8 +160,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         if (_playerController.inputState.right.isJustReleased) {
             _serializedInput.right.isJustReleased = true;
         }
-        if (_playerController.inputState.bubble.isJustPressed) {
-            _serializedInput.bubble.isJustPressed = true;
+        if (_playerController.inputState.swing.isJustPressed) {
+            _serializedInput.swing.isJustPressed = true;
         }
         //stream.Serialize(ref _serializedInput.shift.isDown);
         if (_playerController.inputState.shift.isJustPressed) {
@@ -255,7 +255,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
             // For some reason, the client side player will sometimes go straight into the throw state after catching a hamster
             // Trying to prevent that
-            _playerController.inputState.bubble.isJustPressed = false;
+            _playerController.inputState.swing.isJustPressed = false;
         }
     }
 
@@ -268,7 +268,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         if (hamster != null) {
             // For some reason, the client side player will sometimes go straight into the throw state after catching a hamster
             // Trying to prevent that
-            _playerController.inputState.bubble.isJustPressed = false;
+            _playerController.inputState.swing.isJustPressed = false;
 
             // The hamster was caught.
             hamster.Caught();

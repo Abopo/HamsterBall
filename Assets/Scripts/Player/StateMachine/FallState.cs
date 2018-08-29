@@ -24,7 +24,7 @@ public class FallState : PlayerState {
 	}
 
 	public override void CheckInput(InputState inputState) {
-		if(inputState.bubble.isJustPressed && !playerController.IsInvuln) {
+		if(inputState.swing.isJustPressed && !playerController.IsInvuln) {
 			if(playerController.heldBubble == null) {
                 if (playerController.CanBubble) {
                     playerController.ChangeState(PLAYER_STATE.BUBBLE);

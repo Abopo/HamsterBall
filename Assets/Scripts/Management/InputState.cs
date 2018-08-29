@@ -15,7 +15,7 @@ public class InputState {
     public button 	left;
 	public button 	right;
 	public button	jump;
-	public button	bubble;
+	public button	swing;
     public button   attack;
     public button	shift;
 
@@ -38,7 +38,7 @@ public class InputState {
         left = new button ();
 		right = new button ();
 		jump = new button();
-		bubble = new button ();
+		swing = new button ();
 		attack = new button ();
         shift = new button ();
 	}
@@ -96,9 +96,9 @@ public class InputState {
 			currInput.jump.isDown = Input.GetButton ("Jump 1");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Jump 1");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Jump 1");
-			currInput.bubble.isDown = Input.GetButton ("Bubble 1");
-			currInput.bubble.isJustPressed = Input.GetButtonDown ("Bubble 1");
-			currInput.bubble.isJustReleased = Input.GetButtonUp ("Bubble 1");
+			currInput.swing.isDown = Input.GetButton ("Bubble 1");
+			currInput.swing.isJustPressed = Input.GetButtonDown ("Bubble 1");
+			currInput.swing.isJustReleased = Input.GetButtonUp ("Bubble 1");
             currInput.attack.isDown = Input.GetButton("Attack 1");
             currInput.attack.isJustPressed = Input.GetButtonDown("Attack 1");
             currInput.attack.isJustReleased = Input.GetButtonUp("Attack 1");
@@ -122,9 +122,9 @@ public class InputState {
 			currInput.jump.isDown = Input.GetButton ("Jump 2");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Jump 2");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Jump 2");
-			currInput.bubble.isDown = Input.GetButton ("Bubble 2");
-			currInput.bubble.isJustPressed = Input.GetButtonDown ("Bubble 2");
-			currInput.bubble.isJustReleased = Input.GetButtonUp ("Bubble 2");
+			currInput.swing.isDown = Input.GetButton ("Bubble 2");
+			currInput.swing.isJustPressed = Input.GetButtonDown ("Bubble 2");
+			currInput.swing.isJustReleased = Input.GetButtonUp ("Bubble 2");
             currInput.attack.isDown = Input.GetButton("Attack 2");
             currInput.attack.isJustPressed = Input.GetButtonDown("Attack 2");
             currInput.attack.isJustReleased = Input.GetButtonUp("Attack 2");
@@ -157,9 +157,9 @@ public class InputState {
 			currInput.jump.isDown = Input.GetButton ("Joystick Jump 1");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Joystick Jump 1");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Joystick Jump 1");
-			currInput.bubble.isDown = Input.GetButton ("Joystick Bubble 1");
-			currInput.bubble.isJustPressed = Input.GetButtonDown ("Joystick Bubble 1");
-			currInput.bubble.isJustReleased = Input.GetButtonUp ("Joystick Bubble 1");
+			currInput.swing.isDown = Input.GetButton ("Joystick Bubble 1");
+			currInput.swing.isJustPressed = Input.GetButtonDown ("Joystick Bubble 1");
+			currInput.swing.isJustReleased = Input.GetButtonUp ("Joystick Bubble 1");
             currInput.attack.isDown = Input.GetButton("Joystick Attack 1");
             currInput.attack.isJustPressed = Input.GetButtonDown("Joystick Attack 1");
             currInput.attack.isJustReleased = Input.GetButtonUp("Joystick Attack 1");
@@ -190,9 +190,9 @@ public class InputState {
 			currInput.jump.isDown = Input.GetButton ("Joystick Jump 2");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Joystick Jump 2");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Joystick Jump 2");
-			currInput.bubble.isDown = Input.GetButton ("Joystick Bubble 2");
-			currInput.bubble.isJustPressed = Input.GetButtonDown ("Joystick Bubble 2");
-			currInput.bubble.isJustReleased = Input.GetButtonUp ("Joystick Bubble 2");
+			currInput.swing.isDown = Input.GetButton ("Joystick Bubble 2");
+			currInput.swing.isJustPressed = Input.GetButtonDown ("Joystick Bubble 2");
+			currInput.swing.isJustReleased = Input.GetButtonUp ("Joystick Bubble 2");
             currInput.attack.isDown = Input.GetButton("Joystick Attack 2");
             currInput.attack.isJustPressed = Input.GetButtonDown("Joystick Attack 2");
             currInput.attack.isJustReleased = Input.GetButtonUp("Joystick Attack 2");
@@ -222,9 +222,9 @@ public class InputState {
 			currInput.jump.isDown = Input.GetButton ("Joystick Jump 3");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Joystick Jump 3");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Joystick Jump 3");
-			currInput.bubble.isDown = Input.GetButton ("Joystick Bubble 3");
-			currInput.bubble.isJustPressed = Input.GetButtonDown ("Joystick Bubble 3");
-			currInput.bubble.isJustReleased = Input.GetButtonUp ("Joystick Bubble 3");
+			currInput.swing.isDown = Input.GetButton ("Joystick Bubble 3");
+			currInput.swing.isJustPressed = Input.GetButtonDown ("Joystick Bubble 3");
+			currInput.swing.isJustReleased = Input.GetButtonUp ("Joystick Bubble 3");
             currInput.attack.isDown = Input.GetButton("Joystick Attack 3");
             currInput.attack.isJustPressed = Input.GetButtonDown("Joystick Attack 3");
             currInput.attack.isJustReleased = Input.GetButtonUp("Joystick Attack 3");
@@ -254,9 +254,9 @@ public class InputState {
 			currInput.jump.isDown = Input.GetButton ("Joystick Jump 4");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Joystick Jump 4");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Joystick Jump 4");
-			currInput.bubble.isDown = Input.GetButton ("Joystick Bubble 4");
-			currInput.bubble.isJustPressed = Input.GetButtonDown ("Joystick Bubble 4");
-			currInput.bubble.isJustReleased = Input.GetButtonUp ("Joystick Bubble 4");
+			currInput.swing.isDown = Input.GetButton ("Joystick Bubble 4");
+			currInput.swing.isJustPressed = Input.GetButtonDown ("Joystick Bubble 4");
+			currInput.swing.isJustReleased = Input.GetButtonUp ("Joystick Bubble 4");
             currInput.attack.isDown = Input.GetButton("Joystick Attack 4");
             currInput.attack.isJustPressed = Input.GetButtonDown("Joystick Attack 4");
             currInput.attack.isJustReleased = Input.GetButtonUp("Joystick Attack 4");
@@ -439,9 +439,9 @@ public class InputState {
         currInput.jump.isDown = false;
         currInput.jump.isJustPressed = false;
         currInput.jump.isJustReleased = false;
-        currInput.bubble.isDown = false;
-        currInput.bubble.isJustPressed = false;
-        currInput.bubble.isJustReleased = false;
+        currInput.swing.isDown = false;
+        currInput.swing.isJustPressed = false;
+        currInput.swing.isJustReleased = false;
         currInput.attack.isDown = false;
         currInput.attack.isJustPressed = false;
         currInput.attack.isJustReleased = false;

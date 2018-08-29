@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour {
     public int goalCount; // the number of points or matches to win the level
     public int conditionLimit; // the condition limit to achieve the goal i.e. time limit, throw limit, etc.
 
+    public int numPlayers;
+    public int numAI;
+
     // How many games each team has won
     public int leftTeamGames = 0;
     public int rightTeamGames = 0;
@@ -240,7 +243,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetGameMode(GAME_MODE mode) {
         gameMode = mode;
-        if(gameMode == GAME_MODE.SP_CLEAR || gameMode == GAME_MODE.SP_POINTS) {
+        if(gameMode == GAME_MODE.SP_CLEAR || gameMode == GAME_MODE.SP_POINTS || gameMode == GAME_MODE.SURVIVAL) {
             isSinglePlayer = true;
         } else {
             isSinglePlayer = false;

@@ -335,16 +335,16 @@ public class CharacterSelect : MonoBehaviour {
 
     void ActivateAICharacter(Character parent) {
         if (!character1.Active) {
-            character1.ActivateAI(1, parent);
+            //character1.ActivateAI(1, parent);
             _assignedPlayer1 = true;
         } else if (!character2.Active) {
-            character2.ActivateAI(2, parent);
+            //character2.ActivateAI(2, parent);
             _assignedPlayer2 = true;
         } else if (!character3.Active) {
-            character3.ActivateAI(3, parent);
+            //character3.ActivateAI(3, parent);
             _assignedPlayer3 = true;
         } else if (!character4.Active) {
-            character4.ActivateAI(4, parent);
+            //character4.ActivateAI(4, parent);
             _assignedPlayer4 = true;
         }
     }

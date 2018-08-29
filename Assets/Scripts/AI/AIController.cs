@@ -101,7 +101,7 @@ public class AIController : MonoBehaviour {
         _input.down.isDown = false;
         _input.down.isJustPressed = false;
         _input.down.isJustReleased = false;
-        _input.bubble.isJustPressed = false;
+        _input.swing.isJustPressed = false;
         _input.shift.isDown = false;
         _input.shift.isJustPressed = false;
         _input.shift.isJustReleased = false;
@@ -142,7 +142,7 @@ public class AIController : MonoBehaviour {
         _prevInput.down.isDown = _input.down.isDown;
         _prevInput.down.isJustPressed = _input.down.isJustPressed;
         _prevInput.down.isJustReleased = _input.down.isJustReleased;
-        _prevInput.bubble.isJustPressed = _input.bubble.isJustPressed;
+        _prevInput.swing.isJustPressed = _input.swing.isJustPressed;
         _prevInput.shift.isDown = _input.shift.isDown;
         _prevInput.shift.isJustPressed = _input.shift.isJustPressed;
         _prevInput.shift.isJustReleased = _input.shift.isJustReleased;
@@ -215,7 +215,7 @@ public class AIController : MonoBehaviour {
                 // If we are chasing a hamster and don't already have one
                 if (_curAction.hamsterWant != null && _playerController.heldBubble == null && _playerController.curState != PLAYER_STATE.BUBBLE) {
                     // The hamster(or opponent) is right here! Catch it!
-                    _input.bubble.isJustPressed = true;
+                    _input.swing.isJustPressed = true;
                     // Make a new decision based on what hamster we caught
                     _aiBrain.MakeDecision();
                 // If we are chasing an opponent
@@ -381,7 +381,7 @@ public class AIController : MonoBehaviour {
     void AimThrow() {
         // First put the player into throw state if not already there.
         if(_playerController.curState != PLAYER_STATE.THROW) {
-            _input.bubble.isJustPressed = true;
+            _input.swing.isJustPressed = true;
             return;
         }
 
@@ -396,7 +396,7 @@ public class AIController : MonoBehaviour {
             if(_aimTimer >= _aimTime) {
                 _aimTimer = 0f;
                 dumbFrameCount = 0;
-                _input.bubble.isJustPressed = true;
+                _input.swing.isJustPressed = true;
             }
 
             // If bubble is on the right
@@ -418,7 +418,7 @@ public class AIController : MonoBehaviour {
                     dumbFrameCount = 0;
                     _aimTimer = 0f;
 
-                    _input.bubble.isJustPressed = true;
+                    _input.swing.isJustPressed = true;
                 }
             }
         }

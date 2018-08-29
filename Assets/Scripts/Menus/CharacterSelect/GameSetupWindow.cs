@@ -5,8 +5,8 @@ using System.Collections;
 
 public class GameSetupWindow : MonoBehaviour {
 
-    public Team teamLeft;
-    public Team teamRight;
+    //public Team teamLeft;
+    //public Team teamRight;
 
     public Text lthNumberText;
     public Text rthNumberText;
@@ -58,18 +58,18 @@ public class GameSetupWindow : MonoBehaviour {
 
         //_gameManager.leftTeamHandicap = 9;
         //S_gameManager.rightTeamHandicap = 9;
-        int leftHandicap = 12 - _gameManager.leftTeamHandicap;
-        int rightHandicap = 12 - _gameManager.rightTeamHandicap;
-        _gameManager.leftTeamHandicap = 12;
-        _gameManager.rightTeamHandicap = 12;
-        for (int i = 0; i < leftHandicap; ++i) {
-            teamLeft.DecreaseHandicap();
-        }
-        for (int i = 0; i < rightHandicap; ++i) {
-            teamRight.DecreaseHandicap();
-        }
-        lthNumberText.text = teamLeft.handicap.ToString();
-        rthNumberText.text = teamRight.handicap.ToString();
+        int leftHandicap = 10 - _gameManager.leftTeamHandicap;
+        int rightHandicap = 10 - _gameManager.rightTeamHandicap;
+        _gameManager.leftTeamHandicap = 10;
+        _gameManager.rightTeamHandicap = 10;
+        //for (int i = 0; i < leftHandicap; ++i) {
+        //    teamLeft.DecreaseHandicap();
+        //}
+        //for (int i = 0; i < rightHandicap; ++i) {
+        //    teamRight.DecreaseHandicap();
+        //}
+        //lthNumberText.text = teamLeft.handicap.ToString();
+        //rthNumberText.text = teamRight.handicap.ToString();
 
         _aimAssist = false;
         aaText.text = "Off";
@@ -128,6 +128,7 @@ public class GameSetupWindow : MonoBehaviour {
     }
 
     // Increase the Left team's handicap.
+    /*
     public void IncreaseLTH() {
         teamLeft.IncreaseHandicap();
         teamLeft.FailCheckHandicap();
@@ -152,6 +153,7 @@ public class GameSetupWindow : MonoBehaviour {
         teamRight.FailCheckHandicap();
         rthNumberText.text = teamRight.handicap.ToString();
     }
+    */
 
     public void AimAssistButton() {
         _aimAssist = !_aimAssist;
@@ -219,9 +221,9 @@ public class GameSetupWindow : MonoBehaviour {
         }
 
         // If either team has no players, we should load single player levels
-        if(teamLeft.numPlayers == 0 || teamRight.numPlayers == 0) {
-            _gameManager.isSinglePlayer = true;
-        }
+        //if(teamLeft.numPlayers == 0 || teamRight.numPlayers == 0) {
+        //    _gameManager.isSinglePlayer = true;
+        //}
 
         if(_gameManager.demoMode) {
             if(_gameManager.isSinglePlayer) {

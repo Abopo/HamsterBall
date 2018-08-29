@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour {
     public int marginMultiplier = 1;
 
     float _marginTimer = 0;
-    float _marginTime = 10f;
+    float _marginTime = 128f;
     int _initialTargetPoints = 120;
     int _targetPoints;
     int _marginIterations = 0;
