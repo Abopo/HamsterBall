@@ -29,9 +29,10 @@ public class PlayerController : Entity {
 
     public int atkModifier; // Modifies the amount of junk generated when making matches
 
-	bool _canShift;
+	public bool shifted;
+    bool _canShift;
     public bool CanShift {
-        get { return (_canShift && curState != PLAYER_STATE.HIT && curState != PLAYER_STATE.SHIFT && curState != PLAYER_STATE.THROW); }
+        get { return (_canShift && (curState == PLAYER_STATE.IDLE || curState == PLAYER_STATE.WALK || curState == PLAYER_STATE.JUMP || curState == PLAYER_STATE.FALL)); }
     }
     float _shiftCooldownTime;
 	public float ShiftCooldownTime {
@@ -42,14 +43,6 @@ public class PlayerController : Entity {
 		get {return _shiftCooldownTimer;	}
         set { _shiftCooldownTimer = value; }
 	}
-
-	public bool shifted;
-	float _shiftTime;
-	float _shiftTimer;
-    public float ShiftTimer {
-        get { return _shiftTimer; }
-        set { _shiftTimer = value; }
-    }
 
     public float bubbleCooldownTimer;
     public float bubbleCooldownTime; // 0.15f
@@ -162,15 +155,17 @@ public class PlayerController : Entity {
 
         _canShift = false;
 		_shiftCooldownTime = 12.0f;
-		_shiftCooldownTimer = 0;
-		_shiftTime = 6.0f;
-		_shiftTimer = 0;
+		_shiftCooldownTimer = 0f;
         direction = _animator.GetBool("FacingRight") ? 1 : -1;
 
-        if (team == 0) {
+        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
-        } else if(team == 1) {
-            _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+        } else {
+            if (team == 0) {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            } else if (team == 1) {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+            }
         }
 
         InitStates();
@@ -291,11 +286,7 @@ public class PlayerController : Entity {
 			// Shift to opposite field.
 			if(shifted) {
                 _shiftCooldownTimer = 0f;
-                _shiftTimer = 0f;
                 _canShift = false;
-				//Shift ();
-				//canShift = false;
-				//shiftCooldownTimer = 0;
 			}
             ChangeState(PLAYER_STATE.SHIFT);
         }
@@ -328,9 +319,8 @@ public class PlayerController : Entity {
 
     void ShiftUpdates() {
         if (shifted && curState != PLAYER_STATE.SHIFT) {
-            _shiftTimer += Time.deltaTime;
             _shiftCooldownTimer -= Time.deltaTime * 2;
-            if (_shiftTimer >= _shiftTime) {
+            if (_shiftCooldownTimer <= 0) {
                 //Shift ();
                 ChangeState(PLAYER_STATE.SHIFT);
                 _canShift = false;
@@ -368,11 +358,6 @@ public class PlayerController : Entity {
             shifted = false;
             _targetArrow.enabled = false;
         }
-
-
-        //_playerAudio.PlayShiftClip();
-
-        _shiftTimer = 0f;
     }
 
     // This shift is used on mirrored stages to help keep players out of level collision
@@ -396,9 +381,6 @@ public class PlayerController : Entity {
             shifted = false;
             _targetArrow.enabled = false;
         }
-
-        _shiftTimer = 0f;
-
     }
 
     void InvulnerabilityState() {
@@ -514,7 +496,7 @@ public class PlayerController : Entity {
     }
 
     public void ResetShiftTimer() {
-        _shiftTimer = 0f;
+        _shiftCooldownTimer = 0f;
     }
 
     public override void Respawn() {

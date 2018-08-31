@@ -18,7 +18,7 @@ public class LevelUI : MonoBehaviour {
     void SetupGameMarkers() {
         _gameMarkers = GetComponentsInChildren<GameMarker>();
 
-        if (_gameManager.isSinglePlayer) {
+        if (_gameManager.isSinglePlayer || _gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             foreach(GameMarker gM in _gameMarkers) {
                 gM.gameObject.SetActive(false);
             }

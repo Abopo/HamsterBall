@@ -14,6 +14,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
 
     int _maxPlayers;
     int _minPlayers;
+    bool _aiAllowed;
 
     GameManager _gameManager;
 
@@ -32,10 +33,11 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         }
 	}
 
-    public void Activate(int maxPlayers, int minPlayers) {
+    public void Activate(int maxPlayers, int minPlayers, bool aiAllowed) {
         gameObject.SetActive(true);
         _maxPlayers = maxPlayers;
         _minPlayers = minPlayers;
+        _aiAllowed = aiAllowed;
 
         // TODO: Adjust for number of connected controllers?
 
@@ -63,7 +65,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         // Set player count
         _gameManager.numPlayers = 1;
 
-        if (_minPlayers > 1) {
+        if (_aiAllowed && _minPlayers > 1) {
             // Open AI selection
             OpenAICountMenu();
         } else {
@@ -75,7 +77,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         // Set player count
         _gameManager.numPlayers = 2;
 
-        if (_maxPlayers > 2) {
+        if (_aiAllowed && _maxPlayers > 2) {
             // Open AI selection
             OpenAICountMenu();
         } else {
@@ -87,7 +89,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         // Set player count
         _gameManager.numPlayers = 3;
 
-        if (_maxPlayers > 3) {
+        if (_aiAllowed && _maxPlayers > 3) {
             // Open AI selection
             OpenAICountMenu();
         } else {

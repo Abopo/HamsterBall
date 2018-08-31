@@ -167,7 +167,7 @@ public class ThrowState : PlayerState {
 
         if (playerController.shifted) {
             // If you are on the opponent side, make the bubble work on their board.
-            playerController.heldBubble.SwitchTeams();
+            //playerController.heldBubble.SwitchTeams();
         }
         Vector2 dir = aimingArrow.GetChild(0).position - aimingArrow.position;
         dir.Normalize();

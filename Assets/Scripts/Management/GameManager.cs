@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System.Collections.Generic;
 
-public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, MP_PARTY, SURVIVAL, NUM_MODES }
+public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, MP_PARTY, SURVIVAL, TEAMSURVIVAL, NUM_MODES }
 public enum MENU { STORY = 0, VERSUS, EDITOR };
 
 public class GameManager : MonoBehaviour {
@@ -127,7 +127,6 @@ public class GameManager : MonoBehaviour {
             Screen.SetResolution(width, height, true);
         }
     }
-
 
     void ResetValues() {
         leftTeamHandicap = 9;

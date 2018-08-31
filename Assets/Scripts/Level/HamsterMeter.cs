@@ -5,11 +5,12 @@ public class HamsterMeter : MonoBehaviour {
     public int shields; // Shields block orbs from adding to the meter
 
     public GameObject hamsterStockSprite;
-    public BubbleManager bubbleManager;
     public GameObject hamsterTallyObj;
+    public int team;
 
     int curStock;
-    int meterSize;
+    int _baseMeterSize;
+    int _meterSize;
     List<Transform> stockTallies = new List<Transform>();
     List<GameObject> stockSprites = new List<GameObject>();
 
@@ -22,18 +23,72 @@ public class HamsterMeter : MonoBehaviour {
         get { return stockTallies; }
     }
 
+    public int MeterSize {
+        get { return _meterSize; }
+    }
+
     GameObject _shieldSpriteObj;
     GameObject[] _shieldSprites = new GameObject[6];
 
+    BubbleManager _bubbleManager;
+
     // Use this for initialization
     void Start() {
+        // if we haven't been initialized yet
+        if(_baseMeterSize == 0) {
+            //Initialize with default values
+            Initialize(13);
+        }
+
         curStock = 0;
-        meterSize = 12;
-        GetChildren();
+        //GetChildren();
 
         _nextTallyIndex = 0;
 
         _shieldSpriteObj = Resources.Load<GameObject>("Prefabs/Effects/ShieldSprite");
+
+        // FindObjectOfType correct bubble manager
+        BubbleManager[] bManagers = FindObjectsOfType<BubbleManager>();
+        foreach(BubbleManager bMan in bManagers) {
+            if(bMan.team == team) {
+                _bubbleManager = bMan;
+            }
+        }
+    }
+
+    public void Initialize(int lineLength) {
+        int tallies = transform.childCount;
+
+        // Remove tallies until lined up with handicap.
+        while (lineLength != tallies) {
+            if (lineLength < tallies) {
+                DestroyImmediate(transform.GetChild(tallies - 1).gameObject);
+                --tallies;
+            } else if (lineLength > tallies) {
+                // Adjust Hamster Meter accordingly
+                // - Add a sprite
+                GameObject hamsterTally = GameObject.Instantiate(hamsterTallyObj, transform) as GameObject;
+                hamsterTally.transform.position = new Vector3(transform.GetChild(transform.childCount - 2).transform.position.x + 0.77f,
+                                                               transform.position.y,
+                                                               transform.position.z);
+                tallies++;
+            }
+        }
+
+
+        // - Adjust position of meter to be centered.
+        //float x = 2.09f - ((tallies/2) * 0.5f);
+        //transform.position = new Vector3(xPos + x, transform.position.y, transform.position.z);
+
+        for (int i = 0; i < transform.childCount; ++i) {
+            transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        GetChildren();
+
+        _baseMeterSize = tallies;
+        _meterSize = _baseMeterSize;
+        BecomeShort();
     }
 
     void GetChildren() {
@@ -62,8 +117,8 @@ public class HamsterMeter : MonoBehaviour {
                     // Move remaining shields down
                     for (int i = 0; i < _shieldSprites.Length; ++i) {
                         if (_shieldSprites[i] != null) {
-                            _shieldSprites[i].transform.position = new Vector3(_shieldSprites[i].transform.position.x,
-                                                                                _shieldSprites[i].transform.position.y - (1f * count),
+                            _shieldSprites[i].transform.position = new Vector3(_shieldSprites[i].transform.position.x - (1f * count),
+                                                                                _shieldSprites[i].transform.position.y,
                                                                                 _shieldSprites[i].transform.position.z);
                             _shieldSprites[i - count] = _shieldSprites[i];
                             _shieldSprites[i] = null;
@@ -72,36 +127,6 @@ public class HamsterMeter : MonoBehaviour {
                 }
             }
         }
-    }
-
-    public void Initialize(int handicap) {
-        int tallies = transform.childCount;
-
-        /*
-        // Remove tallies until lined up with handicap.
-        while (handicap != tallies) {
-            if (handicap < tallies) {
-                DestroyImmediate(transform.GetChild(tallies - 1).gameObject);
-                --tallies;
-            } else if (handicap > tallies) {
-                // Adjust Hamster Meter accordingly
-                // - Add a sprite
-                GameObject hamsterTally = GameObject.Instantiate(hamsterTallyObj, transform) as GameObject;
-                hamsterTally.transform.position = new Vector3(transform.position.x,
-                                                               transform.GetChild(transform.childCount - 2).transform.position.y + 0.95f,
-                                                               transform.position.z);
-                tallies++;
-            }
-        }
-
-        // - Adjust position of meter to be centered.
-        float y = 2.09f - ((tallies - 6) * 0.5f);
-        transform.position = new Vector3(transform.position.x, y, transform.position.z);
-
-        for (int i = 0; i < transform.childCount; ++i) {
-            transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
-        }
-        */
     }
 
     // so far in all cases inc is going to be 1
@@ -116,10 +141,10 @@ public class HamsterMeter : MonoBehaviour {
 
         curStock += inc;
         // If we've filled the entire meter
-        if (curStock >= meterSize) {
-            while (curStock >= meterSize) {
+        if (curStock >= _meterSize) {
+            while (curStock >= _meterSize) {
                 // If more than 1 stock was added at once and we went over limit, overflow to the next line
-                curStock = curStock - meterSize;
+                curStock = curStock - _meterSize;
 
                 // Clear out stockSprites
                 foreach (GameObject sprite in stockSprites) {
@@ -130,14 +155,14 @@ public class HamsterMeter : MonoBehaviour {
                 // Add line to bubble manager
                 if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
                     // Update meter size
-                    if(meterSize == 12) {
-                        Become13Wide();
+                    if(_meterSize == _baseMeterSize) {
+                        BecomeShort();
                     } else {
-                        Become12Wide();
+                        BecomeLong();
                     }
 
                     //bubbleManager.AddLine();
-                    bubbleManager.TryAddLine();
+                    _bubbleManager.TryAddLine();
                 }
 
                 // Add new stock sprites if we need to
@@ -160,7 +185,7 @@ public class HamsterMeter : MonoBehaviour {
         UpdateStockSprites();
 
         // Set bubbles managers stock
-        bubbleManager.bubbleStock = curStock;
+        _bubbleManager.bubbleStock = curStock;
     }
 
     void CreateNewStockSprite() {
@@ -168,7 +193,7 @@ public class HamsterMeter : MonoBehaviour {
         GameObject newStockSprite = GameObject.Instantiate(hamsterStockSprite, transform);
 
         // Set new stock sprite to correct color.
-        int type = bubbleManager.GetNextLineBubble(bubbleManager.NextLineIndex + curStock - 1);
+        int type = _bubbleManager.GetNextLineBubble(_bubbleManager.NextLineIndex + curStock - 1);
         Animator[] animators = newStockSprite.GetComponentsInChildren<Animator>();
         foreach (Animator anim in animators) {
             anim.SetInteger("Type", type);
@@ -192,25 +217,25 @@ public class HamsterMeter : MonoBehaviour {
     }
 
     // These change the meter to either be 12 bubbles long or 13 bubbles long
-    void Become12Wide() {
+    void BecomeShort() {
         // Turn off furthest tally
-        stockTallies[12].gameObject.SetActive(false);
+        stockTallies[_baseMeterSize-1].gameObject.SetActive(false);
 
         // Move meter right one tally
         transform.Translate(0.38f, 0f, 0f);
 
         // Update meter size
-        meterSize = 12;
+        _meterSize -= 1;
     }
-    void Become13Wide() {
+    void BecomeLong() {
         // Turn on furthest tally
-        stockTallies[12].gameObject.SetActive(true);
+        stockTallies[_baseMeterSize-1].gameObject.SetActive(true);
 
         // Move meter left one tally
         transform.Translate(-0.38f, 0f, 0f);
 
         // Update meter size
-        meterSize = 13;
+        _meterSize += 1;
     }
 
     public Transform GetNextTalleyPosition() {
@@ -220,7 +245,7 @@ public class HamsterMeter : MonoBehaviour {
 
         if(shields == 0) {
             _nextTallyIndex++;
-            if (_nextTallyIndex >= StockTallies.Count - (meterSize == 13 ? 1 : 0)) {
+            if (_nextTallyIndex >= StockTallies.Count - (_meterSize == _baseMeterSize ? 1 : 0)) {
                 _nextTallyIndex = 0;
             }
         }

@@ -86,11 +86,7 @@ public class NewCharacterSelect : MonoBehaviour {
             if (pressStartText.activeSelf == true) {
                 // Look for input to start game
                 if (Input.GetButtonDown("Start")) {
-                    if (_gameManager.gameMode == GAME_MODE.SP_CLEAR || _gameManager.gameMode == GAME_MODE.SURVIVAL) {
-                        SceneManager.LoadScene("MapSelectWheel");
-                    } else {
-                        SceneManager.LoadScene("TeamSelect");
-                    }
+                    LoadNextScene();
                 }
             }
 
@@ -143,7 +139,7 @@ public class NewCharacterSelect : MonoBehaviour {
             } else {
                 pressStartText.SetActive(false);
             }
-        } else if (_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+        } else /*if (_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.SP_CLEAR)*/ {
             if (AllPlayersLockedIn()) {
                 pressStartText.SetActive(true);
             } else {
@@ -160,6 +156,14 @@ public class NewCharacterSelect : MonoBehaviour {
         }
 
         return true;
+    }
+
+    public void LoadNextScene() {
+        if (_gameManager.gameMode == GAME_MODE.SP_CLEAR || _gameManager.gameMode == GAME_MODE.SURVIVAL) {
+            SceneManager.LoadScene("MapSelectWheel");
+        } else {
+            SceneManager.LoadScene("TeamSelect");
+        }
     }
 
     public void BackToPreviousMenu() {

@@ -26,7 +26,6 @@ public class Hamster : Entity {
     int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
 
     BubbleManager _homeBubbleManager;
-	//BubbleManager _enemyBubbleManager;
 
     HamsterSpawner _parentSpawner;
     List<int> _okTypes;
@@ -72,7 +71,6 @@ public class Hamster : Entity {
         _curState = 1;
         _animator.SetInteger("State", _curState);
 
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         moveSpeedModifier = 0;
 
@@ -82,15 +80,19 @@ public class Hamster : Entity {
     public void Initialize(int inTeam) {
         team = inTeam;
 
+        _gameManager = FindObjectOfType<GameManager>();
+
         HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         if (team == 0) {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
-            //_enemyBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
 
             _okTypes = hamsterScan.OkTypesLeft;
         } else if (team == 1) {
-            _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
-            //_enemyBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            } else {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+            }
 
             _okTypes = hamsterScan.OkTypesRight;
         }

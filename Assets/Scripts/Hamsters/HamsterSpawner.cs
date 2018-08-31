@@ -54,6 +54,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
         if (_gameManager.gameMode == GAME_MODE.SP_POINTS) {
             // Score attack stages have set spawn sequences
             _random = new System.Random(spawnSeed);
+        } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            _random = new System.Random(Random.Range(1, 1000));
         } else {
             _random = new System.Random((int)Time.realtimeSinceStartup);
         }
@@ -78,7 +80,12 @@ public class HamsterSpawner : Photon.PunBehaviour {
             _hamsterInfo = _hamsterScan.rightHamsterInfo;
             //_okTypes = _hamsterScan.OkTypesRight;
         }
-        _nextHamsterType = GetValidType();
+
+        // Team survival mode does not need hamsters to be equally seeded
+        if (_gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
+            // Choose the next hamster type right now
+            _nextHamsterType = GetValidType();
+        }
 
         SetSpawnMax();
 
@@ -124,8 +131,12 @@ public class HamsterSpawner : Photon.PunBehaviour {
         _spawnTimer += Time.deltaTime;
 		if (_spawnTimer >= _spawnTime && hamsterCount < maxHamsterCount) {
 			SpawnHamster();
-            // Choose the next hamster type right now
-            _nextHamsterType = GetValidType();
+
+            // Team survival mode does not need hamsters to be equally seeded
+            //if(_gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
+                // Choose the next hamster type right now
+                _nextHamsterType = GetValidType();
+            //}
             //Debug.Log(_nextHamsterType.ToString());
             _spawnTimer = 0;
 		}

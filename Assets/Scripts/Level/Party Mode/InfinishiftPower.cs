@@ -22,7 +22,6 @@ public class InfinishiftPower : PowerUp {
 
         if (_isActive) {
             _caughtPlayer.ShiftCooldownTimer = _caughtPlayer.ShiftCooldownTime;
-            _caughtPlayer.ShiftTimer = 0f;
 
             _activateTimer += Time.deltaTime;
             if (_activateTimer >= _activateTime) {
@@ -35,7 +34,6 @@ public class InfinishiftPower : PowerUp {
         base.Activate();
 
         _caughtPlayer.ShiftCooldownTimer = _caughtPlayer.ShiftCooldownTime;
-        _caughtPlayer.ShiftTimer = 0f;
     }
 
     protected override void Deactivate() {

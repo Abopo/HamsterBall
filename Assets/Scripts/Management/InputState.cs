@@ -69,7 +69,14 @@ public class InputState {
 
 	public static int AssignController() {
 		string[] joysticks = Input.GetJoystickNames ();
-		if (joysticksTaken < joysticks.Length) {
+        int badJoysticks = 0;
+        // remove disconnected joysticks
+        foreach (string joystick in joysticks) {
+            if(joystick == "") {
+                badJoysticks++;
+            }
+        }
+        if (joysticksTaken < joysticks.Length-badJoysticks) {
 			return 3 + joysticksTaken++;
 		} else if (keyboardTaken < 2) {
 			return 1 + keyboardTaken++;

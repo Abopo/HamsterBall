@@ -51,6 +51,7 @@ public class Bubble : MonoBehaviour {
     }
 
     BubbleManager _homeBubbleManager;
+    GameManager _gameManager;
     Rigidbody2D _rigibody2D;
 
     AudioSource _audioSource;
@@ -83,11 +84,16 @@ public class Bubble : MonoBehaviour {
         _popAnimation = GetComponent<BubblePopAnimation>();
         _popAnimation.LoadPieces(inType);
 
-		if(team == 0) {
-			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager1").GetComponent<BubbleManager>();
-		} else if (team == 1) {
-			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager2").GetComponent<BubbleManager>();
-		}
+        _gameManager = FindObjectOfType<GameManager>();
+        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+        } else {
+            if (team == 0) {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            } else if (team == 1) {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+            }
+        }
 
         _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
 
@@ -312,7 +318,7 @@ public class Bubble : MonoBehaviour {
 		if (other.tag == "Bubble") {
 			if(!locked && other.GetComponent<Bubble>().locked) {
                 if (!PhotonNetwork.connectedAndReady || (GetComponent<PhotonView>().owner == PhotonNetwork.player)) {
-                    CollisionWithBoard();
+                    CollisionWithBoard(other.GetComponent<Bubble>()._homeBubbleManager);
                 } else {
                     // Stop moving and sit in place.
                     _rigibody2D.velocity = Vector2.zero;
@@ -321,33 +327,36 @@ public class Bubble : MonoBehaviour {
             }
 		}
         if(other.tag == "Ceiling" && !locked) {
-            CollisionWithBoard();
+            CollisionWithBoard(other.GetComponent<Ceiling>().bubbleManager);
         }
         if (other.tag == "Bottom") {
-            if(type == HAMSTER_TYPES.DEAD) {
-                int inc = 1;
+            if (type == HAMSTER_TYPES.DEAD) {
+                int inc = 1 * (_dropCombo ? 3 : 1);
 
                 // Calculate score before the margin multiplier
                 int incScore = inc * 100;
                 _homeBubbleManager.IncreaseScore(incScore);
 
-                // If we are not playing single player
-                if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
+                // If we are not playing single player or team survival
+                if (!_gameManager.isSinglePlayer && _gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
                     GenerateDropJunk(inc);
                 }
             } else {
-                int inc = 2 * (_dropCombo ? 2 : 1);
+                int inc = 2 * (_dropCombo ? 3 : 1);
                 
                 // Calculate score before the margin multiplier
                 int incScore = inc * 100;
                 _homeBubbleManager.IncreaseScore(incScore);
 
-                // If we are not playing single player
-                if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
+                // If we are not playing single player or team survival
+                if (!_gameManager.isSinglePlayer && _gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
                     GenerateDropJunk(inc);
                 }
             }
-            //_homeBubbleManager.RemoveBubble(node);
+
+            // Remove self from bubble manager
+            _homeBubbleManager.RemoveBubble(node);
+
             PlayDropClip();
 
             _destroy = true;
@@ -367,13 +376,17 @@ public class Bubble : MonoBehaviour {
         _homeBubbleManager.BubbleEffects.StockOrbEffect(amount, transform.position);
     }
 
-    public void CollisionWithBoard() {
+    public void CollisionWithBoard(BubbleManager bubbleManager) {
         // Stop moving and sit in place.
         _rigibody2D.velocity = Vector2.zero;
         locked = true;
 
         // Remove the held bubble of the player controller
         _playerController.heldBubble = null;
+
+        // If we hit a different board, make that one our bubbleManager
+        _homeBubbleManager = bubbleManager;
+        team = _homeBubbleManager.team;
 
         if (_homeBubbleManager.LastBubbleAdded != null) {
             _homeBubbleManager.LastBubbleAdded.canCombo = true;
@@ -420,8 +433,6 @@ public class Bubble : MonoBehaviour {
                 HandleMatch(matches);
                 _homeBubbleManager.matchCount++;
                 Pop();
-            } else {
-                _homeBubbleManager.ResetComboCounter();
             }
         }
 
@@ -589,7 +600,7 @@ public class Bubble : MonoBehaviour {
         // Calculate amount of garbage to generate
         //int garbageCount = (int)Mathf.Pow((matchCount - 2), 2); // 3 = 1, 4 = 4, 5 = 9, 6 = 16, 7 = 25, 8 = 36
         int garbageCount = 3;
-        for (int i = 0; i <= matchCount%3; ++i) {
+        for (int i = 0; i <= matchCount-3; ++i) {
             garbageCount += (3 * i) + (i - 1); // 3 = 2, 4 = 5, 5 = 12, 6 = 23, 7 = 38, 8 = 57
         }
         
@@ -614,8 +625,8 @@ public class Bubble : MonoBehaviour {
         //Debug.Log("Comboed " + _homeBubbleManager.ComboCount);
         //}
 
-        // If we are not playing single player
-        if (!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().isSinglePlayer) {
+        // If we are not playing single player or team survival
+        if (!_gameManager.isSinglePlayer && _gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
             // Start stock orb effect
             _homeBubbleManager.BubbleEffects.StockOrbEffect(garbageCount, transform.position);
         }
@@ -635,11 +646,11 @@ public class Bubble : MonoBehaviour {
                 // If a different team threw the bubble
                 if (b.PlayerController.team != _playerController.team) {
                     // Then it's a counter!
-                    comboBonus += 4;
+                    comboBonus += 5;
                     _homeBubbleManager.BubbleEffects.CounterMatchEffect(transform.position);
                 } else {
                     // Team combo!
-                    comboBonus += 3;
+                    comboBonus += 4;
                     _homeBubbleManager.BubbleEffects.TeamComboEffect(transform.position);
                 }
             }
@@ -694,8 +705,6 @@ public class Bubble : MonoBehaviour {
 		locked = false;
         _rigibody2D.velocity = new Vector2 (0.0f, -5f);
 		gameObject.layer = 15; // GhostBubble
-
-        _homeBubbleManager.RemoveBubble(node);
 
         // If both bubbles player controllers exist
         if (_playerController != null && _homeBubbleManager.LastBubbleAdded.PlayerController != null) {
@@ -769,20 +778,6 @@ public class Bubble : MonoBehaviour {
             SetIce(false);
         }
     }
-
-    public void SwitchTeams() {
-        if(team == 0) {
-            team = 1;
-        } else if(team == 1) {
-            team = 0;
-        }
-
-		if(team == 0) {
-			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager1").GetComponent<BubbleManager>();
-		} else if(team == 1) {
-			_homeBubbleManager = GameObject.FindGameObjectWithTag ("BubbleManager2").GetComponent<BubbleManager>();
-		}
-	}
 
     // Is called when the board is changed
     void BoardChanged() {

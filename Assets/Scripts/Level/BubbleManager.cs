@@ -15,65 +15,62 @@ public struct BubbleInfo {
 
 public class BubbleManager : MonoBehaviour {
 
-	public GameObject bubbleObj;
-	public GameObject NodeLine13;
-	public GameObject NodeLine12;
-	public HamsterMeter hamsterMeter;
-    //public Text scoreText;
-
-	//public bool leftTeam;
     public int team; // -1 = no team, 0 = left team, 1 = right team
-	public int bubbleStock; // counts up to 12 then adds a line.
+    public int bubbleStock; // counts up to 12 then adds a line.
     public bool testMode;
 
-    Transform _ceiling;
+    protected Transform _ceiling;
 
     // 10 rows
     // alternating between 13 and 12 columns
     // should specify top and bottom rows
     public List<Node> nodeList = new List<Node>();
-	int _topLineLength = 13;
-	public int TopLineLength {
-		get {return _topLineLength;}
-	}
+    protected int _baseLineLength = 13;
+    protected int _topLineLength = 13;
+    public int TopLineLength {
+        get { return _topLineLength; }
+    }
 
-    Vector3 _nodeSpawnPos = new Vector3(-5.35f, 5.6f, 0f);
+    protected Vector3 _firstNodePos = new Vector3(-10.86f, 7.34f, 0f);
 
-	bool _justAddedBubble = false;
-    bool _justRemovedBubble = false;
-    Transform _bubblesParent;
-    Transform _nodesParent;
-    float _nodeHeight = 0.67f; // The height of a single node (i.e. how far down lines move)
-    int _bottomRowStart {
+    protected bool _justAddedBubble = false;
+    protected bool _justRemovedBubble = false;
+    protected Transform _bubblesParent;
+    protected Transform _nodesParent;
+    protected float _nodeHeight = 0.67f; // The height of a single node (i.e. how far down lines move)
+    protected int _bottomRowStart {
         get {
-            return nodeList.Count - 25 + _topLineLength;
+            return nodeList.Count - (_baseLineLength * 2 - 1) + _topLineLength;
         }
     }
 
     public static BubbleInfo[] startingBubbleInfo = new BubbleInfo[125];
 
-    static List<int> _nextLineBubbles = new List<int>();
-    int _nextLineIndex = 0; // counts up as new lines are added
-    bool _setupDone;
+    protected static List<int> _nextLineBubbles = new List<int>();
+    protected int _nextLineIndex = 0; // counts up as new lines are added
+    protected bool _setupDone;
 
-    int _comboCount = -1;
+    protected int _comboCount = -1;
     //int _scoreTotal = 0;
     public int matchCount = 0;
     public bool wonGame;
-    bool _gameOver = false;
+    protected bool _gameOver = false;
 
-    Bubble[] _bubbles;
+    GameObject _bubbleObj;
+    GameObject _nodeObj;
+
+    protected Bubble[] _bubbles;
     public Bubble[] Bubbles {
         get { return _bubbles; }
     }
 
-    Bubble _lastBubbleAdded;
+    protected Bubble _lastBubbleAdded;
     public Bubble LastBubbleAdded {
-        get {return _lastBubbleAdded;}
+        get { return _lastBubbleAdded; }
         set { _lastBubbleAdded = value; }
     }
 
-    BubbleEffects _bubbleEffects;
+    protected BubbleEffects _bubbleEffects;
     public BubbleEffects BubbleEffects {
         get { return _bubbleEffects; }
     }
@@ -90,6 +87,11 @@ public class BubbleManager : MonoBehaviour {
         get { return _setupDone; }
     }
 
+    HamsterMeter _hamsterMeter;
+    public HamsterMeter HamsterMeter {
+        get { return _hamsterMeter; }
+    }
+
     public UnityEvent boardChangedEvent;
 
     int linesToAdd = 0;
@@ -102,6 +104,7 @@ public class BubbleManager : MonoBehaviour {
     Coroutine _checkbubbleDropPotentials;
     Coroutine _checkNodesCanBeHit;
 
+
     DividerFlash _divider;
 
     ScoreManager _scoreManager;
@@ -110,18 +113,32 @@ public class BubbleManager : MonoBehaviour {
     GameManager _gameManager;
     LevelManager _levelManager;
     AudioSource _audioSource;
-    AudioClip _bubblePopClip;
     AudioClip _addLineClip;
 
-    void Awake() {
+    protected virtual void Awake() {
+
+        float pos = (_baseLineLength / 2 - 1) * -0.77f;
+
         _setupDone = false;
 
         Time.timeScale = 1;
 
+        _bubbleObj = Resources.Load<GameObject>("Prefabs/Level/Bubble");
+        _nodeObj = Resources.Load<GameObject>("Prefabs/Level/Node");
+
+        // Get the right hamster meter
+        HamsterMeter[] hamMeters = FindObjectsOfType<HamsterMeter>();
+        foreach (HamsterMeter hM in hamMeters) {
+            if (hM.team == team) {
+                _hamsterMeter = hM;
+                break;
+            }
+        }
+
         // Get the right score manager
         ScoreManager[] scoreMans = FindObjectsOfType<ScoreManager>();
-        foreach(ScoreManager sM in scoreMans) {
-            if(sM.team == team) {
+        foreach (ScoreManager sM in scoreMans) {
+            if (sM.team == team) {
                 _scoreManager = sM;
                 break;
             }
@@ -133,19 +150,24 @@ public class BubbleManager : MonoBehaviour {
         _bubblesParent = transform.GetChild(0);
         _nodesParent = transform.GetChild(1);
 
-        _bubbles = new Bubble[150];
+        _topLineLength = _baseLineLength;
         BuildStartingNodes();
 
+
+        int totalBubbleCount = (_baseLineLength * 6) + ((_baseLineLength - 1) * 6);
+        _bubbles = new Bubble[totalBubbleCount];
+
+        int startingBubbleCount = (_baseLineLength * 2) + ((_baseLineLength - 1) * 2);
         // If we are networked
         if (PhotonNetwork.connectedAndReady) {
             // If we are the master client
-            if(PhotonNetwork.isMasterClient) {
+            if (PhotonNetwork.isMasterClient) {
                 // Go ahead and make the starting bubbles
-                SpawnStartingBubblesInfo();
+                SpawnStartingBubblesInfo(startingBubbleCount);
                 _justAddedBubble = true;
             }
         } else {
-            SpawnStartingBubblesInfo();
+            SpawnStartingBubblesInfo(startingBubbleCount);
             _justAddedBubble = true;
         }
 
@@ -159,7 +181,6 @@ public class BubbleManager : MonoBehaviour {
         testMode = _gameManager.testMode;
 
         _audioSource = GetComponent<AudioSource>();
-        _bubblePopClip = Resources.Load<AudioClip>("Audio/SFX/Pop");
         _addLineClip = Resources.Load<AudioClip>("Audio/SFX/Add_Line");
 
         ReadyHamsterMeter();
@@ -168,18 +189,15 @@ public class BubbleManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    protected virtual void Start() {
         _bubbleEffects = GetComponentInChildren<BubbleEffects>();
-
-        //_scoreTotal = 0;
-        //scoreText.text = _scoreTotal.ToString();
 
         _gameOver = false;
 
         // Get enemy bubble manager
         BubbleManager[] bManagers = FindObjectsOfType<BubbleManager>();
-        foreach(BubbleManager bM in bManagers) {
-            if(bM != this) {
+        foreach (BubbleManager bM in bManagers) {
+            if (bM != this) {
                 _enemyBubbleManager = bM;
                 break;
             }
@@ -195,7 +213,7 @@ public class BubbleManager : MonoBehaviour {
         boardChangedEvent.AddListener(UpdateAllAdjBubbles);
         boardChangedEvent.AddListener(OnBoardChanged);
 
-        if(_gameManager.gameMode == GAME_MODE.SURVIVAL) {
+        if (_gameManager.gameMode >= GAME_MODE.SURVIVAL) {
             transform.gameObject.AddComponent<SurvivalManager>();
         }
 
@@ -209,45 +227,41 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    void BuildStartingNodes() {
-		bool longLine = true;
-		for (int i = 0; i < 12; ++i) {
-			_nodeSpawnPos = new Vector3(transform.position.x, (transform.position.y + 2.9f) - (0.67f * i), 0);
-			if(longLine) {
-				GameObject nodeLine = Instantiate(NodeLine13, _nodeSpawnPos, Quaternion.identity) as GameObject;
-                for (int j = 0; j < 13; ++j) {
-                    nodeLine.transform.GetChild(0).GetComponent<Node>().number = nodeList.Count;
-                    nodeList.Add(nodeLine.transform.GetChild(0).GetComponent<Node>());
-                    nodeLine.transform.GetChild(0).parent = _nodesParent;
-				}
-				DestroyObject(nodeLine);
-				longLine = false;
-			} else {
-				GameObject nodeLine = Instantiate(NodeLine12, _nodeSpawnPos, Quaternion.identity) as GameObject;
-				for(int j = 0; j < 12; ++j) {
-                    nodeLine.transform.GetChild(0).GetComponent<Node>().number = nodeList.Count;
-                    nodeList.Add(nodeLine.transform.GetChild(0).GetComponent<Node>());
-                    nodeLine.transform.GetChild(0).parent = _nodesParent;
-				}
-				DestroyObject(nodeLine);
-				longLine = true;
-			}
-		}
+    protected void BuildStartingNodes() {
+        int lineLength = _baseLineLength;
+        float baseXOffset = (_baseLineLength / 2) * -0.77f;
+        float xOffset = baseXOffset;
+        Vector3 nodeSpawnPos;
+        GameObject newNode;
+        for(int i = 0; i < 12; ++i) {
+            for(int j = 0; j < lineLength; ++j) {
+                nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.77f * j), (transform.position.y + 2.9f) - (0.67f * i), -5);
+                newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
+                newNode.GetComponent<Node>().number = nodeList.Count;
+                nodeList.Add(newNode.GetComponent<Node>());
+                newNode.transform.parent = _nodesParent;
+            }
 
-		_nodeSpawnPos = new Vector3(transform.position.x, (transform.position.y + 2.9f), 0f);
-	}
+            if(lineLength == _baseLineLength) {
+                lineLength = _baseLineLength - 1;
+                xOffset = baseXOffset + 0.385f;
+            } else {
+                lineLength = _baseLineLength;
+                xOffset = baseXOffset;
+            }
+        }
+    }
 
-    public void SpawnStartingBubblesInfo() {
-        int numBubbles = 50;
-
+    public void SpawnStartingBubblesInfo(int numBubbles) {
         // If the starting bubbles have not been built yet
         if (!startingBubbleInfo[0].isSet) {
             int tempType = 0;
+            int[] typeCounts = new int[7]; // keeps track of how many of a type has been spawned
             List<Bubble> tempMatches = new List<Bubble>();
             List<int> okTypes = new List<int>();
-            for (int i = 0; i < 50; ++i) {
+            for (int i = 0; i < numBubbles; ++i) {
                 // Create and initialize a new bubble
-                GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
+                GameObject bub = Instantiate(_bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
                 Bubble bubble = bub.GetComponent<Bubble>();
                 bubble.transform.parent = _bubblesParent;
                 bubble.node = i;
@@ -282,11 +296,20 @@ public class BubbleManager : MonoBehaviour {
                     }
                 }
 
+                // Also remove any types that have been spawned too many times
+                for(int j = 0; j < 7; ++j) {
+                    if (typeCounts[j] > 7) {
+                        okTypes.Remove(j);
+                    }
+                }
+
                 // Randomly choose type for the new bubble based on available types
                 tempType = Random.Range(0, okTypes.Count);
                 startingBubbleInfo[i].isSet = true;
                 startingBubbleInfo[i].type = (HAMSTER_TYPES)okTypes[tempType];
+                typeCounts[okTypes[tempType]] += 1;
 
+                // Actually initialize the bubble with the correct type
                 InitBubble(bubble, okTypes[tempType]);
 
                 // Reset for next check
@@ -303,7 +326,7 @@ public class BubbleManager : MonoBehaviour {
                 // If this node is not supposed to be empty
                 if (startingBubbleInfo[i].isSet && startingBubbleInfo[i].type >= 0) {
                     // Create a new bubble
-                    GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
+                    GameObject bub = Instantiate(_bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
                     Bubble bubble = bub.GetComponent<Bubble>();
                     bubble.transform.parent = _bubblesParent;
                     // Set it to the corresponding type of the decided starting bubbles
@@ -341,25 +364,15 @@ public class BubbleManager : MonoBehaviour {
     }
 
     void InitBubble(Bubble bubble, int Type) {
-		//bubble.leftTeam = leftTeam;
+        //bubble.leftTeam = leftTeam;
         bubble.team = team;
-		bubble.Initialize((HAMSTER_TYPES)Type);
-		bubble.locked = true;
-	}
-
-    void SeedNextLineBubbles() {
-        int[] lineBubbles;
-        for (int i = 0; i < 10; ++i) {
-            lineBubbles = DecideNextLine();
-            foreach (int bub in lineBubbles) {
-                _nextLineBubbles.Add(bub);
-            }
-        }
+        bubble.Initialize((HAMSTER_TYPES)Type);
+        bubble.locked = true;
     }
 
     void ReadyHamsterMeter() {
         int handicap = 9;
-        
+
         // Get team handicap from Game Manager.
         if (team == 0) {
             handicap = _gameManager.leftTeamHandicap;
@@ -367,146 +380,150 @@ public class BubbleManager : MonoBehaviour {
             handicap = _gameManager.rightTeamHandicap;
         }
 
-        hamsterMeter.Initialize(handicap);
+        _hamsterMeter.Initialize(_baseLineLength);
     }
 
     // Assign adjBubbles for each bubble and empty node
-    void UpdateAllAdjBubbles() {
-		for(int i = 0; i < nodeList.Count; ++i) {
-			if(_bubbles[i] != null) {
-				_bubbles[i].ClearAdjBubbles();
-				AssignAdjBubbles(_bubbles[i], i);
-			}
-            if(nodeList[i].bubble == null) {
+    protected void UpdateAllAdjBubbles() {
+        for (int i = 0; i < nodeList.Count; ++i) {
+            if (_bubbles[i] != null) {
+                _bubbles[i].ClearAdjBubbles();
+                AssignAdjBubbles(_bubbles[i], i);
+            }
+            if (nodeList[i].bubble == null) {
                 nodeList[i].ClearAdjBubbles();
                 AssignAdjBubbles(null, i);
             }
-		}
-	}
+        }
+    }
 
-	public void AssignAdjBubbles(Bubble bubble, int node) {
-		// Now must adjust based on which size of line is on top
-		if(_topLineLength == 13) { // if top line is a 13 line.
-			// Corners
-			if (node == 0) {
-				GetMiddleRight(bubble, node);
-				GetBottomRight(bubble, node);
-			} else if(node == 12) {
-				GetMiddleLeft(bubble, node);
-				GetBottomLeft(bubble, node);
-			} else if(node == 138) {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleRight(bubble, node);
-			} else if(node == 149) {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleLeft(bubble, node);
-			} 
-			// Outer Lefts
-			else if (node == 25 || node == 50 || node == 75 || node == 100 || node == 125) {
-				GetTopRight(bubble, node);
-				GetMiddleRight(bubble, node);
-				GetBottomRight(bubble, node);
-                if (bubble != null) {
-                    bubble.is13Edge = -1;
-                }
-			} 
-			// Outer Rights
-			else if (node == 37 || node == 62 || node == 87 || node == 112 || node == 137) {
-				GetTopLeft(bubble, node);
-				GetMiddleLeft(bubble, node);
-				GetBottomLeft(bubble, node);
-                if (bubble != null) {
-                    bubble.is13Edge = 1;
-                }
+    public void AssignAdjBubbles(Bubble bubble, int node) {
+        // The adjacent bubbles are different based on where the bubble is and what the line order of the board is
+
+        int leftNodes = (_baseLineLength * 2) - 1;
+
+        // If the top line is a big line
+        if (_topLineLength == _baseLineLength) {
+            // Corners
+            if (node == 0) {
+                GetMiddleRight(bubble, node);
+                GetBottomRight(bubble, node);
+            } else if (node == _topLineLength - 1) {
+                GetMiddleLeft(bubble, node);
+                GetBottomLeft(bubble, node);
+            } else if (node == nodeList.Count - _topLineLength + 1 /*138*/) {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleRight(bubble, node);
+            } else if (node == nodeList.Count - 1 /*149*/) {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleLeft(bubble, node);
             }
-            // Inner Lefts
-            else if (node == 13 || node == 38 || node == 63 || node == 88 || node == 113) {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleRight(bubble, node);
-				GetBottomLeft(bubble, node);
-				GetBottomRight(bubble, node);
-			} 
-			// Inner Rights
-			else if (node == 24 || node == 49 || node == 74 || node == 99 || node == 124) {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleLeft(bubble, node);
-				GetBottomLeft(bubble, node);
-				GetBottomRight(bubble, node);
-			} 
-			// All other nodes
-			else {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleLeft(bubble, node);
-				GetMiddleRight(bubble, node);
-				GetBottomLeft(bubble, node);
-				GetBottomRight(bubble, node);
-			}
-		} else { // if top line is a 12 line.
-			// Corners
-			if (node == 0) {
-				GetMiddleRight(bubble, node);
-				GetBottomRight(bubble, node);
-				GetBottomLeft(bubble, node);
-			} else if(node == 11) {
-				GetMiddleLeft(bubble, node);
-				GetBottomLeft(bubble, node);
-				GetBottomRight(bubble, node);
-			} else if(node == 137) {
-				GetTopRight(bubble, node);
-				GetMiddleRight(bubble, node);
-			} else if(node == 148) {
-				GetTopLeft(bubble, node);
-				GetMiddleLeft(bubble, node);
-			} 
-			// Outer Lefts
-			else if (node == 12 || node == 37 || node == 62 || node == 87 || node == 112) {
-				GetTopRight(bubble, node);
-				GetMiddleRight(bubble, node);
-				GetBottomRight(bubble, node);
+            // Outer Lefts
+            else if (node == leftNodes || node == leftNodes * 2 || node == leftNodes * 3 || node == leftNodes * 4 || node == leftNodes * 5) {
+                GetTopRight(bubble, node);
+                GetMiddleRight(bubble, node);
+                GetBottomRight(bubble, node);
                 if (bubble != null) {
                     bubble.is13Edge = -1;
                 }
             }
             // Outer Rights
-            else if (node == 24 || node == 49 || node == 74 || node == 99 || node == 124) {
-				GetTopLeft(bubble, node);
-				GetMiddleLeft(bubble, node);
-				GetBottomLeft(bubble, node);
+            else if (node == leftNodes + _topLineLength - 1 || node == leftNodes * 2 + _topLineLength - 1 || node == leftNodes * 3 + _topLineLength - 1 || node == leftNodes * 4 + _topLineLength - 1 || node == leftNodes * 5 + _topLineLength - 1) {
+                GetTopLeft(bubble, node);
+                GetMiddleLeft(bubble, node);
+                GetBottomLeft(bubble, node);
                 if (bubble != null) {
                     bubble.is13Edge = 1;
                 }
             }
             // Inner Lefts
-            else if (node == 25 || node == 50 || node == 75 || node == 100 || node == 125) {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleRight(bubble, node);
-				GetBottomLeft(bubble, node);
-				GetBottomRight(bubble, node);
-			} 
-			// Inner Rights
-			else if (node == 36 || node == 61 || node == 86 || node == 111 || node == 136) {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleLeft(bubble, node);
-				GetBottomLeft(bubble, node);
-				GetBottomRight(bubble, node);
-			} 
-			// All other nodes
-			else {
-				GetTopLeft(bubble, node);
-				GetTopRight(bubble, node);
-				GetMiddleLeft(bubble, node);
-				GetMiddleRight(bubble, node);
-				GetBottomLeft(bubble, node);
-				GetBottomRight(bubble, node);
-			}
-		}
+            else if (node == _topLineLength || node == leftNodes + _topLineLength || node == leftNodes * 2 + _topLineLength || node == leftNodes * 3 + _topLineLength || node == leftNodes * 4 + _topLineLength) {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleRight(bubble, node);
+                GetBottomLeft(bubble, node);
+                GetBottomRight(bubble, node);
+            }
+            // Inner Rights
+            else if (node == leftNodes - 1 || node == leftNodes * 2 - 1 || node == leftNodes * 3 - 1 || node == leftNodes * 4 - 1 || node == leftNodes * 2 - 1) {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleLeft(bubble, node);
+                GetBottomLeft(bubble, node);
+                GetBottomRight(bubble, node);
+            }
+            // All other nodes
+            else {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleLeft(bubble, node);
+                GetMiddleRight(bubble, node);
+                GetBottomLeft(bubble, node);
+                GetBottomRight(bubble, node);
+            }
+        } else { // if top line is a small line.
+            // Corners
+            if (node == 0) {
+                GetMiddleRight(bubble, node);
+                GetBottomRight(bubble, node);
+                GetBottomLeft(bubble, node);
+            } else if (node == _topLineLength - 1) {
+                GetMiddleLeft(bubble, node);
+                GetBottomLeft(bubble, node);
+                GetBottomRight(bubble, node);
+            } else if (node == nodeList.Count - _topLineLength - 1 /*137*/) {
+                GetTopRight(bubble, node);
+                GetMiddleRight(bubble, node);
+            } else if (node == nodeList.Count - 2 /*148*/) {
+                GetTopLeft(bubble, node);
+                GetMiddleLeft(bubble, node);
+            }
+            // Outer Lefts
+            else if (node == _topLineLength || node == leftNodes + _topLineLength || node == leftNodes * 2 + _topLineLength || node == leftNodes * 3 + _topLineLength || node == leftNodes * 4 + _topLineLength) {
+                GetTopRight(bubble, node);
+                GetMiddleRight(bubble, node);
+                GetBottomRight(bubble, node);
+                if (bubble != null) {
+                    bubble.is13Edge = -1;
+                }
+            }
+            // Outer Rights
+            else if (node == leftNodes - 1 || node == leftNodes * 2 - 1 || node == leftNodes * 3 - 1 || node == leftNodes * 4 - 1 || node == leftNodes * 2 - 1) {
+                GetTopLeft(bubble, node);
+                GetMiddleLeft(bubble, node);
+                GetBottomLeft(bubble, node);
+                if (bubble != null) {
+                    bubble.is13Edge = 1;
+                }
+            }
+            // Inner Lefts
+            else if (node == leftNodes || node == leftNodes * 2 || node == leftNodes * 3 || node == leftNodes * 4 || node == leftNodes * 5) {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleRight(bubble, node);
+                GetBottomLeft(bubble, node);
+                GetBottomRight(bubble, node);
+            }
+            // Inner Rights
+            else if (node == leftNodes + _topLineLength - 1 || node == leftNodes * 2 + _topLineLength - 1 || node == leftNodes * 3 + _topLineLength - 1 || node == leftNodes * 4 + _topLineLength - 1 || node == leftNodes * 5 + _topLineLength - 1) {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleLeft(bubble, node);
+                GetBottomLeft(bubble, node);
+                GetBottomRight(bubble, node);
+            }
+            // All other nodes
+            else {
+                GetTopLeft(bubble, node);
+                GetTopRight(bubble, node);
+                GetMiddleLeft(bubble, node);
+                GetMiddleRight(bubble, node);
+                GetBottomLeft(bubble, node);
+                GetBottomRight(bubble, node);
+            }
+        }
 
         // Make sure it's not assigned to itself
         if (bubble != null) {
@@ -516,75 +533,80 @@ public class BubbleManager : MonoBehaviour {
                 }
             }
         }
-	}
+    }
 
     // All these Get?? functions can be called with "bubble" as null
     // in order to fill in the corresponding node's adjBubbles instead.
-	void GetTopLeft(Bubble bubble, int node) {
-		if (node - 13 >= 0) {
+    void GetTopLeft(Bubble bubble, int node) {
+        if (node - _baseLineLength >= 0) {
             if (bubble != null) {
-                bubble.adjBubbles[0] = _bubbles[node - 13]; // top left
+                bubble.adjBubbles[0] = _bubbles[node - _baseLineLength]; // top left
             } else {
-                nodeList[node].AdjBubbles[0] = _bubbles[node - 13];
-            }
-		}
-	}
-	void GetTopRight(Bubble bubble, int node) {
-		if (node - 12 >= 0) {
-            if (bubble != null) {
-                bubble.adjBubbles[1] = _bubbles[node - 12]; // top right
-            } else {
-                nodeList[node].AdjBubbles[1] = _bubbles[node - 12];
+                nodeList[node].AdjBubbles[0] = _bubbles[node - _baseLineLength];
             }
         }
-	}
-	void GetMiddleLeft(Bubble bubble, int node) {
-		if (node - 1 >= 0) {
+    }
+    void GetTopRight(Bubble bubble, int node) {
+        if (node - (_baseLineLength - 1) >= 0) {
+            if (bubble != null) {
+                bubble.adjBubbles[1] = _bubbles[node - (_baseLineLength - 1)]; // top right
+            } else {
+                nodeList[node].AdjBubbles[1] = _bubbles[node - (_baseLineLength - 1)];
+            }
+        }
+    }
+    void GetMiddleLeft(Bubble bubble, int node) {
+        if (node - 1 >= 0) {
             if (bubble != null) {
                 bubble.adjBubbles[5] = _bubbles[node - 1]; // middle left
             } else {
                 nodeList[node].AdjBubbles[5] = _bubbles[node - 1];
             }
         }
-	}
-	void GetMiddleRight(Bubble bubble, int node) {
-		if (node + 1 < nodeList.Count) {
+    }
+    void GetMiddleRight(Bubble bubble, int node) {
+        if (node + 1 < nodeList.Count) {
             if (bubble != null) {
                 bubble.adjBubbles[2] = _bubbles[node + 1]; // middle right
             } else {
                 nodeList[node].AdjBubbles[2] = _bubbles[node + 1];
             }
         }
-	}
-	void GetBottomLeft(Bubble bubble, int node) {
-		if (node + 12 < nodeList.Count) {
+    }
+    void GetBottomLeft(Bubble bubble, int node) {
+        if (node + (_baseLineLength - 1) < nodeList.Count) {
             if (bubble != null) {
-                bubble.adjBubbles[4] = _bubbles[node + 12]; // bottom left
+                bubble.adjBubbles[4] = _bubbles[node + (_baseLineLength - 1)]; // bottom left
             } else {
-                nodeList[node].AdjBubbles[4] = _bubbles[node + 12];
+                nodeList[node].AdjBubbles[4] = _bubbles[node + (_baseLineLength - 1)];
             }
-		}
-	}
-	void GetBottomRight(Bubble bubble, int node) {
-		if (node + 13 < nodeList.Count) {
+        }
+    }
+    void GetBottomRight(Bubble bubble, int node) {
+        if (node + _baseLineLength < nodeList.Count) {
             if (bubble != null) {
-                bubble.adjBubbles[3] = _bubbles[node + 13]; // bottom right
+                bubble.adjBubbles[3] = _bubbles[node + _baseLineLength]; // bottom right
             } else {
-                nodeList[node].AdjBubbles[3] = _bubbles[node + 13];
+                nodeList[node].AdjBubbles[3] = _bubbles[node + _baseLineLength];
             }
-		}
-	}
+        }
+    }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    protected virtual void Update() {
+        if(Input.GetKeyDown(KeyCode.L)) {
+            AddLine();
+        }
+
         // If for some reason the bubble haven't been setup yet
-        if(!startingBubbleInfo[0].isSet && !_setupDone) {
-            SpawnStartingBubblesInfo();
+        if (!startingBubbleInfo[0].isSet && !_setupDone) {
+            int startingBubbleCount = (_baseLineLength * 2) + ((_baseLineLength - 1) * 2);
+            SpawnStartingBubblesInfo(startingBubbleCount);
         }
 
         if ((_justAddedBubble || _justRemovedBubble) && IsBoardStable()) {
-			// Check for anchor points
-			List<Bubble> anchorBubbles = new List<Bubble>();
+            // Check for anchor points
+            List<Bubble> anchorBubbles = new List<Bubble>();
             foreach (Bubble b in _bubbles) {
                 if (b != null) {
                     b.checkedForAnchor = false;
@@ -593,19 +615,19 @@ public class BubbleManager : MonoBehaviour {
                 }
             }
             foreach (Bubble b in _bubbles) {
-				if(b != null) {
-					anchorBubbles.Clear();
-					b.CheckForAnchor(anchorBubbles);
-				}
-			}
+                if (b != null) {
+                    anchorBubbles.Clear();
+                    b.CheckForAnchor(anchorBubbles);
+                }
+            }
 
             boardChangedEvent.Invoke();
-			_justAddedBubble = false;
+            _justAddedBubble = false;
             _justRemovedBubble = false;
-		}
+        }
 
         // If the board is waiting to add a line
-        if(linesToAdd > 0) {
+        if (linesToAdd > 0) {
             // Shake the board
             StartShaking();
 
@@ -617,28 +639,18 @@ public class BubbleManager : MonoBehaviour {
             }
         }
 
-        if(_isShaking) {
+        if (_isShaking) {
             _shakeTimer += Time.deltaTime;
             if (_shakeTimer >= _shakeTime) {
                 ShakeMovement();
                 _shakeTimer = 0f;
             }
         }
-
-        if(testMode) {
-            CheckInput();
-        }
-	}
-
-    private void LateUpdate() {
-        if (!_gameOver && IsBoardStable()) {
-            CheckWinConditions();
-        }
     }
 
-    void CheckInput() {
-        if(Input.GetKeyDown(KeyCode.PageUp)) {
-            //HandleEnemyMatch(1);
+    private void LateUpdate() {
+        if (!_gameOver && IsBoardStable() && !_justAddedBubble && !_justRemovedBubble) {
+            CheckWinConditions();
         }
     }
 
@@ -646,7 +658,7 @@ public class BubbleManager : MonoBehaviour {
         int closestNode;
         closestNode = FindClosestNode(newBubble);
 
-        if(closestNode == -1) {
+        if (closestNode == -1) {
             // something really wrong happened
             // if we ever get here, maybe add more backup nodes.
             Debug.Log("No node found for bubble, Destroying");
@@ -657,18 +669,18 @@ public class BubbleManager : MonoBehaviour {
         newBubble.node = closestNode;
         newBubble.transform.position = nodeList[closestNode].nPosition;
 
-		// assign adj bubbles
-		AssignAdjBubbles (newBubble, closestNode);
+        // assign adj bubbles
+        AssignAdjBubbles(newBubble, closestNode);
 
         newBubble.transform.parent = _bubblesParent;
 
         // add to list
-        _bubbles [newBubble.node] = newBubble;
+        _bubbles[newBubble.node] = newBubble;
         nodeList[newBubble.node].bubble = newBubble;
 
-		UpdateAllAdjBubbles ();
+        UpdateAllAdjBubbles();
 
-		_justAddedBubble = true;
+        _justAddedBubble = true;
     }
 
     public void AddBubble(Bubble newBubble, int node) {
@@ -755,22 +767,15 @@ public class BubbleManager : MonoBehaviour {
         return closestNode;
     }
 
-	public void RemoveBubble(int node) {
-        if(node == -1) {
+    public void RemoveBubble(int node) {
+        if (node == -1) {
             Debug.Log("Shiiit");
         }
-		_bubbles [node] = null;
+        _bubbles[node] = null;
         nodeList[node].bubble = null;
 
         //boardChangedEvent.Invoke();
         _justRemovedBubble = true;
-
-        /*
-		if (!_audioSource.isPlaying) {
-            _audioSource.clip = _bubblePopClip;
-			_audioSource.Play();
-		}
-        */
     }
 
     public void TryAddLine() {
@@ -781,82 +786,82 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    public void AddLine() {
+    public virtual void AddLine() {
         // We're gonna modify the nodesList so we should stop this coroutine in case it's mid-stuff
-        StopCoroutine(_checkNodesCanBeHit);
+        if (_checkNodesCanBeHit != null) {
+            StopCoroutine(_checkNodesCanBeHit);
+        }
 
-		for (int i = 0; i < nodeList.Count; ++i) {
-			// Delete bottom line
-			if(i >= _bottomRowStart) {
-				DestroyObject(nodeList[i].gameObject);
-			// Move nodes down
-			} else {
-				nodeList[i].transform.Translate(new Vector3(0.0f, -_nodeHeight, 0.0f));
-                nodeList[i].number += _topLineLength;
-			}
-		}
+        // Since bottomRowStart is calculated using topLineLength, we can't change topLingLength ahead of these next few operations
+        // If we do then everything gets offset improperly
+
+        for (int i = 0; i < nodeList.Count; ++i) {
+            // Delete bottom line
+            if (i >= _bottomRowStart) {
+                DestroyObject(nodeList[i].gameObject);
+                // Move nodes down
+            } else {
+                nodeList[i].transform.Translate(new Vector3(0.0f, -_nodeHeight, 0.0f));
+                nodeList[i].number += _topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength;
+            }
+        }
 
         // Remove the deleted nodes from the nodeList
-        nodeList.RemoveRange(_bottomRowStart, (_topLineLength == 13 ? 12 : 13));
+        nodeList.RemoveRange(_bottomRowStart, _topLineLength == _baseLineLength ? _baseLineLength - 1 : _baseLineLength);
 
-		Node tempChild;
-		// Add top line
-		if(_topLineLength == 12) {
-			GameObject nodeLine = Instantiate(NodeLine13, _nodeSpawnPos, Quaternion.identity) as GameObject;
-            for (int j = 12; j >= 0; --j) {
-				tempChild = nodeLine.transform.GetChild(j).GetComponent<Node>();
-				tempChild.transform.parent = this.transform;
-				tempChild.transform.SetAsFirstSibling();
-                tempChild.number = j;
-                nodeList.Insert(0, tempChild);
-			}
+        // Swap top line length and set xOFfset for new nodes
+        float xOffset;
+        if (_topLineLength == _baseLineLength) {
+            _topLineLength = _baseLineLength - 1;
+            xOffset = (_baseLineLength / 2) * -0.77f + 0.385f;
+        } else {
+            _topLineLength = _baseLineLength;
+            xOffset = (_baseLineLength / 2) * -0.77f;
+        }
 
-			DestroyObject(nodeLine);
-			_topLineLength = 13;
-		} else if(_topLineLength == 13) {
-			GameObject nodeLine = Instantiate(NodeLine12, _nodeSpawnPos, Quaternion.identity) as GameObject;
-            for (int j = 11; j >= 0; --j) {
-                tempChild = nodeLine.transform.GetChild(j).GetComponent<Node>();
-                tempChild.transform.parent = this.transform;
-                tempChild.transform.SetAsFirstSibling();
-                tempChild.number = j;
-                nodeList.Insert(0, tempChild);
-            }
-            DestroyObject(nodeLine);
-			_topLineLength = 12;
-		}
+        // Create a new node line and put on the top of the nodelist
+        Vector3 nodeSpawnPos;
+        GameObject newNode;
+        for (int j = _topLineLength-1; j >= 0; --j) {
+            nodeSpawnPos = new Vector3((transform.position.x + xOffset) + (0.77f * j), (transform.position.y + 2.9f), -5);
+            newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
+            newNode.transform.parent = _nodesParent;
+            newNode.transform.SetAsFirstSibling();
+            newNode.GetComponent<Node>().number = j;
+            nodeList.Insert(0, newNode.GetComponent<Node>());
+        }
 
         // Move bubbles down one line
         Bubble[] tempBubbles = new Bubble[nodeList.Count];
-		for (int i = 0; i < nodeList.Count; ++i) {
-			tempBubbles[i] = _bubbles[i];
-		}
-		_bubbles = new Bubble[nodeList.Count];
-		List<Bubble> testList = new List<Bubble> ();
-		foreach (Bubble b in tempBubbles) {
-			if(b != null) {
-				b.node += _topLineLength;
-				b.transform.position = nodeList[b.node].nPosition;
-				_bubbles[b.node] = b;
-				testList.Add(b);
-			}
-		}
+        for (int i = 0; i < nodeList.Count; ++i) {
+            tempBubbles[i] = _bubbles[i];
+        }
+        _bubbles = new Bubble[nodeList.Count];
+        List<Bubble> testList = new List<Bubble>();
+        foreach (Bubble b in tempBubbles) {
+            if (b != null) {
+                b.node += _topLineLength;
+                b.transform.position = nodeList[b.node].nPosition;
+                _bubbles[b.node] = b;
+                testList.Add(b);
+            }
+        }
 
         // Spawn bubbles on top line
-		for (int i = 0; i < _topLineLength; ++i, ++_nextLineIndex) {
-			GameObject bub = Instantiate(bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
-			Bubble bubble = bub.GetComponent<Bubble>();
+        for (int i = 0; i < _topLineLength; ++i, ++_nextLineIndex) {
+            GameObject bub = Instantiate(_bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
+            Bubble bubble = bub.GetComponent<Bubble>();
             bubble.transform.parent = _bubblesParent;
 
             // Init bubble using the types that were decided ahead of time
             InitBubble(bubble, _nextLineBubbles[_nextLineIndex]);
-			bubble.node = i;
+            bubble.node = i;
             nodeList[i].bubble = bubble;
-			_bubbles[i] = bubble;
-		}
+            _bubbles[i] = bubble;
+        }
 
         // If we're near the end of the generated line bubbles
-        if(_nextLineIndex >= _nextLineBubbles.Count-26 && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
+        if (_nextLineIndex >= _nextLineBubbles.Count - _baseLineLength * 2 && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
             // Generate some more!
             SeedNextLineBubbles();
             // Send RPC if we are networked
@@ -865,20 +870,48 @@ public class BubbleManager : MonoBehaviour {
             }
         }
 
-        UpdateAllAdjBubbles ();
+        UpdateAllAdjBubbles();
 
-		_justAddedBubble = true;
-        //boardChangedEvent.Invoke();
-
-        // Send RPC if we are networked
-        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
-            GetComponent<PhotonView>().RPC("AddLine", PhotonTargets.Others/*, _nextLineBubbles*/);
-        }
+        _justAddedBubble = true;
 
         // Play sound
-        _audioSource.clip = _addLineClip;
-        _audioSource.Play();
-	}
+        PlayAddLineClip();
+    }
+
+    protected void SeedNextLineBubbles() {
+        int[] lineBubbles;
+        int lineLength = _topLineLength == _baseLineLength ? _baseLineLength -1 : _baseLineLength;
+        for (int i = 0; i < 10; ++i) {
+            lineBubbles = DecideNextLine(lineLength);
+            foreach (int bub in lineBubbles) {
+                _nextLineBubbles.Add(bub);
+            }
+            // swap to next line length
+            lineLength = lineLength == _baseLineLength ? _baseLineLength - 1 : _baseLineLength;
+        }
+    }
+
+    protected virtual int[] DecideNextLine(int lineLength) {
+        int[] nextLineBubbles = new int[lineLength];
+        int[] typeCounts = new int[7]; // Keeps track of how many of each color has been made
+        int tempType = 0;
+
+        for (int i = 0; i < lineLength; ++i) {
+            // If the line already has too many of the type, try again
+            // TODO: This could potentially be really slow, maybe optimize it sometime
+            do {
+                tempType = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
+            } while (typeCounts[tempType] > 2);
+
+            // Increase count of type
+            typeCounts[tempType] += 1;
+
+            // Save type for next line
+            nextLineBubbles[i] = tempType;
+        }
+
+        return nextLineBubbles;
+    }
 
     // Used in single player puzzle boards. Pushes the board down one line, but covers the top line with a wall instead of bubbles.
     public void PushBoardDown() {
@@ -905,40 +938,17 @@ public class BubbleManager : MonoBehaviour {
         boardChangedEvent.Invoke();
 
         // Play sound
-        _audioSource.clip = _addLineClip;
-        _audioSource.Play();
-    }
-
-    int[] DecideNextLine() {
-        int[] nextLineBubbles = new int[13];
-        int[] typeCounts = new int[7]; // Keeps track of how many of each color has been made
-        int tempType = 0;
-
-        for (int i = 0; i < _topLineLength; ++i) {
-            // If the line already has too many of the type, try again
-            // TODO: This could potentially be really slow, maybe optimize it sometime
-            do {
-                tempType = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
-            } while (typeCounts[tempType] > 3);
-
-            // Increase count of type
-            typeCounts[tempType] += 1;
-
-            // Save type for next line
-            nextLineBubbles[i] = tempType;
-        }
-
-        return nextLineBubbles;
+        PlayAddLineClip();
     }
 
     // TODO: move this to the level manager?
     public void CheckWinConditions() {
         // Check single player challenge goals
-        if(_gameManager.isSinglePlayer) {
+        if (_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
                     if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && IsBoardStable()) {
-                        if(_scoreManager.TotalScore >= _gameManager.goalCount) {
+                        if (_scoreManager.TotalScore >= _gameManager.goalCount) {
                             EndGame(1);
                         } else {
                             EndGame(-1);
@@ -961,7 +971,7 @@ public class BubbleManager : MonoBehaviour {
             }
 
             // If there is a timeLimit and we have passed it
-            if(_gameManager.gameMode == GAME_MODE.SP_CLEAR && _gameManager.conditionLimit > 0 && _levelManager.LevelTimer >= _gameManager.conditionLimit) {
+            if (_gameManager.gameMode == GAME_MODE.SP_CLEAR && _gameManager.conditionLimit > 0 && _levelManager.LevelTimer >= _gameManager.conditionLimit) {
                 // This is actually a loss so handle that
                 EndGame(-1);
                 return;
@@ -969,9 +979,9 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // If there's a bubble on the bottom line
-        if(CheckBottomLine()) {
+        if (CheckBottomLine()) {
             // Check for a tie
-            if(_enemyBubbleManager != null && _enemyBubbleManager.CheckBottomLine()) {
+            if (_enemyBubbleManager != null && _enemyBubbleManager.CheckBottomLine()) {
                 // It's a tie!
                 EndGame(0);
             } else {
@@ -998,14 +1008,19 @@ public class BubbleManager : MonoBehaviour {
     public void EndGame(int result) {
         _gameOver = true;
 
-        if(result == 0 || result == 1) {
+        if (result == 0 || result == 1) {
             wonGame = true;
         } else {
             wonGame = false;
         }
 
         if (_enemyBubbleManager != null) {
-            _enemyBubbleManager.wonGame = !wonGame;
+            _enemyBubbleManager._gameOver = true;
+            if (result == 0) {
+                _enemyBubbleManager.wonGame = true;
+            } else {
+                _enemyBubbleManager.wonGame = !wonGame;
+            }
         }
 
         // Clear out starting bubbles to prepare for next round
@@ -1016,9 +1031,9 @@ public class BubbleManager : MonoBehaviour {
         // Send the winning team to the game manager
         if (result == 1) {
             _gameManager.EndGame(team, _scoreManager.TotalScore);
-        } else if(result == -1){
+        } else if (result == -1) {
             _gameManager.EndGame(team == 0 ? 1 : 0, _scoreManager.TotalScore);
-        } else if(result == 0) {
+        } else if (result == 0) {
             _gameManager.EndGame(-1, 0);
         }
 
@@ -1030,23 +1045,27 @@ public class BubbleManager : MonoBehaviour {
     void OnBoardChanged() {
         //Debug.Log("Board has changed");
 
-        if (_checkbubbleDropPotentials != null) {
-            StopCoroutine(_checkbubbleDropPotentials);
-        }
-        _checkbubbleDropPotentials = StartCoroutine(CheckBubbleDropPotentials());
+        // If we have AI
+        if (_gameManager.numAI > 0) {
+            // Update important bubble information
+            if (_checkbubbleDropPotentials != null) {
+                StopCoroutine(_checkbubbleDropPotentials);
+            }
+            _checkbubbleDropPotentials = StartCoroutine(CheckBubbleDropPotentials());
 
-        if (_checkNodesCanBeHit != null) {
-            StopCoroutine(_checkNodesCanBeHit);
+            if (_checkNodesCanBeHit != null) {
+                StopCoroutine(_checkNodesCanBeHit);
+            }
+            _checkNodesCanBeHit = StartCoroutine(CheckNodesCanBeHit());
         }
-        _checkNodesCanBeHit = StartCoroutine(CheckNodesCanBeHit());
 
         CheckSecondToLastRow();
     }
 
     // Drop potentials are used by the AI to determine how many bubbles will drop if a particular bubble is popped.
     IEnumerator CheckBubbleDropPotentials() {
-        foreach(Bubble b in _bubbles) {
-            if(b != null && b.CouldMaybeBeHit()) {
+        foreach (Bubble b in _bubbles) {
+            if (b != null && b.CouldMaybeBeHit()) {
                 b.CheckDropPotential();
                 yield return null;
             }
@@ -1056,8 +1075,8 @@ public class BubbleManager : MonoBehaviour {
     // Nodes will check if they can be hit by a player, which is used by the AI to determine which nodes to aim at.
     IEnumerator CheckNodesCanBeHit() {
         bool isRelevant = false;
-        foreach(Node n in nodeList.ToArray()) {
-            if(n != null) {
+        foreach (Node n in nodeList.ToArray()) {
+            if (n != null) {
                 isRelevant = n.CheckRelevancy();
                 // We want to get to the relevant nodes quickly, so only yield when we get to one
                 if (isRelevant) {
@@ -1068,9 +1087,9 @@ public class BubbleManager : MonoBehaviour {
     }
 
     void CheckSecondToLastRow() {
-        int firstNode = nodeList.Count - 37 + _topLineLength;
-        foreach(Bubble b in _bubbles) {
-            if(b != null && b.node >= firstNode) {
+        int firstNode = nodeList.Count - (_baseLineLength * 3 - 2) + _topLineLength;
+        foreach (Bubble b in _bubbles) {
+            if (b != null && b.node >= firstNode) {
                 _divider.StartFlashing();
                 return;
             }
@@ -1080,16 +1099,16 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void RefreshRainbowBubbles() {
-		for (int i = 0; i < nodeList.Count; ++i) {
-			if(_bubbles[i] != null && _bubbles[i].type == HAMSTER_TYPES.RAINBOW) {
-				_bubbles[i].checkedForMatches = false;
-			}
-		}
-	}
+        for (int i = 0; i < nodeList.Count; ++i) {
+            if (_bubbles[i] != null && _bubbles[i].type == HAMSTER_TYPES.RAINBOW) {
+                _bubbles[i].checkedForMatches = false;
+            }
+        }
+    }
 
     bool IsBoardClear() {
-        foreach(Bubble b in _bubbles) {
-            if(b != null) {
+        foreach (Bubble b in _bubbles) {
+            if (b != null) {
                 return false;
             }
         }
@@ -1111,18 +1130,6 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    public void IncreaseComboCounter(Vector3 position) {
-        _comboCount += 1;
-
-        if(_comboCount > 0) {
-            // Show combo graphic
-            _bubbleEffects.MatchComboEffect(position, _comboCount-1);
-        }
-    }
-    public void ResetComboCounter() {
-        _comboCount = -1;
-    }
-
     public void IncreaseScore(int incScore) {
         _scoreManager.IncreaseScore(incScore);
     }
@@ -1140,7 +1147,7 @@ public class BubbleManager : MonoBehaviour {
     void ShakeMovement() {
         if (transform.position.x < _initialPos.x) {
             transform.Translate(0.1f, 0f, 0f, Space.World);
-        } else if(transform.position.x > _initialPos.x) {
+        } else if (transform.position.x > _initialPos.x) {
             transform.Translate(-0.1f, 0f, 0f, Space.World);
         }
     }
@@ -1156,7 +1163,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     bool IsBoardStable() {
-        if(AreThereBubblesMidAir() || AreThereBusyBubbles()) {
+        if (AreThereBubblesMidAir() || AreThereBusyBubbles()) {
             return false;
         }
 
@@ -1167,7 +1174,7 @@ public class BubbleManager : MonoBehaviour {
         PlayerController[] players = FindObjectsOfType<PlayerController>();
         foreach (PlayerController p in players) {
             // If the player is on our side
-            if(p.team == team && !p.shifted || p.team != team && p.shifted) {
+            if (p.team == team && !p.shifted || p.team != team && p.shifted) {
                 // If the player's bubble was thrown but hasn't locked with the board yet
                 if (p.heldBubble != null && p.heldBubble.wasThrown && !p.heldBubble.locked) {
                     // It's still mid-throw
@@ -1188,5 +1195,10 @@ public class BubbleManager : MonoBehaviour {
         }
 
         return false;
+    }
+
+    protected void PlayAddLineClip() {
+        _audioSource.clip = _addLineClip;
+        _audioSource.Play();
     }
 }

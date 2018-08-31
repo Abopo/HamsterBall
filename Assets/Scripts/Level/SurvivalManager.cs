@@ -14,6 +14,10 @@ public class SurvivalManager : MonoBehaviour {
 	void Start () {
         _bubbleManager = GetComponent<BubbleManager>();
         _gameManager = FindObjectOfType<GameManager>();
+
+        // Adjust addLineTime based on the number of players in the game
+        _addLineTime = 60f - _gameManager.numPlayers * 10;
+        _addLineTime = 2f - _gameManager.numPlayers * 0.25f;
 	}
 
     // Update is called once per frame
@@ -24,7 +28,7 @@ public class SurvivalManager : MonoBehaviour {
 
         _addLineTimer += Time.deltaTime;
 
-        if(_addLineTime - _addLineTimer <= 5f) {
+        if(_linesAdded >= 26f) {
             _bubbleManager.StartShaking();
         }
 
@@ -32,18 +36,20 @@ public class SurvivalManager : MonoBehaviour {
             _addLineTimer = 0f;
             _linesAdded++;
 
-            //_bubbleManager.AddLine();
-            _bubbleManager.TryAddLine();
-            _bubbleManager.StopShaking();
+            //_bubbleManager.TryAddLine();
 
-            if (_linesAdded >= 4) {
-                _addLineTime -= 1f;
-                if (_addLineTime < 5f) {
-                    _addLineTime = 5f;
+            if (_linesAdded >= _bubbleManager.HamsterMeter.MeterSize) {
+                _bubbleManager.StopShaking();
+
+                _addLineTime -= 0.1f;
+                if (_addLineTime < 0.1f) {
+                    _addLineTime = 0.1f;
                 }
 
                 _linesAdded = 0;
             }
+
+            _bubbleManager.HamsterMeter.IncreaseStock(1);
         }
-	}
+    }
 }

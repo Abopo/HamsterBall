@@ -34,7 +34,7 @@ public class JunkShieldPower : PowerUp {
         base.Activate();
 
         // Find hamster meter
-        _hamMeter = _caughtPlayer.HomeBubbleManager.hamsterMeter;
+        _hamMeter = _caughtPlayer.HomeBubbleManager.HamsterMeter;
 
         // Give it some shields
         _hamMeter.GainShields(6);

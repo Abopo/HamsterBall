@@ -13,6 +13,9 @@ public class LevelManager : MonoBehaviour {
     public bool continueLevel;
     public int marginMultiplier = 1;
 
+    public Transform bubbleManager1Pos;
+    public Transform bubbleManager2Pos;
+
     float _marginTimer = 0;
     float _marginTime = 128f;
     int _initialTargetPoints = 120;
@@ -33,13 +36,41 @@ public class LevelManager : MonoBehaviour {
         get { return _levelTimer; }
     }
 
+    private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+
+        // Create bubble managers
+        /*
+        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            GameObject bubbleManagerObj = Resources.Load("Prefabs/Level/BigBubbleManager") as GameObject;
+            GameObject bubMan = Instantiate(bubbleManagerObj);
+            bubMan.transform.position = new Vector3(0f, bubbleManager1Pos.position.y, bubbleManager1Pos.position.z);
+        } else if (_gameManager.isSinglePlayer) {
+            GameObject bubbleManagerObj = Resources.Load("Prefabs/Level/BigBubbleManager") as GameObject;
+            GameObject bubMan = Instantiate(bubbleManagerObj);
+            bubMan.transform.position = bubbleManager1Pos.position;
+            _bubbleManager = bubMan.GetComponent<BubbleManager>();
+        } else {
+            // First bubble manager
+            GameObject bubbleManagerObj = Resources.Load("Prefabs/Level/BigBubbleManager") as GameObject;
+            GameObject bubMan = Instantiate(bubbleManagerObj);
+            bubMan.transform.position = bubbleManager1Pos.position;
+
+            // Second bubble manager
+            bubMan = Instantiate(bubbleManagerObj);
+            bubMan.transform.position = bubbleManager2Pos.position;
+            bubMan.tag = "BubbleManager2";
+            bubMan.GetComponent<BubbleManager>().team = 1;
+        }
+        */
+    }
+
     // Use this for initialization
     void Start () {
         _targetPoints = _initialTargetPoints;
-        _gameManager = FindObjectOfType<GameManager>();
         _gameManager.gameOverEvent.AddListener(GameEnd);
 
-        if(_gameManager.isSinglePlayer) {
+        if (_gameManager.isSinglePlayer) {
             _bubbleManager = FindObjectOfType<BubbleManager>();
         }
         if (_gameManager.nextLevel != "" || _gameManager.nextCutscene != "") {
@@ -179,6 +210,7 @@ public class LevelManager : MonoBehaviour {
                     // the whole set was a draw
                     // So replay?
                     // TODO: figure out what to do here
+                    ActivateFinalResultsScreen(team, 0);
                 } else if(_gameManager.leftTeamGames >= 2) {
                     // Left team has won the set
                     // Activate final results screen
@@ -187,6 +219,9 @@ public class LevelManager : MonoBehaviour {
                     // Right team has won the set
                     // Activate final results screen
                     ActivateFinalResultsScreen(team, result);
+                } else {
+                    // Set not done so activate continue screen
+                    ActivateContinueScreen(0, 0);
                 }
             } else {
                 // If Left team wins
@@ -242,6 +277,9 @@ public class LevelManager : MonoBehaviour {
                 } else if(result == -1) {
                     // The other team won so send that team
                     spContinueScreen.Activate(team == 1 ? 0 : 1);
+                } else {
+                    // It's a draw so display that
+                    spContinueScreen.Activate(-1);
                 }
             }
         }

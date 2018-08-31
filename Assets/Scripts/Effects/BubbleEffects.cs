@@ -252,9 +252,9 @@ public class BubbleEffects : MonoBehaviour {
         soGenerator.team = transform.parent.GetComponent<BubbleManager>().team;
         soGenerator.bubbleEffects = this;
         if (_hamsterMeter == null && soGenerator.team == 0) {
-            _hamsterMeter = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>().hamsterMeter;
+            _hamsterMeter = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>().HamsterMeter;
         } else if (_hamsterMeter == null && soGenerator.team == 1) {
-            _hamsterMeter = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>().hamsterMeter;
+            _hamsterMeter = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>().HamsterMeter;
         }
 
         soGenerator.BeginSpawning(spawnAmount, pos);

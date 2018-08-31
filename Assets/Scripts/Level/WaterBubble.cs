@@ -60,10 +60,10 @@ public class WaterBubble : MonoBehaviour {
             CatchHamster(other.GetComponent<Hamster>());
         } else if (other.tag == "Bubble") {
             if (other.GetComponent<Bubble>().locked) {
-                BoardCollide();
+                BoardCollide(other.GetComponent<Bubble>().HomeBubbleManager);
             }
         } else if (other.tag == "Ceiling") {
-            BoardCollide();
+            BoardCollide(other.GetComponent<Ceiling>().bubbleManager);
         } else if (other.tag == "Attack") {
             if (_caughtBubble != null) {
                 // Drop the caught bubble
@@ -102,11 +102,11 @@ public class WaterBubble : MonoBehaviour {
         hamster.Caught();
     }
 
-    void BoardCollide() {
+    void BoardCollide(BubbleManager bubbleManager) {
         if (_caughtBubble != null) {
             // Collide bubble with board
             _caughtBubble.GetComponent<CircleCollider2D>().enabled = true;
-            _caughtBubble.CollisionWithBoard();
+            _caughtBubble.CollisionWithBoard(bubbleManager);
         }
 
         // Destroy self

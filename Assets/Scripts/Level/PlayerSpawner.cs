@@ -6,6 +6,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject playerObj;
     public GameObject aiPlayerObj;
     public ShiftMeter[] shiftMeters = new ShiftMeter[4];
+
     int leftMeters = 0;
     int rightMeters = 0;
     Sprite[] playerIcons = new Sprite[4];

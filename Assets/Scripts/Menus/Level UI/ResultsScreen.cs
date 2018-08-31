@@ -6,7 +6,6 @@ using System.Collections;
 public class ResultsScreen : MonoBehaviour {
     public Text winningTeamText;
     public SpriteRenderer winningTeamSprite;
-    public Button previousMenuButton;
     public MenuButton mainMenuButton;
 
     MenuOption[] _menuOptions;
@@ -20,17 +19,6 @@ public class ResultsScreen : MonoBehaviour {
     void Start () {
         // Set the text of the previousMenuButton to a proper text
         _gameManager = FindObjectOfType<GameManager>();
-        switch (_gameManager.prevMenu) {
-            case MENU.STORY:
-                previousMenuButton.GetComponentInChildren<Text>().text = "Story Select";
-                break;
-            case MENU.VERSUS:
-                previousMenuButton.GetComponentInChildren<Text>().text = "Character Select";
-                break;
-            case MENU.EDITOR:
-                previousMenuButton.GetComponentInChildren<Text>().text = "Board Editor";
-                break;
-        }
     }
 
     // Update is called once per frame
@@ -62,6 +50,7 @@ public class ResultsScreen : MonoBehaviour {
         } else {
             winningTeamText.text = "Draw";
             winningTeamText.gameObject.SetActive(true);
+            winningTeamSprite.enabled = false;
         }
     }
 

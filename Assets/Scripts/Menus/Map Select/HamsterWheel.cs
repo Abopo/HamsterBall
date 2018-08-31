@@ -155,6 +155,8 @@ public class HamsterWheel : MonoBehaviour {
 
         if (_gameManager.isSinglePlayer) {
             levelName += " - SinglePlayer";
+        } else if(_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            levelName += " - Team Survival";
         }
 
         if (_gameManager.isOnline && PhotonNetwork.connectedAndReady) {

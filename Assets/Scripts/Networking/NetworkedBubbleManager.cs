@@ -9,10 +9,13 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
     float _boardCheckTime = 5.0f;
     float _boardCheckTimer = 0f;
+    GameObject _bubbleObj;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         _bubbleManager = GetComponent<BubbleManager>();
+
+        _bubbleObj = Resources.Load<GameObject>("Prefabs/Level/Bubble");
 	}
 	
 	// Update is called once per frame
@@ -43,7 +46,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
             }
 
             if (!_bubbleManager.SetupDone) {
-                _bubbleManager.SpawnStartingBubblesInfo();
+                _bubbleManager.SpawnStartingBubblesInfo(50);
             }
         }
     }
@@ -91,7 +94,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
             // If there should be a bubble here but we don't have one
             if (boardBubbles[i] != -1 && n.bubble == null) {
                 // Make a new bubble
-                GameObject bub = Instantiate(_bubbleManager.bubbleObj, n.nPosition, Quaternion.identity) as GameObject;
+                GameObject bub = Instantiate(_bubbleObj, n.nPosition, Quaternion.identity) as GameObject;
                 Bubble bubble = bub.GetComponent<Bubble>();
                 _bubbleManager.AddBubble(bubble, n.number);
             }

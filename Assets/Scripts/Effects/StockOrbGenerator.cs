@@ -53,7 +53,7 @@ public class StockOrbGenerator : MonoBehaviour {
 
     public void BeginSpawning(int spawnAmount, Vector2 spawnPos) {
         _spawnAmount = spawnAmount;
-        _spawnPos = new Vector3(spawnPos.x, spawnPos.y, -5f);
+        _spawnPos = new Vector3(spawnPos.x, spawnPos.y, -10f);
         _spawnTimer = 0.0f;
         _spawnCount = 0;
         //_spawning = true;

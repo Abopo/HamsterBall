@@ -50,6 +50,6 @@ public class NetworkedBubble : Photon.MonoBehaviour {
     [PunRPC]
     void AddToBoard(int node) {
         _bubble.HomeBubbleManager.AddBubble(_bubble, node);
-        _bubble.CollisionWithBoard();
+        _bubble.CollisionWithBoard(_bubble.HomeBubbleManager);
     }
 }

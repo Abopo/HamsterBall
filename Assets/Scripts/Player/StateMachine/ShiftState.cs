@@ -14,6 +14,11 @@ public class ShiftState : PlayerState {
     // Use this for initialization
     public override void Initialize(PlayerController playerIn) {
         base.Initialize(playerIn);
+
+        if(playerIn.shifted) {
+            playerIn.ResetShiftTimer();
+        }
+
         _shifted = false;
         _shiftTimer = 0f;
         _oldScale = playerController.transform.localScale;

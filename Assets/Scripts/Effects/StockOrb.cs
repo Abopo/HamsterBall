@@ -54,7 +54,7 @@ public class StockOrb : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.tag == "Tally" && collision.transform == targetTransform) {
             HamsterMeter hMeter = collision.transform.parent.GetComponent<HamsterMeter>();
-            if (hMeter.bubbleManager.team != team) {
+            if (hMeter.team != team) {
                 // Add stock to the hamster meter
                 hMeter.IncreaseStock(1);
 
