@@ -110,6 +110,7 @@ public class PlayerController : Entity {
     SpriteRenderer _spriteRenderer;
     PlayerManager _playerManager;
     GameManager _gameManager;
+    LevelManager _levelManager;
     PlayerAudio _playerAudio;
     BubbleManager _homeBubbleManager;
     Vector3 _spawnPos;
@@ -129,11 +130,12 @@ public class PlayerController : Entity {
     private void Awake() {
         canBeHit = true;
 
-        _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _playerManager = _gameManager.GetComponent<PlayerManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
         _gameManager.gameOverEvent.AddListener(GameEnded);
         _playerAudio = GetComponent<PlayerAudio>();
+        _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         _animator = GetComponentInChildren<Animator>();
         blahblahblah = GetComponentInChildren<Animator>();
 
@@ -339,22 +341,29 @@ public class PlayerController : Entity {
     }
 
     public void Shift() {
+        if(_levelManager.mirroredLevel) {
+            MirrorShift();
+        } else {
+            SymmetricalShift();
+        }
+    }
+
+    // This shift is used on symmetrical stages
+    public void SymmetricalShift() {
         if (!shifted) {
             if (team == 0) {
-                transform.Translate(12.5f /* * direction* */, 0.0f, 0.0f);
+                transform.Translate(12.5f, 0.0f, 0.0f);
             } else if (team == 1) {
-                transform.Translate(-12.5f /* * direction * -1*/, 0.0f, 0.0f);
+                transform.Translate(-12.5f, 0.0f, 0.0f);
             }
-            //transform.Translate (10.5f * direction * (isLeftTeam ? 1 : -1), 0.0f, 0.0f);
             shifted = true;
             _targetArrow.enabled = true;
         } else {
             if (team == 0) {
-                transform.Translate(-12.5f /* * direction * -1*/, 0.0f, 0.0f);
+                transform.Translate(-12.5f, 0.0f, 0.0f);
             } else if (team == 1) {
-                transform.Translate(12.5f /* * direction */, 0.0f, 0.0f);
+                transform.Translate(12.5f, 0.0f, 0.0f);
             }
-            //transform.Translate (10.5f * direction * (isLeftTeam ? -1 : 1), 0.0f, 0.0f);
             shifted = false;
             _targetArrow.enabled = false;
         }

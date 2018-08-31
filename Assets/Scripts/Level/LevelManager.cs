@@ -11,10 +11,11 @@ public class LevelManager : MonoBehaviour {
     public Text marginMultiplierText;
 
     public bool continueLevel;
+    public bool mirroredLevel;
     public int marginMultiplier = 1;
 
-    public Transform bubbleManager1Pos;
-    public Transform bubbleManager2Pos;
+    //public Transform bubbleManager1Pos;
+    //public Transform bubbleManager2Pos;
 
     float _marginTimer = 0;
     float _marginTime = 128f;
