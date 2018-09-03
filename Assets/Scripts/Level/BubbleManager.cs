@@ -296,9 +296,10 @@ public class BubbleManager : MonoBehaviour {
                     }
                 }
 
+                int maxTypeCount = Mathf.FloorToInt(numBubbles / 7);
                 // Also remove any types that have been spawned too many times
-                for(int j = 0; j < 7; ++j) {
-                    if (typeCounts[j] > 7) {
+                for (int j = 0; j < 7; ++j) {
+                    if (typeCounts[j] > maxTypeCount) {
                         okTypes.Remove(j);
                     }
                 }
