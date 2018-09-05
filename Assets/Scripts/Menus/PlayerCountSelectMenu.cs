@@ -40,8 +40,11 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         _aiAllowed = aiAllowed;
 
         // TODO: Adjust for number of connected controllers?
+        for(int i = 0; i < minPlayers-1; ++i) {
+            playerButtons[i].Disable();
+        }
 
-        for(int i = 0; i < maxPlayers; ++i) {
+        for(int i = minPlayers; i < maxPlayers; ++i) {
             playerButtons[i].Enable();
         }
 
