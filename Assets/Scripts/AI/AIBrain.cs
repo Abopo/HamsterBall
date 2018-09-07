@@ -405,6 +405,15 @@ public class AIBrain : MonoBehaviour {
         // Sort bubbles by node number (descending).
         _actions.Sort((x, y) => y.weight.CompareTo(x.weight));
 
+        // Remove best actions if difficulty is too low
+        for (int i = _difficulty; i < 3; ++i) {
+            if (_actions.Count > 8) {
+                _actions.RemoveAt(0);
+                _actions.RemoveAt(0);
+                _actions.RemoveAt(0);
+            }
+        }
+
         int choice;
         int choiceOffset = 0; // this slightly increases the chance of choosing each subsequent action.
         int weightOffset = -17 + (_difficulty * 3); // this makes it easier/harder to change actions
@@ -421,7 +430,7 @@ public class AIBrain : MonoBehaviour {
             }
 
             // Chance to choose an action increases each loop
-            choiceOffset += 5 / _difficulty;
+            choiceOffset += 1 * _difficulty;
         }
 
         // If we get all the way through withough picking any actions, pick one at random

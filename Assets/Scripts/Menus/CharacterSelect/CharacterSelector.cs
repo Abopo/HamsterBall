@@ -14,6 +14,9 @@ public class CharacterSelector : MonoBehaviour {
     public bool isAI = false;
 
     InputState _inputState = new InputState();
+    public InputState InputState {
+        get { return _inputState; }
+    }
     public int ControllerNum {
         get {
             return _inputState.controllerNum;
@@ -23,6 +26,10 @@ public class CharacterSelector : MonoBehaviour {
         }
     }
 
+    public bool Active {
+        get { return gameObject.activeSelf; }
+    }
+
     // these are only used by the first player to control the selections of ai players
     public List<CharacterSelector> aiList = new List<CharacterSelector>();
     CharacterSelector parentSelector;
@@ -30,6 +37,18 @@ public class CharacterSelector : MonoBehaviour {
     bool frameskip = false;
 
     PlayerManager _playerManager;
+
+    // Networking stuff
+    PhotonView _photonView;
+    public PhotonView PhotonView {
+        get { return _photonView; }
+    }
+    public bool isLocal;
+    public int ownerID;
+
+    private void Awake() {
+        _photonView = GetComponent<PhotonView>();
+    }
 
     // Use this for initialization
     void Start () {
@@ -45,6 +64,19 @@ public class CharacterSelector : MonoBehaviour {
         }
         gameObject.SetActive(true);
         characterAnimator.gameObject.SetActive(true);
+    }
+
+    // For networking
+    public void Activate(int conNum, bool ai, int oID) {
+        ControllerNum = conNum;
+        if (ai) {
+            isAI = true;
+            takeInput = false;
+        }
+        gameObject.SetActive(true);
+        characterAnimator.gameObject.SetActive(true);
+
+        ownerID = oID;
     }
 
     public void Deactivate() {
@@ -127,7 +159,11 @@ public class CharacterSelector : MonoBehaviour {
         lockedIn = true;
         readySprite.SetActive(true);
         curCharacterIcon.Lock();
-        _playerManager.AddPlayer(playerNum, ControllerNum, curCharacterIcon.characterName);
+        if (!isAI) {
+            _playerManager.AddPlayer(playerNum, ControllerNum, curCharacterIcon.characterName);
+        } else {
+            _playerManager.AddPlayer(playerNum, -1, curCharacterIcon.characterName);
+        }
     }
     void Unlock() {
         lockedIn = false;
@@ -165,5 +201,11 @@ public class CharacterSelector : MonoBehaviour {
 
         // Highlight the icon
         charaIcon.Highlight();
+    }
+
+    public void TakeInput(InputState input) {
+        int conNum = _inputState.controllerNum;
+        _inputState = input;
+        _inputState.controllerNum = conNum;
     }
 }

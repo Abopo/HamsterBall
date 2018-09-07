@@ -27,6 +27,16 @@ public class MainMenu : MonoBehaviour {
             PlayerPrefs.SetString("StoryProgress", "3-5"); // How far into the story the player is (used to lock/unlock story levels)-
             PlayerPrefs.SetString("StoryPos", "3-5"); // Last place in the story the player was on (used to position the selector in the story select scene)
 
+            // Stages
+            PlayerPrefs.SetInt("Forest", 1);
+            PlayerPrefs.SetInt("Mountain", 1);
+            PlayerPrefs.SetInt("Beach", 1);
+            PlayerPrefs.SetInt("City2", 0);
+            PlayerPrefs.SetInt("Sewers", 0);
+            PlayerPrefs.SetInt("Laboratory", 0);
+            PlayerPrefs.SetInt("Dark Forest", 0);
+            PlayerPrefs.SetInt("Space", 0);
+
             // Highscores
 
             // World 1

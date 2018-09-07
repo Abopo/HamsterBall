@@ -38,6 +38,7 @@ public class LevelUI : MonoBehaviour {
 	}
 
     public void FillInGameMarker(int team) {
+        //Debug.Log("Should fill in");
         foreach(GameMarker gM in _gameMarkers) {
             if(gM.team == team && !gM.isFilledIn) {
                 gM.FillIn();

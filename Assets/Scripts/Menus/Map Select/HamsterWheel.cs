@@ -19,6 +19,7 @@ public class HamsterWheel : MonoBehaviour {
 
     int _index = 0;
     string[] _mapNames = new string[8];
+    StageIcon[] _stageIcons;
 
     GameManager _gameManager;
     AudioSource _audioSource;
@@ -32,7 +33,9 @@ public class HamsterWheel : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start() {
+        _stageIcons = GetComponentsInChildren<StageIcon>();
+
         _mapNames[0] = "Forest";
         _mapNames[1] = "Mountain";
         _mapNames[2] = "Beach";
@@ -45,7 +48,7 @@ public class HamsterWheel : MonoBehaviour {
         curMapText.text = _mapNames[_index];
 
         // TODO: set random hamster
-        int type = Random.Range(0, 3);
+        int type = Random.Range(0, 7);
         hamster.SetInteger("Type", type);
         hamster.SetInteger("State", 0);
 
@@ -56,26 +59,30 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
         CheckInput();
 
         if (_rotating) {
             transform.Rotate(0f, 0f, _curRotSpeed * Time.deltaTime);
 
             // If we get close enough to the desired rotation angle
-            if(Mathf.Abs(transform.rotation.eulerAngles.z - _desiredRotation) < 1f) {
+            if (Mathf.Abs(transform.rotation.eulerAngles.z - _desiredRotation) < 1f) {
                 EndRotation();
             }
         }
-	}
+    }
 
     void CheckInput() {
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) ||
             (Input.GetAxis("Horizontal") < -0.3f) || Input.GetAxis("Horizontal DPad") < -0.3f) {
-            RotateLeft();
+            if (!_stageIcons[PrevIndex()].isLocked) {
+                RotateLeft();
+            }
         } else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) ||
             (Input.GetAxis("Horizontal") > 0.3f) || Input.GetAxis("Horizontal DPad") > 0.3f) {
-            RotateRight();
+            if (!_stageIcons[NextIndex()].isLocked) {
+                RotateRight();
+            }
         }
 
         if (Input.GetButtonDown("Cancel")) {
@@ -85,26 +92,26 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void RotateRight() {
-        if(_rotating) {
+        if (_rotating) {
             return;
         }
         _audioSource.Play();
 
         _curRotSpeed = -baseRotSpeed;
         _desiredRotation = transform.eulerAngles.z - 45f;
-        if(_desiredRotation < 0) {
+        if (_desiredRotation < 0) {
             _desiredRotation = 315f;
         }
 
         _index++;
-        if(_index > 7) {
+        if (_index > 7) {
             _index = 0;
         }
 
         hamster.SetInteger("State", 1);
         FlipHamster(true);
 
-        if(_photonView != null && PhotonNetwork.connectedAndReady) {
+        if (_photonView != null && PhotonNetwork.connectedAndReady) {
             _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, false);
         }
 
@@ -119,12 +126,12 @@ public class HamsterWheel : MonoBehaviour {
 
         _curRotSpeed = baseRotSpeed;
         _desiredRotation = transform.eulerAngles.z + 45f;
-        if(_desiredRotation > 360) {
+        if (_desiredRotation > 360) {
             _desiredRotation = 45f;
         }
 
         _index--;
-        if(_index < 0) {
+        if (_index < 0) {
             _index = 7;
         }
 
@@ -155,7 +162,7 @@ public class HamsterWheel : MonoBehaviour {
 
         if (_gameManager.isSinglePlayer) {
             levelName += " - SinglePlayer";
-        } else if(_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+        } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             levelName += " - Team Survival";
         }
 
@@ -167,7 +174,7 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void LoadCharacterSelect() {
-        SceneManager.LoadScene("CharacterSelect");
+        _gameManager.CharacterSelectButton();
     }
 
     public void FlipHamster(bool right) {
@@ -182,6 +189,21 @@ public class HamsterWheel : MonoBehaviour {
             Vector3 theScale = hamster.transform.localScale;
             theScale.x = Mathf.Abs(theScale.x) * -1;
             hamster.transform.localScale = theScale;
+        }
+    }
+
+    int NextIndex() {
+        if(_index+1 >= _stageIcons.Length) {
+            return 0;
+        } else {
+            return _index + 1;
+        }
+    }
+    int PrevIndex() {
+        if (_index-1 < 0) {
+            return _stageIcons.Length-1;
+        } else {
+            return _index - 1;
         }
     }
 

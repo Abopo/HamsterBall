@@ -23,8 +23,8 @@ public class NewCharacterSelect : MonoBehaviour {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.prevMenu = MENU.VERSUS;
         if(_gameManager.numPlayers == 0) {
-            _gameManager.numPlayers = 2;
-            _numPlayers = 2;
+            _gameManager.numPlayers = 1;
+            _numPlayers = 1;
         } else {
             _numPlayers = _gameManager.numPlayers;
             _numAI = _gameManager.numAI;
@@ -59,11 +59,7 @@ public class NewCharacterSelect : MonoBehaviour {
 
         // Setup and activate selectors that have controllers
         for (int i = 0; i < _numPlayers; ++i) {
-            //foreach(CharacterSelector charaSelector in charaSelectors) {
-            //    if(charaSelector.playerNum == i) {
-                    charaSelectors[i].Activate(InputState.AssignController(), false);
-            //    }
-            //}
+            charaSelectors[i].Activate(InputState.AssignController(), false);
         }
 
         // Do the same for AI
@@ -169,4 +165,26 @@ public class NewCharacterSelect : MonoBehaviour {
     public void BackToPreviousMenu() {
         SceneManager.LoadScene("LocalPlay");
     }
+
+    // Networking
+    public void AddNetworkedCharacter(int controllerNum, int ownerID) {
+        charaSelectors[_numPlayers].Activate(controllerNum, false, ownerID);
+        _numPlayers++;
+    }
+
+    public void RemoveNetworkedCharacter(int controllerNum, int ownerID) {
+        // Find the selector with the same owner
+        for(int i = 0; i < _numPlayers; ++i) {
+            if(charaSelectors[i].ownerID == ownerID) {
+                // Deactivate that selector
+                charaSelectors[i].Deactivate();
+                _numPlayers--;
+                break;
+            }
+        }
+
+        // Adjust player nums and stuff?
+
+    }
+
 }

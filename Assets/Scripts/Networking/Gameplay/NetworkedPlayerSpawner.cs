@@ -5,9 +5,6 @@ using System.Collections.Generic;
 
 public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     public GameObject aiPlayerObj;
-    //public SpriteRenderer[] shiftMeterIcons = new SpriteRenderer[4]; // 0 - leftmeter1; 1 - leftmeter2; 2 - rightmeter; 3 - rightmeter2
-    //public Image[] shiftMeterFronts = new Image[4];
-    //public Image[] shiftMeterBacks = new Image[4];
     public ShiftMeter[] shiftMeters = new ShiftMeter[4];
     int leftMeters = 0;
     int rightMeters = 0;

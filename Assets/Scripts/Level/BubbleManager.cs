@@ -598,6 +598,9 @@ public class BubbleManager : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.L)) {
             AddLine();
         }
+        if(Input.GetKeyDown(KeyCode.P)) {
+            boardChangedEvent.Invoke();
+        }
 
         // If for some reason the bubble haven't been setup yet
         if (!startingBubbleInfo[0].isSet && !_setupDone) {

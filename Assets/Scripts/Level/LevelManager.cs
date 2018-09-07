@@ -201,53 +201,56 @@ public class LevelManager : MonoBehaviour {
     public void ActivateResultsScreen(int team, int result) {
         // If this was a versus match
         if (!_gameManager.isSinglePlayer) {
-            // Deal with best 2/3 stuff
-            
-            // Draw
-            if (result == 0) {
-                IncreaseLeftTeamGames();
-                IncreaseRightTeamGames();
-                if(_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
-                    // the whole set was a draw
-                    // So replay?
-                    // TODO: figure out what to do here
-                    ActivateFinalResultsScreen(team, 0);
-                } else if(_gameManager.leftTeamGames >= 2) {
-                    // Left team has won the set
-                    // Activate final results screen
-                    ActivateFinalResultsScreen(team, result);
-                } else if(_gameManager.rightTeamGames >= 2) {
-                    // Right team has won the set
-                    // Activate final results screen
-                    ActivateFinalResultsScreen(team, result);
-                } else {
-                    // Set not done so activate continue screen
-                    ActivateContinueScreen(0, 0);
-                }
+
+            if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+                // TODO: make a different results screen for these modes
+                ActivateFinalResultsScreen(team, 1);
             } else {
-                // If Left team wins
-                if (team == 0 && result == 1 || team == 1 && result == -1) {
+                // Deal with best 2/3 stuff
+                // Draw
+                if (result == 0) {
                     IncreaseLeftTeamGames();
-                    if (_gameManager.leftTeamGames >= 2) {
-                        // Left team has won the set
-                        // Activate final results screen with left team winning
-                        ActivateFinalResultsScreen(0, 1);
-                    } else {
-                        // Set still not won
-                        // Activate Continue screen
-                        ActivateContinueScreen(0, 1);
-                    }
-                // If Right team wins
-                } else if (team == 1 && result == 1 || team == 0 && result == -1) {
                     IncreaseRightTeamGames();
-                    if (_gameManager.rightTeamGames >= 2) {
+                    if (_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
+                        // the whole set was a draw
+                        ActivateFinalResultsScreen(team, 0);
+                    } else if (_gameManager.leftTeamGames >= 2) {
+                        // Left team has won the set
+                        // Activate final results screen
+                        ActivateFinalResultsScreen(team, result);
+                    } else if (_gameManager.rightTeamGames >= 2) {
                         // Right team has won the set
-                        // Activate final results screen with right team winning
-                        ActivateFinalResultsScreen(1, 1);
+                        // Activate final results screen
+                        ActivateFinalResultsScreen(team, result);
                     } else {
-                        // Set still not won
-                        // Activate Continue screen
-                        ActivateContinueScreen(1, 1);
+                        // Set not done so activate continue screen
+                        ActivateContinueScreen(0, 0);
+                    }
+                } else {
+                    // If Left team wins
+                    if (team == 0 && result == 1 || team == 1 && result == -1) {
+                        IncreaseLeftTeamGames();
+                        if (_gameManager.leftTeamGames >= 2) {
+                            // Left team has won the set
+                            // Activate final results screen with left team winning
+                            ActivateFinalResultsScreen(0, 1);
+                        } else {
+                            // Set still not won
+                            // Activate Continue screen
+                            ActivateContinueScreen(0, 1);
+                        }
+                        // If Right team wins
+                    } else if (team == 1 && result == 1 || team == 0 && result == -1) {
+                        IncreaseRightTeamGames();
+                        if (_gameManager.rightTeamGames >= 2) {
+                            // Right team has won the set
+                            // Activate final results screen with right team winning
+                            ActivateFinalResultsScreen(1, 1);
+                        } else {
+                            // Set still not won
+                            // Activate Continue screen
+                            ActivateContinueScreen(1, 1);
+                        }
                     }
                 }
             }
