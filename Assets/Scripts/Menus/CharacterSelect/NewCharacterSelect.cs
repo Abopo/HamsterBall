@@ -11,24 +11,28 @@ public class NewCharacterSelect : MonoBehaviour {
 
     int _numPlayers = 0;
     int _numAI = 0;
-    CharacterSelector[] charaSelectors;
+    CharacterSelector[] charaSelectors = new CharacterSelector[4];
 
     bool _isActive;
 
     PlayerManager _playerManager;
     GameManager _gameManager;
 
+    public int NumPlayers {
+        get { return _numPlayers; }
+    }
+
     // Use this for initialization
     void Start () {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.prevMenu = MENU.VERSUS;
-        if(_gameManager.numPlayers == 0) {
-            _gameManager.numPlayers = 1;
-            _numPlayers = 1;
-        } else {
+        //if(_gameManager.numPlayers == 0) {
+        //    _gameManager.numPlayers = 1;
+        //    _numPlayers = 1;
+        //} else {
             _numPlayers = _gameManager.numPlayers;
             _numAI = _gameManager.numAI;
-        }
+        //}
 
         _playerManager = _gameManager.GetComponent<PlayerManager>();
         _playerManager.ClearAllPlayers();
@@ -38,7 +42,10 @@ public class NewCharacterSelect : MonoBehaviour {
 
         InputState.Reset();
 
-        SetupSelectors();
+        // If we are online, the selectors will be made elsewhere
+        if (!_gameManager.isOnline) {
+            SetupSelectors();
+        }
 	}
 
     // Assign controllers to every player
@@ -146,12 +153,43 @@ public class NewCharacterSelect : MonoBehaviour {
 
     bool AllPlayersLockedIn() {
         for(int i = 0; i < _numPlayers+_numAI; ++i) {
-            if(!charaSelectors[i].lockedIn) {
+            if(charaSelectors[i] != null && !charaSelectors[i].lockedIn) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    public void AddSelector(CharacterSelector selector) {
+        // Make sure we don't add a duplicate selector
+        foreach (CharacterSelector charaSelector in charaSelectors) {
+            if(charaSelector == selector) {
+                return;
+            }
+        }
+
+        // If no duplicates were found
+
+        // Add it to the array
+        charaSelectors[_numPlayers] = selector;
+
+        _numPlayers++;
+
+        Debug.Log("Added player" + " Num players: " + _numPlayers);
+    }
+    // Only used for networking
+    public void RemoveSelector(int ownerId) {
+        // Find the selector with the same owner
+        for (int i = 0; i < _numPlayers; ++i) {
+            if (charaSelectors[i].ownerId == ownerId) {
+                // Deactivate that selector
+                charaSelectors[i].Deactivate();
+                _numPlayers--;
+                break;
+            }
+        }
+
     }
 
     public void LoadNextScene() {
@@ -165,26 +203,4 @@ public class NewCharacterSelect : MonoBehaviour {
     public void BackToPreviousMenu() {
         SceneManager.LoadScene("LocalPlay");
     }
-
-    // Networking
-    public void AddNetworkedCharacter(int controllerNum, int ownerID) {
-        charaSelectors[_numPlayers].Activate(controllerNum, false, ownerID);
-        _numPlayers++;
-    }
-
-    public void RemoveNetworkedCharacter(int controllerNum, int ownerID) {
-        // Find the selector with the same owner
-        for(int i = 0; i < _numPlayers; ++i) {
-            if(charaSelectors[i].ownerID == ownerID) {
-                // Deactivate that selector
-                charaSelectors[i].Deactivate();
-                _numPlayers--;
-                break;
-            }
-        }
-
-        // Adjust player nums and stuff?
-
-    }
-
 }

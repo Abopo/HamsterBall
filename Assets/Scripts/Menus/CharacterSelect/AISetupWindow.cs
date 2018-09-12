@@ -14,7 +14,6 @@ public class AISetupWindow : MonoBehaviour {
     public SpriteRenderer ai3Sprite;
 
     public GameSetupWindow gameSetupWindow;
-    public CharacterSelect characterSelect;
 
     int _numAIs;
 
@@ -125,8 +124,7 @@ public class AISetupWindow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if(Input.GetButtonDown("Cancel")) {
-            // Turn off menu and turn back on character select stuff
-            characterSelect.Reactivate();
+            // Turn off menu and turn back on team select stuff
             Deactivate();
         }
     }

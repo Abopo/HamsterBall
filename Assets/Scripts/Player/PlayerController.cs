@@ -153,7 +153,12 @@ public class PlayerController : Entity {
         attackObj.team = team;
 
         _targetArrow = transform.Find("Target Arrow").GetComponent<SpriteRenderer>();
-        _targetArrow.enabled = false;
+        //_targetArrow.enabled = false;
+        if(team == 0) {
+            _targetArrow.color = new Color(242f/255f, 152f/255f, 18f/255f);
+        } else if(team == 1) {
+            _targetArrow.color = new Color(18f/255f, 103f/255f, 242f/255f);
+        }
 
         _canShift = false;
 		_shiftCooldownTime = 12.0f;
@@ -476,6 +481,12 @@ public class PlayerController : Entity {
 		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13 || collider.gameObject.layer == 18) {
 			velocity.y = 0.0f;
 		}
+
+        if (collider.name == "Ice Platform") {
+            _traction = 0.2f;
+        } else if (collider.name != "Ice Platform" && collider.tag == "Platform") {
+            _traction = 1f;
+        }
 	}
 
     public override void Spring(float springForce) {

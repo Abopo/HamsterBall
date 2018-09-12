@@ -27,7 +27,8 @@ public class GameSetupOption : MenuOption {
         _justMoved = false;
 
         if(isFirstSelection) {
-            _isHighlighted = true;
+            Highlight();
+            //_isHighlighted = true;
         } else {
             _isHighlighted = false;
         }

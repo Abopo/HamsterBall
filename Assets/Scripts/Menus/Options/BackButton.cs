@@ -6,12 +6,14 @@ using System.Collections;
 [RequireComponent(typeof(Button))]
 public class BackButton : MenuOption {
     Image _image;
+    GameManager _gameManager;
 
     // Use this for initialization
     protected override void Start () {
         base.Start();
 
         _image = GetComponent<Image>();
+        _gameManager = FindObjectOfType<GameManager>();
 
         if(SceneManager.GetActiveScene().name == "DemoCharacterSelect" && FindObjectOfType<GameManager>().demoMode) {
             gameObject.SetActive(false);
@@ -34,7 +36,7 @@ public class BackButton : MenuOption {
     }
 
     public void BackToMainMenu() {
-        SceneManager.LoadScene("MainMenu");
+        _gameManager.MainMenuButton();
     }
 
     public void BackToLocalPlay() {
@@ -42,7 +44,7 @@ public class BackButton : MenuOption {
     }
 
     public void BackToCharacterSelect() {
-        SceneManager.LoadScene("NewCharacterSelect");
+        _gameManager.CharacterSelectButton();
     }
 
     public void DisconnectFromRoom() {

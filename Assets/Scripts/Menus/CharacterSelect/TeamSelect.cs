@@ -102,6 +102,16 @@ public class TeamSelect : MonoBehaviour {
         }
     }
 
+    public void TurnOnCharacters() {
+        _isActive = true;
+
+        foreach (Character chara in characters) {
+            chara.takeInput = true;
+            if (_gameManager.isOnline) {
+                chara.GetComponent<PhotonView>().RPC("GameSetup", PhotonTargets.Others, true);
+            }
+        }
+    }
     void TurnOffCharacters() {
         foreach(Character chara in characters) {
             chara.takeInput = false;

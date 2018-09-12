@@ -44,7 +44,10 @@ public class PlayerCountSelectMenu : MonoBehaviour {
             playerButtons[i].Disable();
         }
 
-        for(int i = minPlayers; i < maxPlayers; ++i) {
+        // Highlight the first available button
+        playerButtons[minPlayers - 1].isFirstSelection = true;
+        playerButtons[minPlayers - 1].Highlight();
+        for(int i = minPlayers-1; i < maxPlayers; ++i) {
             playerButtons[i].Enable();
         }
 
@@ -73,7 +76,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
             OpenAICountMenu();
         } else {
             // Go to character select
-            SceneManager.LoadScene("NewCharacterSelect");
+            _gameManager.CharacterSelectButton();
         }
     }
     public void TwoPlayers() {
@@ -85,7 +88,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
             OpenAICountMenu();
         } else {
             // Go to character select
-            SceneManager.LoadScene("NewCharacterSelect");
+            _gameManager.CharacterSelectButton();
         }
     }
     public void ThreePlayers() {
@@ -97,7 +100,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
             OpenAICountMenu();
         } else {
             // Go to character select
-            SceneManager.LoadScene("NewCharacterSelect");
+            _gameManager.CharacterSelectButton();
         }
     }
     public void FourPlayers() {
@@ -106,7 +109,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         // Set player count
         _gameManager.numPlayers = 4;
 
-        SceneManager.LoadScene("NewCharacterSelect");
+        _gameManager.CharacterSelectButton();
     }
 
     void OpenAICountMenu() {
@@ -141,25 +144,25 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         // Set ai count
         _gameManager.numAI = 0;
 
-        SceneManager.LoadScene("NewCharacterSelect");
+        _gameManager.CharacterSelectButton();
     }
     public void OneComPlayers() {
         // Set ai count
         _gameManager.numAI = 1;
 
-        SceneManager.LoadScene("NewCharacterSelect");
+        _gameManager.CharacterSelectButton();
     }
     public void TwoComPlayers() {
         // Set ai count
         _gameManager.numAI = 2;
 
-        SceneManager.LoadScene("NewCharacterSelect");
+        _gameManager.CharacterSelectButton();
     }
     public void ThreeComPlayers() {
         // Set ai count
         _gameManager.numAI = 3;
 
-        SceneManager.LoadScene("NewCharacterSelect");
+        _gameManager.CharacterSelectButton();
     }
 
 }

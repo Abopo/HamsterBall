@@ -11,11 +11,13 @@ public class HamsterWheel : MonoBehaviour {
     public Animator hamster;
 
     float _curRotSpeed;
-    float _desiredRotation;
+    public float _desiredRotation;
     bool _rotating = false;
     public bool Rotating {
         get { return _rotating; }
     }
+    float _failsafeTime = 1.75f;
+    float _failsafeTimer = 0f;
 
     int _index = 0;
     string[] _mapNames = new string[8];
@@ -31,7 +33,6 @@ public class HamsterWheel : MonoBehaviour {
         set { _index = value; }
     }
 
-
     // Use this for initialization
     void Start() {
         _stageIcons = GetComponentsInChildren<StageIcon>();
@@ -46,6 +47,7 @@ public class HamsterWheel : MonoBehaviour {
         _mapNames[7] = "Space";
 
         curMapText.text = _mapNames[_index];
+        SetTextColor();
 
         // TODO: set random hamster
         int type = Random.Range(0, 7);
@@ -64,25 +66,23 @@ public class HamsterWheel : MonoBehaviour {
 
         if (_rotating) {
             transform.Rotate(0f, 0f, _curRotSpeed * Time.deltaTime);
+            _failsafeTimer += Time.deltaTime;
 
-            // If we get close enough to the desired rotation angle
+            // If we get close enough to the desired rotation angle or we've past the failsafe timer
             if (Mathf.Abs(transform.rotation.eulerAngles.z - _desiredRotation) < 1f) {
                 EndRotation();
+                _failsafeTimer = 0f;
             }
         }
     }
 
     void CheckInput() {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) ||
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) ||
             (Input.GetAxis("Horizontal") < -0.3f) || Input.GetAxis("Horizontal DPad") < -0.3f) {
-            if (!_stageIcons[PrevIndex()].isLocked) {
-                RotateLeft();
-            }
-        } else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) ||
+            RotateLeft();
+        } else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) ||
             (Input.GetAxis("Horizontal") > 0.3f) || Input.GetAxis("Horizontal DPad") > 0.3f) {
-            if (!_stageIcons[NextIndex()].isLocked) {
-                RotateRight();
-            }
+            RotateRight();
         }
 
         if (Input.GetButtonDown("Cancel")) {
@@ -92,14 +92,14 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void RotateRight() {
-        if (_rotating) {
+        if (_rotating || _stageIcons[NextIndex()].isLocked) {
             return;
         }
         _audioSource.Play();
 
         _curRotSpeed = -baseRotSpeed;
         _desiredRotation = transform.eulerAngles.z - 45f;
-        if (_desiredRotation < 0) {
+        if (_desiredRotation < -1) {
             _desiredRotation = 315f;
         }
 
@@ -119,14 +119,14 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void RotateLeft() {
-        if (_rotating) {
+        if (_rotating || _stageIcons[PrevIndex()].isLocked) {
             return;
         }
         _audioSource.Play();
 
         _curRotSpeed = baseRotSpeed;
         _desiredRotation = transform.eulerAngles.z + 45f;
-        if (_desiredRotation > 360) {
+        if (_desiredRotation > 361) {
             _desiredRotation = 45f;
         }
 
@@ -146,10 +146,20 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     void EndRotation() {
-        transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, _desiredRotation);
-        curMapText.text = _mapNames[_index];
+        // End the rotation
         _rotating = false;
-        hamster.SetInteger("State", 0);
+        transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, _desiredRotation);
+
+        // But check if we want to keep running past this map
+        CheckInput();
+
+        // If we didn't keep rotating
+        if (!_rotating) {
+            // Fully stop
+            curMapText.text = _mapNames[_index];
+            SetTextColor();
+            hamster.SetInteger("State", 0);
+        }
     }
 
     public void LoadSelectedMap() {
@@ -205,6 +215,26 @@ public class HamsterWheel : MonoBehaviour {
         } else {
             return _index - 1;
         }
+    }
+
+    void SetTextColor() {
+        Color newColor = new Color();
+        switch (curMapText.text) {
+            case "Forest":
+                ColorUtility.TryParseHtmlString("#00FF4CFF", out newColor);
+                break;
+            case "Mountain":
+                ColorUtility.TryParseHtmlString("#11FFEBFF", out newColor);
+                break;
+            case "Beach":
+                ColorUtility.TryParseHtmlString("#FBEC99FF", out newColor);
+                break;
+            default:
+                ColorUtility.TryParseHtmlString("#FFFFFFFF", out newColor);
+                break;
+        }
+
+        curMapText.color = newColor;
     }
 
     [PunRPC]

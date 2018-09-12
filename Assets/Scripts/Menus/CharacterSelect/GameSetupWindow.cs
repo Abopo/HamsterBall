@@ -16,12 +16,13 @@ public class GameSetupWindow : MonoBehaviour {
     public Text deadText;
     public Text gravityText;
     public Text bombText;
-    public CharacterSelect charSelect;
     public AISetupWindow aiSetupWindow;
+
 
     bool _aimAssist;
 
     GameManager _gameManager;
+    TeamSelect _teamSelect;
 
     //string[] hsrTexts = new string[3];
     GameSetupOption[] _options = new GameSetupOption[8];
@@ -32,8 +33,8 @@ public class GameSetupWindow : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-
+        _gameManager = FindObjectOfType<GameManager>();
+        _teamSelect = FindObjectOfType<TeamSelect>();
         //hsrTexts[0] = "Slow";
         //hsrTexts[1] = "Medium";
         //hsrTexts[2] = "Fast";
@@ -102,13 +103,13 @@ public class GameSetupWindow : MonoBehaviour {
     void Update () {
         if (Input.GetButtonDown("Cancel") && !IsAnyOptionSelected()) {
             // Back out to character select
-            if (charSelect.AnyAICharacters()) {
+            if (_gameManager.numAI > 0) {
                 // Go back to AI setup
                 aiSetupWindow.gameObject.SetActive(true);
                 gameObject.SetActive(false);
             } else {
                 // Go straight to char select
-                charSelect.Reactivate();
+                _teamSelect.TurnOnCharacters();
                 gameObject.SetActive(false);
             }
 

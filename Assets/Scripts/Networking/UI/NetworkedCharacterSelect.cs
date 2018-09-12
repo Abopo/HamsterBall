@@ -4,96 +4,104 @@ using UnityEngine;
 using Photon;
 
 [RequireComponent(typeof(PhotonView))]
-public class NetworkedCharacterSelect : Photon.MonoBehaviour {
-    PlayerController _playerController;
-    InputState _serializedInput;
+public class NetworkedCharacterSelect :Photon.MonoBehaviour {
+    public Animator[] charaAnimators;
+    public GameObject[] readySprites;
 
-    private void Awake() {
-        _playerController = GetComponent<PlayerController>();
-        _serializedInput = new InputState();
+    NewCharacterSelect _characterSelect;
+
+	// Use this for initialization
+	void Start () {
+        _characterSelect = GetComponent<NewCharacterSelect>();
+
+        CreateNetworkedCharacterSelector();
+
+        //InitializeSelectors();
+        StartCoroutine(TryInitializeSelectors());
+	}
+
+    IEnumerator TryInitializeSelectors() {
+        // Find all the selectors
+        CharacterSelector[] charaSelectors = FindObjectsOfType<CharacterSelector>();
+
+        // Wait until the number of selectors matches the number of players
+        while(charaSelectors.Length != PhotonNetwork.playerList.Length) {
+            charaSelectors = FindObjectsOfType<CharacterSelector>();
+            yield return null;
+        }
+
+        // Once all the selectors have been created by the server
+        // Initialize them
+        InitializeSelectors();
+    }
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+    void InitializeSelectors() {
+        // Find all the selectors
+        CharacterSelector[] charaSelectors = FindObjectsOfType<CharacterSelector>();
+
+        // Initialize them in order of owner
+        // For each player in the room
+        Debug.Log(charaSelectors.Length);
+        for (int i = 0; i < PhotonNetwork.playerList.Length; ++i) {
+            // Find the matching selector
+            for(int j = 0; j < charaSelectors.Length; ++j) {
+                if(charaSelectors[j].ownerId == PhotonNetwork.playerList[i].ID) {
+
+                    // If it hasn't been initialize yet
+                    if (charaSelectors[j].playerNum == -1 || charaSelectors[j].characterAnimator == null || charaSelectors[j].readySprite == null) {
+                        // Initialize it
+                        charaSelectors[j].Initialize();
+                       
+                        // If we own this selector
+                        if (charaSelectors[j].ownerId == PhotonNetwork.player.ID) {
+                            // Activate it with a controller
+                            charaSelectors[j].Activate(InputState.AssignController(), false, true);
+                        } else {
+                            // Activate it with no controller
+                            charaSelectors[j].Activate(-1, false, false);
+                        }
+
+                        // Add it to the character select
+                        _characterSelect.AddSelector(charaSelectors[j]);
+                    }
+                }
+            }
+        }
     }
 
-    public void Start() {
+    public void OnPhotonPlayerConnected(PhotonPlayer otherPlayer) {
+        // Wait for their selector to spawn, then initialize it
+        StartCoroutine(TryInitializeSelectors());
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.isWriting) {
-            stream.Serialize(ref _serializedInput.jump.isDown);
-            stream.Serialize(ref _serializedInput.jump.isJustReleased);
-            stream.Serialize(ref _serializedInput.jump.isJustPressed);
-            stream.Serialize(ref _serializedInput.swing.isDown);
-            stream.Serialize(ref _serializedInput.swing.isJustPressed);
-            stream.Serialize(ref _serializedInput.attack.isDown);
-            stream.Serialize(ref _serializedInput.attack.isJustPressed);
-            stream.Serialize(ref _serializedInput.attack.isJustReleased);
-
-            ResetInput();
-
-        } else {
-            stream.Serialize(ref _serializedInput.jump.isDown);
-            stream.Serialize(ref _serializedInput.jump.isJustReleased);
-            stream.Serialize(ref _serializedInput.jump.isJustPressed);
-            stream.Serialize(ref _serializedInput.swing.isDown);
-            stream.Serialize(ref _serializedInput.swing.isJustPressed);
-            stream.Serialize(ref _serializedInput.attack.isDown);
-            stream.Serialize(ref _serializedInput.attack.isJustPressed);
-            stream.Serialize(ref _serializedInput.attack.isJustReleased);
-
-            // Take all the input built up between updates
-            _playerController.TakeInput(_serializedInput);
-
-            ResetInput();
-        }
     }
 
-    public void Update() {
-        GetOwnerInput();
+    // Networking
+    public void CreateNetworkedCharacterSelector() {
+        // Make new selector
+        GameObject selectorObj = Resources.Load<GameObject>("Prefabs/UI/Character Select/NetworkedCharacterSelector");
+        CharacterSelector newSelector = PhotonNetwork.Instantiate("Prefabs/UI/Character Select/NetworkedCharacterSelector", transform.position, Quaternion.identity, 0).GetComponent<CharacterSelector>();
+        //newSelector.Initialize();
+        /*
+        // TODO: Move selector to emtpy character?
+        CharacterIcon[] charaIcons = FindObjectsOfType<CharacterIcon>();
+        newSelector.transform.position = new Vector3(charaIcons[_characterSelect.NumPlayers].transform.position.x,
+                                                    charaIcons[_characterSelect.NumPlayers].transform.position.y,
+                                                    charaIcons[_characterSelect.NumPlayers].transform.position.z - 2f);
+        newSelector.curCharacterIcon = charaIcons[_characterSelect.NumPlayers];
+        newSelector.characterAnimator = charaAnimators[_characterSelect.NumPlayers];
+        newSelector.readySprite = readySprites[_characterSelect.NumPlayers];
+        */
+
     }
 
-    void GetOwnerInput() {
-        if (_playerController.inputState.jump.isDown) {
-            _serializedInput.jump.isDown = true;
-        }
-        if (_playerController.inputState.jump.isJustReleased) {
-            _serializedInput.jump.isJustReleased = true;
-        }
-        if (_playerController.inputState.jump.isJustPressed) {
-            _serializedInput.jump.isJustPressed = true;
-        }
-        if (_playerController.inputState.left.isDown) {
-            _serializedInput.left.isDown = true;
-        }
-        if (_playerController.inputState.left.isJustPressed) {
-            _serializedInput.left.isJustPressed = true;
-        }
-        if (_playerController.inputState.left.isJustReleased) {
-            _serializedInput.left.isJustReleased = true;
-        }
-        if (_playerController.inputState.right.isDown) {
-            _serializedInput.right.isDown = true;
-        }
-        if (_playerController.inputState.right.isJustPressed) {
-            _serializedInput.right.isJustPressed = true;
-        }
-        if (_playerController.inputState.right.isJustReleased) {
-            _serializedInput.right.isJustReleased = true;
-        }
-        if (_playerController.inputState.swing.isJustPressed) {
-            _serializedInput.swing.isJustPressed = true;
-        }
-        //stream.Serialize(ref _serializedInput.shift.isDown);
-        if (_playerController.inputState.shift.isJustPressed) {
-            _serializedInput.shift.isJustPressed = true;
-        }
-        //stream.Serialize(ref _serializedInput.shift.isJustReleased);
-        //stream.Serialize(ref _serializedInput.attack.isDown);
-        if (_playerController.inputState.attack.isJustPressed) {
-            _serializedInput.attack.isJustPressed = true;
-        }
-        //stream.Serialize(ref _serializedInput.attack.isJustReleased);
-    }
+    public void RemoveNetworkedCharacter(int controllerNum, int ownerID) {
 
-    void ResetInput() {
-        _serializedInput = new InputState();
     }
 }

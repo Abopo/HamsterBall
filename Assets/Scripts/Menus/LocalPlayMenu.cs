@@ -23,25 +23,17 @@ public class LocalPlayMenu : MonoBehaviour {
 
     public void StandardVersus() {
         _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
-
         OpenPlayerCountSelectMenu(4, 2, true);
-        //if (_gameManager.demoMode) {
-            //SceneManager.LoadScene("DemoCharacterSelect");
-        //} else {
-        //    SceneManager.LoadScene("CharacterSelect");
-        //}
     }
 
     public void PartyVersus() {
         _gameManager.SetGameMode(GAME_MODE.MP_PARTY);
         OpenPlayerCountSelectMenu(4, 2, true);
-        //SceneManager.LoadScene("DemoCharacterSelect");
     }
 
     public void Survival() {
         _gameManager.SetGameMode(GAME_MODE.SURVIVAL);
         OpenPlayerCountSelectMenu(2, 1, false);
-        //SceneManager.LoadScene("DemoCharacterSelect");
     }
 
     public void TeamSurvival() {
@@ -52,12 +44,11 @@ public class LocalPlayMenu : MonoBehaviour {
     public void PuzzleChallenge() {
         _gameManager.SetGameMode(GAME_MODE.SP_CLEAR);
         OpenPlayerCountSelectMenu(2, 1, false);
-        //SceneManager.LoadScene("DemoCharacterSelect");
     }
 
     public void OpenPlayerCountSelectMenu(int maxPlayers, int minPlayers, bool aiAllowed) {
-        pcsMenu.Activate(maxPlayers, minPlayers, aiAllowed);
         Deactivate();
+        pcsMenu.Activate(maxPlayers, minPlayers, aiAllowed);
     }
 
     public void Activate() {

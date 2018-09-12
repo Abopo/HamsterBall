@@ -12,7 +12,7 @@ public class MenuOption : MonoBehaviour {
     public bool isReady = true;
 
     //protected Vector2 _selectedPos;
-    protected bool _isHighlighted;
+    public bool _isHighlighted;
     protected bool _justHighlighted; // use this to stop inputs from flowing over into multiple options.
     protected bool _moved;
 
@@ -208,5 +208,4 @@ public class MenuOption : MonoBehaviour {
             Highlight();
         }
     }
-
 }

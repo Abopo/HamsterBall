@@ -305,129 +305,131 @@ public class InputState {
     }
 
     static InputState GetUp(InputState currInput) {
-        currInput.up.isDown = true;
-        if (!currInput.upJustPressed) {
+        if (!currInput.up.isDown && !currInput.upJustPressed) {
             currInput.up.isJustPressed = true;
             currInput.upJustPressed = true;
         } else {
             currInput.up.isJustPressed = false;
         }
         currInput.up.isJustReleased = false;
+        currInput.up.isDown = true;
 
-        if (!currInput.down.isJustReleased) {
+        if (currInput.down.isDown && !currInput.down.isJustReleased) {
             currInput.down.isJustReleased = true;
             currInput.downJustPressed = false;
         } else {
             currInput.down.isJustReleased = false;
         }
+        currInput.down.isDown = false;
 
         return currInput;
     }
 
     static InputState GetDown(InputState currInput) {
-        currInput.down.isDown = true;
-        if (!currInput.downJustPressed) {
+        if (!currInput.down.isDown && !currInput.downJustPressed) {
             currInput.down.isJustPressed = true;
             currInput.downJustPressed = true;
         } else {
             currInput.down.isJustPressed = false;
         }
         currInput.down.isJustReleased = false;
+        currInput.down.isDown = true;
 
-        if (!currInput.up.isJustReleased) {
+        if (currInput.up.isDown && !currInput.up.isJustReleased) {
             currInput.up.isJustReleased = true;
             currInput.upJustPressed = false;
         } else {
             currInput.up.isJustReleased = false;
         }
+        currInput.up.isDown = false;
 
         return currInput;
     }
 
     static InputState GetIdleVertical(InputState currInput) {
-        currInput.up.isDown = false;
-        currInput.up.isJustPressed = false;
-        if (!currInput.up.isJustReleased) {
+        if (currInput.up.isDown && !currInput.up.isJustReleased) {
             currInput.up.isJustReleased = true;
             currInput.upJustPressed = false;
         } else {
             currInput.up.isJustReleased = false;
         }
+        currInput.up.isDown = false;
+        currInput.up.isJustPressed = false;
 
-        currInput.down.isDown = false;
-        currInput.down.isJustPressed = false;
-        if (!currInput.down.isJustReleased) {
+        if (currInput.down.isDown && !currInput.down.isJustReleased) {
             currInput.down.isJustReleased = true;
             currInput.downJustPressed = false;
         } else {
             currInput.down.isJustReleased = false;
         }
+        currInput.down.isDown = false;
+        currInput.down.isJustPressed = false;
 
         return currInput;
     }
 
     static InputState GetLeft(InputState currInput) {
-		currInput.left.isDown = true;
-		if(!currInput.leftJustPressed) {
+		if(!currInput.left.isDown && !currInput.leftJustPressed) {
 			currInput.left.isJustPressed = true;
             currInput.leftJustPressed = true;
 		} else {
 			currInput.left.isJustPressed = false;
 		}
 		currInput.left.isJustReleased = false;
+        currInput.left.isDown = true;
 
-        currInput.right.isDown = false;
-		if(!currInput.right.isJustReleased) {
+		if(currInput.right.isDown && !currInput.right.isJustReleased) {
 			currInput.right.isJustReleased = true;
             currInput.rightJustPressed = false;
 		} else {
 			currInput.right.isJustReleased = false;
 		}
+        currInput.right.isDown = false;
 
         return currInput;
 	}
 
 	static InputState GetRight(InputState currInput) {
-		currInput.right.isDown = true;
-        if (!currInput.rightJustPressed) {
+        if (!currInput.right.isDown && !currInput.rightJustPressed) {
 			currInput.right.isJustPressed = true;
             currInput.rightJustPressed = true;
 		} else {
 			currInput.right.isJustPressed = false;
 		}
 		currInput.right.isJustReleased = false;
+        currInput.right.isDown = true;
 
-        currInput.left.isDown = false;
-		if(!currInput.left.isJustReleased) {
+        if (currInput.left.isDown && !currInput.left.isJustReleased) {
 			currInput.left.isJustReleased = true;
             currInput.leftJustPressed = false;
 		} else {
 			currInput.left.isJustReleased = false;
 		}
+        currInput.left.isDown = false;
 
-		return currInput;
+        return currInput;
 	}
 
 	static InputState GetIdleHorizontal(InputState currInput) {
-		currInput.right.isDown = false;
-		currInput.right.isJustPressed = false;
-		if(!currInput.right.isJustReleased) {
+		if(currInput.right.isDown && !currInput.right.isJustReleased) {
 			currInput.right.isJustReleased = true;
             currInput.rightJustPressed = false;
 		} else {
 			currInput.right.isJustReleased = false;
 		}
-		
-		currInput.left.isDown = false;
-		currInput.left.isJustPressed = false;
-		if(!currInput.left.isJustReleased) {
+        currInput.right.isDown = false;
+        currInput.right.isJustPressed = false;
+
+		if(currInput.left.isDown && !currInput.left.isJustReleased) {
 			currInput.left.isJustReleased = true;
             currInput.leftJustPressed = false;
 		} else {
 			currInput.left.isJustReleased = false;
 		}
+        currInput.left.isDown = false;
+        currInput.left.isJustPressed = false;
 
-		return currInput;
+        return currInput;
 	}
 
     public static InputState ResetInput(InputState currInput) {
