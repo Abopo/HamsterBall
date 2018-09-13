@@ -176,25 +176,28 @@ public class InputState {
 			// joystick 2
 		} else if(currInput.controllerNum == 4) {
             // Get vertical input, turn it into button format.
-            float vert = Input.GetAxis("Vertical 2");
-            if (vert < -0.1f) {
+            float vertStick = Input.GetAxis("Vertical 2");
+            float vertPad = Input.GetAxis("D-Pad Y 2");
+            if (vertStick < -0.1f || vertPad < -0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vert > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad > 0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);
             }
+
             // Get horizontal input, turn it into button format.
-            float hor = Input.GetAxis("Horizontal 2");
-			if(hor < -0.1f) {
-				currInput = GetLeft(currInput);
-			} else if(hor > 0.1f) {
-				currInput = GetRight(currInput);
-			} else {
-				currInput = GetIdleHorizontal(currInput);
-			}
-			
-			currInput.jump.isDown = Input.GetButton ("Joystick Jump 2");
+            float horStick = Input.GetAxis("Horizontal 2");
+            float horPad = Input.GetAxis("D-Pad X 2");
+            if (horStick < -0.1f || horPad < -0.1f) {
+                currInput = GetLeft(currInput);
+            } else if (horStick > 0.1f || horPad > 0.1f) {
+                currInput = GetRight(currInput);
+            } else {
+                currInput = GetIdleHorizontal(currInput);
+            }
+
+            currInput.jump.isDown = Input.GetButton ("Joystick Jump 2");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Joystick Jump 2");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Joystick Jump 2");
 			currInput.swing.isDown = Input.GetButton ("Joystick Bubble 2");
@@ -208,25 +211,27 @@ public class InputState {
 			currInput.shift.isJustReleased = Input.GetButtonUp ("Joystick Shift 2");
 		} else if(currInput.controllerNum == 5) {
             // Get vertical input, turn it into button format.
-            float vert = Input.GetAxis("Vertical 3");
-            if (vert < -0.1f) {
+            float vertStick = Input.GetAxis("Vertical 3");
+            float vertPad = Input.GetAxis("D-Pad Y 3");
+            if (vertStick < -0.1f || vertPad < -0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vert > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad > 0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);
             }
             // Get horizontal input, turn it into button format.
-            float hor = Input.GetAxis("Horizontal 3");
-			if(hor < -0.1f) {
-				currInput = GetLeft(currInput);
-			} else if(hor > 0.1f) {
-				currInput = GetRight(currInput);
-			} else {
-				currInput = GetIdleHorizontal(currInput);
-			}
-			
-			currInput.jump.isDown = Input.GetButton ("Joystick Jump 3");
+            float horStick = Input.GetAxis("Horizontal 3");
+            float horPad = Input.GetAxis("D-Pad X 3");
+            if (horStick < -0.1f || horPad < -0.1f) {
+                currInput = GetLeft(currInput);
+            } else if (horStick > 0.1f || horPad > 0.1f) {
+                currInput = GetRight(currInput);
+            } else {
+                currInput = GetIdleHorizontal(currInput);
+            }
+
+            currInput.jump.isDown = Input.GetButton ("Joystick Jump 3");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Joystick Jump 3");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Joystick Jump 3");
 			currInput.swing.isDown = Input.GetButton ("Joystick Bubble 3");
@@ -240,25 +245,27 @@ public class InputState {
 			currInput.shift.isJustReleased = Input.GetButtonUp ("Joystick Shift 3");
 		} else if(currInput.controllerNum == 6) {
             // Get vertical input, turn it into button format.
-            float vert = Input.GetAxis("Vertical 4");
-            if (vert < -0.1f) {
+            float vertStick = Input.GetAxis("Vertical 4");
+            float vertPad = Input.GetAxis("D-Pad Y 4");
+            if (vertStick < -0.1f || vertPad < -0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vert > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad > 0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);
             }
             // Get horizontal input, turn it into button format.
-            float hor = Input.GetAxis("Horizontal 4");
-			if(hor < -0.1f) {
-				currInput = GetLeft(currInput);
-			} else if(hor > 0.1f) {
-				currInput = GetRight(currInput);
-			} else {
-				currInput = GetIdleHorizontal(currInput);
-			}
-			
-			currInput.jump.isDown = Input.GetButton ("Joystick Jump 4");
+            float horStick = Input.GetAxis("Horizontal 4");
+            float horPad = Input.GetAxis("D-Pad X 4");
+            if (horStick < -0.1f || horPad < -0.1f) {
+                currInput = GetLeft(currInput);
+            } else if (horStick > 0.1f || horPad > 0.1f) {
+                currInput = GetRight(currInput);
+            } else {
+                currInput = GetIdleHorizontal(currInput);
+            }
+
+            currInput.jump.isDown = Input.GetButton ("Joystick Jump 4");
 			currInput.jump.isJustPressed = Input.GetButtonDown ("Joystick Jump 4");
 			currInput.jump.isJustReleased = Input.GetButtonUp ("Joystick Jump 4");
 			currInput.swing.isDown = Input.GetButton ("Joystick Bubble 4");

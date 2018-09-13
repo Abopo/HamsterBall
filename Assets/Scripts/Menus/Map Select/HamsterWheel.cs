@@ -237,6 +237,10 @@ public class HamsterWheel : MonoBehaviour {
         curMapText.color = newColor;
     }
 
+    // Networking
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+    }
+
     [PunRPC]
     void RotateWheel(bool left) {
         if (left) {

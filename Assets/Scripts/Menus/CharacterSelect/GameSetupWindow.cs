@@ -236,12 +236,12 @@ public class GameSetupWindow : MonoBehaviour {
             return;
         }
 
-        if (_gameManager.isOnline) {
+        //if (_gameManager.isOnline) {
             //PhotonNetwork.LoadLevel("NetworkedMapSelect");
-            PhotonNetwork.LoadLevel("NetworkedMapSelectWheel");
-        } else {
+        //    PhotonNetwork.LoadLevel("NetworkedMapSelectWheel");
+        //} else {
             SceneManager.LoadScene("MapSelectWheel");
-        }
+        //}
     }
 
     // Sets the game up for demo mode and skips this menu

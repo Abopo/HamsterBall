@@ -13,10 +13,12 @@ public class Character : MonoBehaviour {
 
     int _playerNum;
     CHARACTERNAMES _characterName;
-    int _team; // -1 = no team, 0 = left team, 1 = right team
+    public int _team; // -1 = no team, 0 = left team, 1 = right team
     bool _active;
 
     Vector2 _initialPos;
+
+    bool _justMoved;
 
     InputState _inputState;
     public int ControllerNum {
@@ -84,6 +86,9 @@ public class Character : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         _moveClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
 
+        _photonView = GetComponent<PhotonView>();
+        isLocal = true;
+
         GetArrows();
     }
 
@@ -93,9 +98,7 @@ public class Character : MonoBehaviour {
         takeInput = true;
 
         _active = true;
-
-        _photonView = GetComponent<PhotonView>();
-        isLocal = true;
+        _justMoved = false;
     }
 
     public void Initialize(PlayerInfo pInfo) {
@@ -137,19 +140,28 @@ public class Character : MonoBehaviour {
         if (isLocal) {
             _inputState = InputState.GetInput(_inputState);
         }
-        // Changing teams
-        if (_inputState.left.isJustPressed && !isAI) {
-            if (TopAIChild != null) {
-                TopAIChild.MoveLeft();
-            } else {
-                MoveLeft();
+
+        if (!_justMoved) {
+            // Changing teams
+            if (_inputState.left.isDown && !isAI) {
+                if (TopAIChild != null) {
+                    TopAIChild.MoveLeft();
+                } else {
+                    MoveLeft();
+                }
+                _justMoved = true;
             }
-        }
-        if(_inputState.right.isJustPressed && !isAI) {
-            if (TopAIChild != null) {
-                TopAIChild.MoveRight();
-            } else {
-                MoveRight();
+            if (_inputState.right.isDown && !isAI) {
+                if (TopAIChild != null) {
+                    TopAIChild.MoveRight();
+                } else {
+                    MoveRight();
+                }
+                _justMoved = true;
+            }
+        } else {
+            if(!_inputState.right.isDown && !_inputState.left.isDown) {
+                _justMoved = false;
             }
         }
 

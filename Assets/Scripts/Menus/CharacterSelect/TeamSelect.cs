@@ -60,27 +60,11 @@ public class TeamSelect : MonoBehaviour {
             // If all players are ready
             if (PlayersAreReady()) {
                 // Show pressstarttext
-                pressStartText.SetActive(true);
+                ShowPressStartText(true);
             } else {
-                pressStartText.SetActive(false);
+                ShowPressStartText(false);
             }
         }
-    }
-
-    bool PlayersAreReady() {
-        // If any players are not on a team
-        foreach(Character chara in characters) {
-            if(chara != null && chara.Team == -1) {
-                return false;
-            }
-        }
-
-        // Or any team doesn't have a player
-        if(teamLeft.numPlayers == 0 || teamRight.numPlayers == 0) {
-            return false;
-        }
-
-        return true;
     }
 
     public void OpenSetupMenu() {
@@ -100,6 +84,36 @@ public class TeamSelect : MonoBehaviour {
                 TurnOffCharacters();
             }
         }
+
+        if (_gameManager.isOnline) {
+            GetComponent<PhotonView>().RPC("GameSetup", PhotonTargets.AllBuffered, true);
+        }
+    }
+
+    bool PlayersAreReady() {
+        // If any players are not on a team
+        foreach(Character chara in characters) {
+            if(chara != null && chara.Team == -1) {
+                return false;
+            }
+        }
+
+        // Or any team doesn't have a player
+        if(teamLeft.numPlayers == 0 || teamRight.numPlayers == 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    void ShowPressStartText(bool show) {
+        if(show) {
+            if(!_gameManager.isOnline || (_gameManager.isOnline && PhotonNetwork.isMasterClient)) {
+                pressStartText.SetActive(true);
+            }
+        } else {
+            pressStartText.SetActive(false);
+        }
     }
 
     public void TurnOnCharacters() {
@@ -107,17 +121,15 @@ public class TeamSelect : MonoBehaviour {
 
         foreach (Character chara in characters) {
             chara.takeInput = true;
-            if (_gameManager.isOnline) {
-                chara.GetComponent<PhotonView>().RPC("GameSetup", PhotonTargets.Others, true);
-            }
+        }
+
+        if (_gameManager.isOnline) {
+            GetComponent<PhotonView>().RPC("GameSetup", PhotonTargets.AllBuffered, false);
         }
     }
-    void TurnOffCharacters() {
+    public void TurnOffCharacters() {
         foreach(Character chara in characters) {
             chara.takeInput = false;
-            if(_gameManager.isOnline) {
-                chara.GetComponent<PhotonView>().RPC("GameSetup", PhotonTargets.Others, true);
-            }
         }
     }
 }

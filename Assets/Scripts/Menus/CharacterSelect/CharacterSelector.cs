@@ -171,10 +171,9 @@ public class CharacterSelector : MonoBehaviour {
                     _moveTimer = 0f;
                 }
             }
-
-            if(_inputState.right.isJustReleased || _inputState.left.isJustReleased || _inputState.up.isJustReleased || _inputState.down.isJustReleased) {
-                _moveTimer = _moveTime;
-            }
+        }
+        if (!_inputState.right.isDown && !_inputState.left.isDown && !_inputState.up.isDown && !_inputState.down.isDown) {
+            _moveTimer = _moveTime + 1f;
         }
 
         if (_inputState.swing.isJustPressed && !lockedIn && !curCharacterIcon.isLocked) {

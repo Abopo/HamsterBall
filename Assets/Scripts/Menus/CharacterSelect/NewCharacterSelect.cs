@@ -196,11 +196,11 @@ public class NewCharacterSelect : MonoBehaviour {
         if (_gameManager.gameMode == GAME_MODE.SP_CLEAR || _gameManager.gameMode == GAME_MODE.SURVIVAL) {
             SceneManager.LoadScene("MapSelectWheel");
         } else {
-            SceneManager.LoadScene("TeamSelect");
+            if (!_gameManager.isOnline) {
+                SceneManager.LoadScene("TeamSelect");
+            } else {
+                SceneManager.LoadScene("NetworkedTeamSelect");
+            }
         }
-    }
-
-    public void BackToPreviousMenu() {
-        SceneManager.LoadScene("LocalPlay");
     }
 }

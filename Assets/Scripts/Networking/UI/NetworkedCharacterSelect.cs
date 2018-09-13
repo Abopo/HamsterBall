@@ -46,7 +46,6 @@ public class NetworkedCharacterSelect :Photon.MonoBehaviour {
 
         // Initialize them in order of owner
         // For each player in the room
-        Debug.Log(charaSelectors.Length);
         for (int i = 0; i < PhotonNetwork.playerList.Length; ++i) {
             // Find the matching selector
             for(int j = 0; j < charaSelectors.Length; ++j) {

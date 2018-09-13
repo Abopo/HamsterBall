@@ -15,6 +15,8 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     int characterName;
     bool islockedIn;
 
+    GameManager _gameManager;
+
     private void Awake() {
         _selector = GetComponent<CharacterSelector>();
         _serializedInput = new InputState();
@@ -25,6 +27,8 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     // Use this for initialization
     void Start () {
         _characterSelect = FindObjectOfType<NetworkedCharacterSelect>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager.numPlayers++;
 
         _nickname = PhotonNetwork.playerName;
 
@@ -117,5 +121,7 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
         if (otherPlayer.NickName == _nickname) {
             _characterSelect.RemoveNetworkedCharacter(_selector.InputState.controllerNum, otherPlayer.ID);
         }
+
+        _gameManager.numPlayers--;
     }
 }
