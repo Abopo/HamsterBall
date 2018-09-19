@@ -52,12 +52,12 @@ public class BubbleState : PlayerState {
     }
 
     public void Activate() {
-        playerController.attackBubble.SetActive(true);
+        playerController.swingObj.SetActive(true);
         playerController.velocity.x = 0f;
     }
 
     public void Deactivate() {
-        playerController.attackBubble.SetActive(false);
+        playerController.swingObj.SetActive(false);
         _swingDone = true;
     }
 
@@ -72,6 +72,6 @@ public class BubbleState : PlayerState {
 
 	//	use this for destruction
 	public override void End(){
-		playerController.attackBubble.SetActive (false);
+		playerController.swingObj.SetActive (false);
 	}
 }

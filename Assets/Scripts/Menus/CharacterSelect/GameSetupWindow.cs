@@ -253,10 +253,7 @@ public class GameSetupWindow : MonoBehaviour {
         HamsterSpawner.canBeBomb = false;
         HamsterSpawner.canBeGravity = false;
 
-        if (_gameManager.isSinglePlayer) {
-            SceneManager.LoadScene("Forest - SinglePlayer");
-        } else {
-            SceneManager.LoadScene("Forest");
-        }
+        SceneManager.LoadScene("MapSelectWheel");
+        //SceneManager.LoadScene("Forest");
     }
 }

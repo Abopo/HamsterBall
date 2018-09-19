@@ -5,34 +5,48 @@ using UnityEngine;
 public class PlayerAnimationTriggers : MonoBehaviour {
 
     PlayerController _playerController;
+    ThrowState _throwState;
+    BubbleState _bubbleState;
+    AttackState _attackState;
 
 	// Use this for initialization
 	void Start () {
         _playerController = GetComponentInParent<PlayerController>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        _throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
+        _bubbleState = (BubbleState)_playerController.GetPlayerState(PLAYER_STATE.BUBBLE);
+        _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
     public void ThrowBall() {
-        ThrowState throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
-        throwState.Throw();
+        _throwState.Throw();
     }
 
     public void NetSwingOn() {
-        BubbleState bubbleState = (BubbleState)_playerController.GetPlayerState(PLAYER_STATE.BUBBLE);
-        bubbleState.Activate();
+        _bubbleState.Activate();
     }
 
     public void NetSwingOff() {
-        BubbleState bubbleState = (BubbleState)_playerController.GetPlayerState(PLAYER_STATE.BUBBLE);
-        bubbleState.Deactivate();
+        _bubbleState.Deactivate();
     }
 
     public void NetSwingFinished() {
-        BubbleState bubbleState = (BubbleState)_playerController.GetPlayerState(PLAYER_STATE.BUBBLE);
-        bubbleState.Finish();
+        _bubbleState.Finish();
+    }
+
+    public void AttackOn() {
+        _attackState.StartAttack();
+    }
+
+    public void AttackOff() {
+        _attackState.EndAttack();
+    }
+
+    public void AttackFinished() {
+        _attackState.ExitAttack();
     }
 }

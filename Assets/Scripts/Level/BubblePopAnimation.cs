@@ -5,7 +5,7 @@ public class BubblePopAnimation : MonoBehaviour {
     public GameObject bubblePieceObj;
 
     HAMSTER_TYPES _type;
-    Rigidbody2D _hamsterSprite;
+    HamsterSprite _hamsterSprite;
     //Sprite[] _bubblePiecesSprites = new Sprite[4];
     GameObject[] _bubblePieces = new GameObject[4];
     Sprite[] _bubblePiecesSprites = new Sprite[4];
@@ -19,7 +19,7 @@ public class BubblePopAnimation : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _hamsterSprite = transform.GetChild(0).GetComponent<Rigidbody2D>();
+        _hamsterSprite = GetComponentInChildren<HamsterSprite>();
         _popped = false;
     }
 
@@ -116,7 +116,9 @@ public class BubblePopAnimation : MonoBehaviour {
         for(int i = 0; i < 4; ++i) {
             _bubblePieces[i] = GameObject.Instantiate(bubblePieceObj, this.transform) as GameObject;
             _bubblePieces[i].GetComponent<SpriteRenderer>().sprite = _bubblePiecesSprites[i];
-            _bubblePieces[i].transform.position = transform.position;
+            _bubblePieces[i].transform.position = new Vector3(transform.position.x,
+                                                              transform.position.y,
+                                                              transform.position.z - 3f);
         }
 
         // Launch off bubble pieces with slight random velocities and rotations.
@@ -143,16 +145,12 @@ public class BubblePopAnimation : MonoBehaviour {
         _bubblePieces[3].GetComponent<Rigidbody2D>().rotation = Random.Range(-20f, 20f);
 
         // Launch off hamster sprite
-        rX = Random.Range(-1f, 1f);
-        rY = Random.Range(-0.5f, 2f);
-        _hamsterSprite.velocity = new Vector2(1f + rX, 4f + rY);
-        _hamsterSprite.gravityScale = 2;
-        _hamsterSprite.isKinematic = false;
-        _hamsterSprite.GetComponent<Animator>().SetInteger("State", 1);
+        _hamsterSprite.Pop();
 
         // Turn off normal bubble sprite and collision
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<CircleCollider2D>().enabled = false;
+
 
         // Start destroy timer
         _popped = true;

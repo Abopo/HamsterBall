@@ -7,7 +7,6 @@ public class PauseMenu : MonoBehaviour {
 
     public Button previousMenuButton;
     public GameObject optionsMenu;
-    public MenuButton mainMenuButton;
 
     MenuButton[] _buttons;
     GameManager _gameManager;
@@ -34,12 +33,6 @@ public class PauseMenu : MonoBehaviour {
                 break;
         }
         */
-
-        // Don't allow players to return to the main menu in demo mode
-        if(mainMenuButton != null && _gameManager.demoMode) {
-            mainMenuButton.isReady = false;
-            mainMenuButton.gameObject.SetActive(false);
-        }
     }
 
     // Update is called once per frame

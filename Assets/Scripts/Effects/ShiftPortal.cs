@@ -5,11 +5,13 @@ public class ShiftPortal : MonoBehaviour {
     Animator _animator;
     Animator _exitPortal;
     PlayerController _playerController;
+    LevelManager _levelManager;
 
     void Awake() {
         _animator = GetComponent<Animator>();
         _exitPortal = transform.GetChild(0).GetComponent<Animator>();
         _playerController = transform.parent.GetComponent<PlayerController>();
+        _levelManager = FindObjectOfType<LevelManager>();
     }
 
     // Use this for initialization
@@ -32,14 +34,15 @@ public class ShiftPortal : MonoBehaviour {
 
 
         // TODO: Do whichever shift is appropriate for the current stage
-        //_exitPortal.transform.Translate(12.5f * dir, 0f, 0f, Space.World);
-        float shiftDistance = Mathf.Abs(_playerController.transform.position.x) * 2;
-        _exitPortal.transform.position = transform.position;
-        _exitPortal.transform.Translate(shiftDistance * dir, 0f, 0f, Space.World);
+        if (_levelManager.mirroredLevel) {
+            float shiftDistance = Mathf.Abs(_playerController.transform.position.x) * 2;
+            _exitPortal.transform.position = transform.position;
+            _exitPortal.transform.Translate(shiftDistance * dir, 0f, 0f, Space.World);
+        } else {
+            _exitPortal.transform.Translate(12.5f * dir, 0f, 0f, Space.World);
+        }
 
         // Animate both portals
-        //_animator.Play("Portal_CW");
-        //_exitPortal.Play("Portal_CCW");
         _animator.Play("PortalSpinCCW");
         _exitPortal.Play("PortalSpinCW");
     }

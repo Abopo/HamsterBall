@@ -5,8 +5,10 @@ public class ShiftState : PlayerState {
 
     bool _shifted = false;
     float _shiftTimer = 0;
-    float _shiftTime = 0.65f;
+    float _totalShiftTime = 0.65f;
     Vector3 _oldScale = new Vector3();
+
+    float _tempScale = 0f;
 
     void Start() {
     }
@@ -53,27 +55,29 @@ public class ShiftState : PlayerState {
     // Update is called once per frame
     public override void Update() {
         _shiftTimer += Time.deltaTime;
-        if(_shiftTimer >= _shiftTime/2) {
+        if(_shiftTimer >= _totalShiftTime/2) {
             if (!_shifted) {
                 Vector3 tempScale = playerController.transform.localScale;
+                Quaternion tempRot = playerController.transform.rotation;
                 playerController.transform.rotation = Quaternion.identity;
                 playerController.Shift();
                 _shifted = true;
                 playerController.transform.localScale = tempScale;
-            } else {
-                // Undo Rotate/Scale from before
-                playerController.transform.Rotate(0f, 0f, -520f * Time.deltaTime);
-                playerController.transform.localScale = new Vector3(playerController.transform.localScale.x + (1f * Time.deltaTime), 
-                                                                    playerController.transform.localScale.y + (1f * Time.deltaTime), _oldScale.z);
+                playerController.transform.rotation = tempRot;
             }
+
+            // Undo Rotate/Scale from before
+            playerController.transform.Rotate(0f, 0f, -720 * Time.deltaTime);
+            _tempScale = playerController.transform.localScale.x + (1.1f * Time.deltaTime);
+            playerController.transform.localScale = new Vector3(_tempScale, _tempScale, _oldScale.z);
         } else {
             // Rotate/Scale player for little teleport animation
-            playerController.transform.Rotate(0f, 0f, 520f * Time.deltaTime);
-            playerController.transform.localScale = new Vector3(playerController.transform.localScale.x - (1f * Time.deltaTime), 
-                                                                playerController.transform.localScale.y - (1f * Time.deltaTime), _oldScale.z);
+            playerController.transform.Rotate(0f, 0f, 720 * Time.deltaTime);
+            _tempScale = playerController.transform.localScale.x - (1f * Time.deltaTime);
+            playerController.transform.localScale = new Vector3(_tempScale, _tempScale, _oldScale.z);
         }
 
-        if (_shiftTimer >= _shiftTime) {
+        if (_shiftTimer >= _totalShiftTime) {
             playerController.ChangeState(PLAYER_STATE.IDLE);
         }
     }

@@ -235,7 +235,7 @@ public class BubbleManager : MonoBehaviour {
         GameObject newNode;
         for(int i = 0; i < 12; ++i) {
             for(int j = 0; j < lineLength; ++j) {
-                nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.77f * j), (transform.position.y + 2.9f) - (0.67f * i), -5);
+                nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.77f * j), (transform.position.y + 2.9f) - (0.67f * i), -2);
                 newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
                 newNode.GetComponent<Node>().number = nodeList.Count;
                 nodeList.Add(newNode.GetComponent<Node>());

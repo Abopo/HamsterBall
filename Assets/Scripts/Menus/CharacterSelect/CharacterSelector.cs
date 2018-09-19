@@ -176,7 +176,7 @@ public class CharacterSelector : MonoBehaviour {
             _moveTimer = _moveTime + 1f;
         }
 
-        if (_inputState.swing.isJustPressed && !lockedIn && !curCharacterIcon.isLocked) {
+        if (_inputState.jump.isJustPressed && !lockedIn && !curCharacterIcon.isLocked) {
             // Lock in
             LockIn();
 

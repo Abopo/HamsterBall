@@ -13,7 +13,7 @@ public class PlayerController : Entity {
 	public float jumpMoveMax; // 5
 	public PlayerState currentState;
 	public PLAYER_STATE curState;
-	public GameObject attackBubble;
+	public GameObject swingObj;
     public Transform bubblePosition;
     public AttackObject attackObj;
     public ShiftPortal shiftPortal;
@@ -140,6 +140,8 @@ public class PlayerController : Entity {
         blahblahblah = GetComponentInChildren<Animator>();
 
         inputState = new InputState();
+
+        InitStates();
     }
 
     // Use this for initialization
@@ -148,8 +150,8 @@ public class PlayerController : Entity {
 
         _spawnPos = transform.position;
 
-        attackBubble = transform.Find("AttackBubble").gameObject;
-        attackBubble.SetActive (false);
+        swingObj = transform.Find("AttackBubble").gameObject;
+        swingObj.SetActive (false);
         attackObj.team = team;
 
         _targetArrow = transform.Find("Target Arrow").GetComponent<SpriteRenderer>();
@@ -175,7 +177,6 @@ public class PlayerController : Entity {
             }
         }
 
-        InitStates();
 
         totalThrowCount = 0;
 
@@ -307,7 +308,7 @@ public class PlayerController : Entity {
 
 	void UpdateBubbles() {
 		float dir = facingRight ? 1 : -1;
-		attackBubble.transform.position = new Vector3 (transform.position.x + 0.5f * dir,
+		swingObj.transform.position = new Vector3 (transform.position.x + 0.5f * dir,
 		                                               transform.position.y,
 		                                               transform.position.z);
 

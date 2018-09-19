@@ -40,7 +40,7 @@ public class AttackState : PlayerState {
         if (_isAttacking) {
             _attackTimer += Time.deltaTime;
             if (_attackTimer >= _attackTime) {
-                EndAttack();
+                _isAttacking = false;
             }
         } else {
             if (Mathf.Abs(playerController.velocity.x) > 0.5f) {
@@ -64,27 +64,20 @@ public class AttackState : PlayerState {
                 ExitAttack();
             }
         }
-
-        //JumpMaxCheck();
-
-        // Fall
-        //playerController.ApplyGravity();
     }
 
     public override void CheckInput(InputState inputState) {
-        //if (inputState.jump.isJustReleased) {
-        //    playerController.velocity.y /= 2;
-        //}
-
-        //LockedJumpMovement(inputState);
     }
 
-    void EndAttack() {
+    public void StartAttack() {
+        playerController.attackObj.gameObject.SetActive(true);
+    }
+
+    public void EndAttack() {
         playerController.attackObj.gameObject.SetActive(false);
-        _isAttacking = false;
     }
 
-    void ExitAttack() {
+    public void ExitAttack() {
         playerController.attackObj.gameObject.SetActive(false);
         playerController.attackCooldownTimer = 0;
         playerController.ChangeState(PLAYER_STATE.IDLE);
