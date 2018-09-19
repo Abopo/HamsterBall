@@ -30,8 +30,8 @@ public class ShiftPortal : MonoBehaviour {
 
         // Detach from the parent to prevent transformations
         transform.parent = null;
+        _exitPortal.transform.parent = null;
         _exitPortal.gameObject.SetActive(true);
-
 
         // TODO: Do whichever shift is appropriate for the current stage
         if (_levelManager.mirroredLevel) {
@@ -50,6 +50,7 @@ public class ShiftPortal : MonoBehaviour {
     public void Deactivate() {
         // Reattach to parent
         transform.parent = _playerController.transform;
+        _exitPortal.transform.parent = _playerController.transform;
 
         transform.localPosition = new Vector3(0, 0, 1);
         _exitPortal.transform.localPosition = new Vector3(0, 0, 1);
@@ -57,8 +58,6 @@ public class ShiftPortal : MonoBehaviour {
         // Stop animating both portals
         _animator.Play("Portal_Idle");
         _exitPortal.Play("Portal_Idle");
-        //_animator.Stop();
-        //_exitPortal.Stop();
 
         // Deactivate objects
         gameObject.SetActive(false);
