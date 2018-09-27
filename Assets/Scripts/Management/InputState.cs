@@ -143,9 +143,9 @@ public class InputState {
             // Get vertical input, turn it into button format.
             float vertStick = Input.GetAxis("Vertical 1");
             float vertPad = Input.GetAxis("D-Pad Y 1");
-            if (vertStick < -0.1f || vertPad < -0.1f) {
+            if (vertStick < -0.1f || vertPad > 0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vertStick > 0.1f || vertPad > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad < -0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);
@@ -178,9 +178,9 @@ public class InputState {
             // Get vertical input, turn it into button format.
             float vertStick = Input.GetAxis("Vertical 2");
             float vertPad = Input.GetAxis("D-Pad Y 2");
-            if (vertStick < -0.1f || vertPad < -0.1f) {
+            if (vertStick < -0.1f || vertPad > 0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vertStick > 0.1f || vertPad > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad < -0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);
@@ -213,9 +213,9 @@ public class InputState {
             // Get vertical input, turn it into button format.
             float vertStick = Input.GetAxis("Vertical 3");
             float vertPad = Input.GetAxis("D-Pad Y 3");
-            if (vertStick < -0.1f || vertPad < -0.1f) {
+            if (vertStick < -0.1f || vertPad > 0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vertStick > 0.1f || vertPad > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad < -0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);
@@ -247,9 +247,9 @@ public class InputState {
             // Get vertical input, turn it into button format.
             float vertStick = Input.GetAxis("Vertical 4");
             float vertPad = Input.GetAxis("D-Pad Y 4");
-            if (vertStick < -0.1f || vertPad < -0.1f) {
+            if (vertStick < -0.1f || vertPad > 0.1f) {
                 currInput = GetUp(currInput);
-            } else if (vertStick > 0.1f || vertPad > 0.1f) {
+            } else if (vertStick > 0.1f || vertPad < -0.1f) {
                 currInput = GetDown(currInput);
             } else {
                 currInput = GetIdleVertical(currInput);

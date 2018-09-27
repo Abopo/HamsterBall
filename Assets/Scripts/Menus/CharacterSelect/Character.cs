@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public enum CHARACTERNAMES { BOY1 = 0, BOY2, BOY3, BOY4, NUM_CHARACTERS};
+public enum CHARACTERNAMES { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, NUM_CHARACTERS};
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
@@ -133,6 +133,7 @@ public class Character : MonoBehaviour {
     void Update () {
         if (_active && takeInput) {
             CheckInput();
+            UpdateArrows();
         }
 	}
 
@@ -192,16 +193,7 @@ public class Character : MonoBehaviour {
         } else {
             _leftArrow.Deactivate();
             _rightArrow.Activate();
-        } /*else if (_team == 0) {
-            _leftArrow.Deactivate();
-            _rightArrow.Activate();
-        } else if(_team == 1) {
-            _leftArrow.Activate();
-            _rightArrow.Deactivate();
-        }*/
-
-        //_leftArrow.transform.position = new Vector3(transform.position.x - 1f, transform.position.y, 0);
-        //_rightArrow.transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
+        }
     }
 
     public void MoveLeft() {
@@ -272,6 +264,12 @@ public class Character : MonoBehaviour {
                 break;
             case CHARACTERNAMES.BOY4:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL1:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL2:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
                 break;
         }
 

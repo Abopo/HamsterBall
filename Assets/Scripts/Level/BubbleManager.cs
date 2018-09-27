@@ -49,6 +49,7 @@ public class BubbleManager : MonoBehaviour {
     protected static List<int> _nextLineBubbles = new List<int>();
     protected int _nextLineIndex = 0; // counts up as new lines are added
     protected bool _setupDone;
+    protected System.Random _random;
 
     protected int _comboCount = -1;
     //int _scoreTotal = 0;
@@ -158,6 +159,7 @@ public class BubbleManager : MonoBehaviour {
         _bubbles = new Bubble[totalBubbleCount];
 
         int startingBubbleCount = (_baseLineLength * 2) + ((_baseLineLength - 1) * 2);
+
         // If we are networked
         if (PhotonNetwork.connectedAndReady) {
             // If we are the master client
@@ -175,6 +177,7 @@ public class BubbleManager : MonoBehaviour {
 
         // Get the next line of bubbles
         if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
+            _random = new System.Random((int)Time.realtimeSinceStartup);
             SeedNextLineBubbles();
         }
 
@@ -235,7 +238,7 @@ public class BubbleManager : MonoBehaviour {
         GameObject newNode;
         for(int i = 0; i < 12; ++i) {
             for(int j = 0; j < lineLength; ++j) {
-                nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.77f * j), (transform.position.y + 2.9f) - (0.67f * i), -2);
+                nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.77f * j), (transform.position.y + 2.9f) - (0.67f * i), -1);
                 newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
                 newNode.GetComponent<Node>().number = nodeList.Count;
                 nodeList.Add(newNode.GetComponent<Node>());
@@ -904,7 +907,8 @@ public class BubbleManager : MonoBehaviour {
             // If the line already has too many of the type, try again
             // TODO: This could potentially be really slow, maybe optimize it sometime
             do {
-                tempType = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
+                //tempType = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
+                tempType = _random.Next(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
             } while (typeCounts[tempType] > 2);
 
             // Increase count of type
@@ -1027,10 +1031,8 @@ public class BubbleManager : MonoBehaviour {
             }
         }
 
-        // Clear out starting bubbles to prepare for next round
-        for (int i = 0; i < startingBubbleInfo.Length; ++i) {
-            startingBubbleInfo[i].isSet = false;
-        }
+        // Clear data for next round
+        ClearAllData();
 
         // Send the winning team to the game manager
         if (result == 1) {
@@ -1159,11 +1161,13 @@ public class BubbleManager : MonoBehaviour {
     private void OnDestroy() {
     }
 
-    public static void ClearStartingBubbles() {
+    public static void ClearAllData() {
         // Clear out starting bubbles to prepare for next round
         for (int i = 0; i < startingBubbleInfo.Length; ++i) {
             startingBubbleInfo[i].isSet = false;
         }
+
+        _nextLineBubbles.Clear();
     }
 
     bool IsBoardStable() {

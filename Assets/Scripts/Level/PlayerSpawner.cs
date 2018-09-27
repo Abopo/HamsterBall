@@ -9,7 +9,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     int leftMeters = 0;
     int rightMeters = 0;
-    Sprite[] playerIcons = new Sprite[4];
+    Sprite[] playerIcons = new Sprite[8];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -28,6 +28,11 @@ public class PlayerSpawner : MonoBehaviour {
         playerIcons[1] = sprites[1];
         playerIcons[2] = sprites[2];
         playerIcons[3] = sprites[3];
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
+        playerIcons[4] = sprites[0];
+        playerIcons[5] = sprites[1];
+        playerIcons[6] = sprites[2];
+        playerIcons[7] = sprites[3];
 
         GetSpawnLocations();
         SpawnPlayers();

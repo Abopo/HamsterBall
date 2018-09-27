@@ -218,8 +218,13 @@ public class PlayerController : Entity {
             case CHARACTERNAMES.BOY4:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
                 break;
+            case CHARACTERNAMES.GIRL1:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL2:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
+                break;
         }
-
     }
 
     // Update is called once per frame

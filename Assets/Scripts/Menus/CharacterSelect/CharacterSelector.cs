@@ -58,6 +58,8 @@ public class CharacterSelector : MonoBehaviour {
     void Start () {
         _playerManager = FindObjectOfType<PlayerManager>();
 
+        aiIndex = 0;
+
         // If we haven't been set up properly
         if (playerNum == -1 || characterAnimator == null || readySprite == null) { // Should probably only happen when networking
             // Find correct stuff
@@ -176,7 +178,7 @@ public class CharacterSelector : MonoBehaviour {
             _moveTimer = _moveTime + 1f;
         }
 
-        if (_inputState.jump.isJustPressed && !lockedIn && !curCharacterIcon.isLocked) {
+        if ((_inputState.jump.isJustPressed || _inputState.swing.isJustPressed) && !lockedIn && !curCharacterIcon.isLocked) {
             // Lock in
             LockIn();
 
@@ -241,6 +243,12 @@ public class CharacterSelector : MonoBehaviour {
                 break;
             case CHARACTERNAMES.BOY4:
                 characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL1:
+                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL2:
+                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
                 break;
         }
 

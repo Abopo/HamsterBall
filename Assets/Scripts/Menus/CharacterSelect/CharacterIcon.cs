@@ -15,6 +15,10 @@ public class CharacterIcon : MenuOption {
 
         isLocked = false;
         _sprites = GetComponentsInChildren<SpriteRenderer>();
+
+        if(!isReady) {
+            Lock();
+        }
     }
 
     public void Initialize(PlayerInfo pI) {

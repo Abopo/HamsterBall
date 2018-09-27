@@ -183,23 +183,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     void SetAnimatorController(CHARACTERNAMES charaName) {
         switch (charaName) {
-            /*
-            case CHARACTERNAMES.BUB:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABUB:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOB:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABOB:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.PEPSIMAN:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
-                break;
-            */
             case CHARACTERNAMES.BOY1:
                 _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
                 break;
@@ -211,6 +194,12 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
                 break;
             case CHARACTERNAMES.BOY4:
                 _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL1:
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL2:
+                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
                 break;
         }
     }

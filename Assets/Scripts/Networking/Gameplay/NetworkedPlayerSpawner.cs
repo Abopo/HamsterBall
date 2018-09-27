@@ -79,23 +79,6 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     RuntimeAnimatorController FindAnimatorController(CHARACTERNAMES character) {
         RuntimeAnimatorController controller = null;
         switch (character) {
-            /*
-            case CHARACTERNAMES.BUB:
-                controller = Resources.Load("Art/Animations/Player/Bub") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABUB:
-                controller = Resources.Load("Art/Animations/Player/Bub2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOB:
-                controller = Resources.Load("Art/Animations/Player/Bub3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.NEGABOB:
-                controller = Resources.Load("Art/Animations/Player/Bub4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.PEPSIMAN:
-                controller = Resources.Load("Art/Animations/Player/PepsiMan/PepsiMan") as RuntimeAnimatorController;
-                break;
-            */
             case CHARACTERNAMES.BOY1:
                 controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
                 break;
@@ -107,6 +90,12 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
                 break;
             case CHARACTERNAMES.BOY4:
                 controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL1:
+                controller = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.GIRL2:
+                controller = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
                 break;
         }
 

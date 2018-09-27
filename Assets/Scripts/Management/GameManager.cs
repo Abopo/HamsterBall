@@ -324,7 +324,7 @@ public class GameManager : MonoBehaviour {
         }
         _playerManager.ClearAllPlayers();
 
-        BubbleManager.ClearStartingBubbles();
+        BubbleManager.ClearAllData();
 
         if(full) {
             ResetGames();

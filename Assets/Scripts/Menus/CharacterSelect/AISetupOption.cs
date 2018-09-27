@@ -39,7 +39,7 @@ public class AISetupOption : MenuOption {
             }
         }
 
-        if (Input.GetAxis("Horizontal") < 0.3f && Input.GetAxis("Horizontal") > -0.3f) {
+        if (InputReset()) {
             _justMoved = false;
         }
 

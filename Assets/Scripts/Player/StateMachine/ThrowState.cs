@@ -56,7 +56,7 @@ public class ThrowState : PlayerState {
         // Make sure the aiming arrow is in the right position
         aimingArrow.transform.position = new Vector3(playerController.bubblePosition.position.x,
                                                     playerController.bubblePosition.position.y,
-                                                    -10);
+                                                    -15);
 
         // If we've thrown the bubble and it has locked onto the board
         if (_hasThrown && (playerController.heldBubble == null || playerController.heldBubble.locked)) {

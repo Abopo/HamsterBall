@@ -58,44 +58,39 @@ public class MenuOption : MonoBehaviour {
         if (!_moved && _isHighlighted && !_justHighlighted) {
             // Right
             if (InputRight()) {
-                if (adjOptions[0] != null && adjOptions[0].isReady) {
-                    //_isHighlighted = false;
-                    _moved = true;
-                    // move selector to adjOptions[0]
-                    adjOptions[0].Highlight();
-                }
-            }
-            // Left
-            if (InputLeft()) {
-                if (adjOptions[2] != null && adjOptions[2].isReady) {
-                    //_isHighlighted = false;
-                    _moved = true;
-                    // move selector to adjOptions[2]
-                    adjOptions[2].Highlight();
-                }
-            }
-            // Up
-            if (InputUp()) {
-                if (adjOptions[3] != null && adjOptions[3].isReady) {
-                    //_isHighlighted = false;
-                    _moved = true;
-                    // move selector to adjOptions[3]
-                    adjOptions[3].Highlight();
-                }
+                TryHighlight(0);
             }
             // Down
             if (InputDown()) {
-                if (adjOptions[1] != null && adjOptions[1].isReady) {
-                    //_isHighlighted = false;
-                    _moved = true;
-                    // move selector to adjOptions[1]
-                    adjOptions[1].Highlight();
-                }
+                TryHighlight(1);
+            }
+            // Left
+            if (InputLeft()) {
+                TryHighlight(2);
+            }
+            // Up
+            if (InputUp()) {
+                TryHighlight(3);
             }
         } else {
             if (InputReset()) {
                 _moved = false;
                 _justHighlighted = false;
+            }
+        }
+    }
+
+    void TryHighlight(int index) {
+        if (adjOptions[index] != null) {
+            if (adjOptions[index].isReady) {
+                _moved = true;
+                adjOptions[index].Highlight();
+            } else {
+                // Search for a valid option in the same direction
+                MenuOption validOption = FindValidOption(index);
+                if (validOption != null) {
+                    validOption.Highlight();
+                }
             }
         }
     }
@@ -130,6 +125,20 @@ public class MenuOption : MonoBehaviour {
                 adjOptions[i]._isHighlighted = false;
             }
         }
+    }
+
+    MenuOption FindValidOption(int index) {
+        MenuOption validOption = adjOptions[index];
+
+        while(validOption != null) {
+            if(validOption.isReady) {
+                break;
+            }
+
+            validOption = validOption.adjOptions[index];
+        }
+
+        return validOption;
     }
 
     protected void DeHighlightOtherOptions() {

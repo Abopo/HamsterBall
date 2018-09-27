@@ -20,9 +20,11 @@ public class AISetupWindow : MonoBehaviour {
     Sprite[] characterSprites = new Sprite[4];
 
     PlayerManager _playerManager;
+    TeamSelect _teamSelect;
 
     // Use this for initialization
     void Start () {
+        _teamSelect = FindObjectOfType<TeamSelect>();
     }
 
     public void Initialize() {
@@ -134,6 +136,8 @@ public class AISetupWindow : MonoBehaviour {
         ai2Setup.gameObject.SetActive(false);
         ai3Setup.gameObject.SetActive(false);
         gameObject.SetActive(false);
+
+        _teamSelect.TurnOnCharacters();
     }
 
     public void OpenGameSetup() {

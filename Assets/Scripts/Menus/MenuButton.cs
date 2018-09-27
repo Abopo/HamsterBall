@@ -15,6 +15,7 @@ public class MenuButton : MenuOption {
     protected override void Start () {
         base.Start();
 
+        isReady = _button.interactable;
 	}
 	
 	// Update is called once per frame
