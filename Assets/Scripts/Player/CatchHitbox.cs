@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AttackBubble : MonoBehaviour {
+public class CatchHitbox : MonoBehaviour {
 	public GameObject playerBubble;
 
     PlayerController _playerController;

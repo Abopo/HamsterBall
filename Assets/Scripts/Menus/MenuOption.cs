@@ -116,7 +116,9 @@ public class MenuOption : MonoBehaviour {
 
     protected virtual void Select() {
         //PlaySelectSound();
-        GetComponent<Button>().onClick.Invoke();
+        if (isReady) {
+            GetComponent<Button>().onClick.Invoke();
+        }
     }
 
     protected void DeHighlightAdjOptions() {

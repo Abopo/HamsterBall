@@ -1,16 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelUI : MonoBehaviour {
+    public Text levelTimer;
 
     GameMarker[] _gameMarkers;
 
     GameManager _gameManager;
+    LevelManager _levelManager;
 
 	// Use this for initialization
 	void Start () {
         _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
 
         SetupGameMarkers();
 	}
@@ -34,7 +38,9 @@ public class LevelUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        int seconds = Mathf.FloorToInt(_levelManager.LevelTimer % 60);
+        int minutes = Mathf.FloorToInt(_levelManager.LevelTimer / 60);
+        levelTimer.text = string.Format("{0}:{1:00}", minutes, seconds);
 	}
 
     public void FillInGameMarker(int team) {

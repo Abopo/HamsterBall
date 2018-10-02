@@ -33,7 +33,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         PhotonView photonView = GetComponent<PhotonView>();
         _playerController.playerNum = (int)photonView.instantiationData[0];
         _playerController.team = (int)photonView.instantiationData[1];
-        _playerController.attackObj.team = _playerController.team;
         int controllerNum = (int)photonView.instantiationData[2];
         if (!PhotonNetwork.isMasterClient) {
             _playerController.inputState.controllerNum = controllerNum - 4 - photonView.ownerId;

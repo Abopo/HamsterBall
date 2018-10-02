@@ -10,7 +10,7 @@ public class ResultsScreen : MonoBehaviour {
 
     MenuOption[] _menuOptions;
 
-    float winTime = 1.0f;
+    float winTime = 0.75f;
     float winTimer = 0.0f;
 
     GameManager _gameManager;
@@ -23,8 +23,7 @@ public class ResultsScreen : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        // Game is paused here, so just use a fake delta time
-        winTimer += 0.03f;
+        winTimer += Time.unscaledDeltaTime;
         if(winTimer > winTime) {
             foreach (MenuOption mo in _menuOptions) {
                 if (mo != null) {
@@ -70,6 +69,8 @@ public class ResultsScreen : MonoBehaviour {
                 mo.gameObject.SetActive(false);
             }
         }
+
+        winTimer = 0f;
     }
 
     // used for single player
@@ -84,6 +85,8 @@ public class ResultsScreen : MonoBehaviour {
         foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;
         }
+
+        winTimer = 0f;
     }
 
     public void ReturnToPreviousScene() {

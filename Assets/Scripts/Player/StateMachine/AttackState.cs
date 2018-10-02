@@ -25,7 +25,7 @@ public class AttackState : PlayerState {
         _cooldownTimer = 0f;
 
         // Activate attack animation thingy
-        playerController.attackObj.gameObject.SetActive(true);
+        playerController.attackObj.SetActive(true);
         playerController.velocity.x = _attackSpeed * _direction;
         playerController.velocity.y = 0f;
         playerController.attackCooldownTimer = 0;
@@ -70,15 +70,15 @@ public class AttackState : PlayerState {
     }
 
     public void StartAttack() {
-        playerController.attackObj.gameObject.SetActive(true);
+        playerController.attackObj.SetActive(true);
     }
 
     public void EndAttack() {
-        playerController.attackObj.gameObject.SetActive(false);
+        playerController.attackObj.SetActive(false);
     }
 
     public void ExitAttack() {
-        playerController.attackObj.gameObject.SetActive(false);
+        playerController.attackObj.SetActive(false);
         playerController.attackCooldownTimer = 0;
         playerController.ChangeState(PLAYER_STATE.IDLE);
     }

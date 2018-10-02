@@ -10,10 +10,21 @@ public class IdleState : PlayerState {
 	// Use this for initialization
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
-	}
 
-	// Update is called once per frame
-	public override void Update(){
+        // Double check holding bubble
+        if (playerController.heldBubble != null) {
+            playerController.Animator.SetBool("HoldingBall", true);
+        } else {
+            playerController.Animator.SetBool("HoldingBall", false);
+        }
+
+        // Make sure extra hitboxes are turned off
+        playerController.swingObj.SetActive(false);
+        playerController.attackObj.gameObject.SetActive(false);
+    }
+
+    // Update is called once per frame
+    public override void Update(){
 		//Just Idling man, don't do shit
 		
 		// Just kidding, slow the player to a stop

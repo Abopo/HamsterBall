@@ -95,7 +95,6 @@ public class Team : MonoBehaviour {
     }
 
     public void LoseCharacter(Character character) {
-        character.transform.localScale = new Vector3(Mathf.Abs(character.transform.localScale.x), character.transform.localScale.y, character.transform.localScale.z);
         if (_character1 == character) {
             _character1 = null;
             //readySprite1.gameObject.SetActive(false);

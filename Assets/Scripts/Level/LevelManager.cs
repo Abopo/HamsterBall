@@ -12,17 +12,10 @@ public class LevelManager : MonoBehaviour {
 
     public bool continueLevel;
     public bool mirroredLevel;
-    public int marginMultiplier = 1;
-
-    //public Transform bubbleManager1Pos;
-    //public Transform bubbleManager2Pos;
+    public float marginMultiplier = 1f;
 
     float _marginTimer = 0;
-    float _marginTime = 128f;
-    int _initialTargetPoints = 120;
-    int _targetPoints;
-    int _marginIterations = 0;
-    int _prevTargetPoints;
+    float _marginTime = 120f;
 
     float _levelTimer;
     float _pushTimer; // timer for pushing the board down in single player
@@ -39,36 +32,10 @@ public class LevelManager : MonoBehaviour {
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
-
-        // Create bubble managers
-        /*
-        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-            GameObject bubbleManagerObj = Resources.Load("Prefabs/Level/BigBubbleManager") as GameObject;
-            GameObject bubMan = Instantiate(bubbleManagerObj);
-            bubMan.transform.position = new Vector3(0f, bubbleManager1Pos.position.y, bubbleManager1Pos.position.z);
-        } else if (_gameManager.isSinglePlayer) {
-            GameObject bubbleManagerObj = Resources.Load("Prefabs/Level/BigBubbleManager") as GameObject;
-            GameObject bubMan = Instantiate(bubbleManagerObj);
-            bubMan.transform.position = bubbleManager1Pos.position;
-            _bubbleManager = bubMan.GetComponent<BubbleManager>();
-        } else {
-            // First bubble manager
-            GameObject bubbleManagerObj = Resources.Load("Prefabs/Level/BigBubbleManager") as GameObject;
-            GameObject bubMan = Instantiate(bubbleManagerObj);
-            bubMan.transform.position = bubbleManager1Pos.position;
-
-            // Second bubble manager
-            bubMan = Instantiate(bubbleManagerObj);
-            bubMan.transform.position = bubbleManager2Pos.position;
-            bubMan.tag = "BubbleManager2";
-            bubMan.GetComponent<BubbleManager>().team = 1;
-        }
-        */
     }
 
     // Use this for initialization
     void Start () {
-        _targetPoints = _initialTargetPoints;
         _gameManager.gameOverEvent.AddListener(GameEnd);
 
         if (_gameManager.isSinglePlayer) {
@@ -98,9 +65,9 @@ public class LevelManager : MonoBehaviour {
             if (_gameManager.gameMode == GAME_MODE.MP_VERSUS) {
                 // Update margin stuff
                 _marginTimer += Time.deltaTime;
-                if (_marginTimer >= _marginTime && _targetPoints > 1 && _marginIterations < 14) {
+                if (_marginTimer >= _marginTime) {
                     IncreaseMarginMultiplier();
-                    _marginTime = 32f;
+                    _marginTime = 30f;
                     _marginTimer = 0f;
                 }
             // If we are playing the single player Clear mode
@@ -126,56 +93,31 @@ public class LevelManager : MonoBehaviour {
     }
 
     void IncreaseMarginMultiplier() {
-        /*
-        int curTargetPoints = _targetPoints;
-        if(_marginIterations == 0) {
-            _targetPoints = (int)(_initialTargetPoints * 0.75f);
-        } else {
-            _targetPoints = (int)(_prevTargetPoints / 2);
-        }
-
-        _prevTargetPoints = curTargetPoints;
-        _marginIterations++;
-
-        marginMultiplier = _initialTargetPoints / (float)_targetPoints;
-        marginMultiplierText.text = "x" + marginMultiplier.ToString("0.00");
-        */
-
-        marginMultiplier += 1;
+        marginMultiplier += 0.5f;
         if(marginMultiplier > 9) {
             marginMultiplier = 9;
         }
         
         marginMultiplierText.text = "x" + marginMultiplier.ToString();
-        marginMultiplierText.fontSize = 10 + 2 * marginMultiplier;
-        switch(marginMultiplier) {
-            case 1:
-                marginMultiplierText.color = Color.black;
-                break;
-            case 2:
-                marginMultiplierText.color = Color.blue;
-                break;
-            case 3:
-                marginMultiplierText.color = Color.cyan;
-                break;
-            case 4:
-                marginMultiplierText.color = Color.green;
-                break;
-            case 5:
-                marginMultiplierText.color = Color.magenta;
-                break;
-            case 6:
-                marginMultiplierText.color = Color.yellow;
-                break;
-            case 7:
-                marginMultiplierText.color = Color.red;
-                break;
-            case 8:
-                marginMultiplierText.color = Color.red;
-                break;
-            case 9:
-                marginMultiplierText.color = Color.red;
-                break;
+        marginMultiplierText.fontSize = 10 + 2 * Mathf.CeilToInt(marginMultiplier);
+        if (marginMultiplier == 1f) {
+            marginMultiplierText.color = Color.black;
+        } else if(marginMultiplier == 1.5f) {
+            marginMultiplierText.color = Color.blue;
+        } else if (marginMultiplier == 2f) {
+            marginMultiplierText.color = Color.cyan;
+        } else if (marginMultiplier == 2.5f) {
+            marginMultiplierText.color = Color.green;
+        } else if (marginMultiplier == 3f) {
+            marginMultiplierText.color = Color.magenta;
+        } else if (marginMultiplier == 3.5f) {
+            marginMultiplierText.color = Color.yellow;
+        } else if (marginMultiplier == 4f) {
+            marginMultiplierText.color = Color.red;
+        } else if (marginMultiplier == 4.5f) {
+            marginMultiplierText.color = Color.red;
+        } else if (marginMultiplier == 5f) {
+            marginMultiplierText.color = Color.red;
         }
     }
 

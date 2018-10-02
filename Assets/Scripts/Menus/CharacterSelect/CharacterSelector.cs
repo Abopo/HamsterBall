@@ -87,13 +87,6 @@ public class CharacterSelector : MonoBehaviour {
 
         _charaIcons = FindObjectsOfType<CharacterIcon>();
         HighlightIcon(_charaIcons[playerNum]);
-        //curCharacterIcon = _charaIcons[playerNum];
-        //transform.position = new Vector3(_charaIcons[playerNum].transform.position.x,
-        //                                            _charaIcons[playerNum].transform.position.y,
-        //                                            _charaIcons[playerNum].transform.position.z - (2f+0.1f*playerNum));
-
-        // Add ourself to the character select in case we were missed
-        //FindObjectOfType<NewCharacterSelect>().AddSelector(this);
     }
 
     public void Activate(int conNum, bool ai) {

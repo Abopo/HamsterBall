@@ -117,7 +117,6 @@ public class BubbleManager : MonoBehaviour {
     AudioClip _addLineClip;
 
     protected virtual void Awake() {
-
         float pos = (_baseLineLength / 2 - 1) * -0.77f;
 
         _setupDone = false;
@@ -181,12 +180,12 @@ public class BubbleManager : MonoBehaviour {
             SeedNextLineBubbles();
         }
 
+        ReadyHamsterMeter();
+
         testMode = _gameManager.testMode;
 
         _audioSource = GetComponent<AudioSource>();
         _addLineClip = Resources.Load<AudioClip>("Audio/SFX/Add_Line");
-
-        ReadyHamsterMeter();
 
         _initialPos = transform.position;
     }
@@ -219,6 +218,7 @@ public class BubbleManager : MonoBehaviour {
         if (_gameManager.gameMode >= GAME_MODE.SURVIVAL) {
             transform.gameObject.AddComponent<SurvivalManager>();
         }
+
 
         // Get divider
         DividerFlash[] dividers = FindObjectsOfType<DividerFlash>();
@@ -384,7 +384,7 @@ public class BubbleManager : MonoBehaviour {
             handicap = _gameManager.rightTeamHandicap;
         }
 
-        _hamsterMeter.Initialize(_baseLineLength);
+        _hamsterMeter.Initialize(_baseLineLength, this);
     }
 
     // Assign adjBubbles for each bubble and empty node
@@ -1093,7 +1093,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     void CheckSecondToLastRow() {
-        int firstNode = nodeList.Count - (_baseLineLength * 3 - 2) + _topLineLength;
+        int firstNode = nodeList.Count - (_baseLineLength * 3 - 2) + _baseLineLength - 1;
         foreach (Bubble b in _bubbles) {
             if (b != null && b.node >= firstNode) {
                 _divider.StartFlashing();

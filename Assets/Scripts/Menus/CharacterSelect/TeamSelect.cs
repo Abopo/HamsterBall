@@ -18,19 +18,20 @@ public class TeamSelect : MonoBehaviour {
 
     bool _isActive;
 
-    // Use this for initialization
-    void Start () {
+    private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
         _playerManager = _gameManager.GetComponent<PlayerManager>();
         _gameManager.prevMenu = MENU.VERSUS;
 
+        SetupCharacters();
+    }
+    // Use this for initialization
+    void Start () {
         _isActive = true;
 
         pressStartText.SetActive(false);
 
         gameSetupWindow.OptionsSetup();
-
-        SetupCharacters();
     }
 
     void SetupCharacters() {

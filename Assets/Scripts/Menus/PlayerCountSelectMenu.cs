@@ -39,9 +39,11 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         _minPlayers = minPlayers;
         _aiAllowed = aiAllowed;
 
-        // TODO: Adjust for number of connected controllers?
-        for(int i = 0; i < minPlayers-1; ++i) {
-            playerButtons[i].Disable();
+        if (!aiAllowed) {
+            // TODO: Adjust for number of connected controllers?
+            for (int i = 0; i < minPlayers - 1; ++i) {
+                playerButtons[i].Disable();
+            }
         }
 
         // Highlight the first available button
@@ -124,6 +126,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
             // Disable just the 0 ai button
             comButtons[0].Disable();
             comButtons[1].Enable();
+            comButtons[1].Highlight();
             comButtons[2].Enable();
             comButtons[3].Enable();
         } else if(_gameManager.numPlayers == 2 && _maxPlayers == 4) {

@@ -33,7 +33,6 @@ public class HamsterSprite : MonoBehaviour {
             }
         }
         averageX = averageX / bubble.matches.Count;
-        Debug.Log(averageX.ToString());
 
         float dir = 1f;
         if (transform.position.x < averageX) {

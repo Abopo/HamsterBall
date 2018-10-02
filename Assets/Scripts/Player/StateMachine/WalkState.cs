@@ -6,10 +6,10 @@ public class WalkState : PlayerState {
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
-	}
+    }
 
-	// Update is called once per frame
-	public override void Update(){
+    // Update is called once per frame
+    public override void Update(){
 		playerController.velocity.x += playerController.walkForce * playerController.WaterMultiplier * playerController.Traction * playerController.speedModifier * Time.deltaTime * _direction;
 		
 		if(playerController.velocity.x >= playerController.walkSpeed * playerController.WaterMultiplier * playerController.speedModifier) {

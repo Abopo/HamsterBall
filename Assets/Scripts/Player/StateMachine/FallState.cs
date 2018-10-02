@@ -6,10 +6,10 @@ public class FallState : PlayerState {
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
-	}
+    }
 
-	// Update is called once per frame
-	public override void Update(){
+    // Update is called once per frame
+    public override void Update(){
         JumpMaxCheck();
 
         // Fall

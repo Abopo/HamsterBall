@@ -42,6 +42,7 @@ public class HitState : PlayerState {
 
     void DropHamster() {
         GameObject hamsterGO = GameObject.Instantiate(_hamsterObj, playerController.heldBubble.transform.position, Quaternion.identity) as GameObject;
+        hamsterGO.transform.position = new Vector3(hamsterGO.transform.position.x, hamsterGO.transform.position.y, -0.5f);
         Hamster hamster = hamsterGO.GetComponent<Hamster>();
         // Set the correct team and parent spawner
         if (playerController.shifted) {
@@ -115,9 +116,23 @@ public class HitState : PlayerState {
 		if (_hitTimer >= _hitTime) {
 			playerController.ChangeState(PLAYER_STATE.IDLE);
 		}
-	}
 
-	public override void CheckInput(InputState inputState) {
+        // If the player is holding a hamster, drop it
+        if (playerController.heldBubble != null && !playerController.heldBubble.wasThrown) {
+            if (PhotonNetwork.connectedAndReady) {
+                if (PhotonNetwork.isMasterClient) {
+                    DropNetworkHamster();
+                }
+            } else {
+                DropHamster();
+            }
+
+            // Destroy the held bubble
+            Object.Destroy(playerController.heldBubble.gameObject);
+        }
+    }
+
+    public override void CheckInput(InputState inputState) {
 
 	}
 

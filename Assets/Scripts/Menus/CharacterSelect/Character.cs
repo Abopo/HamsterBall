@@ -5,11 +5,10 @@ public enum CHARACTERNAMES { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, NUM_CHARA
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
+    public SpriteRenderer readySprite;
+    public bool lockedIn = false;
     public bool isAI;
     public bool takeInput;
-    //public Character aiChild;
-    public Stack<Character> aiChildren = new Stack<Character>();
-    Character humanParent; // the player controlling this ai character
 
     int _playerNum;
     CHARACTERNAMES _characterName;
@@ -26,6 +25,12 @@ public class Character : MonoBehaviour {
             return _inputState.controllerNum;
         }
     }
+
+    // these are only used by the first player to control the selections of ai players
+    public List<Character> aiList = new List<Character>();
+    Character parentCharacter;
+    static int aiIndex = 0;
+    bool frameskip = false;
 
     Animator _animator;
 
@@ -64,23 +69,19 @@ public class Character : MonoBehaviour {
         get { return _inputState; }
     }
 
-    public Character TopAIChild {
-        get {
-            if (aiChildren.Count > 0) {
-                return aiChildren.Peek();
-            } else {
-                return null;
-            }
-        }    
-    }
-
     private void Awake() {
         _initialPos = transform.position;
 
-        _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        _inputState = new InputState();
+        if (_playerManager == null) {
+            _playerManager = FindObjectOfType<PlayerManager>();
+        }
+        if (_inputState == null) {
+            _inputState = new InputState();
+        }
+        if (_animator == null) {
+            _animator = GetComponentInChildren<Animator>();
+        }
 
-        _animator = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         _audioSource = GetComponent<AudioSource>();
@@ -93,25 +94,46 @@ public class Character : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-        isAI = false;
-        takeInput = true;
-
+    void Start() {
         _active = true;
         _justMoved = false;
+
+        // If we're first player
+        if (_playerNum == 0) {
+            // Find the ai characters
+            Character[] characters = FindObjectsOfType<Character>();
+            foreach(Character chara in characters) {
+                if(chara.isAI) {
+                    aiList.Add(chara);
+                }
+            }
+        }
     }
 
     public void Initialize(PlayerInfo pInfo) {
         _team = -1;
+        _playerManager = FindObjectOfType<PlayerManager>();
 
+        _inputState = new InputState();
         _inputState.controllerNum = pInfo.controllerNum;
         _playerNum = pInfo.playerNum;
+
+        _animator = GetComponentInChildren<Animator>();
         SetCharacter(pInfo.characterName);
+
+        if(pInfo.controllerNum < 0) {
+            isAI = true;
+            takeInput = false;
+        } else {
+            takeInput = true;
+        }
+        /*
         if (pInfo.team == 0) {
             MoveLeft();
         } else {
             MoveRight();
         }
+        */
     }
 
     void GetArrows() {
@@ -130,39 +152,61 @@ public class Character : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
         if (_active && takeInput) {
             CheckInput();
             UpdateArrows();
         }
-	}
+    }
 
     void CheckInput() {
         if (isLocal) {
             _inputState = InputState.GetInput(_inputState);
         }
-
-        if (!_justMoved) {
+        if(isAI) {
+            _inputState = InputState.GetInput(parentCharacter._inputState);
+        }
+        
+        if (!_justMoved && !lockedIn) {
             // Changing teams
-            if (_inputState.left.isDown && !isAI) {
-                if (TopAIChild != null) {
-                    TopAIChild.MoveLeft();
-                } else {
-                    MoveLeft();
-                }
+            if (_inputState.left.isDown) {
+                MoveLeft();
                 _justMoved = true;
             }
-            if (_inputState.right.isDown && !isAI) {
-                if (TopAIChild != null) {
-                    TopAIChild.MoveRight();
-                } else {
-                    MoveRight();
-                }
+            if (_inputState.right.isDown) {
+                MoveRight();
                 _justMoved = true;
             }
         } else {
-            if(!_inputState.right.isDown && !_inputState.left.isDown) {
+            if (!_inputState.right.isDown && !_inputState.left.isDown) {
                 _justMoved = false;
+            }
+        }
+
+        if ((_inputState.jump.isJustPressed || _inputState.swing.isJustPressed) && _team != -1 && !lockedIn) {
+            // Lock in
+            LockIn();
+
+            // If first player or an ai
+            if ((_playerNum == 0 || isAI) && aiList.Count > 0 && aiIndex < aiList.Count) {
+                // Gain control of next AI player
+                takeInput = false;
+                aiList[aiIndex].takeInput = true;
+                aiList[aiIndex].frameskip = true;
+                aiList[aiIndex].aiList = aiList;
+                aiList[aiIndex].parentCharacter = this;
+                aiIndex++;
+            }
+        }
+        if (_inputState.attack.isJustPressed) {
+            if (lockedIn) {
+                Unlock();
+            } else if (isAI) {
+                takeInput = false;
+                parentCharacter.takeInput = true;
+                parentCharacter.frameskip = true;
+                parentCharacter.Unlock();
+                aiIndex--;
             }
         }
 
@@ -170,6 +214,15 @@ public class Character : MonoBehaviour {
         if (_photonView != null && _photonView.owner != PhotonNetwork.player) {
             _inputState = InputState.ResetInput(_inputState);
         }
+    }
+
+    public void LockIn() {
+        lockedIn = true;
+        readySprite.enabled = true;
+    }
+    public void Unlock() {
+        lockedIn = false;
+        readySprite.enabled = false;
     }
 
     void PlayMoveClip() {
@@ -213,6 +266,10 @@ public class Character : MonoBehaviour {
             teamRight.LoseCharacter(this);
             _team = -1;
         }
+        // Set facing to normal
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        readySprite.transform.localScale = new Vector3(Mathf.Abs(readySprite.transform.localScale.x * -1f), readySprite.transform.localScale.y, readySprite.transform.localScale.z);
+
         _playerManager.SetTeam(_playerNum, _team);
         UpdateArrows();
         PlayMoveClip();
@@ -228,6 +285,7 @@ public class Character : MonoBehaviour {
                 teamRight.TakeCharacter(this);
                 // Turn character around to face center
                 transform.localScale = new Vector3(transform.localScale.x * -1f, transform.localScale.y, transform.localScale.z);
+                readySprite.transform.localScale = new Vector3(readySprite.transform.localScale.x * -1f, readySprite.transform.localScale.y, readySprite.transform.localScale.z);
                 _team = 1;
             }
             // If already assigned to left team,
@@ -276,16 +334,6 @@ public class Character : MonoBehaviour {
         // Play idle animation
         _animator.SetInteger("PlayerState", 0);
         _animator.speed = 1;
-    }
-
-    public bool AllAIAssignedToTeam() {
-        for(int i = 0; i < aiChildren.Count; ++i) {
-            if (aiChildren.ToArray()[i]._team == -1) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public void TakeInput(InputState input) {

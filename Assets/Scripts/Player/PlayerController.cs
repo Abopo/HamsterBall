@@ -15,7 +15,7 @@ public class PlayerController : Entity {
 	public PLAYER_STATE curState;
 	public GameObject swingObj;
     public Transform bubblePosition;
-    public AttackObject attackObj;
+    public GameObject attackObj;
     public ShiftPortal shiftPortal;
 	public Bubble heldBubble;
     public int direction;
@@ -29,10 +29,13 @@ public class PlayerController : Entity {
 
     public int atkModifier; // Modifies the amount of junk generated when making matches
 
+    public bool CanJump {
+        get { return GetComponent<EntityPhysics>().IsTouchingFloor; }
+    }
 	public bool shifted;
     bool _canShift;
     public bool CanShift {
-        get { return (_canShift && (curState == PLAYER_STATE.IDLE || curState == PLAYER_STATE.WALK || curState == PLAYER_STATE.JUMP || curState == PLAYER_STATE.FALL)); }
+        get { return (_canShift && !_isInvuln && (curState == PLAYER_STATE.IDLE || curState == PLAYER_STATE.WALK || curState == PLAYER_STATE.JUMP || curState == PLAYER_STATE.FALL)); }
     }
     float _shiftCooldownTime;
 	public float ShiftCooldownTime {
@@ -150,9 +153,8 @@ public class PlayerController : Entity {
 
         _spawnPos = transform.position;
 
-        swingObj = transform.Find("AttackBubble").gameObject;
+        swingObj = transform.Find("CatchBubble").gameObject;
         swingObj.SetActive (false);
-        attackObj.team = team;
 
         _targetArrow = transform.Find("Target Arrow").GetComponent<SpriteRenderer>();
         //_targetArrow.enabled = false;
@@ -454,7 +456,7 @@ public class PlayerController : Entity {
     }
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		if (collider.gameObject.layer == 12 && team != collider.GetComponent<AttackObject>().team/* && shifted */&& !_isInvuln && curState != PLAYER_STATE.SHIFT && canBeHit) {
+		if (collider.gameObject.layer == 12 && team != collider.GetComponentInParent<PlayerController>().team/* && shifted */&& !_isInvuln && curState != PLAYER_STATE.SHIFT && canBeHit) {
 			ChangeState(PLAYER_STATE.HIT);
             ((HitState)GetPlayerState(PLAYER_STATE.HIT)).Knockback((int)Mathf.Sign(transform.position.x - collider.transform.position.x));
             
