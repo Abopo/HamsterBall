@@ -12,9 +12,11 @@ public class HamsterWheel : MonoBehaviour {
 
     float _curRotSpeed;
     public float _desiredRotation;
-    bool _rotating = false;
+    int[] _possibleRotations = new int[8];
+    bool _rotatingRight = false;
+    bool _rotatingLeft = false;
     public bool Rotating {
-        get { return _rotating; }
+        get { return _rotatingRight || _rotatingLeft; }
     }
     float _failsafeTime = 1.75f;
     float _failsafeTimer = 0f;
@@ -36,6 +38,16 @@ public class HamsterWheel : MonoBehaviour {
     // Use this for initialization
     void Start() {
         _stageIcons = GetComponentsInChildren<StageIcon>();
+
+        _possibleRotations[0] = 0;
+        _possibleRotations[1] = 315;
+        _possibleRotations[2] = 270;
+        _possibleRotations[3] = 225;
+        _possibleRotations[4] = 180;
+        _possibleRotations[5] = 135;
+        _possibleRotations[6] = 90;
+        _possibleRotations[7] = 45;
+
 
         _mapNames[0] = "Forest";
         _mapNames[1] = "Mountain";
@@ -64,7 +76,7 @@ public class HamsterWheel : MonoBehaviour {
     void Update() {
         CheckInput();
 
-        if (_rotating) {
+        if (Rotating) {
             transform.Rotate(0f, 0f, _curRotSpeed * Time.deltaTime);
             _failsafeTimer += Time.deltaTime;
 
@@ -80,9 +92,11 @@ public class HamsterWheel : MonoBehaviour {
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) ||
             (Input.GetAxis("Horizontal") < -0.3f) || Input.GetAxis("Horizontal DPad") < -0.3f) {
             RotateLeft();
+            UpdateText();
         } else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) ||
             (Input.GetAxis("Horizontal") > 0.3f) || Input.GetAxis("Horizontal DPad") > 0.3f) {
             RotateRight();
+            UpdateText();
         }
 
         if (Input.GetButtonDown("Cancel")) {
@@ -92,21 +106,22 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void RotateRight() {
-        if (_rotating || _stageIcons[NextIndex()].isLocked) {
+        if (_rotatingRight || _stageIcons[NextIndex()].isLocked) {
             return;
         }
         _audioSource.Play();
-
-        _curRotSpeed = -baseRotSpeed;
-        _desiredRotation = transform.eulerAngles.z - 45f;
-        if (_desiredRotation < -1) {
-            _desiredRotation = 315f;
-        }
 
         _index++;
         if (_index > 7) {
             _index = 0;
         }
+
+        _curRotSpeed = -baseRotSpeed;
+        _desiredRotation = _possibleRotations[_index];
+        //_desiredRotation = transform.eulerAngles.z - 45f;
+        //if (_desiredRotation < -1) {
+        //   _desiredRotation = 315f;
+        //}
 
         hamster.SetInteger("State", 1);
         FlipHamster(true);
@@ -115,25 +130,27 @@ public class HamsterWheel : MonoBehaviour {
             _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, false);
         }
 
-        _rotating = true;
+        _rotatingRight = true;
+        _rotatingLeft = false;
     }
 
     public void RotateLeft() {
-        if (_rotating || _stageIcons[PrevIndex()].isLocked) {
+        if (_rotatingLeft || _stageIcons[PrevIndex()].isLocked) {
             return;
         }
         _audioSource.Play();
-
-        _curRotSpeed = baseRotSpeed;
-        _desiredRotation = transform.eulerAngles.z + 45f;
-        if (_desiredRotation > 361) {
-            _desiredRotation = 45f;
-        }
 
         _index--;
         if (_index < 0) {
             _index = 7;
         }
+
+        _curRotSpeed = baseRotSpeed;
+        _desiredRotation = _possibleRotations[_index];
+        //_desiredRotation = transform.eulerAngles.z + 45f;
+        //if (_desiredRotation > 361) {
+        //    _desiredRotation = 45f;
+        //}
 
         hamster.SetInteger("State", 1);
         FlipHamster(false);
@@ -142,22 +159,27 @@ public class HamsterWheel : MonoBehaviour {
             _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, true);
         }
 
-        _rotating = true;
+        _rotatingLeft = true;
+        _rotatingRight = false;
+    }
+
+    void UpdateText() {
+        curMapText.text = _mapNames[_index];
+        SetTextColor();
     }
 
     void EndRotation() {
         // End the rotation
-        _rotating = false;
+        _rotatingRight = false;
+        _rotatingLeft = false;
         transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, _desiredRotation);
 
         // But check if we want to keep running past this map
         CheckInput();
 
         // If we didn't keep rotating
-        if (!_rotating) {
+        if (!Rotating) {
             // Fully stop
-            curMapText.text = _mapNames[_index];
-            SetTextColor();
             hamster.SetInteger("State", 0);
         }
     }
