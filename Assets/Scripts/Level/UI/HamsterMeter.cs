@@ -157,16 +157,15 @@ public class HamsterMeter : MonoBehaviour {
                 }
                 _stockSprites.Clear();
 
-                // Add line to bubble manager
-                if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
-                    // Update meter size
-                    if(_meterSize == _baseMeterSize) {
-                        BecomeShort();
-                    } else {
-                        BecomeLong();
-                    }
+                // Update meter size
+                if (_meterSize == _baseMeterSize) {
+                    BecomeShort();
+                } else {
+                    BecomeLong();
+                }
 
-                    //bubbleManager.AddLine();
+                // Add line to bubble manager
+                if (_bubbleManager != null && !PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
                     _bubbleManager.TryAddLine();
                 }
 
@@ -188,8 +187,10 @@ public class HamsterMeter : MonoBehaviour {
 
         UpdateStockSprites();
 
-        // Set bubbles managers stock
-        _bubbleManager.bubbleStock = _curStock;
+        if (_bubbleManager != null) {
+            // Set bubbles managers stock
+            _bubbleManager.bubbleStock = _curStock;
+        }
     }
 
     void CreateNewStockSprites() {
@@ -199,7 +200,10 @@ public class HamsterMeter : MonoBehaviour {
             GameObject newStockSprite = GameObject.Instantiate(hamsterStockSprite, transform);
 
             // Set new stock sprite to correct color.
-            int type = _bubbleManager.GetNextLineBubble(_nextLineIndex + i);
+            int type = 0;
+            if (_bubbleManager != null) {
+                type = _bubbleManager.GetNextLineBubble(_nextLineIndex + i);
+            }
             Animator[] animators = newStockSprite.GetComponentsInChildren<Animator>();
             foreach (Animator anim in animators) {
                 anim.SetInteger("Type", type);
@@ -267,7 +271,7 @@ public class HamsterMeter : MonoBehaviour {
         _audioSource.Play();
     }
 
-    public Transform GetNextTalleyPosition() {
+    public Transform GetNextTallyPosition() {
         Transform t;
 
         t = StockTallies[_nextTallyIndex];

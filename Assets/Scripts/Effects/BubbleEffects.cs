@@ -250,12 +250,12 @@ public class BubbleEffects : MonoBehaviour {
         GameObject stockOrbGenerator = GameObject.Instantiate(stockOrbGeneratorObj, pos, Quaternion.identity);
         StockOrbGenerator soGenerator = stockOrbGenerator.GetComponent<StockOrbGenerator>();
         soGenerator.team = transform.parent.GetComponent<BubbleManager>().team;
-        soGenerator.bubbleEffects = this;
         if (_hamsterMeter == null && soGenerator.team == 0) {
             _hamsterMeter = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>().HamsterMeter;
         } else if (_hamsterMeter == null && soGenerator.team == 1) {
             _hamsterMeter = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>().HamsterMeter;
         }
+        soGenerator.hamsterMeter = _hamsterMeter;
 
         soGenerator.BeginSpawning(spawnAmount, pos);
     }
@@ -266,22 +266,4 @@ public class BubbleEffects : MonoBehaviour {
         explosion.SetActive(true);
         _bombExplosionObjects.Add(explosion);
     }
-
-    public Transform GetNextTallyPosition() {
-        /*
-        Transform t;
-
-        t = _hamsterMeter.StockTallies[_index];
-
-        _index++;
-        if (_index >= _hamsterMeter.StockTallies.Count) {
-            _index = 0;
-        }
-
-        return t;
-        */
-
-        return _hamsterMeter.GetNextTalleyPosition();
-    }
-
 }

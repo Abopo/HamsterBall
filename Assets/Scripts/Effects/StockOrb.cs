@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StockOrb : MonoBehaviour {
-
     public Transform targetTransform;
     public int team;
 
@@ -11,6 +10,8 @@ public class StockOrb : MonoBehaviour {
     float _delayTimer = 0.0f;
 
     float moveSpeed = 20.0f;
+
+    bool _destroy = false;
 
     Rigidbody2D _rigidbody;
     GameManager _gameManager;
@@ -23,7 +24,7 @@ public class StockOrb : MonoBehaviour {
 	
     public void Initialize() {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     public void Launch(Transform target)
@@ -52,13 +53,15 @@ public class StockOrb : MonoBehaviour {
 	}
 
     void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.tag == "Tally" && collision.transform == targetTransform) {
+        if (collision.tag == "Tally" && collision.transform == targetTransform && !_destroy) {
             HamsterMeter hMeter = collision.transform.parent.GetComponent<HamsterMeter>();
             if (hMeter.team != team) {
                 // Add stock to the hamster meter
                 hMeter.IncreaseStock(1);
 
                 DestroyObject(this.gameObject);
+
+                _destroy = true;
             }
         }
     }
