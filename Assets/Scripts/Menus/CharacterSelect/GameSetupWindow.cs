@@ -18,7 +18,6 @@ public class GameSetupWindow : MonoBehaviour {
     public Text bombText;
     public AISetupWindow aiSetupWindow;
 
-
     bool _aimAssist;
 
     GameManager _gameManager;

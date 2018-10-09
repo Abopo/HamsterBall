@@ -50,6 +50,8 @@ public class CharacterSelector : MonoBehaviour {
 
     CharacterIcon[] _charaIcons;
 
+    CharacterSelectResources _resources;
+
     private void Awake() {
         _photonView = GetComponent<PhotonView>();
     }
@@ -57,8 +59,10 @@ public class CharacterSelector : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _playerManager = FindObjectOfType<PlayerManager>();
+        _resources = FindObjectOfType<CharacterSelectResources>();
 
         aiIndex = 0;
+        HighlightIcon(curCharacterIcon);
 
         // If we haven't been set up properly
         if (playerNum == -1 || characterAnimator == null || readySprite == null) { // Should probably only happen when networking
@@ -224,26 +228,7 @@ public class CharacterSelector : MonoBehaviour {
         transform.position = new Vector3(charaIcon.transform.position.x, charaIcon.transform.position.y, charaIcon.transform.position.z - (2f + 0.1f * playerNum));
 
         // Change animator to correct character
-        switch(charaIcon.characterName) {
-            case CHARACTERNAMES.BOY1:
-                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY2:
-                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY3:
-                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY4:
-                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL1:
-                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL2:
-                characterAnimator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
-                break;
-        }
+        characterAnimator.runtimeAnimatorController = _resources.characterAnimators[(int)charaIcon.characterName];
 
         // Play idle animation
         characterAnimator.SetInteger("PlayerState", 0);

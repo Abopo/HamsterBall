@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class CatchHitbox : MonoBehaviour {
 	public GameObject playerBubble;
+
+    List<Hamster> _caughtHamsters = new List<Hamster>();
+    Hamster _closestHamster;
+    float _closestDist = 1000f;
+    float _tempDist = 0f;
 
     PlayerController _playerController;
 
@@ -16,32 +21,65 @@ public class CatchHitbox : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        // If we caught at least one hamster last frame
+	    if(_caughtHamsters.Count > 0 && _playerController.heldBubble == null) {
+            // Catch the correct one
+
+            // Reset dist values
+            _closestDist = 1000f;
+            _tempDist = 0f;
+
+            // For each of the caught hamsters
+            foreach (Hamster ham in _caughtHamsters) {
+                if(ham.wasCaught) {
+                    continue;
+                }
+
+                // Check how close the hamster is
+                _tempDist = Mathf.Abs(_playerController.transform.position.x - ham.transform.position.x);
+                
+                // If it's the closest, record it
+                if(_tempDist < _closestDist) {
+                    _closestDist = _tempDist;
+                    _closestHamster = ham;
+                }
+            }
+
+            // Catch the closest hamster
+
+            // If we are networked
+            if (PhotonNetwork.connectedAndReady) {
+                // If we are the local client and aren't already trying to catch a hamster
+                if (_playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
+                    // Catch the hamster
+                    CatchHamster(_closestHamster);
+                    if (PhotonNetwork.isMasterClient) {
+                        // Tell other clients that a hamster was caught
+                        _playerController.GetComponent<PhotonView>().RPC("HamsterCaught", PhotonTargets.All, _closestHamster.hamsterNum);
+                    } else {
+                        // Have the master client double check that it's ok
+                        _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, _closestHamster.hamsterNum);
+                    }
+                }
+            } else {
+                CatchHamster(_closestHamster);
+            }
+
+            // Clear the hamster list
+            _caughtHamsters.Clear();
+
+        } else if(_caughtHamsters.Count > 0 && _playerController.heldBubble != null) {
+            // Clear the hamster list
+            _caughtHamsters.Clear();
+        }
+    }
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Hamster" && _playerController.heldBubble == null) {
-            // && other.GetComponent<Hamster>().exitedPipe && 
             Hamster hamster = other.GetComponent<Hamster>();
 
             if (hamster.exitedPipe && !hamster.wasCaught) {
-                // If we are networked
-                if (PhotonNetwork.connectedAndReady) {
-                    // If we are the local client and aren't already trying to catch a hamster
-                    if (_playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
-                        // Catch the hamster
-                        CatchHamster(hamster);
-                        if (PhotonNetwork.isMasterClient) {
-                            // Tell other clients that a hamster was caught
-                            _playerController.GetComponent<PhotonView>().RPC("HamsterCaught", PhotonTargets.All, hamster.hamsterNum);
-                        } else {
-                            // Have the master client double check that it's ok
-                            _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, hamster.hamsterNum);
-                        }
-                    }
-                } else {
-                    CatchHamster(hamster);
-                }
+                _caughtHamsters.Add(hamster);
             }
         }
         if(other.tag == "PowerUp"/* && other.GetComponent<PowerUp>().exitedPipe*/) {
@@ -82,8 +120,12 @@ public class CatchHitbox : MonoBehaviour {
 
         _playerController.aimCooldownTimer = 0.0f;
 
+
         // Tell animator we've got a bubble
         _playerController.Animator.SetBool("HoldingBall", true);
+
+        // Turn of the catch hitbox so we don't accidently catch more hamsters
+        _playerController.swingObj.SetActive(false);
 
         // For now this is only for the AI
         _playerController.significantEvent.Invoke();

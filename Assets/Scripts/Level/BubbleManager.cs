@@ -105,7 +105,6 @@ public class BubbleManager : MonoBehaviour {
     Coroutine _checkbubbleDropPotentials;
     Coroutine _checkNodesCanBeHit;
 
-
     DividerFlash _divider;
 
     ScoreManager _scoreManager;
