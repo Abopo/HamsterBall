@@ -76,7 +76,7 @@ public class PauseMenu : MonoBehaviour {
         // Return to the scene before this one
         switch (_gameManager.prevMenu) {
             case MENU.STORY:
-                _gameManager.StageSelectButton();
+                _gameManager.StoryButton();
                 break;
             case MENU.VERSUS:
                 _gameManager.CharacterSelectButton();

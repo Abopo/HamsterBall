@@ -94,6 +94,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public UnityEvent boardChangedEvent;
+    bool _boardIsStable = true;
 
     int linesToAdd = 0;
 
@@ -101,6 +102,8 @@ public class BubbleManager : MonoBehaviour {
     bool _isShaking;
     float _shakeTime = 0.1f;
     float _shakeTimer = 0f;
+
+    PlayerController[] players;
 
     Coroutine _checkbubbleDropPotentials;
     Coroutine _checkNodesCanBeHit;
@@ -218,6 +221,7 @@ public class BubbleManager : MonoBehaviour {
             transform.gameObject.AddComponent<SurvivalManager>();
         }
 
+        players = FindObjectsOfType<PlayerController>();
 
         // Get divider
         DividerFlash[] dividers = FindObjectsOfType<DividerFlash>();
@@ -604,13 +608,15 @@ public class BubbleManager : MonoBehaviour {
             boardChangedEvent.Invoke();
         }
 
+        _boardIsStable = IsBoardStable();
+
         // If for some reason the bubble haven't been setup yet
         if (!startingBubbleInfo[0].isSet && !_setupDone) {
             int startingBubbleCount = (_baseLineLength * 2) + ((_baseLineLength - 1) * 2);
             SpawnStartingBubblesInfo(startingBubbleCount);
         }
 
-        if ((_justAddedBubble || _justRemovedBubble) && IsBoardStable()) {
+        if ((_justAddedBubble || _justRemovedBubble) && _boardIsStable) {
             // Check for anchor points
             List<Bubble> anchorBubbles = new List<Bubble>();
             foreach (Bubble b in _bubbles) {
@@ -638,7 +644,7 @@ public class BubbleManager : MonoBehaviour {
             StartShaking();
 
             // Once the board is stable
-            if (IsBoardStable()) {
+            if (_boardIsStable) {
                 --linesToAdd;
                 AddLine();
                 StopShaking();
@@ -655,7 +661,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     private void LateUpdate() {
-        if (!_gameOver && IsBoardStable() && !_justAddedBubble && !_justRemovedBubble) {
+        if (!_gameOver && _boardIsStable && !_justAddedBubble && !_justRemovedBubble) {
             CheckWinConditions();
         }
     }
@@ -785,7 +791,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void TryAddLine() {
-        if (!IsBoardStable()) {
+        if (!_boardIsStable) {
             ++linesToAdd;
         } else {
             AddLine();
@@ -954,7 +960,7 @@ public class BubbleManager : MonoBehaviour {
         if (_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
-                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && IsBoardStable()) {
+                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && _boardIsStable) {
                         if (_scoreManager.TotalScore >= _gameManager.goalCount) {
                             EndGame(1);
                         } else {
@@ -1178,7 +1184,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     bool AreThereBubblesMidAir() {
-        PlayerController[] players = FindObjectsOfType<PlayerController>();
+        // TODO: If players (or AI) are created mid-match, this will be inaccurate
         foreach (PlayerController p in players) {
             // If the player is on our side
             if (p.team == team && !p.shifted || p.team != team && p.shifted) {

@@ -277,9 +277,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void StageSelectButton() {
+    public void StoryButton() {
         CleanUp(true);
         SceneManager.LoadScene("StorySelect");
+    }
+
+    public void MapSelectButton() {
+        SceneManager.LoadScene("MapSelectWheel");
     }
 
     public void MainMenuButton() {
