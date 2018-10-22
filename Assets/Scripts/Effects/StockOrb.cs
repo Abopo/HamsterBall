@@ -18,7 +18,7 @@ public class StockOrb : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //Initialize();
+        Initialize();
         //Launch();
 	}
 	
