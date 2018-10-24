@@ -48,7 +48,10 @@ public class StoryButton : MenuOption {
 
         FindObjectOfType<GameManager>().stage = sceneNumber;
 
-        if(hasCutscene) {
+        // Set the new story position to here
+        PlayerPrefs.SetString("StoryPos", sceneNumber);
+
+        if (hasCutscene) {
             // Load a cutscene
             CutsceneManager.fileToLoad = fileToLoad;
             SceneManager.LoadScene("Cutscene");

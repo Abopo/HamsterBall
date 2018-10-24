@@ -4,6 +4,9 @@ using System.Collections;
 public class IdleState : PlayerState {
     float sign;
 
+    float _longIdleTime = 5.0f;
+    float _longIdleTimer = 0f;
+
     void Start() {
 	}
 
@@ -17,6 +20,8 @@ public class IdleState : PlayerState {
         } else {
             playerController.Animator.SetBool("HoldingBall", false);
         }
+
+        _longIdleTimer = 0f;
 
         // Make sure extra hitboxes are turned off
         playerController.swingObj.SetActive(false);
@@ -38,6 +43,15 @@ public class IdleState : PlayerState {
 		} else {
 			playerController.velocity.x = 0;
 		}
+
+        // Update for the long idle animation
+        _longIdleTimer += Time.deltaTime;
+        if(_longIdleTimer >= _longIdleTime) {
+            // Play long idle animation
+            playerController.Animator.SetBool("LongIdle", true);
+
+            _longIdleTimer = 0f;
+        }
 		
 		// Check below the player to make sure they 
 		// are standing on something
@@ -72,5 +86,6 @@ public class IdleState : PlayerState {
 
 	//	use this for destruction
 	public override void End(){
-	}
+        playerController.Animator.SetBool("LongIdle", false);
+    }
 }

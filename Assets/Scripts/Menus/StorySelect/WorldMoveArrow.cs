@@ -37,6 +37,7 @@ public class WorldMoveArrow : MenuOption {
                 TryMoveRight();
             } else if (dir == -1) {
                 _storySelectMenu.StartMoveWorlds(dir);
+                DeHighlightOtherOptions();
             }
         }
     }
@@ -46,6 +47,7 @@ public class WorldMoveArrow : MenuOption {
 
         if (_storySelectMenu.CurWorld+1 < int.Parse(storyProgress[0].ToString())) {
             _storySelectMenu.StartMoveWorlds(dir);
+            DeHighlightOtherOptions();
         }
     }
 }

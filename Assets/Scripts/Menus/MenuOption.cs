@@ -23,16 +23,15 @@ public class MenuOption : MonoBehaviour {
     MenuOption[] _allOtherOptions;
 
     private void Awake() {
-    }
-
-    // Use this for initialization
-    protected virtual void Start () {
         if (isFirstSelection) {
             _isHighlighted = true;
         } else {
             _isHighlighted = false;
         }
+    }
 
+    // Use this for initialization
+    protected virtual void Start () {
         //_selectedPos = transform.position;
         _moved = false;
 
@@ -110,7 +109,6 @@ public class MenuOption : MonoBehaviour {
         _justHighlighted = true;
 
         // Make sure it's adjacent options are NOT highlighted
-        //DeHighlightAdjOptions();
         DeHighlightOtherOptions();
     }
 

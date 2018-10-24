@@ -85,16 +85,6 @@ public class AIBoardScan : MonoBehaviour {
             }
         }
 
-        // Check matches of the available bubbles
-        /*
-        List<Bubble> tempBubs = new List<Bubble>();
-        foreach (Bubble b in _availableBubbles) {
-            tempBubs = b.CheckMatches(tempBubs);
-            b.numMatches = tempBubs.Count;
-            tempBubs.Clear();
-        }
-        */
-
         // Sort the available bubbles by how many matches there are.
         sortedBubbles.Sort((x, y) => y.numMatches.CompareTo(x.numMatches));
 

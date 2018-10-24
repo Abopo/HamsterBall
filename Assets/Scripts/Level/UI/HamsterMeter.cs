@@ -186,11 +186,6 @@ public class HamsterMeter : MonoBehaviour {
         }
 
         UpdateStockSprites();
-
-        if (_bubbleManager != null) {
-            // Set bubbles managers stock
-            _bubbleManager.bubbleStock = _curStock;
-        }
     }
 
     void CreateNewStockSprites() {

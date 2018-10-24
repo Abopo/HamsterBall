@@ -62,23 +62,40 @@ public class HamsterScan : MonoBehaviour {
         get { return _okTypesRight; }
     }
 
+    // Single player only stuff //
+    GameManager _gameManager;
+    BubbleManager _bubbleManager;
+    int[] _availableTypes = new int[8];
 
     private void Awake() {
+        // Populate lists with all types
+        for(int i = 0; i < 7; ++i) {
+            _okTypesLeft.Add(i);
+            _okTypesRight.Add(i);
+        }
+
         leftHamsterInfo.SpecialSpawnOffset = -6;
         leftHamsterInfo.OkTypes = _okTypesLeft;
         rightHamsterInfo.SpecialSpawnOffset = -6;
         rightHamsterInfo.OkTypes = _okTypesRight;
-
-        FindHamsters();
-        UpdateOKTypes();
     }
 
     // Use this for initialization
     void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        // Only used in single player modes
+        _gameManager = FindObjectOfType<GameManager>();
+        _bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+        _bubbleManager.boardChangedEvent.AddListener(ScanBoardForAvailableTypes);
+
+        //FindHamsters();
+        //ScanBoardForAvailableTypes();
+        //UpdateLeftList();
+        //UpdateRightList();
+        //UpdateOKTypes();
+    }
+
+    // Update is called once per frame
+    void Update () {
         // TODO: Right now doing this every frame, could optimize to only do on each hamster spawn.
         FindHamsters();
 
@@ -215,10 +232,18 @@ public class HamsterScan : MonoBehaviour {
 
     public void UpdateLeftList() {
         UpdateOKTypeList(_okTypesLeft, _allLeftHamsters);
+
+        if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            // Remove from ok types any types that aren't currently on the board
+            ReduceToAvailableTypes();
+        }
+
+        PopulateOKTypesList(_okTypesLeft);
     }
 
     public void UpdateRightList() {
         UpdateOKTypeList(_okTypesRight, _allRightHamsters);
+        PopulateOKTypesList(_okTypesRight);
     }
 
     void UpdateOKTypeList(List<int> list, List<Hamster> hamsters) {
@@ -259,7 +284,6 @@ public class HamsterScan : MonoBehaviour {
                 }
             }
         }
-        PopulateOKTypesList(list);
     }
 
     void PopulateOKTypesList(List<int> list) {
@@ -281,12 +305,61 @@ public class HamsterScan : MonoBehaviour {
     }
 
     public Hamster GetHamster(int hamsterNum) {
-        foreach(Hamster ham in AvailableHamsters) {
-            if(ham.hamsterNum == hamsterNum) {
+        foreach (Hamster ham in AvailableHamsters) {
+            if (ham.hamsterNum == hamsterNum) {
                 return ham;
             }
         }
 
         return null;
+    }
+
+
+    // Single player only stuff //
+
+    void ReduceToAvailableTypes() {
+        // For each type
+        for (int i = 0; i < 8; ++i) {
+            // If it is not on the board, 
+            if (_availableTypes[i] == 0) {
+                // Don't spawn that type
+                _typeCounts[i] = 10;
+            }
+        }
+    }
+
+    // This will trigger when the board changes
+    void ScanBoardForAvailableTypes() {
+        for(int i = 0; i < 8; ++i) {
+            _availableTypes[i] = 0;
+        }
+
+        foreach (Bubble bub in _bubbleManager.Bubbles) {
+            if(bub != null) {
+                switch (bub.type) {
+                    case HAMSTER_TYPES.GREEN:
+                        _availableTypes[0] = 1;
+                        break;
+                    case HAMSTER_TYPES.RED:
+                        _availableTypes[1] = 1;
+                        break;
+                    case HAMSTER_TYPES.ORANGE:
+                        _availableTypes[2] = 1;
+                        break;
+                    case HAMSTER_TYPES.GRAY:
+                        _availableTypes[3] = 1;
+                        break;
+                    case HAMSTER_TYPES.BLUE:
+                        _availableTypes[4] = 1;
+                        break;
+                    case HAMSTER_TYPES.PINK:
+                        _availableTypes[5] = 1;
+                        break;
+                    case HAMSTER_TYPES.PURPLE:
+                        _availableTypes[6] = 1;
+                        break;
+                }
+            }
+        }
     }
 }

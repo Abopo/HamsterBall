@@ -27,7 +27,7 @@ public class ContinueButton : MonoBehaviour {
                 _gameManager.LoadPuzzleChallenge();
             } else {
                 // Load the next level
-                GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
+                _levelManager.GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
             }
         } else if (_gameManager.nextCutscene != "") {
             // Load a cutscene

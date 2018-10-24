@@ -49,4 +49,9 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     public void AttackFinished() {
         _attackState.ExitAttack();
     }
+
+    public void LongIdleEnd() {
+        _playerController.Animator.SetBool("LongIdle", false);
+        _playerController.ChangeState(PLAYER_STATE.IDLE);
+    }
 }

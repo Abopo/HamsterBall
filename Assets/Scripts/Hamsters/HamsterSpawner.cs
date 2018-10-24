@@ -20,8 +20,6 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     int _nextHamsterType;
     HamsterInfo _hamsterInfo;
-    //List<int> _okTypes;
-    //public int _specialSpawnOffset;
 
     public static bool canBeRainbow = true;
     public static bool canBeDead = true;

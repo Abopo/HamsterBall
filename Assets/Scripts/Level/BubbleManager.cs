@@ -16,7 +16,6 @@ public struct BubbleInfo {
 public class BubbleManager : MonoBehaviour {
 
     public int team; // -1 = no team, 0 = left team, 1 = right team
-    public int bubbleStock; // counts up to 12 then adds a line.
     public bool testMode;
 
     protected Transform _ceiling;
@@ -960,7 +959,10 @@ public class BubbleManager : MonoBehaviour {
         if (_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
-                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && _boardIsStable) {
+                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && IsBoardStable()) {
+                        // Make sure score manager is fully updated
+                        _scoreManager.CombineScore();
+                        // Check if the player won the stage
                         if (_scoreManager.TotalScore >= _gameManager.goalCount) {
                             EndGame(1);
                         } else {

@@ -39,7 +39,7 @@ public class ScoreManager : MonoBehaviour {
 	}
 
     // Combines the scorePool into the totalScore
-    void CombineScore() {
+    public void CombineScore() {
         _totalScore += _scorePool;
         _totalScoreText.text = _totalScore.ToString();
 

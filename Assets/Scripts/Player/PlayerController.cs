@@ -324,7 +324,7 @@ public class PlayerController : Entity {
 			jumpMoveMax = 3;
 			heldBubble.transform.position = new Vector3 (bubblePosition.position.x,
                                                          bubblePosition.position.y,
-                                                         bubblePosition.position.z-8);
+                                                         bubblePosition.position.z-10);
             
 		} else {
 			walkSpeed = 5;

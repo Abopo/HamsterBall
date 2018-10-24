@@ -45,7 +45,9 @@ public class PlayerGUI : MonoBehaviour {
         _fullSprite = sprites[6];
         _emptySprite = sprites[5];
 
-        _meterMaterial = _shiftMeter.GetMeterFront().GetComponent<Image>().material;
+        if (_shiftMeter != null) {
+            _meterMaterial = _shiftMeter.GetMeterFront().GetComponent<Image>().material;
+        }
 	}
 	
 	// Update is called once per frame
