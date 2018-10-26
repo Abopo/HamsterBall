@@ -84,9 +84,10 @@ public class HamsterScan : MonoBehaviour {
     void Start () {
         // Only used in single player modes
         _gameManager = FindObjectOfType<GameManager>();
-        _bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
-        _bubbleManager.boardChangedEvent.AddListener(ScanBoardForAvailableTypes);
-
+        if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            _bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            _bubbleManager.boardChangedEvent.AddListener(OnBoardChanged);
+        }
         //FindHamsters();
         //ScanBoardForAvailableTypes();
         //UpdateLeftList();
@@ -232,13 +233,12 @@ public class HamsterScan : MonoBehaviour {
 
     public void UpdateLeftList() {
         UpdateOKTypeList(_okTypesLeft, _allLeftHamsters);
-
-        if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
-            // Remove from ok types any types that aren't currently on the board
-            ReduceToAvailableTypes();
-        }
-
         PopulateOKTypesList(_okTypesLeft);
+
+        if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            // Remove from ok types any types that aren't currently on the board
+            ReduceToAvailableTypes(_okTypesLeft);
+        }
     }
 
     public void UpdateRightList() {
@@ -317,13 +317,33 @@ public class HamsterScan : MonoBehaviour {
 
     // Single player only stuff //
 
-    void ReduceToAvailableTypes() {
+    void OnBoardChanged() {
+        ScanBoardForAvailableTypes();
+
+        // Remove from ok types any types that aren't currently on the board
+        ReduceToAvailableTypes(_okTypesLeft);
+    }
+
+    void ReduceToAvailableTypes(List<int> list) {
         // For each type
         for (int i = 0; i < 8; ++i) {
             // If it is not on the board, 
             if (_availableTypes[i] == 0) {
-                // Don't spawn that type
-                _typeCounts[i] = 10;
+                // Remove that type from the list
+                list.Remove(i);
+            }
+        }
+
+        // If we accidentally cleared the entire list
+        if(list.Count <= 0) {
+            // Add in hamsters that are ok
+            // For each type
+            for (int i = 0; i < 8; ++i) {
+                // If it is not on the board, 
+                if (_availableTypes[i] > 0) {
+                    // Add that type to the list
+                    list.Add(i);
+                }
             }
         }
     }

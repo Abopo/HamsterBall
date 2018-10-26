@@ -19,9 +19,13 @@ public class ScoreManager : MonoBehaviour {
         get { return _totalScore; }
     }
 
+    GameManager _gameManager;
+
     // Use this for initialization
     void Start () {
-        _totalScore = 0;
+        _gameManager = FindObjectOfType<GameManager>();
+
+        _totalScore = _gameManager.scoreOverflow;
         _totalScoreText.text = _totalScore.ToString();
         _scorePoolText.text = "";
 

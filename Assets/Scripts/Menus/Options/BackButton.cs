@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 [RequireComponent(typeof(Button))]
-public class BackButton : MenuOption {
+public class BackButton : MenuButton {
     Image _image;
     GameManager _gameManager;
 

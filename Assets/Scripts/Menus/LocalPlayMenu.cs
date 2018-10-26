@@ -7,19 +7,27 @@ public class LocalPlayMenu : MonoBehaviour {
 
     public PlayerCountSelectMenu pcsMenu;
 
-    public MenuOption[] buttons;
+    public MenuButton[] buttons;
+
+    bool _isActive;
 
     GameManager _gameManager;
 
 	// Use this for initialization
 	void Start () {
         _gameManager = FindObjectOfType<GameManager>();
+
+        _isActive = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (_isActive) {
+            if (Input.GetButtonDown("Cancel")) {
+                FindObjectOfType<GameManager>().MainMenuButton();
+            }
+        }
+    }
 
     public void StandardVersus() {
         _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
@@ -53,14 +61,20 @@ public class LocalPlayMenu : MonoBehaviour {
 
     public void Activate() {
         // Turn on buttons
-        foreach(MenuOption mb in buttons) {
-            mb.isReady = true;
+        foreach(MenuButton mb in buttons) {
+            if (mb.IsInteractable) {
+                mb.isReady = true;
+            }
         }
+
+        _isActive = true;
     }
     void Deactivate() {
         // Turn off buttons
-        foreach (MenuOption mb in buttons) {
+        foreach (MenuButton mb in buttons) {
             mb.isReady = false;
         }
+
+        _isActive = false;
     }
 }

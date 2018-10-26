@@ -7,7 +7,13 @@ public class MenuButton : MenuOption {
 
     Button _button;
 
-    private void Awake() {
+    public bool IsInteractable {
+        get { return _button.interactable; }
+    }
+
+    protected override void Awake() {
+        base.Awake();
+
         _button = GetComponent<Button>();
     }
 
@@ -24,7 +30,7 @@ public class MenuButton : MenuOption {
 	}
 
     protected override void Select() {
-        if (isReady) {
+        if (isReady && _button.interactable) {
             base.Select();
 
             GetComponent<Button>().onClick.Invoke();

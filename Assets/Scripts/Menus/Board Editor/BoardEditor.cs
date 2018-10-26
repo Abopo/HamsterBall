@@ -430,11 +430,13 @@ public class BoardEditor : MonoBehaviour {
         }
         _readLine = _linesFromFile[fileIndex];
         GameObject levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/SinglePlayer/" + _readLine);
-        GameObject newLevel = GameObject.Instantiate(levelPrefab, new Vector3(-1.3f, 0, -0.5f), Quaternion.identity);
+        GameObject newLevel = GameObject.Instantiate(levelPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         HamsterSpawner[] spawners = newLevel.GetComponentsInChildren<HamsterSpawner>();
         foreach (HamsterSpawner hS in spawners) {
             hS.enabled = false;
         }
+        Ceiling ceiling = FindObjectOfType<Ceiling>();
+        ceiling.enabled = false;
 
         // Delete and replace the old level
         ChangeLevel(newLevel, _readLine, newScene);

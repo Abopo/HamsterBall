@@ -36,8 +36,6 @@ public class LevelManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager.gameOverEvent.AddListener(GameEnd);
-
         if (_gameManager.isSinglePlayer) {
             _bubbleManager = FindObjectOfType<BubbleManager>();
         }
@@ -121,14 +119,21 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    void GameEnd() {
+    public void GameEnd() {
         _gameOver = true;
 
         // If we won and are in a timed mode, set the time highscore
-        if(_gameManager.gameMode == GAME_MODE.SP_MATCH || _gameManager.gameMode == GAME_MODE.SP_POINTS || _gameManager.gameMode == GAME_MODE.SP_CLEAR) {
-            string pref = _gameManager.stage + "Highscore";
-            if ((int)_levelTimer < PlayerPrefs.GetInt(pref) || PlayerPrefs.GetInt(pref) == 0) {
-                PlayerPrefs.SetInt(pref, (int)_levelTimer);
+        if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            // Add score based on completion speed
+            BubbleManager[] _bManagers = FindObjectsOfType<BubbleManager>();
+            int timeScore = 5000;
+            foreach (BubbleManager _bM in _bManagers) {
+                // Time score is lower the longer it takes to finish the level
+                timeScore = timeScore - 10 * (int)_levelTimer;
+                if(timeScore < 10) {
+                    timeScore = 10;
+                }
+                _bM.IncreaseScore(timeScore);
             }
         } else if(_gameManager.gameMode == GAME_MODE.SURVIVAL) {
             // Add the time survived to the player's score

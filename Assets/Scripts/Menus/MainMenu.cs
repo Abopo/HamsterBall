@@ -61,6 +61,17 @@ public class MainMenu : MonoBehaviour {
             PlayerPrefs.SetInt("2-7Highscore", 0);
             PlayerPrefs.SetInt("2-8Highscore", 0);
             PlayerPrefs.SetInt("2-9Highscore", 0);
+            // World 3
+            PlayerPrefs.SetInt("3-0Highscore", 0);
+            PlayerPrefs.SetInt("3-1Highscore", 0);
+            PlayerPrefs.SetInt("3-2Highscore", 0);
+            PlayerPrefs.SetInt("3-3Highscore", 0);
+            PlayerPrefs.SetInt("3-4Highscore", 0);
+            PlayerPrefs.SetInt("3-5Highscore", 0);
+            PlayerPrefs.SetInt("3-6Highscore", 0);
+            PlayerPrefs.SetInt("3-7Highscore", 0);
+            PlayerPrefs.SetInt("3-8Highscore", 0);
+            PlayerPrefs.SetInt("3-9Highscore", 0);
 
             PlayerPrefs.SetInt("FirstTimePlaying", 1);
         }

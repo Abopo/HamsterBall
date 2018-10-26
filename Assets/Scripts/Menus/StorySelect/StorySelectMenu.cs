@@ -7,6 +7,7 @@ public class StorySelectMenu : MonoBehaviour {
     public Text chapter;
     public Text location;
     public Image locationImage;
+    public Image locationImageSP;
     public Text gameType;
     public Text highscoreHeader;
     public Text highscore;
@@ -22,7 +23,11 @@ public class StorySelectMenu : MonoBehaviour {
     int _furthestWorld;
     int _furthestLevel;
 
+    float _worldYPos = 0f;
+
     Dictionary<string, Sprite> locationImages = new Dictionary<string, Sprite>();
+    Dictionary<string, Sprite> locationImagesSP = new Dictionary<string, Sprite>();
+    BoardDisplay _boardDisplay;
 
     public int CurWorld {
         get { return _curWorld; }
@@ -42,6 +47,7 @@ public class StorySelectMenu : MonoBehaviour {
         GameManager gameManager = FindObjectOfType<GameManager>();
         gameManager.prevMenu = MENU.STORY;
 
+        // Multiplayer images
 		locationImages["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/BasicForest");
         locationImages["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/BasicMountain");
         locationImages["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
@@ -51,6 +57,21 @@ public class StorySelectMenu : MonoBehaviour {
         locationImages["Fungals"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
         locationImages["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
         locationImages["Space"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
+
+        // Single player images
+        locationImagesSP["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/ForestBoard");
+        locationImagesSP["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/MountainBoard");
+        locationImagesSP["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
+        locationImagesSP["City"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City");
+        locationImagesSP["Sewers"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Sewers");
+        locationImagesSP["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");
+        locationImagesSP["Fungals"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
+        locationImagesSP["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
+        locationImagesSP["Space"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
+
+        _boardDisplay = FindObjectOfType<BoardDisplay>();
+
+        _worldYPos = worlds[0].transform.localPosition.y;
 
         // Load saved world
         LoadSaveData();
@@ -79,7 +100,7 @@ public class StorySelectMenu : MonoBehaviour {
         worlds[0].Deactivate();
 
         // Set the new world into the right position
-        worlds[world-1].transform.localPosition = new Vector3(0, -110, 0);
+        worlds[world-1].transform.localPosition = new Vector3(0, _worldYPos, 0);
         worlds[world-1].Activate(level);
 
         // Set curWorld to new world
@@ -88,6 +109,8 @@ public class StorySelectMenu : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        CheckInput();
+
 		if(_movingWorld) {
             worlds[_curWorld].transform.Translate(worldMoveSpeed * -_worldDif * Time.deltaTime, 0f, 0f, Space.World);
             worlds[_curWorld+_worldDif].transform.Translate(worldMoveSpeed * -_worldDif * Time.deltaTime, 0f, 0f, Space.World);
@@ -99,14 +122,19 @@ public class StorySelectMenu : MonoBehaviour {
         }
 	}
 
+    void CheckInput() {
+        if(Input.GetButtonDown("Cancel")) {
+            FindObjectOfType<GameManager>().MainMenuButton();
+        }
+    }
+
     public void UpdateUI(StoryButton storyButton) {
         // Set chapter number
         int world = storyButton.GetComponentInParent<World>().worldNum;
         chapter.text = "Chapter " + world;
 
-        // Set location name and image
+        // Set the location name
         location.text = storyButton.locationName;
-        locationImage.sprite = locationImages[storyButton.locationName];
 
         int time = 0;
         // Set game type text
@@ -115,12 +143,15 @@ public class StorySelectMenu : MonoBehaviour {
                 gameType.text = "Versus Stage";
                 highscoreHeader.text = "Highscore";
                 highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
+
+                VersusSetup(storyButton);
                 break;
             case GAME_MODE.SP_POINTS:
                 gameType.text = "Point Challenge";
-                highscoreHeader.text = "Best Time";
-                time = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore");
-                highscore.text = string.Format("{0}:{1:00}", (int)time / 60, (int)time % 60);
+                highscoreHeader.text = "Highscore";
+                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
+
+                SinglePlayerSetup(storyButton);
                 break;
             case GAME_MODE.SP_MATCH:
                 gameType.text = "Match Challenge";
@@ -131,15 +162,40 @@ public class StorySelectMenu : MonoBehaviour {
                 break;
             case GAME_MODE.SP_CLEAR:
                 gameType.text = "Puzzle Stage";
-                highscoreHeader.text = "Best Time";
-                string pref = storyButton.sceneNumber.ToString() + "Highscore";
-                time = PlayerPrefs.GetInt(pref);
-                highscore.text = string.Format("{0}:{1:00}", (int)time / 60, (int)time % 60);
+                highscoreHeader.text = "Highscore";
+                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
+
+                SinglePlayerSetup(storyButton);
                 break;
         }
 
         // Set win condition text
         winCondition.text = storyButton.winCondition;
+    }
+
+    void VersusSetup(StoryButton storyButton) {
+        // Show the versus location image
+        locationImage.transform.parent.gameObject.SetActive(true);
+        // Hide the single player location image
+        locationImageSP.transform.parent.gameObject.SetActive(false);
+        
+        // Set location image
+        locationImage.sprite = locationImages[storyButton.locationName];
+
+        // Clear any previews that may be showing
+        _boardDisplay.ClearBoard();
+    }
+    void SinglePlayerSetup(StoryButton storyButton) {
+        // Show the single player location image
+        locationImageSP.transform.parent.gameObject.SetActive(true);
+        // Hide the versus location image
+        locationImage.transform.parent.gameObject.SetActive(false);
+
+        // Set location image
+        locationImageSP.sprite = locationImagesSP[storyButton.locationName];
+
+        // Display a preview of the stage
+        _boardDisplay.LoadBoard(storyButton.fileToLoad);
     }
 
     // Change the UI to a different world
@@ -156,9 +212,9 @@ public class StorySelectMenu : MonoBehaviour {
 
             // Place the next world in correct location
             if (dir > 0) {
-                worlds[_curWorld + dir].transform.localPosition = new Vector3(700, -110, 0);
+                worlds[_curWorld + dir].transform.localPosition = new Vector3(700, _worldYPos, 0);
             } else if(dir < 0) {
-                worlds[_curWorld + dir].transform.localPosition = new Vector3(-700, -110, 0);
+                worlds[_curWorld + dir].transform.localPosition = new Vector3(-700, _worldYPos, 0);
             }
         }
     }
@@ -169,7 +225,7 @@ public class StorySelectMenu : MonoBehaviour {
         worlds[_curWorld].Deactivate();
         
         // Set the new world into the right position
-        worlds[_curWorld + _worldDif].transform.localPosition = new Vector3(0, -110, 0);
+        worlds[_curWorld + _worldDif].transform.localPosition = new Vector3(0, _worldYPos, 0);
         if (_worldDif > 0) {
             worlds[_curWorld + _worldDif].Activate(0);
         } else {

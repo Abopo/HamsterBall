@@ -21,11 +21,13 @@ public class LevelPickButton : MonoBehaviour {
 
     private void OnMouseUp() {
         // Load in the level geometry for this level
-        GameObject newLevel = GameObject.Instantiate(levelObject, new Vector3(-1.3f, 0, -0.5f), Quaternion.identity);
+        GameObject newLevel = GameObject.Instantiate(levelObject, new Vector3(0, 0, 0), Quaternion.identity);
         HamsterSpawner[] spawners = newLevel.GetComponentsInChildren<HamsterSpawner>();
         foreach(HamsterSpawner hS in spawners) {
             hS.enabled = false;
         }
+        Ceiling ceiling = FindObjectOfType<Ceiling>();
+        ceiling.enabled = false;
 
         // Delete and replace the old level
         _boardEditor.ChangeLevel(newLevel, levelObject.name, levelName);

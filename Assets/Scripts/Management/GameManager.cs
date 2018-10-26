@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
     public GAME_MODE gameMode;
     public int goalCount; // the number of points or matches to win the level
     public int conditionLimit; // the condition limit to achieve the goal i.e. time limit, throw limit, etc.
+    public int scoreOverflow = 0; // this variable holds onto the player's score between stages with multiple boards
 
     public int numPlayers;
     public int numAI;
@@ -184,25 +185,26 @@ public class GameManager : MonoBehaviour {
 
         // If we are playing a story level 
         if (IsStoryLevel()) {
-            // and the player's team won
-            if(winningTeam == 0) {
-                // For versus mode
-                if (gameMode == GAME_MODE.MP_VERSUS) {
-                    string pref = stage.ToString() + "Highscore";
+            // If there's still levels to play
+            if (nextLevel != "") {
+                // Carry over the highscore
+                scoreOverflow = winScore;
 
-                    // If their new score is better than the old one
-                    if (winScore > PlayerPrefs.GetInt(pref)) {
-                        // Set their highscore
-                        PlayerPrefs.SetInt(pref, winScore);
-                    }
-
-                    // Unlock the next level
-                    UnlockNextLevel();
-                // If last board of a clear level
-                } else if((gameMode == GAME_MODE.SP_CLEAR || gameMode == GAME_MODE.SP_POINTS) && nextLevel == "") {
-                    // Unlock the next level
-                    UnlockNextLevel();
+            // The player's team won
+            } else if(winningTeam == 0) {
+                // Save the highscore
+                string pref = stage.ToString() + "Highscore";
+                // If their new score is better than the old one
+                if (winScore > PlayerPrefs.GetInt(pref)) {
+                    // Set their highscore
+                    PlayerPrefs.SetInt(pref, winScore);
                 }
+
+                // reset score overflow
+                scoreOverflow = 0;
+
+                // Unlock the next level
+                UnlockNextLevel();
 
                 aimAssist = false;
             } else {
@@ -276,16 +278,16 @@ public class GameManager : MonoBehaviour {
             SceneManager.LoadScene("CharacterSelect");
         }
     }
-
     public void StoryButton() {
         CleanUp(true);
         SceneManager.LoadScene("StorySelect");
     }
-
     public void MapSelectButton() {
         SceneManager.LoadScene("MapSelectWheel");
     }
-
+    public void LocalPlayButton() {
+        SceneManager.LoadScene("LocalPlay");
+    }
     public void MainMenuButton() {
         CleanUp(true);
 
@@ -333,6 +335,7 @@ public class GameManager : MonoBehaviour {
         if(full) {
             ResetGames();
             prevPuzzles.Clear();
+            scoreOverflow = 0;
         }
     }
 

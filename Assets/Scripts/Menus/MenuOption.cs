@@ -22,7 +22,7 @@ public class MenuOption : MonoBehaviour {
 
     MenuOption[] _allOtherOptions;
 
-    private void Awake() {
+    protected virtual void Awake() {
         if (isFirstSelection) {
             _isHighlighted = true;
         } else {

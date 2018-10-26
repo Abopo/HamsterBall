@@ -1041,7 +1041,11 @@ public class BubbleManager : MonoBehaviour {
         // Clear data for next round
         ClearAllData();
 
-        // Send the winning team to the game manager
+        // Make sure the final score is fully updated
+        _levelManager.GameEnd();
+        _scoreManager.CombineScore();
+
+        // Send the winning team and score to the game manager
         if (result == 1) {
             _gameManager.EndGame(team, _scoreManager.TotalScore);
         } else if (result == -1) {
