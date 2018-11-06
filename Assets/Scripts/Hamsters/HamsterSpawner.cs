@@ -32,6 +32,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     public static int nextHamsterNum;
 
     GameManager _gameManager;
+    LevelManager _levelManager;
     HamsterScan _hamsterScan;
 
     public int NextHamsterType {
@@ -46,9 +47,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     // Use this for initialization
     void Start() {
-        //_spawnTime = 4;
+        // Set the spawn timer to wait for the countdown
         _spawnTimer = 0;
         _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
         if (_gameManager.gameMode == GAME_MODE.SP_POINTS) {
             // Score attack stages have set spawn sequences
             _random = new System.Random(spawnSeed);
@@ -121,8 +123,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     // Update is called once per frame
     void Update () {
-        // Don't update if the game is over
-        if (_gameManager.gameIsOver) {
+        // Don't update if the game is over or hasn't started yet
+        if (_gameManager.gameIsOver || !_levelManager.gameStarted) {
             return;
         }
 

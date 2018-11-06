@@ -6,13 +6,16 @@ using System.Collections;
 public class LevelManager : MonoBehaviour {
     public ResultsScreen mpResultsScreen;
     public ResultsScreen spResultsScreen;
-    public ResultsScreen spContinueScreen;
+    public ResultsScreen continueScreen;
     public PauseMenu pauseMenu;
     public Text marginMultiplierText;
 
     public bool continueLevel;
     public bool mirroredLevel;
     public float marginMultiplier = 1f;
+
+    public bool gameStarted = false;
+    public bool setOver = false; // If the entire 2/3 set is finished
 
     float _marginTimer = 0;
     float _marginTime = 120f;
@@ -50,7 +53,7 @@ public class LevelManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (!_gameOver) {
+        if (!_gameOver && gameStarted) {
             _levelTimer += Time.deltaTime;
 
             // Check for pausing
@@ -144,66 +147,67 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+
+    // TODO: All of this results screen activation code is pretty unreadable, especially with the singleplayer/versus continue overlaps and crap
+    // Need to somehow refactor this to make it less all over the place.
+
     // result: -1 = loss, 0 = draw, 1 = win
     public void ActivateResultsScreen(int team, int result) {
         // If this was a versus match
-        if (!_gameManager.isSinglePlayer) {
-
-            if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-                // TODO: make a different results screen for these modes
-                ActivateFinalResultsScreen(team, 1);
-            } else {
-                // Deal with best 2/3 stuff
-                // Draw
-                if (result == 0) {
-                    IncreaseLeftTeamGames();
-                    IncreaseRightTeamGames();
-                    if (_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
-                        // the whole set was a draw
-                        ActivateFinalResultsScreen(team, 0);
-                    } else if (_gameManager.leftTeamGames >= 2) {
-                        // Left team has won the set
-                        // Activate final results screen
-                        ActivateFinalResultsScreen(team, result);
-                    } else if (_gameManager.rightTeamGames >= 2) {
-                        // Right team has won the set
-                        // Activate final results screen
-                        ActivateFinalResultsScreen(team, result);
-                    } else {
-                        // Set not done so activate continue screen
-                        ActivateContinueScreen(0, 0);
-                    }
+        if (!_gameManager.isSinglePlayer || _gameManager.gameMode == GAME_MODE.MP_VERSUS) {
+            // Deal with best 2/3 stuff
+            // Draw
+            if (result == 0) {
+                IncreaseLeftTeamGames();
+                IncreaseRightTeamGames();
+                if (_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
+                    // the whole set was a draw
+                    ActivateFinalResultsScreen(team, 0);
+                } else if (_gameManager.leftTeamGames >= 2) {
+                    // Left team has won the set
+                    // Activate final results screen
+                    ActivateFinalResultsScreen(team, result);
+                } else if (_gameManager.rightTeamGames >= 2) {
+                    // Right team has won the set
+                    // Activate final results screen
+                    ActivateFinalResultsScreen(team, result);
                 } else {
-                    // If Left team wins
-                    if (team == 0 && result == 1 || team == 1 && result == -1) {
-                        IncreaseLeftTeamGames();
-                        if (_gameManager.leftTeamGames >= 2) {
-                            // Left team has won the set
-                            // Activate final results screen with left team winning
-                            ActivateFinalResultsScreen(0, 1);
-                        } else {
-                            // Set still not won
-                            // Activate Continue screen
-                            ActivateContinueScreen(0, 1);
-                        }
-                        // If Right team wins
-                    } else if (team == 1 && result == 1 || team == 0 && result == -1) {
-                        IncreaseRightTeamGames();
-                        if (_gameManager.rightTeamGames >= 2) {
-                            // Right team has won the set
-                            // Activate final results screen with right team winning
-                            ActivateFinalResultsScreen(1, 1);
-                        } else {
-                            // Set still not won
-                            // Activate Continue screen
-                            ActivateContinueScreen(1, 1);
-                        }
+                    // Set not done so activate continue screen
+                    ActivateContinueScreen(0, 0);
+                }
+            } else {
+                // If Left team wins
+                if (team == 0 && result == 1 || team == 1 && result == -1) {
+                    IncreaseLeftTeamGames();
+                    if (_gameManager.leftTeamGames >= 2) {
+                        // Left team has won the set
+                        // Activate final results screen with left team winning
+                        ActivateFinalResultsScreen(0, 1);
+                    } else {
+                        // Set still not won
+                        // Activate Continue screen
+                        ActivateContinueScreen(0, 1);
+                    }
+                    // If Right team wins
+                } else if (team == 1 && result == 1 || team == 0 && result == -1) {
+                    IncreaseRightTeamGames();
+                    if (_gameManager.rightTeamGames >= 2) {
+                        // Right team has won the set
+                        // Activate final results screen with right team winning
+                        ActivateFinalResultsScreen(1, 1);
+                    } else {
+                        // Set still not won
+                        // Activate Continue screen
+                        ActivateContinueScreen(1, 1);
                     }
                 }
             }
+        } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            // TODO: make a different results screen for these modes
+            ActivateFinalResultsScreen(team, 1);
         // If this was a single player level
         } else {
-            if(continueLevel) {
+            if (continueLevel) {
                 ActivateContinueScreen(team, result);
             } else {
                 ActivateFinalResultsScreen(team, result);
@@ -212,35 +216,43 @@ public class LevelManager : MonoBehaviour {
     }
 
     void ActivateContinueScreen(int team, int result) {
-        if(spContinueScreen != null) {
-            if(_gameManager.IsStoryLevel()) {
+        if(continueScreen != null) {
+            if(_gameManager.IsStoryLevel() && _gameManager.gameMode != GAME_MODE.MP_VERSUS) {
                 // If it's the player
                 if (team == 0) {
-                    spContinueScreen.Activate(result == 1);
+                    continueScreen.Activate(result == 1);
 
                 // If it's the enemy
                 } else {
-                    spContinueScreen.Activate(result == -1);
+                    continueScreen.Activate(result == -1);
                 }
             } else {
                 if (result == 1) {
-                    spContinueScreen.Activate(team);
+                    continueScreen.Activate(team);
                 } else if(result == -1) {
                     // The other team won so send that team
-                    spContinueScreen.Activate(team == 1 ? 0 : 1);
+                    continueScreen.Activate(team == 1 ? 0 : 1);
                 } else {
                     // It's a draw so display that
-                    spContinueScreen.Activate(-1);
+                    continueScreen.Activate(-1);
                 }
             }
         }
     }
 
     void ActivateFinalResultsScreen(int team, int result) {
+        setOver = true;
         if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
             // If it's the player
             if (team == 0) {
-                spResultsScreen.Activate(result == 1);
+                // If there is a cutscene after this stage, show a continue screen instead
+                if (_gameManager.nextCutscene != "") {
+                    continueScreen.Activate(true);
+                } else if (_gameManager.gameMode == GAME_MODE.MP_VERSUS && !setOver) {
+                    continueScreen.Activate(team);
+                } else {
+                    spResultsScreen.Activate(result == 1);
+                }
             } else {
                 spResultsScreen.Activate(result == -1);
             }

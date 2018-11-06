@@ -9,7 +9,12 @@ public class GoalMenu : MonoBehaviour {
     public Text conditionText;
     public Text conditionLeftText;
 
+    public Text timeText;
+    int seconds;
+    int minutes;
+
     GameManager _gameManager;
+    LevelManager _levelManager;
     BubbleManager _bubbleManager;
     float _conditionLeft;
 
@@ -18,16 +23,21 @@ public class GoalMenu : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
         _bubbleManager = FindObjectOfType<BubbleManager>();
         _conditionLeft = _gameManager.conditionLimit;
         conditionLeftText.text = _gameManager.conditionLimit.ToString();
 
         switch (_gameManager.gameMode) {
+            case GAME_MODE.MP_VERSUS:
+                gameObject.SetActive(false);
+                break;
             case GAME_MODE.SP_CLEAR:
-                // No goal text for this mode
+                // No goal or condition text for this mode
                 goalText.enabled = false;
                 goalRequirement.enabled = false;
-                conditionText.text = "Time";
+                conditionText.enabled = false;
+                conditionLeftText.enabled = false;
                 break;
             case GAME_MODE.SP_POINTS:
                 goalText.text = "Score\n       Needed";
@@ -53,8 +63,13 @@ public class GoalMenu : MonoBehaviour {
             return;
         }
 
-        switch(_gameManager.gameMode) {
+        seconds = Mathf.FloorToInt(_levelManager.LevelTimer % 60);
+        minutes = Mathf.FloorToInt(_levelManager.LevelTimer / 60);
+        timeText.text = string.Format("{0}:{1:00}", minutes, seconds);
+
+        switch (_gameManager.gameMode) {
             case GAME_MODE.SP_CLEAR:
+                break;
             case GAME_MODE.SURVIVAL:
                 if (_gameManager.conditionLimit > 0) {
                     _conditionLeft -= Time.deltaTime;
@@ -72,7 +87,6 @@ public class GoalMenu : MonoBehaviour {
                 goalRequirement.text = (_gameManager.goalCount - _bubbleManager.matchCount).ToString();
                 break;
         }
-
     }
 
 }

@@ -12,9 +12,11 @@ public class StorySelectMenu : MonoBehaviour {
     public Text highscoreHeader;
     public Text highscore;
     public Text winCondition;
+    public CharacterSelectWindow characterSelectWindow;
 
     public World[] worlds = new World[2];
     public float worldMoveSpeed;
+
 
     int _curWorld;
     bool _movingWorld;
@@ -124,7 +126,11 @@ public class StorySelectMenu : MonoBehaviour {
 
     void CheckInput() {
         if(Input.GetButtonDown("Cancel")) {
-            FindObjectOfType<GameManager>().MainMenuButton();
+            if (characterSelectWindow.gameObject.activeSelf) {
+                characterSelectWindow.Deactivate();
+            } else {
+                FindObjectOfType<GameManager>().MainMenuButton();
+            }
         }
     }
 

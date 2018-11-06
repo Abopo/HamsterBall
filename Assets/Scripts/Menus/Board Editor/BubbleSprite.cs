@@ -46,7 +46,7 @@ public class BubbleSprite : MonoBehaviour {
         }
 
         // Stay forward
-        transform.position = new Vector3(transform.position.x, transform.position.y, -5f);
+        transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
     }
 
     public void SetType(int inType) {

@@ -14,17 +14,24 @@ public class BoardLoader : MonoBehaviour {
     char _readChar;
     string _readText;
 
+    CHARACTERNAMES _chosenCharacter;
+
     // Use this for initialization
     void Start () {
         //_cutscenePath = "Assets/Resources/Text/BoardSetup.txt";
         //_reader = new StreamReader(_cutscenePath);
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _chosenCharacter = CHARACTERNAMES.BOY1;
     }
 
     // Update is called once per frame
     void Update () {
 		
 	}
+
+    public void SetCharacter(CHARACTERNAMES character) {
+        _chosenCharacter = character;
+    }
 
     public void ReadBoardSetup(string path) {
         // Save the path to the level data
@@ -98,7 +105,7 @@ public class BoardLoader : MonoBehaviour {
                 ReadSpecialHamsters();
                 break;
             case "AI":
-                SetupPlayers();
+                SetupAIPlayers();
                 break;
             case "Mode":
                 SetMode();
@@ -226,72 +233,26 @@ public class BoardLoader : MonoBehaviour {
         } while (_readText != "End");
     }
 
-    void SetupPlayers() {
-        PlayerManager playerManager = _gameManager.GetComponent<PlayerManager>();
-        playerManager.ClearAllPlayers();
-
-        PlayerInfo player1 = new PlayerInfo();
-        player1.playerNum = 1;
-        int joystick = InputState.GetValidJoystick();
-        if (joystick > 0) {
-            player1.controllerNum = joystick;
-        } else {
-            player1.controllerNum = 1;
-        }
-
-        /*
-        if (Input.GetJoystickNames().Length > 0) {
-            player1.controllerNum = 3;
-        } else {
-            player1.controllerNum = 1;
-        }
-        */
-        player1.team = 0;
-        playerManager.AddPlayer(player1);
-
-        //_readText = _reader.ReadLine();
+    void SetupAIPlayers() {
         _readText = _linesFromFile[_fileIndex++]; // read AI difficulty
         if (_readText != "None") {
-            PlayerInfo player2 = new PlayerInfo();
-            player2.playerNum = 2;
-            player2.controllerNum = -1;
-            player2.team = 1;
-            player2.difficulty = int.Parse(_readText);
+            PlayerManager playerManager = _gameManager.GetComponent<PlayerManager>();
 
-            //_readText = _reader.ReadLine();
+            PlayerInfo aiPlayer = new PlayerInfo();
+            aiPlayer.playerNum = 2;
+            aiPlayer.controllerNum = -1;
+            aiPlayer.characterName = CHARACTERNAMES.BOY3;
+            aiPlayer.team = 1;
+            aiPlayer.difficulty = int.Parse(_readText);
+
             _readText = _linesFromFile[_fileIndex++]; // read AI character script
-            player2.characterAI = _readText;
-            /*
-            if (_readText != "Standard") {
-                SetCharacterAI(player2, _readText);
-            }
-            */
-            playerManager.AddPlayer(player2);
+            aiPlayer.characterAI = _readText;
+            playerManager.AddPlayer(aiPlayer);
+
+            // Make sure the game manager knows there's an AI
+            _gameManager.numAI += 1;
         }
     }
-
-    /*
-    void SetCharacterAI(PlayerInfo pInfo, string charAI) {
-
-        CharacterAI characterAI = new CharacterAI();
-        switch(charAI) {
-            case "GeneralHam":
-                characterAI = new GeneralHamAI();
-                break;
-            case "MountainGoat":
-                characterAI = new MountainGoatAI();
-                break;
-            case "Snail":
-                characterAI = new SnailAI();
-                break;
-            case "Rooster":
-                characterAI = new RoosterAI();
-                break;
-        }
-
-        //pInfo.characterAI = characterAI;
-    }
-    */
 
     void SetMode() {
         _readText = _linesFromFile[_fileIndex++];

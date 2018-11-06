@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StoryButton : MenuOption {
     public bool hasCutscene;
@@ -17,7 +17,9 @@ public class StoryButton : MenuOption {
     StorySelectMenu _storySelectMenu;
     BoardLoader _boardLoader;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
+
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
         _boardLoader = FindObjectOfType<BoardLoader>();
     }
@@ -25,18 +27,18 @@ public class StoryButton : MenuOption {
     // Use this for initialization
     protected override void Start () {
         base.Start();
-	}
-	
-	// Update is called once per frame
-	protected override void Update () {
-        base.Update();
-
+        
         // Don't move to this button if it's locked
         if (isLocked) {
             isReady = false;
         } else {
             isReady = true;
         }
+    }
+
+    // Update is called once per frame
+    protected override void Update () {
+        base.Update();
 	}
 
     protected override void Select() {
@@ -46,6 +48,12 @@ public class StoryButton : MenuOption {
             return;
         }
 
+        // Open the character select window
+        _storySelectMenu.characterSelectWindow.Activate(this);
+
+        isReady = false;
+
+        /*
         FindObjectOfType<GameManager>().stage = sceneNumber;
 
         // Set the new story position to here
@@ -59,6 +67,7 @@ public class StoryButton : MenuOption {
             // Load a board
             _boardLoader.ReadBoardSetup(fileToLoad);
         }
+        */
     }
 
     public override void Highlight() {
@@ -71,7 +80,7 @@ public class StoryButton : MenuOption {
     }
 
     public void Unlock() {
-        GetComponentInChildren<SpriteRenderer>().enabled = false;
+        transform.GetChild(1).GetComponent<Image>().enabled = false;
         isLocked = false;
     }
 }

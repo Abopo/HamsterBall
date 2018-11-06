@@ -52,10 +52,12 @@ public class IdleState : PlayerState {
 
             _longIdleTimer = 0f;
         }
-		
-		// Check below the player to make sure they 
-		// are standing on something
-		playerController.Physics.CheckBelow ();
+
+        playerController.ApplyGravity();
+
+        // Check below the player to make sure they 
+        // are standing on something
+        playerController.Physics.CheckBelow ();
 		playerController.CheckPosition();
 	}
 

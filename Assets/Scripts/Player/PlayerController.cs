@@ -233,8 +233,8 @@ public class PlayerController : Entity {
     protected override void Update () {
         base.Update();
 
-        // Don't update if the game is over
-        if(_gameManager.gameIsOver) {
+        // Don't update if the game is over or hasn't started yet
+        if(_gameManager.gameIsOver || !_levelManager.gameStarted) {
             currentState.CheckInput(inputState);
             currentState.Update();
 

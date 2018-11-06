@@ -30,9 +30,22 @@ public class ContinueButton : MonoBehaviour {
                 _levelManager.GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
             }
         } else if (_gameManager.nextCutscene != "") {
-            // Load a cutscene
-            CutsceneManager.fileToLoad = _gameManager.nextCutscene;
-            SceneManager.LoadScene("Cutscene");
+            // If we are in a verus stage
+            if(_gameManager.gameMode == GAME_MODE.MP_VERSUS) {
+                // Make sure the entire set is done before playing the cutscene
+                if (_levelManager.setOver) {
+                    // Load a cutscene
+                    CutsceneManager.fileToLoad = _gameManager.nextCutscene;
+                    SceneManager.LoadScene("Cutscene");
+                // Otherwise, play the next game in the set
+                } else {
+                    _levelManager.NextGame();
+                }
+            } else {
+                // Load a cutscene
+                CutsceneManager.fileToLoad = _gameManager.nextCutscene;
+                SceneManager.LoadScene("Cutscene");
+            }
         } else {
             // It's probably a versus match so
             // Replay the current level

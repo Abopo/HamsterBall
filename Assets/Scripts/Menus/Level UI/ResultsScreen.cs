@@ -14,11 +14,16 @@ public class ResultsScreen : MonoBehaviour {
     float winTimer = 0.0f;
 
     GameManager _gameManager;
-    
+    LevelManager _levelManager;
+
+    private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
+    }
+
     // Use this for initialization
     void Start () {
         // Set the text of the previousMenuButton to a proper text
-        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -76,11 +81,14 @@ public class ResultsScreen : MonoBehaviour {
     // used for single player
     public void Activate(bool won) {
         gameObject.SetActive(true);
+        winningTeamSprite.gameObject.SetActive(false);
+        winningTeamText.gameObject.SetActive(true);
         if (won) {
             winningTeamText.text = "You did it!";
         } else {
             winningTeamText.text = "You failed...";
         }
+
         _menuOptions = transform.GetComponentsInChildren<MenuOption>();
         foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;

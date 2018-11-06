@@ -600,7 +600,12 @@ public class BubbleManager : MonoBehaviour {
 
     // Update is called once per frame
     protected virtual void Update() {
-        if(Input.GetKeyDown(KeyCode.L)) {
+        // Wait until the game starts to update
+        if (!_levelManager.gameStarted) {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.L)) {
             AddLine();
         }
         if(Input.GetKeyDown(KeyCode.P)) {
