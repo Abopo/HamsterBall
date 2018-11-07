@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Rewired;
 using System.Collections.Generic;
 
 public enum CHARACTERNAMES { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, NUM_CHARACTERS};
@@ -19,12 +20,7 @@ public class Character : MonoBehaviour {
 
     bool _justMoved;
 
-    InputState _inputState;
-    public int ControllerNum {
-        get {
-            return _inputState.controllerNum;
-        }
-    }
+    Player _player;
 
     // these are only used by the first player to control the selections of ai players
     public List<Character> aiList = new List<Character>();
@@ -53,9 +49,6 @@ public class Character : MonoBehaviour {
     public int PlayerNum {
         get { return _playerNum; }
     }
-    public int JoystickNum {
-        get { return _inputState.controllerNum; }
-    }
     public CHARACTERNAMES CharacterName {
         get { return _characterName; }
     }
@@ -65,18 +58,12 @@ public class Character : MonoBehaviour {
     public int Team {
         get { return _team; }
     }
-    public InputState InputState {
-        get { return _inputState; }
-    }
 
     private void Awake() {
         _initialPos = transform.position;
 
         if (_playerManager == null) {
             _playerManager = FindObjectOfType<PlayerManager>();
-        }
-        if (_inputState == null) {
-            _inputState = new InputState();
         }
         if (_animator == null) {
             _animator = GetComponentInChildren<Animator>();
@@ -114,18 +101,18 @@ public class Character : MonoBehaviour {
         _team = -1;
         _playerManager = FindObjectOfType<PlayerManager>();
 
-        _inputState = new InputState();
-        _inputState.controllerNum = pInfo.controllerNum;
         _playerNum = pInfo.playerNum;
 
         _animator = GetComponentInChildren<Animator>();
         SetCharacter(pInfo.characterName);
 
-        if(pInfo.controllerNum < 0) {
+        if(pInfo.isAI) {
             isAI = true;
             takeInput = false;
+            _player = ReInput.players.GetPlayer(0);
         } else {
             takeInput = true;
+            _player = ReInput.players.GetPlayer(_playerNum);
         }
         /*
         if (pInfo.team == 0) {
@@ -153,37 +140,30 @@ public class Character : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (_active && takeInput) {
+        if (isLocal && _active && takeInput) {
             CheckInput();
             UpdateArrows();
         }
     }
 
     void CheckInput() {
-        if (isLocal) {
-            _inputState = InputState.GetInput(_inputState);
-        }
-        if(isAI) {
-            _inputState = InputState.GetInput(parentCharacter._inputState);
-        }
-        
         if (!_justMoved && !lockedIn) {
             // Changing teams
-            if (_inputState.left.isDown) {
+            if (_player.GetButtonDown("Left")) {
                 MoveLeft();
                 _justMoved = true;
             }
-            if (_inputState.right.isDown) {
+            if (_player.GetButtonDown("Right")) {
                 MoveRight();
                 _justMoved = true;
             }
         } else {
-            if (!_inputState.right.isDown && !_inputState.left.isDown) {
+            if (!_player.GetButton("Left") && !_player.GetButton("Right")) {
                 _justMoved = false;
             }
         }
 
-        if ((_inputState.jump.isJustPressed || _inputState.swing.isJustPressed) && _team != -1 && !lockedIn) {
+        if (_player.GetButtonDown("Submit") && _team != -1 && !lockedIn) {
             // Lock in
             LockIn();
 
@@ -198,7 +178,7 @@ public class Character : MonoBehaviour {
                 aiIndex++;
             }
         }
-        if (_inputState.attack.isJustPressed) {
+        if (_player.GetButtonDown("Cancel")) {
             if (lockedIn) {
                 Unlock();
             } else if (isAI) {
@@ -208,11 +188,6 @@ public class Character : MonoBehaviour {
                 parentCharacter.Unlock();
                 aiIndex--;
             }
-        }
-
-        // Reset the input for networked instances
-        if (_photonView != null && _photonView.owner != PhotonNetwork.player) {
-            _inputState = InputState.ResetInput(_inputState);
         }
     }
 
@@ -334,12 +309,6 @@ public class Character : MonoBehaviour {
         // Play idle animation
         _animator.SetInteger("PlayerState", 0);
         _animator.speed = 1;
-    }
-
-    public void TakeInput(InputState input) {
-        int conNum = _inputState.controllerNum;
-        _inputState = input;
-        _inputState.controllerNum = conNum;
     }
 
     // Only for networking use

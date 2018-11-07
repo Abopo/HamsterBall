@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerCountSelectMenu : MonoBehaviour {
-
     public MenuButton[] playerButtons;
     public MenuButton[] comButtons;
     public GameObject playerCountMenu;
@@ -27,7 +25,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(gameObject.activeSelf) {
-            if(Input.GetButtonDown("Cancel")) {
+            if(_gameManager.playerInput.GetButtonDown("Cancel")) {
                 Deactivate();
             }
         }

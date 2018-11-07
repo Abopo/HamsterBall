@@ -53,7 +53,7 @@ public class TeamSelect : MonoBehaviour {
         if (_isActive) {
             if (pressStartText.activeSelf == true) {
                 // Look for input to start game
-                if (Input.GetButtonDown("Start")) {
+                if (_gameManager.playerInput.GetButtonDown("Start")) {
                     OpenSetupMenu();
                 }
             }

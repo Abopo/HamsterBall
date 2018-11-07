@@ -100,7 +100,7 @@ public class GameSetupWindow : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetButtonDown("Cancel") && !IsAnyOptionSelected()) {
+        if (_gameManager.playerInput.GetButtonDown("Cancel") && !IsAnyOptionSelected()) {
             // Back out to character select
             if (_gameManager.numAI > 0) {
                 // Go back to AI setup

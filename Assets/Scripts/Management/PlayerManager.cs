@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class PlayerInfo {
     public int playerNum;
     public CHARACTERNAMES characterName;
-    public int controllerNum;
     public int team; // -1 == none; 0 == left; 1 == right
     public bool aimAssist;
+    public bool isAI; // whether this character is an ai or not
     public int difficulty; // Only used for AI, 0-3: easy-expert
     public string characterAI; // Only used for AI
     public int ownerID; // used for networking
@@ -42,13 +42,13 @@ public class PlayerManager : MonoBehaviour {
     void BackupPlayers() {
         PlayerInfo newPlayer = new PlayerInfo();
         newPlayer.playerNum = 1;
-        newPlayer.controllerNum = 1;
+        newPlayer.isAI = false;
         newPlayer.team = 0;
         _players.Add(newPlayer);
 
         PlayerInfo newPlayer2 = new PlayerInfo();
         newPlayer2.playerNum = 2;
-        newPlayer2.controllerNum = -1;
+        newPlayer.isAI = true;
         newPlayer2.team = 1;
         _players.Add(newPlayer2);
     }
@@ -78,17 +78,6 @@ public class PlayerManager : MonoBehaviour {
         return tempPlayer;
     }
 
-    public int GetControllerNum(int playerNum) {
-        foreach (PlayerInfo p in _players) {
-            if (p.playerNum == playerNum) {
-                // TODO: Might need to clean up memory here.
-                return p.controllerNum;
-            }
-        }
-
-        return -1;
-    }
-
     public void SetTeam(int playerNum, int team) {
         foreach (PlayerInfo p in _players) {
             if (p.playerNum == playerNum) {
@@ -103,7 +92,7 @@ public class PlayerManager : MonoBehaviour {
     public void AddPlayer() {
         PlayerInfo newPlayer = new PlayerInfo();
         newPlayer.playerNum = _players.Count+1;
-        newPlayer.controllerNum = -1;
+        newPlayer.isAI = false;
         newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BOY1);
         newPlayer.team = -1;
         newPlayer.difficulty = 0;
@@ -111,11 +100,11 @@ public class PlayerManager : MonoBehaviour {
         _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
     }
 
-    public void AddPlayer(int playerNum, int controllerNum) {
+    public void AddPlayer(int playerNum, bool isAI) {
         if (playerNum != -1) {
             PlayerInfo newPlayer = new PlayerInfo();
             newPlayer.playerNum = playerNum;
-            newPlayer.controllerNum = controllerNum;
+            newPlayer.isAI = isAI;
             newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BOY1);
             newPlayer.team = -1;
             newPlayer.difficulty = 0;
@@ -124,11 +113,11 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    public void AddPlayer(int playerNum, int controllerNum, CHARACTERNAMES charaName) {
+    public void AddPlayer(int playerNum, bool isAI, CHARACTERNAMES charaName) {
         if (playerNum != -1) {
             PlayerInfo newPlayer = new PlayerInfo();
             newPlayer.playerNum = playerNum;
-            newPlayer.controllerNum = controllerNum;
+            newPlayer.isAI = isAI;
             newPlayer.characterName = charaName;
             newPlayer.team = -1;
             newPlayer.difficulty = 0;
@@ -143,11 +132,11 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // For networking
-    public void AddPlayer(int playerNum, int controllerNum, int ownerID) {
+    public void AddPlayer(int playerNum, bool isAI, int ownerID) {
         if (playerNum != -1) {
             PlayerInfo newPlayer = new PlayerInfo();
             newPlayer.playerNum = playerNum;
-            newPlayer.controllerNum = controllerNum;
+            newPlayer.isAI = isAI;
             newPlayer.team = -1;
             newPlayer.difficulty = 0;
             newPlayer.ownerID = ownerID;
@@ -162,18 +151,6 @@ public class PlayerManager : MonoBehaviour {
                 // TODO: Might need to clean up memory here.
                 _players.Remove(p);
                 return playerNum;
-            }
-        }
-        return -1;
-    }
-
-    // Returns the player number to keep track on which one has been removed.
-    public int RemovePlayerByController(int controllerNum) {
-        foreach(PlayerInfo p in _players) {
-            if(p.controllerNum == controllerNum) {
-                // TODO: Might need to clean up memory here.
-                _players.Remove(p);
-                return p.playerNum;
             }
         }
         return -1;

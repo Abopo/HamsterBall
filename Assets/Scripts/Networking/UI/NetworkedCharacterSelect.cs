@@ -59,10 +59,10 @@ public class NetworkedCharacterSelect :Photon.MonoBehaviour {
                         // If we own this selector
                         if (charaSelectors[j].ownerId == PhotonNetwork.player.ID) {
                             // Activate it with a controller
-                            charaSelectors[j].Activate(InputState.AssignController(), false, true);
+                            charaSelectors[j].Activate(false, true);
                         } else {
                             // Activate it with no controller
-                            charaSelectors[j].Activate(-1, false, false);
+                            charaSelectors[j].Activate(false, false);
                         }
 
                         // Add it to the character select
@@ -100,7 +100,7 @@ public class NetworkedCharacterSelect :Photon.MonoBehaviour {
 
     }
 
-    public void RemoveNetworkedCharacter(int controllerNum, int ownerID) {
+    public void RemoveNetworkedCharacter(int ownerID) {
 
     }
 }

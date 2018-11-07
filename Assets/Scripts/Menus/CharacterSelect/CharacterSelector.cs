@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 public class CharacterSelector : MonoBehaviour {
     public Animator characterAnimator;
@@ -12,18 +13,7 @@ public class CharacterSelector : MonoBehaviour {
     public bool takeInput = true;
     public bool isAI = false;
 
-    InputState _inputState = new InputState();
-    public InputState InputState {
-        get { return _inputState; }
-    }
-    public int ControllerNum {
-        get {
-            return _inputState.controllerNum;
-        }
-        set {
-            _inputState.controllerNum = value;
-        }
-    }
+    Player _player;
 
     public bool Active {
         get { return gameObject.activeSelf; }
@@ -69,12 +59,19 @@ public class CharacterSelector : MonoBehaviour {
             // Find correct stuff
             //Initialize();
         }
+
+        if (!isAI) {
+            _player = ReInput.players.GetPlayer(playerNum);
+        } else {
+            _player = ReInput.players.GetPlayer(0);
+        }
     }
 
     public void Initialize() {
         // Get player number
         NewCharacterSelect characterSelect = FindObjectOfType<NewCharacterSelect>();
         playerNum = characterSelect.NumPlayers;
+        _player = ReInput.players.GetPlayer(playerNum);
 
         // With player number, get correct border sprite, character animator, and ready sprite
         Sprite[] selectorSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterSelectors");
@@ -93,8 +90,7 @@ public class CharacterSelector : MonoBehaviour {
         HighlightIcon(_charaIcons[playerNum]);
     }
 
-    public void Activate(int conNum, bool ai) {
-        ControllerNum = conNum;
+    public void Activate(bool ai) {
         if(ai) {
             isAI = true;
             takeInput = false;
@@ -103,8 +99,7 @@ public class CharacterSelector : MonoBehaviour {
         characterAnimator.gameObject.SetActive(true);
     }
 
-    public void Activate(int conNum, bool ai, bool local) {
-        ControllerNum = conNum;
+    public void Activate(bool ai, bool local) {
         if (ai) {
             isAI = true;
             takeInput = false;
@@ -129,7 +124,6 @@ public class CharacterSelector : MonoBehaviour {
         }
 
         if (isLocal && takeInput) {
-            GetInput();
             CheckInput();
         }
 
@@ -139,7 +133,7 @@ public class CharacterSelector : MonoBehaviour {
     public void CheckInput() {
         if (!lockedIn && CanMove()) {
             // Right
-            if (_inputState.right.isDown) {
+            if (_player.GetButtonDown("Right")) {
                 if (curCharacterIcon.adjOptions[0] != null && curCharacterIcon.adjOptions[0].isReady) {
                     // move selector to adjOptions[0]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[0]);
@@ -147,7 +141,7 @@ public class CharacterSelector : MonoBehaviour {
                 }
             }
             // Left
-            if (_inputState.left.isDown) {
+            if (_player.GetButtonDown("Left")) {
                 if (curCharacterIcon.adjOptions[2] != null && curCharacterIcon.adjOptions[2].isReady) {
                     // move selector to adjOptions[2]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[2]);
@@ -155,7 +149,7 @@ public class CharacterSelector : MonoBehaviour {
                 }
             }
             // Up
-            if (_inputState.up.isDown) {
+            if (_player.GetButtonDown("Up")) {
                 if (curCharacterIcon.adjOptions[3] != null && curCharacterIcon.adjOptions[3].isReady) {
                     // move selector to adjOptions[3]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[3]);
@@ -163,7 +157,7 @@ public class CharacterSelector : MonoBehaviour {
                 }
             }
             // Down
-            if (_inputState.down.isDown) {
+            if (_player.GetButtonDown("Down")) {
                 if (curCharacterIcon.adjOptions[1] != null && curCharacterIcon.adjOptions[1].isReady) {
                     // move selector to adjOptions[1]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[1]);
@@ -171,11 +165,11 @@ public class CharacterSelector : MonoBehaviour {
                 }
             }
         }
-        if (!_inputState.right.isDown && !_inputState.left.isDown && !_inputState.up.isDown && !_inputState.down.isDown) {
+        if (!_player.GetButton("Right") && !_player.GetButton("Left") && !_player.GetButton("Up") && !_player.GetButton("Down")) {
             _moveTimer = _moveTime + 1f;
         }
 
-        if ((_inputState.jump.isJustPressed || _inputState.swing.isJustPressed) && !lockedIn && !curCharacterIcon.isLocked) {
+        if (_player.GetButtonDown("Submit") && !lockedIn && !curCharacterIcon.isLocked) {
             // Lock in
             LockIn();
 
@@ -190,7 +184,7 @@ public class CharacterSelector : MonoBehaviour {
                 aiIndex++;
             }
         }
-        if (_inputState.attack.isJustPressed) {
+        if (_player.GetButtonDown("Cancel")) {
             if (lockedIn) {
                 Unlock();
             } else if (isAI) {
@@ -207,11 +201,7 @@ public class CharacterSelector : MonoBehaviour {
         lockedIn = true;
         readySprite.SetActive(true);
         curCharacterIcon.Lock();
-        if (!isAI) {
-            _playerManager.AddPlayer(playerNum, ControllerNum, curCharacterIcon.characterName);
-        } else {
-            _playerManager.AddPlayer(playerNum, -1, curCharacterIcon.characterName);
-        }
+        _playerManager.AddPlayer(playerNum, isAI, curCharacterIcon.characterName);
     }
     public void Unlock() {
         lockedIn = false;
@@ -244,15 +234,6 @@ public class CharacterSelector : MonoBehaviour {
         }
 
         return false;
-    }
-
-    public void GetInput() {
-        _inputState = InputState.GetInput(_inputState);
-    }
-    public void TakeInput(InputState input) {
-        int conNum = _inputState.controllerNum;
-        _inputState = input;
-        _inputState.controllerNum = conNum;
     }
 
     public void SetIcon(CHARACTERNAMES characterName) {

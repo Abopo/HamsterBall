@@ -201,7 +201,8 @@ public class PlayerController : Entity {
 
     public void SetPlayerNum(int pNum) {
         playerNum = pNum;
-        inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
+        inputState.SetPlayerID(playerNum);
+        //inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
     }
 
     public void SetCharacterName(CHARACTERNAMES charaName) {
@@ -294,7 +295,8 @@ public class PlayerController : Entity {
 
     void CheckInput() {
         if (!aiControlled) {
-            inputState = InputState.GetInput(inputState);
+            //inputState = InputState.GetInput(inputState);
+            inputState.GetInput();
         }
 
         if (inputState.shift.isJustPressed && CanShift) {

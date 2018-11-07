@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Rewired;
 
 // A base class for all menu options, i.e. buttons, sliders, etc.
 // Mostly allows for any menu option to move the selector to any other kind of menu option.
@@ -15,6 +16,8 @@ public class MenuOption : MonoBehaviour {
     public bool _isHighlighted;
     protected bool _justHighlighted; // use this to stop inputs from flowing over into multiple options.
     protected bool _moved;
+
+    protected Player _player;
 
     protected AudioSource _audioSource;
     AudioClip _highlightClip;
@@ -35,11 +38,17 @@ public class MenuOption : MonoBehaviour {
         //_selectedPos = transform.position;
         _moved = false;
 
+        _player = ReInput.players.GetPlayer(0);
+
         _audioSource = GetComponent<AudioSource>();
         _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
         _selectClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
 
         _allOtherOptions = FindObjectsOfType<MenuOption>();
+    }
+
+    public void SetPlayer(int playerID) {
+        _player = ReInput.players.GetPlayer(playerID);
     }
 
     // Update is called once per frame
@@ -49,7 +58,7 @@ public class MenuOption : MonoBehaviour {
         }
 
         if (_isHighlighted) {
-            if (Input.GetButtonDown("Submit")) {
+            if (_player.GetButtonDown("Submit")) {
                 Select();
             }
         }
@@ -152,8 +161,7 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected bool InputRight() {
-        if (Input.GetAxis("Horizontal") > 0.3f || Input.GetAxis("Horizontal DPad") > 0.3f || 
-            Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+        if (_player.GetAxis("Horizontal0") > 0.3f) {
             return true;
         }
 
@@ -161,8 +169,7 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected bool InputLeft() {
-        if (Input.GetAxis("Horizontal") < -0.3f || Input.GetAxis("Horizontal DPad") < -0.3f || 
-            Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+        if (_player.GetAxis("Horizontal0") < -0.3f) {
             return true;
         }
 
@@ -170,8 +177,7 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected bool InputUp() {
-        if(Input.GetAxis("Vertical") < -0.3f || Input.GetAxis("Vertical DPad") > 0.3f || 
-            Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+        if(_player.GetAxis("Vertical") > 0.3f) {
             return true;
         }
 
@@ -179,8 +185,7 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected bool InputDown() {
-        if (Input.GetAxis("Vertical") > 0.3f || Input.GetAxis("Vertical DPad") < -0.3f ||
-            Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+        if (_player.GetAxis("Vertical") < -0.3f) {
             return true;
         }
 
@@ -188,10 +193,8 @@ public class MenuOption : MonoBehaviour {
     }
 
     protected bool InputReset() {
-        if(Input.GetAxis("Horizontal") < 0.3f && Input.GetAxis("Horizontal") > -0.3f &&
-                Input.GetAxis("Vertical") < 0.3f && Input.GetAxis("Vertical") > -0.3f &&
-                Input.GetAxis("Horizontal DPad") < 0.3f && Input.GetAxis("Horizontal DPad") > -0.3f &&
-                Input.GetAxis("Vertical DPad") < 0.3f && Input.GetAxis("Vertical DPad") > -0.3f) {
+        if(_player.GetAxis("Horizontal0") < 0.3f && _player.GetAxis("Horizontal0") > -0.3f &&
+           _player.GetAxis("Vertical") < 0.3f && _player.GetAxis("Vertical") > -0.3f) {
             return true;
         }
 

@@ -44,10 +44,12 @@ public class StorySelectMenu : MonoBehaviour {
         get { return _movingWorld; }
     }
 
+    GameManager _gameManager;
+
     // Use this for initialization
     void Start () {
-        GameManager gameManager = FindObjectOfType<GameManager>();
-        gameManager.prevMenu = MENU.STORY;
+        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager.prevMenu = MENU.STORY;
 
         // Multiplayer images
 		locationImages["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/BasicForest");
@@ -125,7 +127,7 @@ public class StorySelectMenu : MonoBehaviour {
 	}
 
     void CheckInput() {
-        if(Input.GetButtonDown("Cancel")) {
+        if(_gameManager.playerInput.GetButtonDown("Cancel")) {
             if (characterSelectWindow.gameObject.activeSelf) {
                 characterSelectWindow.Deactivate();
             } else {

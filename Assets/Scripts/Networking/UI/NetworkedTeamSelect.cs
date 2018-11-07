@@ -29,7 +29,7 @@ public class NetworkedTeamSelect : MonoBehaviour {
 		
 	}
 
-    public void RemoveNetworkedCharacter(int controllerNum, int Id) {
+    public void RemoveNetworkedCharacter(int Id) {
 
     }
 

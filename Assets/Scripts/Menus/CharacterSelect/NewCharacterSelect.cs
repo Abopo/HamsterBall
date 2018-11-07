@@ -66,13 +66,13 @@ public class NewCharacterSelect : MonoBehaviour {
 
         // Setup and activate selectors that have controllers
         for (int i = 0; i < _numPlayers; ++i) {
-            charaSelectors[i].Activate(InputState.AssignController(), false);
+            charaSelectors[i].Activate(false);
         }
 
         // Do the same for AI
         for (int i = _numPlayers; i < _numPlayers+_numAI; ++i) {
             // Set ai to have same controller as Player 1
-            charaSelectors[i].Activate(charaSelectors[0].ControllerNum, true);
+            charaSelectors[i].Activate(true);
             // Add ai to player 1's list
             charaSelectors[0].aiList.Add(charaSelectors[i]);
         }
@@ -88,12 +88,12 @@ public class NewCharacterSelect : MonoBehaviour {
         if (_isActive) {
             if (pressStartText.activeSelf == true) {
                 // Look for input to start game
-                if (Input.GetButtonDown("Start")) {
+                if (_gameManager.playerInput.GetButtonDown("Start")) {
                     LoadNextScene();
                 }
             }
 
-            if (Input.GetButtonDown("Cancel")) {
+            if (_gameManager.playerInput.GetButtonDown("Cancel")) {
                 FindObjectOfType<GameManager>().LocalPlayButton();
             }
 

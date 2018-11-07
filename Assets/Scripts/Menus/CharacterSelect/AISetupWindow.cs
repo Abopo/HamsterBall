@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using Rewired;
 using System.Collections;
 
 public class AISetupWindow : MonoBehaviour {
@@ -17,7 +17,7 @@ public class AISetupWindow : MonoBehaviour {
 
     int _numAIs;
 
-    Sprite[] characterSprites = new Sprite[4];
+    Sprite[] characterSprites = new Sprite[6];
 
     PlayerManager _playerManager;
     TeamSelect _teamSelect;
@@ -30,12 +30,15 @@ public class AISetupWindow : MonoBehaviour {
     public void Initialize() {
         gameObject.SetActive(true);
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        Sprite[] charaSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
 
-        characterSprites[0] = charaSprites[0];
-        characterSprites[1] = charaSprites[1];
-        characterSprites[2] = charaSprites[2];
-        characterSprites[3] = charaSprites[3];
+        characterSprites[0] = boySprites[0];
+        characterSprites[1] = boySprites[1];
+        characterSprites[2] = boySprites[2];
+        characterSprites[3] = boySprites[3];
+        characterSprites[4] = girlSprites[0];
+        characterSprites[5] = girlSprites[1];
 
         GetAIPlayerInfo();
         MenuMovementSetup();
@@ -59,7 +62,7 @@ public class AISetupWindow : MonoBehaviour {
         for(int i = 0; i < _playerManager.NumPlayers; ++i) {
             // If this player is an AI
             PlayerInfo pi = _playerManager.GetPlayerByIndex(i);
-            if (pi != null && pi.controllerNum < 0) {
+            if (pi != null && pi.isAI) {
                 if(!ai1Setup.gameObject.activeSelf) {
                     ai1Setup.Initialize(pi);
                 } else if(!ai2Setup.gameObject.activeSelf) {
@@ -83,7 +86,7 @@ public class AISetupWindow : MonoBehaviour {
             ai3Setup.adjOptions[3] = ai2Setup;
             aiReadyButton.adjOptions[1] = ai1Setup;
             aiReadyButton.adjOptions[3] = ai3Setup;
-            // If the 2nd AI is active
+        // If the 2nd AI is active
         } else if(ai2Setup.gameObject.activeSelf) {
             ai1Setup.adjOptions[1] = ai2Setup;
             ai1Setup.adjOptions[3] = aiReadyButton;
@@ -91,7 +94,7 @@ public class AISetupWindow : MonoBehaviour {
             ai2Setup.adjOptions[3] = ai1Setup;
             aiReadyButton.adjOptions[1] = ai1Setup;
             aiReadyButton.adjOptions[3] = ai2Setup;
-            // If only the first AI is active
+        // If only the first AI is active
         } else {
             ai1Setup.adjOptions[1] = aiReadyButton;
             ai1Setup.adjOptions[3] = aiReadyButton;
@@ -102,30 +105,11 @@ public class AISetupWindow : MonoBehaviour {
 
     void SetPlayerSprites(PlayerInfo pi, SpriteRenderer sr) {
         sr.sprite = characterSprites[(int)pi.characterName];
-        /*
-        switch(pi.characterName) {
-            case CHARACTERNAMES.BOB:
-                sr.sprite = characterSprites[0];
-                break;
-            case CHARACTERNAMES.BUB:
-                sr.sprite = characterSprites[1];
-                break;
-            case CHARACTERNAMES.NEGABOB:
-                sr.sprite = characterSprites[2];
-                break;
-            case CHARACTERNAMES.NEGABUB:
-                sr.sprite = characterSprites[3];
-                break;
-            case CHARACTERNAMES.PEPSIMAN:
-                sr.sprite = characterSprites[4];
-                break;
-        }
-        */
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetButtonDown("Cancel")) {
+        if(ReInput.players.GetPlayer(0).GetButtonDown("Cancel")) {
             // Turn off menu and turn back on team select stuff
             Deactivate();
         }

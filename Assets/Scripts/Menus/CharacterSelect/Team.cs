@@ -66,25 +66,6 @@ public class Team : MonoBehaviour {
 
     void SetReadyText(SpriteRenderer rSprite, Character chara) {
         // Show Ready Text
-        /*
-        if (chara.isAI) {
-            rSprite.sprite = readyCSprites[chara.PlayerNum - 1];
-        } else {
-            rSprite.sprite = readyPSprites[chara.PlayerNum - 1];
-        }
-        */
-
-
-        // Set proper button prompt
-        Text addAIText = rSprite.transform.GetChild(0).GetComponent<Text>();
-        // If using keyboard
-        if(chara.ControllerNum == 1) {
-            addAIText.text = "V Key\nAdd AI Player";
-        } else if(chara.ControllerNum == 2) {
-            addAIText.text = "0 Key\nAdd AI Player";
-        } else {
-            addAIText.text = "X BUTTON\nAdd AI Player";
-        }
 
         rSprite.gameObject.SetActive(true);
         if(chara.isAI) {

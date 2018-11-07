@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using Rewired;
 
 public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, MP_PARTY, SURVIVAL, TEAMSURVIVAL, NUM_MODES }
 public enum MENU { STORY = 0, VERSUS, EDITOR };
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour {
     public bool demoMode;
 
     public List<string> prevPuzzles = new List<string>(); // A list of the puzzles already played on in a puzzle challenge
+
+    public Player playerInput;
 
     string _levelDoc; // document containing data for a single player level
     int _hamsterSpawnMax = 1;
@@ -103,6 +106,8 @@ public class GameManager : MonoBehaviour {
         Random.InitState(System.Environment.TickCount);
 
         PhotonNetwork.automaticallySyncScene = true;
+
+        playerInput = ReInput.players.GetPlayer(0);
 
         prevBoard = "";
 

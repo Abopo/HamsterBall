@@ -89,17 +89,15 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     void CheckInput() {
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) ||
-            (Input.GetAxis("Horizontal") < -0.3f) || Input.GetAxis("Horizontal DPad") < -0.3f) {
+        if (_gameManager.playerInput.GetAxis("Horizontal0") < -0.3f) {
             RotateLeft();
             UpdateText();
-        } else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) ||
-            (Input.GetAxis("Horizontal") > 0.3f) || Input.GetAxis("Horizontal DPad") > 0.3f) {
+        } else if (_gameManager.playerInput.GetAxis("Horizontal0") > 0.3f) {
             RotateRight();
             UpdateText();
         }
 
-        if (Input.GetButtonDown("Cancel")) {
+        if (_gameManager.playerInput.GetButtonDown("Cancel")) {
             _audioSource.Play();
             LoadCharacterSelect();
         }

@@ -7,14 +7,12 @@ using Photon;
 public class NetworkedCharacter : Photon.MonoBehaviour {
 
     Character _character;
-    InputState _serializedInput;
     NetworkedTeamSelect _teamSelect;
 
     string _nickname;
 
     private void Awake() {
         _character = GetComponent<Character>();
-        _serializedInput = new InputState();
         _teamSelect = FindObjectOfType<NetworkedTeamSelect>();
     }
 
@@ -27,18 +25,6 @@ public class NetworkedCharacter : Photon.MonoBehaviour {
             // Team
             int team = _character.Team;
             stream.Serialize(ref team);
-
-            // Character
-            //int characterName = (int)_character.CharacterName;
-            //stream.Serialize(ref characterName);
-
-            // Input
-            //stream.Serialize(ref _serializedInput.left.isDown);
-            //stream.Serialize(ref _serializedInput.left.isJustPressed);
-            //stream.Serialize(ref _serializedInput.right.isDown);
-            //stream.Serialize(ref _serializedInput.right.isJustPressed);
-
-            ResetInput();
         } else {
             // Team
             int team = -1;
@@ -46,22 +32,6 @@ public class NetworkedCharacter : Photon.MonoBehaviour {
             if(team != _character.Team) {
                 SyncTeam(team);
             }
-
-            // Character
-            //int characterName = 0;
-            //stream.Serialize(ref characterName);
-            //_character.SetCharacter((CHARACTERNAMES)characterName);
-
-            // Input
-            //stream.Serialize(ref _serializedInput.left.isDown);
-            //stream.Serialize(ref _serializedInput.left.isJustPressed);
-            //stream.Serialize(ref _serializedInput.right.isDown);
-            //stream.Serialize(ref _serializedInput.right.isJustPressed);
-
-            // Take all the input built up between updates
-            //_character.TakeInput(_serializedInput);
-
-            //ResetInput();
         }
     }
 
@@ -77,13 +47,12 @@ public class NetworkedCharacter : Photon.MonoBehaviour {
         // If this character was owned by the disconnected player
         // TODO: maybe make this based on ownerID instead of nickname (it's possible for two players to have the same name?)
         if (otherPlayer.NickName == _nickname) {
-            _teamSelect.RemoveNetworkedCharacter(_character.InputState.controllerNum, otherPlayer.ID);
+            _teamSelect.RemoveNetworkedCharacter(otherPlayer.ID);
             _character.isLocal = true;
         }
     }
 
     public void Update() {
-        GetOwnerInput();
     }
 
     void SyncTeam(int team) {
@@ -108,24 +77,5 @@ public class NetworkedCharacter : Photon.MonoBehaviour {
                 _character.MoveRight();
             }
         }
-    }
-
-    void GetOwnerInput() {
-        if (_character.InputState.left.isDown) {
-            _serializedInput.left.isDown = true;
-        }
-        if (_character.InputState.left.isJustPressed) {
-            _serializedInput.left.isJustPressed = true;
-        }
-        if (_character.InputState.right.isDown) {
-            _serializedInput.right.isDown = true;
-        }
-        if (_character.InputState.right.isJustPressed) {
-            _serializedInput.right.isJustPressed = true;
-        }
-    }
-
-    void ResetInput() {
-        _serializedInput = new InputState();
     }
 }

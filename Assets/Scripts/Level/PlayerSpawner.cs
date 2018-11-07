@@ -57,7 +57,7 @@ public class PlayerSpawner : MonoBehaviour {
 
             PlayerController newPlayer;
             // If the player should be an AI
-            if (tempPlayerInfo.controllerNum < 0) {
+            if (tempPlayerInfo.isAI) {
                 newPlayer = Instantiate(aiPlayerObj).GetComponentInChildren<PlayerController>();
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
                 SetCharacterAI(tempPlayerInfo.characterAI, newPlayer);

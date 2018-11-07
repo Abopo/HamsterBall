@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Rewired;
 
 public class LocalPlayMenu : MonoBehaviour {
 
@@ -23,7 +23,7 @@ public class LocalPlayMenu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (_isActive) {
-            if (Input.GetButtonDown("Cancel")) {
+            if (ReInput.players.GetPlayer(0).GetButtonDown("Cancel")) {
                 FindObjectOfType<GameManager>().MainMenuButton();
             }
         }

@@ -19,7 +19,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     float _bufferTime = 0.2f;
     float _bufferTimer = 0f;
 
-
     private void Awake() {
         _playerController = GetComponent<PlayerController>();
         _serializedInput = new InputState();
@@ -33,14 +32,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         PhotonView photonView = GetComponent<PhotonView>();
         _playerController.playerNum = (int)photonView.instantiationData[0];
         _playerController.team = (int)photonView.instantiationData[1];
-        int controllerNum = (int)photonView.instantiationData[2];
-        if (!PhotonNetwork.isMasterClient) {
-            _playerController.inputState.controllerNum = controllerNum - 4 - photonView.ownerId;
-        } else {
-            _playerController.inputState.controllerNum = controllerNum;
-        }
 
-        SetAnimatorController((CHARACTERNAMES)photonView.instantiationData[3]);
+        SetAnimatorController((CHARACTERNAMES)photonView.instantiationData[2]);
 
         // Make sure our player spawner has us in its list
         NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();

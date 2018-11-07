@@ -240,7 +240,7 @@ public class BoardLoader : MonoBehaviour {
 
             PlayerInfo aiPlayer = new PlayerInfo();
             aiPlayer.playerNum = 2;
-            aiPlayer.controllerNum = -1;
+            aiPlayer.isAI = true;
             aiPlayer.characterName = CHARACTERNAMES.BOY3;
             aiPlayer.team = 1;
             aiPlayer.difficulty = int.Parse(_readText);

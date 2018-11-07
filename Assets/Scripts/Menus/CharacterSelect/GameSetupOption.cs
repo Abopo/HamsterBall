@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Rewired;
 using System.Collections;
 
 public class GameSetupOption : MenuOption {
@@ -32,7 +33,7 @@ public class GameSetupOption : MenuOption {
         } else {
             _isHighlighted = false;
         }
-	}
+    }
 
     // Update is called once per frame
     protected override void Update () {
@@ -56,7 +57,7 @@ public class GameSetupOption : MenuOption {
                 _justMoved = true;
             }
             // B
-            if (Input.GetButtonDown("Cancel") || Input.GetButtonDown("Submit")) {
+            if (_player.GetButtonDown("Cancel") || _player.GetButtonDown("Submit")) {
                 Highlight();
             }
         }
