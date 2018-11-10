@@ -21,7 +21,7 @@ public class MasterVolumeSlider : MenuOption {
     protected override void Update() {
         base.Update();
 
-        if(_isHighlighted) {
+        if(isHighlighted) {
             // Right
             if (Input.GetAxis("Horizontal") > 0.3f || Input.GetKey(KeyCode.D)) {
                 // Adjust slider to the right

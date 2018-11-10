@@ -8,6 +8,10 @@ public class World : MonoBehaviour {
     StoryButton[] _storyButtons;
     StorySelectMenu _storySelectMenu;
 
+    public StoryButton[] StoryButtons {
+        get { return _storyButtons; }
+    }
+
     private void Awake() {
         _storyButtons = GetComponentsInChildren<StoryButton>();
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();

@@ -13,7 +13,7 @@ public class MenuOption : MonoBehaviour {
     public bool isReady = true;
 
     //protected Vector2 _selectedPos;
-    public bool _isHighlighted;
+    public bool isHighlighted;
     protected bool _justHighlighted; // use this to stop inputs from flowing over into multiple options.
     protected bool _moved;
 
@@ -27,9 +27,9 @@ public class MenuOption : MonoBehaviour {
 
     protected virtual void Awake() {
         if (isFirstSelection) {
-            _isHighlighted = true;
+            isHighlighted = true;
         } else {
-            _isHighlighted = false;
+            isHighlighted = false;
         }
     }
 
@@ -38,7 +38,9 @@ public class MenuOption : MonoBehaviour {
         //_selectedPos = transform.position;
         _moved = false;
 
-        _player = ReInput.players.GetPlayer(0);
+        if (_player == null) {
+            _player = ReInput.players.GetPlayer(0);
+        }
 
         _audioSource = GetComponent<AudioSource>();
         _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
@@ -57,13 +59,13 @@ public class MenuOption : MonoBehaviour {
             return;
         }
 
-        if (_isHighlighted) {
+        if (isHighlighted) {
             if (_player.GetButtonDown("Submit")) {
                 Select();
             }
         }
 
-        if (!_moved && _isHighlighted && !_justHighlighted) {
+        if (!_moved && isHighlighted && !_justHighlighted) {
             // Right
             if (InputRight()) {
                 TryHighlight(0);
@@ -114,7 +116,7 @@ public class MenuOption : MonoBehaviour {
         PlayHighlightSound();
 
         _moved = true;
-        _isHighlighted = true;
+        isHighlighted = true;
         _justHighlighted = true;
 
         // Make sure it's adjacent options are NOT highlighted
@@ -131,7 +133,7 @@ public class MenuOption : MonoBehaviour {
     protected void DeHighlightAdjOptions() {
         for (int i = 0; i < 4; ++i) {
             if (adjOptions[i] != null) {
-                adjOptions[i]._isHighlighted = false;
+                adjOptions[i].isHighlighted = false;
             }
         }
     }
@@ -154,7 +156,7 @@ public class MenuOption : MonoBehaviour {
         if (_allOtherOptions != null) {
             foreach (MenuOption mO in _allOtherOptions) {
                 if (mO != this && mO.isReady) {
-                    mO._isHighlighted = false;
+                    mO.isHighlighted = false;
                 }
             }
         }

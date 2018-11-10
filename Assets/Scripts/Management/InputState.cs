@@ -58,6 +58,11 @@ public class InputState {
         _player = ReInput.players.GetPlayer(playerID);
     }
 
+    public void Map() {
+        _player.controllers.maps.SetMapsEnabled(false, "Gameplay");
+        _player.controllers.maps.SetMapsEnabled(true, "Menu");
+    }
+
     public void GetInput() {
         if (_player != null) {
             up.isDown = _player.GetButton("MoveUp");

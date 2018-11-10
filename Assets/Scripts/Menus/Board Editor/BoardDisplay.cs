@@ -127,7 +127,7 @@ public class BoardDisplay : MonoBehaviour {
         BubbleSprite bSprite = bSpriteObj.GetComponent<BubbleSprite>();
         bSprite.SetType(type);
         bSprite.node = node;
-        bSprite.transform.position = (Vector2)_nodes[node].nPosition;
+        bSprite.transform.position = _nodes[node].nPosition;
         bSprite.transform.localScale = nodeParent.transform.localScale;
         _nodes[node].bubble = bSprite;
     }

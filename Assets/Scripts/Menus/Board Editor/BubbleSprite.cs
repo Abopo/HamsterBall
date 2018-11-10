@@ -24,8 +24,6 @@ public class BubbleSprite : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _boardEditor = FindObjectOfType<BoardEditor>();
-
-        transform.position = new Vector3(transform.position.x, transform.position.y, -5f);
 	}
 	
 	// Update is called once per frame
@@ -46,7 +44,7 @@ public class BubbleSprite : MonoBehaviour {
         }
 
         // Stay forward
-        transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
+        //transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
     }
 
     public void SetType(int inType) {

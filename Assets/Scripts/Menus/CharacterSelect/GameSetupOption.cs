@@ -31,7 +31,7 @@ public class GameSetupOption : MenuOption {
             Highlight();
             //_isHighlighted = true;
         } else {
-            _isHighlighted = false;
+            isHighlighted = false;
         }
     }
 
@@ -41,7 +41,7 @@ public class GameSetupOption : MenuOption {
 	}
 
     void CheckInput() {
-        if (_isHighlighted && !_isSelected) {
+        if (isHighlighted && !_isSelected) {
             base.Update();
         } 
 
@@ -86,7 +86,7 @@ public class GameSetupOption : MenuOption {
         PlayHighlightSound();
 
         _justMoved = true;
-        _isHighlighted = true;
+        isHighlighted = true;
         _justHighlighted = true;
         _isSelected = false;
 
@@ -104,7 +104,7 @@ public class GameSetupOption : MenuOption {
 
         _isSelected = true;
         _justSelected = true;
-        _isHighlighted = false;
+        isHighlighted = false;
     }
 
     void OnMouseEnter() {

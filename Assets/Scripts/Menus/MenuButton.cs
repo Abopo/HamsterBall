@@ -32,8 +32,6 @@ public class MenuButton : MenuOption {
     protected override void Select() {
         if (isReady && _button.interactable) {
             base.Select();
-
-            GetComponent<Button>().onClick.Invoke();
         }
     }
 

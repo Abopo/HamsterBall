@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Rewired;
 
 public class LevelManager : MonoBehaviour {
     public ResultsScreen mpResultsScreen;
@@ -56,11 +57,6 @@ public class LevelManager : MonoBehaviour {
         if (!_gameOver && gameStarted) {
             _levelTimer += Time.deltaTime;
 
-            // Check for pausing
-            if (Input.GetButtonDown("Pause") && !_gameManager.isPaused && !_gameManager.isOnline) {
-                // Pause the game
-                pauseMenu.Activate();
-            }
 
             // If we are playing versus
             if (_gameManager.gameMode == GAME_MODE.MP_VERSUS) {
@@ -122,6 +118,14 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    public void PauseGame(int playerID) {
+        // Check for pausing
+        if (!_gameManager.isPaused && !_gameManager.isOnline) {
+            // Pause the game
+            pauseMenu.Activate(playerID);
+        }
+    }
+
     public void GameEnd() {
         _gameOver = true;
 
@@ -146,7 +150,6 @@ public class LevelManager : MonoBehaviour {
             }
         }
     }
-
 
     // TODO: All of this results screen activation code is pretty unreadable, especially with the singleplayer/versus continue overlaps and crap
     // Need to somehow refactor this to make it less all over the place.

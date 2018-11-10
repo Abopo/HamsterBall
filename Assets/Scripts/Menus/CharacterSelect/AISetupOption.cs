@@ -26,7 +26,7 @@ public class AISetupOption : MenuOption {
     protected override void Update () {
         base.Update();
 
-        if (_isHighlighted && !_justMoved) {
+        if (isHighlighted && !_justMoved) {
             // Right
             if (InputRight()) {
                 IncreaseAIDifficulty();

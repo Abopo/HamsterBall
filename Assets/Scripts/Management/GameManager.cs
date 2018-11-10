@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     public bool testMode;
     public bool isOnline = false;
     public bool isSinglePlayer = false;
+    public bool isCoop = false;
     public bool gameIsOver = false;
     public string stage; // if level is "" it's a local multiplayer match, otherwise it's a story level
     public string nextLevel; // level to load next
@@ -198,7 +199,12 @@ public class GameManager : MonoBehaviour {
             // The player's team won
             } else if(winningTeam == 0) {
                 // Save the highscore
-                string pref = stage.ToString() + "Highscore";
+                string pref;
+                if(isCoop) {
+                    pref = stage.ToString() + "HighscoreCoop";
+                } else {
+                    pref = stage.ToString() + "HighscoreSolo";
+                }
                 // If their new score is better than the old one
                 if (winScore > PlayerPrefs.GetInt(pref)) {
                     // Set their highscore

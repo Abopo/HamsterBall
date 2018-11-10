@@ -9,8 +9,8 @@ public class StorySelectMenu : MonoBehaviour {
     public Image locationImage;
     public Image locationImageSP;
     public Text gameType;
-    public Text highscoreHeader;
-    public Text highscore;
+    public Text highscoreSolo;
+    public Text highscoreCoop;
     public Text winCondition;
     public CharacterSelectWindow characterSelectWindow;
 
@@ -144,34 +144,26 @@ public class StorySelectMenu : MonoBehaviour {
         // Set the location name
         location.text = storyButton.locationName;
 
-        int time = 0;
         // Set game type text
         switch(storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
                 gameType.text = "Versus Stage";
-                highscoreHeader.text = "Highscore";
-                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
+                highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
+                highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
 
                 VersusSetup(storyButton);
                 break;
             case GAME_MODE.SP_POINTS:
                 gameType.text = "Point Challenge";
-                highscoreHeader.text = "Highscore";
-                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
+                highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
+                highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
 
                 SinglePlayerSetup(storyButton);
                 break;
-            case GAME_MODE.SP_MATCH:
-                gameType.text = "Match Challenge";
-                highscoreHeader.text = "Best Time";
-                //highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString("0:00");
-                time = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore");
-                highscore.text = string.Format("{0}:{1:00}", (int)time / 60, (int)time % 60);
-                break;
             case GAME_MODE.SP_CLEAR:
                 gameType.text = "Puzzle Stage";
-                highscoreHeader.text = "Highscore";
-                highscore.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "Highscore").ToString();
+                highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
+                highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
 
                 SinglePlayerSetup(storyButton);
                 break;
@@ -245,5 +237,30 @@ public class StorySelectMenu : MonoBehaviour {
 
         // Stop moving
         _movingWorld = false;
+    }
+
+    // Enable all the UI functionality
+    public void EnableUI() {
+        // Find the current highlighted stage and enable it
+        foreach(StoryButton sButton in worlds[_curWorld].StoryButtons) {
+            if(sButton.isHighlighted) {
+                sButton.isReady = true;
+            }
+        }
+        
+        // Enable the player info
+        FindObjectOfType<StoryPlayerInfo>().TurnOnInput();
+    }
+    // Disables all the UI functionality
+    public void DisableUI() {
+        // Find the current highlighted stage and disable it
+        foreach (StoryButton sButton in worlds[_curWorld].StoryButtons) {
+            if (sButton.isHighlighted) {
+                sButton.isReady = false;
+            }
+        }
+
+        // Disable the player info
+        FindObjectOfType<StoryPlayerInfo>().TurnOffInput();
     }
 }

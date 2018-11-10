@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StoryButton : MenuOption {
     public bool hasCutscene;
@@ -49,15 +50,18 @@ public class StoryButton : MenuOption {
         }
 
         // Open the character select window
-        _storySelectMenu.characterSelectWindow.Activate(this);
+        //_storySelectMenu.characterSelectWindow.Activate(this);
 
-        isReady = false;
+        //isReady = false;
 
-        /*
+        // Set the stage in the game manager
         FindObjectOfType<GameManager>().stage = sceneNumber;
 
         // Set the new story position to here
         PlayerPrefs.SetString("StoryPos", sceneNumber);
+
+        // Load the players
+        FindObjectOfType<StoryPlayerInfo>().LoadPlayers();
 
         if (hasCutscene) {
             // Load a cutscene
@@ -67,7 +71,6 @@ public class StoryButton : MenuOption {
             // Load a board
             _boardLoader.ReadBoardSetup(fileToLoad);
         }
-        */
     }
 
     public override void Highlight() {

@@ -2,11 +2,14 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using Rewired;
 
 public class PauseMenu : MonoBehaviour {
 
     public Button previousMenuButton;
     public GameObject optionsMenu;
+
+    Player _player;
 
     MenuButton[] _buttons;
     GameManager _gameManager;
@@ -46,6 +49,22 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void Activate() {
+        gameObject.SetActive(true);
+
+        // Pause the game
+        _gameManager.FullPause();
+    }
+
+    public void Activate(int playerID) {
+        // Get the player that opened the pause menu
+        _player = ReInput.players.GetPlayer(playerID);
+
+        // Use that players inputs to control the menu options
+        MenuOption[] options = GetComponentsInChildren<MenuOption>();
+        foreach(MenuOption option in options) {
+            option.SetPlayer(playerID);
+        }
+
         gameObject.SetActive(true);
 
         // Pause the game

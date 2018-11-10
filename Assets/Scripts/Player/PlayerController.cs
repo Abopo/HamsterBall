@@ -308,6 +308,12 @@ public class PlayerController : Entity {
             ChangeState(PLAYER_STATE.SHIFT);
         }
 
+        // If start is pressed
+        if(inputState.start.isJustPressed) {
+            // Open the pause menu
+            _levelManager.PauseGame(inputState.playerID);
+        }
+
         if(_physics.IsTouchingFloor && inputState.down.isJustPressed) {
             // TODO: Make this better and not push players into floors that aren't fallthrough
             // Move player slightly downward to pass through certain platforms
