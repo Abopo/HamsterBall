@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
     public int leftTeamHandicap = 9;
     public int rightTeamHandicap = 9;
     public bool aimAssist;
+    public AIMASSIST aimAssistSetting = AIMASSIST.AFTERLOSS;
 
     public bool isPaused;
 
@@ -87,9 +88,11 @@ public class GameManager : MonoBehaviour {
 
             // Options
             PlayerPrefs.SetFloat("MasterVolume", 100);
+            PlayerPrefs.SetInt("AimAssist", 1);
         }
 
         AudioListener.volume = (PlayerPrefs.GetFloat("MasterVolume") / 100);
+        aimAssistSetting = (AIMASSIST)PlayerPrefs.GetInt("AimAssist");
     }
 
     // Use this for initialization
@@ -218,7 +221,7 @@ public class GameManager : MonoBehaviour {
                 UnlockNextLevel();
 
                 aimAssist = false;
-            } else {
+            } else if (aimAssistSetting == AIMASSIST.AFTERLOSS) {
                 // If the player lost, turn on aimAssist
                 aimAssist = true;
             }

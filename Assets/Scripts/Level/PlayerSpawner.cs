@@ -73,7 +73,11 @@ public class PlayerSpawner : MonoBehaviour {
                 SetupSwitchMeter(newPlayer);
                 newPlayer.aimAssist = tempPlayerInfo.aimAssist;
             } else {
-                newPlayer.aimAssist = gameManager.aimAssist;
+                if (gameManager.aimAssistSetting == AIMASSIST.ALWAYS) {
+                    newPlayer.aimAssist = true;
+                } else {
+                    newPlayer.aimAssist = gameManager.aimAssist;
+                }
             }
 
             _players.Add(newPlayer);

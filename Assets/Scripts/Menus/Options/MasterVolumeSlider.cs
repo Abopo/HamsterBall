@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 
-[RequireComponent (typeof(Slider))]
 public class MasterVolumeSlider : MenuOption {
 
     public Text volumeText;
@@ -13,7 +12,7 @@ public class MasterVolumeSlider : MenuOption {
         base.Start();
 
         //_selectedPos = transform.parent.position;
-        _slider = GetComponent<Slider>();
+        _slider = GetComponentInChildren<Slider>();
         _slider.value = AudioListener.volume * 100;
     }
 
@@ -23,17 +22,17 @@ public class MasterVolumeSlider : MenuOption {
 
         if(isHighlighted) {
             // Right
-            if (Input.GetAxis("Horizontal") > 0.3f || Input.GetKey(KeyCode.D)) {
+            if (_player.GetButtonDown("Right")) {
                 // Adjust slider to the right
-                _slider.value += 1;
+                _slider.value += 5;
                 if(_slider.value > 100) {
                     _slider.value = 100;
                 }
             }
             // Left
-            if (Input.GetAxis("Horizontal") < -0.3f || Input.GetKey(KeyCode.A)) {
+            if (_player.GetButtonDown("Left")) {
                 // Adjust slider to the left
-                _slider.value -= 1;
+                _slider.value -= 5;
                 if(_slider.value < 0) {
                     _slider.value = 0;
                 }
