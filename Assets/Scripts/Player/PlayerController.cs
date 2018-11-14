@@ -99,6 +99,7 @@ public class PlayerController : Entity {
     public float Traction {
         get { return _traction; }
     }
+    bool _onFallThrough;
 
     public bool aiControlled;
     public bool springing;
@@ -314,10 +315,9 @@ public class PlayerController : Entity {
             _levelManager.PauseGame(inputState.playerID);
         }
 
-        if(_physics.IsTouchingFloor && inputState.down.isJustPressed) {
-            // TODO: Make this better and not push players into floors that aren't fallthrough
+        if(_physics.IsTouchingFloor && _onFallThrough && inputState.down.isJustPressed) {
             // Move player slightly downward to pass through certain platforms
-            //transform.Translate(0f, -0.03f, 0f);
+            transform.Translate(0f, -0.03f, 0f);
         }
     }
 
@@ -494,9 +494,14 @@ public class PlayerController : Entity {
 		}
 	}
 	public override void CollisionResponseY(Collider2D collider) {
-		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13 || collider.gameObject.layer == 18) {
+		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
 			velocity.y = 0.0f;
-		}
+            _onFallThrough = false;
+        } else if(collider.gameObject.layer == 18) {
+			velocity.y = 0.0f;
+            // This is a fall through platform
+            _onFallThrough = true;
+        }
 
         if (collider.name == "Ice Platform") {
             _traction = 0.2f;

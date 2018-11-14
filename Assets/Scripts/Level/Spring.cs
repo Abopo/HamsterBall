@@ -20,7 +20,7 @@ public class Spring : MonoBehaviour {
         Entity obj = collider.GetComponent<Entity>();
         if (obj != null) {
             // Set entity pos to spring pos to make sure bounces are consistent
-            obj.transform.position = new Vector3(transform.position.x, transform.position.y+0.9f, obj.transform.position.z);
+            obj.transform.position = new Vector3(transform.position.x, obj.transform.position.y, obj.transform.position.z);
             // Bounce up the entity
             obj.Spring(springPower);
 

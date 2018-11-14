@@ -35,7 +35,7 @@ public class MainMenu : MonoBehaviour {
             PlayerPrefs.SetInt("Sewers", 0);
             PlayerPrefs.SetInt("Laboratory", 0);
             PlayerPrefs.SetInt("Dark Forest", 0);
-            PlayerPrefs.SetInt("Space", 0);
+            PlayerPrefs.SetInt("Space", 1);
 
             // Highscores
 

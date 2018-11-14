@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
+using Rewired;
 
 public class CutsceneManager : MonoBehaviour {
     public Text titleText;
@@ -19,6 +20,8 @@ public class CutsceneManager : MonoBehaviour {
 
     static public string fileToLoad;
 
+    public GameObject skipCutsceneWindow;
+
     TextWriter _textWriter;
     AudioSource _audioSource;
     TextAsset _textAsset;
@@ -28,11 +31,14 @@ public class CutsceneManager : MonoBehaviour {
     string _escapeChar;
     string _readText;
 
+    string _boardToLoad;
+
     bool _ready;
     bool _playedAudio;
     bool _isPlaying;
 
     GameManager _gameManager;
+    Player _player;
 
     // Use this for initialization
     private void Awake() {
@@ -40,7 +46,13 @@ public class CutsceneManager : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
+        if (_player == null) {
+            _player = ReInput.players.GetPlayer(0);
+        }
+
         _fileIndex = 0;
+
+        _boardToLoad = "";
 
         _ready = true;
         _playedAudio = false;
@@ -118,12 +130,45 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void CheckInput() {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Submit")) 
-            && _ready && _isPlaying) {
+        if (_player.GetButtonDown("Submit") && _ready && _isPlaying) {
             // Move to next thing
             //_ready = false;
             //Reset();
             ReadEscapeCharacter();
+        }
+
+        if(_player.GetButtonDown("Start")) {
+            if(!skipCutsceneWindow.activeSelf) {
+                // Turn on the skip cutscene window
+                skipCutsceneWindow.SetActive(true);
+
+                // Turn off cutscene controls
+                _ready = false;
+
+                // Pause the text writer
+                _textWriter.paused = true;
+            } else {
+                // Turn off the skip cutscene window
+                skipCutsceneWindow.SetActive(false);
+
+                // Turn on cutscene controls
+                _ready = true;
+
+                // Unpause the text writer
+                _textWriter.paused = false;
+            }
+        }
+        if(_player.GetButtonDown("Cancel")) {
+            if(skipCutsceneWindow.activeSelf) {
+                // Turn off the skip cutscene window
+                skipCutsceneWindow.SetActive(false);
+
+                // Turn on cutscene controls
+                _ready = true;
+
+                // Unpause the text writer
+                _textWriter.paused = false;
+            }
         }
     }
 
@@ -156,6 +201,9 @@ public class CutsceneManager : MonoBehaviour {
             case "L":
                 ReadLocation();
                 break;
+            case "B":
+                ReadBoard();
+                break;
             case "CL1":
             case "CL2":
             case "CR1":
@@ -167,9 +215,6 @@ public class CutsceneManager : MonoBehaviour {
                 break;
             case "S":
                 ReadSound();
-                break;
-            case "B":
-                LoadBoard();
                 break;
             case "E":
                 EndScene();
@@ -197,6 +242,13 @@ public class CutsceneManager : MonoBehaviour {
         } else {
             backgroundSprite.sprite = Resources.Load<Sprite>("Art/Levels/" + _readText);
         }
+
+        ReadEscapeCharacter();
+    }
+
+    void ReadBoard() {
+        // Read the board file path
+        _boardToLoad = _linesFromFile[_fileIndex++];
 
         ReadEscapeCharacter();
     }
@@ -291,35 +343,29 @@ public class CutsceneManager : MonoBehaviour {
         _playedAudio = true;
     }
 
-    void LoadBoard() {
-        // Since we are about to leave, clean up
-        CleanUp();
-
-        // Read the board file path
-        _readText = _linesFromFile[_fileIndex++];
-        GetComponent<BoardLoader>().ReadBoardSetup(_readText);
-    }
-
     void CleanUp() {
         fileToLoad = "";
     }
 
-    void EndScene() {
+    public void EndScene() {
         // Unpause the game
         _gameManager.Unpause();
 
-        // Disable scene UI
-        titleText.gameObject.SetActive(false);
-        leftChara1.gameObject.SetActive(false);
-        leftChara2.gameObject.SetActive(false);
-        rightChara1.gameObject.SetActive(false);
-        rightChara2.gameObject.SetActive(false);
-        backgroundSprite.gameObject.SetActive(false);
-        textBacker.gameObject.SetActive(false);
-        dialoguetext.gameObject.SetActive(false);
-
         _ready = false;
         _isPlaying = false;
+
+        // Since we are about to leave, clean up
+        CleanUp();
+
+        if(_boardToLoad != "") {
+            LoadBoard();
+        } else {
+            ReturnToStorySelect();
+        }
+    }
+
+    void LoadBoard() {
+        GetComponent<BoardLoader>().ReadBoardSetup(_boardToLoad);
     }
 
     void ReturnToStorySelect() {

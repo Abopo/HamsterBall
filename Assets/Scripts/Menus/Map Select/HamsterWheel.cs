@@ -89,10 +89,10 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     void CheckInput() {
-        if (_gameManager.playerInput.GetAxis("Horizontal0") < -0.3f) {
+        if (_gameManager.playerInput.GetAxis("Horizontal0") < -0.3f || _gameManager.playerInput.GetButtonDown("Left")) {
             RotateLeft();
             UpdateText();
-        } else if (_gameManager.playerInput.GetAxis("Horizontal0") > 0.3f) {
+        } else if (_gameManager.playerInput.GetAxis("Horizontal0") > 0.3f || _gameManager.playerInput.GetButtonDown("Right")) {
             RotateRight();
             UpdateText();
         }

@@ -40,7 +40,7 @@ public class JumpState : PlayerState {
 
     public override void CheckInput(InputState inputState) {
         if(playerController.springing) {
-            if (playerController.velocity.y <= 1) {
+            if (_jumped && playerController.velocity.y <= 1) {
                 playerController.springing = false;
             } else {
                 return;

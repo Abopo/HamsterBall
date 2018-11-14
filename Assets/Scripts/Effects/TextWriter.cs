@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Rewired;
 
 public class TextWriter : MonoBehaviour {
     public Text displayText;
     public bool done;
+    public bool paused;
 
     string _textToWrite;
     string _displayString = "";
@@ -15,14 +17,17 @@ public class TextWriter : MonoBehaviour {
     float _writeDelay = 0.02f;
     float _writeTimer = 0f;
 
+    Player _player;
+
 	// Use this for initialization
 	void Start () {
         _done = true;
+        _player = ReInput.players.GetPlayer(0);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(!_done) {
+		if(!_done && !paused) {
             _writeTimer += Time.unscaledDeltaTime;
             if(_writeTimer >= _writeDelay) {
                 // Display the next character
@@ -44,14 +49,13 @@ public class TextWriter : MonoBehaviour {
     }
 
     void CheckInput() {
-        if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Submit")) 
-            && _displayString.Length > 2) {
+        if(_player.GetButtonDown("Submit") && _displayString.Length > 2) {
             // Skip writing
             _displayString = _textToWrite;
             displayText.text = _displayString;
             _done = true;
         }
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.V) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Submit")) {
+        if(_player.GetButtonDown("Submit")) {
             if (_displayString == _textToWrite) {
                 done = true;
             }
