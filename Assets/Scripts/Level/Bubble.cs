@@ -40,6 +40,7 @@ public class Bubble : MonoBehaviour {
     private Vector3 _bankedPos; // position where this bubble banked off a wall
     BubblePopAnimation _popAnimation;
 
+    Vector2 _velocity;
     float _airTime = 0f; // Time the bubble is in the air before hitting the board
 
     bool _popping = false;
@@ -52,7 +53,6 @@ public class Bubble : MonoBehaviour {
 
     BubbleManager _homeBubbleManager;
     GameManager _gameManager;
-    Rigidbody2D _rigibody2D;
 
     AudioSource _audioSource;
     AudioClip _popClip;
@@ -97,7 +97,6 @@ public class Bubble : MonoBehaviour {
 
         _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
 
-        _rigibody2D = GetComponent<Rigidbody2D>();
         _audioSource = GetComponent<AudioSource>();
         _popClip = Resources.Load<AudioClip>("Audio/SFX/Pop");
         _dropClip = Resources.Load<AudioClip>("Audio/SFX/Hamster_Fall2");
@@ -166,44 +165,41 @@ public class Bubble : MonoBehaviour {
             }
         }
 
-        if (locked) {
-			GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-			checkedForMatches = false;
-			checkedForAnchor = false;
-			foundAnchor = false;
-
-            // Sync drop potential between matched bubbles
-            if(_boardChanged) {
-                foreach(Bubble b in matches) {
-                    if(b != null && b.dropPotential > dropPotential) {
-                        dropPotential = b.dropPotential;
-                    }
-                }
-                _boardChanged = false;
-            }
-		} else {
-            // Move
-            //Debug.Log(_rigibody2D.velocity);
-            if (_rigibody2D != null) {
-                _deltaX = _rigibody2D.velocity.x * Time.deltaTime;
-                _deltaY = _rigibody2D.velocity.y * Time.deltaTime;
-                transform.Translate(_deltaX, _deltaY, 0.0f);
-            } else {
-                _rigibody2D = GetComponent<Rigidbody2D>();
-            }
-
-            // Count time from throw to land
-            if(wasThrown) {
-                _airTime += Time.deltaTime;
-            }
-        }
-
         if(Input.GetKeyDown(KeyCode.U)) {
             BoardChanged();
         }
 	}
 
-	public void CheckForAnchor(List<Bubble> bubbles) {
+    private void LateUpdate() {
+        if (locked) {
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            checkedForMatches = false;
+            checkedForAnchor = false;
+            foundAnchor = false;
+
+            // Sync drop potential between matched bubbles
+            if (_boardChanged) {
+                foreach (Bubble b in matches) {
+                    if (b != null && b.dropPotential > dropPotential) {
+                        dropPotential = b.dropPotential;
+                    }
+                }
+                _boardChanged = false;
+            }
+        } else {
+            // Move
+            _deltaX = _velocity.x * Time.deltaTime;
+            _deltaY = _velocity.y * Time.deltaTime;
+            transform.Translate(_deltaX, _deltaY, 0.0f);
+
+            // Count time from throw to land
+            if (wasThrown) {
+                _airTime += Time.deltaTime;
+            }
+        }
+    }
+
+    public void CheckForAnchor(List<Bubble> bubbles) {
 		for (int i = 0; i < 6; ++i) {
 			if(adjBubbles[i] != null && !adjBubbles[i].popped) {
 				if(!adjBubbles[i].checkedForAnchor && !adjBubbles[i].foundAnchor) {
@@ -292,13 +288,12 @@ public class Bubble : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Wall" && Mathf.Abs(_rigibody2D.velocity.x) > 0.1f) {
+		if (other.tag == "Wall" && Mathf.Abs(_velocity.x) > 0.1f) {
             // Make sure bubbles only bounce off of walls they are moving towards
-            if(_rigibody2D.velocity.x > 0 && other.transform.position.x > transform.position.x || 
-                _rigibody2D.velocity.x < 0 && other.transform.position.x < transform.position.x) {
+            if(_velocity.x > 0 && other.transform.position.x > transform.position.x || 
+                _velocity.x < 0 && other.transform.position.x < transform.position.x) {
                 // Bounce the bubble the opposite direction
-                _rigibody2D.velocity = new Vector2(_rigibody2D.velocity.x * -1,
-                                                   _rigibody2D.velocity.y);
+                _velocity = new Vector2(_velocity.x * -1, _velocity.y);
 
                 // Banked combo effect stuff
                 _bankedPos = transform.position;
@@ -321,7 +316,7 @@ public class Bubble : MonoBehaviour {
                     CollisionWithBoard(other.GetComponent<Bubble>()._homeBubbleManager);
                 } else {
                     // Stop moving and sit in place.
-                    _rigibody2D.velocity = Vector2.zero;
+                    _velocity = Vector2.zero;
                     locked = true;
                 }
             }
@@ -378,7 +373,7 @@ public class Bubble : MonoBehaviour {
 
     public void CollisionWithBoard(BubbleManager bubbleManager) {
         // Stop moving and sit in place.
-        _rigibody2D.velocity = Vector2.zero;
+        _velocity = Vector2.zero;
         locked = true;
 
         // Remove the held bubble of the player controller
@@ -703,7 +698,7 @@ public class Bubble : MonoBehaviour {
 
 	public void Drop() {
 		locked = false;
-        _rigibody2D.velocity = new Vector2 (0.0f, -5f);
+        _velocity = new Vector2 (0.0f, -5f);
 		gameObject.layer = 15; // GhostBubble
 
         // If both bubbles player controllers exist
@@ -919,6 +914,12 @@ public class Bubble : MonoBehaviour {
             _audioSource.clip = _iceClip;
             _audioSource.Play();
         }
+    }
+
+    public void Throw(float speed, Vector2 dir) {
+        _velocity = new Vector2(speed * dir.x, speed * dir.y);
+        GetComponent<CircleCollider2D>().enabled = true;
+        wasThrown = true;
     }
 
     public bool IsSpecialType() {

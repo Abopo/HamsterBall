@@ -494,10 +494,10 @@ public class PlayerController : Entity {
 		}
 	}
 	public override void CollisionResponseY(Collider2D collider) {
-		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
+		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 13/*Grate*/) {
 			velocity.y = 0.0f;
             _onFallThrough = false;
-        } else if(collider.gameObject.layer == 18) {
+        } else if(collider.gameObject.layer == 18/*Fallthrough*/) {
 			velocity.y = 0.0f;
             // This is a fall through platform
             _onFallThrough = true;

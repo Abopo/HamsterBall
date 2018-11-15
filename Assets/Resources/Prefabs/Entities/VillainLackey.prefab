@@ -551,6 +551,16 @@ MonoBehaviour:
   throwMask:
     serializedVersion: 2
     m_Bits: 81920
+  curAction:
+    vertWant: 0
+    horWant: 0
+    hamsterWant: {fileID: 0}
+    bubbleWant: {fileID: 0}
+    nodeWant: {fileID: 0}
+    weight: 0
+    requiresShift: 0
+    opponent: {fileID: 0}
+    waterBubble: {fileID: 0}
 --- !u!114 &114069582324217326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -611,10 +621,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask1:
     serializedVersion: 2
-    m_Bits: 9984
+    m_Bits: 2107136
   collisionMask2:
     serializedVersion: 2
-    m_Bits: 9984
+    m_Bits: 2107136
   wallCheckDist: 0
 --- !u!114 &114549442559862012
 MonoBehaviour:
@@ -652,140 +662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da9e85e3342f35448eaa978b8e0d595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shiftBarStyle:
-    m_Name: 
-    m_Normal:
-      m_Background: {fileID: 2800000, guid: 672875b01cf06864195879b1826efdb1, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 0, b: 0, a: 1}
-    m_Hover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Active:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Focused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnNormal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnHover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnActive:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnFocused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Border:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Margin:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Padding:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Overflow:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Font: {fileID: 0}
-    m_FontSize: 0
-    m_FontStyle: 0
-    m_Alignment: 0
-    m_WordWrap: 0
-    m_RichText: 1
-    m_TextClipping: 0
-    m_ImagePosition: 0
-    m_ContentOffset: {x: 0, y: 0}
-    m_FixedWidth: 0
-    m_FixedHeight: 0
-    m_StretchWidth: 1
-    m_StretchHeight: 0
-  shiftBarBackStyle:
-    m_Name: 
-    m_Normal:
-      m_Background: {fileID: 2800000, guid: 491f44cc939b121459e8033cecacbfda, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Hover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Active:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Focused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnNormal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnHover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnActive:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnFocused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Border:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Margin:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Padding:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Overflow:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Font: {fileID: 0}
-    m_FontSize: 0
-    m_FontStyle: 0
-    m_Alignment: 0
-    m_WordWrap: 0
-    m_RichText: 1
-    m_TextClipping: 0
-    m_ImagePosition: 0
-    m_ContentOffset: {x: 0, y: 0}
-    m_FixedWidth: 0
-    m_FixedHeight: 0
-    m_StretchWidth: 1
-    m_StretchHeight: 0
 --- !u!114 &114712728044466774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -814,19 +690,22 @@ MonoBehaviour:
   curFacing: 0
   walkForce: 50
   walkSpeed: 5
+  speedModifier: 1
   jumpForce: 8.2
   jumpMoveForce: 50
   jumpMoveMax: 5
   curState: 0
-  attackBubble: {fileID: 1382251193358368}
-  heldBubble: {fileID: 0}
-  attackObj: {fileID: 114069582324217326}
+  swingObj: {fileID: 0}
+  bubblePosition: {fileID: 0}
+  attackObj: {fileID: 0}
   shiftPortal: {fileID: 114549442559862012}
+  heldBubble: {fileID: 0}
   direction: 0
   aimAssist: 0
   canBeHit: 0
   team: 0
   playerNum: 1
+  atkModifier: 0
   shifted: 0
   bubbleCooldownTimer: 0
   bubbleCooldownTime: 0.15

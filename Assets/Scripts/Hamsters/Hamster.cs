@@ -221,7 +221,7 @@ public class Hamster : Entity {
 		}
 	}
 	public override void CollisionResponseY(Collider2D collider) {
-		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 18) {
+		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/) {
 			velocity.y = 0.0f;
 		}
 	}

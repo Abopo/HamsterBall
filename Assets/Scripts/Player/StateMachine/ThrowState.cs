@@ -6,7 +6,7 @@ public class ThrowState : PlayerState {
     public Transform aimingArrow;
 
 	float rotateSpeed = 60f;
-    float bubbleSpeed = 7f; // How fast the bubble goes when thrown
+    float bubbleSpeed = 14f; // How fast the bubble goes when thrown
 
     // Small cooldown between readying aim and throwing.
     float throwTimer = 0;
@@ -178,9 +178,7 @@ public class ThrowState : PlayerState {
         playerController.heldBubble.transform.position = new Vector3(aimingArrow.position.x, 
                                                                     aimingArrow.position.y, 
                                                                     playerController.heldBubble.transform.position.z);
-        playerController.heldBubble.GetComponent<Rigidbody2D>().velocity = new Vector2(bubbleSpeed * dir.x, bubbleSpeed * dir.y);
-        playerController.heldBubble.GetComponent<CircleCollider2D>().enabled = true;
-        playerController.heldBubble.wasThrown = true;
+        playerController.heldBubble.Throw(bubbleSpeed, dir);
 
         // Increase score a little
         if (playerController.heldBubble.type < HAMSTER_TYPES.NUM_NORM_TYPES) {
