@@ -53,10 +53,12 @@ public class ThrowState : PlayerState {
 
         throwTimer += Time.deltaTime;
 
-        // Make sure the aiming arrow is in the right position
-        aimingArrow.transform.position = new Vector3(playerController.bubblePosition.position.x,
-                                                    playerController.bubblePosition.position.y,
-                                                    -15);
+        if (!_hasThrown) {
+            // Make sure the aiming arrow is in the right position
+            aimingArrow.transform.position = new Vector3(playerController.bubblePosition.position.x,
+                                                        playerController.bubblePosition.position.y,
+                                                        -15);
+        }
 
         // If we've thrown the bubble and it has locked onto the board
         if (_hasThrown && (playerController.heldBubble == null || playerController.heldBubble.locked)) {
@@ -171,6 +173,11 @@ public class ThrowState : PlayerState {
         }
         Vector2 dir = aimingArrow.GetChild(0).position - aimingArrow.position;
         dir.Normalize();
+
+        // Make sure the position is exactly right before releasing
+        playerController.heldBubble.transform.position = new Vector3(aimingArrow.position.x, 
+                                                                    aimingArrow.position.y, 
+                                                                    playerController.heldBubble.transform.position.z);
         playerController.heldBubble.GetComponent<Rigidbody2D>().velocity = new Vector2(bubbleSpeed * dir.x, bubbleSpeed * dir.y);
         playerController.heldBubble.GetComponent<CircleCollider2D>().enabled = true;
         playerController.heldBubble.wasThrown = true;
