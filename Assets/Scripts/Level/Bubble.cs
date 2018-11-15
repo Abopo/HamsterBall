@@ -698,7 +698,7 @@ public class Bubble : MonoBehaviour {
 
 	public void Drop() {
 		locked = false;
-        _velocity = new Vector2 (0.0f, -5f);
+        _velocity = new Vector2 (0.0f, -10f);
 		gameObject.layer = 15; // GhostBubble
 
         // If both bubbles player controllers exist
