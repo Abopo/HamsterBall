@@ -18,7 +18,19 @@ public class AttackState : PlayerState {
 
         playerController.PlayerAudio.PlayAttackClip();
 
-        _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
+        if(playerController.inputState.left.isDown) {
+            _direction = -1;
+            if(playerController.Animator.GetBool("FacingRight")) {
+                playerController.Flip();
+            }
+        } else if(playerController.inputState.right.isDown) {
+            _direction = 1;
+            if (!playerController.Animator.GetBool("FacingRight")) {
+                playerController.Flip();
+            }
+        } else {
+            _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
+        }
 
         _isAttacking = true;
         _attackTimer = 0f;

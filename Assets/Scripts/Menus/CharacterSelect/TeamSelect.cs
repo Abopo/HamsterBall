@@ -58,6 +58,10 @@ public class TeamSelect : MonoBehaviour {
                 }
             }
 
+            if(_gameManager.playerInput.GetButtonDown("Cancel")) {
+                _gameManager.CharacterSelectButton();
+            }
+
             // If all players are ready
             if (PlayersAreReady()) {
                 // Show pressstarttext

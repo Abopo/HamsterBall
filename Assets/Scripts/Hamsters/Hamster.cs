@@ -118,7 +118,7 @@ public class Hamster : Entity {
         }
         type = (HAMSTER_TYPES)setType;
         if (_animator == null) {
-            _animator = GetComponent<Animator>();
+            _animator = GetComponentInChildren<Animator>();
         }
         _animator.SetInteger("Type", (int)type);
 
@@ -137,7 +137,7 @@ public class Hamster : Entity {
 
         type = cType;
         if (_animator == null) {
-            _animator = GetComponent<Animator>();
+            _animator = GetComponentInChildren<Animator>();
         }
         _animator.SetInteger("Type", (int)type);
 

@@ -22,9 +22,9 @@ public class HamsterSpawner : Photon.PunBehaviour {
     HamsterInfo _hamsterInfo;
 
     public static bool canBeRainbow = true;
-    public static bool canBeDead = true;
-    public static bool canBeGravity = true;
-    public static bool canBeBomb = true;
+    public static bool canBeDead = false;
+    public static bool canBeGravity = false;
+    public static bool canBeBomb = false;
     List<int> specialTypes = new List<int>();
 
     System.Random _random;

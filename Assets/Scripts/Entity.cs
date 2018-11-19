@@ -79,7 +79,7 @@ public class Entity : MonoBehaviour {
 		facingRight = !facingRight;
 
 		if (_animator == null) {
-			_animator = GetComponent<Animator> ();
+			_animator = GetComponentInChildren<Animator> ();
 		}
 		_animator.SetBool ("FacingRight", facingRight);
 

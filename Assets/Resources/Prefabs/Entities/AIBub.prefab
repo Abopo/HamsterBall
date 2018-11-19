@@ -110,10 +110,10 @@ GameObject:
   - component: {fileID: 114000012868662364}
   - component: {fileID: 114000012929200782}
   - component: {fileID: 114000010875103912}
-  - component: {fileID: 58000011873632114}
   - component: {fileID: 114000010196158640}
   - component: {fileID: 114000010676818124}
   - component: {fileID: 114000010274121228}
+  - component: {fileID: 61720589880231956}
   - component: {fileID: 82000010006431056}
   - component: {fileID: 50158078898383876}
   m_Layer: 11
@@ -265,7 +265,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013594012978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.667381, y: -3.4816484, z: 0}
+  m_LocalPosition: {x: 18.164467, y: -4.398874, z: 0}
   m_LocalScale: {x: 0.59110194, y: 0.5911014, z: 0.5911014}
   m_Children:
   - {fileID: 4756504335171006}
@@ -390,21 +390,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &58000011873632114
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013594012978}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.12}
-  serializedVersion: 2
-  m_Radius: 0.63
 --- !u!58 &58000013240367062
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -435,6 +420,31 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.41
+--- !u!61 &61720589880231956
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013594012978}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.06526718}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.079733, y: 1.630791}
+  m_EdgeRadius: 0
 --- !u!82 &82000010006431056
 AudioSource:
   m_ObjectHideFlags: 1
@@ -558,7 +568,7 @@ Animator:
   m_GameObject: {fileID: 1056040014052552}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 021a9552391c7844e9771788b65445ab, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

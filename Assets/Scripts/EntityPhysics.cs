@@ -163,7 +163,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = _pos.y + _center.y + _scaledRadiusY * -1;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
-            //Debug.DrawRay(_ray.origin, _ray.direction * 0.05f);
+            Debug.DrawRay(_ray.origin, _ray.direction * 0.05f);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.05f, collisionMask1);
             if (_hit) {
                 isTouchingFloor = true;

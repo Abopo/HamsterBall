@@ -93,10 +93,6 @@ public class NewCharacterSelect : MonoBehaviour {
                 }
             }
 
-            if (_gameManager.playerInput.GetButtonDown("Cancel")) {
-                FindObjectOfType<GameManager>().LocalPlayButton();
-            }
-
             UpdateUI();
         }
     }

@@ -193,6 +193,9 @@ public class CharacterSelector : MonoBehaviour {
                 parentSelector.frameskip = true;
                 parentSelector.Unlock();
                 aiIndex--;
+            } else {
+                // Back out to local play menu
+                FindObjectOfType<GameManager>().LocalPlayButton();
             }
         }
     }
