@@ -34,7 +34,9 @@ public class AIMapScan : MonoBehaviour {
     RaycastHit2D _jumpCheckHit2; // Result of ray checks
 
     Vector2 _pos; // Transform position
-    float _scaledRadius;
+    //float _scaledRadius;
+    float _scaledRadiusX;
+    float _scaledRadiusY;
 
     public float LeftWallDistance {
         get { return _leftWallDistance; }
@@ -70,7 +72,10 @@ public class AIMapScan : MonoBehaviour {
     // Use this for initialization
     void Start() {
         _playerController = GetComponent<PlayerController>();
-        _scaledRadius = Mathf.Abs(GetComponent<CircleCollider2D>().radius * transform.localScale.x);
+        //_scaledRadius = Mathf.Abs(GetComponent<CircleCollider2D>().radius * transform.localScale.x);
+        BoxCollider2D _collider = GetComponent<BoxCollider2D>();
+        _scaledRadiusX = Mathf.Abs(_collider.size.x / 2 * transform.localScale.x);
+        _scaledRadiusY = Mathf.Abs(_collider.size.y / 2 * transform.localScale.y);
     }
 
     // Update is called once per frame
@@ -89,7 +94,7 @@ public class AIMapScan : MonoBehaviour {
     }
 
     void CheckWallDistances() {
-        float y = _pos.y + GetComponent<CircleCollider2D>().offset.y + _scaledRadius / 1.5f;
+        float y = _pos.y + GetComponent<Collider2D>().offset.y + _scaledRadiusY / 1.5f;
         // Check Right
         _rightWallCheckRay = new Ray2D(new Vector2(_pos.x, y), Vector2.right);
         _rightWallCheckHit = Physics2D.Raycast(_rightWallCheckRay.origin, _rightWallCheckRay.direction, 1000f, collisionMask);
