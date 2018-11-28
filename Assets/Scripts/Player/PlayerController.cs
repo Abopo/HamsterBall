@@ -170,16 +170,21 @@ public class PlayerController : Entity {
 		_shiftCooldownTimer = 0f;
         direction = _animator.GetBool("FacingRight") ? 1 : -1;
 
+        // Find a proper bubble manager
+        GameObject bubbleManager = null;
         if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-            _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1");
         } else {
             if (team == 0) {
-                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+                bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1");
             } else if (team == 1) {
-                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+                bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2");
             }
         }
 
+        if(bubbleManager != null) {
+            _homeBubbleManager = bubbleManager.GetComponent<BubbleManager>();
+        }
 
         totalThrowCount = 0;
 
@@ -236,7 +241,7 @@ public class PlayerController : Entity {
         base.Update();
 
         // Don't update if the game is over or hasn't started yet
-        if(_gameManager.gameIsOver || !_levelManager.gameStarted) {
+        if(_gameManager.gameIsOver || (_levelManager != null && !_levelManager.gameStarted)) {
             currentState.CheckInput(inputState);
             currentState.Update();
 
@@ -311,8 +316,10 @@ public class PlayerController : Entity {
 
         // If start is pressed
         if(inputState.start.isJustPressed) {
-            // Open the pause menu
-            _levelManager.PauseGame(inputState.playerID);
+            if (_levelManager != null) {
+                // Open the pause menu
+                _levelManager.PauseGame(inputState.playerID);
+            }
         }
 
         if(_physics.IsTouchingFloor && _onFallThrough && inputState.down.isJustPressed) {

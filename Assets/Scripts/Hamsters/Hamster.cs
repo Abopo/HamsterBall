@@ -189,8 +189,13 @@ public class Hamster : Entity {
                 UpdateVelocity();
             }
 
+            // If we've reached the peak of the spring jump
             if(_springing && velocity.y <= 0) {
+                // Stop springing and regain control
                 _springing = false;
+                // Unrotate sprite back to normal
+                transform.GetChild(0).Rotate(0f, 0f, -45f);
+
                 UpdateVelocity();
             }
         } else {
@@ -233,6 +238,9 @@ public class Hamster : Entity {
         _springing = true;
         // Restrict x velocity while rising
         velocity.x = 0;
+
+        // Rotate sprite so it faces upward a bit
+        transform.GetChild(0).Rotate(0f, 0f, 45f);
     }
 
     public void Caught() {

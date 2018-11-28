@@ -36,8 +36,9 @@ public class WorldMoveArrow : MenuOption {
             if (dir == 1) {
                 TryMoveRight();
             } else if (dir == -1) {
-                _storySelectMenu.StartMoveWorlds(dir);
-                DeHighlightOtherOptions();
+                TryMoveLeft();
+                //_storySelectMenu.StartMoveWorlds(dir);
+                //DeHighlightOtherOptions();
             }
         }
     }
@@ -46,6 +47,13 @@ public class WorldMoveArrow : MenuOption {
         string storyProgress = PlayerPrefs.GetString("StoryProgress");
 
         if (_storySelectMenu.CurWorld+1 < int.Parse(storyProgress[0].ToString())) {
+            _storySelectMenu.StartMoveWorlds(dir);
+            DeHighlightOtherOptions();
+        }
+    }
+
+    void TryMoveLeft() {
+        if(_storySelectMenu.CurWorld > 0) {
             _storySelectMenu.StartMoveWorlds(dir);
             DeHighlightOtherOptions();
         }
