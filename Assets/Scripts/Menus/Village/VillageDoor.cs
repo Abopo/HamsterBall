@@ -11,11 +11,15 @@ public class VillageDoor : MonoBehaviour {
 
     Player _playerInput;
 
+    VillagePlayerSpawn _villagePlayerSpawn;
+
 	// Use this for initialization
 	void Start () {
         _isPlayerHere = false;
 
         _playerInput = ReInput.players.GetPlayer(0);
+
+        _villagePlayerSpawn = FindObjectOfType<VillagePlayerSpawn>();
 	}
 	
 	// Update is called once per frame
@@ -24,6 +28,9 @@ public class VillageDoor : MonoBehaviour {
             if (_playerInput.GetButtonDown("Up") && _sceneToLoad != "") {
                 // Load the proper scene
                 SceneManager.LoadScene(_sceneToLoad);
+
+                // Set the player's respawn point to this door
+                _villagePlayerSpawn.SetSpawnPosition(transform.position);
             }
         }
 	}

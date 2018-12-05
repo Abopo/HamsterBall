@@ -22,25 +22,13 @@ public class PauseMenu : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        // Set the text of the previousMenuButton to a proper text
-        /*
-        switch(_gameManager.prevMenu) {
-            case MENU.STORY:
-                previousMenuButton.GetComponentInChildren<Text>().text = "Story Select";
-                break;
-            case MENU.VERSUS:
-                previousMenuButton.GetComponentInChildren<Text>().text = "Character Select";
-                break;
-            case MENU.EDITOR:
-                previousMenuButton.GetComponentInChildren<Text>().text = "Board Editor";
-                break;
-        }
-        */
     }
 
     // Update is called once per frame
     void Update() {
-
+        if(_player.GetButtonDown("Start")) {
+            ResumeButton();
+        }
     }
 
     public void ResumeButton() {

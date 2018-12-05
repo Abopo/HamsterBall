@@ -50,6 +50,12 @@ public class LevelManager : MonoBehaviour {
         }
 
         _levelUI = GetComponentInChildren<LevelUI>();
+
+        // Failsafe for a missing countdown
+        GameCountdown gc = FindObjectOfType<GameCountdown>();
+        if(gc == null) {
+            gameStarted = true;
+        }
     }
 
     // Update is called once per frame

@@ -50,7 +50,7 @@ public class PlayerInfoBox : MonoBehaviour {
 
     private void OnLevelWasLoaded(int level) {
         // If we've loaded in story select
-        if (level == 1) {
+        if (level == 2) {
             _characterSelectWindow = FindObjectOfType<StorySelectMenu>().characterSelectWindow;
         }
     }

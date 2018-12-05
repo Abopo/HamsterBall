@@ -36,7 +36,7 @@ public class MenuOption : MonoBehaviour {
     // Use this for initialization
     protected virtual void Start () {
         //_selectedPos = transform.position;
-        _moved = false;
+        _moved = true;
 
         if (_player == null) {
             _player = ReInput.players.GetPlayer(0);

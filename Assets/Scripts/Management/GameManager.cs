@@ -311,7 +311,8 @@ public class GameManager : MonoBehaviour {
             PhotonNetwork.LeaveRoom();
         }
 
-        SceneManager.LoadScene("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("VillageScene");
     }
 
     public void BoardEditorButton() {

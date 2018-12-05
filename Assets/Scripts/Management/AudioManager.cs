@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour {
 	}
 
     void PlayMusic(Scene scene, LoadSceneMode mode) {
-        if(scene.buildIndex < 13 && _audioSource != null && _audioSource.clip != _backgroundMusic[0]) {
+        if(scene.buildIndex < 15 && _audioSource != null && _audioSource.clip != _backgroundMusic[0]) {
             // We're in a menu so play menu music
             _audioSource.clip = _backgroundMusic[0];
             _audioSource.volume = 1f;

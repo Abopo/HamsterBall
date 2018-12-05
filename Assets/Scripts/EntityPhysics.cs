@@ -15,7 +15,7 @@ public class EntityPhysics : MonoBehaviour {
     private float _scaledRadius;
     private float _scaledRadiusX;
     private float _scaledRadiusY;
-    private Vector2 _center;
+    private Vector2 _offset;
 
     private float _skin = 0.005f;
 
@@ -62,7 +62,7 @@ public class EntityPhysics : MonoBehaviour {
             _scaledRadiusY = Mathf.Abs(((BoxCollider2D)_collider).size.y/2 * transform.localScale.y);
         }
 
-        _center = _collider.offset;
+        _offset = _collider.offset;
         wallCheckDist = 0.1f;
     }
 
@@ -76,10 +76,10 @@ public class EntityPhysics : MonoBehaviour {
             return;
         }
 
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 5; ++i) {
             float dir = Mathf.Sign(deltaX);
-            float x = _pos.x + _center.x + _scaledRadiusX * dir;
-            float y = (_pos.y + _center.y - _scaledRadiusY / 1.5f) + _scaledRadiusY / 1.5f * i;
+            float x = _pos.x + _offset.x + _scaledRadiusX * dir;
+            float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 2.5f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
             Debug.DrawRay(_ray.origin, _ray.direction * Mathf.Abs(deltaX));
@@ -120,8 +120,8 @@ public class EntityPhysics : MonoBehaviour {
 
         for (int i = 0; i < 3; ++i) {
             float dir = Mathf.Sign(inDeltaY);
-            float x = (_pos.x + _center.x - _scaledRadiusX / 2) + _scaledRadiusX / 2 * i;
-            float y = _pos.y + _center.y + _scaledRadiusY * dir;
+            float x = (_pos.x + _offset.x - _scaledRadiusX / 2) + _scaledRadiusX / 2 * i;
+            float y = _pos.y + _offset.y + _scaledRadiusY * dir;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * dir);
             Debug.DrawRay(_ray.origin, _ray.direction * Mathf.Abs(inDeltaY));
@@ -159,8 +159,8 @@ public class EntityPhysics : MonoBehaviour {
         floorHitCount = 0;
 
         for (int i = 0; i < 3; ++i) {
-            float x = (_pos.x + _center.x - _scaledRadiusX / 2) + _scaledRadiusX / 2 * i;
-            float y = _pos.y + _center.y + _scaledRadiusY * -1;
+            float x = (_pos.x + _offset.x - _scaledRadiusX / 2) + _scaledRadiusX / 2 * i;
+            float y = _pos.y + _offset.y + _scaledRadiusY * -1;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
             Debug.DrawRay(_ray.origin, _ray.direction * 0.05f);
@@ -183,8 +183,8 @@ public class EntityPhysics : MonoBehaviour {
 
         // Check right first
         for (int i = 0; i < 3; ++i) {
-            float x = _pos.x + _center.x + _scaledRadiusX;
-            float y = (_pos.y + _center.y - _scaledRadiusY / 2) + _scaledRadiusY / 2 * i;
+            float x = _pos.x + _offset.x + _scaledRadiusX;
+            float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 1.25f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right);
             Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
@@ -197,8 +197,8 @@ public class EntityPhysics : MonoBehaviour {
 
         // Check left second
         for (int i = 0; i < 3; ++i) {
-            float x = _pos.x + _center.x + _scaledRadiusX * -1;
-            float y = (_pos.y + _center.y - _scaledRadiusY / 2) + _scaledRadiusY / 2 * i;
+            float x = _pos.x + _offset.x + _scaledRadiusX * -1;
+            float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 1.25f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * -1);
             Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
@@ -219,8 +219,8 @@ public class EntityPhysics : MonoBehaviour {
     }
 
     void OnTriggerStay2D(Collider2D collider) {
-        // If we are in a wall (layer 9) with a box collider
-        if (collider.gameObject.layer == 9 && collider.GetComponent<BoxCollider2D>() != null) {
+        // If we are in a wall (layer 9) or platform (layer 21) with a box collider
+        if ((collider.gameObject.layer == 9 || collider.gameObject.layer == 21) && collider.GetComponent<BoxCollider2D>() != null) {
             _stuckTimer += Time.deltaTime;
             if(_stuckTimer < _stuckTime) {
                 return;
@@ -235,7 +235,7 @@ public class EntityPhysics : MonoBehaviour {
             int sideCount = 0;
 
             // Bottom check
-            RaycastHit2D hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _center.y - _scaledRadiusY), new Vector2(0, -1), 0.1f);
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _offset.y - _scaledRadiusY), new Vector2(0, -1), 0.1f);
             //Debug.DrawRay(new Vector2(_pos.x, _pos.y + _center.y - _scaledRadius), new Vector2(0, -1));
             if (hit && hit.collider == collider && hitCount <= floorHitCount) {
                 dir = 2;
@@ -243,7 +243,7 @@ public class EntityPhysics : MonoBehaviour {
                 sideCount++;
             }
             // Top check
-            hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _center.y + _scaledRadiusY), new Vector2(0, 1), 0.1f);
+            hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _offset.y + _scaledRadiusY), new Vector2(0, 1), 0.1f);
             //Debug.DrawRay(new Vector2(_pos.x, _pos.y + _center.y + _scaledRadius), new Vector2(0, 1));
             if (hit && hit.collider == collider & hitCount <= ceilingHitCount) {
                 dir = 3;
@@ -251,7 +251,7 @@ public class EntityPhysics : MonoBehaviour {
                 sideCount++;
             }
             // Right side check
-            hit = Physics2D.Raycast(new Vector2(_pos.x + _center.x + _scaledRadiusX, _pos.y), new Vector2(1, 0), 0.1f);
+            hit = Physics2D.Raycast(new Vector2(_pos.x + _offset.x + _scaledRadiusX, _pos.y), new Vector2(1, 0), 0.1f);
             //Debug.DrawRay(new Vector2(_pos.x + _center.x + _scaledRadius, _pos.y), new Vector2(1, 0));
             if(hit && hit.collider == collider && hitCount <= rightHitCount) {
                 dir = 0;
@@ -259,7 +259,7 @@ public class EntityPhysics : MonoBehaviour {
                 sideCount++;
             }
             // left side check
-            hit = Physics2D.Raycast(new Vector2(_pos.x + _center.x - _scaledRadiusX, _pos.y), new Vector2(-1, 0), 0.1f);
+            hit = Physics2D.Raycast(new Vector2(_pos.x + _offset.x - _scaledRadiusX, _pos.y), new Vector2(-1, 0), 0.1f);
             //Debug.DrawRay(new Vector2(_pos.x + _center.x - _scaledRadius, _pos.y), new Vector2(-1, 0));
             if (hit && hit.collider == collider && hitCount <= leftHitCount) {
                 dir = 1;
@@ -292,7 +292,7 @@ public class EntityPhysics : MonoBehaviour {
                         }
                         break;
                     case 2:
-                        float curYPos = transform.position.y - _scaledRadiusY;
+                        float curYPos = transform.position.y + _offset.y - _scaledRadiusY;
                         float wantYPos = collider.transform.position.y + (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.localScale.y) / 2f;
                         float yMove = wantYPos - curYPos;
                         if (Mathf.Abs(yMove) > _scaledRadiusY / 64) {
@@ -309,6 +309,8 @@ public class EntityPhysics : MonoBehaviour {
                         break;
                 }
             }
+
+            _stuckTimer = 0f;
         } else {
             _stuckTimer = 0f;
         }

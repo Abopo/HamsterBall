@@ -35,7 +35,7 @@ public class StoryPlayerInfo : MonoBehaviour {
 
     private void OnLevelWasLoaded(int level) {
         // If we've loaded in story select
-        if (level == 1) {
+        if (level == 2) {
             // Turn on the info boxes
             foreach (PlayerInfoBox pib in _playerInfoBoxes) {
                 pib.gameObject.SetActive(true);
