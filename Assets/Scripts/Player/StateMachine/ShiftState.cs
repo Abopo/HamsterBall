@@ -9,6 +9,15 @@ public class ShiftState : PlayerState {
     Vector3 _oldScale = new Vector3();
 
     float _tempScale = 0f;
+    Vector2 _takeOffPosition;
+    Vector2 _landingPosition;
+    Transform _playerSprite;
+    float _scaleT = 0f;
+    float _scaleVelocity;
+    float _startScale;
+    float _endScale;
+
+    float _initialZPos;
 
     void Start() {
     }
@@ -21,6 +30,8 @@ public class ShiftState : PlayerState {
             playerIn.ResetShiftTimer();
         }
 
+        _totalShiftTime = 0.65f;
+
         _shifted = false;
         _shiftTimer = 0f;
         _oldScale = playerController.transform.localScale;
@@ -30,7 +41,44 @@ public class ShiftState : PlayerState {
 
         playerController.PlayerAudio.PlayShiftClip();
 
-        ActivateShiftPortal();
+        //ActivateShiftPortal();
+
+        _takeOffPosition = playerController.transform.position;
+
+        float shiftDistance = 12.5f;
+        //if(playerController.LevelManager.mirroredLevel) {
+        shiftDistance = Mathf.Abs(playerController.transform.position.x) * 2;
+        //}
+
+        // Find landing point
+        if (!playerController.shifted) {
+            if (playerController.team == 0) {
+                _landingPosition = new Vector2(playerController.transform.position.x + shiftDistance, playerController.transform.position.y);
+            } else if (playerController.team == 1) {
+                _landingPosition = new Vector2(playerController.transform.position.x - shiftDistance, playerController.transform.position.y);
+            }
+        } else {
+            if (playerController.team == 0) {
+                _landingPosition = new Vector2(playerController.transform.position.x - shiftDistance, playerController.transform.position.y);
+            } else if (playerController.team == 1) {
+                _landingPosition = new Vector2(playerController.transform.position.x + shiftDistance, playerController.transform.position.y);
+            }
+        }
+
+        // Find the player's sprite object
+        _playerSprite = playerController.GetComponentInChildren<PlayerAnimationTriggers>().transform;
+        _startScale = playerController.transform.localScale.x;
+        _endScale = _startScale * 10;
+        _scaleT = 0f;
+        _scaleVelocity = _totalShiftTime;
+
+        // Save the player's initial z position
+        _initialZPos = playerController.transform.position.z;
+        // Push the player forward so they render over level stuff
+        playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, -10);
+
+        // Turn off main collider so walls and stuff don't get in the way
+        playerController.GetComponent<BoxCollider2D>().enabled = false;
     }
 
     void ActivateShiftPortal() {
@@ -54,28 +102,24 @@ public class ShiftState : PlayerState {
     
     // Update is called once per frame
     public override void Update() {
-        _shiftTimer += Time.deltaTime;
-        if(_shiftTimer >= _totalShiftTime/2) {
-            if (!_shifted) {
-                Vector3 tempScale = playerController.transform.localScale;
-                Quaternion tempRot = playerController.transform.rotation;
-                playerController.transform.rotation = Quaternion.identity;
-                playerController.Shift();
-                _shifted = true;
-                playerController.transform.localScale = tempScale;
-                playerController.transform.rotation = tempRot;
-            }
+        _shiftTimer += _totalShiftTime * Time.deltaTime;
 
-            // Undo Rotate/Scale from before
-            playerController.transform.Rotate(0f, 0f, -720 * Time.deltaTime);
-            _tempScale = playerController.transform.localScale.x + (1.1f * Time.deltaTime);
-            playerController.transform.localScale = new Vector3(_tempScale, _tempScale, _oldScale.z);
-        } else {
-            // Rotate/Scale player for little teleport animation
-            playerController.transform.Rotate(0f, 0f, 720 * Time.deltaTime);
-            _tempScale = playerController.transform.localScale.x - (1f * Time.deltaTime);
-            playerController.transform.localScale = new Vector3(_tempScale, _tempScale, _oldScale.z);
+        // Jump towards landing point
+        // Apply initial jump force towards landing point
+        // Lerp towards landing point
+        playerController.transform.position = new Vector3(Mathf.Lerp(_takeOffPosition.x, _landingPosition.x, _shiftTimer / _totalShiftTime),
+                                                            playerController.transform.position.y,
+                                                            playerController.transform.position.z);
+
+        // Lerp up/down scale to appear as if character is jumping towards the screen.
+        _scaleT += _scaleVelocity * Time.deltaTime;
+        _scaleVelocity -= (_totalShiftTime * 2) * Time.deltaTime;
+        if (_scaleT > 1f) {
+            _scaleT = 1f;
         }
+        // Apply the scale changes
+        float scale = Mathf.Lerp(_startScale, _endScale, _scaleT);
+        playerController.transform.localScale = new Vector3(scale, Mathf.Abs(scale), 1);
 
         if (_shiftTimer >= _totalShiftTime) {
             playerController.ChangeState(PLAYER_STATE.IDLE);
@@ -87,16 +131,8 @@ public class ShiftState : PlayerState {
     }
 
     void StopPlayerMovement() {
-        //if (Mathf.Abs(playerController.velocity.x) > 0.5f) {
-        //    playerController.velocity.x -= Mathf.Sign(playerController.velocity.x) * playerController.walkForce * 1.5f * Time.deltaTime;
-        //} else {
-            playerController.velocity.x = 0;
-        //}
-        //if (Mathf.Abs(playerController.velocity.y) > 0.5f) {
-        //    playerController.velocity.y -= Mathf.Sign(playerController.velocity.y) * playerController.jumpForce * 5f * Time.deltaTime;
-        //} else {
-            playerController.velocity.y = 0;
-        //}
+        playerController.velocity.x = 0;
+        playerController.velocity.y = 0;
     }
 
     // returns the PLAYER_STATE that represents this state
@@ -108,6 +144,13 @@ public class ShiftState : PlayerState {
     public override void End() {
         playerController.transform.rotation = Quaternion.identity;
         playerController.transform.localScale = _oldScale;
-        playerController.shiftPortal.Deactivate();
+        //playerController.shiftPortal.Deactivate();
+
+        playerController.shifted = !playerController.shifted;
+        // Return player's z pos to normal
+        playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, _initialZPos);
+
+        // Turn main collider back on.
+        playerController.GetComponent<BoxCollider2D>().enabled = true;
     }
 }

@@ -123,6 +123,9 @@ public class PlayerController : Entity {
     public BubbleManager HomeBubbleManager {
         get { return _homeBubbleManager; }
     }
+    public LevelManager LevelManager {
+        get { return _levelManager; }
+    }
 
     bool _justChangedState; // Can only change state once per frame
 
@@ -369,11 +372,11 @@ public class PlayerController : Entity {
     }
 
     public void Shift() {
-        if(_levelManager.mirroredLevel) {
+        //if(_levelManager.mirroredLevel) {
             MirrorShift();
-        } else {
-            SymmetricalShift();
-        }
+        //} else {
+        //    SymmetricalShift();
+        //}
     }
 
     // This shift is used on symmetrical stages
@@ -400,7 +403,7 @@ public class PlayerController : Entity {
     // This shift is used on mirrored stages to help keep players out of level collision
     public void MirrorShift() {
         float shiftDistance = Mathf.Abs(transform.position.x) * 2;
-
+        
         if (!shifted) {
             if (team == 0) {
                 transform.Translate(shiftDistance, 0.0f, 0.0f);
