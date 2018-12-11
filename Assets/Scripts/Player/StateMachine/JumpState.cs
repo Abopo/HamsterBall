@@ -15,10 +15,12 @@ public class JumpState : PlayerState {
         playerController.PlayerAudio.PlayJumpClip();
 
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
-	}
 
-	// Update is called once per frame
-	public override void Update(){
+        playerController.Traction = 1.0f;
+    }
+
+    // Update is called once per frame
+    public override void Update(){
         if (!_jumped) {
             // TODO: This can potentially get very ugly, look into a better way to check which animation the player is in
             if (playerController.Animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jump") ||

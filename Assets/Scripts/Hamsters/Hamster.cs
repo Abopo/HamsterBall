@@ -39,7 +39,10 @@ public class Hamster : Entity {
     float rainbowMoveSpeed = 4f;
     float deadMoveSpeed = 2.25f;
     float gravityMoveSpeed = 3.5f;
-    
+
+    float _stuckTimer = 0f;
+    float _stuckTime = 0.5f;
+
     public HamsterSpawner ParentSpawner {
         set { _parentSpawner = value; }
     }
@@ -316,17 +319,21 @@ public class Hamster : Entity {
             }
         }
 
-        if (other.tag == "PipeCorner") {
-            // If we're stuck in the collider for some reason, get set back to a good spot
-            transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.05f, transform.position.z);
+        if ((other.tag == "PipeCornerLeft" || other.tag == "PipeCornerRight") && other.name != "Blocker") {
+            _stuckTimer += Time.deltaTime;
+            if (_stuckTimer >= _stuckTime) {
+                // If we're stuck in the collider for some reason, get set back to a good spot
+                transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.06f, transform.position.z);
 
-            // Turn
-            if (inRightPipe) {
-                FaceLeft();
-            } else {
-                FaceRight();
+                // Turn
+                if (inRightPipe) {
+                    FaceLeft();
+                } else {
+                    FaceRight();
+                }
+
+                _stuckTimer = 0f;
             }
-            exitedPipe = true;
         }
     }
 

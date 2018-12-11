@@ -78,7 +78,8 @@ public class OnlineLobby : MonoBehaviour {
 
     public void Quit() {
         PhotonNetwork.Disconnect();
-        SceneManager.LoadScene("MainMenu");
+        FindObjectOfType<GameManager>().MainMenuButton();
+        //SceneManager.LoadScene("MainMenu");
     }
 
     public void OnCreatedRoom() {

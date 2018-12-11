@@ -6,6 +6,7 @@ public class FallState : PlayerState {
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
+        playerController.Traction = 1.0f;
     }
 
     // Update is called once per frame

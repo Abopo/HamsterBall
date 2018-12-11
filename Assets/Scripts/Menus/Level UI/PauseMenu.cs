@@ -6,9 +6,11 @@ using Rewired;
 
 public class PauseMenu : MonoBehaviour {
 
-    public Button previousMenuButton;
     public GameObject optionsMenu;
+    public GameObject pauseMenu;
 
+    bool _isActive;
+    bool _justActivated;
     Player _player;
 
     MenuButton[] _buttons;
@@ -26,24 +28,43 @@ public class PauseMenu : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(_player.GetButtonDown("Start")) {
+    }
+
+    private void LateUpdate() {
+        if (_isActive && _player.GetButtonDown("Start") && !_justActivated) {
             ResumeButton();
         }
+
+        _justActivated = false;
     }
 
     public void ResumeButton() {
         _gameManager.Unpause();
-        gameObject.SetActive(false);
+        _isActive = false;
+        pauseMenu.SetActive(false);
     }
 
     public void Activate() {
-        gameObject.SetActive(true);
+        if (_isActive) {
+            return;
+        }
+
+        pauseMenu.SetActive(true);
+        _isActive = true;
+        _justActivated = true;
 
         // Pause the game
         _gameManager.FullPause();
     }
 
     public void Activate(int playerID) {
+        if(_isActive) {
+            return;
+        }
+
+        _isActive = true;
+        _justActivated = true;
+
         // Get the player that opened the pause menu
         _player = ReInput.players.GetPlayer(playerID);
 
@@ -53,7 +74,7 @@ public class PauseMenu : MonoBehaviour {
             option.SetPlayer(playerID);
         }
 
-        gameObject.SetActive(true);
+        pauseMenu.SetActive(true);
 
         // Pause the game
         _gameManager.FullPause();

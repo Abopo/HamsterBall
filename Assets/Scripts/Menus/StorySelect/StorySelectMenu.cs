@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class StorySelectMenu : MonoBehaviour {
     public Text chapter;
     public Text location;
-    public Image locationImage;
-    public Image locationImageSP;
     public Text gameType;
     public Text highscoreSolo;
     public Text highscoreCoop;
@@ -17,6 +15,7 @@ public class StorySelectMenu : MonoBehaviour {
     public World[] worlds = new World[2];
     public float worldMoveSpeed;
 
+    StagePicture _stagePicture;
 
     int _curWorld;
     bool _movingWorld;
@@ -26,10 +25,6 @@ public class StorySelectMenu : MonoBehaviour {
     int _furthestLevel;
 
     float _worldYPos = 0f;
-
-    Dictionary<string, Sprite> locationImages = new Dictionary<string, Sprite>();
-    Dictionary<string, Sprite> locationImagesSP = new Dictionary<string, Sprite>();
-    BoardDisplay _boardDisplay;
 
     public int CurWorld {
         get { return _curWorld; }
@@ -51,29 +46,7 @@ public class StorySelectMenu : MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
         _gameManager.prevMenu = MENU.STORY;
 
-        // Multiplayer images
-		locationImages["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/BasicForest");
-        locationImages["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/BasicMountain");
-        locationImages["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
-        locationImages["City"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City");
-        locationImages["Sewers"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Sewers");
-        locationImages["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");
-        locationImages["Fungals"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
-        locationImages["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
-        locationImages["Space"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
-
-        // Single player images
-        locationImagesSP["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/ForestBoard");
-        locationImagesSP["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/MountainBoard");
-        locationImagesSP["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
-        locationImagesSP["City"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City");
-        locationImagesSP["Sewers"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Sewers");
-        locationImagesSP["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");
-        locationImagesSP["Fungals"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
-        locationImagesSP["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
-        locationImagesSP["Space"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
-
-        _boardDisplay = FindObjectOfType<BoardDisplay>();
+        _stagePicture = FindObjectOfType<StagePicture>();
 
         _worldYPos = worlds[0].transform.localPosition.y;
 
@@ -150,52 +123,24 @@ public class StorySelectMenu : MonoBehaviour {
                 gameType.text = "Versus Stage";
                 highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
                 highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
-
-                VersusSetup(storyButton);
                 break;
             case GAME_MODE.SP_POINTS:
                 gameType.text = "Point Challenge";
                 highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
                 highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
-
-                SinglePlayerSetup(storyButton);
                 break;
             case GAME_MODE.SP_CLEAR:
                 gameType.text = "Puzzle Stage";
                 highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
                 highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
-
-                SinglePlayerSetup(storyButton);
                 break;
         }
 
+        // Update the stage picture
+        _stagePicture.UpdateImages(storyButton);
+
         // Set win condition text
         winCondition.text = storyButton.winCondition;
-    }
-
-    void VersusSetup(StoryButton storyButton) {
-        // Show the versus location image
-        locationImage.transform.parent.gameObject.SetActive(true);
-        // Hide the single player location image
-        locationImageSP.transform.parent.gameObject.SetActive(false);
-        
-        // Set location image
-        locationImage.sprite = locationImages[storyButton.locationName];
-
-        // Clear any previews that may be showing
-        _boardDisplay.ClearBoard();
-    }
-    void SinglePlayerSetup(StoryButton storyButton) {
-        // Show the single player location image
-        locationImageSP.transform.parent.gameObject.SetActive(true);
-        // Hide the versus location image
-        locationImage.transform.parent.gameObject.SetActive(false);
-
-        // Set location image
-        locationImageSP.sprite = locationImagesSP[storyButton.locationName];
-
-        // Display a preview of the stage
-        _boardDisplay.LoadBoard(storyButton.fileToLoad);
     }
 
     // Change the UI to a different world

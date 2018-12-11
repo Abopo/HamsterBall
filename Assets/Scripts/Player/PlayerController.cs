@@ -98,6 +98,7 @@ public class PlayerController : Entity {
     float _traction = 1.0f;
     public float Traction {
         get { return _traction; }
+        set { _traction = value; }
     }
     bool _onFallThrough;
 
