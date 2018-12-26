@@ -223,17 +223,6 @@ public class Hamster : Entity {
 		}
 	}
 
-	public override void CollisionResponseX(Collider2D collider) {
-		if (collider.gameObject.layer == 9) {
-			//velocity.x = 0.0f;
-		}
-	}
-	public override void CollisionResponseY(Collider2D collider) {
-		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/) {
-			velocity.y = 0.0f;
-		}
-	}
-
     public override void Spring(float springForce) {
         base.Spring(springForce);
 

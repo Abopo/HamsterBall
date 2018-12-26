@@ -5,21 +5,23 @@ using UnityEngine.UI;
 using Rewired;
 
 public class CharacterSelectWindow : MonoBehaviour {
-    CHARACTERNAMES _boyName = CHARACTERNAMES.BOY2;
-    CHARACTERNAMES _girlName = CHARACTERNAMES.GIRL1;
+    protected CHARACTERNAMES _boyName = CHARACTERNAMES.BOY2;
+    protected CHARACTERNAMES _girlName = CHARACTERNAMES.GIRL1;
     public Image boySprite;
     public Image girlSprite;
-    Sprite[] characterSprites = new Sprite[6];
+    protected Sprite[] characterSprites = new Sprite[6];
 
     public CHARACTERNAMES _alreadyChosen1 = CHARACTERNAMES.BOY1;
     public CHARACTERNAMES _alreadyChosen2 = CHARACTERNAMES.NUM_CHARACTERS;
 
     PlayerInfoBox _playerInfoBox;
-    Player _controllingPlayer;
+    protected Player _controllingPlayer;
 
-    MenuOption[] _options;
+    protected MenuOption[] _options;
 
-    GameManager _gameManager;
+    protected bool _isActive;
+
+    protected GameManager _gameManager;
     StorySelectMenu _storySelectMenu;
 
     private void Awake() {
@@ -27,7 +29,7 @@ public class CharacterSelectWindow : MonoBehaviour {
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
     }
     // Use this for initialization
-    void Start () {
+    protected virtual void Start () {
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
         characterSprites[0] = boySprites[0];
@@ -43,9 +45,15 @@ public class CharacterSelectWindow : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (_isActive) {
+            CheckInput();
+        }
+    }
+
+    protected void CheckInput() {
         if (_controllingPlayer.GetButtonDown("Up")) {
             // Figure out which character is highlighted
-            if(IsBoyHighlighted()) {
+            if (IsBoyHighlighted()) {
                 ChangeBoy(1);
             } else {
                 ChangeGirl(1);
@@ -59,12 +67,12 @@ public class CharacterSelectWindow : MonoBehaviour {
                 ChangeGirl(-1);
             }
         }
-        if(_controllingPlayer.GetButtonDown("Cancel")) {
+        if (_controllingPlayer.GetButtonDown("Cancel")) {
             Deactivate();
         }
     }
 
-    void ChangeBoy(int dir) {
+    protected void ChangeBoy(int dir) {
         do {
             // Move down the list one
             _boyName = _boyName + dir;
@@ -78,7 +86,7 @@ public class CharacterSelectWindow : MonoBehaviour {
         // Change the icon to the correct image
         boySprite.sprite = characterSprites[(int)_boyName];
     }
-    void ChangeGirl(int dir) {
+    protected void ChangeGirl(int dir) {
         do {
             // Move down the list one
             _girlName = _girlName + dir;
@@ -98,47 +106,62 @@ public class CharacterSelectWindow : MonoBehaviour {
         _controllingPlayer = ReInput.players.GetPlayer(pib.playerID);
 
         // Don't block the character that this player has chosen
-        if (_playerInfoBox.characterName == _alreadyChosen1) {
-            _alreadyChosen1 = CHARACTERNAMES.NUM_CHARACTERS;
-        } else if(_playerInfoBox.characterName == _alreadyChosen2) {
-            _alreadyChosen2 = CHARACTERNAMES.NUM_CHARACTERS;
-        }
+        AllowChosenCharacter(_playerInfoBox.characterName);
 
         // Use that players inputs to control the menu options
-        _options = GetComponentsInChildren<MenuOption>();
-        foreach (MenuOption option in _options) {
-            option.SetPlayer(pib.playerID);
-        }
+        SetMenuOptionInputs(pib.playerID);
 
         // Set the selection to the players character
-        if (_playerInfoBox.characterName <= CHARACTERNAMES.BOY4) {
+        SetSelectionToCharacter(pib.characterName);
+
+        gameObject.SetActive(true);
+        _isActive = true;
+        _storySelectMenu.DisableUI();
+    }
+
+    // Makes sure that the character already chosen by the player will be displayed
+    // (so they can rechoose the same character if desired)
+    protected void AllowChosenCharacter(CHARACTERNAMES charaName) {
+        if (charaName == _alreadyChosen1) {
+            _alreadyChosen1 = CHARACTERNAMES.NUM_CHARACTERS;
+        } else if (charaName == _alreadyChosen2) {
+            _alreadyChosen2 = CHARACTERNAMES.NUM_CHARACTERS;
+        }
+    }
+
+    protected void SetMenuOptionInputs(int playerID) {
+        _options = GetComponentsInChildren<MenuOption>(true);
+        foreach (MenuOption option in _options) {
+            option.SetPlayer(playerID);
+        }
+    }
+
+    protected void SetSelectionToCharacter(CHARACTERNAMES charaName) {
+        if (charaName <= CHARACTERNAMES.BOY4) {
             // Highlight the boy
             _options[0].Highlight();
 
             // Set the boy to the correct name and sprite
-            _boyName = _playerInfoBox.characterName;
+            _boyName = charaName;
             boySprite.sprite = characterSprites[(int)_boyName];
-        } else if(_playerInfoBox.characterName >= CHARACTERNAMES.GIRL1 && _playerInfoBox.characterName <= CHARACTERNAMES.GIRL2) {
+        } else if (charaName >= CHARACTERNAMES.GIRL1 && charaName <= CHARACTERNAMES.GIRL2) {
             // Highlight the girl
             _options[1].Highlight();
 
             // Set the girl to the correct name and sprite
-            _girlName = _playerInfoBox.characterName;
+            _girlName = charaName;
             girlSprite.sprite = characterSprites[(int)_girlName];
         }
-
-        gameObject.SetActive(true);
-
-        _storySelectMenu.DisableUI();
     }
 
-    public void Deactivate() {
+    public virtual void Deactivate() {
         gameObject.SetActive(false);
+        _isActive = false;
 
         _storySelectMenu.EnableUI();
     }
 
-    bool IsBoyHighlighted() {
+    protected bool IsBoyHighlighted() {
         if(_options[0].isHighlighted) {
             return true;
         }
@@ -146,33 +169,32 @@ public class CharacterSelectWindow : MonoBehaviour {
         return false;
     }
 
-    public void ChooseBoy() {
+    public virtual void ChooseBoy() {
         _playerInfoBox.SetCharacter(_boyName);
 
         CHARACTERNAMES tempName = _boyName;
         ChangeBoy(1);
-        // Hold onto the chosen character so it can be excluded from later choices
-        if (_alreadyChosen1 == CHARACTERNAMES.NUM_CHARACTERS) {
-            _alreadyChosen1 = tempName;
-        } else if(_alreadyChosen2 == CHARACTERNAMES.NUM_CHARACTERS) {
-            _alreadyChosen2 = tempName;
-        }
+        SaveChosen(tempName);
 
         Deactivate();
     }
 
-    public void ChooseGirl() {
+    public virtual void ChooseGirl() {
         _playerInfoBox.SetCharacter(_girlName);
 
         CHARACTERNAMES tempName = _girlName;
         ChangeGirl(1);
-        // Hold onto the chosen character so it can be excluded from later choices
-        if (_alreadyChosen1 == CHARACTERNAMES.NUM_CHARACTERS) {
-            _alreadyChosen1 = tempName;
-        } else if (_alreadyChosen2 == CHARACTERNAMES.NUM_CHARACTERS) {
-            _alreadyChosen2 = tempName;
-        }
+        SaveChosen(tempName);
 
         Deactivate();
+    }
+
+    protected void SaveChosen(CHARACTERNAMES chosen) {
+        // Hold onto the chosen character so it can be excluded from later choices
+        if (_alreadyChosen1 == CHARACTERNAMES.NUM_CHARACTERS) {
+            _alreadyChosen1 = chosen;
+        } else if (_alreadyChosen2 == CHARACTERNAMES.NUM_CHARACTERS) {
+            _alreadyChosen2 = chosen;
+        }
     }
 }

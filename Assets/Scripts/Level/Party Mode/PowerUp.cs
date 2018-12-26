@@ -18,6 +18,9 @@ public class PowerUp : Entity {
     protected float _activateTime = 0f;
     protected float _activateTimer = 0f;
 
+    float _stuckTimer = 0f;
+    float _stuckTime = 0.5f;
+
     int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
 
     protected HamsterSpawner _parentSpawner;
@@ -142,17 +145,21 @@ public class PowerUp : Entity {
     }
 
     void OnTriggerStay2D(Collider2D other) {
-        if (other.tag == "PipeCorner") {
-            // If we're stuck in the collider for some reason, get set back to a good spot
-            transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.05f, transform.position.z);
+        if ((other.tag == "PipeCornerLeft" || other.tag == "PipeCornerRight") && other.name != "Blocker") {
+            _stuckTimer += Time.deltaTime;
+            if (_stuckTimer >= _stuckTime) {
+                // If we're stuck in the collider for some reason, get set back to a good spot
+                transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.06f, transform.position.z);
 
-            // Turn
-            if (inRightPipe) {
-                FaceLeft();
-            } else {
-                FaceRight();
+                // Turn
+                if (inRightPipe) {
+                    FaceLeft();
+                } else {
+                    FaceRight();
+                }
+
+                _stuckTimer = 0f;
             }
-            exitedPipe = true;
         }
     }
 

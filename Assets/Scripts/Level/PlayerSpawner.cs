@@ -66,6 +66,10 @@ public class PlayerSpawner : MonoBehaviour {
             }
             newPlayer.SetPlayerNum(tempPlayerInfo.playerNum);
             newPlayer.team = tempPlayerInfo.team;
+            // Default player to left team if they aren't assigned one
+            if (newPlayer.team == -1) {
+                newPlayer.team = 0;
+            }
             newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
             newPlayer.SetCharacterName(tempPlayerInfo.characterName);
 
