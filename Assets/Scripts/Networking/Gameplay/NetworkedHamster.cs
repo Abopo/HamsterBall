@@ -58,7 +58,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                 hS = s.GetComponent<HamsterSpawner>();
                 if (hS.team == _hamster.team && hS.rightSidePipe == _hamster.inRightPipe) {
                     _hamster.ParentSpawner = hS;
-                    hS.hamsterCount++;
+                    hS.releasedHamsterCount++;
                 }
             }
         } else {
@@ -71,7 +71,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                 hS = s.GetComponent<HamsterSpawner>();
                 if (hS.team == _hamster.team) {
                     _hamster.ParentSpawner = hS;
-                    hS.hamsterCount++;
+                    hS.releasedHamsterCount++;
                 }
             }
         }

@@ -46,17 +46,17 @@ public class GameManager : MonoBehaviour {
     public Player playerInput;
 
     string _levelDoc; // document containing data for a single player level
-    int _hamsterSpawnMax = 1;
+    int _hamsterSpawnMax = 8;
 
     public int HamsterSpawnMax {
         get { return _hamsterSpawnMax; }
 
         set {
             _hamsterSpawnMax = value;
-            if(_hamsterSpawnMax < 6) {
-                _hamsterSpawnMax = 6;
-            } else if(_hamsterSpawnMax > 14) {
-                _hamsterSpawnMax = 14;
+            if(_hamsterSpawnMax < 4) {
+                _hamsterSpawnMax = 4;
+            } else if(_hamsterSpawnMax > 12) {
+                _hamsterSpawnMax = 12;
             }
         }
     }
@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour {
 
         aimAssist = false;
 
-        _hamsterSpawnMax = 10;
+        _hamsterSpawnMax = 8;
     }
 
     void SceneLoad(Scene scene, LoadSceneMode mode) {

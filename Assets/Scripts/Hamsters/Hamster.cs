@@ -18,6 +18,8 @@ public class Hamster : Entity {
 
     public bool exitedPipe;
     public bool inRightPipe;
+    public bool inLine;
+    public bool exitedLine;
 
     public float curMoveSpeed; //  base - 3, rainbow - 4, dead - 2, gravity - 3.5
     public float moveSpeedModifier; // Is added to the move speed
@@ -49,6 +51,10 @@ public class Hamster : Entity {
 
     public bool Destroy1 {
         get { return _destroy; }
+    }
+
+    public int CurState {
+        get { return _curState; }
     }
 
     GameManager _gameManager;
@@ -202,7 +208,7 @@ public class Hamster : Entity {
                 UpdateVelocity();
             }
         } else {
-            _curState = 1;
+            //_curState = 1;
         }
 
         _animator.SetInteger("State", _curState);
@@ -248,19 +254,18 @@ public class Hamster : Entity {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        // Pipe traversal
         if (other.tag == "Pipe Entrance Left") {
             inRightPipe = false;
             ReenterPipe(other.transform);
         } else if (other.tag == "Pipe Entrance Right") {
             inRightPipe = true;
             ReenterPipe(other.transform);
-        } else if(other.tag == "Single Pipe Entrance") {
+        } else if (other.tag == "Single Pipe Entrance") {
             SinglePipeEntrance spe = other.GetComponent<SinglePipeEntrance>();
 
             // For some boards, there are only 1 entrance to the loop so
             // figure out which direction hamsters will go based on their facing
-            if(spe.GetDirection()) {
+            if (spe.GetDirection()) {
                 inRightPipe = false;
             } else {
                 inRightPipe = true;
@@ -268,17 +273,17 @@ public class Hamster : Entity {
             ReenterPipe(other.transform);
         }
 
-        if(other.tag == "PipeCornerLeft") {
+        if (other.tag == "PipeCornerLeft") {
             FaceRight();
             if (other.name == "Blocker") {
                 exitedPipe = true;
             }
-        } else if(other.tag == "PipeCornerRight") {
+        } else if (other.tag == "PipeCornerRight") {
             FaceLeft();
             if (other.name == "Blocker") {
                 exitedPipe = true;
             }
-        } else if(other.tag == "Pipe Turn 1") {
+        } else if (other.tag == "Pipe Turn 1") {
             // Turn into connecting pipe
             if (inRightPipe) {
                 FaceRight();
@@ -286,18 +291,32 @@ public class Hamster : Entity {
                 FaceLeft();
             }
             UpdateVelocity();
-        } else if(other.tag == "Pipe Turn 2") {
+        } else if (other.tag == "Pipe Turn 2") {
             // Turn into main pipe
             FaceUp();
 
             UpdateVelocity();
+        } else if (other.tag == "Bottom Pipe Entrance Left") {
+            exitedPipe = false;
+            inRightPipe = false;
+        } else if (other.tag == "Bottom Pipe Entrance Right") {
+            exitedPipe = false;
+            inRightPipe = true;
         }
-	}
+
+        // If we run into another hamster in line, stop moving
+        if(other.tag == "Hamster"&& !exitedLine) {
+            if(other.GetComponent<Hamster>().CurState == 0) {
+                inLine = true;
+                SetState(0);
+            }
+        }
+    }
 
     void OnTriggerStay2D(Collider2D other) {
         // Prevent hamsters from overlapping each other
         // If we are touching another hamster that is moving the same direction and speed as us
-        if (other.tag == "Hamster" && other.GetComponent<Hamster>().velocity.x == velocity.x) {
+        if (other.tag == "Hamster" && exitedLine && other.GetComponent<Hamster>().velocity.x == velocity.x) {
             Vector2 toHamster = other.transform.position - transform.position;
             toHamster.Normalize();
             // If the other hamster is in front
@@ -328,7 +347,7 @@ public class Hamster : Entity {
 
     void OnTriggerExit2D(Collider2D other) {
         // We have stopped overlapping with another hamster
-        if (other.tag == "Hamster") {
+        if (other.tag == "Hamster" && exitedLine) {
             // Resume normal speed
             curMoveSpeed = moveSpeed;
         }
@@ -343,6 +362,11 @@ public class Hamster : Entity {
         // Go down pipe
         FaceDown();
     }
+
+    public void ExitLine() {
+        inLine = false;
+        exitedLine = true;
+    }
     
     public bool IsSpecial() {
         if (type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.DEAD || isGravity) {
@@ -352,9 +376,25 @@ public class Hamster : Entity {
         return false;
     }
 
-    public void SetMoveSpeed(float mSpeed) {
-        moveSpeed = mSpeed;
-        curMoveSpeed = moveSpeed;
+    public void SetState(int state) {
+        _curState = state;
+        _animator.SetInteger("State", _curState);
+
+        switch(_curState) {
+            case 0: // Idle
+                if (inRightPipe) {
+                    FaceLeft();
+                } else {
+                    FaceRight();
+                }
+                curMoveSpeed = 0;
+                break;
+            case 1: // Walk
+                curMoveSpeed = moveSpeed;
+                break;
+            case 2: // Fall
+                break;
+        }
     }
 
     public override void Respawn() {

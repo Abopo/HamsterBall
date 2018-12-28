@@ -10,16 +10,21 @@ public class HamsterSpawner : Photon.PunBehaviour {
     public bool rightSidePipe;
     public bool testMode;
 
-    public int hamsterCount;
-    public int maxHamsterCount;
+    public int releasedHamsterCount;
+    public int maxReleasedHamsterCount;
 
     public float _spawnTime;
     float _spawnTimer;
+    float _releaseTimer;
 
     Vector3 _spawnPosition;
 
     int _nextHamsterType;
     HamsterInfo _hamsterInfo;
+
+    List<Hamster> _hamsterLine = new List<Hamster>();
+    int _hamsterLineMax;
+    HamsterDoor _hamsterDoor;
 
     public static bool canBeRainbow = true;
     public static bool canBeDead = false;
@@ -67,7 +72,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
 
         Transform spawnPoint = transform.GetChild(0);
-        _spawnPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z + 5f);
+        _spawnPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z);
 
         _nextHamsterType = -1;
         SetupSpecialTypes();
@@ -86,6 +91,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
             // Choose the next hamster type right now
             _nextHamsterType = GetValidType();
         }
+
+        _hamsterDoor = GetComponentInChildren<HamsterDoor>();
 
         SetSpawnMax();
 
@@ -115,9 +122,11 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     void SetSpawnMax() {
         if (twoTubes) {
-            maxHamsterCount = _gameManager.HamsterSpawnMax/2;
+            maxReleasedHamsterCount = _gameManager.HamsterSpawnMax/2;
+            _hamsterLineMax = 2;
         } else {
-            maxHamsterCount = _gameManager.HamsterSpawnMax;
+            maxReleasedHamsterCount = _gameManager.HamsterSpawnMax;
+            _hamsterLineMax = 3;
         }
     }
 
@@ -129,19 +138,27 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
 
         _spawnTimer += Time.deltaTime;
-		if (_spawnTimer >= _spawnTime && hamsterCount < maxHamsterCount) {
-			SpawnHamster();
+		if (_spawnTimer >= _spawnTime) {
+            if (_hamsterLine.Count < 3) {
+                SpawnHamster();
 
-            // Team survival mode does not need hamsters to be equally seeded
-            //if(_gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
                 // Choose the next hamster type right now
                 _nextHamsterType = GetValidType();
-            //}
-            //Debug.Log(_nextHamsterType.ToString());
-            _spawnTimer = 0;
-		}
+                _spawnTimer = 0;
+            }
+        } else {
+            UpdateHamstersInLine();
+        }
+        _releaseTimer += Time.deltaTime;
+        if (_releaseTimer >= _spawnTime) {
+            // If we can release a hamster and have one to release
+            if (releasedHamsterCount < maxReleasedHamsterCount && _hamsterLine.Count > 0 && _hamsterLine[0].inLine == true) {
+                ReleaseNextHamster();
+                _releaseTimer = 0;
+            }
+        }
 
-        if(testMode) {
+        if (testMode) {
             CheckInput();
         }
 	}
@@ -192,10 +209,20 @@ public class HamsterSpawner : Photon.PunBehaviour {
             if (rightSidePipe) {
                 hamster.Flip();
                 hamster.inRightPipe = true;
+                if(twoTubes) {
+                    hamster.FaceRight();
+                } else {
+                    hamster.FaceLeft();
+                }
             } else {
                 hamster.inRightPipe = false;
+                if (twoTubes) {
+                    hamster.FaceLeft();
+                } else {
+                    hamster.FaceRight();
+                }
             }
-            hamster.FaceUp();
+            //hamster.FaceUp();
             hamster.Initialize(team);
             hamster.testMode = testMode;
             hamster.ParentSpawner = this;
@@ -210,8 +237,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
             hamster.hamsterNum = nextHamsterNum;
             nextHamsterNum++;
 
-            // Increase hamster count
-            hamsterCount++;
+            _hamsterLine.Add(hamster);
         }
     }
 
@@ -306,17 +332,90 @@ public class HamsterSpawner : Photon.PunBehaviour {
         return validType;
     }
 
+    public void HamsterLineStop() {
+        if (releasedHamsterCount < maxReleasedHamsterCount && _releaseTimer >= _spawnTime) {
+            ReleaseNextHamster();
+            _releaseTimer = 0f;
+        } else {
+            foreach (Hamster ham in _hamsterLine) {
+                if (ham.inLine) {
+                    ham.SetState(0);
+                }
+            }
+        }
+    }
+
+    void ReleaseNextHamster() {
+        if (_hamsterLine.Count > 0) {
+            // Set hamster to run up
+            _hamsterLine[0].SetState(1);
+            _hamsterLine[0].FaceUp();
+
+            _hamsterLine[0].ExitLine();
+
+            // Open the hamster door
+            _hamsterDoor.Open();
+
+            // Remove the released hamster from the list
+            _hamsterLine.RemoveAt(0);
+
+            // Increase hamster count
+            releasedHamsterCount++;
+
+            // Move the line forward
+            HamsterLineMove();
+        }
+    }
+
+    void HamsterLineMove() {
+        foreach(Hamster ham in _hamsterLine) {
+            ham.SetState(1);
+            if (twoTubes) {
+                if (rightSidePipe) {
+                    ham.FaceRight();
+                } else {
+                    ham.FaceLeft();
+                }
+            } else {
+                if(rightSidePipe) {
+                    ham.FaceLeft();
+                } else {
+                    ham.FaceRight();
+                }
+            }
+        }
+    }
+
+    void UpdateHamstersInLine() {
+        if (twoTubes) {
+            for (int i = 1; i < _hamsterLine.Count; ++i) {
+                if (_hamsterLine[i].inLine) {
+                    _hamsterLine[i].transform.position = new Vector3(_hamsterLine[i - 1].transform.position.x + (rightSidePipe ? -1 : 1),
+                                                                     _hamsterLine[i].transform.position.y,
+                                                                     _hamsterLine[i].transform.position.z);
+                }
+            }
+        } else {
+            for (int i = 1; i < _hamsterLine.Count; ++i) {
+                if (_hamsterLine[i].inLine) {
+                    _hamsterLine[i].transform.position = new Vector3(_hamsterLine[i - 1].transform.position.x + (rightSidePipe ? 1 : -1),
+                                                                     _hamsterLine[i].transform.position.y,
+                                                                     _hamsterLine[i].transform.position.z);
+                }
+            }
+        }
+    }
+
     public void ReduceHamsterCount() {
-        if(hamsterCount >= maxHamsterCount) {
+        if(releasedHamsterCount >= maxReleasedHamsterCount) {
             _spawnTimer = 0;
         }
 
-        hamsterCount--;
+        releasedHamsterCount--;
     }
 
     private void OnDestroy() {
         // Reset spawn seed to true random
         //spawnSeed = (int)Time.realtimeSinceStartup;
     }
-
 }

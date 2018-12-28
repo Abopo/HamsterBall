@@ -36,6 +36,28 @@ public class LevelManager : MonoBehaviour {
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
+
+        // Set up correct ceiling
+        Ceiling[] ceilings = FindObjectsOfType<Ceiling>();
+        if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            // Turn on big ceiling
+            foreach (Ceiling c in ceilings) {
+                if (c.name == "Big Ceiling") {
+                    c.gameObject.SetActive(true);
+                } else {
+                    c.gameObject.SetActive(false);
+                }
+            }
+        } else {
+            foreach (Ceiling c in ceilings) {
+                if (c.name == "Big Ceiling") {
+                    c.gameObject.SetActive(false);
+                } else {
+                    c.gameObject.SetActive(true);
+                }
+
+            }
+        }
     }
 
     // Use this for initialization

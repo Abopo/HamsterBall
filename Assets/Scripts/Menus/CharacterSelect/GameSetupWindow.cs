@@ -11,7 +11,7 @@ public class GameSetupWindow : MonoBehaviour {
     public Text lthNumberText;
     public Text rthNumberText;
     public Text aaText;
-    public Text hsrText;
+    public Text hsmText;
     public Text rainbowText;
     public Text deadText;
     public Text gravityText;
@@ -34,9 +34,6 @@ public class GameSetupWindow : MonoBehaviour {
     void Start () {
         _gameManager = FindObjectOfType<GameManager>();
         _teamSelect = FindObjectOfType<TeamSelect>();
-        //hsrTexts[0] = "Slow";
-        //hsrTexts[1] = "Medium";
-        //hsrTexts[2] = "Fast";
 
         GetOptions();
     }
@@ -74,7 +71,7 @@ public class GameSetupWindow : MonoBehaviour {
         _aimAssist = false;
         aaText.text = "Off";
 
-        hsrText.text = _gameManager.HamsterSpawnMax.ToString();
+        hsmText.text = _gameManager.HamsterSpawnMax.ToString();
 
         if (HamsterSpawner.canBeRainbow) {
             rainbowText.text = "On";
@@ -168,13 +165,13 @@ public class GameSetupWindow : MonoBehaviour {
     // Decrease the Hamster Spawn Rate
     public void DecreaseHSR() {
         _gameManager.HamsterSpawnMax -= 2;
-        hsrText.text = _gameManager.HamsterSpawnMax.ToString();
+        hsmText.text = _gameManager.HamsterSpawnMax.ToString();
     }
 
     // Increase the Hamster Spawn Rate
     public void IncreaseHSR() {
         _gameManager.HamsterSpawnMax += 2;
-        hsrText.text = _gameManager.HamsterSpawnMax.ToString();
+        hsmText.text = _gameManager.HamsterSpawnMax.ToString();
     }
 
     // Turns On/Off Rainbow hamsters
