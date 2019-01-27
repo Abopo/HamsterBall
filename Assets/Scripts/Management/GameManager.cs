@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour {
 
     void SceneLoad(Scene scene, LoadSceneMode mode) {
         gameIsOver = false;
-        isPaused = false;
+        Unpause();
     }
 
     // Update is called once per frame

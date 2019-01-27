@@ -52,6 +52,7 @@ public class VillageCharacterSelect : CharacterSelectWindow {
 
     public override void ChooseBoy() {
         _playerController.SetCharacterName(_boyName);
+        PlayerPrefs.SetInt("Player1Character", (int)_boyName);
 
         CHARACTERNAMES tempName = _boyName;
         ChangeBoy(1);
@@ -61,6 +62,7 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     }
     public override void ChooseGirl() {
         _playerController.SetCharacterName(_girlName);
+        PlayerPrefs.SetInt("Player1Character", (int)_girlName);
 
         CHARACTERNAMES tempName = _girlName;
         ChangeGirl(1);

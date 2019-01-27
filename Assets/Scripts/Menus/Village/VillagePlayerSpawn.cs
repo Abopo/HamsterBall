@@ -25,7 +25,9 @@ public class VillagePlayerSpawn : MonoBehaviour {
         newPlayer.SetPlayerNum(0);
         newPlayer.team = 0;
         newPlayer.transform.position = transform.position;
-        newPlayer.SetCharacterName(CHARACTERNAMES.BOY1);
+        //newPlayer.SetCharacterName(CHARACTERNAMES.BOY1);
+        newPlayer.SetCharacterName((CHARACTERNAMES)PlayerPrefs.GetInt("Player1Character"));
+        
         newPlayer.aimAssist = false;
     }
 

@@ -56,7 +56,7 @@ public class HamsterWheel : MonoBehaviour {
         _mapNames[4] = "Sewers";
         _mapNames[5] = "Laboratory";
         _mapNames[6] = "DarkForest";
-        _mapNames[7] = "Space";
+        _mapNames[7] = "Airship";
 
         curMapText.text = _mapNames[_index];
         SetTextColor();
@@ -85,6 +85,15 @@ public class HamsterWheel : MonoBehaviour {
                 EndRotation();
                 _failsafeTimer = 0f;
             }
+        }
+    }
+
+    private void LateUpdate() {
+        // Have to fix the rotation every fucking frame because Unity animation scales are fucking stupid and don't make any sense
+        if (_rotatingRight) {
+            FlipHamster(true);
+        } else if (_rotatingLeft) {
+            FlipHamster(false);
         }
     }
 
@@ -208,7 +217,7 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void FlipHamster(bool right) {
-        hamster.SetBool("FacingRight", right);
+        hamster.SetBool("FacingLeft", !right);
 
         if (right) {
             // Multiply the player's x local scale by -1.

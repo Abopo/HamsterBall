@@ -42,10 +42,21 @@ public class PlayerInfoBox : MonoBehaviour {
 
         if (playerAssigned) {
             _player.controllers.GetController(ControllerType.Joystick, 0);
+
+            // Set player to correct character
+            int character = 0;
+            if (playerID == 0) {
+                character = PlayerPrefs.GetInt("Player1Character");
+            } else if (playerID == 1) {
+                character = PlayerPrefs.GetInt("Player2Character");
+            }
+
+            SetCharacter((CHARACTERNAMES)character);
         }
 
         // Get the first player
         _player1 = ReInput.players.GetPlayer(0);
+
     }
 
     private void OnLevelWasLoaded(int level) {
@@ -96,8 +107,10 @@ public class PlayerInfoBox : MonoBehaviour {
 
         if (playerID == 0) {
             playerText.text = "Player 1";
+            PlayerPrefs.SetInt("Player1Character", (int)characterName);
         } else {
             playerText.text = "Player 2";
+            PlayerPrefs.SetInt("Player2Character", (int)characterName);
         }
         foreach (GameObject gO in infoObjects) {
             gO.SetActive(true);

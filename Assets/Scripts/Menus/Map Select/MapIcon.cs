@@ -52,7 +52,7 @@ public class MapIcon : MonoBehaviour {
         _mapNames[5] = "City2";
         _mapNames[6] = "Laboratory";
         _mapNames[7] = "Fungals";
-        _mapNames[8] = "Space";
+        _mapNames[8] = "Airship";
         _mapNames[9] = "DarkForest";
 
         _spriteRenderer = GetComponent<SpriteRenderer>();

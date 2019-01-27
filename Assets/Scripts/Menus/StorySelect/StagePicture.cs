@@ -25,7 +25,7 @@ public class StagePicture : MonoBehaviour {
         locationImagesMP["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");
         locationImagesMP["Fungals"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
         locationImagesMP["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
-        locationImagesMP["Space"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
+        locationImagesMP["Airship"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
 
         // Single player images
         locationImagesSP["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/ForestBoard");
@@ -36,7 +36,7 @@ public class StagePicture : MonoBehaviour {
         locationImagesSP["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");
         locationImagesSP["Fungals"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - Fungals");
         locationImagesSP["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
-        locationImagesSP["Space"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
+        locationImagesSP["Airship"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
 
         _boardDisplay = FindObjectOfType<BoardDisplay>();
     }
