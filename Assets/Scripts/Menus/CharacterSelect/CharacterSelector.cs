@@ -12,6 +12,7 @@ public class CharacterSelector : MonoBehaviour {
     public bool lockedIn = false;
     public bool takeInput = true;
     public bool isAI = false;
+    public int charaColor = 1;
 
     Player _player;
 
@@ -164,7 +165,29 @@ public class CharacterSelector : MonoBehaviour {
                     _moveTimer = 0f;
                 }
             }
+        } else if(lockedIn && CanMove()) {
+            if(_player.GetButtonDown("Right")) {
+                // Change Color to the right
+                charaColor += 1;
+                if(charaColor > _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count) {
+                    charaColor = 1;
+                }
+
+                // Change animator to correct character
+                characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1];
+            }
+            if (_player.GetButtonDown("Left")) {
+                // Change color to the left
+                charaColor -= 1;
+                if(charaColor < 1) {
+                    charaColor = _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count;
+                }
+
+                // Change animator to correct character
+                characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1];
+            }
         }
+
         if (!_player.GetButton("Right") && !_player.GetButton("Left") && !_player.GetButton("Up") && !_player.GetButton("Down")) {
             _moveTimer = _moveTime + 1f;
         }
@@ -204,13 +227,15 @@ public class CharacterSelector : MonoBehaviour {
         lockedIn = true;
         readySprite.SetActive(true);
         curCharacterIcon.Lock();
-        _playerManager.AddPlayer(playerNum, isAI, curCharacterIcon.characterName);
     }
     public void Unlock() {
         lockedIn = false;
         readySprite.SetActive(false);
         curCharacterIcon.Unlock();
-        _playerManager.RemovePlayerByNum(playerNum);
+        //_playerManager.RemovePlayerByNum(playerNum);
+
+        // Reset color to default
+        charaColor = 1;
     }
 
     void HighlightIcon(CharacterIcon charaIcon) {
@@ -221,7 +246,7 @@ public class CharacterSelector : MonoBehaviour {
         transform.position = new Vector3(charaIcon.transform.position.x, charaIcon.transform.position.y, charaIcon.transform.position.z - (2f + 0.1f * playerNum));
 
         // Change animator to correct character
-        characterAnimator.runtimeAnimatorController = _resources.characterAnimators[(int)charaIcon.characterName];
+        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][charaColor-1];
 
         // Play idle animation
         characterAnimator.SetInteger("PlayerState", 0);
@@ -239,13 +264,27 @@ public class CharacterSelector : MonoBehaviour {
         return false;
     }
 
-    public void SetIcon(CHARACTERNAMES characterName) {
+    public void LoadCharacter() {
+        CharaInfo tempInfo = new CharaInfo();
+        tempInfo.name = curCharacterIcon.charaName;
+        tempInfo.color = charaColor;
+        _playerManager.AddPlayer(playerNum, isAI, tempInfo);
+    }
+
+    public void SetIcon(CharaInfo charaInfo) {
         if (_charaIcons != null) {
             foreach (CharacterIcon charaIcon in _charaIcons) {
-                if (charaIcon.characterName == characterName) {
+                if (charaIcon.charaName == charaInfo.name) {
                     HighlightIcon(charaIcon);
                 }
             }
         }
+
+        SetColor(charaInfo.color);
     }
+
+    public void SetColor(int color) {
+
+    }
+
 }

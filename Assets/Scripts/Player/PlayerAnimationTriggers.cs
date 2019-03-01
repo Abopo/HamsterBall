@@ -38,6 +38,10 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _bubbleState.Finish();
     }
 
+    public void ShowBubble() {
+        _playerController.heldBubble.DisplaySprites();
+    }
+
     public void AttackOn() {
         _attackState.StartAttack();
     }

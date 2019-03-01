@@ -22,6 +22,7 @@ public class InputState {
     public button   submit;
     public button   cancel;
     public button   start;
+    public button   pause;
 
     // Used within the class to keep track of joystick inputs
     bool upJustPressed;
@@ -100,6 +101,10 @@ public class InputState {
             start.isDown = _player.GetButton("Start");
             start.isJustPressed = _player.GetButtonDown("Start");
             start.isJustReleased = _player.GetButtonUp("Start");
+            pause.isDown = _player.GetButton("Pause");
+            pause.isJustPressed = _player.GetButtonDown("Pause");
+            pause.isJustReleased = _player.GetButtonUp("Pause");
+
         }
     }
 }

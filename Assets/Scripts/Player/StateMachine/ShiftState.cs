@@ -34,7 +34,6 @@ public class ShiftState : PlayerState {
 
         _shifted = false;
         _shiftTimer = 0f;
-        _oldScale = playerController.transform.localScale;
 
         // Slow the player to a stop, even if in midair
         StopPlayerMovement();
@@ -53,15 +52,23 @@ public class ShiftState : PlayerState {
         // Find landing point
         if (!playerController.shifted) {
             if (playerController.team == 0) {
+                // Going right
                 _landingPosition = new Vector2(playerController.transform.position.x + shiftDistance, playerController.transform.position.y);
+                playerController.FaceRight();
             } else if (playerController.team == 1) {
+                // Going left
                 _landingPosition = new Vector2(playerController.transform.position.x - shiftDistance, playerController.transform.position.y);
+                playerController.FaceLeft();
             }
         } else {
             if (playerController.team == 0) {
+                // Going left
                 _landingPosition = new Vector2(playerController.transform.position.x - shiftDistance, playerController.transform.position.y);
+                playerController.FaceLeft();
             } else if (playerController.team == 1) {
+                // Going right
                 _landingPosition = new Vector2(playerController.transform.position.x + shiftDistance, playerController.transform.position.y);
+                playerController.FaceRight();
             }
         }
 
@@ -79,6 +86,9 @@ public class ShiftState : PlayerState {
 
         // Turn off main collider so walls and stuff don't get in the way
         playerController.GetComponent<BoxCollider2D>().enabled = false;
+
+        // Save the current scale to return to at the end
+        _oldScale = playerController.transform.localScale;
     }
 
     void ActivateShiftPortal() {

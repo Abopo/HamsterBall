@@ -73,5 +73,10 @@ public class BubbleState : PlayerState {
 	//	use this for destruction
 	public override void End(){
 		playerController.swingObj.SetActive (false);
-	}
+
+        if (playerController.heldBubble != null) {
+            // Make sure the held bubble is displayed
+            playerController.heldBubble.DisplaySprites();
+        }
+    }
 }

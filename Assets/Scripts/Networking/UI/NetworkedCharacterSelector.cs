@@ -12,7 +12,9 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
 
     string _nickname;
 
+    CharaInfo charaInfo = new CharaInfo();
     int characterName;
+    int characterColor;
     bool islockedIn;
 
     GameManager _gameManager;
@@ -43,17 +45,24 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
             if (_selector.curCharacterIcon != null) {
-                characterName = (int)_selector.curCharacterIcon.characterName;
+                characterName = (int)_selector.curCharacterIcon.charaName;
+                characterColor = _selector.charaColor;
             } else {
                 characterName = 0;
+                characterColor = 0;
             }
             stream.Serialize(ref characterName);
+            stream.Serialize(ref characterColor);
 
             islockedIn = _selector.lockedIn;
             stream.Serialize(ref islockedIn);
         } else {
             stream.Serialize(ref characterName);
-            _selector.SetIcon((CHARACTERNAMES)characterName);
+            stream.Serialize(ref characterColor);
+
+            charaInfo.name = (CHARACTERS)characterName;
+            charaInfo.color = characterColor;
+            _selector.SetIcon(charaInfo);
 
             stream.Serialize(ref islockedIn);
             if(islockedIn && !_selector.lockedIn) {

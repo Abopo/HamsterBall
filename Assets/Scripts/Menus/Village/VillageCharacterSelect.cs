@@ -29,18 +29,44 @@ public class VillageCharacterSelect : CharacterSelectWindow {
         _controllingPlayer = ReInput.players.GetPlayer(pCon.inputState.playerID);
 
         // Don't block the character that this player has chosen
-        AllowChosenCharacter(pCon.CharacterName);
+        AllowChosenCharacter(pCon.CharaInfo);
 
         // Use that players inputs to control the menu options
         SetMenuOptionInputs(pCon.inputState.playerID);
 
         // Set the selection to the players character
-        SetSelectionToCharacter(pCon.CharacterName);
+        SetSelectionToCharacter(pCon.CharaInfo);
 
         _childObject.SetActive(true);
         _isActive = true;
         // Turn off input for the player
         _gameManager.FullPause();
+    }
+
+    // Makes sure that the character already chosen by the player will be displayed
+    // (so they can rechoose the same character if desired)
+    protected void AllowChosenCharacter(CharaInfo charaInfo) {
+        // Convert CharaInfo to CHARACTERCOLORS
+        int charaColor = 0;
+        if(charaInfo.name == CHARACTERS.BOY) {
+            charaColor = charaInfo.color - 1;
+        } else if(charaInfo.name == CHARACTERS.GIRL) {
+            charaColor = 3 + charaInfo.color;
+        }
+
+        AllowChosenCharacter((CHARACTERCOLORS)charaColor);
+    }
+
+    protected void SetSelectionToCharacter(CharaInfo charaInfo) {
+        // Convert CharaInfo to CHARACTERCOLORS
+        int charaColor = 0;
+        if (charaInfo.name == CHARACTERS.BOY) {
+            charaColor = charaInfo.color - 1;
+        } else if (charaInfo.name == CHARACTERS.GIRL) {
+            charaColor = 3 + charaInfo.color;
+        }
+
+        SetSelectionToCharacter((CHARACTERCOLORS)charaColor);
     }
 
     public override void Deactivate() {
@@ -51,22 +77,28 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     }
 
     public override void ChooseBoy() {
-        _playerController.SetCharacterName(_boyName);
-        PlayerPrefs.SetInt("Player1Character", (int)_boyName);
+        CharaInfo charaInfo = new CharaInfo();
+        charaInfo.name = CHARACTERS.BOY;
+        charaInfo.color = (int)_boyColor + 1;
+        _playerController.SetCharacterInfo(charaInfo);
+        PlayerPrefs.SetInt("Player1Character", (int)_boyColor);
 
-        CHARACTERNAMES tempName = _boyName;
+        CHARACTERCOLORS tempColor = _boyColor;
         ChangeBoy(1);
-        SaveChosen(tempName);
+        SaveChosen(tempColor);
 
         Deactivate();
     }
     public override void ChooseGirl() {
-        _playerController.SetCharacterName(_girlName);
-        PlayerPrefs.SetInt("Player1Character", (int)_girlName);
+        CharaInfo charaInfo = new CharaInfo();
+        charaInfo.name = CHARACTERS.GIRL;
+        charaInfo.color = (int)_girlColor - 3;
+        _playerController.SetCharacterInfo(charaInfo);
+        PlayerPrefs.SetInt("Player1Character", (int)_girlColor);
 
-        CHARACTERNAMES tempName = _girlName;
+        CHARACTERCOLORS tempColor = _girlColor;
         ChangeGirl(1);
-        SaveChosen(tempName);
+        SaveChosen(tempColor);
 
         Deactivate();
     }

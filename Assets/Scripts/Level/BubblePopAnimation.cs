@@ -38,34 +38,34 @@ public class BubblePopAnimation : MonoBehaviour {
         int index = 0;
         switch(type) {
             case HAMSTER_TYPES.BLUE:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/BlueBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/BlueBubblePieces");
                 break;
             case HAMSTER_TYPES.GRAY:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/GrayBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GrayBubblePieces");
                 break;
             case HAMSTER_TYPES.GREEN:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/GreenBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GreenBubblePieces");
                 break;
             case HAMSTER_TYPES.ORANGE:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/YellowBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/YellowBubblePieces");
                 break;
             case HAMSTER_TYPES.PINK:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/PinkBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/PinkBubblePieces");
                 break;
             case HAMSTER_TYPES.PURPLE:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/PurpleBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/PurpleBubblePieces");
                 break;
             case HAMSTER_TYPES.RED:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/RedBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/RedBubblePieces");
                 break;
             case HAMSTER_TYPES.RAINBOW:
                 index = -1;
                 break;
             case HAMSTER_TYPES.BOMB:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/RedBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/RedBubblePieces");
                 break;
             case HAMSTER_TYPES.DEAD:
-                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/GrayBubblePieces");
+                _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GrayBubblePieces");
                 break;
         }
 
@@ -78,31 +78,31 @@ public class BubblePopAnimation : MonoBehaviour {
                 color = Random.Range(0, 7);
                 switch ((HAMSTER_TYPES)color) {
                     case HAMSTER_TYPES.BLUE:
-                        tempSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/BlueBubblePieces");
+                        tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/BlueBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
                     case HAMSTER_TYPES.GRAY:
-                        tempSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/GrayBubblePieces");
+                        tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GrayBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
                     case HAMSTER_TYPES.GREEN:
-                        tempSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/GreenBubblePieces");
+                        tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GreenBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
                     case HAMSTER_TYPES.ORANGE:
-                        tempSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/YellowBubblePieces");
+                        tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/YellowBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
                     case HAMSTER_TYPES.PINK:
-                        tempSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/PinkBubblePieces");
+                        tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/PinkBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
                     case HAMSTER_TYPES.PURPLE:
-                        tempSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/PurpleBubblePieces");
+                        tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/PurpleBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
                     case HAMSTER_TYPES.RED:
-                        tempSprites = Resources.LoadAll<Sprite>("Art/Characters/Hamsters/Bubbles/RedBubblePieces");
+                        tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/RedBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
                 }

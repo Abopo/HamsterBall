@@ -17,7 +17,7 @@ public class AISetupWindow : MonoBehaviour {
 
     int _numAIs;
 
-    Sprite[] characterSprites = new Sprite[6];
+    Sprite[,] characterSprites = new Sprite[2,4];
 
     PlayerManager _playerManager;
     TeamSelect _teamSelect;
@@ -33,12 +33,12 @@ public class AISetupWindow : MonoBehaviour {
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
 
-        characterSprites[0] = boySprites[0];
-        characterSprites[1] = boySprites[1];
-        characterSprites[2] = boySprites[2];
-        characterSprites[3] = boySprites[3];
-        characterSprites[4] = girlSprites[0];
-        characterSprites[5] = girlSprites[1];
+        characterSprites[0, 0] = boySprites[0];
+        characterSprites[0, 1] = boySprites[1];
+        characterSprites[0, 2] = boySprites[2];
+        characterSprites[0, 3] = boySprites[3];
+        characterSprites[1, 0] = girlSprites[0];
+        characterSprites[1, 2] = girlSprites[1];
 
         GetAIPlayerInfo();
         MenuMovementSetup();
@@ -104,7 +104,7 @@ public class AISetupWindow : MonoBehaviour {
     }
 
     void SetPlayerSprites(PlayerInfo pi, SpriteRenderer sr) {
-        sr.sprite = characterSprites[(int)pi.characterName];
+        sr.sprite = characterSprites[(int)pi.charaInfo.name, pi.charaInfo.color-1];
     }
 	
 	// Update is called once per frame

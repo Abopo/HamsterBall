@@ -2,7 +2,14 @@
 using Rewired;
 using System.Collections.Generic;
 
-public enum CHARACTERNAMES { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, NUM_CHARACTERS};
+[System.Serializable]
+public class CharaInfo {
+    public CHARACTERS name;
+    public int color = 1;
+}
+
+public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, NUM_CHARACTER };
+//public enum CHARACTERNAMES { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, ROOSTER1, ROOSTER2, NUM_CHARACTERS};
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
@@ -12,7 +19,8 @@ public class Character : MonoBehaviour {
     public bool takeInput;
 
     int _playerNum;
-    CHARACTERNAMES _characterName;
+    //CHARACTERNAMES _characterName;
+    CharaInfo _charaInfo = new CharaInfo();
     public int _team; // -1 = no team, 0 = left team, 1 = right team
     bool _active;
 
@@ -49,8 +57,11 @@ public class Character : MonoBehaviour {
     public int PlayerNum {
         get { return _playerNum; }
     }
-    public CHARACTERNAMES CharacterName {
-        get { return _characterName; }
+    //public CHARACTERNAMES CharacterName {
+    //    get { return _characterName; }
+    //}
+    public CHARACTERS CharacterName {
+        get { return _charaInfo.name; }
     }
     public bool Active {
         get { return _active; }
@@ -104,7 +115,7 @@ public class Character : MonoBehaviour {
         _playerNum = pInfo.playerNum;
 
         _animator = GetComponentInChildren<Animator>();
-        SetCharacter(pInfo.characterName);
+        SetCharacter(pInfo.charaInfo);
 
         if(pInfo.isAI) {
             isAI = true;
@@ -275,17 +286,33 @@ public class Character : MonoBehaviour {
         PlayMoveClip();
     }
 
-    public void SetCharacter(CHARACTERNAMES charaName) {
-        _characterName = charaName;
+    public void SetCharacter(CharaInfo charaInfo) {
+        //_characterName = charaName;
+        _charaInfo = charaInfo;
         SetAnimator();
         
         // Update player info in player manager
-        _playerManager.GetPlayerByNum(_playerNum).characterName = _characterName;
+        _playerManager.GetPlayerByNum(_playerNum).charaInfo = _charaInfo;
     }
 
     // Sets the sprite based on the current character
     void SetAnimator() {
-        switch(_characterName) {
+        string path = "Art/Animations/Player/";
+        switch (_charaInfo.name) {
+            case CHARACTERS.BOY:
+                path += "Boy/Animation Objects/Boy" + _charaInfo.color;
+                break;
+            case CHARACTERS.GIRL:
+                path += "Girl/Animation Objects/Girl" + _charaInfo.color;
+                break;
+            case CHARACTERS.ROOSTER:
+                path += "Rooster/Animation Objects/Rooster" + _charaInfo.color;
+                break;
+        }
+
+        _animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
+        /*
+        switch (_characterName) {
             case CHARACTERNAMES.BOY1:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
                 break;
@@ -304,7 +331,14 @@ public class Character : MonoBehaviour {
             case CHARACTERNAMES.GIRL2:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
                 break;
+            case CHARACTERNAMES.ROOSTER1:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.ROOSTER2:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
+                break;
         }
+        */
 
         // Play idle animation
         _animator.SetInteger("PlayerState", 0);

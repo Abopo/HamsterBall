@@ -348,7 +348,7 @@ public class AIController : MonoBehaviour {
     // Move to a good position to throw a bubble.
     void ThrowMovement() {
         if (_curAction.requiresShift && _playerController.heldBubble.type == HAMSTER_TYPES.RAINBOW) {
-            // don't fucking throw a rainbow to the opponent you fucking jackass goddamnit
+            // don't throw a rainbow to the opponent
             _aiBrain.ChooseNewAction();
             return;
         }

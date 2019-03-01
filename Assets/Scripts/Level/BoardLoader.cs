@@ -14,14 +14,14 @@ public class BoardLoader : MonoBehaviour {
     char _readChar;
     string _readText;
 
-    CHARACTERNAMES _chosenCharacter;
+    CharaInfo _chosenCharacter = new CharaInfo();
 
     // Use this for initialization
     void Start () {
         //_cutscenePath = "Assets/Resources/Text/BoardSetup.txt";
         //_reader = new StreamReader(_cutscenePath);
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        _chosenCharacter = CHARACTERNAMES.BOY1;
+        _chosenCharacter.name = CHARACTERS.BOY;
     }
 
     // Update is called once per frame
@@ -29,9 +29,11 @@ public class BoardLoader : MonoBehaviour {
 		
 	}
 
+    /*
     public void SetCharacter(CHARACTERNAMES character) {
         _chosenCharacter = character;
     }
+    */
 
     public void ReadBoardSetup(string path) {
         // Save the path to the level data
@@ -241,7 +243,10 @@ public class BoardLoader : MonoBehaviour {
             PlayerInfo aiPlayer = new PlayerInfo();
             aiPlayer.playerNum = 2;
             aiPlayer.isAI = true;
-            aiPlayer.characterName = CHARACTERNAMES.BOY3;
+            //aiPlayer.characterName = CHARACTERNAMES.BOY3;
+            // TODO: Implement loading specific characters for ai
+            aiPlayer.charaInfo.name = CHARACTERS.ROOSTER;
+            aiPlayer.charaInfo.color = 1;
             aiPlayer.team = 1;
             aiPlayer.difficulty = int.Parse(_readText);
 

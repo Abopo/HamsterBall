@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class PlayerInfo {
     public int playerNum;
-    public CHARACTERNAMES characterName;
+    //public CHARACTERNAMES characterName;
+    public CharaInfo charaInfo = new CharaInfo();
     public int team; // -1 == none; 0 == left; 1 == right
     public bool aimAssist;
     public bool isAI; // whether this character is an ai or not
@@ -89,6 +90,7 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
+    /*
     public void AddPlayer() {
         PlayerInfo newPlayer = new PlayerInfo();
         newPlayer.playerNum = _players.Count+1;
@@ -112,13 +114,15 @@ public class PlayerManager : MonoBehaviour {
             _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
         }
     }
+    */
 
-    public void AddPlayer(int playerNum, bool isAI, CHARACTERNAMES charaName) {
+    public void AddPlayer(int playerNum, bool isAI, CharaInfo charaInfo) {
         if (playerNum != -1) {
             PlayerInfo newPlayer = new PlayerInfo();
             newPlayer.playerNum = playerNum;
             newPlayer.isAI = isAI;
-            newPlayer.characterName = charaName;
+            //newPlayer.characterName = charaName;
+            newPlayer.charaInfo = charaInfo;
             newPlayer.team = -1;
             newPlayer.difficulty = 0;
             _players.Add(newPlayer);
@@ -168,6 +172,7 @@ public class PlayerManager : MonoBehaviour {
         return -1;
     }
 
+    /*
     public CHARACTERNAMES GetNextAvailableCharacterUp(CHARACTERNAMES startChara) {
         CHARACTERNAMES character = startChara;
 
@@ -220,6 +225,7 @@ public class PlayerManager : MonoBehaviour {
 
         return false;
     }
+    */
 
     public void SetAimAssist(bool on) {
         foreach(PlayerInfo p in _players) {

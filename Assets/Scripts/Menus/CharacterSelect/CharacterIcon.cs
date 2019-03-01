@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CharacterIcon : MenuOption {
 
-    public CHARACTERNAMES characterName;
+    //public CHARACTERNAMES characterName;
+    //public CharaInfo charaInfo = new CharaInfo();
+    public CHARACTERS charaName;
     public bool isLocked;
 
     SpriteRenderer[] _sprites;

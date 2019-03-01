@@ -56,17 +56,27 @@ public class HamsterSpawner : Photon.PunBehaviour {
         _spawnTimer = 0;
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
+
         if (_gameManager.gameMode == GAME_MODE.SP_POINTS) {
             // Score attack stages have set spawn sequences
             _random = new System.Random(spawnSeed);
         } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             _random = new System.Random(Random.Range(1, 1000));
         } else {
-            _random = new System.Random((int)Time.realtimeSinceStartup);
+            // If we are the first spawner to start
+            if (_random == null) {
+                // Make sure all spawners get the same seed
+                int seed = (int)Time.realtimeSinceStartup;
+                HamsterSpawner[] hSpawners = FindObjectsOfType<HamsterSpawner>();
+                foreach(HamsterSpawner hS in hSpawners) {
+                    hS.SeedRandom(seed);
+                }
+            }
+            //_random = new System.Random((int)Time.realtimeSinceStartup);
         }
 
         // If we are in Party mode
-        if(_gameManager.gameMode == GAME_MODE.MP_PARTY) {
+        if (_gameManager.gameMode == GAME_MODE.MP_PARTY) {
             // Add the power up spawner
             gameObject.AddComponent<PowerUpSpawner>();
         }
@@ -99,6 +109,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
         testMode = _gameManager.testMode;
 
         nextHamsterNum = 0;
+    }
+
+    public void SeedRandom(int seed) {
+        _random = new System.Random(seed);
     }
 
     void SetupSpecialTypes() {
@@ -390,7 +404,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         if (twoTubes) {
             for (int i = 1; i < _hamsterLine.Count; ++i) {
                 if (_hamsterLine[i].inLine) {
-                    _hamsterLine[i].transform.position = new Vector3(_hamsterLine[i - 1].transform.position.x + (rightSidePipe ? -1 : 1),
+                    _hamsterLine[i].transform.position = new Vector3(_hamsterLine[i - 1].transform.position.x + (rightSidePipe ? -0.65f : 0.65f),
                                                                      _hamsterLine[i].transform.position.y,
                                                                      _hamsterLine[i].transform.position.z);
                 }
@@ -398,7 +412,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         } else {
             for (int i = 1; i < _hamsterLine.Count; ++i) {
                 if (_hamsterLine[i].inLine) {
-                    _hamsterLine[i].transform.position = new Vector3(_hamsterLine[i - 1].transform.position.x + (rightSidePipe ? 1 : -1),
+                    _hamsterLine[i].transform.position = new Vector3(_hamsterLine[i - 1].transform.position.x + (rightSidePipe ? 0.65f : -0.65f),
                                                                      _hamsterLine[i].transform.position.y,
                                                                      _hamsterLine[i].transform.position.z);
                 }

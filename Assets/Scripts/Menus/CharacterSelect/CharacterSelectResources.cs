@@ -4,19 +4,32 @@ using UnityEngine;
 
 public class CharacterSelectResources : SceneResources {
 
-    public RuntimeAnimatorController[] characterAnimators = new RuntimeAnimatorController[6];
+    List<RuntimeAnimatorController>[] _charaAnimators = new List<RuntimeAnimatorController>[3];
+
+    public List<RuntimeAnimatorController>[] CharaAnimators {
+        get { return _charaAnimators; }
+    }
 
     private void Awake() {
         LoadCharacterAnimators();
     }
 
     void LoadCharacterAnimators() {
-        characterAnimators[0] = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-        characterAnimators[1] = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
-        characterAnimators[2] = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
-        characterAnimators[3] = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
-        characterAnimators[4] = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
-        characterAnimators[5] = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
+        // TODO: Add based on what colors are unlocked
+        // Boy
+        _charaAnimators[0] = new List<RuntimeAnimatorController>();
+        _charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController);
+        _charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController);
+        _charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController);
+        _charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController);
+        // Girl
+        _charaAnimators[1] = new List<RuntimeAnimatorController>();
+        _charaAnimators[1].Add(Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController);
+        _charaAnimators[1].Add(Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController);
+        // Rooster
+        _charaAnimators[2] = new List<RuntimeAnimatorController>();
+        _charaAnimators[2].Add(Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController);
+        _charaAnimators[2].Add(Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController);
     }
 
     // Use this for initialization
