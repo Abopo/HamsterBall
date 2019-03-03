@@ -922,6 +922,22 @@ public class Bubble : MonoBehaviour {
         wasThrown = true;
     }
 
+    public void HideSprites() {
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in sprites) {
+            sprite.enabled = false;
+        }
+    }
+    public void DisplaySprites() {
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach(SpriteRenderer sprite in sprites) {
+            sprite.enabled = true;
+        }
+
+        // Except for the ice sprite
+        iceSprite.enabled = false;
+    }
+
     public bool IsSpecialType() {
         if(type == HAMSTER_TYPES.DEAD || type == HAMSTER_TYPES.RAINBOW) {
             return true;

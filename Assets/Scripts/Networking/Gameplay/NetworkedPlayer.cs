@@ -33,7 +33,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         _playerController.playerNum = (int)photonView.instantiationData[0];
         _playerController.team = (int)photonView.instantiationData[1];
 
-        SetAnimatorController((CHARACTERNAMES)photonView.instantiationData[2]);
+        CharaInfo tempInfo = new CharaInfo();
+        tempInfo.name = (CHARACTERS)photonView.instantiationData[2];
+        tempInfo.color = (int)photonView.instantiationData[3];
+        SetAnimatorController(tempInfo);
+        //SetAnimatorController((CHARACTERNAMES)photonView.instantiationData[2]);
 
         // Make sure our player spawner has us in its list
         NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();
@@ -173,7 +177,23 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         //_writingInputList.Clear();
     }
 
-    void SetAnimatorController(CHARACTERNAMES charaName) {
+    void SetAnimatorController(CharaInfo charaInfo) {
+        string path = "Art/Animations/Player/";
+        switch (charaInfo.name) {
+            case CHARACTERS.BOY:
+                path += "Boy/Animation Objects/Boy" + charaInfo.color;
+                break;
+            case CHARACTERS.GIRL:
+                path += "Girl/Animation Objects/Girl" + charaInfo.color;
+                break;
+            case CHARACTERS.ROOSTER:
+                path += "Rooster/Animation Objects/Rooster" + charaInfo.color;
+                break;
+        }
+
+        _playerController.Animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
+
+        /*
         switch (charaName) {
             case CHARACTERNAMES.BOY1:
                 _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
@@ -194,6 +214,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
                 _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
                 break;
         }
+        */
     }
 
     [PunRPC]

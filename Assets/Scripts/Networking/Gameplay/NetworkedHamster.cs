@@ -41,7 +41,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
         }
 
         if (!(bool)_photonView.instantiationData[0]) { // if has not exited pipe
-            // TODO: for no fucking reason the hamsters in the right pipe are walking backwards
+            // TODO: for some reason the hamsters in the right pipe are walking backwards
             if ((bool)_photonView.instantiationData[1]) { // right side pipe
                 _hamster.Flip();
                 _hamster.transform.Rotate(0f, 0f, -90f);

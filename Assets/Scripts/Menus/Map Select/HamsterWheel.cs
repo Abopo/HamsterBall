@@ -10,7 +10,7 @@ public class HamsterWheel : MonoBehaviour {
     public Text curMapText;
     public Animator hamster;
 
-    float _curRotSpeed;
+    float _curRotSpeed = 0;
     public float _desiredRotation;
     int[] _possibleRotations = new int[8];
     bool _rotatingRight = false;
@@ -25,6 +25,9 @@ public class HamsterWheel : MonoBehaviour {
     string[] _mapNames = new string[8];
     StageIcon[] _stageIcons;
 
+    float _longIdleTimer = 0f;
+    float _longIdleTime = 5f;
+
     GameManager _gameManager;
     AudioSource _audioSource;
 
@@ -35,6 +38,11 @@ public class HamsterWheel : MonoBehaviour {
         set { _index = value; }
     }
 
+    private void Awake() {
+        int type = Random.Range(0, 7);
+        hamster.SetInteger("Type", type);
+        hamster.SetInteger("State", 1);
+    }
     // Use this for initialization
     void Start() {
         _stageIcons = GetComponentsInChildren<StageIcon>();
@@ -61,10 +69,9 @@ public class HamsterWheel : MonoBehaviour {
         curMapText.text = _mapNames[_index];
         SetTextColor();
 
-        // TODO: set random hamster
-        int type = Random.Range(0, 7);
-        hamster.SetInteger("Type", type);
-        hamster.SetInteger("State", 0);
+        _curRotSpeed = 0;
+        _desiredRotation = transform.rotation.eulerAngles.z;
+        _rotatingRight = true;
 
         _gameManager = FindObjectOfType<GameManager>();
         _audioSource = GetComponent<AudioSource>();
@@ -85,11 +92,21 @@ public class HamsterWheel : MonoBehaviour {
                 EndRotation();
                 _failsafeTimer = 0f;
             }
+        } else {
+            // Make sure the hamster is in idle
+            hamster.SetInteger("State", 0);
+
+            // Update long idle timer
+            _longIdleTimer += Time.deltaTime;
+            if (_longIdleTimer >= _longIdleTime) {
+                hamster.SetBool("LongIdle", true);
+                _longIdleTimer = -3f - Random.Range(2f, 7f);
+            }
         }
     }
 
     private void LateUpdate() {
-        // Have to fix the rotation every fucking frame because Unity animation scales are fucking stupid and don't make any sense
+        // Have to fix the rotation every frame because Unity animation scales are stupid and don't make any sense
         if (_rotatingRight) {
             FlipHamster(true);
         } else if (_rotatingLeft) {
@@ -187,7 +204,7 @@ public class HamsterWheel : MonoBehaviour {
         // If we didn't keep rotating
         if (!Rotating) {
             // Fully stop
-            hamster.SetInteger("State", 0);
+            //hamster.SetInteger("State", 0);
         }
     }
 

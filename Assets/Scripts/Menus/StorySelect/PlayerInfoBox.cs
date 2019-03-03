@@ -6,7 +6,8 @@ using Rewired;
 
 public class PlayerInfoBox : MonoBehaviour {
 
-    public CHARACTERNAMES characterName;
+    //public CHARACTERNAMES characterName;
+    public CHARACTERCOLORS charaColor;
     public bool playerAssigned;
     public int playerID;
     public Text playerText;
@@ -51,7 +52,7 @@ public class PlayerInfoBox : MonoBehaviour {
                 character = PlayerPrefs.GetInt("Player2Character");
             }
 
-            SetCharacter((CHARACTERNAMES)character);
+            SetCharacter((CHARACTERCOLORS)character);
         }
 
         // Get the first player
@@ -100,24 +101,24 @@ public class PlayerInfoBox : MonoBehaviour {
         }
 	}
 
-    public void SetCharacter(CHARACTERNAMES character) {
+    public void SetCharacter(CHARACTERCOLORS character) {
         playerAssigned = true;
 
-        characterName = character;
+        charaColor = character;
 
         if (playerID == 0) {
             playerText.text = "Player 1";
-            PlayerPrefs.SetInt("Player1Character", (int)characterName);
+            PlayerPrefs.SetInt("Player1Character", (int)charaColor);
         } else {
             playerText.text = "Player 2";
-            PlayerPrefs.SetInt("Player2Character", (int)characterName);
+            PlayerPrefs.SetInt("Player2Character", (int)charaColor);
         }
         foreach (GameObject gO in infoObjects) {
             gO.SetActive(true);
         }
 
         // Set sprite to correct character
-        _sprite.sprite = characterSprites[(int)characterName];
+        _sprite.sprite = characterSprites[(int)charaColor];
     }
 
     public void LoadCharacter() {
@@ -126,7 +127,14 @@ public class PlayerInfoBox : MonoBehaviour {
 
             PlayerInfo player = new PlayerInfo();
             player.playerNum = playerID;
-            player.characterName = characterName;
+
+            if (charaColor < CHARACTERCOLORS.GIRL1) {
+                player.charaInfo.name = CHARACTERS.BOY;
+                player.charaInfo.color = (int)charaColor + 1;
+            } else {
+                player.charaInfo.name = CHARACTERS.GIRL;
+                player.charaInfo.color = (int)charaColor - 3;
+            }
             player.team = 0;
             playerManager.AddPlayer(player);
         }

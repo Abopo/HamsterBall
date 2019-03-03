@@ -45,6 +45,9 @@ public class Hamster : Entity {
     float _stuckTimer = 0f;
     float _stuckTime = 0.5f;
 
+    float _longIdleTimer = 0f;
+    float _longIdleTime = 5f;
+
     public HamsterSpawner ParentSpawner {
         set { _parentSpawner = value; }
     }
@@ -62,6 +65,7 @@ public class Hamster : Entity {
     // Use this for initialization
     protected override void Start () {
 		base.Start ();
+        _gameManager = FindObjectOfType<GameManager>();
 
         wasCaught = false;
 
@@ -209,6 +213,16 @@ public class Hamster : Entity {
             }
         } else {
             //_curState = 1;
+        }
+
+        // If we are in idle
+        if(_curState == 0) {
+            // Update long idle timer
+            _longIdleTimer += Time.deltaTime;
+            if(_longIdleTimer >= _longIdleTime) {
+                _animator.SetBool("LongIdle", true);
+                _longIdleTimer = -3f - Random.Range(2f, 7f);
+            }
         }
 
         _animator.SetInteger("State", _curState);
@@ -388,6 +402,7 @@ public class Hamster : Entity {
                     FaceRight();
                 }
                 curMoveSpeed = 0;
+                _longIdleTimer = 0f;
                 break;
             case 1: // Walk
                 curMoveSpeed = moveSpeed;

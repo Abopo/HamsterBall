@@ -193,6 +193,13 @@ public class NewCharacterSelect : MonoBehaviour {
     }
 
     public void LoadNextScene() {
+        // Load the chosen characters to the player manager
+        foreach(CharacterSelector charaSelector in charaSelectors) {
+            if (charaSelector.gameObject.activeSelf) {
+                charaSelector.LoadCharacter();
+            }
+        }
+
         if (_gameManager.gameMode == GAME_MODE.SP_CLEAR || _gameManager.gameMode == GAME_MODE.SURVIVAL) {
             SceneManager.LoadScene("MapSelectWheel");
         } else {

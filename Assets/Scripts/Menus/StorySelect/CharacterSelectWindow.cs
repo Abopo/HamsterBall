@@ -4,15 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
 
+// This enum is only used for selecting between the Boy and Girl in story mode
+public enum CHARACTERCOLORS { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, NUM_COLORS }
+
 public class CharacterSelectWindow : MonoBehaviour {
-    protected CHARACTERNAMES _boyName = CHARACTERNAMES.BOY2;
-    protected CHARACTERNAMES _girlName = CHARACTERNAMES.GIRL1;
+    //protected CHARACTERNAMES _boyName = CHARACTERNAMES.BOY2;
+    //protected CHARACTERNAMES _girlName = CHARACTERNAMES.GIRL1;
+    protected CHARACTERCOLORS _boyColor = CHARACTERCOLORS.BOY2;
+    protected CHARACTERCOLORS _girlColor = CHARACTERCOLORS.GIRL1;
+
     public Image boySprite;
     public Image girlSprite;
-    protected Sprite[] characterSprites = new Sprite[6];
+    protected Sprite[] _characterSprites = new Sprite[6];
+    //protected Sprite[] _boySprites = new Sprite[4];
+    //protected Sprite[] _girlSprites = new Sprite[2];
 
-    public CHARACTERNAMES _alreadyChosen1 = CHARACTERNAMES.BOY1;
-    public CHARACTERNAMES _alreadyChosen2 = CHARACTERNAMES.NUM_CHARACTERS;
+    //public CHARACTERNAMES _alreadyChosen1 = CHARACTERNAMES.BOY1;
+    //public CHARACTERNAMES _alreadyChosen2 = CHARACTERNAMES.NUM_CHARACTERS;
+
+    public CHARACTERCOLORS _alreadyChosen1 = CHARACTERCOLORS.BOY1;
+    public CHARACTERCOLORS _alreadyChosen2 = CHARACTERCOLORS.NUM_COLORS;
 
     PlayerInfoBox _playerInfoBox;
     protected Player _controllingPlayer;
@@ -32,15 +43,15 @@ public class CharacterSelectWindow : MonoBehaviour {
     protected virtual void Start () {
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
-        characterSprites[0] = boySprites[0];
-        characterSprites[1] = boySprites[1];
-        characterSprites[2] = boySprites[2];
-        characterSprites[3] = boySprites[3];
-        characterSprites[4] = girlSprites[0];
-        characterSprites[5] = girlSprites[1];
+        _characterSprites[0] = boySprites[0];
+        _characterSprites[1] = boySprites[1];
+        _characterSprites[2] = boySprites[2];
+        _characterSprites[3] = boySprites[3];
+        _characterSprites[4] = girlSprites[0];
+        _characterSprites[5] = girlSprites[1];
 
-        boySprite.sprite = characterSprites[(int)_boyName];
-        girlSprite.sprite = characterSprites[(int)_girlName];
+        boySprite.sprite = _characterSprites[(int)_boyColor];
+        girlSprite.sprite = _characterSprites[(int)_girlColor];
     }
 
     // Update is called once per frame
@@ -75,30 +86,30 @@ public class CharacterSelectWindow : MonoBehaviour {
     protected void ChangeBoy(int dir) {
         do {
             // Move down the list one
-            _boyName = _boyName + dir;
-            if (_boyName < CHARACTERNAMES.BOY1) {
-                _boyName = CHARACTERNAMES.BOY4;
-            } else if (_boyName > CHARACTERNAMES.BOY4) {
-                _boyName = CHARACTERNAMES.BOY1;
+            _boyColor = _boyColor + dir;
+            if (_boyColor < CHARACTERCOLORS.BOY1) {
+                _boyColor = CHARACTERCOLORS.BOY4;
+            } else if (_boyColor > CHARACTERCOLORS.BOY4) {
+                _boyColor = CHARACTERCOLORS.BOY1;
             }
-        } while (_boyName == _alreadyChosen1 || _boyName == _alreadyChosen2);
+        } while (_boyColor == _alreadyChosen1 || _boyColor == _alreadyChosen2);
 
         // Change the icon to the correct image
-        boySprite.sprite = characterSprites[(int)_boyName];
+        boySprite.sprite = _characterSprites[(int)_boyColor];
     }
     protected void ChangeGirl(int dir) {
         do {
             // Move down the list one
-            _girlName = _girlName + dir;
-            if (_girlName < CHARACTERNAMES.GIRL1) {
-                _girlName = CHARACTERNAMES.GIRL2;
-            } else if (_girlName > CHARACTERNAMES.GIRL2) {
-                _girlName = CHARACTERNAMES.GIRL1;
+            _girlColor = _girlColor + dir;
+            if (_girlColor < CHARACTERCOLORS.GIRL1) {
+                _girlColor = CHARACTERCOLORS.GIRL2;
+            } else if (_girlColor > CHARACTERCOLORS.GIRL2) {
+                _girlColor = CHARACTERCOLORS.GIRL1;
             }
-        } while (_girlName == _alreadyChosen1 || _girlName == _alreadyChosen2);
+        } while (_girlColor == _alreadyChosen1 || _girlColor == _alreadyChosen2);
 
         // Change the icon to the correct image
-        girlSprite.sprite = characterSprites[(int)_girlName];
+        girlSprite.sprite = _characterSprites[(int)_girlColor];
     }
 
     public void Activate(PlayerInfoBox pib) {
@@ -106,13 +117,13 @@ public class CharacterSelectWindow : MonoBehaviour {
         _controllingPlayer = ReInput.players.GetPlayer(pib.playerID);
 
         // Don't block the character that this player has chosen
-        AllowChosenCharacter(_playerInfoBox.characterName);
+        AllowChosenCharacter(_playerInfoBox.charaColor);
 
         // Use that players inputs to control the menu options
         SetMenuOptionInputs(pib.playerID);
 
         // Set the selection to the players character
-        SetSelectionToCharacter(pib.characterName);
+        SetSelectionToCharacter(pib.charaColor);
 
         gameObject.SetActive(true);
         _isActive = true;
@@ -121,11 +132,11 @@ public class CharacterSelectWindow : MonoBehaviour {
 
     // Makes sure that the character already chosen by the player will be displayed
     // (so they can rechoose the same character if desired)
-    protected void AllowChosenCharacter(CHARACTERNAMES charaName) {
-        if (charaName == _alreadyChosen1) {
-            _alreadyChosen1 = CHARACTERNAMES.NUM_CHARACTERS;
-        } else if (charaName == _alreadyChosen2) {
-            _alreadyChosen2 = CHARACTERNAMES.NUM_CHARACTERS;
+    protected void AllowChosenCharacter(CHARACTERCOLORS charaColor) {
+        if (charaColor == _alreadyChosen1) {
+            _alreadyChosen1 = CHARACTERCOLORS.NUM_COLORS;
+        } else if (charaColor == _alreadyChosen2) {
+            _alreadyChosen2 = CHARACTERCOLORS.NUM_COLORS;
         }
     }
 
@@ -136,21 +147,21 @@ public class CharacterSelectWindow : MonoBehaviour {
         }
     }
 
-    protected void SetSelectionToCharacter(CHARACTERNAMES charaName) {
-        if (charaName <= CHARACTERNAMES.BOY4) {
+    protected void SetSelectionToCharacter(CHARACTERCOLORS charaColor) {
+        if (charaColor <= CHARACTERCOLORS.BOY4) {
             // Highlight the boy
             _options[0].Highlight();
 
             // Set the boy to the correct name and sprite
-            _boyName = charaName;
-            boySprite.sprite = characterSprites[(int)_boyName];
-        } else if (charaName >= CHARACTERNAMES.GIRL1 && charaName <= CHARACTERNAMES.GIRL2) {
+            _boyColor = charaColor;
+            boySprite.sprite = _characterSprites[(int)_boyColor];
+        } else if (charaColor >= CHARACTERCOLORS.GIRL1 && charaColor <= CHARACTERCOLORS.GIRL2) {
             // Highlight the girl
             _options[1].Highlight();
 
             // Set the girl to the correct name and sprite
-            _girlName = charaName;
-            girlSprite.sprite = characterSprites[(int)_girlName];
+            _girlColor = charaColor;
+            girlSprite.sprite = _characterSprites[(int)_girlColor];
         }
     }
 
@@ -170,30 +181,36 @@ public class CharacterSelectWindow : MonoBehaviour {
     }
 
     public virtual void ChooseBoy() {
-        _playerInfoBox.SetCharacter(_boyName);
+        CharaInfo charaInfo = new CharaInfo();
+        charaInfo.name = CHARACTERS.BOY;
+        charaInfo.color = (int)_boyColor;
+        _playerInfoBox.SetCharacter(_boyColor);
 
-        CHARACTERNAMES tempName = _boyName;
+        CHARACTERCOLORS tempColor = _boyColor;
         ChangeBoy(1);
-        SaveChosen(tempName);
+        SaveChosen(tempColor);
 
         Deactivate();
     }
 
     public virtual void ChooseGirl() {
-        _playerInfoBox.SetCharacter(_girlName);
+        CharaInfo charaInfo = new CharaInfo();
+        charaInfo.name = CHARACTERS.BOY;
+        charaInfo.color = (int)_girlColor;
+        _playerInfoBox.SetCharacter(_girlColor);
 
-        CHARACTERNAMES tempName = _girlName;
+        CHARACTERCOLORS tempColor = _girlColor;
         ChangeGirl(1);
-        SaveChosen(tempName);
+        SaveChosen(tempColor);
 
         Deactivate();
     }
 
-    protected void SaveChosen(CHARACTERNAMES chosen) {
+    protected void SaveChosen(CHARACTERCOLORS chosen) {
         // Hold onto the chosen character so it can be excluded from later choices
-        if (_alreadyChosen1 == CHARACTERNAMES.NUM_CHARACTERS) {
+        if (_alreadyChosen1 == CHARACTERCOLORS.NUM_COLORS) {
             _alreadyChosen1 = chosen;
-        } else if (_alreadyChosen2 == CHARACTERNAMES.NUM_CHARACTERS) {
+        } else if (_alreadyChosen2 == CHARACTERCOLORS.NUM_COLORS) {
             _alreadyChosen2 = chosen;
         }
     }

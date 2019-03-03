@@ -24,13 +24,13 @@ public class MainMenu : MonoBehaviour {
         //PlayerPrefs.SetInt("FirstTimePlaying", 0);
 
         // These prefs reset on every game close/launch.
-        PlayerPrefs.SetInt("Player1Character", (int)CHARACTERNAMES.BOY1);
-        PlayerPrefs.SetInt("Player2Character", (int)CHARACTERNAMES.GIRL1);
+        PlayerPrefs.SetInt("Player1Character", (int)CHARACTERCOLORS.BOY1);
+        PlayerPrefs.SetInt("Player2Character", (int)CHARACTERCOLORS.GIRL1);
 
         // These prefs are only reset on the first launch of the game.
         if (PlayerPrefs.GetInt("FirstTimePlaying", 0) == 0) {
-            PlayerPrefs.SetString("StoryProgress", "2-5"); // How far into the story the player is (used to lock/unlock story levels)-
-            PlayerPrefs.SetString("StoryPos", "1-5"); // Last place in the story the player was on (used to position the selector in the story select scene)
+            PlayerPrefs.SetString("StoryProgress", "1-1"); // How far into the story the player is (used to lock/unlock story levels)-
+            PlayerPrefs.SetString("StoryPos", "1-1"); // Last place in the story the player was on (used to position the selector in the story select scene)
 
             // Stages
             PlayerPrefs.SetInt("Forest", 1);
@@ -40,7 +40,7 @@ public class MainMenu : MonoBehaviour {
             PlayerPrefs.SetInt("Sewers", 0);
             PlayerPrefs.SetInt("Laboratory", 0);
             PlayerPrefs.SetInt("Dark Forest", 0);
-            PlayerPrefs.SetInt("Airship", 1);
+            PlayerPrefs.SetInt("Airship", 0);
 
             // Highscores
 

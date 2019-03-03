@@ -105,9 +105,14 @@ public class PlayerController : Entity {
     public bool aiControlled;
     public bool springing;
 
-    CHARACTERNAMES _characterName;
-    public CHARACTERNAMES CharacterName {
-        get { return _characterName; }
+    //CHARACTERNAMES _characterName;
+    //public CHARACTERNAMES CharacterName {
+    //    get { return _characterName; }
+    //}
+
+    CharaInfo _charaInfo = new CharaInfo();
+    public CharaInfo CharaInfo {
+        get { return _charaInfo; }
     }
 
     SpriteRenderer _targetArrow; // an arrow that appears when shifted
@@ -215,9 +220,25 @@ public class PlayerController : Entity {
         //inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
     }
 
-    public void SetCharacterName(CHARACTERNAMES charaName) {
-        _characterName = charaName;
+    public void SetCharacterInfo(CharaInfo charaInfo) {
+        _charaInfo = charaInfo;
 
+        string path = "Art/Animations/Player/";
+        switch (_charaInfo.name) {
+            case CHARACTERS.BOY:
+                path += "Boy/Animation Objects/Boy" + _charaInfo.color;
+                break;
+            case CHARACTERS.GIRL:
+                path += "Girl/Animation Objects/Girl" + _charaInfo.color;
+                break;
+            case CHARACTERS.ROOSTER:
+                path += "Rooster/Animation Objects/Rooster" + _charaInfo.color;
+                break;
+        }
+
+        _animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
+
+        /*
         switch (charaName) {
             case CHARACTERNAMES.BOY1:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
@@ -237,7 +258,14 @@ public class PlayerController : Entity {
             case CHARACTERNAMES.GIRL2:
                 _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
                 break;
+            case CHARACTERNAMES.ROOSTER1:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
+                break;
+            case CHARACTERNAMES.ROOSTER2:
+                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
+                break;
         }
+        */
     }
 
     // Update is called once per frame
@@ -319,7 +347,7 @@ public class PlayerController : Entity {
         }
 
         // If start is pressed
-        if(inputState.start.isJustPressed) {
+        if(inputState.pause.isJustPressed) {
             if (_levelManager != null) {
                 // Open the pause menu
                 _levelManager.PauseGame(inputState.playerID);
