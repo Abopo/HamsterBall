@@ -920,6 +920,7 @@ public class Bubble : MonoBehaviour {
         _velocity = new Vector2(speed * dir.x, speed * dir.y);
         GetComponent<CircleCollider2D>().enabled = true;
         wasThrown = true;
+        Debug.Log("Thrown");
     }
 
     public void HideSprites() {
