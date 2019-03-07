@@ -12,19 +12,25 @@ public class SoundManager : MonoBehaviour {
 	//Hamster Sounds
 
 	//Generic Player Sounds
-	public string footstepOneshot;
-	public string swingNetOneshot;
-	public string hamsterCollectSuccessOneshot;
-	public string throwStartOneshot;
-	public string throwAngleLoopEvent;
+	public string FootstepOneshot;
+	public string SwingNetOneshot;
+	public string HamsterCollectSuccessOneshot;
+	public string ThrowStartOneshot;
+	public string ThrowAngleLoop;
+	public string ThrowEndOneShot;
 
+	public FMOD.Studio.EventInstance ThrowAngleEvent;
+
+	//Generic Player Sounds EventInstance
 
 	void Awake () {
 		if (mainAudio != null){
 			Destroy(this);
 		}
 		mainAudio = this;
+
+		ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
 	}
 
-
+	//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
 }
