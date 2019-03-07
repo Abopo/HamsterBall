@@ -32,5 +32,7 @@ public class SoundManager : MonoBehaviour {
 		ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
 	}
 
+
+	//SoundManager.mainAudio.Footstep()
 	//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
 }
