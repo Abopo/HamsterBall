@@ -15,4 +15,9 @@ public class SoundAccessTest : MonoBehaviour {
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
 		}
 	}
+
+	void Test(){
+
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
+	}
 }
