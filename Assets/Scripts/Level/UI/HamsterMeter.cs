@@ -182,7 +182,7 @@ public class HamsterMeter : MonoBehaviour {
                 //CreateNewStockSprite();
                 FillInStockSprite();
             }
-            PlaySound();
+            Debug.Log("Orb Hitting Meter and Filling it");
         }
 
         UpdateStockSprites();
