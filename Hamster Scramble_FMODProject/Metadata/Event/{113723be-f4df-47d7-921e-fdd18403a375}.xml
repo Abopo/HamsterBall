@@ -120,6 +120,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{5989472e-d659-418c-b6dc-73576320f47c}">
+        <property name="volume">
+            <value>3</value>
+        </property>
         <property name="name">
             <value>Audio 1</value>
         </property>
@@ -138,13 +141,14 @@
             <value>1.4404761904761905</value>
         </property>
         <relationship name="sounds">
-            <destination>{b53e4ac9-f058-4355-a2cd-f31e6b24f680}</destination>
-            <destination>{1a83ca44-4c20-420d-85b0-6ed7003d69ba}</destination>
             <destination>{e1678e2e-d206-4a44-87fa-1dccb837b062}</destination>
             <destination>{95c21870-6874-42c3-ab36-72051cdc7286}</destination>
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{4b41687c-2301-473f-be7b-c4442dba0e01}">
+        <property name="volume">
+            <value>-5.5</value>
+        </property>
         <property name="name">
             <value>Audio 2</value>
         </property>
@@ -170,6 +174,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{8b955178-b05f-482b-9429-05faf35133ac}">
+        <property name="volume">
+            <value>5</value>
+        </property>
         <property name="name">
             <value>Audio 3</value>
         </property>
@@ -216,16 +223,6 @@
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{ea3d77ca-72ac-4068-a237-1a0aa4a44e04}"/>
-    <object class="SingleSound" id="{b53e4ac9-f058-4355-a2cd-f31e6b24f680}">
-        <relationship name="audioFile">
-            <destination>{b71a2620-e934-4d6b-9899-f78f5ee62755}</destination>
-        </relationship>
-    </object>
-    <object class="SingleSound" id="{1a83ca44-4c20-420d-85b0-6ed7003d69ba}">
-        <relationship name="audioFile">
-            <destination>{4621f702-017a-4f15-bfd7-833c5c8a7d16}</destination>
-        </relationship>
-    </object>
     <object class="SingleSound" id="{e1678e2e-d206-4a44-87fa-1dccb837b062}">
         <relationship name="audioFile">
             <destination>{4275c798-ab9e-4d84-a7c6-3f70b188fbc3}</destination>
@@ -239,6 +236,7 @@
     <object class="MixerBusEffectChain" id="{79787e0f-be55-4e2c-9ed4-24c752d06e08}">
         <relationship name="effects">
             <destination>{29058b44-47da-4e03-a170-987f0bb27ca6}</destination>
+            <destination>{a43306ad-896f-4b4b-8529-9b63e4e98806}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{0263ac88-a018-40da-add6-224ed7e7014b}"/>
@@ -265,11 +263,34 @@
     <object class="MixerBusEffectChain" id="{fcf3a800-5383-4af4-8336-ba5c95f4c75d}">
         <relationship name="effects">
             <destination>{97172c21-51be-48f5-b3b8-b8f60d862a91}</destination>
+            <destination>{7fbf50c4-9d86-4ef0-ac37-aa0a727354cc}</destination>
+            <destination>{7e9d0424-9dca-4461-82f4-099d5ee4c6be}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{558e458b-823a-40f2-8e92-6384197c9225}"/>
     <object class="MixerBusFader" id="{5c443832-ca2a-434d-99a5-26a7ec2133c6}"/>
     <object class="MixerBusFader" id="{dbc3aa46-625c-42e2-952a-a21019da2115}"/>
     <object class="MixerBusFader" id="{29058b44-47da-4e03-a170-987f0bb27ca6}"/>
+    <object class="DistortionEffect" id="{a43306ad-896f-4b4b-8529-9b63e4e98806}">
+        <property name="level">
+            <value>0.620000064</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{97172c21-51be-48f5-b3b8-b8f60d862a91}"/>
+    <object class="FlangerEffect" id="{7fbf50c4-9d86-4ef0-ac37-aa0a727354cc}">
+        <property name="rate">
+            <value>10.5</value>
+        </property>
+        <property name="delay">
+            <value>0.529999971</value>
+        </property>
+        <property name="mix">
+            <value>100</value>
+        </property>
+    </object>
+    <object class="PitchShifterEffect" id="{7e9d0424-9dca-4461-82f4-099d5ee4c6be}">
+        <property name="pitch">
+            <value>1.1400001</value>
+        </property>
+    </object>
 </objects>

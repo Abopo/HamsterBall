@@ -40,8 +40,8 @@ public class PlayerAudio : MonoBehaviour {
     }
 
     public void PlayBubbleClip() {
-        _audioSource.clip = _bubbleClip;
-        _audioSource.Play();
+        //_audioSource.clip = _bubbleClip;
+        //_audioSource.Play();
     }
 
     public void PlayShiftClip() {

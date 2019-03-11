@@ -24,10 +24,12 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void ThrowBall() {
         _throwState.Throw();
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.ThrowEndOneShot);
     }
 
     public void NetSwingOn() {
         _bubbleState.Activate();
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SwingNetOneshot);
     }
 
     public void NetSwingOff() {
@@ -40,6 +42,8 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void ShowBubble() {
         _playerController.heldBubble.DisplaySprites();
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectSuccessOneshot);
+		Debug.Log("Hamster Collected PlayerAnimationTriggerScript");
     }
 
     public void AttackOn() {
@@ -59,6 +63,6 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _playerController.ChangeState(PLAYER_STATE.IDLE);
     }
     public void Footstep() {
-    	Debug.Log("Footstep");
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.FootstepOneshot);
     }
 }
