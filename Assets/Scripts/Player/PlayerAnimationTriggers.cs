@@ -43,8 +43,6 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void ShowBubble() {
         _playerController.heldBubble.DisplaySprites();
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectSuccessOneshot);
-		Debug.Log("Hamster Collected PlayerAnimationTriggerScript");
     }
 
     public void AttackOn() {
