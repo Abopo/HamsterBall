@@ -92,6 +92,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{e0c90c8c-d2fb-4ab5-9f69-4da1cabd715c}">
+        <property name="volume">
+            <value>-5.5</value>
+        </property>
         <relationship name="effectChain">
             <destination>{34e00e24-3529-4cd4-828e-5f4ad0b1dcd7}</destination>
         </relationship>
@@ -193,6 +196,7 @@
     <object class="MixerBusEffectChain" id="{34e00e24-3529-4cd4-828e-5f4ad0b1dcd7}">
         <relationship name="effects">
             <destination>{5c443832-ca2a-434d-99a5-26a7ec2133c6}</destination>
+            <destination>{cee4af10-2d32-44af-838a-67f1e9298af6}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{5daa0955-5d4e-45eb-ac57-f14fd0dfd9ea}"/>
@@ -269,6 +273,35 @@
     </object>
     <object class="MixerBusPanner" id="{558e458b-823a-40f2-8e92-6384197c9225}"/>
     <object class="MixerBusFader" id="{5c443832-ca2a-434d-99a5-26a7ec2133c6}"/>
+    <object class="SFXReverbEffect" id="{cee4af10-2d32-44af-838a-67f1e9298af6}">
+        <property name="decayTime">
+            <value>1600</value>
+        </property>
+        <property name="earlyDelay">
+            <value>15.5</value>
+        </property>
+        <property name="lateDelay">
+            <value>36</value>
+        </property>
+        <property name="HFReference">
+            <value>1750</value>
+        </property>
+        <property name="HFDecayRatio">
+            <value>41</value>
+        </property>
+        <property name="lowShelfFrequency">
+            <value>82</value>
+        </property>
+        <property name="lowShelfGain">
+            <value>-31</value>
+        </property>
+        <property name="highCut">
+            <value>3600</value>
+        </property>
+        <property name="wetLevel">
+            <value>-10</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{dbc3aa46-625c-42e2-952a-a21019da2115}"/>
     <object class="MixerBusFader" id="{29058b44-47da-4e03-a170-987f0bb27ca6}"/>
     <object class="DistortionEffect" id="{a43306ad-896f-4b4b-8529-9b63e4e98806}">

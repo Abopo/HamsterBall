@@ -38,6 +38,7 @@ public class AimingLine : MonoBehaviour {
 
             UpdateAimDots();
         }
+		SoundManager.mainAudio.ThrowAngleEvent.setParameterValue("LaunchAngle", Mathf.Abs(transform.rotation.z));
     }
 
     void Raycasts() {
@@ -107,10 +108,10 @@ public class AimingLine : MonoBehaviour {
                 DestroyObject(aimDot.gameObject);
             }
         }
-
         _aimDots.Clear();
 
         _generating = false;
+		
     }
 
     public void RemoveAimDot(AimDot aimDot) {

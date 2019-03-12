@@ -29,7 +29,7 @@ public class SoundManager : MonoBehaviour {
 		}
 		mainAudio = this;
 
-		//ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
+		ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
 	}
 
 	void Footstep (){

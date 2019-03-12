@@ -93,7 +93,7 @@
     </object>
     <object class="EventMixerMaster" id="{98fb36c6-05e5-43e1-be40-3cf63b292c25}">
         <property name="volume">
-            <value>-7</value>
+            <value>-7.5</value>
         </property>
         <relationship name="effectChain">
             <destination>{d0d2e7b4-cb44-4a5d-ad52-bd9aa9453f3b}</destination>
@@ -189,7 +189,7 @@
     </object>
     <object class="EventMixerGroup" id="{0a98b335-2849-41a1-abc8-9d9ccd421f37}">
         <property name="volume">
-            <value>-8</value>
+            <value>-9</value>
         </property>
         <property name="name">
             <value>Grass</value>
@@ -359,7 +359,13 @@
     <object class="MixerBusFader" id="{cff9b234-117b-4090-9fe0-3ced94d76a17}"/>
     <object class="PitchShifterEffect" id="{a532ae67-3633-47b3-babb-2c1fd46b9a44}">
         <property name="pitch">
-            <value>0.990000069</value>
+            <value>1.00000012</value>
+        </property>
+        <property name="fftSize">
+            <value>256</value>
+        </property>
+        <property name="overlap">
+            <value>1</value>
         </property>
         <relationship name="modulators">
             <destination>{3d3832c0-8aaa-491f-93e3-df7548fa4ac0}</destination>
@@ -370,6 +376,9 @@
         <property name="pitch">
             <value>1.00000012</value>
         </property>
+        <property name="fftSize">
+            <value>256</value>
+        </property>
         <relationship name="modulators">
             <destination>{8934d25c-b77d-49c9-bf1c-69a81ae5c9bf}</destination>
         </relationship>
@@ -378,6 +387,9 @@
     <object class="PitchShifterEffect" id="{e3a1c642-9231-4283-8ea1-fd1abecbaf4c}">
         <property name="pitch">
             <value>1.00000012</value>
+        </property>
+        <property name="fftSize">
+            <value>256</value>
         </property>
         <relationship name="modulators">
             <destination>{997d4b82-53c5-47b3-bef5-58c3a1ba8632}</destination>
@@ -388,7 +400,7 @@
             <value>pitch</value>
         </property>
         <property name="amount">
-            <value>5</value>
+            <value>6.5</value>
         </property>
     </object>
     <object class="RandomizerModulator" id="{8934d25c-b77d-49c9-bf1c-69a81ae5c9bf}">
