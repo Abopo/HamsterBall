@@ -88,12 +88,12 @@ public class AIAction {
                 weight += MyBoardChecks(hamsterWant.type);
             }
         // if we already have a hamster
-        } else if (_playerController != null && _playerController.heldBubble != null) {
+        } else if (_playerController != null && _playerController.heldBall != null) {
             // if the bubble is on the opponents board
             if (bubbleWant != null && bubbleWant.team != _playerController.team) {
-                weight += OpponentBoardChecks(_playerController.heldBubble.type);
+                weight += OpponentBoardChecks(_playerController.heldBall.type);
             } else {
-                weight += MyBoardChecks(_playerController.heldBubble.type);
+                weight += MyBoardChecks(_playerController.heldBall.type);
             }
         } else if(opponent != null) {
             weight += OpponentChecks();
@@ -280,7 +280,7 @@ public class AIAction {
                 addWeight += 20;
 
                 // If the opponent is holding a bubble, try to stop them before they throw it!
-                if (opponent.heldBubble != null) {
+                if (opponent.heldBall != null) {
                     addWeight += 50;
                 }
             }
@@ -292,7 +292,7 @@ public class AIAction {
                 addWeight += 75;
 
                 // If the opponent is holding a bubble, try to stop them before they throw it!
-                if (opponent.heldBubble != null) {
+                if (opponent.heldBall != null) {
                     addWeight += 50;
                 }
             }

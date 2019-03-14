@@ -4,7 +4,6 @@ using System.Collections;
 public class BubblePopAnimation : MonoBehaviour {
     public GameObject bubblePieceObj;
 
-    HAMSTER_TYPES _type;
     HamsterSprite _hamsterSprite;
     //Sprite[] _bubblePiecesSprites = new Sprite[4];
     GameObject[] _bubblePieces = new GameObject[4];
@@ -34,7 +33,6 @@ public class BubblePopAnimation : MonoBehaviour {
     }
 
     public void LoadPieces(HAMSTER_TYPES type) {
-        _type = type;
         int index = 0;
         switch(type) {
             case HAMSTER_TYPES.BLUE:

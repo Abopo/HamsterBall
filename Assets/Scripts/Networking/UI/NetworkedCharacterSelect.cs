@@ -84,7 +84,7 @@ public class NetworkedCharacterSelect :Photon.MonoBehaviour {
     // Networking
     public void CreateNetworkedCharacterSelector() {
         // Make new selector
-        GameObject selectorObj = Resources.Load<GameObject>("Prefabs/UI/Character Select/NetworkedCharacterSelector");
+        //GameObject selectorObj = Resources.Load<GameObject>("Prefabs/UI/Character Select/NetworkedCharacterSelector");
         CharacterSelector newSelector = PhotonNetwork.Instantiate("Prefabs/UI/Character Select/NetworkedCharacterSelector", transform.position, Quaternion.identity, 0).GetComponent<CharacterSelector>();
         //newSelector.Initialize();
         /*

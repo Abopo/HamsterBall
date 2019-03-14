@@ -2,16 +2,11 @@ using UnityEngine;
 using System.Collections;
 
 public class BubbleState : PlayerState {
-	float attackTime;
-	float attackTimer;
-
     bool _swingDone;
 
 	// Use this for initialization
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
-		attackTime = 0.1f;
-		attackTimer = 0;
 
         playerController.PlayerAudio.PlayBubbleClip();
 
@@ -24,11 +19,6 @@ public class BubbleState : PlayerState {
 
     // Update is called once per frame
     public override void Update(){
-		//attackTimer += Time.deltaTime;
-		//if (attackTimer > attackTime) {
-		//	playerController.ChangeState(PLAYER_STATE.IDLE);
-		//}
-
         JumpMaxCheck();
         
 		// Fall
@@ -45,7 +35,7 @@ public class BubbleState : PlayerState {
         if(_swingDone) {
             if(inputState.jump.isJustPressed && playerController.CanJump) {
                 playerController.ChangeState(PLAYER_STATE.JUMP);
-            } else if(inputState.attack.isJustPressed && playerController.heldBubble == null) {
+            } else if(inputState.attack.isJustPressed && playerController.heldBall == null) {
                 playerController.ChangeState(PLAYER_STATE.ATTACK);
             }
         }
@@ -74,9 +64,9 @@ public class BubbleState : PlayerState {
 	public override void End(){
 		playerController.swingObj.SetActive (false);
 
-        if (playerController.heldBubble != null) {
+        if (playerController.heldBall != null) {
             // Make sure the held bubble is displayed
-            playerController.heldBubble.DisplaySprites();
+            playerController.heldBall.DisplaySprites();
         }
     }
 }

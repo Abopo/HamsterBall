@@ -22,7 +22,7 @@ public class CatchHitbox : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // If we caught at least one hamster last frame
-	    if(_caughtHamsters.Count > 0 && _playerController.heldBubble == null) {
+	    if(_caughtHamsters.Count > 0 && _playerController.heldBall == null) {
             // Catch the correct one
 
             // Reset dist values
@@ -68,14 +68,14 @@ public class CatchHitbox : MonoBehaviour {
             // Clear the hamster list
             _caughtHamsters.Clear();
 
-        } else if(_caughtHamsters.Count > 0 && _playerController.heldBubble != null) {
+        } else if(_caughtHamsters.Count > 0 && _playerController.heldBall != null) {
             // Clear the hamster list
             _caughtHamsters.Clear();
         }
     }
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Hamster" && _playerController.heldBubble == null) {
+		if (other.tag == "Hamster" && _playerController.heldBall == null) {
             Hamster hamster = other.GetComponent<Hamster>();
 
             if (hamster.exitedPipe && !hamster.wasCaught) {
@@ -84,7 +84,7 @@ public class CatchHitbox : MonoBehaviour {
         }
         if(other.tag == "PowerUp"/* && other.GetComponent<PowerUp>().exitedPipe*/) {
             PowerUp pUp = other.GetComponent<PowerUp>();
-            other.GetComponent<PowerUp>().Caught(_playerController);
+            pUp.Caught(_playerController);
         }
     }
 
@@ -93,20 +93,20 @@ public class CatchHitbox : MonoBehaviour {
             InstantiateNetworkBubble(hamster);
         } else {
             GameObject bubble = Instantiate(playerBubble) as GameObject;
-            _playerController.heldBubble = bubble.GetComponent<Bubble>();
-            _playerController.heldBubble.team = _playerController.team;
-            _playerController.heldBubble.PlayerController = _playerController;
-            _playerController.heldBubble.Initialize(hamster.type);
-            _playerController.heldBubble.GetComponent<CircleCollider2D>().enabled = false;
-            _playerController.heldBubble.HideSprites();
+            _playerController.heldBall = bubble.GetComponent<Bubble>();
+            _playerController.heldBall.team = _playerController.team;
+            _playerController.heldBall.PlayerController = _playerController;
+            _playerController.heldBall.Initialize(hamster.type);
+            _playerController.heldBall.GetComponent<CircleCollider2D>().enabled = false;
+            _playerController.heldBall.HideSprites();
 
             if (hamster.isGravity) {
-                _playerController.heldBubble.isGravity = true;
+                _playerController.heldBall.isGravity = true;
                 GameObject spiralEffect = hamster.spiralEffectInstance;
-                spiralEffect.transform.parent = _playerController.heldBubble.transform;
-                spiralEffect.transform.position = new Vector3(_playerController.heldBubble.transform.position.x,
-                                                              _playerController.heldBubble.transform.position.y,
-                                                              _playerController.heldBubble.transform.position.z + 3);
+                spiralEffect.transform.parent = _playerController.heldBall.transform;
+                spiralEffect.transform.position = new Vector3(_playerController.heldBall.transform.position.x,
+                                                              _playerController.heldBall.transform.position.y,
+                                                              _playerController.heldBall.transform.position.z + 3);
                 spiralEffect.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
             }
         }

@@ -15,7 +15,7 @@ public class IdleState : PlayerState {
 		base.Initialize(playerIn);
 
         // Double check holding bubble
-        if (playerController.heldBubble != null) {
+        if (playerController.heldBall != null) {
             playerController.Animator.SetBool("HoldingBall", true);
         } else {
             playerController.Animator.SetBool("HoldingBall", false);
@@ -69,14 +69,14 @@ public class IdleState : PlayerState {
 			playerController.ChangeState (PLAYER_STATE.WALK);
 			return;
 		} else if (inputState.swing.isJustPressed && !playerController.IsInvuln) {
-			if(playerController.heldBubble == null) {
+			if(playerController.heldBall == null) {
                 if (playerController.CanBubble) {
                     playerController.ChangeState(PLAYER_STATE.BUBBLE);
                 }
 			} else if (playerController.CanAim) {
                 playerController.ChangeState(PLAYER_STATE.THROW);
 			}
-		} else if (inputState.attack.isJustPressed && playerController.CanAttack && playerController.heldBubble == null) {
+		} else if (inputState.attack.isJustPressed && playerController.CanAttack && playerController.heldBall == null) {
             playerController.ChangeState(PLAYER_STATE.ATTACK);
         }
 	}

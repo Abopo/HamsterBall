@@ -13,8 +13,8 @@ public class GameOverState : PlayerState {
         _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
 
         // Hide held bubble if there is one
-        if(playerController.heldBubble != null) {
-            playerController.heldBubble.gameObject.SetActive(false);
+        if(playerController.heldBall != null) {
+            playerController.heldBall.gameObject.SetActive(false);
         }
     }
 

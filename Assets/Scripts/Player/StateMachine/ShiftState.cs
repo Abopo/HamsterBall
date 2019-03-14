@@ -3,15 +3,12 @@ using System.Collections;
 
 public class ShiftState : PlayerState {
 
-    bool _shifted = false;
     float _shiftTimer = 0;
     float _totalShiftTime = 0.65f;
     Vector3 _oldScale = new Vector3();
 
-    float _tempScale = 0f;
     Vector2 _takeOffPosition;
     Vector2 _landingPosition;
-    Transform _playerSprite;
     float _scaleT = 0f;
     float _scaleVelocity;
     float _startScale;
@@ -32,7 +29,6 @@ public class ShiftState : PlayerState {
 
         _totalShiftTime = 0.65f;
 
-        _shifted = false;
         _shiftTimer = 0f;
 
         // Slow the player to a stop, even if in midair
@@ -73,7 +69,6 @@ public class ShiftState : PlayerState {
         }
 
         // Find the player's sprite object
-        _playerSprite = playerController.GetComponentInChildren<PlayerAnimationTriggers>().transform;
         _startScale = playerController.transform.localScale.x;
         _endScale = _startScale * 10;
         _scaleT = 0f;

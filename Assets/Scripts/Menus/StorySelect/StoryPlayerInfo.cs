@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StoryPlayerInfo : MonoBehaviour {
 
@@ -13,6 +14,8 @@ public class StoryPlayerInfo : MonoBehaviour {
         SingletonCheck();
 
         _playerInfoBoxes = GetComponentsInChildren<PlayerInfoBox>();
+
+        SceneManager.sceneLoaded += OnLevelLoaded;
     }
     // Use this for initialization
     void Start () {
@@ -33,9 +36,9 @@ public class StoryPlayerInfo : MonoBehaviour {
 		
 	}
 
-    private void OnLevelWasLoaded(int level) {
+    private void OnLevelLoaded(Scene scene, LoadSceneMode mode) {
         // If we've loaded in story select
-        if (level == 2) {
+        if (scene.buildIndex == 2) {
             // Turn on the info boxes
             foreach (PlayerInfoBox pib in _playerInfoBoxes) {
                 pib.gameObject.SetActive(true);
