@@ -10,17 +10,22 @@ public class SoundManager : MonoBehaviour {
 	public string testSound = "event:/TestSound";
 
 	//Hamster Sounds
+	public string HamsterConnect;
+	public string HamsterFillBall;
+	public string HamsterCollectSuccessOneshot;
+	public string BallBreak;
+	public string HamsterTravel;
 
 	//Generic Player Sounds
 	public string FootstepOneshot;
 	public string SwingNetOneshot;
-	public string HamsterCollectSuccessOneshot;
 	public string ThrowStartOneshot;
 	public string ThrowAngleLoop;
 	public string ThrowEndOneShot;
+	public string PlayerAttack;
+	public string PlayerJump;
 
 	public FMOD.Studio.EventInstance ThrowAngleEvent;
-
 	//Generic Player Sounds EventInstance
 
 	void Awake () {

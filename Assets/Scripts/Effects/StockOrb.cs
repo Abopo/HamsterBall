@@ -25,7 +25,7 @@ public class StockOrb : MonoBehaviour {
     public void Initialize() {
         _rigidbody = GetComponent<Rigidbody2D>();
         _gameManager = FindObjectOfType<GameManager>();
-        Debug.Log("Hamsters Moving Over");
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterTravel);
     }
 
     public void Launch(Transform target)
