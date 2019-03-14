@@ -27,8 +27,16 @@ public class Hamster : Entity {
 
     int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
 
+    BubbleManager _homeBubbleManager;
+
     HamsterSpawner _parentSpawner;
     List<int> _okTypes;
+
+    AudioClip _fallClip;
+    AudioClip _deadFallClip;
+    AudioSource _audioSource;
+
+    bool _destroy;
 
     float rainbowMoveSpeed = 4f;
     float deadMoveSpeed = 2.25f;
@@ -44,6 +52,10 @@ public class Hamster : Entity {
         set { _parentSpawner = value; }
     }
 
+    public bool Destroy1 {
+        get { return _destroy; }
+    }
+
     public int CurState {
         get { return _curState; }
     }
@@ -56,6 +68,12 @@ public class Hamster : Entity {
         _gameManager = FindObjectOfType<GameManager>();
 
         wasCaught = false;
+
+        _fallClip = Resources.Load<AudioClip>("Audio/SFX/Hamster_Fall2");
+        _deadFallClip = Resources.Load<AudioClip>("Audio/SFX/Dead_Hamster_Fall");
+        _audioSource = GetComponent<AudioSource>();
+
+        _destroy = false;
 
         if (type == HAMSTER_TYPES.NO_TYPE) {
             if(isGravity) {
@@ -79,8 +97,16 @@ public class Hamster : Entity {
 
         HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         if (team == 0) {
+            _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+
             _okTypes = hamsterScan.OkTypesLeft;
         } else if (team == 1) {
+            if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
+            } else {
+                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+            }
+
             _okTypes = hamsterScan.OkTypesRight;
         }
 
@@ -149,6 +175,11 @@ public class Hamster : Entity {
         // Don't update if the game is over
         if (_gameManager.gameIsOver) {
             return;
+        }
+
+        // Wait until SFX is done to destroy
+        if (_destroy && !_audioSource.isPlaying) {
+            DestroyObject(this.gameObject);
         }
 
         _physics.CheckBelow ();

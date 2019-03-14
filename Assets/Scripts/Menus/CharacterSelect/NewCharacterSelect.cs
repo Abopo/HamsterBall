@@ -40,6 +40,8 @@ public class NewCharacterSelect : MonoBehaviour {
         _isActive = true;
         pressStartText.SetActive(false);
 
+        InputState.Reset();
+
         // If we are online, the selectors will be made elsewhere
         if (!_gameManager.isOnline) {
             SetupSelectors();

@@ -17,6 +17,7 @@ public class PlayerInfo {
 public class PlayerManager : MonoBehaviour {
     public bool backup;
     List<PlayerInfo> _players = new List<PlayerInfo>();
+    List<PlayerInfo> _backupPlayers = new List<PlayerInfo>(); // Mainly used for the test scene
 
     public int NumPlayers {
         get {

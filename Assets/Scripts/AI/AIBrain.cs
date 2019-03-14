@@ -123,7 +123,7 @@ public class AIBrain : MonoBehaviour {
 
     public void MakeDecision() {
         // If the opponent is on our side and we aren't already holding a bubble
-        if (_playerController.heldBall == null) {
+        if (_playerController.heldBubble == null) {
             foreach(PlayerController opp in _opponents) {
                 if(opp.shifted && !_playerController.shifted && _playerController.curState != PLAYER_STATE.SHIFT) {
                     // Go after the opponent!
@@ -177,6 +177,11 @@ public class AIBrain : MonoBehaviour {
         } else {
             // Checks based on there being a HamsterWant
             if (action.hamsterWant != null) {
+                // If hamsterWant has already fallen out of bounds
+                if (action.hamsterWant.Destroy1) {
+                    return false;
+                }
+
                 // If the hamster we want is on our team, but the action says it requires a shift
                 // TODO: This should never happen in the first place, look into action generation code.
                 if (action.hamsterWant.team == _playerController.team && action.requiresShift) {
@@ -195,7 +200,7 @@ public class AIBrain : MonoBehaviour {
                 }
             }
             // If we are not chasing a hamster or opponent and are not holding a bubble
-            if (action.hamsterWant == null && action.opponent == null && _playerController.heldBall == null && action.waterBubble == null) {
+            if (action.hamsterWant == null && action.opponent == null && _playerController.heldBubble == null && action.waterBubble == null) {
                 return false;
             }
             if (action.bubbleWant != null) {
@@ -206,7 +211,7 @@ public class AIBrain : MonoBehaviour {
             } else {
                 // if we don't have a bubbleWant
                 // but we are holding a bubble
-                if(_playerController.heldBall != null) {
+                if(_playerController.heldBubble != null) {
                     return false;
                 }
             }
@@ -254,7 +259,7 @@ public class AIBrain : MonoBehaviour {
         }
 
         // If we don't have not caught a hamster yet.
-        if (_playerController.heldBall == null) {
+        if (_playerController.heldBubble == null) {
             MakeNeedHamsterActions();
 
         // if we've already caught a hamster  
@@ -335,7 +340,7 @@ public class AIBrain : MonoBehaviour {
                     if (ob == null) {
                         continue;
                     }
-                    if (ob.type != _playerController.heldBall.type || _playerController.heldBall.type == HAMSTER_TYPES.DEAD) {
+                    if (ob.type != _playerController.heldBubble.type || _playerController.heldBubble.type == HAMSTER_TYPES.DEAD) {
                         AIAction newAction = new AIAction(_playerController, null, ob, n, _playerController.shifted ? false : true);
                         _actions.Add(newAction);
                     }
@@ -345,7 +350,7 @@ public class AIBrain : MonoBehaviour {
     }
 
     void MakeSomeRandomActions() {
-        if (_playerController.heldBall == null) {
+        if (_playerController.heldBubble == null) {
             if(_myHamsters.Count == 0) {
                 return;
             }
@@ -458,7 +463,7 @@ public class AIBrain : MonoBehaviour {
     }
 
     void DecideVertWant() {
-        if (_playerController.heldBall == null) {
+        if (_playerController.heldBubble == null) {
             if (curAction.hamsterWant != null) {
                 VerticalChase(curAction.hamsterWant.gameObject);
             } else if (curAction.opponent != null) {
@@ -466,7 +471,7 @@ public class AIBrain : MonoBehaviour {
             } else if(curAction.waterBubble != null) {
                 VerticalChase(curAction.waterBubble.gameObject);
             }
-        } else if(_playerController.heldBall != null && _playerController.shifted) {
+        } else if(_playerController.heldBubble != null && _playerController.shifted) {
             if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
                 curAction.vertWant = -1;
             } else if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
@@ -480,7 +485,7 @@ public class AIBrain : MonoBehaviour {
     void DecideHorWant() {
         //foreach (AIAction action in _actions) {
         // If we don't have a bubble yet, and want a hamster
-        if (_playerController.heldBall == null) {
+        if (_playerController.heldBubble == null) {
             if (curAction.hamsterWant != null) {
                 HorizontalChase(curAction.hamsterWant.gameObject);
             } else if(curAction.opponent != null) {
@@ -489,7 +494,7 @@ public class AIBrain : MonoBehaviour {
                 HorizontalChase(curAction.waterBubble.gameObject);
             }
         // If we've got a bubble and are looking to throw it
-        } else if (_playerController.heldBall != null && curAction.nodeWant != null) {
+        } else if (_playerController.heldBubble != null && curAction.nodeWant != null) {
             // Move to a decent throwing spot
             float offset = 0;
             if (curAction.nodeWant.AdjBubbles[3] != null) {
@@ -565,8 +570,8 @@ public class AIBrain : MonoBehaviour {
 
         // TODO: Something is happening here where some of the rays won't hit ANYTHING somehow.
         for (int i = -1; i < 2; ++i) {
-            heldBubblePos = new Vector3(_playerController.heldBall.transform.position.x + 0.41f * i, 
-                                        _playerController.heldBall.transform.position.y);
+            heldBubblePos = new Vector3(_playerController.heldBubble.transform.position.x + 0.41f * i, 
+                                        _playerController.heldBubble.transform.position.y);
             nodeWantPos = new Vector3(curAction.nodeWant.transform.position.x + 0.32f * i,
                                         curAction.nodeWant.transform.position.y);
             toNode = nodeWantPos - heldBubblePos;

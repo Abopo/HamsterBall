@@ -118,6 +118,8 @@ public class BubbleManager : MonoBehaviour {
     AudioClip _addLineClip;
 
     protected virtual void Awake() {
+        float pos = (_baseLineLength / 2 - 1) * -0.77f;
+
         _setupDone = false;
 
         Time.timeScale = 1;
@@ -179,8 +181,7 @@ public class BubbleManager : MonoBehaviour {
             SeedNextLineBubbles();
         }
 
-        //ReadyHamsterMeter();
-        _hamsterMeter.Initialize(_baseLineLength, this);
+        ReadyHamsterMeter();
 
         testMode = _gameManager.testMode;
 
@@ -375,7 +376,6 @@ public class BubbleManager : MonoBehaviour {
         bubble.locked = true;
     }
 
-    /*
     void ReadyHamsterMeter() {
         int handicap = 9;
 
@@ -388,7 +388,6 @@ public class BubbleManager : MonoBehaviour {
 
         _hamsterMeter.Initialize(_baseLineLength, this);
     }
-    */
 
     // Assign adjBubbles for each bubble and empty node
     protected void UpdateAllAdjBubbles() {
@@ -1201,7 +1200,7 @@ public class BubbleManager : MonoBehaviour {
             // If the player is on our side
             if (p.team == team && !p.shifted || p.team != team && p.shifted) {
                 // If the player's bubble was thrown but hasn't locked with the board yet
-                if (p.heldBall != null && p.heldBall.wasThrown && !p.heldBall.locked) {
+                if (p.heldBubble != null && p.heldBubble.wasThrown && !p.heldBubble.locked) {
                     // It's still mid-throw
                     return true;
                 }

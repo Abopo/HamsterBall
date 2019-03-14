@@ -39,7 +39,7 @@ public class TutorialManager : MonoBehaviour {
             }
         }
 
-        if (_tutorialIndex == 2 && _playerController.heldBall != null) {
+        if (_tutorialIndex == 2 && _playerController.heldBubble != null) {
             ShowNextTutorial();
         } else if (_tutorialIndex == 3 && _playerController.curState == PLAYER_STATE.THROW) {
             ShowNextTutorial();

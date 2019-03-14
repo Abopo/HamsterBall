@@ -42,7 +42,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     }
 
     public void ShowBubble() {
-        _playerController.heldBall.DisplaySprites();
+        _playerController.heldBubble.DisplaySprites();
     }
 
     public void AttackOn() {

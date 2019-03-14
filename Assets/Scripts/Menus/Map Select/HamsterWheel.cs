@@ -18,6 +18,8 @@ public class HamsterWheel : MonoBehaviour {
     public bool Rotating {
         get { return _rotatingRight || _rotatingLeft; }
     }
+    float _failsafeTime = 1.75f;
+    float _failsafeTimer = 0f;
 
     int _index = 0;
     string[] _mapNames = new string[8];
@@ -83,10 +85,12 @@ public class HamsterWheel : MonoBehaviour {
 
         if (Rotating) {
             transform.Rotate(0f, 0f, _curRotSpeed * Time.deltaTime);
+            _failsafeTimer += Time.deltaTime;
 
             // If we get close enough to the desired rotation angle or we've past the failsafe timer
             if (Mathf.Abs(transform.rotation.eulerAngles.z - _desiredRotation) < 1f) {
                 EndRotation();
+                _failsafeTimer = 0f;
             }
         } else {
             // Make sure the hamster is in idle

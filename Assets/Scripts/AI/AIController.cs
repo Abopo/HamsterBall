@@ -155,7 +155,7 @@ public class AIController : MonoBehaviour {
         if (_playerController.CanShift && _actionTimer > _actionTime) {
             if (_curAction.hamsterWant != null && _curAction.hamsterWant.team != _playerController.team && !_playerController.shifted) {
                 toShiftTimer += Time.deltaTime;
-            } else if (_playerController.heldBall != null && _curAction.bubbleWant != null && // if holding bubble and want a bubble and
+            } else if (_playerController.heldBubble != null && _curAction.bubbleWant != null && // if holding bubble and want a bubble and
                 ((!_playerController.shifted && _curAction.bubbleWant.team != _playerController.team) || // not yet shifted and bubble want is on opposing side OR
                 (_playerController.shifted && _curAction.bubbleWant.team == _playerController.team))) { // have shifted and bubble want is on our side
                 toShiftTimer += Time.deltaTime;
@@ -176,7 +176,7 @@ public class AIController : MonoBehaviour {
 
     void HorizontalMovement() {
         // Once we have a hamster caught, move to under the bubbleWant.
-        if (_playerController.heldBall != null) {
+        if (_playerController.heldBubble != null) {
             // if we are shifted with a hamster
             //if (_playerController.shifted) {
                 // run from opponent
@@ -213,7 +213,7 @@ public class AIController : MonoBehaviour {
             // If we are close to the object
             if (Mathf.Abs(chaseObj.transform.position.x - transform.position.x) < 0.5f) { 
                 // If we are chasing a hamster and don't already have one
-                if (_curAction.hamsterWant != null && _playerController.heldBall == null && _playerController.curState != PLAYER_STATE.BUBBLE) {
+                if (_curAction.hamsterWant != null && _playerController.heldBubble == null && _playerController.curState != PLAYER_STATE.BUBBLE) {
                     // The hamster(or opponent) is right here! Catch it!
                     _input.swing.isJustPressed = true;
                     // Make a new decision based on what hamster we caught
@@ -347,7 +347,7 @@ public class AIController : MonoBehaviour {
 
     // Move to a good position to throw a bubble.
     void ThrowMovement() {
-        if (_curAction.requiresShift && _playerController.heldBall.type == HAMSTER_TYPES.RAINBOW) {
+        if (_curAction.requiresShift && _playerController.heldBubble.type == HAMSTER_TYPES.RAINBOW) {
             // don't throw a rainbow to the opponent
             _aiBrain.ChooseNewAction();
             return;

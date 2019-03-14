@@ -8,6 +8,7 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     NetworkedCharacterSelect _characterSelect;
 
     CharacterSelector _selector;
+    InputState _serializedInput;
 
     string _nickname;
 
@@ -20,6 +21,7 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
 
     private void Awake() {
         _selector = GetComponent<CharacterSelector>();
+        _serializedInput = new InputState();
 
         _selector.ownerId = GetComponent<PhotonView>().ownerId;
     }

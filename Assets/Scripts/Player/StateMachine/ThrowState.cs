@@ -63,12 +63,12 @@ public class ThrowState : PlayerState {
         }
 
         // If we've thrown the bubble and it has locked onto the board
-        if (_hasThrown && (playerController.heldBall == null || playerController.heldBall.locked)) {
-            playerController.heldBall = null;
+        if (_hasThrown && (playerController.heldBubble == null || playerController.heldBubble.locked)) {
+            playerController.heldBubble = null;
             
             // Leave the Throw state
             playerController.ChangeState(PLAYER_STATE.IDLE);
-        } else if(!_hasThrown && playerController.heldBall != null) {
+        } else if(!_hasThrown && playerController.heldBubble != null) {
             // Make sure the player can't get stuck in the aim state before throwing
             playerController.Animator.SetBool("HoldingBall", true);
         }
@@ -165,7 +165,7 @@ public class ThrowState : PlayerState {
     }
 
     public void Throw() {
-        if(playerController.heldBall == null) {
+        if(playerController.heldBubble == null) {
             playerController.ChangeState(PLAYER_STATE.IDLE);
         }
 
@@ -177,13 +177,13 @@ public class ThrowState : PlayerState {
         dir.Normalize();
 
         // Make sure the position is exactly right before releasing
-        playerController.heldBall.transform.position = new Vector3(aimingArrow.position.x, 
+        playerController.heldBubble.transform.position = new Vector3(aimingArrow.position.x, 
                                                                     aimingArrow.position.y, 
-                                                                    playerController.heldBall.transform.position.z);
-        playerController.heldBall.Throw(bubbleSpeed, dir);
+                                                                    playerController.heldBubble.transform.position.z);
+        playerController.heldBubble.Throw(bubbleSpeed, dir);
 
         // Increase score a little
-        if (playerController.heldBall.type < HAMSTER_TYPES.NUM_NORM_TYPES) {
+        if (playerController.heldBubble.type < HAMSTER_TYPES.NUM_NORM_TYPES) {
             playerController.HomeBubbleManager.IncreaseScore(10);
         } else {
             playerController.HomeBubbleManager.IncreaseScore(20);

@@ -14,9 +14,11 @@ public class ResultsScreen : MonoBehaviour {
     float winTimer = 0.0f;
 
     GameManager _gameManager;
+    LevelManager _levelManager;
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
     }
 
     // Use this for initialization

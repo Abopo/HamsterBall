@@ -44,6 +44,7 @@ public class HamSpeedUpPower : PowerUp {
         base.Activate();
 
         // Find opposing team's hamsters and increase their speed
+        HamsterScan hamScan = FindObjectOfType<HamsterScan>();
         if (_caughtPlayer.team == 0) {
             IncreaseHamsterSpeed(_hamScan.AllRightHamsters);
         } else if(_caughtPlayer.team == 1) {
@@ -55,6 +56,7 @@ public class HamSpeedUpPower : PowerUp {
         //base.Deactivate();
 
         // Find opposing team's hamsters and return their speed to normal
+        HamsterScan hamScan = FindObjectOfType<HamsterScan>();
         if (_caughtPlayer.team == 0) {
             DefaultHamsterSpeed(_hamScan.AllRightHamsters);
         } else if (_caughtPlayer.team == 1) {

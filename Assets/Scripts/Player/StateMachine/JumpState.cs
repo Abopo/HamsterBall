@@ -32,22 +32,7 @@ public class JumpState : PlayerState {
             // Fall
             playerController.ApplyGravity();
 
-            if(playerController.velocity.y < 0.75f) {
-                if (playerController.heldBall != null) {
-                    playerController.Animator.Play("Player_AirTransition_Ball");
-                } else {
-                    playerController.Animator.Play("Player_AirTransition");
-                }
-            }
-            if (playerController.velocity.y <= 0) {
-                playerController.Physics.CheckBelow();
-
-                // check if the player has landed
-                if (playerController.Physics.IsTouchingFloor) {
-                    playerController.ChangeState(PLAYER_STATE.IDLE);
-                }
-            }
-            if (playerController.velocity.y < -0.75f) {
+            if (playerController.velocity.y < 0) {
                 playerController.ChangeState(PLAYER_STATE.FALL);
             }
         }
@@ -70,14 +55,14 @@ public class JumpState : PlayerState {
 		}
 
 		if(inputState.swing.isJustPressed && !playerController.IsInvuln) {
-			if(playerController.heldBall == null) {
+			if(playerController.heldBubble == null) {
                 if (playerController.CanBubble) {
                     playerController.ChangeState(PLAYER_STATE.BUBBLE);
                 }
             } else if (playerController.CanAim) {
                 playerController.ChangeState(PLAYER_STATE.THROW);
 			}
-		} else if (inputState.attack.isJustPressed && playerController.CanAttack && playerController.heldBall == null) {
+		} else if (inputState.attack.isJustPressed && playerController.CanAttack && playerController.heldBubble == null) {
             playerController.ChangeState(PLAYER_STATE.ATTACK);
         }
 

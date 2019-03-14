@@ -18,6 +18,8 @@ public class GoalMenu : MonoBehaviour {
     BubbleManager _bubbleManager;
     float _conditionLeft;
 
+    PlayerController[] pCons;
+
     // Use this for initialization
     void Start () {
         _gameManager = FindObjectOfType<GameManager>();
@@ -40,6 +42,8 @@ public class GoalMenu : MonoBehaviour {
             case GAME_MODE.SP_POINTS:
                 goalText.text = "Score\n       Needed";
                 conditionText.text = "Throws";
+                // Get throw events from players
+                pCons = FindObjectsOfType<PlayerController>();
                 break;
             case GAME_MODE.SP_MATCH:
                 goalText.text = "Matches\n       Needed";

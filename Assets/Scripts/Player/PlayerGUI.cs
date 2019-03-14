@@ -12,6 +12,7 @@ public class PlayerGUI : MonoBehaviour {
     Sprite _fullSprite;
     Sprite _emptySprite;
 
+    bool _topPlayer;
     static int teamLeftPlayers;
     static int teamRightPlayers;
 
@@ -26,11 +27,17 @@ public class PlayerGUI : MonoBehaviour {
 
         if (_playerController.team == 0) {
             if (teamLeftPlayers == 0) {
+                _topPlayer = true;
                 teamLeftPlayers++;
+            } else {
+                _topPlayer = false;
             }
         } else if (_playerController.team == 1) {
             if(teamRightPlayers == 0) {
+                _topPlayer = true;
                 teamRightPlayers++;
+            } else {
+                _topPlayer = false;
             }
         }
 

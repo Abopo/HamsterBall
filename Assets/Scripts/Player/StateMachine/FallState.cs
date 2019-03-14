@@ -26,14 +26,14 @@ public class FallState : PlayerState {
 
 	public override void CheckInput(InputState inputState) {
 		if(inputState.swing.isJustPressed && !playerController.IsInvuln) {
-			if(playerController.heldBall == null) {
+			if(playerController.heldBubble == null) {
                 if (playerController.CanBubble) {
                     playerController.ChangeState(PLAYER_STATE.BUBBLE);
                 }
             } else if(playerController.CanAim) {
 				playerController.ChangeState(PLAYER_STATE.THROW);
 			}
-		} else if (inputState.attack.isJustPressed && playerController.CanAttack && playerController.heldBall == null) {
+		} else if (inputState.attack.isJustPressed && playerController.CanAttack && playerController.heldBubble == null) {
             playerController.ChangeState(PLAYER_STATE.ATTACK);
         }
 

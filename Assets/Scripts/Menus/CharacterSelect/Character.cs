@@ -34,10 +34,12 @@ public class Character : MonoBehaviour {
     public List<Character> aiList = new List<Character>();
     Character parentCharacter;
     static int aiIndex = 0;
+    bool frameskip = false;
 
     Animator _animator;
 
     PlayerManager _playerManager;
+    SpriteRenderer _spriteRenderer;
     AudioSource _audioSource;
 
     AudioClip _moveClip;
@@ -77,6 +79,8 @@ public class Character : MonoBehaviour {
         if (_animator == null) {
             _animator = GetComponentInChildren<Animator>();
         }
+
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         _audioSource = GetComponent<AudioSource>();
         _moveClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
@@ -179,6 +183,7 @@ public class Character : MonoBehaviour {
                 // Gain control of next AI player
                 takeInput = false;
                 aiList[aiIndex].takeInput = true;
+                aiList[aiIndex].frameskip = true;
                 aiList[aiIndex].aiList = aiList;
                 aiList[aiIndex].parentCharacter = this;
                 aiIndex++;
@@ -190,6 +195,7 @@ public class Character : MonoBehaviour {
             } else if (isAI) {
                 takeInput = false;
                 parentCharacter.takeInput = true;
+                parentCharacter.frameskip = true;
                 parentCharacter.Unlock();
                 aiIndex--;
             }
