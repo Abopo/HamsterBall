@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Rewired;
 
 public class PlayerInfoBox : MonoBehaviour {
@@ -26,6 +27,8 @@ public class PlayerInfoBox : MonoBehaviour {
     private void Awake() {
         _characterSelectWindow = FindObjectOfType<StorySelectMenu>().characterSelectWindow;
         _gameManager = FindObjectOfType<GameManager>();
+
+        SceneManager.sceneLoaded += OnLevelLoaded;
     }
     // Use this for initialization
     void Start () {
@@ -60,9 +63,9 @@ public class PlayerInfoBox : MonoBehaviour {
 
     }
 
-    private void OnLevelWasLoaded(int level) {
+    private void OnLevelLoaded(Scene scene, LoadSceneMode mode) {
         // If we've loaded in story select
-        if (level == 2) {
+        if (scene.buildIndex == 2) {
             _characterSelectWindow = FindObjectOfType<StorySelectMenu>().characterSelectWindow;
         }
     }

@@ -22,7 +22,7 @@ public class HitState : PlayerState {
         playerController.PlayerAudio.PlayHitClip();
 
         // If the player is holding a hamster, drop it
-        if(playerController.heldBubble != null && !playerController.heldBubble.wasThrown) {
+        if(playerController.heldBall != null && !playerController.heldBall.wasThrown) {
             if (PhotonNetwork.connectedAndReady) {
                 if (PhotonNetwork.isMasterClient) {
                     DropNetworkHamster();
@@ -32,7 +32,7 @@ public class HitState : PlayerState {
             }
 
             // Destroy the held bubble
-            GameObject.Destroy(playerController.heldBubble.gameObject);
+            GameObject.Destroy(playerController.heldBall.gameObject);
         }
 
         //hitTime = 3.0f;
@@ -41,7 +41,7 @@ public class HitState : PlayerState {
 	}
 
     void DropHamster() {
-        GameObject hamsterGO = GameObject.Instantiate(_hamsterObj, playerController.heldBubble.transform.position, Quaternion.identity) as GameObject;
+        GameObject hamsterGO = GameObject.Instantiate(_hamsterObj, playerController.heldBall.transform.position, Quaternion.identity) as GameObject;
         hamsterGO.transform.position = new Vector3(hamsterGO.transform.position.x, hamsterGO.transform.position.y, -0.5f);
         Hamster hamster = hamsterGO.GetComponent<Hamster>();
         // Set the correct team and parent spawner
@@ -64,10 +64,10 @@ public class HitState : PlayerState {
         }
 
         // Set the correct type
-        if (playerController.heldBubble.isGravity) {
-            hamster.SetType(11, playerController.heldBubble.type);
+        if (playerController.heldBall.isGravity) {
+            hamster.SetType(11, playerController.heldBall.type);
         } else {
-            hamster.SetType((int)playerController.heldBubble.type);
+            hamster.SetType((int)playerController.heldBall.type);
         }
 
         // Randomly choose direction
@@ -93,15 +93,15 @@ public class HitState : PlayerState {
         }
 
         // Set the correct type
-        hamsterInfo[3] = playerController.heldBubble.type;
-        if (playerController.heldBubble.isGravity) {
+        hamsterInfo[3] = playerController.heldBall.type;
+        if (playerController.heldBall.isGravity) {
             hamsterInfo[4] = true; // isGravity
         } else {
             hamsterInfo[4] = false; // isGravity
         }
 
         // Use the network instantiate method
-        PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", playerController.heldBubble.transform.position, Quaternion.identity, 0, hamsterInfo);
+        PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", playerController.heldBall.transform.position, Quaternion.identity, 0, hamsterInfo);
 
         // Tell the animator we don't have a bubble anymore
         playerController.Animator.SetBool("HoldingBall", false);
@@ -118,7 +118,7 @@ public class HitState : PlayerState {
 		}
 
         // If the player is holding a hamster, drop it
-        if (playerController.heldBubble != null && !playerController.heldBubble.wasThrown) {
+        if (playerController.heldBall != null && !playerController.heldBall.wasThrown) {
             if (PhotonNetwork.connectedAndReady) {
                 if (PhotonNetwork.isMasterClient) {
                     DropNetworkHamster();
@@ -128,7 +128,7 @@ public class HitState : PlayerState {
             }
 
             // Destroy the held bubble
-            Object.Destroy(playerController.heldBubble.gameObject);
+            Object.Destroy(playerController.heldBall.gameObject);
         }
     }
 

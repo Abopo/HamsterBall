@@ -377,7 +377,7 @@ public class Bubble : MonoBehaviour {
         locked = true;
 
         // Remove the held bubble of the player controller
-        _playerController.heldBubble = null;
+        _playerController.heldBall = null;
 
         // If we hit a different board, make that one our bubbleManager
         _homeBubbleManager = bubbleManager;

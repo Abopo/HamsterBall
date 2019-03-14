@@ -17,7 +17,7 @@ public class PlayerController : Entity {
     public Transform bubblePosition;
     public GameObject attackObj;
     public ShiftPortal shiftPortal;
-	public Bubble heldBubble;
+	public Bubble heldBall;
     public int direction;
     public bool aimAssist;
     public bool canBeHit;
@@ -118,13 +118,11 @@ public class PlayerController : Entity {
     SpriteRenderer _targetArrow; // an arrow that appears when shifted
 
     SpriteRenderer _spriteRenderer;
-    PlayerManager _playerManager;
     GameManager _gameManager;
     LevelManager _levelManager;
     PlayerAudio _playerAudio;
     BubbleManager _homeBubbleManager;
     Vector3 _spawnPos;
-    Animator blahblahblah;
 
     public BubbleManager HomeBubbleManager {
         get { return _homeBubbleManager; }
@@ -144,13 +142,11 @@ public class PlayerController : Entity {
         canBeHit = true;
 
         _gameManager = FindObjectOfType<GameManager>();
-        _playerManager = _gameManager.GetComponent<PlayerManager>();
         _levelManager = FindObjectOfType<LevelManager>();
         _gameManager.gameOverEvent.AddListener(GameEnded);
         _playerAudio = GetComponent<PlayerAudio>();
         _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         _animator = GetComponentInChildren<Animator>();
-        blahblahblah = GetComponentInChildren<Animator>();
 
         inputState = new InputState();
 
@@ -323,8 +319,8 @@ public class PlayerController : Entity {
         }
 
         // Failsafe checks
-        if(heldBubble != null && heldBubble.locked) {
-            heldBubble = null;
+        if(heldBall != null && heldBall.locked) {
+            heldBall = null;
         }
         if(curState != PLAYER_STATE.ATTACK && attackObj.gameObject.activeSelf) {
             attackObj.gameObject.SetActive(false);
@@ -366,10 +362,10 @@ public class PlayerController : Entity {
 		                                               transform.position.y,
 		                                               transform.position.z);
 
-		if (heldBubble != null && !heldBubble.wasThrown) {
+		if (heldBall != null && !heldBall.wasThrown) {
 			walkSpeed = 3;
 			jumpMoveMax = 3;
-			heldBubble.transform.position = new Vector3 (bubblePosition.position.x,
+			heldBall.transform.position = new Vector3 (bubblePosition.position.x,
                                                          bubblePosition.position.y,
                                                          bubblePosition.position.z-10);
             
