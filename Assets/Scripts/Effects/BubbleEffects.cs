@@ -33,7 +33,6 @@ public class BubbleEffects : MonoBehaviour {
 
     // Stock orbs
     public GameObject stockOrbGeneratorObj;
-    int _index;
     HamsterMeter _hamsterMeter;
 
     // Bomb bubble explosion
@@ -112,8 +111,6 @@ public class BubbleEffects : MonoBehaviour {
         _bombExplosionObj.GetComponent<AudioSource>().volume = 0.5f;
         _bombExplosionObj.GetComponent<AudioSource>().playOnAwake = true;
         _bombExplosionObj.GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Audio/SFX/BombExplosion");
-
-        _index = 0;
     }
 
     // Update is called once per frame

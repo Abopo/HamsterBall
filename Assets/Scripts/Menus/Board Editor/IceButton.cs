@@ -18,7 +18,7 @@ public class IceButton : MonoBehaviour {
     private void OnMouseOver() {
         if (Input.GetMouseButtonDown(0)) {
             // Create an ice sprite obj
-            GameObject iSprite = GameObject.Instantiate(iceSpriteObj, transform.position, Quaternion.identity);
+            Instantiate(iceSpriteObj, transform.position, Quaternion.identity);
         }
     }
 }

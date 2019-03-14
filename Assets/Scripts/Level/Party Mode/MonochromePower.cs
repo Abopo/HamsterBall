@@ -35,7 +35,6 @@ public class MonochromePower : PowerUp {
         base.Activate();
 
         // Find opposing team's hamsters and increase their speed
-        HamsterScan hamScan = FindObjectOfType<HamsterScan>();
         if (_caughtPlayer.team == 0) {
             Monochrome(_hamScan.AllRightHamsters);
         } else if (_caughtPlayer.team == 1) {

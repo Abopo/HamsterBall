@@ -12,8 +12,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     //List<InputState> _writingInputList = new List<InputState>();
     //List<InputState> _readingInputList = new List<InputState>();
 
-    Vector3 _latestCorrectPos;
-    Vector3 _onUpdatePos;
     int _correctState;
 
     float _bufferTime = 0.2f;
@@ -25,9 +23,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     public void Start() {
-        _latestCorrectPos = transform.position;
-        _onUpdatePos = transform.position;
-
         // Get instantiation data
         PhotonView photonView = GetComponent<PhotonView>();
         _playerController.playerNum = (int)photonView.instantiationData[0];
@@ -77,17 +72,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             ResetInput();
         } else {
             // Receive latest state information
-            Vector3 pos = Vector3.zero;
-            Quaternion rot = Quaternion.identity;
 
-            //stream.Serialize(ref pos);
-            //stream.Serialize(ref rot);
             stream.Serialize(ref _correctState);
-
-            _latestCorrectPos = pos;                // save this to move towards it in FixedUpdate()
-            _onUpdatePos = transform.localPosition; // we interpolate from here to latestCorrectPos
-
-            transform.localRotation = rot;              // this sample doesn't smooth rotation
 
             stream.Serialize(ref _serializedInput.jump.isDown);
             stream.Serialize(ref _serializedInput.jump.isJustReleased);
@@ -252,7 +238,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     // When this player catches a hamster
     void MeCatchHamster() {
-        if (_playerController.heldBubble == null) {
+        if (_playerController.heldBall == null) {
             //_playerController.attackBubble.GetComponent<AttackBubble>().CatchHamster(tryingToCatchHamster);
 
             // For some reason, the client side player will sometimes go straight into the throw state after catching a hamster
@@ -280,9 +266,9 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     [PunRPC]
     void HamsterMissed() {
         // If we were the player to try and catch this bubble
-        if (_playerController.heldBubble.GetComponent<PhotonView>().owner == PhotonNetwork.player) { 
+        if (_playerController.heldBall.GetComponent<PhotonView>().owner == PhotonNetwork.player) { 
             // Destroy the held bubble
-            PhotonNetwork.Destroy(_playerController.heldBubble.gameObject);
+            PhotonNetwork.Destroy(_playerController.heldBall.gameObject);
         }
     }
 

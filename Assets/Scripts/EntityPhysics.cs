@@ -25,7 +25,6 @@ public class EntityPhysics : MonoBehaviour {
     private float _stuckTimer = 0;
     private float _stuckTime = 0.5f;
 
-    private bool isTouchingCeiling;
     private int ceilingHitCount; // this is a counter for how much of the top of the player is colliding
     private bool isTouchingFloor;
     private int floorHitCount; // this is a counter for how much of the top of the player is colliding
@@ -34,9 +33,6 @@ public class EntityPhysics : MonoBehaviour {
     private bool isTouchingWallRight;
     private int rightHitCount; // this is a counter for how much of the top of the player is colliding
 
-    public bool IsTouchingCeiling {
-        get { return isTouchingCeiling; }
-    }
     public bool IsTouchingFloor {
         get { return isTouchingFloor; }
     }
@@ -211,7 +207,7 @@ public class EntityPhysics : MonoBehaviour {
     }
 
     public bool IsTouchingAnything() {
-        if (isTouchingFloor || isTouchingCeiling || isTouchingWallLeft || isTouchingWallRight) {
+        if (isTouchingFloor || isTouchingWallLeft || isTouchingWallRight) {
             return true;
         }
 

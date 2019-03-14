@@ -153,7 +153,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
         _spawnTimer += Time.deltaTime;
 		if (_spawnTimer >= _spawnTime) {
-            if (_hamsterLine.Count < 3) {
+            if (_hamsterLine.Count < _hamsterLineMax) {
                 SpawnHamster();
 
                 // Choose the next hamster type right now

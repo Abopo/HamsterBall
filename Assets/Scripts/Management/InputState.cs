@@ -33,9 +33,6 @@ public class InputState {
     public int playerID;
     Player _player;
 
-	static int joysticksTaken = 0;
-	static int keyboardTaken = 0;
-
 	public InputState(){
 		timeStamp = -1.0f;
 		timeDelta = -1.0f;
@@ -47,11 +44,6 @@ public class InputState {
 		swing = new button ();
 		attack = new button ();
         shift = new button ();
-	}
-
-	public static void Reset() {
-		joysticksTaken = 0;
-		keyboardTaken = 0;
 	}
 
     public void SetPlayerID(int iD) {

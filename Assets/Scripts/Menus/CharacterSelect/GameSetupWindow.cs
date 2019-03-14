@@ -55,8 +55,6 @@ public class GameSetupWindow : MonoBehaviour {
 
         //_gameManager.leftTeamHandicap = 9;
         //S_gameManager.rightTeamHandicap = 9;
-        int leftHandicap = 10 - _gameManager.leftTeamHandicap;
-        int rightHandicap = 10 - _gameManager.rightTeamHandicap;
         _gameManager.leftTeamHandicap = 10;
         _gameManager.rightTeamHandicap = 10;
         //for (int i = 0; i < leftHandicap; ++i) {
