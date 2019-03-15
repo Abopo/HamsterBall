@@ -3,9 +3,10 @@ using System.Collections;
 
 public class BubbleState : PlayerState {
     bool _swingDone;
+    float sign;
 
-	// Use this for initialization
-	public override void Initialize(PlayerController playerIn){
+    // Use this for initialization
+    public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 
         playerController.PlayerAudio.PlayBubbleClip();
@@ -30,9 +31,31 @@ public class BubbleState : PlayerState {
 			playerController.velocity.y /= 2;
 		}
 
-        BaseJumpMovement(inputState);
+        //BaseJumpMovement(inputState);
+        if (inputState.right.isDown) {
+            if (_direction < 0) {
+                _direction = 1;
+            }
+            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.Traction * playerController.speedModifier * Time.deltaTime * _direction;
+        } else if (inputState.left.isDown) {
+            if (_direction > 0) {
+                _direction = -1;
+            }
+            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.Traction * playerController.speedModifier * Time.deltaTime * _direction;
+        } else {
+            if (Mathf.Abs(playerController.velocity.x) > 0.5f) {
+                sign = Mathf.Sign(playerController.velocity.x);
+                playerController.velocity.x -= sign * (playerController.walkForce / 1.5f) * playerController.Traction * Time.deltaTime;
+                if (sign > 0 && playerController.velocity.x < 0 ||
+                    sign < 0 && playerController.velocity.x > 0) {
+                    playerController.velocity.x = 0;
+                }
+            } else {
+                playerController.velocity.x = 0;
+            }
+        }
 
-        if(_swingDone) {
+        if (_swingDone) {
             if(inputState.jump.isJustPressed && playerController.CanJump) {
                 playerController.ChangeState(PLAYER_STATE.JUMP);
             } else if(inputState.attack.isJustPressed && playerController.heldBall == null) {
@@ -43,7 +66,12 @@ public class BubbleState : PlayerState {
 
     public void Activate() {
         playerController.swingObj.SetActive(true);
-        playerController.velocity.x = 0f;
+
+        // If the player is not on ice (is on normal ground)
+        if(playerController.Traction == 1f) {
+            // Halt momentum for the swing
+            playerController.velocity.x = 0f;
+        }
     }
 
     public void Deactivate() {

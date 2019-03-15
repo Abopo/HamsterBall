@@ -131,6 +131,10 @@ public class PlayerController : Entity {
         get { return _levelManager; }
     }
 
+    public SpriteRenderer SpriteRenderer {
+        get { return _spriteRenderer; }
+    }
+
     bool _justChangedState; // Can only change state once per frame
 
     // Events

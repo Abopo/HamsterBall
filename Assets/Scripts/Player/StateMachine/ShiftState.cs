@@ -68,8 +68,12 @@ public class ShiftState : PlayerState {
             }
         }
 
-        // Find the player's sprite object
+        // Push the player's sprite higher on the draw order (so it renders above the stage)
+        playerController.SpriteRenderer.sortingOrder = 8;
+
+        // Save the initial scale to return to at the end
         _startScale = playerController.transform.localScale.x;
+        // Calculate the largest scale the sprite will get to
         _endScale = _startScale * 10;
         _scaleT = 0f;
         _scaleVelocity = _totalShiftTime;
@@ -154,6 +158,9 @@ public class ShiftState : PlayerState {
         playerController.shifted = !playerController.shifted;
         // Return player's z pos to normal
         playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, _initialZPos);
+
+        // Return player's sprite's draw order back to normal
+        playerController.SpriteRenderer.sortingOrder = 0;
 
         // Turn main collider back on.
         playerController.GetComponent<BoxCollider2D>().enabled = true;
