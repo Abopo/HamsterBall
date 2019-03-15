@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class HamsterDoor : MonoBehaviour {
 
-    bool _isOpen;
+    protected bool _isOpen;
     float _openTime = 0.5f;
-    float _openTimer = 0f;
+    protected float _openTimer = 0f;
 
     float _dir = 1f;
 
 	// Use this for initialization
 	void Start () {
-        if(transform.GetComponentInParent<HamsterSpawner>().rightSidePipe) {
-            //_dir = -1f;
-        }
+
 	}
 	
 	// Update is called once per frame
@@ -27,10 +25,9 @@ public class HamsterDoor : MonoBehaviour {
         }
 	}
 
-    public void Open() {
+    public virtual void Open() {
         if (!_isOpen) {
-            // TODO: Rotate the proper way when on the right side
-            transform.Rotate(0f, 0f, 90f * _dir);
+            transform.Rotate(0f, 0f, 90f);
 
             _isOpen = true;
         }
@@ -38,9 +35,9 @@ public class HamsterDoor : MonoBehaviour {
         _openTimer = 0f;
     }
 
-    void Close() {
+    protected virtual void Close() {
         if (_isOpen) {
-            transform.Rotate(0f, 0f, -90f * _dir);
+            transform.Rotate(0f, 0f, -90f);
 
             _isOpen = false;
         }

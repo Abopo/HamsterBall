@@ -147,10 +147,12 @@ public class ThrowState : PlayerState {
             }
         }
 
+        // Cancel the throw
         if(inputState.attack.isJustPressed) {
             // Reset aim cooldown
             playerController.aimCooldownTimer = 0f;
 
+            // Return to idle state
             playerController.ChangeState(PLAYER_STATE.IDLE);
         }
 	}

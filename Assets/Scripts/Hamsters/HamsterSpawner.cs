@@ -24,7 +24,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     List<Hamster> _hamsterLine = new List<Hamster>();
     int _hamsterLineMax;
-    HamsterDoor _hamsterDoor;
+    HamsterDoor[] _hamsterDoors; // Anything that moves/activates when a hamster leaves the spawn line
 
     public static bool canBeRainbow = true;
     public static bool canBeDead = false;
@@ -102,7 +102,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
             _nextHamsterType = GetValidType();
         }
 
-        _hamsterDoor = GetComponentInChildren<HamsterDoor>();
+        _hamsterDoors = GetComponentsInChildren<HamsterDoor>();
 
         SetSpawnMax();
 
@@ -367,8 +367,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
             _hamsterLine[0].ExitLine();
 
-            // Open the hamster door
-            _hamsterDoor.Open();
+            // Open the hamster doors
+            foreach(HamsterDoor hamDoor in _hamsterDoors) {
+                hamDoor.Open();
+            }
 
             // Remove the released hamster from the list
             _hamsterLine.RemoveAt(0);
