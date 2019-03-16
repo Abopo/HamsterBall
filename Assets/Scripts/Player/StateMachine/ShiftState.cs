@@ -19,7 +19,7 @@ public class ShiftState : PlayerState {
     void Start() {
     }
 
-    // Use this for initialization
+    // Use this for initialization. Ran every time the player enters the state
     public override void Initialize(PlayerController playerIn) {
         base.Initialize(playerIn);
 
@@ -34,9 +34,13 @@ public class ShiftState : PlayerState {
         // Slow the player to a stop, even if in midair
         StopPlayerMovement();
 
-        playerController.PlayerAudio.PlayShiftClip();
+        // If the player has a ball
+        if(playerController.heldBall != null) {
+            // Hide it so it doesn't look weird
+            playerController.heldBall.HideSprites();
+        }
 
-        //ActivateShiftPortal();
+        playerController.PlayerAudio.PlayShiftClip();
 
         _takeOffPosition = playerController.transform.position;
 
@@ -161,6 +165,12 @@ public class ShiftState : PlayerState {
 
         // Return player's sprite's draw order back to normal
         playerController.SpriteRenderer.sortingOrder = 0;
+
+        // If the player has a ball
+        if (playerController.heldBall != null) {
+            // Display it
+            playerController.heldBall.DisplaySprites();
+        }
 
         // Turn main collider back on.
         playerController.GetComponent<BoxCollider2D>().enabled = true;

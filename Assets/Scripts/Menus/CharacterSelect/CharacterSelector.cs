@@ -30,6 +30,7 @@ public class CharacterSelector : MonoBehaviour {
     bool frameskip = false;
 
     PlayerManager _playerManager;
+    AudioSource _audioSource;
 
     // Networking stuff
     PhotonView _photonView;
@@ -50,6 +51,7 @@ public class CharacterSelector : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _playerManager = FindObjectOfType<PlayerManager>();
+        _audioSource = GetComponent<AudioSource>();
         _resources = FindObjectOfType<CharacterSelectResources>();
 
         aiIndex = 0;
@@ -175,6 +177,8 @@ public class CharacterSelector : MonoBehaviour {
 
                 // Change animator to correct character
                 characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1];
+
+                _audioSource.Play();
             }
             if (_player.GetButtonDown("Left")) {
                 // Change color to the left
@@ -185,6 +189,8 @@ public class CharacterSelector : MonoBehaviour {
 
                 // Change animator to correct character
                 characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1];
+
+                _audioSource.Play();
             }
         }
 
@@ -227,6 +233,9 @@ public class CharacterSelector : MonoBehaviour {
         lockedIn = true;
         readySprite.SetActive(true);
         curCharacterIcon.Lock();
+
+        // Play a sound
+        _audioSource.Play();
     }
     public void Unlock() {
         lockedIn = false;
@@ -254,6 +263,9 @@ public class CharacterSelector : MonoBehaviour {
 
         // Highlight the icon
         charaIcon.Highlight();
+
+        // Play a sound
+        _audioSource.Play();
     }
 
     bool CanMove() {

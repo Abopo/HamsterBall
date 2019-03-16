@@ -13,7 +13,7 @@ public class PlayerState {
 		}
 	}
 
-	// Use this for initialization
+	// Use this for initialization. Ran every time the player enters the state.
 	public virtual void Initialize(PlayerController playerIn) {
 		playerController = playerIn;
 	}

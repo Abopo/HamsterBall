@@ -79,7 +79,7 @@ public class Character : MonoBehaviour {
         }
 
         _audioSource = GetComponent<AudioSource>();
-        _moveClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
+        _moveClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
 
         _photonView = GetComponent<PhotonView>();
         isLocal = true;
