@@ -44,6 +44,10 @@ public class HamsterWheel : MonoBehaviour {
     // Use this for initialization
     void Start() {
         _stageIcons = GetComponentsInChildren<StageIcon>();
+        // Scale down all the stage icons
+        for (int i = 0; i < _stageIcons.Length; ++i) {
+            _stageIcons[i].ScaleDown();
+        }
 
         _possibleRotations[0] = 0;
         _possibleRotations[1] = 315;
@@ -131,6 +135,9 @@ public class HamsterWheel : MonoBehaviour {
         }
         _audioSource.Play();
 
+        // Reduce size of current stage icon
+        //_stageIcons[_index].ScaleDown();
+
         _index++;
         if (_index > 7) {
             _index = 0;
@@ -159,6 +166,9 @@ public class HamsterWheel : MonoBehaviour {
             return;
         }
         _audioSource.Play();
+
+        // Reduce size of current stage icon
+        //_stageIcons[_index].ScaleDown();
 
         _index--;
         if (_index < 0) {
@@ -193,6 +203,9 @@ public class HamsterWheel : MonoBehaviour {
         _rotatingRight = false;
         _rotatingLeft = false;
         transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, _desiredRotation);
+
+        // Increase size of current stage icon
+        _stageIcons[_index].ScaleUp();
 
         // But check if we want to keep running past this map
         CheckInput();

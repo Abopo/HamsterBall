@@ -455,7 +455,7 @@ public class Bubble : MonoBehaviour {
 		checkedForMatches = false;
 		_homeBubbleManager.RefreshRainbowBubbles ();
 		// Orange checks
-		type = HAMSTER_TYPES.ORANGE;
+		type = HAMSTER_TYPES.YELLOW;
 		orangeMatches = CheckMatches(orangeMatches);
 		checkedForMatches = false;
 		_homeBubbleManager.RefreshRainbowBubbles ();

@@ -44,7 +44,7 @@ public class BubblePopAnimation : MonoBehaviour {
             case HAMSTER_TYPES.GREEN:
                 _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GreenBubblePieces");
                 break;
-            case HAMSTER_TYPES.ORANGE:
+            case HAMSTER_TYPES.YELLOW:
                 _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/YellowBubblePieces");
                 break;
             case HAMSTER_TYPES.PINK:
@@ -87,7 +87,7 @@ public class BubblePopAnimation : MonoBehaviour {
                         tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GreenBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;
-                    case HAMSTER_TYPES.ORANGE:
+                    case HAMSTER_TYPES.YELLOW:
                         tempSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/YellowBubblePieces");
                         _bubblePiecesSprites[i] = tempSprites[i];
                         break;

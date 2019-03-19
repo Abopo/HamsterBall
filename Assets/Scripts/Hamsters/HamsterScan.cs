@@ -169,7 +169,7 @@ public class HamsterScan : MonoBehaviour {
                     case HAMSTER_TYPES.RED:
                         _typeCounts[1]++;
                         break;
-                    case HAMSTER_TYPES.ORANGE:
+                    case HAMSTER_TYPES.YELLOW:
                         _typeCounts[2]++;
                         break;
                     case HAMSTER_TYPES.GRAY:
@@ -205,7 +205,7 @@ public class HamsterScan : MonoBehaviour {
                     case HAMSTER_TYPES.RED:
                         _typeCounts[1]++;
                         break;
-                    case HAMSTER_TYPES.ORANGE:
+                    case HAMSTER_TYPES.YELLOW:
                         _typeCounts[2]++;
                         break;
                     case HAMSTER_TYPES.GRAY:
@@ -261,7 +261,7 @@ public class HamsterScan : MonoBehaviour {
                     case HAMSTER_TYPES.RED:
                         _typeCounts[1]++;
                         break;
-                    case HAMSTER_TYPES.ORANGE:
+                    case HAMSTER_TYPES.YELLOW:
                         _typeCounts[2]++;
                         break;
                     case HAMSTER_TYPES.GRAY:
@@ -363,7 +363,7 @@ public class HamsterScan : MonoBehaviour {
                     case HAMSTER_TYPES.RED:
                         _availableTypes[1] = 1;
                         break;
-                    case HAMSTER_TYPES.ORANGE:
+                    case HAMSTER_TYPES.YELLOW:
                         _availableTypes[2] = 1;
                         break;
                     case HAMSTER_TYPES.GRAY:

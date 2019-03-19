@@ -185,7 +185,7 @@ public class BoardEditor : MonoBehaviour {
                         case HAMSTER_TYPES.RED:
                             tempLine += "1";
                             break;
-                        case HAMSTER_TYPES.ORANGE:
+                        case HAMSTER_TYPES.YELLOW:
                             tempLine += "2";
                             break;
                         case HAMSTER_TYPES.GRAY:

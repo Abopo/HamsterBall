@@ -16,6 +16,7 @@ public class HamsterMeter : MonoBehaviour {
 
     int _nextTallyIndex;
     int _nextLineIndex = 0;
+    int _nextStockSpriteIndex = 0;
 
     public int CurStock {
         get { return _curStock; }
@@ -279,6 +280,15 @@ public class HamsterMeter : MonoBehaviour {
         }
 
         return t;
+    }
+
+    public int GetNextStockSpriteType() {
+        int spriteType;
+
+        spriteType = _bubbleManager.GetNextLineBubble(_nextStockSpriteIndex);
+        _nextStockSpriteIndex++;
+
+        return spriteType;
     }
 
     public void GainShields(int amount) {

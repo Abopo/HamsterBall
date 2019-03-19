@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public enum HAMSTER_TYPES { NO_TYPE = -1, GREEN = 0, RED, ORANGE, GRAY, BLUE, PINK, PURPLE, NUM_NORM_TYPES,
+public enum HAMSTER_TYPES { NO_TYPE = -1, GREEN = 0, RED, YELLOW, GRAY, BLUE, PINK, PURPLE, NUM_NORM_TYPES,
 						   RAINBOW = 8, DEAD, BOMB, NUM_SPEC_TYPES = 3};
 
 public class Hamster : Entity {
@@ -192,6 +192,8 @@ public class Hamster : Entity {
                 _animator.SetBool("LongIdle", true);
                 _longIdleTimer = -3f - Random.Range(2f, 7f);
             }
+        } else {
+            _longIdleTimer = 0f;
         }
 
         _animator.SetInteger("State", _curState);

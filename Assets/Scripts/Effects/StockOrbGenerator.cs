@@ -41,12 +41,13 @@ public class StockOrbGenerator : MonoBehaviour {
 	}
 
     void SpawnStockOrb() {
-        GameObject newStockOrb = GameObject.Instantiate(stockOrbObj, _spawnPos, Quaternion.identity);
+        GameObject newStockOrb = Instantiate(stockOrbObj, _spawnPos, Quaternion.identity);
         StockOrb stockOrb = newStockOrb.GetComponent<StockOrb>();
         stockOrb.Initialize();
         stockOrb.team = team;
+        int stockSprite = hamsterMeter.GetNextStockSpriteType();
         Transform target = hamsterMeter.GetNextTallyPosition();
-        stockOrb.Launch(target);
+        stockOrb.Launch(target, stockSprite);
     }
 
     public void BeginSpawning(int spawnAmount, Vector2 spawnPos) {
