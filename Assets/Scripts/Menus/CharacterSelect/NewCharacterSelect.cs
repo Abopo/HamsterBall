@@ -131,7 +131,7 @@ public class NewCharacterSelect : MonoBehaviour {
         // When all players have locked their characters in,
         // show the press start screen.
         if (_gameManager.gameMode == GAME_MODE.MP_VERSUS || _gameManager.gameMode == GAME_MODE.MP_PARTY) {
-            if (AllPlayersLockedIn()) {
+            if (AllPlayersReady()) {
                 if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
                     pressStartText.SetActive(true);
                 } else if (!PhotonNetwork.connectedAndReady) {
@@ -141,7 +141,7 @@ public class NewCharacterSelect : MonoBehaviour {
                 pressStartText.SetActive(false);
             }
         } else /*if (_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.SP_CLEAR)*/ {
-            if (AllPlayersLockedIn()) {
+            if (AllPlayersReady()) {
                 pressStartText.SetActive(true);
             } else {
                 pressStartText.SetActive(false);
@@ -149,9 +149,9 @@ public class NewCharacterSelect : MonoBehaviour {
         }
     }
 
-    bool AllPlayersLockedIn() {
+    bool AllPlayersReady() {
         for(int i = 0; i < _numPlayers+_numAI; ++i) {
-            if(charaSelectors[i] != null && !charaSelectors[i].lockedIn) {
+            if(charaSelectors[i] != null && !charaSelectors[i].isReady) {
                 return false;
             }
         }

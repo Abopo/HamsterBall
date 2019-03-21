@@ -6,10 +6,12 @@ using Rewired;
 public class CharacterSelector : MonoBehaviour {
     public Animator characterAnimator;
     public CharacterIcon curCharacterIcon;
+    public GameObject colorArrows;
     public GameObject readySprite;
 
     public int playerNum = -1;
     public bool lockedIn = false;
+    public bool isReady = false;
     public bool takeInput = true;
     public bool isAI = false;
     public int charaColor = 1;
@@ -167,30 +169,14 @@ public class CharacterSelector : MonoBehaviour {
                     _moveTimer = 0f;
                 }
             }
-        } else if(lockedIn && CanMove()) {
+        } else if(lockedIn && !isReady && CanMove()) {
             if(_player.GetButtonDown("Right")) {
                 // Change Color to the right
-                charaColor += 1;
-                if(charaColor > _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count) {
-                    charaColor = 1;
-                }
-
-                // Change animator to correct character
-                characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1];
-
-                _audioSource.Play();
+                ChangeColorRight();
             }
             if (_player.GetButtonDown("Left")) {
                 // Change color to the left
-                charaColor -= 1;
-                if(charaColor < 1) {
-                    charaColor = _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count;
-                }
-
-                // Change animator to correct character
-                characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1];
-
-                _audioSource.Play();
+                ChangeColorLeft();
             }
         }
 
@@ -198,23 +184,43 @@ public class CharacterSelector : MonoBehaviour {
             _moveTimer = _moveTime + 1f;
         }
 
-        if (_player.GetButtonDown("Submit") && !lockedIn && !curCharacterIcon.isLocked) {
-            // Lock in
-            LockIn();
+        if (_player.GetButtonDown("Submit") && (!lockedIn || !isReady)) {
+            if (!lockedIn) {
+                // Lock in
+                LockIn();
+            } else {
+                // If the selected color isn't taken
+                if(!_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
+                    // Take it
+                    _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = true;
 
-            // If first player or an ai
-            if ((playerNum == 0 || isAI) && aiList.Count > 0 && aiIndex < aiList.Count) {
-                // Gain control of next AI player
-                takeInput = false;
-                aiList[aiIndex].takeInput = true;
-                aiList[aiIndex].frameskip = true;
-                aiList[aiIndex].aiList = aiList;
-                aiList[aiIndex].parentSelector = this;
-                aiIndex++;
+                    // This player is ready
+                    isReady = true;
+                    readySprite.SetActive(true);
+                    colorArrows.SetActive(false);
+
+                    // If first player or an ai
+                    if ((playerNum == 0 || isAI) && aiList.Count > 0 && aiIndex < aiList.Count) {
+                        // Gain control of next AI player
+                        takeInput = false;
+                        aiList[aiIndex].takeInput = true;
+                        aiList[aiIndex].frameskip = true;
+                        aiList[aiIndex].aiList = aiList;
+                        aiList[aiIndex].parentSelector = this;
+                        aiIndex++;
+                    }
+                }
             }
         }
         if (_player.GetButtonDown("Cancel")) {
-            if (lockedIn) {
+            if(isReady) {
+                // Unready
+                isReady = false;
+                readySprite.SetActive(false);
+                colorArrows.SetActive(true);
+
+                _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = false;
+            } else if (lockedIn) {
                 Unlock();
             } else if (isAI) {
                 takeInput = false;
@@ -231,20 +237,20 @@ public class CharacterSelector : MonoBehaviour {
 
     public void LockIn() {
         lockedIn = true;
-        readySprite.SetActive(true);
-        curCharacterIcon.Lock();
+        //curCharacterIcon.Lock();
+        colorArrows.SetActive(true);
 
         // Play a sound
         _audioSource.Play();
     }
     public void Unlock() {
         lockedIn = false;
-        readySprite.SetActive(false);
-        curCharacterIcon.Unlock();
+        colorArrows.SetActive(false);
+        // curCharacterIcon.Unlock();
         //_playerManager.RemovePlayerByNum(playerNum);
 
         // Reset color to default
-        charaColor = 1;
+        //charaColor = 1;
     }
 
     void HighlightIcon(CharacterIcon charaIcon) {
@@ -255,7 +261,7 @@ public class CharacterSelector : MonoBehaviour {
         transform.position = new Vector3(charaIcon.transform.position.x, charaIcon.transform.position.y, charaIcon.transform.position.z - (2f + 0.1f * playerNum));
 
         // Change animator to correct character
-        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][charaColor-1];
+        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][charaColor-1].animator;
 
         // Play idle animation
         characterAnimator.SetInteger("PlayerState", 0);
@@ -265,6 +271,51 @@ public class CharacterSelector : MonoBehaviour {
         charaIcon.Highlight();
 
         // Play a sound
+        _audioSource.Play();
+    }
+
+    void ChangeColorRight() {
+        int curColor = charaColor;
+
+        // Iterate throught the colors until there is one that isn't already taken
+        do {
+            charaColor += 1;
+            if (charaColor > _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count) {
+                charaColor = 1;
+            }
+
+            // If we've looped back to the same color
+            if (charaColor == curColor) {
+                // Break out of the loop
+                break;
+            }
+        } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
+
+        // Change animator to correct character
+        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+
+        _audioSource.Play();
+    }
+    void ChangeColorLeft() {
+        int curColor = charaColor;
+
+        // Iterate throught the colors until there is one that isn't already taken
+        do {
+            charaColor -= 1;
+            if (charaColor < 1) {
+                charaColor = _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count;
+            }
+
+            // If we've looped back to the same color
+            if (charaColor == curColor) {
+                // Break out of the loop
+                break;
+            }
+        } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
+
+        // Change animator to correct character
+        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+
         _audioSource.Play();
     }
 
