@@ -10,17 +10,17 @@ public class StageIcon : MonoBehaviour {
     Vector3[] _startScale = new Vector3[3];
     bool _downScaled = false;
 
-    SpriteRenderer _spriteRenderer;
     SpriteRenderer _lockSprite;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
         // Get the inital scales of children
         for (int i = 0; i < transform.childCount; ++i) {
             _startScale[i] = transform.GetChild(i).localScale;
         }
+    }
 
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+    // Use this for initialization
+    void Start () {
         _lockSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
 		// See if this stage is unlocked or not

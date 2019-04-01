@@ -38,10 +38,11 @@ public class PlayerSpawner : MonoBehaviour {
         playerIcons[1, 2] = sprites[2];
         playerIcons[1, 3] = sprites[3];
         // Rooster
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
         playerIcons[2, 0] = sprites[0];
         playerIcons[2, 1] = sprites[1];
-        playerIcons[2, 2] = sprites[2];
-        playerIcons[2, 3] = sprites[3];
+        playerIcons[2, 2] = sprites[0];
+        playerIcons[2, 3] = sprites[1];
 
         GetSpawnLocations();
         SpawnPlayers();

@@ -25,6 +25,7 @@ public class VillagePlayerSpawn : MonoBehaviour {
         newPlayer.SetPlayerNum(0);
         newPlayer.team = 0;
         newPlayer.transform.position = transform.position;
+        newPlayer.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
 
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.BOY;

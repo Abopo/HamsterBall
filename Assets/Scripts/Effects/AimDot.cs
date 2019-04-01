@@ -32,8 +32,14 @@ public class AimDot : MonoBehaviour {
 
     public void Reflect() {
         // Turn around
-        float rotOffset = 90 - transform.rotation.eulerAngles.z;
-        transform.Rotate(0f, 0f, rotOffset * 2, Space.World);
+        //float rotOffset = transform.rotation.eulerAngles.z - 90;
+        //transform.Rotate(0f, 0f, rotOffset * 2, Space.World);
+
+        float zAngle = transform.rotation.eulerAngles.z;
+        zAngle *= -1;
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,
+                                              transform.rotation.eulerAngles.y,
+                                              zAngle);
 
         _reflected = true;
         _rayPos = 0;

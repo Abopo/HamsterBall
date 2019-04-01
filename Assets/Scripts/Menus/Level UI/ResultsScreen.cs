@@ -5,7 +5,7 @@ using System.Collections;
 
 public class ResultsScreen : MonoBehaviour {
     public Text winningTeamText;
-    public SpriteRenderer winningTeamSprite;
+    public Image winningTeamSprite;
     public MenuButton mainMenuButton;
 
     MenuOption[] _menuOptions;
@@ -22,6 +22,7 @@ public class ResultsScreen : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // Set the text of the previousMenuButton to a proper text
+        //_menuOptions = transform.GetComponentsInChildren<MenuOption>();
     }
 
     // Update is called once per frame

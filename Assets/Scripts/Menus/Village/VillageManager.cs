@@ -36,7 +36,7 @@ public class VillageManager : MonoBehaviour {
 
         // These prefs are only reset on the first launch of the game.
         if (PlayerPrefs.GetInt("FirstTimePlaying", 0) == 0) {
-            PlayerPrefs.SetString("StoryProgress", "1-3"); // How far into the story the player is (used to lock/unlock story levels)-
+            PlayerPrefs.SetString("StoryProgress", "2-3"); // How far into the story the player is (used to lock/unlock story levels)-
             PlayerPrefs.SetString("StoryPos", "1-3"); // Last place in the story the player was on (used to position the selector in the story select scene)
 
             // Stages
