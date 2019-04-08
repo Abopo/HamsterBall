@@ -5,7 +5,7 @@
             <value>HammsterConnect</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="folder">
             <destination>{f9bdb44e-ec29-4a95-bbaa-2026b7d6f563}</destination>
@@ -112,6 +112,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{7aadca8a-a063-45f2-b672-8836bb48d72b}">
+        <property name="volume">
+            <value>-6.5</value>
+        </property>
         <relationship name="effectChain">
             <destination>{62b2fcc9-43ee-4814-9fee-61e55e7d7b5d}</destination>
         </relationship>
@@ -137,6 +140,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{9d32cb9f-7d94-4f3b-b191-161049669ede}">
+        <property name="volume">
+            <value>-22</value>
+        </property>
         <property name="name">
             <value>Audio 1</value>
         </property>
@@ -203,6 +209,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{a0035a23-cf9e-4481-9618-379740d05529}">
+        <property name="volume">
+            <value>-80</value>
+        </property>
         <property name="name">
             <value>Audio 4</value>
         </property>
@@ -244,7 +253,6 @@
     <object class="MixerBusEffectChain" id="{62b2fcc9-43ee-4814-9fee-61e55e7d7b5d}">
         <relationship name="effects">
             <destination>{121b7889-bdbe-4add-a47a-90bd74d78bda}</destination>
-            <destination>{64dea8d9-0de7-4fbe-8f25-67f488af9b0d}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{bbe826ec-348d-4a8a-aa93-34e6eeac7954}"/>
@@ -293,7 +301,6 @@
     </object>
     <object class="MixerBusPanner" id="{93ddfaf9-ae67-4d66-9e90-c62ccfee8005}"/>
     <object class="MixerBusFader" id="{121b7889-bdbe-4add-a47a-90bd74d78bda}"/>
-    <object class="SpatialiserEffect" id="{64dea8d9-0de7-4fbe-8f25-67f488af9b0d}"/>
     <object class="MixerBusFader" id="{79494625-0535-46ed-8e86-592e958df4c5}"/>
     <object class="PitchShifterEffect" id="{fadd3450-55f8-4c21-8e81-1c5d22ba1a06}">
         <property name="pitch">

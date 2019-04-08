@@ -9,6 +9,7 @@ public class JumpState : PlayerState {
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 
+
         _jumped = false;
         _jumpForce = playerController.jumpForce;
 

@@ -376,6 +376,9 @@ public class Bubble : MonoBehaviour {
         _velocity = Vector2.zero;
         locked = true;
 
+        Debug.Log("connect with board");
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnect);
+
         // Remove the held bubble of the player controller
         _playerController.heldBall = null;
 
@@ -671,6 +674,8 @@ public class Bubble : MonoBehaviour {
 		popped = true;
         _popping = false;
 
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.BallBreak);
+		Debug.Log("Pop");
         // Instaed of destroying, do a nice animation of the bubble opening.
         _popAnimation.Pop();
 

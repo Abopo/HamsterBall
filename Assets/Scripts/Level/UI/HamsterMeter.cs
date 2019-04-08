@@ -144,8 +144,10 @@ public class HamsterMeter : MonoBehaviour {
             _nextTallyIndex -= 1;
             LoseShield();
         }
-
+		SoundManager.mainAudio.HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
+        SoundManager.mainAudio.HamsterFillBallEvent.start();
         _curStock += inc;
+
         // If we've filled the entire meter
         if (_curStock >= _meterSize) {
             while (_curStock >= _meterSize) {
