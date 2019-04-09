@@ -46,6 +46,10 @@ public class SoundManager : MonoBehaviour {
 		FMODUnity.RuntimeManager.PlayOneShot("event:/SingleFootstepEvent");
 	}
 
+	void Jump (){
+		FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerJump");
+	}
+
 	//SoundManager.mainAudio.Footstep()
 	//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
 }
