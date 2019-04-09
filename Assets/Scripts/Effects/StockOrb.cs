@@ -20,13 +20,17 @@ public class StockOrb : MonoBehaviour {
     TrailRenderer _trailRenderer;
 
     public bool HamsterTravelStart = false;
+	public FMOD.Studio.EventInstance HamsterTravelEvent;
 
 	// Use this for initialization
 	void Start () {
         Initialize();
         //Launch();
-		SoundManager.mainAudio.HamsterTravelEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTravel);
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(SoundManager.mainAudio.HamsterTravelEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+       
+
+		HamsterTravelEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTravel);
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(HamsterTravelEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
 	}
 	
     public void Initialize() {
@@ -106,7 +110,11 @@ public class StockOrb : MonoBehaviour {
             _rigidbody.velocity = new Vector2(moveSpeed * dir.x, moveSpeed * dir.y);
 
             if(HamsterTravelStart == false) {
-            	SoundManager.mainAudio.HamsterTravelEvent.start();
+            	HamsterTravelEvent.start();
+				HamsterTravelEvent.release();
+
+				//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterTravel);
+
             	HamsterTravelStart = true;
 			}
 

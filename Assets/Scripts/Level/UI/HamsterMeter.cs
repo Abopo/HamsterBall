@@ -146,6 +146,7 @@ public class HamsterMeter : MonoBehaviour {
         }
 		SoundManager.mainAudio.HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
         SoundManager.mainAudio.HamsterFillBallEvent.start();
+		SoundManager.mainAudio.HamsterFillBallEvent.release();
         _curStock += inc;
 
         // If we've filled the entire meter

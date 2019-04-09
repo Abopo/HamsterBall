@@ -27,7 +27,6 @@ public class SoundManager : MonoBehaviour {
 	public string PlayerJump;
 
 	public FMOD.Studio.EventInstance ThrowAngleEvent;
-	public FMOD.Studio.EventInstance HamsterTravelEvent;
 
 	public FMOD.Studio.EventInstance HamsterFillBallEvent;
 	//Generic Player Sounds EventInstance
