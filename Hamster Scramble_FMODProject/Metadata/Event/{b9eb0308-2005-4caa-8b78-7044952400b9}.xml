@@ -112,6 +112,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{65cdfd82-5ba1-4889-ad8c-f6b3022aa478}">
+        <property name="volume">
+            <value>-4.5</value>
+        </property>
         <relationship name="effectChain">
             <destination>{62a87754-13f9-41c8-92ba-5f328b42bf3b}</destination>
         </relationship>
@@ -140,6 +143,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{c72d91f8-4140-4ea2-990c-979193d00358}">
+        <property name="volume">
+            <value>-8.5</value>
+        </property>
         <property name="name">
             <value>Audio 1</value>
         </property>
@@ -190,6 +196,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{654b0f27-11d7-4d4c-ba5c-9638b1b9f2a6}">
+        <property name="volume">
+            <value>-10.5</value>
+        </property>
         <property name="name">
             <value>Audio 3</value>
         </property>
@@ -256,6 +265,7 @@
     <object class="MixerBusEffectChain" id="{62a87754-13f9-41c8-92ba-5f328b42bf3b}">
         <relationship name="effects">
             <destination>{eebd8d8b-3ddb-4817-8a3a-070fbf18cb63}</destination>
+            <destination>{2eb6a428-9364-4507-927f-d5a5790a2bbd}</destination>
             <destination>{d3d76b3e-bf8b-4803-842b-d5333ecd9043}</destination>
         </relationship>
     </object>
@@ -396,6 +406,29 @@
     </object>
     <object class="MixerBusPanner" id="{800621b3-e19e-4441-80c4-4a7316cdaeea}"/>
     <object class="MixerBusFader" id="{eebd8d8b-3ddb-4817-8a3a-070fbf18cb63}"/>
+    <object class="MultibandEqEffect" id="{2eb6a428-9364-4507-927f-d5a5790a2bbd}">
+        <property name="filterTypeA">
+            <value>7</value>
+        </property>
+        <property name="filterTypeE">
+            <value>8</value>
+        </property>
+        <property name="frequencyA">
+            <value>116.379707</value>
+        </property>
+        <property name="frequencyE">
+            <value>4193.3999</value>
+        </property>
+        <property name="qualityA">
+            <value>1.19744825</value>
+        </property>
+        <property name="gainA">
+            <value>-6.72413635</value>
+        </property>
+        <property name="gainE">
+            <value>2.06896663</value>
+        </property>
+    </object>
     <object class="SpatialiserEffect" id="{d3d76b3e-bf8b-4803-842b-d5333ecd9043}">
         <property name="minimumDistance">
             <value>0.099999994</value>
