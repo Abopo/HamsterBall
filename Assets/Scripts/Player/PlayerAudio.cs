@@ -13,10 +13,12 @@ public class PlayerAudio : MonoBehaviour {
 
     AudioSource _audioSource;
 
+	
     // Use this for initialization
     void Start () {
         _audioSource = GetComponent<AudioSource>();
         LoadSFX ();
+
     }
 
     void LoadSFX() {
@@ -31,7 +33,7 @@ public class PlayerAudio : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	
+
 	}
 
     public void PlayJumpClip() {
@@ -63,6 +65,7 @@ public class PlayerAudio : MonoBehaviour {
     public void PlayAttackClip() {
         _audioSource.clip = _attackClip;
         _audioSource.Play();
+		
     }
 
     public void PlayHitClip() {

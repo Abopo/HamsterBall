@@ -5,7 +5,7 @@
             <value>SingleFootstepEvent</value>
         </property>
         <property name="outputFormat">
-            <value>1</value>
+            <value>2</value>
         </property>
         <relationship name="folder">
             <destination>{f9bdb44e-ec29-4a95-bbaa-2026b7d6f563}</destination>
@@ -210,6 +210,7 @@
     <object class="MixerBusEffectChain" id="{d0d2e7b4-cb44-4a5d-ad52-bd9aa9453f3b}">
         <relationship name="effects">
             <destination>{60e019f4-f74c-4195-99d3-a7a9deebee55}</destination>
+            <destination>{bbd500c1-6266-4bd8-91e3-04e806d13fd5}</destination>
             <destination>{fff7da72-a3f1-4e19-9f7c-bd168b753d91}</destination>
             <destination>{30d5c289-cf45-41ee-a624-b2f4a4c94dd9}</destination>
             <destination>{45276ed7-02da-41a6-ac5d-1c1aad2826d8}</destination>
@@ -338,6 +339,23 @@
     </object>
     <object class="MixerBusPanner" id="{29ce6427-98ac-4226-9a17-a3696c298aab}"/>
     <object class="MixerBusFader" id="{60e019f4-f74c-4195-99d3-a7a9deebee55}"/>
+    <object class="SpatialiserEffect" id="{bbd500c1-6266-4bd8-91e3-04e806d13fd5}">
+        <property name="bypass">
+            <value>true</value>
+        </property>
+        <property name="minimumDistance">
+            <value>3.60000014</value>
+        </property>
+        <property name="maximumDistance">
+            <value>9.99999905</value>
+        </property>
+        <property name="extentMode">
+            <value>1</value>
+        </property>
+        <property name="soundSize">
+            <value>10</value>
+        </property>
+    </object>
     <object class="PitchShifterEffect" id="{fff7da72-a3f1-4e19-9f7c-bd168b753d91}">
         <property name="pitch">
             <value>1.11000013</value>

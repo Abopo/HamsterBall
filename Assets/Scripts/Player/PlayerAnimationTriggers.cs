@@ -9,12 +9,16 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     BubbleState _bubbleState;
     AttackState _attackState;
 
+	public FMOD.Studio.EventInstance PlayerFootstepEvent;
 	// Use this for initialization
 	void Start () {
         _playerController = GetComponentInParent<PlayerController>();
         _throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
         _bubbleState = (BubbleState)_playerController.GetPlayerState(PLAYER_STATE.BUBBLE);
         _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
+
+		PlayerFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.FootstepOneshot);
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerFootstepEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
     // Update is called once per frame
@@ -47,6 +51,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void AttackOn() {
         _attackState.StartAttack();
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.PlayerAttack);
     }
 
     public void AttackOff() {
@@ -62,6 +67,6 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _playerController.ChangeState(PLAYER_STATE.IDLE);
     }
     public void Footstep() {
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.FootstepOneshot);
+		PlayerFootstepEvent.start();
     }
 }
