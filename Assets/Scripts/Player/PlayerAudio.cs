@@ -37,8 +37,8 @@ public class PlayerAudio : MonoBehaviour {
 	}
 
     public void PlayJumpClip() {
-        _audioSource.clip = _jumpClip;
-        _audioSource.Play();
+        //_audioSource.clip = _jumpClip;
+        //_audioSource.Play();
 		FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerJump");
     }
 

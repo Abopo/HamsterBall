@@ -191,7 +191,7 @@ public class ThrowState : PlayerState {
             playerController.HomeBubbleManager.IncreaseScore(20);
         }
 
-        playerController.PlayerAudio.PlayThrowClip();
+        //playerController.PlayerAudio.PlayThrowClip();
 
         if (_aimingLine != null) {
             _aimingLine.Stop();
