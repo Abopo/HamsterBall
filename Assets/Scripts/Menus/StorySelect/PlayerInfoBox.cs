@@ -36,7 +36,7 @@ public class PlayerInfoBox : MonoBehaviour {
 
         _sprite = GetComponentInChildren<SpriteRenderer>(true);
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
-        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
+        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
         characterSprites[0] = boySprites[0];
         characterSprites[1] = boySprites[1];
         characterSprites[2] = boySprites[2];

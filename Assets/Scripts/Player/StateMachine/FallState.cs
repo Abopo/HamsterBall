@@ -28,7 +28,7 @@ public class FallState : PlayerState {
 		if(inputState.swing.isJustPressed && !playerController.IsInvuln) {
 			if(playerController.heldBall == null) {
                 if (playerController.CanBubble) {
-                    playerController.ChangeState(PLAYER_STATE.BUBBLE);
+                    playerController.ChangeState(PLAYER_STATE.CATCH);
                 }
             } else if(playerController.CanAim) {
 				playerController.ChangeState(PLAYER_STATE.THROW);

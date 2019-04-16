@@ -379,6 +379,9 @@ public class Bubble : MonoBehaviour {
         Debug.Log("connect with board");
 		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnect);
 
+        // Make super sure the bubble is visible
+        DisplaySprites();
+
         // Remove the held bubble of the player controller
         _playerController.heldBall = null;
 

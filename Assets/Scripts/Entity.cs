@@ -41,6 +41,10 @@ public class Entity : MonoBehaviour {
 
     private WaterController _waterController;
 
+    protected virtual void Awake() {
+
+    }
+
     // Use this for initialization
     protected virtual void Start () {
         if (_animator == null) {

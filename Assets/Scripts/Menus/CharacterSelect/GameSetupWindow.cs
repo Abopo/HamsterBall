@@ -21,7 +21,7 @@ public class GameSetupWindow : MonoBehaviour {
     bool _aimAssist;
 
     GameManager _gameManager;
-    TeamSelect _teamSelect;
+    CharacterSelect _characterSelect;
 
     //string[] hsrTexts = new string[3];
     GameSetupOption[] _options = new GameSetupOption[8];
@@ -33,7 +33,7 @@ public class GameSetupWindow : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _gameManager = FindObjectOfType<GameManager>();
-        _teamSelect = FindObjectOfType<TeamSelect>();
+        _characterSelect = FindObjectOfType<CharacterSelect>();
 
         GetOptions();
     }
@@ -96,14 +96,14 @@ public class GameSetupWindow : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (_gameManager.playerInput.GetButtonDown("Cancel") && !IsAnyOptionSelected()) {
-            // Back out to character select
+            // If there's AI's
             if (_gameManager.numAI > 0) {
                 // Go back to AI setup
                 aiSetupWindow.gameObject.SetActive(true);
                 gameObject.SetActive(false);
             } else {
-                // Go straight to char select
-                _teamSelect.TurnOnCharacters();
+                // Go back to char select
+                _characterSelect.Reactivate();
                 gameObject.SetActive(false);
             }
 

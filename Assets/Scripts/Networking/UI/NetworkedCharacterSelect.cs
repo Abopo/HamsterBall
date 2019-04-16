@@ -8,11 +8,11 @@ public class NetworkedCharacterSelect :Photon.MonoBehaviour {
     public Animator[] charaAnimators;
     public GameObject[] readySprites;
 
-    NewCharacterSelect _characterSelect;
+    CharacterSelect _characterSelect;
 
 	// Use this for initialization
 	void Start () {
-        _characterSelect = GetComponent<NewCharacterSelect>();
+        _characterSelect = GetComponent<CharacterSelect>();
 
         CreateNetworkedCharacterSelector();
 

@@ -4,10 +4,14 @@ using UnityEngine;
 using Rewired;
 
 public class CharacterSelector : MonoBehaviour {
+    public CSPlayerController playerController;
     public Animator characterAnimator;
+    public SpriteRenderer characterPortrait;
     public CharacterIcon curCharacterIcon;
+    public PullDownWindow pullDownWindow;
     public GameObject colorArrows;
     public GameObject readySprite;
+    public GameObject comText;
 
     public int playerNum = -1;
     public bool lockedIn = false;
@@ -16,6 +20,7 @@ public class CharacterSelector : MonoBehaviour {
     public bool isAI = false;
     public int charaColor = 1;
 
+    // Input
     Player _player;
 
     public bool Active {
@@ -30,6 +35,15 @@ public class CharacterSelector : MonoBehaviour {
     CharacterSelector parentSelector;
     static int aiIndex = 0;
     bool frameskip = false;
+    public CharacterSelector NextAI {
+        get {
+            if (aiList.Count > 0 && aiIndex < aiList.Count) {
+                return aiList[aiIndex];
+            } else {
+                return null;
+            }
+        }
+    }
 
     PlayerManager _playerManager;
     AudioSource _audioSource;
@@ -69,12 +83,15 @@ public class CharacterSelector : MonoBehaviour {
             _player = ReInput.players.GetPlayer(playerNum);
         } else {
             _player = ReInput.players.GetPlayer(0);
+            playerController.SetInputPlayer(0);
         }
+
+        playerController.characterSelector = this;
     }
 
     public void Initialize() {
         // Get player number
-        NewCharacterSelect characterSelect = FindObjectOfType<NewCharacterSelect>();
+        CharacterSelect characterSelect = FindObjectOfType<CharacterSelect>();
         playerNum = characterSelect.NumPlayers;
         _player = ReInput.players.GetPlayer(playerNum);
 
@@ -102,6 +119,7 @@ public class CharacterSelector : MonoBehaviour {
         }
         gameObject.SetActive(true);
         characterAnimator.gameObject.SetActive(true);
+        characterPortrait.enabled = true;
     }
 
     public void Activate(bool ai, bool local) {
@@ -111,6 +129,7 @@ public class CharacterSelector : MonoBehaviour {
         }
         gameObject.SetActive(true);
         characterAnimator.gameObject.SetActive(true);
+        characterPortrait.enabled = true;
         isLocal = local;
     }
 
@@ -118,6 +137,7 @@ public class CharacterSelector : MonoBehaviour {
         gameObject.SetActive(false);
         characterAnimator.gameObject.SetActive(false);
         readySprite.SetActive(false);
+        characterPortrait.enabled = false;
     }
 
     // Update is called once per frame
@@ -136,6 +156,11 @@ public class CharacterSelector : MonoBehaviour {
     }
 
     public void CheckInput() {
+        // Don't take any input if the player is being controlled
+        if(playerController.underControl) {
+            return;
+        }
+
         if (!lockedIn && CanMove()) {
             // Right
             if (_player.GetButtonDown("Right")) {
@@ -184,7 +209,7 @@ public class CharacterSelector : MonoBehaviour {
             _moveTimer = _moveTime + 1f;
         }
 
-        if (_player.GetButtonDown("Submit") && (!lockedIn || !isReady)) {
+        if ((_player.GetButtonDown("Submit") || _player.GetButtonDown("Shift")) && (!lockedIn || !isReady)) {
             if (!lockedIn) {
                 // Lock in
                 LockIn();
@@ -194,39 +219,20 @@ public class CharacterSelector : MonoBehaviour {
                     // Take it
                     _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = true;
 
-                    // This player is ready
+                    // Shift this player into the play area
+                    playerController.ShiftIntoPlayArea();
                     isReady = true;
-                    readySprite.SetActive(true);
-                    colorArrows.SetActive(false);
-
-                    // If first player or an ai
-                    if ((playerNum == 0 || isAI) && aiList.Count > 0 && aiIndex < aiList.Count) {
-                        // Gain control of next AI player
-                        takeInput = false;
-                        aiList[aiIndex].takeInput = true;
-                        aiList[aiIndex].frameskip = true;
-                        aiList[aiIndex].aiList = aiList;
-                        aiList[aiIndex].parentSelector = this;
-                        aiIndex++;
-                    }
                 }
             }
         }
         if (_player.GetButtonDown("Cancel")) {
-            if(isReady) {
-                // Unready
-                isReady = false;
-                readySprite.SetActive(false);
-                colorArrows.SetActive(true);
-
-                _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = false;
-            } else if (lockedIn) {
+            if (lockedIn) {
                 Unlock();
             } else if (isAI) {
+                // Revert input to parent
                 takeInput = false;
                 parentSelector.takeInput = true;
-                parentSelector.frameskip = true;
-                parentSelector.Unlock();
+                parentSelector.playerController.RegainControl();
                 aiIndex--;
             } else {
                 // Back out to local play menu
@@ -240,6 +246,8 @@ public class CharacterSelector : MonoBehaviour {
         //curCharacterIcon.Lock();
         colorArrows.SetActive(true);
 
+        pullDownWindow.Show();
+
         // Play a sound
         _audioSource.Play();
     }
@@ -249,8 +257,18 @@ public class CharacterSelector : MonoBehaviour {
         // curCharacterIcon.Unlock();
         //_playerManager.RemovePlayerByNum(playerNum);
 
+        pullDownWindow.Hide();
+
         // Reset color to default
-        //charaColor = 1;
+        charaColor = 1;
+    }
+    public void Unready() {
+        isReady = false;
+        readySprite.SetActive(false);
+        colorArrows.SetActive(true);
+        
+        // Free up that color
+        _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = false;
     }
 
     void HighlightIcon(CharacterIcon charaIcon) {
@@ -260,8 +278,10 @@ public class CharacterSelector : MonoBehaviour {
         // Move to that icon
         transform.position = new Vector3(charaIcon.transform.position.x, charaIcon.transform.position.y, charaIcon.transform.position.z - (2f + 0.1f * playerNum));
 
+        // Change portrait to correct character
+        characterPortrait.sprite = _resources.CharaPortraits[(int)charaIcon.charaName][0];
         // Change animator to correct character
-        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][charaColor-1].animator;
+        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][0].animator;
 
         // Play idle animation
         characterAnimator.SetInteger("PlayerState", 0);
@@ -291,6 +311,8 @@ public class CharacterSelector : MonoBehaviour {
             }
         } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
 
+        // Change portrait to correct character
+        characterPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         // Change animator to correct character
         characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
@@ -313,6 +335,8 @@ public class CharacterSelector : MonoBehaviour {
             }
         } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
 
+        // Change portrait to correct character
+        characterPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         // Change animator to correct character
         characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
@@ -327,10 +351,32 @@ public class CharacterSelector : MonoBehaviour {
         return false;
     }
 
+    public void ControlNextAI() {
+        // If first player or an ai
+        if ((playerNum == 0 || isAI) && aiList.Count > 0 && aiIndex < aiList.Count) {
+            // Gain control of next AI player
+            takeInput = false;
+            aiList[aiIndex].takeInput = true;
+            aiList[aiIndex].frameskip = true;
+            aiList[aiIndex].aiList = aiList;
+            aiList[aiIndex].parentSelector = this;
+            aiList[aiIndex].HideCOMText();
+            aiIndex++;
+        }
+    }
+
+    public void ReadyPlayer() {
+        // This player is ready
+        isReady = true;
+        readySprite.SetActive(true);
+        colorArrows.SetActive(false);
+    }
+
     public void LoadCharacter() {
         CharaInfo tempInfo = new CharaInfo();
         tempInfo.name = curCharacterIcon.charaName;
         tempInfo.color = charaColor;
+        tempInfo.team = playerController.team;
         _playerManager.AddPlayer(playerNum, isAI, tempInfo);
     }
 
@@ -350,4 +396,10 @@ public class CharacterSelector : MonoBehaviour {
 
     }
 
+    public void ShowCOMText() {
+        comText.SetActive(true);
+    }
+    public void HideCOMText() {
+        comText.SetActive(false);
+    }
 }

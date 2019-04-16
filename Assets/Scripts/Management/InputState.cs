@@ -23,6 +23,7 @@ public class InputState {
     public button   cancel;
     public button   start;
     public button   pause;
+    public button   select;
 
     // Used within the class to keep track of joystick inputs
     bool upJustPressed;
@@ -44,6 +45,7 @@ public class InputState {
 		swing = new button ();
 		attack = new button ();
         shift = new button ();
+        select = new button();
 	}
 
     public void SetPlayerID(int iD) {
@@ -83,6 +85,10 @@ public class InputState {
             shift.isJustPressed = _player.GetButtonDown("Shift");
             shift.isJustReleased = _player.GetButtonUp("Shift");
 
+            if(shift.isDown) {
+                upJustPressed = true;
+            }
+
             // Menu inputs
             submit.isDown = _player.GetButton("Submit");
             submit.isJustPressed = _player.GetButtonDown("Submit");
@@ -96,7 +102,9 @@ public class InputState {
             pause.isDown = _player.GetButton("Pause");
             pause.isJustPressed = _player.GetButtonDown("Pause");
             pause.isJustReleased = _player.GetButtonUp("Pause");
-
+            select.isDown = _player.GetButton("Select");
+            select.isJustPressed = _player.GetButtonDown("Select");
+            select.isJustReleased = _player.GetButtonUp("Select");
         }
     }
 }

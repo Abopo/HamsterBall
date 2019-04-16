@@ -121,6 +121,7 @@ public class Node : MonoBehaviour {
                         Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
                     }
                 }
+                Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
             }
 
             if (hitCount > 2) {

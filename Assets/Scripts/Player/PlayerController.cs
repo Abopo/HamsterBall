@@ -16,7 +16,6 @@ public class PlayerController : Entity {
 	public GameObject swingObj;
     public Transform bubblePosition;
     public GameObject attackObj;
-    public ShiftPortal shiftPortal;
 	public Bubble heldBall;
     public int direction;
     public bool aimAssist;
@@ -33,7 +32,7 @@ public class PlayerController : Entity {
         get { return GetComponent<EntityPhysics>().IsTouchingFloor; }
     }
 	public bool shifted;
-    bool _canShift;
+    protected bool _canShift;
     public bool CanShift {
         get { return (_canShift && !_isInvuln && (curState == PLAYER_STATE.IDLE || curState == PLAYER_STATE.WALK || curState == PLAYER_STATE.JUMP || curState == PLAYER_STATE.FALL)); }
     }
@@ -82,10 +81,10 @@ public class PlayerController : Entity {
         get { return _playerAudio; }
     }
 
-    PlayerState[] _states = new PlayerState[10];
+    protected PlayerState[] _states = new PlayerState[10];
 
     // The grace period time after getting hit
-    bool _isInvuln;
+    protected bool _isInvuln;
     float _invulnTimer;
     float _invulnTime = 1.15f;
     bool _blinked;
@@ -100,7 +99,7 @@ public class PlayerController : Entity {
         get { return _traction; }
         set { _traction = value; }
     }
-    bool _onFallThrough;
+    protected bool _onFallThrough;
 
     public bool aiControlled;
     public bool springing;
@@ -110,7 +109,7 @@ public class PlayerController : Entity {
     //    get { return _characterName; }
     //}
 
-    CharaInfo _charaInfo = new CharaInfo();
+    protected CharaInfo _charaInfo = new CharaInfo();
     public CharaInfo CharaInfo {
         get { return _charaInfo; }
     }
@@ -118,7 +117,7 @@ public class PlayerController : Entity {
     SpriteRenderer _targetArrow; // an arrow that appears when shifted
 
     SpriteRenderer _spriteRenderer;
-    GameManager _gameManager;
+    protected GameManager _gameManager;
     LevelManager _levelManager;
     PlayerAudio _playerAudio;
     BubbleManager _homeBubbleManager;
@@ -135,14 +134,14 @@ public class PlayerController : Entity {
         get { return _spriteRenderer; }
     }
 
-    bool _justChangedState; // Can only change state once per frame
+    protected bool _justChangedState; // Can only change state once per frame
 
     // Events
     public UnityEvent significantEvent;
 
     public static int totalThrowCount;
 
-    private void Awake() {
+    protected override void Awake() {
         canBeHit = true;
 
         _gameManager = FindObjectOfType<GameManager>();
@@ -179,6 +178,9 @@ public class PlayerController : Entity {
 		_shiftCooldownTimer = 0f;
         direction = _animator.GetBool("FacingRight") ? 1 : -1;
 
+        // Ignore collision with our own attack object
+        Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), attackObj.GetComponent<CircleCollider2D>());
+
         // Find a proper bubble manager
         GameObject bubbleManager = null;
         if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
@@ -201,12 +203,12 @@ public class PlayerController : Entity {
         ChangeState (PLAYER_STATE.IDLE);
 	}
 
-    void InitStates() {
+    protected virtual void InitStates() {
         _states[0] = new IdleState();
         _states[1] = new WalkState();
         _states[2] = new JumpState();
         _states[3] = new FallState();
-        _states[4] = new BubbleState();
+        _states[4] = new CatchState();
         _states[5] = new ThrowState();
         _states[6] = new HitState();
         _states[7] = new ShiftState();
@@ -237,35 +239,6 @@ public class PlayerController : Entity {
         }
 
         _animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
-
-        /*
-        switch (charaName) {
-            case CHARACTERNAMES.BOY1:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY2:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY3:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY4:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL1:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL2:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.ROOSTER1:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.ROOSTER2:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
-                break;
-        }
-        */
     }
 
     // Update is called once per frame
@@ -331,7 +304,7 @@ public class PlayerController : Entity {
         }
 	}
 
-    void CheckInput() {
+    protected virtual void CheckInput() {
         if (!aiControlled) {
             //inputState = InputState.GetInput(inputState);
             inputState.GetInput();
@@ -452,7 +425,7 @@ public class PlayerController : Entity {
         }
     }
 
-    void InvulnerabilityState() {
+    protected void InvulnerabilityState() {
         _blinkTimer += Time.deltaTime;
         if (_blinkTimer > _blinkTime) {
             // Blink sprite
@@ -503,7 +476,10 @@ public class PlayerController : Entity {
     }
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		if (collider.gameObject.layer == 12 && team != collider.GetComponentInParent<PlayerController>().team/* && shifted */&& !_isInvuln && curState != PLAYER_STATE.SHIFT && canBeHit) {
+        // Attack Object
+		if (collider.gameObject.layer == 12 && collider.gameObject != attackObj && 
+            (team != collider.GetComponentInParent<PlayerController>().team || team == -1) && 
+            !_isInvuln && curState != PLAYER_STATE.SHIFT && canBeHit) {
 			ChangeState(PLAYER_STATE.HIT);
             ((HitState)GetPlayerState(PLAYER_STATE.HIT)).Knockback((int)Mathf.Sign(transform.position.x - collider.transform.position.x));
             

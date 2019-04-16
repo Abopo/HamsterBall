@@ -215,6 +215,9 @@ public class HamsterWheel : MonoBehaviour {
             // Fully stop
             //hamster.SetInteger("State", 0);
         }
+
+        // Reset long idle timer
+        _longIdleTimer = -3f - Random.Range(2f, 7f);
     }
 
     public void LoadSelectedMap() {

@@ -42,7 +42,7 @@ public class CharacterSelectWindow : MonoBehaviour {
     // Use this for initialization
     protected virtual void Start () {
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
-        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
+        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
         _characterSprites[0] = boySprites[0];
         _characterSprites[1] = boySprites[1];
         _characterSprites[2] = boySprites[2];

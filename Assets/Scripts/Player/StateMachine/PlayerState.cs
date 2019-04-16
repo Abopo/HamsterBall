@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public enum PLAYER_STATE { IDLE=0, WALK, JUMP, FALL, BUBBLE, THROW, HIT, SHIFT, ATTACK, GAMEOVER, NUM_STATES };
+public enum PLAYER_STATE { IDLE=0, WALK, JUMP, FALL, CATCH, THROW, HIT, SHIFT, ATTACK, GAMEOVER, NUM_STATES };
 
 public class PlayerState {
 	protected int _direction;	// -1 for left, 1 for right

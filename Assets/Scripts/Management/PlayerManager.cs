@@ -84,7 +84,7 @@ public class PlayerManager : MonoBehaviour {
                 // TODO: Might need to clean up memory here.
                 int i = _players.IndexOf(p);
                 _players[i].team = team;
-                //Debug.Log("Player " + playerNum + " added to Team " + team);
+                Debug.Log("Player " + playerNum + " added to Team " + team);
             }
         }
     }
@@ -122,7 +122,7 @@ public class PlayerManager : MonoBehaviour {
             newPlayer.isAI = isAI;
             //newPlayer.characterName = charaName;
             newPlayer.charaInfo = charaInfo;
-            newPlayer.team = -1;
+            newPlayer.team = charaInfo.team;
             newPlayer.difficulty = 0;
             _players.Add(newPlayer);
             _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));

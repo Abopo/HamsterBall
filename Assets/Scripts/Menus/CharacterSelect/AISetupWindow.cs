@@ -17,28 +17,20 @@ public class AISetupWindow : MonoBehaviour {
 
     int _numAIs;
 
-    Sprite[,] characterSprites = new Sprite[2,4];
-
+    CharacterSelect _characterSelect;
+    CharacterSelectResources _csResources;
     PlayerManager _playerManager;
-    TeamSelect _teamSelect;
+
 
     // Use this for initialization
     void Start () {
-        _teamSelect = FindObjectOfType<TeamSelect>();
+        _characterSelect = FindObjectOfType<CharacterSelect>();
     }
 
     public void Initialize() {
         gameObject.SetActive(true);
-        _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
-        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
-
-        characterSprites[0, 0] = boySprites[0];
-        characterSprites[0, 1] = boySprites[1];
-        characterSprites[0, 2] = boySprites[2];
-        characterSprites[0, 3] = boySprites[3];
-        characterSprites[1, 0] = girlSprites[0];
-        characterSprites[1, 2] = girlSprites[1];
+        _playerManager = FindObjectOfType<PlayerManager>();
+        _csResources = FindObjectOfType<CharacterSelectResources>();
 
         GetAIPlayerInfo();
         MenuMovementSetup();
@@ -104,7 +96,7 @@ public class AISetupWindow : MonoBehaviour {
     }
 
     void SetPlayerSprites(PlayerInfo pi, SpriteRenderer sr) {
-        sr.sprite = characterSprites[(int)pi.charaInfo.name, pi.charaInfo.color-1];
+        sr.sprite = _csResources.CharaPortraits[(int)pi.charaInfo.name][pi.charaInfo.color-1];
     }
 	
 	// Update is called once per frame
@@ -121,7 +113,7 @@ public class AISetupWindow : MonoBehaviour {
         ai3Setup.gameObject.SetActive(false);
         gameObject.SetActive(false);
 
-        _teamSelect.TurnOnCharacters();
+        _characterSelect.Reactivate();
     }
 
     public void OpenGameSetup() {

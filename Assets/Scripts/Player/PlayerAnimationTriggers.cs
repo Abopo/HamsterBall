@@ -6,7 +6,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     PlayerController _playerController;
     ThrowState _throwState;
-    BubbleState _bubbleState;
+    CatchState _bubbleState;
     AttackState _attackState;
 
 	public FMOD.Studio.EventInstance PlayerFootstepEvent;
@@ -14,7 +14,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 	void Start () {
         _playerController = GetComponentInParent<PlayerController>();
         _throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
-        _bubbleState = (BubbleState)_playerController.GetPlayerState(PLAYER_STATE.BUBBLE);
+        _bubbleState = (CatchState)_playerController.GetPlayerState(PLAYER_STATE.CATCH);
         _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
 
 		PlayerFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.FootstepOneshot);

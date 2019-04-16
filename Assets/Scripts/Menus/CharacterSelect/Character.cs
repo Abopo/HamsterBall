@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class CharaInfo {
     public CHARACTERS name;
     public int color = 1;
+    public int team;
 }
 
 public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, NUM_CHARACTER };
@@ -305,34 +306,6 @@ public class Character : MonoBehaviour {
         }
 
         _animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
-        /*
-        switch (_characterName) {
-            case CHARACTERNAMES.BOY1:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY2:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY3:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY4:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL1:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL2:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.ROOSTER1:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.ROOSTER2:
-                _animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
-                break;
-        }
-        */
 
         // Play idle animation
         _animator.SetInteger("PlayerState", 0);

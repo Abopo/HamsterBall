@@ -683,6 +683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4260021541933218}
   - component: {fileID: 61755342988815992}
+  - component: {fileID: 114626994999374886}
   m_Layer: 20
   m_Name: Platform End Cap
   m_TagString: Platform End Cap
@@ -747,6 +748,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4504046380026046}
   - component: {fileID: 61855978577792196}
+  - component: {fileID: 114907317216170942}
   m_Layer: 20
   m_Name: Platform End Cap
   m_TagString: Platform End Cap
@@ -779,6 +781,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4079840741128252}
   - component: {fileID: 61549963422090284}
+  - component: {fileID: 114088682122209850}
   m_Layer: 20
   m_Name: Platform End Cap
   m_TagString: Platform End Cap
@@ -795,6 +798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4591791070065682}
   - component: {fileID: 61506886872408572}
+  - component: {fileID: 114961154056049060}
   m_Layer: 20
   m_Name: Platform End Cap
   m_TagString: Platform End Cap
@@ -981,6 +985,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4478113096436552}
   - component: {fileID: 61263352022578226}
+  - component: {fileID: 114164212109240280}
   m_Layer: 20
   m_Name: Platform End Cap
   m_TagString: Platform End Cap
@@ -1013,6 +1018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4176554192776176}
   - component: {fileID: 61500584418623486}
+  - component: {fileID: 114992188034086772}
   m_Layer: 20
   m_Name: Platform End Cap
   m_TagString: Platform End Cap
@@ -1266,9 +1272,9 @@ Transform:
   - {fileID: 4000013991931180}
   - {fileID: 4000012025058474}
   - {fileID: 4919374374013608}
-  - {fileID: 4469519407608014}
-  - {fileID: 4167348647615232}
   - {fileID: 4176722143000758}
+  - {fileID: 4167348647615232}
+  - {fileID: 4469519407608014}
   m_Father: {fileID: 4000013703901168}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1561,7 +1567,7 @@ Transform:
   - {fileID: 4504046380026046}
   - {fileID: 4162125808477440}
   m_Father: {fileID: 4000011847188576}
-  m_RootOrder: 20
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4222333464520954
 Transform:
@@ -1759,7 +1765,7 @@ Transform:
   - {fileID: 4478113096436552}
   - {fileID: 4524917713277170}
   m_Father: {fileID: 4000011847188576}
-  m_RootOrder: 18
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4473189101025570
 Transform:
@@ -4098,6 +4104,18 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114088682122209850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1606649045895380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746c1206f0335324397d107232ac21f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformSide: 0
 --- !u!114 &114154725023716522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4110,6 +4128,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 1
+--- !u!114 &114164212109240280
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1828600294790220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746c1206f0335324397d107232ac21f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformSide: 1
 --- !u!114 &114507139538384946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4123,6 +4153,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 0
   bubbleManager: {fileID: 0}
+--- !u!114 &114626994999374886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1458984111094534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746c1206f0335324397d107232ac21f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformSide: 0
 --- !u!114 &114680240641038208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4148,6 +4190,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+--- !u!114 &114907317216170942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1549006929815336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746c1206f0335324397d107232ac21f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformSide: 1
+--- !u!114 &114961154056049060
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618247476068140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746c1206f0335324397d107232ac21f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformSide: 0
+--- !u!114 &114992188034086772
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1885291863733754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746c1206f0335324397d107232ac21f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformSide: 1
 --- !u!212 &212004635183183250
 SpriteRenderer:
   m_ObjectHideFlags: 1

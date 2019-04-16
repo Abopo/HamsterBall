@@ -11,12 +11,19 @@ public class CharacterSelectResources : SceneResources {
 
     List<CharaSelectInfo>[] _charaAnimators = new List<CharaSelectInfo>[3];
 
+    List<Sprite>[] _charaPortraits = new List<Sprite>[3];
+
     public List<CharaSelectInfo>[] CharaAnimators {
         get { return _charaAnimators; }
     }
 
+    public List<Sprite>[] CharaPortraits {
+        get { return _charaPortraits; }
+    }
+
     private void Awake() {
         LoadCharacterAnimators();
+        LoadCharacterPortraits();
     }
 
     void LoadCharacterAnimators() {
@@ -41,11 +48,6 @@ public class CharacterSelectResources : SceneResources {
         boy4.isTaken = false;
         _charaAnimators[0].Add(boy4);
 
-
-        //_charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController);
-        //_charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController);
-        //_charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController);
-        //_charaAnimators[0].Add(Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController);
         // Girl
         _charaAnimators[1] = new List<CharaSelectInfo>();
 
@@ -58,10 +60,9 @@ public class CharacterSelectResources : SceneResources {
         girl2.isTaken = false;
         _charaAnimators[1].Add(girl2);
 
-        //_charaAnimators[1].Add(Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController);
-        //_charaAnimators[1].Add(Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController);
         // Rooster
         _charaAnimators[2] = new List<CharaSelectInfo>();
+
         CharaSelectInfo rooster1 = new CharaSelectInfo();
         rooster1.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
         rooster1.isTaken = false;
@@ -70,10 +71,31 @@ public class CharacterSelectResources : SceneResources {
         rooster2.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
         rooster2.isTaken = false;
         _charaAnimators[2].Add(rooster2);
+    }
 
+    void LoadCharacterPortraits() {
+        // Boy
+        _charaPortraits[0] = new List<Sprite>();
 
-        //_charaAnimators[2].Add(Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController);
-        //_charaAnimators[2].Add(Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController);
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        _charaPortraits[0].Add(sprites[0]);
+        _charaPortraits[0].Add(sprites[1]);
+        _charaPortraits[0].Add(sprites[2]);
+        _charaPortraits[0].Add(sprites[3]);
+
+        // Girl
+        _charaPortraits[1] = new List<Sprite>();
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
+        _charaPortraits[1].Add(sprites[0]);
+        _charaPortraits[1].Add(sprites[1]);
+        _charaPortraits[1].Add(sprites[2]);
+        _charaPortraits[1].Add(sprites[3]);
+
+        // Rooster
+        _charaPortraits[2] = new List<Sprite>();
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
+        _charaPortraits[2].Add(sprites[0]);
+        _charaPortraits[2].Add(sprites[1]);
     }
 
     // Use this for initialization

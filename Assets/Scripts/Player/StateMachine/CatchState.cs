@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BubbleState : PlayerState {
+public class CatchState : PlayerState {
     bool _swingDone;
     float sign;
 
@@ -35,11 +35,13 @@ public class BubbleState : PlayerState {
         if (inputState.right.isDown) {
             if (_direction < 0) {
                 _direction = 1;
+                playerController.Flip();
             }
             playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.Traction * playerController.speedModifier * Time.deltaTime * _direction;
         } else if (inputState.left.isDown) {
             if (_direction > 0) {
                 _direction = -1;
+				playerController.Flip();
             }
             playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.Traction * playerController.speedModifier * Time.deltaTime * _direction;
         } else {
@@ -85,7 +87,7 @@ public class BubbleState : PlayerState {
 
     // returns the PLAYER_STATE that represents this state
     public override PLAYER_STATE getStateType(){
-		return PLAYER_STATE.BUBBLE;
+		return PLAYER_STATE.CATCH;
 	}
 
 	//	use this for destruction

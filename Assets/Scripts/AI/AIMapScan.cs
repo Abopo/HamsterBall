@@ -33,6 +33,9 @@ public class AIMapScan : MonoBehaviour {
     RaycastHit2D _jumpCheckHit; // Result of ray checks
     RaycastHit2D _jumpCheckHit2; // Result of ray checks
 
+    Transform _closestJump;
+    Transform _closestDrop;
+
     Vector2 _pos; // Transform position
     //float _scaledRadius;
     float _scaledRadiusX;
@@ -67,6 +70,13 @@ public class AIMapScan : MonoBehaviour {
     }
     public float RightStepDistance {
         get { return _rightStepDistance; }        
+    }
+
+    public Transform ClosestJump {
+        get { return _closestJump; }
+    }
+    public Transform ClosestDrop {
+        get { return _closestDrop; }
     }
 
     // Use this for initialization
@@ -159,10 +169,12 @@ public class AIMapScan : MonoBehaviour {
             // If the platform above us is a passthrough platform
             if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
                 _rightJumpDistance = Mathf.Max(rayOffsetX, 0.5f);
+                _closestJump = _jumpCheckHit.transform;
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             } else if (_jumpCheckHit && _jumpCheckHit.collider.tag == "Platform End Cap") {
                 _rightJumpDistance = rayOffsetX;
+                _closestJump = _jumpCheckHit.transform;
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             }
@@ -174,7 +186,7 @@ public class AIMapScan : MonoBehaviour {
         rayOffsetX = 0.1f;
         while (rayOffsetX < _leftWallCheckHit.distance) {
             _jumpCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.up);
-            _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 3f, collisionMask);
+            _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
 
             if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
                 _leftJumpDistance = Mathf.Max(rayOffsetX, 0.5f);
@@ -182,6 +194,9 @@ public class AIMapScan : MonoBehaviour {
                 break;
             } else if (_jumpCheckHit && _jumpCheckHit.collider.tag == "Platform End Cap") {
                 _leftJumpDistance = rayOffsetX;
+                if(_leftJumpDistance < _rightJumpDistance) {
+                    _closestJump = _jumpCheckHit.transform;
+                }
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             }

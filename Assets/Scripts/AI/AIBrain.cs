@@ -198,18 +198,13 @@ public class AIBrain : MonoBehaviour {
             if (action.hamsterWant == null && action.opponent == null && _playerController.heldBall == null && action.waterBubble == null) {
                 return false;
             }
-            if (action.bubbleWant != null) {
-                // If bubbleWant can't be hit
-                //if (!action.bubbleWant.canBeHit) {
-                //    return false;
-                //}
-            } else {
-                // if we don't have a bubbleWant
-                // but we are holding a bubble
-                if(_playerController.heldBall != null) {
-                    return false;
-                }
+
+            // if we don't have a bubbleWant
+            // but we are holding a bubble
+            if(action.bubbleWant == null && _playerController.heldBall != null) {
+                return false;
             }
+
             // If we are trying to chase an opponent but they are not on the same side
             if (action.opponent != null && action.opponent.GetComponent<PlayerController>().shifted == _playerController.shifted) {
                 return false;
@@ -219,11 +214,14 @@ public class AIBrain : MonoBehaviour {
                 return false;
             }
 
-            // If nodeWant is in the bottom row of our board it'll kill us!
             if(action.nodeWant != null) {
-                if (action.nodeWant.number > 137 && !action.requiresShift && (action.bubbleWant == null || action.bubbleWant.numMatches < 2)) {
-                    return false;
+                // If nodeWant is in the bottom row of our board it'll kill us!
+                if (!_playerController.shifted) {
+                    if (action.nodeWant.number > 137 && !action.requiresShift && (action.bubbleWant == null || action.bubbleWant.numMatches < 2)) {
+                        return false;
+                    }
                 }
+
                 if(!action.nodeWant.isRelevant) {
                     return false;
                 }

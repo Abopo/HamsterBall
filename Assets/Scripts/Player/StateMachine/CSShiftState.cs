@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class ShiftState : PlayerState {
-
+// This shift is only used in Character Select, used to jump between pull down window and the play space.
+public class CSShiftState : PlayerState {
     float _shiftTimer = 0;
     float _totalShiftTime = 0.65f;
     Vector3 _oldScale = new Vector3();
@@ -14,18 +15,12 @@ public class ShiftState : PlayerState {
     float _startScale;
     float _endScale;
 
-    float _initialZPos;
-
     void Start() {
     }
 
     // Use this for initialization. Ran every time the player enters the state
     public override void Initialize(PlayerController playerIn) {
         base.Initialize(playerIn);
-
-        if(playerIn.shifted) {
-            playerIn.ResetShiftTimer();
-        }
 
         _totalShiftTime = 0.65f;
 
@@ -34,8 +29,8 @@ public class ShiftState : PlayerState {
         // Slow the player to a stop, even if in midair
         StopPlayerMovement();
 
-        // If the player has a ball and it wasn't thrown
-        if(playerController.heldBall != null && !playerController.heldBall.wasThrown) {
+        // If the player has a ball
+        if (playerController.heldBall != null) {
             // Hide it so it doesn't look weird
             playerController.heldBall.HideSprites();
         }
@@ -50,26 +45,10 @@ public class ShiftState : PlayerState {
         //}
 
         // Find landing point
-        if (!playerController.shifted) {
-            if (playerController.team == 0) {
-                // Going right
-                _landingPosition = new Vector2(playerController.transform.position.x + shiftDistance, playerController.transform.position.y);
-                playerController.FaceRight();
-            } else if (playerController.team == 1) {
-                // Going left
-                _landingPosition = new Vector2(playerController.transform.position.x - shiftDistance, playerController.transform.position.y);
-                playerController.FaceLeft();
-            }
+        if(playerController.shifted) {
+            _landingPosition = ((CSPlayerController)playerController).returnPos;
         } else {
-            if (playerController.team == 0) {
-                // Going left
-                _landingPosition = new Vector2(playerController.transform.position.x - shiftDistance, playerController.transform.position.y);
-                playerController.FaceLeft();
-            } else if (playerController.team == 1) {
-                // Going right
-                _landingPosition = new Vector2(playerController.transform.position.x + shiftDistance, playerController.transform.position.y);
-                playerController.FaceRight();
-            }
+            _landingPosition = ((CSPlayerController)playerController).shiftLandingPos.position;
         }
 
         // Push the player's sprite higher on the draw order (so it renders above the stage)
@@ -82,18 +61,13 @@ public class ShiftState : PlayerState {
         _scaleT = 0f;
         _scaleVelocity = _totalShiftTime;
 
-        // Save the player's initial z position
-        _initialZPos = playerController.transform.position.z;
-        // Push the player forward so they render over level stuff
-        playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, -10);
-
         // Turn off main collider so walls and stuff don't get in the way
         playerController.GetComponent<BoxCollider2D>().enabled = false;
 
         // Save the current scale to return to at the end
         _oldScale = playerController.transform.localScale;
     }
-    
+
     // Update is called once per frame
     public override void Update() {
         _shiftTimer += _totalShiftTime * Time.deltaTime;
@@ -102,7 +76,7 @@ public class ShiftState : PlayerState {
         // Apply initial jump force towards landing point
         // Lerp towards landing point
         playerController.transform.position = new Vector3(Mathf.Lerp(_takeOffPosition.x, _landingPosition.x, _shiftTimer / _totalShiftTime),
-                                                            playerController.transform.position.y,
+                                                          Mathf.Lerp(_takeOffPosition.y, _landingPosition.y, _shiftTimer / _totalShiftTime),
                                                             playerController.transform.position.z);
 
         // Lerp up/down scale to appear as if character is jumping towards the screen.
@@ -141,8 +115,11 @@ public class ShiftState : PlayerState {
         //playerController.shiftPortal.Deactivate();
 
         playerController.shifted = !playerController.shifted;
-        // Return player's z pos to normal
-        playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, _initialZPos);
+        if (playerController.shifted) {
+            ((CSPlayerController)playerController).EnterPlayArea();
+        } else {
+            ((CSPlayerController)playerController).EnterPullDownWindow();
+        }
 
         // Return player's sprite's draw order back to normal
         playerController.SpriteRenderer.sortingOrder = 0;

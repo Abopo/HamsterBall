@@ -45,7 +45,7 @@ public class GameMarker : MonoBehaviour {
         //Debug.Log(isFilledIn.ToString());
         _spriteRenderer.sprite = _filledInSprite;
     }
-    void FillOut() {
+    public void FillOut() {
         isFilledIn = false;
         _spriteRenderer.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Tally")[0];
     }

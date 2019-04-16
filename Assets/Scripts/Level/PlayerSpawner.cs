@@ -32,7 +32,7 @@ public class PlayerSpawner : MonoBehaviour {
         playerIcons[0, 2] = sprites[2];
         playerIcons[0, 3] = sprites[3];
         // Girl
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Girl-Icon");
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
         playerIcons[1, 0] = sprites[0];
         playerIcons[1, 1] = sprites[1];
         playerIcons[1, 2] = sprites[2];
