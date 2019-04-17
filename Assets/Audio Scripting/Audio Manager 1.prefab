@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4819165542409534}
   - component: {fileID: 114647123583609950}
   - component: {fileID: 114325352463117294}
+  - component: {fileID: 81063665588010326}
+  - component: {fileID: 114858761058321054}
   m_Layer: 0
   m_Name: Audio Manager 1
   m_TagString: Untagged
@@ -41,6 +43,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &81063665588010326
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1773127477766632}
+  m_Enabled: 0
 --- !u!114 &114325352463117294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,6 +85,7 @@ MonoBehaviour:
   BallBreak: event:/BallBreak
   HamsterTravel: event:/HamsterTravel
   HamsterOrbCreate: event:/HamsterOrbCreation
+  NewLine: event:/NewLine
   FootstepOneshot: event:/SingleFootstepEvent
   SwingNetOneshot: event:/SwingNet
   ThrowStartOneshot: event:/ThrowStart
@@ -83,3 +93,15 @@ MonoBehaviour:
   ThrowEndOneShot: event:/Throw
   PlayerAttack: event:/PlayerAttack
   PlayerJump: event:/PlayerJump
+--- !u!114 &114858761058321054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1773127477766632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListenerNumber: 0
