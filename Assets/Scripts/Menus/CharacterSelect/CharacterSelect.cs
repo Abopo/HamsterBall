@@ -132,7 +132,7 @@ public class CharacterSelect : MonoBehaviour {
         }
     }
 
-    void Reactivate() {
+    public void Reactivate() {
         _isActive = true;
 
         foreach (CharacterSelector charaSelector in _charaSelectors) {

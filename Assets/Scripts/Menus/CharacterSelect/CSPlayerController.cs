@@ -114,4 +114,9 @@ public class CSPlayerController : PlayerController {
     public void SetInputPlayer(int playerNum) {
         inputState.SetPlayerID(playerNum);
     }
+
+    public void RegainControl() {
+        underControl = true;
+        _isInvuln = false;
+    }
 }
