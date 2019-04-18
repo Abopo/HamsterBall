@@ -80,7 +80,7 @@ public class Bubble : MonoBehaviour {
 
     public void Initialize(HAMSTER_TYPES inType) {
 		adjBubbles = new Bubble[6];
-
+		
         _popAnimation = GetComponent<BubblePopAnimation>();
         _popAnimation.LoadPieces(inType);
 
