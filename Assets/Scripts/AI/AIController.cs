@@ -332,6 +332,10 @@ public class AIController : MonoBehaviour {
     }
 
     void BeginMovingUp() {
+        if(_mapScan.ClosestJump == null) {
+            return;
+        }
+
         // Get the closest jump from the map scan
         _targetEndCap = _mapScan.ClosestJump.GetComponent<PlatformEndCap>();
 

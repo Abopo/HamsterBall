@@ -190,6 +190,9 @@ public class AIMapScan : MonoBehaviour {
 
             if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
                 _leftJumpDistance = Mathf.Max(rayOffsetX, 0.5f);
+                if (_leftJumpDistance < _rightJumpDistance) {
+                    _closestJump = _jumpCheckHit.transform;
+                }
                 Debug.DrawRay(_jumpCheckRay.origin, _jumpCheckRay.direction * _jumpCheckHit.distance, Color.green);
                 break;
             } else if (_jumpCheckHit && _jumpCheckHit.collider.tag == "Platform End Cap") {

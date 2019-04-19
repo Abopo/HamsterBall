@@ -10,8 +10,8 @@ public class PullDownWindow : MonoBehaviour {
     bool _isHiding = false;
 
     float _moveSpeed = 10f;
-    float _upYPos = 6.1f;
-    float _downYPos = 2.55f;
+    float _upYPos = 5.8f;
+    float _downYPos = 1.86f;
 
 	// Use this for initialization
 	void Start () {

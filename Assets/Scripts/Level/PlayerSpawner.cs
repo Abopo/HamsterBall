@@ -44,11 +44,11 @@ public class PlayerSpawner : MonoBehaviour {
         playerIcons[2, 2] = sprites[0];
         playerIcons[2, 3] = sprites[1];
         // Lackey
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/LackeyIcon");
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
         playerIcons[3, 0] = sprites[0];
-        playerIcons[3, 1] = sprites[0];
+        playerIcons[3, 1] = sprites[1];
         playerIcons[3, 2] = sprites[0];
-        playerIcons[3, 3] = sprites[0];
+        playerIcons[3, 3] = sprites[1];
 
         GetSpawnLocations();
         SpawnPlayers();

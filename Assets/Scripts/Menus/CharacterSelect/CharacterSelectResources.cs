@@ -13,6 +13,8 @@ public class CharacterSelectResources : MonoBehaviour {
 
     List<Sprite>[] _charaPortraits = new List<Sprite>[4];
 
+    Sprite[] _charaNames;
+
     public List<CharaSelectInfo>[] CharaAnimators {
         get { return _charaAnimators; }
     }
@@ -21,9 +23,14 @@ public class CharacterSelectResources : MonoBehaviour {
         get { return _charaPortraits; }
     }
 
+    public Sprite[] CharaNames {
+        get { return _charaNames; }
+    }
+
     private void Awake() {
         LoadCharacterAnimators();
         LoadCharacterPortraits();
+        LoadCharacterNames();
     }
 
     void LoadCharacterAnimators() {
@@ -112,9 +119,13 @@ public class CharacterSelectResources : MonoBehaviour {
 
         // Lackey
         _charaPortraits[3] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/LackeyIcon");
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
         _charaPortraits[3].Add(sprites[0]);
-        _charaPortraits[3].Add(sprites[0]);
+        _charaPortraits[3].Add(sprites[1]);
+    }
+
+    void LoadCharacterNames() {
+        _charaNames = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterNames");
     }
 
     // Use this for initialization

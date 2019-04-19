@@ -6,7 +6,8 @@ public class GameMarker : MonoBehaviour {
     public int team;
     public bool isFilledIn = false;
 
-    Sprite _filledInSprite;
+    public Sprite _emptySprite;
+    public Sprite _filledInSprite;
 
     SpriteRenderer _spriteRenderer;
 
@@ -16,7 +17,12 @@ public class GameMarker : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _filledInSprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Tally")[3];
+        if(_emptySprite == null) {
+            _emptySprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Tally")[0];
+        }
+        if (_filledInSprite == null) {
+            _filledInSprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Tally")[3];
+        }
 	}
 	
 	// Update is called once per frame
@@ -47,6 +53,6 @@ public class GameMarker : MonoBehaviour {
     }
     public void FillOut() {
         isFilledIn = false;
-        _spriteRenderer.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Tally")[0];
+        _spriteRenderer.sprite = _emptySprite;
     }
 }

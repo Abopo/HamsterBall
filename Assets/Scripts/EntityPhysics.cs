@@ -272,32 +272,32 @@ public class EntityPhysics : MonoBehaviour {
                 // Move out of it
                 switch (dir) {
                     case 0:
-                        float curXPos = transform.position.x + _scaledRadiusX/2;
-                        float wantXPos = collider.transform.position.x - (collider.GetComponent<BoxCollider2D>().size.x * collider.transform.localScale.x) / 2;
+                        float curXPos = transform.position.x + _scaledRadiusX;
+                        float wantXPos = collider.transform.position.x - (collider.GetComponent<BoxCollider2D>().size.x * collider.transform.lossyScale.x) / 2;
                         float xMove = wantXPos - curXPos;
                         if (Mathf.Abs(xMove) > _scaledRadiusX / 4) {
                             MoveX(xMove);
                         }
                         break;
                     case 1:
-                        curXPos = transform.position.x - _scaledRadiusX/2;
-                        wantXPos = collider.transform.position.x + (collider.GetComponent<BoxCollider2D>().size.x * collider.transform.localScale.x) / 2;
+                        curXPos = transform.position.x - _scaledRadiusX;
+                        wantXPos = collider.transform.position.x + (collider.GetComponent<BoxCollider2D>().size.x * collider.transform.lossyScale.x) / 2;
                         xMove = wantXPos - curXPos;
                         if (Mathf.Abs(xMove) > _scaledRadiusX / 4) {
                             MoveX(xMove);
                         }
                         break;
                     case 2:
-                        float curYPos = transform.position.y + _offset.y - _scaledRadiusY/2;
-                        float wantYPos = collider.transform.position.y + (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.localScale.y) / 2f;
+                        float curYPos = transform.position.y + _offset.y - _scaledRadiusY;
+                        float wantYPos = collider.transform.position.y + (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.lossyScale.y) / 2f;
                         float yMove = wantYPos - curYPos;
                         if (Mathf.Abs(yMove) > _scaledRadiusY / 4) {
                             MoveY(yMove);
                         }
                         break;
                     case 3:
-                        curYPos = transform.position.y + _scaledRadiusY/2;
-                        wantYPos = collider.transform.position.y - (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.localScale.y) / 2;
+                        curYPos = transform.position.y + _scaledRadiusY;
+                        wantYPos = collider.transform.position.y - (collider.GetComponent<BoxCollider2D>().size.y * collider.transform.lossyScale.y) / 2;
                         yMove = wantYPos - curYPos;
                         if (Mathf.Abs(yMove) > _scaledRadiusY / 4) {
                             MoveY(yMove);
@@ -306,8 +306,6 @@ public class EntityPhysics : MonoBehaviour {
                 }
             }
 
-            _stuckTimer = 0f;
-        } else {
             _stuckTimer = 0f;
         }
     }

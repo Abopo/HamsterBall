@@ -9,6 +9,7 @@ public class MenuButton : MenuOption {
     Button _button;
 
     Vector3 _baseScale;
+    Vector3 _selectedScale;
 
     public bool IsInteractable {
         get { return _button.interactable; }
@@ -18,6 +19,9 @@ public class MenuButton : MenuOption {
         base.Awake();
 
         _baseScale = transform.localScale;
+        _selectedScale = new Vector3(_baseScale.x * 1.1f,
+                                     _baseScale.y * 1.1f,
+                                     _baseScale.z);
 
         _button = GetComponent<Button>();
         if(isFirstSelection) {
@@ -64,9 +68,7 @@ public class MenuButton : MenuOption {
         }
 
         _button.Select();
-        transform.localScale = new Vector3(transform.localScale.x * 1.1f,
-                                            transform.localScale.y * 1.1f,
-                                            transform.localScale.z);
+        transform.localScale = _selectedScale;
     }
 
     public override void Unhighlight() {
@@ -83,6 +85,10 @@ public class MenuButton : MenuOption {
 
         _button.interactable = true;
         isReady = true;
+
+        if(isHighlighted) {
+            _button.Select();
+        }
     }
     public void Disable() {
         if(_button == null) {

@@ -68,6 +68,8 @@ public class PlayerCountSelectMenu : MonoBehaviour {
     }
 
     public void OnePlayer() {
+        Debug.Log("One Player");
+
         // Set player count
         _gameManager.numPlayers = 1;
 
@@ -80,6 +82,8 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         }
     }
     public void TwoPlayers() {
+        Debug.Log("Two Players");
+        
         // Set player count
         _gameManager.numPlayers = 2;
 
@@ -92,6 +96,8 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         }
     }
     public void ThreePlayers() {
+        Debug.Log("Three Players");
+
         // Set player count
         _gameManager.numPlayers = 3;
 
@@ -104,10 +110,13 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         }
     }
     public void FourPlayers() {
+        Debug.Log("Four Players");
+
         // Can't have more than 4 players so go straight to character select
 
         // Set player count
         _gameManager.numPlayers = 4;
+        _gameManager.numAI = 0;
 
         _gameManager.CharacterSelectButton();
     }

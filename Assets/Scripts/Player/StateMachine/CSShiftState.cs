@@ -51,6 +51,13 @@ public class CSShiftState : PlayerState {
             _landingPosition = ((CSPlayerController)playerController).shiftLandingPos.position;
         }
 
+        // Face towards the direction we are shifting
+        if(_landingPosition.x < playerController.transform.position.x) {
+            playerController.FaceLeft();
+        } else if(_landingPosition.x > playerController.transform.position.x) {
+            playerController.FaceRight();
+        }
+
         // Push the player's sprite higher on the draw order (so it renders above the stage)
         playerController.SpriteRenderer.sortingOrder = 8;
 

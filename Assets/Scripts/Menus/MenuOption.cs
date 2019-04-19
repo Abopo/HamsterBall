@@ -29,8 +29,10 @@ public class MenuOption : MonoBehaviour {
     protected virtual void Awake() {
         if (isFirstSelection) {
             isHighlighted = true;
+            _justHighlighted = true;
         } else {
             isHighlighted = false;
+            _justHighlighted = false;
         }
     }
 
@@ -60,7 +62,7 @@ public class MenuOption : MonoBehaviour {
             return;
         }
 
-        if (isHighlighted) {
+        if (isHighlighted && !_justHighlighted) {
             if (_player.GetButtonDown("Submit")) {
                 Select();
             }
@@ -225,6 +227,12 @@ public class MenuOption : MonoBehaviour {
     void OnMouseEnter() {
         if (isReady) {
             Highlight();
+        }
+    }
+
+    private void OnEnable() {
+        if(isHighlighted) {
+            _justHighlighted = true;
         }
     }
 }

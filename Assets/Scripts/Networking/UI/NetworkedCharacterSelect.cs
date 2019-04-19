@@ -52,7 +52,7 @@ public class NetworkedCharacterSelect :Photon.MonoBehaviour {
                 if(charaSelectors[j].ownerId == PhotonNetwork.playerList[i].ID) {
 
                     // If it hasn't been initialize yet
-                    if (charaSelectors[j].playerNum == -1 || charaSelectors[j].characterAnimator == null || charaSelectors[j].readySprite == null) {
+                    if (charaSelectors[j].playerNum == -1 || charaSelectors[j].characterAnimator == null) {
                         // Initialize it
                         charaSelectors[j].Initialize();
                        

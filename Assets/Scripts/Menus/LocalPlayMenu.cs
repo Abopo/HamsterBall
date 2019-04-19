@@ -63,7 +63,7 @@ public class LocalPlayMenu : MonoBehaviour {
         // Turn on buttons
         foreach(MenuButton mb in buttons) {
             if (mb.IsInteractable) {
-                mb.isReady = true;
+                mb.Enable();
             }
         }
 

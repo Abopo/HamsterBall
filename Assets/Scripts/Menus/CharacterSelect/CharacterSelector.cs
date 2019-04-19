@@ -7,10 +7,10 @@ public class CharacterSelector : MonoBehaviour {
     public CSPlayerController playerController;
     public Animator characterAnimator;
     public SpriteRenderer characterPortrait;
+    public SpriteRenderer characterName;
     public CharacterIcon curCharacterIcon;
     public PullDownWindow pullDownWindow;
     public GameObject colorArrows;
-    public GameObject readySprite;
     public GameObject comText;
 
     public int playerNum = -1;
@@ -74,7 +74,7 @@ public class CharacterSelector : MonoBehaviour {
         HighlightIcon(curCharacterIcon);
 
         // If we haven't been set up properly
-        if (playerNum == -1 || characterAnimator == null || readySprite == null) { // Should probably only happen when networking
+        if (playerNum == -1 || characterAnimator == null) { // Should probably only happen when networking
             // Find correct stuff
             //Initialize();
         }
@@ -105,8 +105,6 @@ public class CharacterSelector : MonoBehaviour {
         NetworkedCharacterSelect networkedCharaSelect = FindObjectOfType<NetworkedCharacterSelect>();
         characterAnimator = networkedCharaSelect.charaAnimators[playerNum];
         characterAnimator.gameObject.SetActive(true);
-        readySprite = networkedCharaSelect.readySprites[playerNum];
-        readySprite.SetActive(false);
 
         _charaIcons = FindObjectsOfType<CharacterIcon>();
         HighlightIcon(_charaIcons[playerNum]);
@@ -136,7 +134,6 @@ public class CharacterSelector : MonoBehaviour {
     public void Deactivate() {
         gameObject.SetActive(false);
         characterAnimator.gameObject.SetActive(false);
-        readySprite.SetActive(false);
         characterPortrait.enabled = false;
     }
 
@@ -264,7 +261,6 @@ public class CharacterSelector : MonoBehaviour {
     }
     public void Unready() {
         isReady = false;
-        readySprite.SetActive(false);
         colorArrows.SetActive(true);
         
         // Free up that color
@@ -282,6 +278,8 @@ public class CharacterSelector : MonoBehaviour {
         characterPortrait.sprite = _resources.CharaPortraits[(int)charaIcon.charaName][0];
         // Change animator to correct character
         characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][0].animator;
+        // Change name to correct character
+        characterName.sprite = _resources.CharaNames[(int)charaIcon.charaName];
 
         // Play idle animation
         characterAnimator.SetInteger("PlayerState", 0);
@@ -363,13 +361,6 @@ public class CharacterSelector : MonoBehaviour {
             aiList[aiIndex].HideCOMText();
             aiIndex++;
         }
-    }
-
-    public void ReadyPlayer() {
-        // This player is ready
-        isReady = true;
-        readySprite.SetActive(true);
-        colorArrows.SetActive(false);
     }
 
     public void LoadCharacter() {
