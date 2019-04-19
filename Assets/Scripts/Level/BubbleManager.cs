@@ -1029,6 +1029,9 @@ public class BubbleManager : MonoBehaviour {
     public void EndGame(int result) {
         _gameOver = true;
 
+
+        SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
         if (result == 0 || result == 1) {
             wonGame = true;
         } else {

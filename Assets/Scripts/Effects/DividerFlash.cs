@@ -45,10 +45,12 @@ public class DividerFlash : MonoBehaviour {
             _isFlashing = true;
             _flashTimer = 0f;
         }
+		//SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 2f);
     }
 
     public void StopFlashing() {
         _isFlashing = false;
         _material.color = brown;
+		SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 1f);
     }
 }

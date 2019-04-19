@@ -29,6 +29,7 @@ public class SoundManager : MonoBehaviour {
 
 	//Music
 	public string MusicMain;
+	public FMOD.Studio.EventInstance MusicMainEvent;
 
 	public FMOD.Studio.EventInstance ThrowAngleEvent;
 	public FMOD.Studio.EventInstance HamsterFillBallEvent;

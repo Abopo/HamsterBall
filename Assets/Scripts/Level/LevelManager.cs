@@ -33,6 +33,8 @@ public class LevelManager : MonoBehaviour {
     BubbleManager _bubbleManager;
     LevelUI _levelUI;
 
+    //Music
+
     public float LevelTimer {
         get { return _levelTimer; }
     }
@@ -83,6 +85,7 @@ public class LevelManager : MonoBehaviour {
         if (gc == null) {
             gameStarted = true;
         }
+		SoundManager.mainAudio.MusicMainEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MusicMain);
 
         SetStageMusic();
     }
@@ -90,9 +93,12 @@ public class LevelManager : MonoBehaviour {
     void SetStageMusic() {
         switch (stage) {
             case STAGES.FOREST:
-                // Forest music start can go here
+			SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				SoundManager.mainAudio.MusicMainEvent.start();
                 break;
             case STAGES.MOUNTAIN:
+			SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				SoundManager.mainAudio.MusicMainEvent.start();
                 break;
             case STAGES.BEACH:
                 break;
