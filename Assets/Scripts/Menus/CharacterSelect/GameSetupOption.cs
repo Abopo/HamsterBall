@@ -77,7 +77,7 @@ public class GameSetupOption : MenuOption {
         if (!infoBox.activeSelf) {
             infoBox.SetActive(true);
         }
-        infoBox.transform.position = new Vector3(textPosition.position.x - 4.25f,
+        infoBox.transform.position = new Vector3(textPosition.position.x - 2.5f,
                                                   textPosition.position.y,
                                                   infoBox.transform.position.z);
         infoBoxText.text = infoText;

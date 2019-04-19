@@ -30,8 +30,6 @@ public class TeamSelect : MonoBehaviour {
         _isActive = true;
 
         pressStartText.SetActive(false);
-
-        gameSetupWindow.OptionsSetup();
     }
 
     void SetupCharacters() {

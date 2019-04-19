@@ -236,6 +236,9 @@ public class PlayerController : Entity {
             case CHARACTERS.ROOSTER:
                 path += "Rooster/Animation Objects/Rooster" + _charaInfo.color;
                 break;
+            case CHARACTERS.LACKEY:
+                path += "Lackey/Animation Objects/Lackey" + _charaInfo.color;
+                break;
         }
 
         _animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
@@ -335,9 +338,9 @@ public class PlayerController : Entity {
 
 	void UpdateBubbles() {
 		float dir = facingRight ? 1 : -1;
-		swingObj.transform.position = new Vector3 (transform.position.x + 0.5f * dir,
-		                                               transform.position.y,
-		                                               transform.position.z);
+		//swingObj.transform.position = new Vector3 (transform.position.x + 0.5f * dir,
+		//                                               transform.position.y,
+		//                                               transform.position.z);
 
 		if (heldBall != null && !heldBall.wasThrown) {
 			walkSpeed = 3;

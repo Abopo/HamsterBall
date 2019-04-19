@@ -63,7 +63,7 @@ public class GameCountdown : MonoBehaviour {
                     break;
                 case 3:
                     _displayText.text = "GO!";
-                    FindObjectOfType<LevelManager>().gameStarted = true;
+                    GameStart();
                     break;
                 case 4:
                     _displayText.enabled = false;
@@ -78,5 +78,10 @@ public class GameCountdown : MonoBehaviour {
 
             _scaleTimer = 0f;
         }
+    }
+
+    void GameStart() {
+        FindObjectOfType<LevelManager>().gameStarted = true;
+
     }
 }

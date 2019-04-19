@@ -36,6 +36,8 @@ public class GameSetupWindow : MonoBehaviour {
         _characterSelect = FindObjectOfType<CharacterSelect>();
 
         GetOptions();
+
+        OptionsSetup();
     }
 
     void GetOptions() {

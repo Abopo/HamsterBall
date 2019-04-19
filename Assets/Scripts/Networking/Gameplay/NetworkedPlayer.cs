@@ -175,32 +175,12 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             case CHARACTERS.ROOSTER:
                 path += "Rooster/Animation Objects/Rooster" + charaInfo.color;
                 break;
+            case CHARACTERS.LACKEY:
+                path += "Lackey/Animation Objects/Lackey" + charaInfo.color;
+                break;
         }
 
         _playerController.Animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
-
-        /*
-        switch (charaName) {
-            case CHARACTERNAMES.BOY1:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY2:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY3:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY4:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL1:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL2:
-                _playerController.Animator.runtimeAnimatorController = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
-                break;
-        }
-        */
     }
 
     [PunRPC]

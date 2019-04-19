@@ -84,6 +84,8 @@ MonoBehaviour:
   pressStartText: {fileID: 92}
   aiSetupWindow: {fileID: 521}
   gameSetupWindow: {fileID: 524}
+  leftTeam: {fileID: 0}
+  rightTeam: {fileID: 0}
 --- !u!114 &42
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1169,10 +1171,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85868a86eb1ee2245a47fed1ed6f1a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
   characterAnimator: {fileID: 1066830917}
+  characterPortrait: {fileID: 0}
   curCharacterIcon: {fileID: 2094102772}
+  pullDownWindow: {fileID: 0}
   colorArrows: {fileID: 1247929074}
   readySprite: {fileID: 508722185}
+  comText: {fileID: 0}
   playerNum: 3
   lockedIn: 0
   isReady: 0
@@ -2881,10 +2887,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85868a86eb1ee2245a47fed1ed6f1a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
   characterAnimator: {fileID: 91051066}
+  characterPortrait: {fileID: 0}
   curCharacterIcon: {fileID: 2094102772}
+  pullDownWindow: {fileID: 0}
   colorArrows: {fileID: 343278891}
   readySprite: {fileID: 1194557766}
+  comText: {fileID: 0}
   playerNum: 0
   lockedIn: 0
   isReady: 0
@@ -3135,10 +3145,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85868a86eb1ee2245a47fed1ed6f1a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
   characterAnimator: {fileID: 1745069510}
+  characterPortrait: {fileID: 0}
   curCharacterIcon: {fileID: 503530346}
+  pullDownWindow: {fileID: 0}
   colorArrows: {fileID: 1649235596}
   readySprite: {fileID: 1825599591}
+  comText: {fileID: 0}
   playerNum: 1
   lockedIn: 0
   isReady: 0
@@ -6549,10 +6563,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85868a86eb1ee2245a47fed1ed6f1a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
   characterAnimator: {fileID: 719380302}
+  characterPortrait: {fileID: 0}
   curCharacterIcon: {fileID: 1864170214}
+  pullDownWindow: {fileID: 0}
   colorArrows: {fileID: 194734063}
   readySprite: {fileID: 1827235253}
+  comText: {fileID: 0}
   playerNum: 2
   lockedIn: 0
   isReady: 0
@@ -7135,6 +7153,31 @@ Prefab:
       propertyPath: aiSetupWindow
       value: 
       objectReference: {fileID: 521}
+    - target: {fileID: 1000011330129900, guid: 87ac5781891f9e64bb511c88ba9c8310, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114516574118313654, guid: 87ac5781891f9e64bb511c88ba9c8310,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Off
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010144935022, guid: 87ac5781891f9e64bb511c88ba9c8310,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Off
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013371065524, guid: 87ac5781891f9e64bb511c88ba9c8310,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Off
+
+'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 87ac5781891f9e64bb511c88ba9c8310, type: 2}
   m_IsPrefabParent: 0

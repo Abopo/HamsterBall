@@ -90,6 +90,9 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
             case CHARACTERS.ROOSTER:
                 path += "Rooster/Animation Objects/Rooster" + charaInfo.color;
                 break;
+            case CHARACTERS.LACKEY:
+                path += "Lackey/Animation Objects/Lackey" + charaInfo.color;
+                break;
         }
 
         controller = Resources.Load(path) as RuntimeAnimatorController;

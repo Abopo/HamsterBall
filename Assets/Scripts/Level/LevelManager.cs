@@ -4,12 +4,15 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using Rewired;
 
+public enum STAGES { FOREST = 0, MOUNTAIN, BEACH, CITY, CORPORATION, LABORATORY, AIRSHIP, NUM_STAGES };
 public class LevelManager : MonoBehaviour {
     public ResultsScreen mpResultsScreen;
     public ResultsScreen spResultsScreen;
     public ResultsScreen continueScreen;
     public PauseMenu pauseMenu;
     public Text marginMultiplierText;
+
+    public STAGES stage;
 
     public bool continueLevel;
     public bool mirroredLevel;
@@ -58,10 +61,12 @@ public class LevelManager : MonoBehaviour {
 
             }
         }
+
+        SceneManager.sceneUnloaded += OnSceneExit;
     }
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         if (_gameManager.isSinglePlayer) {
             _bubbleManager = FindObjectOfType<BubbleManager>();
         }
@@ -75,13 +80,35 @@ public class LevelManager : MonoBehaviour {
 
         // Failsafe for a missing countdown
         GameCountdown gc = FindObjectOfType<GameCountdown>();
-        if(gc == null) {
+        if (gc == null) {
             gameStarted = true;
+        }
+
+        SetStageMusic();
+    }
+
+    void SetStageMusic() {
+        switch (stage) {
+            case STAGES.FOREST:
+                // Forest music start can go here
+                break;
+            case STAGES.MOUNTAIN:
+                break;
+            case STAGES.BEACH:
+                break;
+            case STAGES.CITY:
+                break;
+            case STAGES.CORPORATION:
+                break;
+            case STAGES.LABORATORY:
+                break;
+            case STAGES.AIRSHIP:
+                break;
         }
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
         if (!_gameOver && gameStarted) {
             _levelTimer += Time.deltaTime;
 
@@ -95,8 +122,8 @@ public class LevelManager : MonoBehaviour {
                     _marginTime = 30f;
                     _marginTimer = 0f;
                 }
-            // If we are playing the single player Clear mode
-            } else if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+                // If we are playing the single player Clear mode
+            } else if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
                 // Update pushing down the board stuff
                 if (_gameManager.conditionLimit == 0) {
                     _pushTimer += Time.deltaTime;
@@ -108,7 +135,7 @@ public class LevelManager : MonoBehaviour {
                         _bubbleManager.PushBoardDown();
 
                         _pushTimer = 0;
-                    } else if(_pushTime - _pushTimer < 5) {
+                    } else if (_pushTime - _pushTimer < 5) {
                         // Shake the bubble manager
                         _bubbleManager.StartShaking();
                     }
@@ -119,15 +146,15 @@ public class LevelManager : MonoBehaviour {
 
     void IncreaseMarginMultiplier() {
         marginMultiplier += 0.5f;
-        if(marginMultiplier > 9) {
+        if (marginMultiplier > 9) {
             marginMultiplier = 9;
         }
-        
+
         marginMultiplierText.text = "x" + marginMultiplier.ToString();
         marginMultiplierText.fontSize = 10 + 2 * Mathf.CeilToInt(marginMultiplier);
         if (marginMultiplier == 1f) {
             marginMultiplierText.color = Color.black;
-        } else if(marginMultiplier == 1.5f) {
+        } else if (marginMultiplier == 1.5f) {
             marginMultiplierText.color = Color.blue;
         } else if (marginMultiplier == 2f) {
             marginMultiplierText.color = Color.cyan;
@@ -158,22 +185,22 @@ public class LevelManager : MonoBehaviour {
         _gameOver = true;
 
         // If we won and are in a timed mode, set the time highscore
-        if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+        if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
             // Add score based on completion speed
             BubbleManager[] _bManagers = FindObjectsOfType<BubbleManager>();
             int timeScore = 5000;
             foreach (BubbleManager _bM in _bManagers) {
                 // Time score is lower the longer it takes to finish the level
                 timeScore = timeScore - 10 * (int)_levelTimer;
-                if(timeScore < 10) {
+                if (timeScore < 10) {
                     timeScore = 10;
                 }
                 _bM.IncreaseScore(timeScore);
             }
-        } else if(_gameManager.gameMode == GAME_MODE.SURVIVAL) {
+        } else if (_gameManager.gameMode == GAME_MODE.SURVIVAL) {
             // Add the time survived to the player's score
             BubbleManager[] _bManagers = FindObjectsOfType<BubbleManager>();
-            foreach(BubbleManager _bM in _bManagers) {
+            foreach (BubbleManager _bM in _bManagers) {
                 _bM.IncreaseScore(50 * (int)_levelTimer);
             }
         }
@@ -236,7 +263,7 @@ public class LevelManager : MonoBehaviour {
         } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             // TODO: make a different results screen for these modes
             ActivateFinalResultsScreen(team, 1);
-        // If this was a single player level
+            // If this was a single player level
         } else {
             if (continueLevel) {
                 ActivateContinueScreen(team, result);
@@ -247,20 +274,20 @@ public class LevelManager : MonoBehaviour {
     }
 
     void ActivateContinueScreen(int team, int result) {
-        if(continueScreen != null) {
-            if(_gameManager.IsStoryLevel() && _gameManager.gameMode != GAME_MODE.MP_VERSUS) {
+        if (continueScreen != null) {
+            if (_gameManager.IsStoryLevel() && _gameManager.gameMode != GAME_MODE.MP_VERSUS) {
                 // If it's the player
                 if (team == 0) {
                     continueScreen.Activate(result == 1);
 
-                // If it's the enemy
+                    // If it's the enemy
                 } else {
                     continueScreen.Activate(result == -1);
                 }
             } else {
                 if (result == 1) {
                     continueScreen.Activate(team);
-                } else if(result == -1) {
+                } else if (result == -1) {
                     // The other team won so send that team
                     continueScreen.Activate(team == 1 ? 0 : 1);
                 } else {
@@ -273,7 +300,7 @@ public class LevelManager : MonoBehaviour {
 
     void ActivateFinalResultsScreen(int team, int result) {
         setOver = true;
-        if(_gameManager.IsStoryLevel() && spResultsScreen != null) {
+        if (_gameManager.IsStoryLevel() && spResultsScreen != null) {
             // If it's the player
             if (team == 0) {
                 // If there is a cutscene after this stage, show a continue screen instead
@@ -287,7 +314,7 @@ public class LevelManager : MonoBehaviour {
             } else {
                 spResultsScreen.Activate(result == -1);
             }
-        } else if(!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
+        } else if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
             if (result != 0) {
                 mpResultsScreen.Activate(team);
             } else {
@@ -311,10 +338,15 @@ public class LevelManager : MonoBehaviour {
             _gameManager.CleanUp(false);
             BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
             boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
-        } else if(!_gameManager.isOnline) {
+        } else if (!_gameManager.isOnline) {
             _gameManager.ContinueLevel();
-        } else if(PhotonNetwork.connectedAndReady) {
+        } else if (PhotonNetwork.connectedAndReady) {
             PhotonNetwork.RPC(GetComponent<PhotonView>(), "ReloadCurrentLevel", PhotonTargets.All, false);
         }
+    }
+
+    void OnSceneExit(Scene scene) {
+        // Stop looping sounds here
+
     }
 }

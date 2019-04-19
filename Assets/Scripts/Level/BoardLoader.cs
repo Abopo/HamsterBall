@@ -245,7 +245,7 @@ public class BoardLoader : MonoBehaviour {
             aiPlayer.isAI = true;
             //aiPlayer.characterName = CHARACTERNAMES.BOY3;
             // TODO: Implement loading specific characters for ai
-            aiPlayer.charaInfo.name = CHARACTERS.ROOSTER;
+            aiPlayer.charaInfo.name = CHARACTERS.LACKEY;
             aiPlayer.charaInfo.color = 1;
             aiPlayer.team = 1;
             aiPlayer.difficulty = int.Parse(_readText);

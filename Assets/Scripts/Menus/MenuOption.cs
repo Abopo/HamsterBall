@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 using Rewired;
 
@@ -156,10 +157,14 @@ public class MenuOption : MonoBehaviour {
         if (_allOtherOptions != null) {
             foreach (MenuOption mO in _allOtherOptions) {
                 if (mO != this && mO.isReady) {
-                    mO.isHighlighted = false;
+                    mO.Unhighlight();
                 }
             }
         }
+    }
+
+    public virtual void Unhighlight() {
+        isHighlighted = false;
     }
 
     protected bool InputRight() {

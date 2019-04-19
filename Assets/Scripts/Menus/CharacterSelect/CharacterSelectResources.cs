@@ -7,11 +7,11 @@ public class CharaSelectInfo {
     public bool isTaken;
 }
 
-public class CharacterSelectResources : SceneResources {
+public class CharacterSelectResources : MonoBehaviour {
 
-    List<CharaSelectInfo>[] _charaAnimators = new List<CharaSelectInfo>[3];
+    List<CharaSelectInfo>[] _charaAnimators = new List<CharaSelectInfo>[4];
 
-    List<Sprite>[] _charaPortraits = new List<Sprite>[3];
+    List<Sprite>[] _charaPortraits = new List<Sprite>[4];
 
     public List<CharaSelectInfo>[] CharaAnimators {
         get { return _charaAnimators; }
@@ -71,6 +71,19 @@ public class CharacterSelectResources : SceneResources {
         rooster2.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
         rooster2.isTaken = false;
         _charaAnimators[2].Add(rooster2);
+
+        // Lackey
+        _charaAnimators[3] = new List<CharaSelectInfo>();
+
+        CharaSelectInfo lackey1 = new CharaSelectInfo();
+        lackey1.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey1") as RuntimeAnimatorController;
+        lackey1.isTaken = false;
+        _charaAnimators[3].Add(lackey1);
+        CharaSelectInfo lackey2 = new CharaSelectInfo();
+        lackey2.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey2") as RuntimeAnimatorController;
+        lackey2.isTaken = false;
+        _charaAnimators[3].Add(lackey2);
+
     }
 
     void LoadCharacterPortraits() {
@@ -96,6 +109,12 @@ public class CharacterSelectResources : SceneResources {
         sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
         _charaPortraits[2].Add(sprites[0]);
         _charaPortraits[2].Add(sprites[1]);
+
+        // Lackey
+        _charaPortraits[3] = new List<Sprite>();
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/LackeyIcon");
+        _charaPortraits[3].Add(sprites[0]);
+        _charaPortraits[3].Add(sprites[0]);
     }
 
     // Use this for initialization

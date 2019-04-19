@@ -10,7 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
     int leftMeters = 0;
     int rightMeters = 0;
 
-    Sprite[,] playerIcons = new Sprite[3,4];
+    Sprite[,] playerIcons = new Sprite[4,4];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -43,6 +43,12 @@ public class PlayerSpawner : MonoBehaviour {
         playerIcons[2, 1] = sprites[1];
         playerIcons[2, 2] = sprites[0];
         playerIcons[2, 3] = sprites[1];
+        // Lackey
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/LackeyIcon");
+        playerIcons[3, 0] = sprites[0];
+        playerIcons[3, 1] = sprites[0];
+        playerIcons[3, 2] = sprites[0];
+        playerIcons[3, 3] = sprites[0];
 
         GetSpawnLocations();
         SpawnPlayers();
