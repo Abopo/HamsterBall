@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour {
         //clip1 = Resources.Load<AudioClip>("Audio/BGM/Puzzle Bobble - Theme Remix by SuperNormanBross");
         //clip2 = Resources.Load<AudioClip>("Audio/BGM/bubble-bobble-06-ingame-music-hurry-up-");
         clip1 = Resources.Load<AudioClip>("Audio/BGM/happy days (loop)");
+        //FMOD Happy Days Menu Music
         clip2 = Resources.Load<AudioClip>("Audio/BGM/Silly 01");
         _backgroundMusic.Add(clip1);
         _backgroundMusic.Add(clip2);
