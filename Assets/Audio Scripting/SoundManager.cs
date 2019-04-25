@@ -40,14 +40,16 @@ public class SoundManager : MonoBehaviour {
 	//Generic Player Sounds EventInstance
 
 	void Awake () {
-		if (mainAudio != null){
-			Destroy(this);
-		}
-		mainAudio = this;
+        if (mainAudio != null) {
+            DestroyImmediate(this);
+        } else {
+            mainAudio = this;
 
-		HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(HamsterFillBall);
-		ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
+            DontDestroyOnLoad(gameObject);
 
+            HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(HamsterFillBall);
+            ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
+        }
 	}
 
 	void Footstep (){
