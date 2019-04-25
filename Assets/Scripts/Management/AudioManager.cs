@@ -4,33 +4,28 @@ using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour {
 
-    List<AudioClip> _backgroundMusic = new List<AudioClip>();
-    AudioSource _audioSource;
+    bool firstPass = true;
+    int sceneIndex = 0;
+
+    static bool alreadyPlaying = false;
 
     void Awake() {
-        _audioSource = GetComponent<AudioSource>();
-
-        LoadBGM();
-
         SceneManager.sceneLoaded += PlayMusic;
     }
 
     // Use this for initialization
     void Start () {
-	
-	}
-	
-    void LoadBGM() {
-		SoundManager.mainAudio.HappyDaysMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HappyDaysMusic);
+        LoadBGM();
 
-        AudioClip clip1, clip2;
-        clip1 = Resources.Load<AudioClip>("Audio/BGM/Puzzle Bobble - Theme Remix by SuperNormanBross");
-        clip2 = Resources.Load<AudioClip>("Audio/BGM/bubble-bobble-06-ingame-music-hurry-up-");
-       
-        clip1 = Resources.Load<AudioClip>("Audio/BGM/happy days (loop)");
-        clip2 = Resources.Load<AudioClip>("Audio/BGM/Silly 01");
-        _backgroundMusic.Add(clip1);
-        _backgroundMusic.Add(clip2);
+        if (sceneIndex < 15) {
+            SoundManager.mainAudio.HappyDaysMusicEvent.start();
+            alreadyPlaying = true;
+        }
+    }
+
+    void LoadBGM() {
+        Debug.Log("Load Menu Music");
+		SoundManager.mainAudio.HappyDaysMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HappyDaysMusic);
     }
 
     // Update is called once per frame
@@ -39,19 +34,26 @@ public class AudioManager : MonoBehaviour {
 	}
 
     void PlayMusic(Scene scene, LoadSceneMode mode) {
-        if(scene.buildIndex < 15 && _audioSource != null && _audioSource.clip != _backgroundMusic[0]) {
-            // We're in a menu so play menu music
-			SoundManager.mainAudio.HappyDaysMusicEvent.start();
-
-            _audioSource.clip = _backgroundMusic[0];
-            _audioSource.volume = 1f;
-            _audioSource.Play();
-
-        } else if (scene.buildIndex > 12 && _audioSource != null) {
-            // We're in a level so play level music
-            _audioSource.clip = _backgroundMusic[1];
-            _audioSource.volume = 0.25f;
-            _audioSource.Play();
+        if(firstPass) {
+            sceneIndex = scene.buildIndex;
+            firstPass = false;
+        } else {
+            sceneIndex = scene.buildIndex;
+            if (sceneIndex < 15 && !alreadyPlaying) {
+                // We're in a menu so play menu music
+                Debug.Log("Play Menu Music");
+                SoundManager.mainAudio.HappyDaysMusicEvent.start();
+                alreadyPlaying = true;
+            } else if (sceneIndex > 12) {
+                // We're in a level so play level music
+                Debug.Log("Stop menu music");
+                SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                alreadyPlaying = false;
+            }
         }
+    }
+
+    private void OnDestroy() {
+        SceneManager.sceneLoaded -= PlayMusic;
     }
 }

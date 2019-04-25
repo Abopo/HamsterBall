@@ -701,7 +701,7 @@ public class Bubble : MonoBehaviour {
             }
         }
 
-        PlayPopClip();
+        // PlayPopClip();
 
 		//DestroyObject (this.gameObject);
 	}

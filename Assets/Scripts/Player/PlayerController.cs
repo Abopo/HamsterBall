@@ -199,8 +199,14 @@ public class PlayerController : Entity {
 
         totalThrowCount = 0;
 
+        // Character specific scripts
+        // (right now the rooster is the only character with a special script)
+        if (_charaInfo.name == CHARACTERS.ROOSTER) {
+            gameObject.AddComponent<Rooster>();
+        }
+
         //	start in idle
-        ChangeState (PLAYER_STATE.IDLE);
+        ChangeState(PLAYER_STATE.IDLE);
 	}
 
     protected virtual void InitStates() {

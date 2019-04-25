@@ -7,7 +7,7 @@ public class DividerFlash : MonoBehaviour {
 
     Material _material;
 
-    bool _isFlashing;
+    public bool isFlashing;
     float _flashTime = 0.2f;
     float _flashTimer = 0f;
 
@@ -17,12 +17,12 @@ public class DividerFlash : MonoBehaviour {
 	void Start () {
         _material = GetComponent<MeshRenderer>().material;
 
-        _isFlashing = false;
+        isFlashing = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if(_isFlashing) {
+        if(isFlashing) {
             _flashTimer += Time.deltaTime;
             if(_flashTimer >= _flashTime) {
                 Flash();
@@ -41,15 +41,15 @@ public class DividerFlash : MonoBehaviour {
     }
 
     public void StartFlashing() {
-        if (!_isFlashing) {
-            _isFlashing = true;
+        if (!isFlashing) {
+            isFlashing = true;
             _flashTimer = 0f;
         }
-		//SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 2f);
+		SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 2f);
     }
 
     public void StopFlashing() {
-        _isFlashing = false;
+        isFlashing = false;
         _material.color = brown;
 		SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 1f);
     }

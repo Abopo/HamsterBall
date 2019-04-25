@@ -14,10 +14,6 @@ public class BackButton : MenuButton {
 
         _image = GetComponent<Image>();
         _gameManager = FindObjectOfType<GameManager>();
-
-        if(SceneManager.GetActiveScene().name == "DemoCharacterSelect" && FindObjectOfType<GameManager>().demoMode) {
-            gameObject.SetActive(false);
-        }
 	}
 
     // Update is called once per frame
@@ -36,7 +32,10 @@ public class BackButton : MenuButton {
     }
 
     public void BackToMainMenu() {
-        _gameManager.MainMenuButton();
+        // Don't go back while in demo mode
+        if (!_gameManager.demoMode) {
+            _gameManager.MainMenuButton();
+        }
     }
 
     public void BackToLocalPlay() {

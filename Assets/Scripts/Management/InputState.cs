@@ -37,16 +37,27 @@ public class InputState {
 	public InputState(){
 		timeStamp = -1.0f;
 		timeDelta = -1.0f;
+        MakeButtons();
+	}
+
+    public InputState(int iD) {
+        SetPlayerID(iD);
+        timeStamp = -1.0f;
+        timeDelta = -1.0f;
+        MakeButtons();
+    }
+
+    void MakeButtons() {
         up = new button();
         down = new button();
-        left = new button ();
-		right = new button ();
-		jump = new button();
-		swing = new button ();
-		attack = new button ();
-        shift = new button ();
+        left = new button();
+        right = new button();
+        jump = new button();
+        swing = new button();
+        attack = new button();
+        shift = new button();
         select = new button();
-	}
+    }
 
     public void SetPlayerID(int iD) {
         playerID = iD;
@@ -106,5 +117,17 @@ public class InputState {
             select.isJustPressed = _player.GetButtonDown("Select");
             select.isJustReleased = _player.GetButtonUp("Select");
         }
+    }
+
+    public bool AnyButtonPressed() {
+        if(jump.isJustPressed || swing.isJustPressed ||
+            shift.isJustPressed || attack.isJustPressed ||
+            submit.isJustPressed || cancel.isJustPressed ||
+            start.isJustPressed || pause.isJustPressed ||
+            select.isJustPressed) {
+            return true;
+        }
+
+        return false;
     }
 }

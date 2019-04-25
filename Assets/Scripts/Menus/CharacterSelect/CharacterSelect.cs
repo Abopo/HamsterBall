@@ -120,6 +120,7 @@ public class CharacterSelect : MonoBehaviour {
         // Otherwise, activate the Game Setup Windows
         else {
             if (_gameManager.demoMode) {
+                Deactivate();
                 gameSetupWindow.DemoSetup();
             } else {
                 Deactivate();

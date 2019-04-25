@@ -2,473 +2,355 @@
 [LOG] Manager::init                            : maxchannels = 256 studioflags = 00000006 flags 00000000 extradriverdata 0000000000000000.
 [LOG] SystemI::init                            : Initialize version=11011 (100047), maxchannels=256, flags=0x00020000
 [LOG] SystemI::setOutputInternal               : Setting output to 'FMOD WASAPI Output'
-[LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEX): wFormatTag=0xFFFE, nChannels=2, nSamplesPerSec=44100, nAvgBytesPerSec=352800, nBlockAlign=8, wBitsPerSample=32, cbSize=22.
+[LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEX): wFormatTag=0xFFFE, nChannels=2, nSamplesPerSec=48000, nAvgBytesPerSec=384000, nBlockAlign=8, wBitsPerSample=32, cbSize=22.
 [LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEXTENSIBLE): wValidBitsPerSample=32, dwChannelMask=0x00000003, SubFormat=00000003-0000-0010-8000-00AA00389B71.
-[LOG] OutputWASAPI::init                       : Output buffer size: 3760 samples, latency: 0.00ms, period: 10.16ms, DSP buffer: 1024 * 4
-[WRN] SystemI::init                            : Output requires a sample rate of 44100Hz, resampling will occur.
+[LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Priority: 2, Stack Size: 65536, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Priority: 3, Stack Size: 49152, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 00000000759DF628 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : manager 000000004C71DA38 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Priority: 0, Stack Size: 65536, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] PlaybackSystem::init                     : done
 [LOG] Thread::initThread                       : Init FMOD Studio bank load thread. Priority: 0, Stack Size: 65536, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] Manager::init                            : done.
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'E:\Github\Hamster Scramble\HamsterBall\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\TempCopy\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\ToUpdate\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000000007593E108 : node = 0000000047AEB9F0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000000059713E38.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000000007593E108
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 6041824
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 129568
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000047AEBB08
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Music_MainLevel1', format=2, channels=2, frequency=48000, lengthbytes=1464192, lengthpcm=5068800, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.988525.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000000007593E108
-[LOG] SoundI::getSubSound                      : sound 000000007593E108.  Subsound index 0 / 1
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[WRN] ObjectLookup::get                        : Lookup failed for EventModel: {361bf22c-302e-47d3-9fbe-7422efaaa90e}
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'E:\Github\Hamster Scramble\HamsterBall\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\TempCopy\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\ToUpdate\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000000007593E7C8 : node = 0000000047AEC080
-[LOG] SystemI::createSound                     : add node to async list : head = 0000000059713E38.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000000007593E7C8
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 6041824
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 129568
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000047AEC198
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekposition = 600
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Music_MainLevel1', format=2, channels=2, frequency=48000, lengthbytes=1464192, lengthpcm=5068800, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.988525.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000000007593E7C8
-[LOG] SoundI::getSubSound                      : sound 000000007593E7C8.  Subsound index 0 / 1
-[LOG] SoundI::release                          : HS_Music_MainLevel1 (000000007593E108)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (0000000075969818)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (000000007593EE88)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000000007593E108 : node = 0000000047AEB600
-[LOG] SystemI::createSound                     : add node to async list : head = 0000000059713E38.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000000007593E108
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 6041824
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 129568
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000047AEB718
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekposition = 600
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Music_MainLevel1', format=2, channels=2, frequency=48000, lengthbytes=1464192, lengthpcm=5068800, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.988525.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000000007593E108
-[LOG] SoundI::getSubSound                      : sound 000000007593E108.  Subsound index 0 / 1
-[LOG] SoundI::release                          : HS_Music_MainLevel1 (000000007593E7C8)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (00000000759687D8)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (000000007593F398)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000000007593ECD8 : node = 0000000047AEC5C0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000000059713E38.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000000007593ECD8
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 6041824
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 129568
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000047AEC6D8
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekposition = 1200
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Music_MainLevel1', format=2, channels=2, frequency=48000, lengthbytes=1464192, lengthpcm=5068800, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.988525.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000000007593ECD8
-[LOG] SoundI::getSubSound                      : sound 000000007593ECD8.  Subsound index 0 / 1
-[LOG] SoundI::release                          : HS_Music_MainLevel1 (000000007593E108)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (0000000075968978)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (000000007593E2B8)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[WRN] ObjectLookup::get                        : Lookup failed for EventModel: {361bf22c-302e-47d3-9fbe-7422efaaa90e}
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'E:\Github\Hamster Scramble\HamsterBall\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\TempCopy\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\ToUpdate\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[WRN] ObjectLookup::get                        : Lookup failed for EventModel: {5ad9fac8-e5e3-4a83-ba40-f90a2ea97ea2}
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'E:\Github\Hamster Scramble\HamsterBall\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\TempCopy\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\ToUpdate\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] SoundI::release                          : HS_Music_MainLevel1 (000000007593ECD8)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (00000000759687D8)
-[LOG] SoundI::release                          :     HS_Music_MainLevel1 (000000007593E468)
-[LOG] SoundI::release                          :  (00000000759641B8)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-001 (000000007596F568)
-[LOG] SoundI::release                          :  (00000000783AFF08)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-002 (0000000047CA5CB8)
-[LOG] SoundI::release                          :  (0000000076A59528)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-003 (00000000590F2468)
-[LOG] SoundI::release                          :  (0000000075964498)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-004 (0000000075970A88)
-[LOG] SoundI::release                          :  (0000000048165308)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-001 (0000000075968CB8)
-[LOG] SoundI::release                          :  (0000000047FE3BB8)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-002 (000000007596E6C8)
-[LOG] SoundI::release                          :  (00000000794827C8)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-003 (00000000759727C8)
-[LOG] SoundI::release                          :  (00000000783B1328)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-004 (0000000047CA2098)
-[LOG] SoundI::release                          :  (0000000073977848)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-001 (00000000590F27A8)
-[LOG] SoundI::release                          :  (0000000047FE4008)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-002 (000000007596DEA8)
-[LOG] SoundI::release                          :  (0000000048166168)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-003 (000000007596A6B8)
-[LOG] SoundI::release                          :  (0000000076A58F68)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-004 (00000000590F5388)
-[LOG] SoundI::release                          :  (0000000076A593B8)
-[LOG] SoundI::release                          :     HS_Attack_Noise-001 (00000000590F3988)
-[LOG] SoundI::release                          :  (0000000076A5A7D8)
-[LOG] SoundI::release                          :     HS_Attack_Noise-002 (00000000590F41A8)
-[LOG] SoundI::release                          :  (0000000073977E08)
-[LOG] SoundI::release                          :     HS_Attack_Noise-003 (0000000047CA45F8)
-[LOG] SoundI::release                          :  (0000000076A590D8)
-[LOG] SoundI::release                          :     HS_Attack_Noise-004 (00000000590F22C8)
-[LOG] SoundI::release                          :  (0000000073A0DBC8)
-[LOG] SoundI::release                          :     HS_Jump_2-001 (000000007596C168)
-[LOG] SoundI::release                          :  (0000000075964048)
-[LOG] SoundI::release                          :     HS_Jump_2-002 (000000007596C7E8)
-[LOG] SoundI::release                          :  (0000000073977B28)
-[LOG] SoundI::release                          :     HS_Jump_2-003 (0000000047CA3DD8)
-[LOG] SoundI::release                          :  (0000000073978258)
-[LOG] SoundI::release                          :     HS_Jump_2-004 (0000000047CA35B8)
-[LOG] SoundI::release                          :  (0000000048165D18)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-001 (0000000075969338)
-[LOG] SoundI::release                          :  (0000000048165A38)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-002 (0000000075969CF8)
-[LOG] SoundI::release                          :  (0000000073A0E188)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-003 (000000006A2E0608)
-[LOG] SoundI::release                          :  (0000000073A0D778)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-004 (0000000075971C68)
-[LOG] SoundI::release                          :  (0000000047FE4A18)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-001 (000000007596F228)
-[LOG] SoundI::release                          :  (0000000076A5AAB8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-002 (00000000590F4348)
-[LOG] SoundI::release                          :  (0000000047FE4458)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-003 (000000007596BFC8)
-[LOG] SoundI::release                          :  (000000000F427708)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-004 (000000006A2DEF48)
-[LOG] SoundI::release                          :  (0000000073A0C4C8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-001 (000000006A2E0468)
-[LOG] SoundI::release                          :  (0000000075964A58)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-002 (000000007596CCC8)
-[LOG] SoundI::release                          :  (0000000076A5A388)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-003 (00000000590F2608)
-[LOG] SoundI::release                          :  (0000000075963358)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-004 (000000007596D008)
-[LOG] SoundI::release                          :  (0000000079483BE8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-001 (0000000075973328)
-[LOG] SoundI::release                          :  (00000000783B04C8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-002 (0000000047CA42B8)
-[LOG] SoundI::release                          :  (0000000075964D38)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-003 (0000000075971FA8)
-[LOG] SoundI::release                          :  (0000000073976FA8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-004 (0000000047CA4AD8)
-[LOG] SoundI::release                          :  (0000000073A0CA88)
-[LOG] SoundI::release                          :     HS_Filling Blocks_LowNoise (000000006A2DFDE8)
-[LOG] SoundI::release                          :  (0000000047FE4738)
-[LOG] SoundI::release                          :     HS_Filling Blocks_TinkHigh (000000007596D9C8)
-[LOG] SoundI::release                          :  (00000000794824E8)
-[LOG] SoundI::release                          :     HS_Filling Blocks_Tink (00000000590F2FC8)
-[LOG] SoundI::release                          :  (0000000073A0E018)
-[LOG] SoundI::release                          :     HS_Throw_Synth-001 (0000000075970748)
-[LOG] SoundI::release                          :  (0000000076A59808)
-[LOG] SoundI::release                          :     HS_Throw_Synth-002 (00000000590F4EA8)
-[LOG] SoundI::release                          :  (00000000783B0078)
-[LOG] SoundI::release                          :     HS_Throw_Synth-003 (0000000047CA4938)
-[LOG] SoundI::release                          :  (0000000076A59248)
-[LOG] SoundI::release                          :     HS_Throw_Synth-004 (00000000590F34A8)
-[LOG] SoundI::release                          :  (0000000075963BF8)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-001 (00000000759700C8)
-[LOG] SoundI::release                          :  (0000000048164BD8)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-002 (000000007596AED8)
-[LOG] SoundI::release                          :  (0000000048164618)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-003 (0000000075969678)
-[LOG] SoundI::release                          :  (0000000079482378)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-004 (0000000075972148)
-[LOG] SoundI::release                          :  (00000000596A5FC8)
-[LOG] SoundI::release                          :     HS_Throw_LowNoise-001 (000000006A2DFF88)
-[LOG] SoundI::release                          :  (0000000079482AA8)
-[LOG] SoundI::release                          :     HS_Throw_LowNoise-003 (0000000075972488)
-[LOG] SoundI::release                          :  (00000000783B0358)
-[LOG] SoundI::release                          :     HS_Throw_LowNoise-004 (0000000047CA4E18)
-[LOG] SoundI::release                          :  (0000000073A0D048)
-[LOG] SoundI::release                          :     HS_Throw_Glass-001 (000000006A2DF908)
-[LOG] SoundI::release                          :  (0000000079483D58)
-[LOG] SoundI::release                          :     HS_Throw_Glass-002 (00000000590F1908)
-[LOG] SoundI::release                          :  (0000000073978818)
-[LOG] SoundI::release                          :     HS_Throw_Glass-003 (0000000047CA2578)
-[LOG] SoundI::release                          :  (0000000047FE5878)
-[LOG] SoundI::release                          :     HS_Throw_Glass-004 (0000000075970DC8)
-[LOG] SoundI::release                          :  (0000000073A0CED8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Stutter (0000000075970F68)
-[LOG] SoundI::release                          :  (0000000075964BC8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Crunch (0000000075971108)
-[LOG] SoundI::release                          :  (0000000073977288)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Stutter2 (0000000047CA28B8)
-[LOG] SoundI::release                          :  (0000000079483628)
-[LOG] SoundI::release                          :     HS_Hamster Connect_SynthNoise (00000000590F4828)
-[LOG] SoundI::release                          :  (0000000079482938)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Rise (00000000590F51E8)
-[LOG] SoundI::release                          :  (00000000783B11B8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Latch (0000000047CA5E58)
-[LOG] SoundI::release                          :  (0000000073A0D608)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-001 (000000006A2DFAA8)
-[LOG] SoundI::release                          :  (0000000075963D68)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-002 (000000007596CB28)
-[LOG] SoundI::release                          :  (00000000759631E8)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-003 (000000007596D1A8)
-[LOG] SoundI::release                          :  (0000000076A58C88)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-004 (00000000590F37E8)
-[LOG] SoundI::release                          :  (00000000739786A8)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-001 (0000000047CA3F78)
-[LOG] SoundI::release                          :  (00000000794831D8)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-002 (00000000590F3648)
-[LOG] SoundI::release                          :  (0000000048164A68)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-003 (0000000075967938)
-[LOG] SoundI::release                          :  (0000000047FE5598)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-004 (000000007596F088)
-[LOG] SoundI::release                          :  (00000000783B07A8)
-[LOG] SoundI::release                          :     HS_Bike Loop_master (0000000047CA5638)
-[LOG] SoundI::release                          :  (0000000047FE4B88)
-[LOG] SoundI::release                          :     HS_ThrowLoop (2) (000000007596E048)
-[LOG] SoundI::release                          :  (0000000079483A78)
-[LOG] SoundI::release                          :     HS_ThrowLoop (3) (0000000075972968)
-[LOG] SoundI::release                          :  (0000000073977F78)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-002 (0000000047CA30D8)
-[LOG] SoundI::release                          :  (0000000073A0DD38)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-003 (0000000075971928)
-[LOG] SoundI::release                          :  (0000000073978538)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-004 (0000000047CA2D98)
-[LOG] SoundI::release                          :  (000000000F426B88)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-005 (000000006A2DE8C8)
-[LOG] SoundI::release                          :  (00000000759637A8)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-001 (000000007596ED48)
-[LOG] SoundI::release                          :  (0000000079482C18)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-003 (0000000075972E48)
-[LOG] SoundI::release                          :  (0000000047FE4E68)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-004 (000000007596EEE8)
-[LOG] SoundI::release                          :  (0000000047FE48A8)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-005 (0000000075971E08)
-[LOG] SoundI::release                          :  (0000000073977568)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-001 (0000000047CA2BF8)
-[LOG] SoundI::release                          :  (00000000783B1498)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-002 (0000000047CA4118)
-[LOG] SoundI::release                          :  (0000000079482208)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-001 (00000000590F4008)
-[LOG] SoundI::release                          :  (0000000047D92098)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-002 (000000006A2DF0E8)
-[LOG] SoundI::release                          :  (0000000073A0DA58)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-003 (000000006A2E07A8)
-[LOG] SoundI::release                          :  (00000000481655E8)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-004 (0000000075969198)
-[LOG] SoundI::release                          :  (0000000079483348)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-005 (0000000075972B08)
-[LOG] SoundI::release                          :  (0000000076A5A218)
-[LOG] SoundI::release                          :     Blip_Crafting_Dirt_Impact_002 (00000000590F4D08)
-[LOG] SoundI::release                          :  (0000000073976E38)
-[LOG] SoundI::release                          :     HS_Ball Break_Break-001 (0000000047CA57D8)
-[LOG] SoundI::release                          :  (0000000073A0D328)
-[LOG] SoundI::release                          :     HS_Ball Break_Break-002 (000000007596C648)
-[LOG] SoundI::release                          :  (0000000073A0C358)
-[LOG] SoundI::release                          :     HS_Ball Break_Break-003 (000000006A2DF768)
-[LOG] SoundI::release                          :  (00000000783B01E8)
-[LOG] SoundI::release                          :     HS_Ball Break_Break-004 (0000000047CA3758)
-[LOG] SoundI::release                          :  (0000000079482D88)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-001 (00000000590F3308)
-[LOG] SoundI::release                          :  (0000000047FE45C8)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-002 (000000007596B948)
-[LOG] SoundI::release                          :  (0000000079482098)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-003 (00000000759734C8)
-[LOG] SoundI::release                          :  (00000000596A5E58)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-004 (000000006A2E21A8)
-[LOG] SoundI::release                          :  (0000000073977C98)
-[LOG] SoundI::release                          :     HS_Ball Break_Dink-001 (00000000590F2C88)
-[LOG] SoundI::release                          :  (000000000F428118)
-[LOG] SoundI::release                          :     HS_Ball Break_Dink-002 (000000006A2E1648)
-[LOG] SoundI::release                          :  (0000000073A0D8E8)
-[LOG] SoundI::release                          :     HS_Ball Break_Dink-003 (000000007596BC88)
-[LOG] SoundI::release                          :  (00000000783B0918)
-[LOG] SoundI::release                          :     HS_Ball Break_Dink-004 (0000000047CA23D8)
-[LOG] SoundI::release                          :  (00000000783B0BF8)
-[LOG] SoundI::release                          :     HS_Attack_Punch-001 (0000000047CA38F8)
-[LOG] SoundI::release                          :  (00000000596A4D18)
-[LOG] SoundI::release                          :     HS_Attack_Punch-002 (000000006A2DEC08)
-[LOG] SoundI::release                          :  (0000000047FE52B8)
-[LOG] SoundI::release                          :     HS_Attack_Punch-003 (000000007596D348)
-[LOG] SoundI::release                          :  (0000000076A59978)
-[LOG] SoundI::release                          :     HS_Attack_Punch-004 (00000000590F2128)
-[LOG] SoundI::release                          :  (00000000739783C8)
-[LOG] SoundI::release                          :     HS_Ball Break_Noise-001 (0000000047CA5158)
-[LOG] SoundI::release                          :  (0000000073A0CBF8)
-[LOG] SoundI::release                          :     HS_Ball Break_Noise-002 (000000006A2DF5C8)
-[LOG] SoundI::release                          :  (0000000075963ED8)
-[LOG] SoundI::release                          :     HS_Ball Break_Noise-003 (000000007596F3C8)
-[LOG] SoundI::release                          :  (00000000739776D8)
-[LOG] SoundI::release                          :     HS_Ball Break_Noise-004 (00000000590F44E8)
-[LOG] SoundI::release                          :  (0000000048164D48)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-001 (000000007596AB98)
-[LOG] SoundI::release                          :  (00000000783B1D38)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-002 (00000000759694D8)
-[LOG] SoundI::release                          :  (0000000076A59DC8)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-004 (00000000590F3168)
-[LOG] SoundI::release                          :  (00000000794834B8)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-001 (00000000759722E8)
-[LOG] SoundI::release                          :  (0000000048165E88)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-002 (00000000759699B8)
-[LOG] SoundI::release                          :  (0000000073A0C7A8)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-003 (000000007596F8A8)
-[LOG] SoundI::release                          :  (0000000073978988)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-004 (0000000047CA4458)
-[LOG] SoundI::release                          :  (0000000076A5A948)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-005 (00000000590F2AE8)
-[LOG] SoundI::release                          :  (00000000783B18E8)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-006 (0000000047CA3418)
-[LOG] SoundI::release                          :  (0000000047FE42E8)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-007 (000000007596E1E8)
-[LOG] SoundI::release                          :  (0000000047FE3E98)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-008 (000000007596E868)
-[LOG] SoundI::release                          :  (00000000783B0ED8)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-001 (0000000047CA4FB8)
-[LOG] SoundI::release                          :  (00000000783B1048)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-002 (0000000047CA5B18)
-[LOG] SoundI::release                          :  (0000000079483068)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-003 (0000000075972CA8)
-[LOG] SoundI::release                          :  (00000000739779B8)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-004 (00000000590F2948)
-[LOG] SoundI::release                          :  (0000000047FE59E8)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-005 (000000007596C308)
-[LOG] SoundI::release                          :  (0000000076A59C58)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-003 (00000000590F3CC8)
-[LOG] SoundI::release                          :  (0000000075963638)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-004 (000000007596FF28)
-[LOG] SoundI::release                          :  (0000000075964608)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-005 (000000007596EBA8)
-[LOG] SoundI::release                          :  (0000000075963078)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-001 (00000000759708E8)
-[LOG] SoundI::release                          :  (0000000047FE3D28)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-002 (000000007596FD88)
-[LOG] SoundI::release                          :  (00000000783B1778)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Init_Spark (000000007596B3B8)
-[LOG] SoundI::release                          :  (0000000079483EC8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Init_Whoosh (0000000075973188)
-[LOG] SoundI::release                          :  (0000000079482EF8)
-[LOG] SoundI::release                          :     HS_Filling Blocks_HiNoise (0000000075972FE8)
-[LOG] SoundI::release                          :  (0000000048165FF8)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-003 (0000000075967E18)
-[LOG] SoundI::release                          :  (00000000759634C8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Coin (0000000075972628)
-[LOG] SoundI::release                          :  (0000000073976CC8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Init_NoiseImp (0000000047CA3278)
-[LOG] SoundI::release                          :  (0000000079482658)
-[LOG] SoundI::release                          :     HS_Hamster Collected_LowNoise-003 (00000000590F4688)
-[LOG] SoundI::release                          :  (0000000076A58DF8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_LowNoise-004 (00000000590F49C8)
-[LOG] SoundI::release                          :  (0000000073A0DEA8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-001 (000000007596CE68)
-[LOG] SoundI::release                          :  (0000000047FE4FD8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-002 (000000007596E528)
-[LOG] SoundI::release                          :  (00000000783B1BC8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-003 (0000000075968E58)
-[LOG] SoundI::release                          :  (0000000048165198)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-004 (0000000075967C78)
-[LOG] SoundI::release                          :  (0000000075964328)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-001 (000000007596C4A8)
-[LOG] SoundI::release                          :  (0000000048166448)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-002 (000000007596B558)
-[LOG] SoundI::release                          :  (0000000079483908)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-003 (0000000075973668)
-[LOG] SoundI::release                          :  (0000000076A59AE8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-004 (00000000590F1F88)
-[LOG] SoundI::release                          :  (0000000073A0C918)
-[LOG] SoundI::release                          :     HS_New Line_Low Noise (000000007596E388)
-[LOG] SoundI::release                          :  (0000000079483798)
-[LOG] SoundI::release                          :     HS_New Line_Noise (00000000590F1C48)
-[LOG] SoundI::release                          :  (000000000F4265C8)
-[LOG] SoundI::release                          :     HS_New Line_GroundBoost (000000006A2E1B28)
-[LOG] SoundI::release                          :  (0000000075964EA8)
-[LOG] SoundI::release                          :     HS_New Line_Synth (000000007596BE28)
-[LOG] SoundI::release                          :  (00000000783B1A58)
-[LOG] SoundI::release                          :     HS_New Line_Ground (0000000047CA5978)
-[LOG] SoundI::release                          :  (00000000783B1608)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-001 (3) (0000000047CA2238)
-[LOG] SoundI::release                          :  (00000000739773F8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-002 (3) (00000000590F2E28)
-[LOG] SoundI::release                          :  (00000000596A4758)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-004 (3) (000000006A2DEA68)
-[LOG] SoundI::release                          :  (00000000759648E8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-002 (000000007596F708)
-[LOG] SoundI::release                          :  (0000000073978AF8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-003 (0000000047CA2F38)
-[LOG] SoundI::release                          :  (000000000F426FD8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-004 (000000006A2DE728)
-[LOG] SoundI::release                          :  (0000000047FE4178)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-001 (000000007596FA48)
-[LOG] SoundI::release                          :  (0000000073A0D498)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-003 (000000007596D688)
-[LOG] SoundI::release                          :  (0000000075963A88)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-004 (000000007596C988)
-[LOG] SoundI::release                          :  (0000000047FE5428)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-001 (0000000075970C28)
-[LOG] SoundI::release                          :  (00000000739780E8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-002 (0000000047CA52F8)
-[LOG] SoundI::release                          :  (0000000047FE4CF8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-003 (0000000075970408)
-[LOG] SoundI::release                          :  (0000000076A5A4F8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-004 (00000000590F3E68)
-[LOG] SoundI::release                          :  (0000000076A59F38)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-001 (00000000590F4B68)
-[LOG] SoundI::release                          :  (00000000783B0D68)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-002 (0000000047CA4C78)
-[LOG] SoundI::release                          :  (0000000047FE5708)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-001 (000000007596D828)
-[LOG] SoundI::release                          :  (0000000076A5A0A8)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-002 (00000000590F1DE8)
-[LOG] SoundI::release                          :  (000000000F427878)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-003 (000000006A2E1CC8)
-[LOG] SoundI::release                          :  (0000000076A5A668)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-004 (00000000590F5048)
-[LOG] SoundI::release                          :  (00000000783B0A88)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-001 (0000000047CA2718)
-[LOG] SoundI::release                          :  (0000000073A0C638)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-002 (000000007596D4E8)
-[LOG] SoundI::release                          :  (00000000596A7DF8)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-003 (000000006A2E2348)
-[LOG] SoundI::release                          :  (0000000075964778)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-004 (0000000075970268)
-[LOG] SoundI::release                          :  (00000000783B0638)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-001 (0000000047CA2A58)
-[LOG] SoundI::release                          :  (0000000047FE5148)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-002 (0000000075971AC8)
-[LOG] SoundI::release                          :  (0000000073A0D1B8)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-003 (000000007596DD08)
-[LOG] SoundI::release                          :  (0000000048165478)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-004 (0000000075969E98)
-[LOG] SoundI::release                          :  (0000000073A0CD68)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-001 (000000006A2DF288)
-[LOG] SoundI::release                          :  (0000000075963918)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-002 (000000007596BAE8)
-[LOG] SoundI::release                          :  (0000000076A59698)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-003 (00000000590F3B28)
-[LOG] SoundI::release                          :  (0000000073977118)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-004 (0000000047CA4798)
-[LOG] Thread::callback                         : FMOD Studio update thread finished.
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_HighWhoosh-003', format=2, channels=2, frequency=48000, lengthbytes=8512, lengthpcm=53199, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.022430.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Whoosh-003', format=2, channels=2, frequency=48000, lengthbytes=12192, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.999969.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Whoosh-001', format=2, channels=2, frequency=48000, lengthbytes=11648, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.999969.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Flutter-002', format=2, channels=2, frequency=48000, lengthbytes=12288, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.178589.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Whoosh-002', format=2, channels=2, frequency=48000, lengthbytes=11968, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.322449.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Flutter-004', format=2, channels=2, frequency=48000, lengthbytes=12608, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.195801.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_HighWhoosh-004', format=2, channels=2, frequency=48000, lengthbytes=8192, lengthpcm=53199, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.024719.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Flutter-003', format=2, channels=2, frequency=48000, lengthbytes=12288, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.194092.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_HighWhoosh-001', format=2, channels=2, frequency=48000, lengthbytes=8608, lengthpcm=53199, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.021729.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_HighWhoosh-002', format=2, channels=2, frequency=48000, lengthbytes=8192, lengthpcm=53199, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.020325.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Sparkle-004', format=2, channels=2, frequency=48000, lengthbytes=10752, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.339600.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Whoosh-004', format=2, channels=2, frequency=48000, lengthbytes=11968, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.851563.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Sparkle-002', format=2, channels=2, frequency=48000, lengthbytes=10880, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.117157.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Flutter-001', format=2, channels=2, frequency=48000, lengthbytes=12992, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.171906.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Sparkle-003', format=2, channels=2, frequency=48000, lengthbytes=9728, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.108398.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 863872
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 80256
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000006BEDF5CC
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFCA4860D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFCA4860D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFCA4860E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFCA4860F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000000011E6BA28
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='HS_HamsterWhisp_Sparkle-001', format=2, channels=2, frequency=48000, lengthbytes=10880, lengthpcm=67599, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.117188.
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'E:\Github\Hamster Scramble\HamsterBall\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\TempCopy\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[ERR] RuntimeBankModel::openFile               : Failed to open file 'D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\ToUpdate\trunk\Hamster Scramble_FMODProject\Build\Desktop\Master Bank.bank'
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::finishLoadBank                  : Bank with guid {3af05227-d1bf-4060-a295-7eccf2850cff} has already been loaded
+[WRN] ObjectLookup::get                        : Lookup failed for EventModel: {361bf22c-302e-47d3-9fbe-7422efaaa90e}
+[LOG] SoundI::release                          :  (000000005426ED28)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-001 (000000005429DA78)
+[LOG] SoundI::release                          :  (000000005426D068)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-002 (000000005429C898)
+[LOG] SoundI::release                          :  (000000005426EBB8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-003 (000000005429D8D8)
+[LOG] SoundI::release                          :  (0000000054270B58)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Flutter-004 (000000005429F478)
+[LOG] SoundI::release                          :  (000000005426FCF8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-001 (000000005429EAB8)
+[LOG] SoundI::release                          :  (0000000054270598)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-002 (000000005429EC58)
+[LOG] SoundI::release                          :  (000000005426F8A8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-003 (000000005429D738)
+[LOG] SoundI::release                          :  (000000005426CEF8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-004 (000000005429F7B8)
+[LOG] SoundI::release                          :  (000000005426DA78)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-001 (000000005429EDF8)
+[LOG] SoundI::release                          :  (000000005426D628)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-002 (000000005429F618)
+[LOG] SoundI::release                          :  (000000005426D798)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-003 (000000005429DC18)
+[LOG] SoundI::release                          :  (00000000542702B8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Sparkle-004 (000000005429DDB8)
+[LOG] SoundI::release                          :  (00000000542709E8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-001 (000000005429E918)
+[LOG] SoundI::release                          :  (000000005426E318)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-002 (000000005429FC98)
+[LOG] SoundI::release                          :  (000000005426DBE8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-003 (000000005429E778)
+[LOG] SoundI::release                          :  (000000005426DD58)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Whoosh-004 (000000005429CA38)
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
 [LOG] Thread::callback                         : FMOD Studio sample load thread finished.
 [LOG] LiveUpdate::release                      : 

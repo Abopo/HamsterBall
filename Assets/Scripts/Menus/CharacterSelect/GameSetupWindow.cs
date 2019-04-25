@@ -30,11 +30,13 @@ public class GameSetupWindow : MonoBehaviour {
         gameObject.SetActive(true);
     }
 
-    // Use this for initialization
-    void Start () {
+    private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
         _characterSelect = FindObjectOfType<CharacterSelect>();
+    }
 
+    // Use this for initialization
+    void Start () {
         GetOptions();
 
         OptionsSetup();
@@ -217,21 +219,6 @@ public class GameSetupWindow : MonoBehaviour {
             return;
         }
 
-        // If either team has no players, we should load single player levels
-        //if(teamLeft.numPlayers == 0 || teamRight.numPlayers == 0) {
-        //    _gameManager.isSinglePlayer = true;
-        //}
-
-        if(_gameManager.demoMode) {
-            if(_gameManager.isSinglePlayer) {
-                SceneManager.LoadScene("Forest - SinglePlayer");
-            } else {
-                SceneManager.LoadScene("Forest");
-            }
-
-            return;
-        }
-
         //if (_gameManager.isOnline) {
             //PhotonNetwork.LoadLevel("NetworkedMapSelect");
         //    PhotonNetwork.LoadLevel("NetworkedMapSelectWheel");
@@ -242,14 +229,15 @@ public class GameSetupWindow : MonoBehaviour {
 
     // Sets the game up for demo mode and skips this menu
     public void DemoSetup() {
+        _gameManager = FindObjectOfType<GameManager>();
+
         _gameManager.GetComponent<PlayerManager>().SetAimAssist(false);
-        _gameManager.HamsterSpawnMax = 10;
+        _gameManager.HamsterSpawnMax = 8;
         HamsterSpawner.canBeRainbow = true;
         HamsterSpawner.canBeDead = false;
         HamsterSpawner.canBeBomb = false;
         HamsterSpawner.canBeGravity = false;
 
         SceneManager.LoadScene("MapSelectWheel");
-        //SceneManager.LoadScene("Forest");
     }
 }

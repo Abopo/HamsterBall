@@ -213,6 +213,8 @@ public class ThrowState : PlayerState {
         aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 90.01f);
         aimingArrow.gameObject.SetActive (false);
 
+        SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
         if (_aimingLine != null) {
             _aimingLine.Stop();
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AimingLine : MonoBehaviour {
     public LayerMask collisionMask1;
 
-    GameObject _aimDotObj;
+    public GameObject _aimDotObj;
 
     List<AimDot> _aimDots = new List<AimDot>();
 
@@ -22,11 +22,10 @@ public class AimingLine : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _aimDotObj = Resources.Load<GameObject>("Prefabs/Effects/AimDot");
 	}
 	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
         Raycasts();
 
         if (_generating) {

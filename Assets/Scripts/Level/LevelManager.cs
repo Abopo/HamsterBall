@@ -93,13 +93,13 @@ public class LevelManager : MonoBehaviour {
     void SetStageMusic() {
         switch (stage) {
             case STAGES.FOREST:
-			SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
-				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
                 break;
             case STAGES.MOUNTAIN:
-			SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
-				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
                 break;
             case STAGES.BEACH:
@@ -355,6 +355,7 @@ public class LevelManager : MonoBehaviour {
 
     void OnSceneExit(Scene scene) {
         // Stop looping sounds here
-
+        SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

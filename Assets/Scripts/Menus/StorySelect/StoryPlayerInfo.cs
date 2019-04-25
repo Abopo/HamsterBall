@@ -38,15 +38,19 @@ public class StoryPlayerInfo : MonoBehaviour {
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode) {
         // If we've loaded in story select
-        if (scene.buildIndex == 2) {
+        if (scene.name == "StorySelect") {
             // Turn on the info boxes
             foreach (PlayerInfoBox pib in _playerInfoBoxes) {
-                pib.gameObject.SetActive(true);
+                if (pib != null) {
+                    pib.gameObject.SetActive(true);
+                }
             }
         } else {
             // Turn off the info boxes
             foreach (PlayerInfoBox pib in _playerInfoBoxes) {
-                pib.gameObject.SetActive(false);
+                if (pib != null) {
+                    pib.gameObject.SetActive(false);
+                }
             }
         }
     }
