@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour {
 	public string HamsterTravel;
 	public string HamsterOrbCreate;
 	public string NewLine;
+	public string WallBounce;
 
 	//Generic Player Sounds
 	public string FootstepOneshot;

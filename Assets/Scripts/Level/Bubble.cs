@@ -293,8 +293,10 @@ public class Bubble : MonoBehaviour {
             if(_velocity.x > 0 && other.transform.position.x > transform.position.x || 
                 _velocity.x < 0 && other.transform.position.x < transform.position.x) {
                 // Bounce the bubble the opposite direction
+                //BOUNCE AUDIO
                 _velocity = new Vector2(_velocity.x * -1, _velocity.y);
 
+				FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.WallBounce);
                 // Banked combo effect stuff
                 _bankedPos = transform.position;
                 // Check which side we collided on

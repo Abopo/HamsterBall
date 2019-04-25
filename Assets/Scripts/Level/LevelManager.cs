@@ -94,10 +94,12 @@ public class LevelManager : MonoBehaviour {
         switch (stage) {
             case STAGES.FOREST:
 			SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
                 break;
             case STAGES.MOUNTAIN:
 			SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
                 break;
             case STAGES.BEACH:
