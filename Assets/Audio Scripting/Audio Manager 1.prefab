@@ -22,8 +22,9 @@ GameObject:
   - component: {fileID: 114647123583609950}
   - component: {fileID: 114325352463117294}
   - component: {fileID: 114858761058321054}
-  - component: {fileID: 81866860766650720}
   - component: {fileID: 114089465308646052}
+  - component: {fileID: 81234181167284338}
+  - component: {fileID: 114801578689992838}
   m_Layer: 0
   m_Name: Audio Manager 1
   m_TagString: Untagged
@@ -44,7 +45,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &81866860766650720
+--- !u!81 &81234181167284338
 AudioListener:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -107,6 +108,19 @@ MonoBehaviour:
   PlayerAttack: event:/PlayerAttack
   PlayerJump: event:/PlayerJump
   MusicMain: event:/MainMusic
+  HappyDaysMusic: event:/MenuMusic
+--- !u!114 &114801578689992838
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1773127477766632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListenerNumber: 0
 --- !u!114 &114858761058321054
 MonoBehaviour:
   m_ObjectHideFlags: 1

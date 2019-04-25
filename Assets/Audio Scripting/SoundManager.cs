@@ -31,6 +31,9 @@ public class SoundManager : MonoBehaviour {
 	public string MusicMain;
 	public FMOD.Studio.EventInstance MusicMainEvent;
 
+	public string HappyDaysMusic;
+	public FMOD.Studio.EventInstance HappyDaysMusicEvent;
+
 	public FMOD.Studio.EventInstance ThrowAngleEvent;
 	public FMOD.Studio.EventInstance HamsterFillBallEvent;
 	//Generic Player Sounds EventInstance
