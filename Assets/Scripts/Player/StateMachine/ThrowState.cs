@@ -13,6 +13,8 @@ public class ThrowState : PlayerState {
     float throwTime = 0.2f;
 
     bool _hasThrown;
+    public bool throwStateActive;
+
 
     AimingLine _aimingLine;
 
@@ -41,11 +43,12 @@ public class ThrowState : PlayerState {
 
         _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
         _hasThrown = false;
+        throwStateActive = true;
 
         // For now this is only for the AI
         playerController.significantEvent.Invoke();
 
-		SoundManager.mainAudio.ThrowAngleEvent.start();
+		//SoundManager.mainAudio.ThrowAngleEvent.start();
     }
 
     // Update is called once per frame
@@ -213,7 +216,8 @@ public class ThrowState : PlayerState {
         aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 90.01f);
         aimingArrow.gameObject.SetActive (false);
 
-        SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+		throwStateActive = false;
+        //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
         if (_aimingLine != null) {
             _aimingLine.Stop();

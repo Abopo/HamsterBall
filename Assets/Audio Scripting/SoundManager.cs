@@ -23,7 +23,7 @@ public class SoundManager : MonoBehaviour {
 	public string FootstepOneshot;
 	public string SwingNetOneshot;
 	public string ThrowStartOneshot;
-	public string ThrowAngleLoop;
+	//public string ThrowAngleLoop;
 	public string ThrowEndOneShot;
 	public string PlayerAttack;
 	public string PlayerJump;
@@ -35,7 +35,7 @@ public class SoundManager : MonoBehaviour {
 	public string HappyDaysMusic;
 	public FMOD.Studio.EventInstance HappyDaysMusicEvent;
 
-	public FMOD.Studio.EventInstance ThrowAngleEvent;
+	//public FMOD.Studio.EventInstance ThrowAngleEvent;
 	public FMOD.Studio.EventInstance HamsterFillBallEvent;
 	//Generic Player Sounds EventInstance
 
@@ -48,7 +48,7 @@ public class SoundManager : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
 
             HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(HamsterFillBall);
-            ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
+            //ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
         }
 	}
 

@@ -13,6 +13,8 @@ public class AimingLine : MonoBehaviour {
     float _generateTime = 0.1f;
     float _generateTimer = 0f;
 
+    FMODUnity.StudioEventEmitter emitter;
+
     Ray2D _ray;
     Vector2 _dir;
     RaycastHit2D _hit;
@@ -20,24 +22,43 @@ public class AimingLine : MonoBehaviour {
     Vector2 _dir2;
     RaycastHit2D _hit2;
 
+
+    //[FMODUnity.EventRef]
+	//public string ThrowAngleLoop;
+	//public FMOD.Studio.EventInstance ThrowAngleLoopEvent;
+
     // Use this for initialization
     void Start () {
+
+		//ThrowAngleLoopEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
+		//Debug.Log("Instance Created");
 	}
-	
+
+	public void OnEnable(){
+		var target = this.gameObject;
+		emitter = target.GetComponent<FMODUnity.StudioEventEmitter>();
+		Debug.Log(emitter);
+	}
+
     // Update is called once per frame
     void Update () {
         Raycasts();
+
+		emitter.SetParameter("LaunchAngle", Mathf.Abs(transform.rotation.z));
 
         if (_generating) {
             _generateTimer += Time.deltaTime;
             if (_generateTimer >= _generateTime) {
                 GenerateAimDot();
+				//ThrowAngleLoopEvent.start();
+				//Debug.Log("Generated Dot");
                 _generateTimer = 0f;
             }
 
             UpdateAimDots();
         }
-		SoundManager.mainAudio.ThrowAngleEvent.setParameterValue("LaunchAngle", Mathf.Abs(transform.rotation.z));
+		//ThrowAngleLoopEvent.setParameterValue("LaunchAngle", Mathf.Abs(transform.rotation.z));
+
     }
 
     void Raycasts() {
@@ -107,6 +128,7 @@ public class AimingLine : MonoBehaviour {
                 DestroyObject(aimDot.gameObject);
             }
         }
+
         _aimDots.Clear();
 
         _generating = false;

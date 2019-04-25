@@ -356,6 +356,6 @@ public class LevelManager : MonoBehaviour {
     void OnSceneExit(Scene scene) {
         // Stop looping sounds here
         SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

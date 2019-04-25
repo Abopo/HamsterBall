@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4000013890957008}
   - component: {fileID: 212000013370802308}
   - component: {fileID: 114671548659744038}
+  - component: {fileID: 114619646721128862}
   m_Layer: 0
   m_Name: AimingArrow
   m_TagString: Untagged
@@ -265,7 +266,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013594012978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.164467, y: -4.398874, z: 0}
+  m_LocalPosition: {x: -2.0794475, y: -1.03847, z: 0}
   m_LocalScale: {x: 0.59110194, y: 0.5911014, z: 0.5911014}
   m_Children:
   - {fileID: 4756504335171006}
@@ -764,6 +765,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44600fb06a5ad474aaea757cd6fae9d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114619646721128862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010318516620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/ThrowLaunchAngleLoop
+  PlayEvent: 11
+  StopEvent: 12
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!114 &114671548659744038
 MonoBehaviour:
   m_ObjectHideFlags: 1

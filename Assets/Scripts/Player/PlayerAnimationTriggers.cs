@@ -28,7 +28,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void ThrowBall() {
         _throwState.Throw();
-		SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+		//SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.ThrowEndOneShot);
     }
 
