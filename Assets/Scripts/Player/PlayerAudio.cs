@@ -48,8 +48,9 @@ public class PlayerAudio : MonoBehaviour {
     }
 
     public void PlayShiftClip() {
-        _audioSource.clip = _shiftClip;
-        _audioSource.Play();
+        //_audioSource.clip = _shiftClip;
+        //_audioSource.Play();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.Shift);
     }
 
     public void PlayShiftReadyClip() {

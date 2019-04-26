@@ -28,6 +28,9 @@ public class SoundManager : MonoBehaviour {
 	public string PlayerAttack;
 	public string PlayerJump;
 
+	//Other Sounds
+	public string Shift;
+
 	//Music
 	public string MusicMain;
 	public FMOD.Studio.EventInstance MusicMainEvent;
