@@ -236,18 +236,19 @@ public class BoardLoader : MonoBehaviour {
     }
 
     void SetupAIPlayers() {
-        _readText = _linesFromFile[_fileIndex++]; // read AI difficulty
+        _readText = _linesFromFile[_fileIndex++]; // read AI character
         if (_readText != "None") {
             PlayerManager playerManager = _gameManager.GetComponent<PlayerManager>();
 
             PlayerInfo aiPlayer = new PlayerInfo();
             aiPlayer.playerNum = 2;
             aiPlayer.isAI = true;
-            //aiPlayer.characterName = CHARACTERNAMES.BOY3;
             // TODO: Implement loading specific characters for ai
-            aiPlayer.charaInfo.name = CHARACTERS.LACKEY;
-            aiPlayer.charaInfo.color = 1;
+            aiPlayer.charaInfo.name = (CHARACTERS)int.Parse(_readText);
+            _readText = _linesFromFile[_fileIndex++]; // read AI character color
+            aiPlayer.charaInfo.color = int.Parse(_readText);
             aiPlayer.team = 1;
+            _readText = _linesFromFile[_fileIndex++]; // read AI difficulty
             aiPlayer.difficulty = int.Parse(_readText);
 
             _readText = _linesFromFile[_fileIndex++]; // read AI character script

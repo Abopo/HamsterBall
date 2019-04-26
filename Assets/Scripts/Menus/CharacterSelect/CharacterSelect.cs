@@ -167,8 +167,8 @@ public class CharacterSelect : MonoBehaviour {
     void UpdateUI() {
         // When all players have locked their characters in,
         // show the press start screen.
-        if (_gameManager.gameMode == GAME_MODE.MP_VERSUS || _gameManager.gameMode == GAME_MODE.MP_PARTY) {
-            if (AllPlayersReady()) {
+        if (_gameManager.gameMode == GAME_MODE.MP_VERSUS || _gameManager.gameMode == GAME_MODE.MP_PARTY || _gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            if (AllPlayersOnTeams()) {
                 if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
                     pressStartText.SetActive(true);
                 } else if (!PhotonNetwork.connectedAndReady) {
@@ -177,8 +177,8 @@ public class CharacterSelect : MonoBehaviour {
             } else {
                 pressStartText.SetActive(false);
             }
-        } else /*if (_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.SP_CLEAR)*/ {
-            if (AllPlayersReady()) {
+        } else if (_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            if (AllPlayersSelected()) {
                 pressStartText.SetActive(true);
             } else {
                 pressStartText.SetActive(false);
@@ -186,7 +186,7 @@ public class CharacterSelect : MonoBehaviour {
         }
     }
 
-    bool AllPlayersReady() {
+    bool AllPlayersOnTeams() {
         // If any players are not on a team
         for(int i = 0; i < NumPlayers+NumAI; i++) {
             if(_players[i].team < 0) {
@@ -197,6 +197,17 @@ public class CharacterSelect : MonoBehaviour {
         // Or any team doesn't have a player
         if (leftTeam.numPlayers == 0 || rightTeam.numPlayers == 0) {
             return false;
+        }
+
+        return true;
+    }
+
+    bool AllPlayersSelected() {
+        for (int i = 0; i < NumPlayers + NumAI; ++i) {
+            // If there is a player that's not underControl yet
+            if (!_players[i].underControl) {
+                return false;
+            }
         }
 
         return true;

@@ -339,15 +339,15 @@ public class GameManager : MonoBehaviour {
 
         gameIsOver = false;
 
-        if (_playerManager == null) {
-            // Must fully find game object for the script because the button stuff is dumb.
-            _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        }
-        _playerManager.ClearAllPlayers();
-
         BubbleManager.ClearAllData();
 
         if(full) {
+            if (_playerManager == null) {
+                // Must fully find game object for the script because the button stuff is dumb.
+                _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
+            }
+            _playerManager.ClearAllPlayers();
+
             ResetGames();
             prevPuzzles.Clear();
             scoreOverflow = 0;

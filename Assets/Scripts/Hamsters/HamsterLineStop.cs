@@ -17,8 +17,12 @@ public class HamsterLineStop : MonoBehaviour {
 	}
 
     void OnTriggerEnter2D(Collider2D other) {
-        if(other.tag == "Hamster") {
+        if (other.tag == "Hamster") {
             other.GetComponent<Hamster>().inLine = true;
+            _hamsterSpawner.HamsterLineStop();
+        }
+        if (other.tag == "PowerUp") {
+            other.GetComponent<PowerUp>().inLine = true;
             _hamsterSpawner.HamsterLineStop();
         }
     }

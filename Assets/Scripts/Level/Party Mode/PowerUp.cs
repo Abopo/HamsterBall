@@ -11,7 +11,11 @@ public class PowerUp : Entity {
 
     public bool exitedPipe;
     public bool inRightPipe;
+    public bool inLine;
+    public bool exitedLine;
 
+    public float curMoveSpeed;
+    public float moveSpeedModifier; // Is added to the move speed
     protected float _moveSpeed = 3.75f;
 
     protected bool _isActive = false;
@@ -22,6 +26,9 @@ public class PowerUp : Entity {
     float _stuckTime = 0.5f;
 
     int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
+    public int CurState {
+        get { return _curState; }
+    }
 
     protected HamsterSpawner _parentSpawner;
     protected SpriteRenderer _spriteRenderer;
@@ -32,7 +39,9 @@ public class PowerUp : Entity {
 
     protected GameManager _gameManager;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _audioSource = GetComponent<AudioSource>();
         _powerText = GetComponentInChildren<PowerUpText>();
@@ -95,9 +104,9 @@ public class PowerUp : Entity {
 
     void UpdateVelocity() {
         if (facingRight) {
-            velocity.x = _moveSpeed * (exitedPipe ? WaterMultiplier : 1);
+            velocity.x = curMoveSpeed * (exitedPipe ? WaterMultiplier : 1);
         } else {
-            velocity.x = -_moveSpeed * (exitedPipe ? WaterMultiplier : 1);
+            velocity.x = -curMoveSpeed * (exitedPipe ? WaterMultiplier : 1);
         }
     }
 
@@ -124,10 +133,14 @@ public class PowerUp : Entity {
 
         if (other.tag == "PipeCornerLeft") {
             FaceRight();
-            exitedPipe = true;
+            if (other.name == "Blocker") {
+                exitedPipe = true;
+            }
         } else if (other.tag == "PipeCornerRight") {
             FaceLeft();
-            exitedPipe = true;
+            if (other.name == "Blocker") {
+                exitedPipe = true;
+            }
         } else if (other.tag == "Pipe Turn 1") {
             // Turn into connecting pipe
             if (inRightPipe) {
@@ -141,6 +154,27 @@ public class PowerUp : Entity {
             FaceUp();
 
             UpdateVelocity();
+        } else if (other.tag == "Bottom Pipe Entrance Left") {
+            exitedPipe = false;
+            inRightPipe = false;
+        } else if (other.tag == "Bottom Pipe Entrance Right") {
+            exitedPipe = false;
+            inRightPipe = true;
+        }
+
+        // If we run into another hamster in line, stop moving
+        if (other.tag == "Hamster" && !exitedLine) {
+            if (other.GetComponent<Hamster>().CurState == 0) {
+                inLine = true;
+                SetState(0);
+            }
+        }
+        // Or if we run into a power up
+        if (other.tag == "PowerUp" && !exitedLine) {
+            if (other.GetComponent<PowerUp>().CurState == 0) {
+                inLine = true;
+                SetState(0);
+            }
         }
     }
 
@@ -211,5 +245,25 @@ public class PowerUp : Entity {
 
     protected virtual void Deactivate() {
         DestroyObject(this.gameObject);
+    }
+
+    public void SetState(int state) {
+        _curState = state;
+
+        switch (_curState) {
+            case 0: // Idle
+                if (inRightPipe) {
+                    FaceLeft();
+                } else {
+                    FaceRight();
+                }
+                curMoveSpeed = 0;
+                break;
+            case 1: // Walk
+                curMoveSpeed = _moveSpeed;
+                break;
+            case 2: // Fall
+                break;
+        }
     }
 }

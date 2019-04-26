@@ -342,10 +342,19 @@ public class LevelManager : MonoBehaviour {
     }
 
     public void NextGame() {
+        // If we're in a story stage with a doc to load
         if (_gameManager.LevelDoc != null) {
             _gameManager.CleanUp(false);
-            BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
-            boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
+
+            // If we're playing versus
+            if(_gameManager.gameMode == GAME_MODE.MP_VERSUS) {
+                // We don't need to reload the doc, just continue the game
+                _gameManager.ContinueLevel();
+            } else {
+                // Otherwise we need to read the next doc and load the stage
+                BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
+                boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
+            }
         } else if (!_gameManager.isOnline) {
             _gameManager.ContinueLevel();
         } else if (PhotonNetwork.connectedAndReady) {

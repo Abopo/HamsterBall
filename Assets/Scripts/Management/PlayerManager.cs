@@ -171,61 +171,6 @@ public class PlayerManager : MonoBehaviour {
         return -1;
     }
 
-    /*
-    public CHARACTERNAMES GetNextAvailableCharacterUp(CHARACTERNAMES startChara) {
-        CHARACTERNAMES character = startChara;
-
-        int counter = 0;
-        while (IsCharacterTaken(character)) {
-            character = character + 1;
-            if(character >= CHARACTERNAMES.NUM_CHARACTERS) {
-                character = 0;
-            }
-
-            // If we've looped through the whole thing and haven't found an open slot
-            counter++;
-            if(counter >= (int)CHARACTERNAMES.NUM_CHARACTERS) {
-                // Leave and return the starting character
-                character = startChara;
-                break;
-            }
-        }
-
-        return character;
-    }
-    public CHARACTERNAMES GetNextAvailableCharacterDown(CHARACTERNAMES startChara) {
-        CHARACTERNAMES character = startChara;
-
-        int counter = 0;
-        while (IsCharacterTaken(character)) {
-            character = character - 1;
-            if (character < 0) {
-                character = CHARACTERNAMES.NUM_CHARACTERS-1;
-            }
-
-            // If we've looped through the whole thing and haven't found an open slot
-            counter++;
-            if (counter >= (int)CHARACTERNAMES.NUM_CHARACTERS) {
-                // Leave and return the starting character
-                character = startChara;
-                break;
-            }
-        }
-
-        return character;
-    }
-
-    public bool IsCharacterTaken(CHARACTERNAMES chara) {
-        foreach (PlayerInfo p in _players) {
-            if(p.characterName == chara) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-    */
-
     public void SetAimAssist(bool on) {
         foreach(PlayerInfo p in _players) {
             p.aimAssist = on;

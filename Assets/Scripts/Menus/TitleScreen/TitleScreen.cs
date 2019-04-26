@@ -7,10 +7,15 @@ using Rewired;
 public class TitleScreen : MonoBehaviour {
 
     InputState _input;
+    GameManager _gameManager;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
         _input = new InputState(0);
+        _gameManager = FindObjectOfType<GameManager>();
+    }
+
+    // Use this for initialization
+    void Start () {
     }
 	
 	// Update is called once per frame
@@ -18,6 +23,7 @@ public class TitleScreen : MonoBehaviour {
         _input.GetInput();
         if(_input.select.isJustPressed) {
             // Load in demo mode
+            _gameManager.demoMode = true;
             SceneManager.LoadScene("LocalPlay");
         } else if(_input.AnyButtonPressed()) {
             // Load village

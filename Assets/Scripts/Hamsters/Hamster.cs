@@ -290,8 +290,15 @@ public class Hamster : Entity {
         }
 
         // If we run into another hamster in line, stop moving
-        if(other.tag == "Hamster"&& !exitedLine) {
+        if(other.tag == "Hamster" && !exitedLine) {
             if(other.GetComponent<Hamster>().CurState == 0) {
+                inLine = true;
+                SetState(0);
+            }
+        }
+        // Or if we run into a power up
+        if(other.tag == "PowerUp" && !exitedLine) {
+            if(other.GetComponent<PowerUp>().CurState == 0) {
                 inLine = true;
                 SetState(0);
             }

@@ -368,6 +368,10 @@ public class CharacterSelector : MonoBehaviour {
         tempInfo.name = curCharacterIcon.charaName;
         tempInfo.color = charaColor;
         tempInfo.team = playerController.team;
+        // TODO: Make it so they can't get a team at all in the character select
+        if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SURVIVAL) {
+            tempInfo.team = -1;
+        }
         _playerManager.AddPlayer(playerNum, isAI, tempInfo);
     }
 

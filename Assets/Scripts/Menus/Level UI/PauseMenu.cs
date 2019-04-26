@@ -69,7 +69,7 @@ public class PauseMenu : MonoBehaviour {
         _player = ReInput.players.GetPlayer(playerID);
 
         // Use that players inputs to control the menu options
-        MenuOption[] options = GetComponentsInChildren<MenuOption>();
+        MenuOption[] options = GetComponentsInChildren<MenuOption>(true);
         foreach(MenuOption option in options) {
             option.SetPlayer(playerID);
         }
