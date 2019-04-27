@@ -9,7 +9,13 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     CatchState _bubbleState;
     AttackState _attackState;
 
+	FMODUnity.StudioEventEmitter footstepEmitter;
+	//FMODUnity.StudioEventEmitter netSwingEmitter;
+
+	//public FMOD.Studio.EventInstance PlayerFootstepEvent
+	public FMOD.Studio.EventInstance SwingNetEvent;
 	public FMOD.Studio.EventInstance PlayerFootstepEvent;
+
 	// Use this for initialization
 	void Start () {
         _playerController = GetComponentInParent<PlayerController>();
@@ -17,13 +23,22 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _bubbleState = (CatchState)_playerController.GetPlayerState(PLAYER_STATE.CATCH);
         _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
 
-		PlayerFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.FootstepOneshot);
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerFootstepEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
+		PlayerFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerFootstep);
     }
+
+	public void OnEnable(){
+		var target1 = this.gameObject;
+		footstepEmitter = target1.GetComponent<FMODUnity.StudioEventEmitter>();
+		//netSwingEmitter = target1.GetComponent<FMODUnity.StudioEventEmitter.>();
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(SwingNetEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerFootstepEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+	}
 
     // Update is called once per frame
     void Update () {
-		
+		SwingNetEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+		PlayerFootstepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 	}
 
     public void ThrowBall() {
@@ -34,7 +49,8 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void NetSwingOn() {
         _bubbleState.Activate();
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SwingNetOneshot);
+		SwingNetEvent.start();
+		//netSwingEmitter.Play();
     }
 
     public void NetSwingOff() {

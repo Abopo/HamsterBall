@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 61720589880231956}
   - component: {fileID: 82000010006431056}
   - component: {fileID: 50158078898383876}
+  - component: {fileID: 114412069186812108}
   m_Layer: 11
   m_Name: AIPlayer
   m_TagString: Player
@@ -135,6 +136,7 @@ GameObject:
   - component: {fileID: 212622639856712046}
   - component: {fileID: 95320067421082528}
   - component: {fileID: 114352491722543578}
+  - component: {fileID: 114741863504645968}
   m_Layer: 11
   m_Name: Sprite
   m_TagString: Untagged
@@ -266,7 +268,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013594012978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.0794475, y: -1.03847, z: 0}
+  m_LocalPosition: {x: -2.0856974, y: -1.5885394, z: -22.988117}
   m_LocalScale: {x: 0.59110194, y: 0.5911014, z: 0.5911014}
   m_Children:
   - {fileID: 4756504335171006}
@@ -765,6 +767,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44600fb06a5ad474aaea757cd6fae9d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114412069186812108
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013594012978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/PlayerJump
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 90
+  OverrideMaxDistance: 4850
 --- !u!114 &114619646721128862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -803,6 +827,28 @@ MonoBehaviour:
     m_Bits: 4210688
   _aimDotObj: {fileID: 1017865717118922, guid: 38c0c946534635b4cb5a2e83b964a65a, type: 2}
   _generating: 0
+--- !u!114 &114741863504645968
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1056040014052552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/SingleFootstepEvent
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 11
+  OverrideMaxDistance: 14
 --- !u!212 &212000010554698640
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -5,6 +5,6 @@ using UnityEngine;
 public class PlayerSounds : MonoBehaviour {
 
 	public void Footstep(){
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.FootstepOneshot);
+		//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.FootstepOneshot);
 	}
 }

@@ -5,7 +5,7 @@
             <value>ThrowStart</value>
         </property>
         <property name="outputFormat">
-            <value>1</value>
+            <value>2</value>
         </property>
         <relationship name="folder">
             <destination>{f9bdb44e-ec29-4a95-bbaa-2026b7d6f563}</destination>
@@ -56,7 +56,7 @@
             <destination>{82ca96ab-a483-4e1c-8b44-0de489612f00}</destination>
         </relationship>
         <relationship name="output">
-            <destination>{445169aa-4f12-482b-b82c-99e9763e67d9}</destination>
+            <destination>{cc12ff0b-0594-45e3-850f-587fe4d710f6}</destination>
         </relationship>
     </object>
     <object class="EventAutomatableProperties" id="{cc3cd94d-4e6d-4e80-9b89-9cc2e9efb0b3}"/>
@@ -234,6 +234,7 @@
         <relationship name="effects">
             <destination>{1a7004f0-8745-4652-8c2d-4bbc5d8c7aa6}</destination>
             <destination>{eb6dce77-896a-4553-a76c-28b70384ad18}</destination>
+            <destination>{225bb7be-2ab6-4106-9117-85a9d81b4bd6}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{d31e86fa-cda4-4e4b-aca3-3c0c48d3990c}"/>
@@ -270,6 +271,7 @@
         <relationship name="effects">
             <destination>{cee650dd-852c-489c-a528-4c096086a026}</destination>
             <destination>{90360470-8112-4524-8497-6a79a1c57a4c}</destination>
+            <destination>{59ad1519-18e1-4059-aed3-6b2b72a2726f}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{87eb5445-4ffb-4ca1-bc0d-8b6d18cdf0a9}"/>
@@ -399,6 +401,14 @@
             <value>-9.5</value>
         </property>
     </object>
+    <object class="SpatialiserEffect" id="{225bb7be-2ab6-4106-9117-85a9d81b4bd6}">
+        <property name="minimumDistance">
+            <value>11</value>
+        </property>
+        <property name="maximumDistance">
+            <value>14</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{cee650dd-852c-489c-a528-4c096086a026}"/>
     <object class="PitchShifterEffect" id="{90360470-8112-4524-8497-6a79a1c57a4c}">
         <property name="pitch">
@@ -407,6 +417,14 @@
         <relationship name="modulators">
             <destination>{bf8013b6-4310-4588-9b9d-b07ba459cef7}</destination>
         </relationship>
+    </object>
+    <object class="SpatialiserEffect" id="{59ad1519-18e1-4059-aed3-6b2b72a2726f}">
+        <property name="minimumDistance">
+            <value>11</value>
+        </property>
+        <property name="maximumDistance">
+            <value>14</value>
+        </property>
     </object>
     <object class="MixerBusFader" id="{265f596e-b739-4b47-99a5-56894982e013}"/>
     <object class="PitchShifterEffect" id="{83a23321-61a3-4279-b1b9-011ed611ff26}">

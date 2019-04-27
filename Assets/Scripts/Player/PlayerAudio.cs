@@ -13,12 +13,13 @@ public class PlayerAudio : MonoBehaviour {
 
     AudioSource _audioSource;
 
-	
+	public FMOD.Studio.EventInstance PlayerJumpEvent;
+
     // Use this for initialization
     void Start () {
         _audioSource = GetComponent<AudioSource>();
         LoadSFX ();
-
+		PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
     }
 
     void LoadSFX() {
@@ -31,15 +32,19 @@ public class PlayerAudio : MonoBehaviour {
         _hitClip = Resources.Load<AudioClip>("Audio/SFX/Hit_Hurt");
     }
 
+    void OnEnable(){
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerJumpEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+    }
     // Update is called once per frame
     void Update () {
-
+		PlayerJumpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 	}
 
     public void PlayJumpClip() {
         //_audioSource.clip = _jumpClip;
         //_audioSource.Play();
-		FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerJump");
+		//FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerJump");
+		PlayerJumpEvent.start();
     }
 
     public void PlayBubbleClip() {

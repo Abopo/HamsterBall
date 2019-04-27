@@ -20,7 +20,7 @@ public class SoundManager : MonoBehaviour {
 	public string WallBounce;
 
 	//Generic Player Sounds
-	public string FootstepOneshot;
+	public string PlayerFootstep;
 	public string SwingNetOneshot;
 	public string ThrowStartOneshot;
 	//public string ThrowAngleLoop;
@@ -58,11 +58,6 @@ public class SoundManager : MonoBehaviour {
 	void Footstep (){
 		FMODUnity.RuntimeManager.PlayOneShot("event:/SingleFootstepEvent");
 	}
-
-	void Jump (){
-		FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerJump");
-	}
-
 	//SoundManager.mainAudio.Footstep()
 	//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
 }
