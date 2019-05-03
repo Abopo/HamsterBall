@@ -62,7 +62,8 @@ public class Bubble : MonoBehaviour {
     bool _destroy = false;
     bool _boardChanged = false;
 
-
+	public FMOD.Studio.EventInstance BubbleDropEvent;
+		
     PlayerController _playerController;
     public PlayerController PlayerController {
         get { return _playerController; }
@@ -147,6 +148,8 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
         }
@@ -707,6 +710,9 @@ public class Bubble : MonoBehaviour {
 	}
 
 	public void Drop() {
+		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
 		locked = false;
         _velocity = new Vector2 (0.0f, -10f);
 		gameObject.layer = 15; // GhostBubble

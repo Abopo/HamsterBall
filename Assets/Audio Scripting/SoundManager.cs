@@ -19,6 +19,9 @@ public class SoundManager : MonoBehaviour {
 	public string NewLine;
 	public string WallBounce;
 
+	//Game Sounds
+	public string BubbleDrop;
+
 	//Generic Player Sounds
 	public string PlayerFootstep;
 	public string SwingNetOneshot;

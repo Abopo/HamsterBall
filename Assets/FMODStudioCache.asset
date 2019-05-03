@@ -34,6 +34,7 @@ MonoBehaviour:
   - {fileID: 114556384920326372}
   - {fileID: 114595262413119524}
   - {fileID: 114046059379871008}
+  - {fileID: 114503323234878252}
   MasterBanks:
   - {fileID: 114463103330479880}
   - {fileID: 114570037072349014}
@@ -42,7 +43,7 @@ MonoBehaviour:
   - {fileID: 114834560753960548}
   StringsBanks:
   - {fileID: 114169718387466888}
-  stringsBankWriteTime: 636919117575472041
+  stringsBankWriteTime: 636925012295515118
   cacheVersion: 3
 --- !u!114 &114001462217497760
 MonoBehaviour:
@@ -90,6 +91,21 @@ MonoBehaviour:
   Max: 0.923773
   Default: 0.386363
 --- !u!114 &114011024333136178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
+--- !u!114 &114012549552385600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -277,8 +293,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 11
-  MaxDistance: 14
+  MinDistance: 13
+  MaxDistance: 16
   Length: 1745
 --- !u!114 &114048823156701486
 MonoBehaviour:
@@ -295,6 +311,21 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114050766638612338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114051373927732574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +363,36 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114052339312546596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
+--- !u!114 &114053635174258002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114058613746333398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,8 +494,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 11
-  MaxDistance: 14
+  MinDistance: 13
+  MaxDistance: 16
   Length: 906
 --- !u!114 &114077220947283490
 MonoBehaviour:
@@ -632,7 +693,37 @@ MonoBehaviour:
   Min: 0
   Max: 3
   Default: 0
+--- !u!114 &114110838722855448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114111709799134302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
+--- !u!114 &114113071716462664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -830,6 +921,21 @@ MonoBehaviour:
   - Name: 
     Value: 720
   Exists: 1
+--- !u!114 &114141836875854304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114141958436189200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,8 +1030,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 11
-  MaxDistance: 14
+  MinDistance: 13
+  MaxDistance: 16
   Length: 500
 --- !u!114 &114157684238384522
 MonoBehaviour:
@@ -1055,11 +1161,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: Hamster Scramble_FMODProject\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636919117575472041
+  lastModified: 636925012295515118
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1584
+    Value: 1638
   Exists: 1
 --- !u!114 &114173358168721722
 MonoBehaviour:
@@ -1549,6 +1655,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114245486796269154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114246474008537352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1727,6 +1848,36 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 768
+--- !u!114 &114274219821737902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
+--- !u!114 &114275508297420294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114276902244100014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,6 +2147,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114323209318376768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114324811569070678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2012,12 +2178,12 @@ MonoBehaviour:
   Banks:
   - {fileID: 114737159779875780}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 1204
+  MinDistance: 13
+  MaxDistance: 16
+  Length: 1450
 --- !u!114 &114325049098559120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2153,6 +2319,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114339195370285768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114340000855224932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2393,6 +2574,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114373429256490006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114374251523756252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2414,7 +2610,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 937
+  Length: 892
 --- !u!114 &114378871130142106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2590,6 +2786,21 @@ MonoBehaviour:
   Name: LaunchAngle
   Min: 0
   Max: 1
+  Default: 0
+--- !u!114 &114404530666835814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
   Default: 0
 --- !u!114 &114405167088614712
 MonoBehaviour:
@@ -3291,6 +3502,21 @@ MonoBehaviour:
   Min: 0
   Max: 3
   Default: 0
+--- !u!114 &114466275505611560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114466884418943646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3556,6 +3782,28 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114503323234878252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/BubblesDrop
+  guid: 453d806d428c2f42aa09408b704fb37b
+  Banks:
+  - {fileID: 114737159779875780}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2691
 --- !u!114 &114506867322758936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3735,8 +3983,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 11
-  MaxDistance: 14
+  MinDistance: 13
+  MaxDistance: 16
   Length: 1408
 --- !u!114 &114523500728838544
 MonoBehaviour:
@@ -3840,6 +4088,21 @@ MonoBehaviour:
   Min: 0.3863626
   Max: 0.9237733
   Default: 0.3863626
+--- !u!114 &114535342571685054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114535978329607798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3949,7 +4212,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 114454168718325952}
+  - {fileID: 114466275505611560}
   MinDistance: 11
   MaxDistance: 14
   Length: 9363
@@ -4072,7 +4335,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114329813731565866}
+  - {fileID: 114053635174258002}
   MinDistance: 0
   MaxDistance: 0
   Length: 151000
@@ -4218,7 +4481,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 11
+  MinDistance: 13
   MaxDistance: 16
   Length: 1298
 --- !u!114 &114596845216625236
@@ -4546,6 +4809,21 @@ MonoBehaviour:
   MinDistance: 0.099999994
   MaxDistance: 5.3999996
   Length: 1408
+--- !u!114 &114661289810505034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114661681677108296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4595,7 +4873,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114870005226865938}
+  - {fileID: 114863877097792082}
   MinDistance: 0
   MaxDistance: 0
   Length: 1108
@@ -4798,7 +5076,37 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114688143229444938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114693594517986776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
+--- !u!114 &114694773922822128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -5026,8 +5334,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 11
-  MaxDistance: 14
+  MinDistance: 13
+  MaxDistance: 16
   Length: 1408
 --- !u!114 &114733598773093614
 MonoBehaviour:
@@ -5097,11 +5405,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: E:\Github\Hamster Scramble\HamsterBall\Hamster Scramble_FMODProject\Build\Desktop\Master
     Bank.bank
-  lastModified: 636919117575402113
+  lastModified: 636925012295435203
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 6186944
+    Value: 6207584
   Exists: 1
 --- !u!114 &114738661266926750
 MonoBehaviour:
@@ -5324,6 +5632,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114771256758064878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114775545985331962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5496,6 +5819,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114800272624797854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114804864975967658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5605,6 +5943,21 @@ MonoBehaviour:
     Value: 794
   Exists: 1
 --- !u!114 &114821298449346954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
+--- !u!114 &114822207800419036
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -5862,6 +6215,21 @@ MonoBehaviour:
   - Name: Desktop
     Value: 3443488
   Exists: 1
+--- !u!114 &114863877097792082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114870005226865938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5876,6 +6244,21 @@ MonoBehaviour:
   Name: CurrentStock
   Min: 0
   Max: 24
+  Default: 0
+--- !u!114 &114870552247045750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
   Default: 0
 --- !u!114 &114877565630276444
 MonoBehaviour:
@@ -6249,6 +6632,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114922408417093080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114923117401007630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6367,7 +6765,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 1408
+  Length: 1060
 --- !u!114 &114933556274027444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6593,6 +6991,21 @@ MonoBehaviour:
   - Name: Desktop
     Value: 944128
   Exists: 0
+--- !u!114 &114955109898771272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114956846030242698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6612,6 +7025,21 @@ MonoBehaviour:
   - Name: Desktop
     Value: 6073920
   Exists: 1
+--- !u!114 &114972216221803940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114977076104451494
 MonoBehaviour:
   m_ObjectHideFlags: 0

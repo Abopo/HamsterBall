@@ -14,12 +14,14 @@ public class PlayerAudio : MonoBehaviour {
     AudioSource _audioSource;
 
 	public FMOD.Studio.EventInstance PlayerJumpEvent;
+	public FMOD.Studio.EventInstance ShiftEvent;
 
     // Use this for initialization
     void Start () {
         _audioSource = GetComponent<AudioSource>();
         LoadSFX ();
 		PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
+		ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
     }
 
     void LoadSFX() {
@@ -34,10 +36,12 @@ public class PlayerAudio : MonoBehaviour {
 
     void OnEnable(){
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerJumpEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(ShiftEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
     // Update is called once per frame
     void Update () {
 		PlayerJumpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+		ShiftEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 	}
 
     public void PlayJumpClip() {
@@ -55,7 +59,7 @@ public class PlayerAudio : MonoBehaviour {
     public void PlayShiftClip() {
         //_audioSource.clip = _shiftClip;
         //_audioSource.Play();
-        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.Shift);
+		ShiftEvent.start();
     }
 
     public void PlayShiftReadyClip() {

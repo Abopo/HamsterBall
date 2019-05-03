@@ -102,6 +102,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{5781b3eb-90f5-4e3e-bfe1-9ec23ed88eca}">
+        <property name="volume">
+            <value>1</value>
+        </property>
         <relationship name="effectChain">
             <destination>{b9ad4da6-b5eb-46f6-8416-1069ac3c8056}</destination>
         </relationship>
@@ -120,7 +123,7 @@
     <object class="MixerBusPanner" id="{82bbac67-ca4b-426f-b757-0a120d14218a}"/>
     <object class="MultiSound" id="{e7e6661c-ec57-41eb-94a5-0ba45644faa8}">
         <property name="length">
-            <value>0.875</value>
+            <value>0.46875</value>
         </property>
         <relationship name="fadeInCurve">
             <destination>{980225e3-dd98-4c62-a928-f4aba88fdcc2}</destination>
@@ -154,7 +157,7 @@
     </object>
     <object class="MultiSound" id="{f0e1ff2d-81e5-4274-9ea2-258f69c97b6d}">
         <property name="length">
-            <value>0.5</value>
+            <value>0.46875</value>
         </property>
         <relationship name="sounds">
             <destination>{676fe0f3-40d2-43bd-af99-61588e8e9d17}</destination>
@@ -182,7 +185,7 @@
     </object>
     <object class="MultiSound" id="{eff809e3-5cc9-4bc3-9fba-d7c8b63490c4}">
         <property name="length">
-            <value>0.9375</value>
+            <value>0.4375</value>
         </property>
         <relationship name="fadeOutCurve">
             <destination>{6b509eba-fe2d-4d33-a3e4-64db1b7565ff}</destination>
@@ -225,6 +228,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{c9f730a9-2df5-40bd-86d7-d1e06b05ddb3}">
+        <property name="volume">
+            <value>-80</value>
+        </property>
         <property name="name">
             <value>Audio 4</value>
         </property>
@@ -386,6 +392,9 @@
     </object>
     <object class="MixerBusPanner" id="{b5a91268-3f6d-4e54-918d-cf5c65319983}"/>
     <object class="CompressorEffect" id="{6269380d-2236-45ec-bda9-561fb97b7d1b}">
+        <property name="bypass">
+            <value>true</value>
+        </property>
         <property name="threshold">
             <value>-16</value>
         </property>
@@ -411,16 +420,16 @@
             <value>8</value>
         </property>
         <property name="frequencyA">
-            <value>517.306396</value>
+            <value>476.162323</value>
         </property>
         <property name="frequencyE">
-            <value>1398.49707</value>
+            <value>1908.24695</value>
         </property>
         <property name="gainA">
-            <value>-5.6896553</value>
+            <value>1.03448153</value>
         </property>
         <property name="gainE">
-            <value>19.6551743</value>
+            <value>15</value>
         </property>
     </object>
     <object class="DelayEffect" id="{7d522095-6608-436b-9966-0d32bdfca247}">
@@ -455,7 +464,7 @@
     </object>
     <object class="AutomationPoint" id="{df30c381-9dd9-4207-a6b6-2aa3124349da}">
         <property name="position">
-            <value>0.125</value>
+            <value>0</value>
         </property>
         <property name="value">
             <value>1</value>
@@ -466,7 +475,7 @@
     </object>
     <object class="AutomationPoint" id="{52c37d39-be97-4b92-8045-6512c2c3f9d2}">
         <property name="position">
-            <value>0.875</value>
+            <value>0.46875</value>
         </property>
         <property name="value">
             <value>0</value>
@@ -476,7 +485,7 @@
     <object class="MixerBusFader" id="{8710a069-adbd-4fc3-8375-eee9a22512da}"/>
     <object class="AutomationPoint" id="{630c8a97-f4b4-4b26-981f-56bb1cc548c6}">
         <property name="position">
-            <value>0.12290532879818561</value>
+            <value>0</value>
         </property>
         <property name="value">
             <value>1</value>
@@ -487,7 +496,7 @@
     </object>
     <object class="AutomationPoint" id="{c40cb520-5b7d-416a-98a5-6c0a29e378ba}">
         <property name="position">
-            <value>0.9375</value>
+            <value>0.4375</value>
         </property>
         <property name="value">
             <value>0</value>
