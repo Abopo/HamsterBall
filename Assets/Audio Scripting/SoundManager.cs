@@ -21,6 +21,8 @@ public class SoundManager : MonoBehaviour {
 
 	//Game Sounds
 	public string BubbleDrop;
+	public string CountDown321;
+	public string CountDownGo;
 
 	//Generic Player Sounds
 	public string PlayerFootstep;

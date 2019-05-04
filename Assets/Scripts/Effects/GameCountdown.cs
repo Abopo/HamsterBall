@@ -21,6 +21,7 @@ public class GameCountdown : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
         _displayText = transform.GetChild(0).GetComponent<Text>();
         _displayText.enabled = true;
 
@@ -56,12 +57,15 @@ public class GameCountdown : MonoBehaviour {
             _stage++;
             switch(_stage) {
                 case 1:
+					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
                     _displayText.text = "2";
                     break;
                 case 2:
                     _displayText.text = "1";
+					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
                     break;
                 case 3:
+					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDownGo);
                     _displayText.text = "GO!";
                     GameStart();
                     break;
