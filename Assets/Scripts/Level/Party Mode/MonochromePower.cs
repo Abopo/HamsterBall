@@ -51,6 +51,11 @@ public class MonochromePower : PowerUp {
     void Monochrome(List<Hamster> hamsters) {
         int rType = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
         foreach(Hamster ham in hamsters) {
+            // Doesn't affect hamsters still in line
+            if (ham.inLine) {
+                continue;
+            }
+
             if (ham.isGravity) {
                 ham.SetType(11, (HAMSTER_TYPES)rType);
             } else {

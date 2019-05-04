@@ -41,6 +41,6 @@ public class VillagePlayerSpawn : MonoBehaviour {
 	}
 
     public void SetSpawnPosition(Vector3 pos) {
-        _spawnPosition = new Vector3(pos.x, pos.y, transform.position.z);
+        _spawnPosition = new Vector3(pos.x, pos.y+0.15f, transform.position.z);
     }
 }

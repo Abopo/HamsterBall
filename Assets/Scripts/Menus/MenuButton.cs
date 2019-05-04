@@ -8,8 +8,8 @@ public class MenuButton : MenuOption {
 
     Button _button;
 
-    Vector3 _baseScale;
-    Vector3 _selectedScale;
+    public Vector3 _baseScale;
+    public Vector3 _selectedScale;
 
     public bool IsInteractable {
         get { return _button.interactable; }
@@ -18,15 +18,20 @@ public class MenuButton : MenuOption {
     protected override void Awake() {
         base.Awake();
 
+        Initialize();
+
+        if(isFirstSelection) {
+            ButtonHighlight();
+        }
+    }
+
+    void Initialize() {
         _baseScale = transform.localScale;
         _selectedScale = new Vector3(_baseScale.x * 1.1f,
                                      _baseScale.y * 1.1f,
                                      _baseScale.z);
 
         _button = GetComponent<Button>();
-        if(isFirstSelection) {
-            ButtonHighlight();
-        }
     }
 
     // Use this for initialization
@@ -64,7 +69,7 @@ public class MenuButton : MenuOption {
 
     void ButtonHighlight() {
         if (_button == null) {
-            _button = GetComponent<Button>();
+            Initialize();
         }
 
         _button.Select();
@@ -80,7 +85,7 @@ public class MenuButton : MenuOption {
 
     public void Enable() {
         if (_button == null) {
-            _button = GetComponent<Button>();
+            Initialize();
         }
 
         _button.interactable = true;
@@ -92,7 +97,7 @@ public class MenuButton : MenuOption {
     }
     public void Disable() {
         if(_button == null) {
-            _button = GetComponent<Button>();
+            Initialize();
         }
 
         _button.interactable = false;

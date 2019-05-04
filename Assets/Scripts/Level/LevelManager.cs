@@ -122,7 +122,7 @@ public class LevelManager : MonoBehaviour {
 
 
             // If we are playing versus
-            if (_gameManager.gameMode == GAME_MODE.MP_VERSUS) {
+            if (_gameManager.gameMode == GAME_MODE.MP_VERSUS || _gameManager.gameMode == GAME_MODE.MP_PARTY) {
                 // Update margin stuff
                 _marginTimer += Time.deltaTime;
                 if (_marginTimer >= _marginTime) {

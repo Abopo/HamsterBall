@@ -33,6 +33,7 @@ public class AIController : MonoBehaviour {
     float _aimTime = 5.0f;
     float _aimTimer = 0f;
     int dumbFrameCount = 0;
+    bool _isAimed = false;
 
     private void Awake() {
         _input = new InputState();
@@ -73,8 +74,8 @@ public class AIController : MonoBehaviour {
                 Jumping();
             }
         } else if(_playerController.curState == PLAYER_STATE.THROW) {
-            if (_curAction.nodeWant != null) {
-                _toNodeWant = _curAction.nodeWant.transform.position - transform.position;
+            if (_curAction.nodeWant != null && _playerController.heldBall != null) {
+                _toNodeWant = _curAction.nodeWant.transform.position - _playerController.heldBall.transform.position;
             }
             AimThrow();
         }
@@ -275,58 +276,7 @@ public class AIController : MonoBehaviour {
 
             // If we're already moving
             } else {
-                // If we aren't jumping
-                if(_playerController.curState != PLAYER_STATE.JUMP) {
-                    // Update where the closest jump is
-                    _targetEndCap = _mapScan.ClosestJump.GetComponent<PlatformEndCap>();
-                }
-
-                // If the target is above us
-                if (_targetEndCap.transform.position.y > transform.position.y) {
-                    // We should try to move toward it
-
-                    // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
-                    // If the target is to our left
-                    if ((_moveDir == 1 && _targetEndCap.transform.position.x < transform.position.x+1f &&
-                        (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP))
-                        /*|| GetComponent<EntityPhysics>().IsTouchingWallRight*/) {
-                        // Change direction to the left
-                        _input.left.isDown = true;
-                        _input.right.isDown = false;
-                        _moveDir = -1;
-
-                    // If the target is to our right
-                    } else if ((_moveDir == -1 && _targetEndCap.transform.position.x > transform.position.x-1f &&
-                               (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP))
-                               /*|| GetComponent<EntityPhysics>().IsTouchingWallLeft*/) {
-                        // Change direction to the right
-                        _input.left.isDown = false;
-                        _input.right.isDown = true;
-                        _moveDir = 1;
-
-                    } else {
-                        // Keep moving the same direction
-                        if (_moveDir == -1) {
-                            _input.left.isDown = true;
-                            _input.right.isDown = false;
-                        } else if (_moveDir == 1) {
-                            _input.left.isDown = false;
-                            _input.right.isDown = true;
-                        }
-                    }
-                    // If the target is below us
-                } else {
-                    // We should try to move to where the platform is
-                    if(_targetEndCap.platformSide == SIDE.LEFT) {
-                        _input.left.isDown = true;
-                        _input.right.isDown = false;
-                        _moveDir = -1;
-                    } else {
-                        _input.left.isDown = false;
-                        _input.right.isDown = true;
-                        _moveDir = 1;
-                    }
-                }
+                ContinueMovingUp();
             }
         }
     }
@@ -354,6 +304,61 @@ public class AIController : MonoBehaviour {
         _isMovingUp = true;
     }
 
+    void ContinueMovingUp() {
+        // If we aren't jumping
+        if (_playerController.curState != PLAYER_STATE.JUMP) {
+            // Update where the closest jump is
+            _targetEndCap = _mapScan.ClosestJump.GetComponent<PlatformEndCap>();
+        }
+
+        // If the target is above us
+        if (_targetEndCap.transform.position.y > transform.position.y) {
+            // We should try to move toward it
+
+            // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
+            // If the target is to our left
+            if ((_moveDir == 1 && _targetEndCap.transform.position.x < transform.position.x + 1f &&
+                (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP))
+                /*|| GetComponent<EntityPhysics>().IsTouchingWallRight*/) {
+                // Change direction to the left
+                _input.left.isDown = true;
+                _input.right.isDown = false;
+                _moveDir = -1;
+
+                // If the target is to our right
+            } else if ((_moveDir == -1 && _targetEndCap.transform.position.x > transform.position.x - 1f &&
+                       (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP))
+                       /*|| GetComponent<EntityPhysics>().IsTouchingWallLeft*/) {
+                // Change direction to the right
+                _input.left.isDown = false;
+                _input.right.isDown = true;
+                _moveDir = 1;
+
+            } else {
+                // Keep moving the same direction
+                if (_moveDir == -1) {
+                    _input.left.isDown = true;
+                    _input.right.isDown = false;
+                } else if (_moveDir == 1) {
+                    _input.left.isDown = false;
+                    _input.right.isDown = true;
+                }
+            }
+            // If the target is below us
+        } else {
+            // We should try to move to where the platform is
+            if (_targetEndCap.platformSide == SIDE.LEFT) {
+                _input.left.isDown = true;
+                _input.right.isDown = false;
+                _moveDir = -1;
+            } else {
+                _input.left.isDown = false;
+                _input.right.isDown = true;
+                _moveDir = 1;
+            }
+        }
+    }
+
     void Jumping() {
         // If we want to move horizontally but there is a step in the way.
         if(_curAction.horWant == 1 && _mapScan.RightStepDistance > 0 && _mapScan.RightStepDistance < 0.5f) {
@@ -379,9 +384,7 @@ public class AIController : MonoBehaviour {
             _input.jump.isDown = true;
         } else if(_mapScan.RightJumpDistance < 1.75f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
             _input.jump.isDown = true;
-        }/* else {
-            _input.jump.isDown = false;
-        }*/
+        }
     }
 
     // Move to a good position to throw a bubble.
@@ -427,7 +430,7 @@ public class AIController : MonoBehaviour {
         // If we're not yet aiming at nodeWant
         Vector2 aimDirection = ((ThrowState)_playerController.currentState).AimDirection;
         float dot = Vector2.Dot(aimDirection.normalized, _toNodeWant.normalized);
-        if (dot < 0.9999f && dumbFrameCount < 30) {
+        if (dot < 0.9999f && dumbFrameCount < 30 && !_isAimed) {
             // Rotate towards the node
 
             // If we've been aiming for too long, just go ahead and throw
@@ -436,6 +439,7 @@ public class AIController : MonoBehaviour {
                 _aimTimer = 0f;
                 dumbFrameCount = 0;
                 _input.swing.isJustPressed = true;
+                _isAimed = false;
             }
 
             // If bubble is on the right
@@ -447,10 +451,11 @@ public class AIController : MonoBehaviour {
             }
 
             // If we are aiming at the node
-        } else if(_actionTimer > _actionTime) {
+        } else if(_actionTimer > _actionTime || _isAimed) {
             // Throw
             dumbFrameCount++; // Waits for 20 frames to make sure aim is on point
             if (dumbFrameCount > 20) {
+                _isAimed = true;
                 OffsetAim();
 
                 if (dumbFrameCount > 30) {
@@ -458,6 +463,7 @@ public class AIController : MonoBehaviour {
                     _aimTimer = 0f;
 
                     _input.swing.isJustPressed = true;
+                    _isAimed = false;
                 }
             }
         }

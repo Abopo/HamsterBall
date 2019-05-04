@@ -23,9 +23,9 @@ public class Hamster : Entity {
 
     public float curMoveSpeed; //  base - 3, rainbow - 4, dead - 2, gravity - 3.5
     public float moveSpeedModifier; // Is added to the move speed
-    float moveSpeed = 3;
+    protected float _moveSpeed = 3;
 
-    int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
+    protected int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
 
     HamsterSpawner _parentSpawner;
     List<int> _okTypes;
@@ -66,7 +66,6 @@ public class Hamster : Entity {
         _curState = 1;
         _animator.SetInteger("State", _curState);
 
-
         moveSpeedModifier = 0;
 
         UpdateVelocity();
@@ -90,18 +89,18 @@ public class Hamster : Entity {
     // If setType is -1, will randomly generate a type.
     public void SetType(int setType) {
         if(setType == (int)HAMSTER_TYPES.RAINBOW) {
-            moveSpeed = rainbowMoveSpeed;
+            _moveSpeed = rainbowMoveSpeed;
         } else if(setType == (int)HAMSTER_TYPES.DEAD) {
-            moveSpeed = deadMoveSpeed;
+            _moveSpeed = deadMoveSpeed;
         } else if(setType == 11) {
             isGravity = true;
             spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
             spiralEffectInstance.transform.parent = transform;
             spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
             setType = SelectValidNormalType();
-            moveSpeed = gravityMoveSpeed;
+            _moveSpeed = gravityMoveSpeed;
         } else {
-            moveSpeed = 3;
+            _moveSpeed = 3;
         }
         type = (HAMSTER_TYPES)setType;
         if (_animator == null) {
@@ -109,7 +108,7 @@ public class Hamster : Entity {
         }
         _animator.SetInteger("Type", (int)type);
 
-        curMoveSpeed = moveSpeed;
+        curMoveSpeed = _moveSpeed;
     }
 
     // This overload is specifically used to set a special type with a color.
@@ -119,7 +118,7 @@ public class Hamster : Entity {
             spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
             spiralEffectInstance.transform.parent = transform;
             spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
-            moveSpeed = gravityMoveSpeed;
+            _moveSpeed = gravityMoveSpeed;
         }
 
         type = cType;
@@ -128,7 +127,7 @@ public class Hamster : Entity {
         }
         _animator.SetInteger("Type", (int)type);
 
-        curMoveSpeed = moveSpeed;
+        curMoveSpeed = _moveSpeed;
     }
 
     int SelectValidNormalType() {
@@ -180,8 +179,6 @@ public class Hamster : Entity {
 
                 UpdateVelocity();
             }
-        } else {
-            //_curState = 1;
         }
 
         // If we are in idle
@@ -202,11 +199,13 @@ public class Hamster : Entity {
             UpdateVelocity();
         }
 
-		_physics.MoveX (velocity.x * Time.deltaTime);
-		_physics.MoveY (velocity.y * Time.deltaTime);
+        if (_curState != 0) {
+            _physics.MoveX(velocity.x * Time.deltaTime);
+            _physics.MoveY(velocity.y * Time.deltaTime);
+        }
 	}
 
-	void UpdateVelocity() {
+	protected void UpdateVelocity() {
 		if (facingRight) {
 			velocity.x = curMoveSpeed * (exitedPipe ? WaterMultiplier : 1) + moveSpeedModifier;
 		} else {
@@ -239,6 +238,54 @@ public class Hamster : Entity {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
+        // Pipe traversal
+        PipeMovement(other);
+
+        // Line collisions
+        LineCollisions(other);
+    }
+
+    void OnTriggerStay2D(Collider2D other) {
+        // Prevent hamsters from overlapping each other
+        // If we are touching another hamster that is moving the same direction and speed as us
+        if (other.tag == "Hamster" && exitedLine && other.GetComponent<Hamster>().velocity.x == velocity.x) {
+            Vector2 toHamster = other.transform.position - transform.position;
+            toHamster.Normalize();
+            // If the other hamster is in front
+            if (Vector2.Dot(transform.right, toHamster) > 0.95f) {
+                // Reduce speed to make space
+                curMoveSpeed = 2.5f;
+                UpdateVelocity();
+            }
+        }
+
+        if ((other.tag == "PipeCornerLeft" || other.tag == "PipeCornerRight") && other.name != "Blocker") {
+            _stuckTimer += Time.deltaTime;
+            if (_stuckTimer >= _stuckTime) {
+                // If we're stuck in the collider for some reason, get set back to a good spot
+                transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.06f, transform.position.z);
+
+                // Turn
+                if (inRightPipe) {
+                    FaceLeft();
+                } else {
+                    FaceRight();
+                }
+
+                _stuckTimer = 0f;
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other) {
+        // We have stopped overlapping with another hamster
+        if (other.tag == "Hamster" && exitedLine) {
+            // Resume normal speed
+            curMoveSpeed = _moveSpeed;
+        }
+    }
+
+    protected void PipeMovement(Collider2D other) {
         if (other.tag == "Pipe Entrance Left") {
             inRightPipe = false;
             ReenterPipe(other.transform);
@@ -288,61 +335,6 @@ public class Hamster : Entity {
             exitedPipe = false;
             inRightPipe = true;
         }
-
-        // If we run into another hamster in line, stop moving
-        if(other.tag == "Hamster" && !exitedLine) {
-            if(other.GetComponent<Hamster>().CurState == 0) {
-                inLine = true;
-                SetState(0);
-            }
-        }
-        // Or if we run into a power up
-        if(other.tag == "PowerUp" && !exitedLine) {
-            if(other.GetComponent<PowerUp>().CurState == 0) {
-                inLine = true;
-                SetState(0);
-            }
-        }
-    }
-
-    void OnTriggerStay2D(Collider2D other) {
-        // Prevent hamsters from overlapping each other
-        // If we are touching another hamster that is moving the same direction and speed as us
-        if (other.tag == "Hamster" && exitedLine && other.GetComponent<Hamster>().velocity.x == velocity.x) {
-            Vector2 toHamster = other.transform.position - transform.position;
-            toHamster.Normalize();
-            // If the other hamster is in front
-            if (Vector2.Dot(transform.right, toHamster) > 0.95f) {
-                // Reduce speed to make space
-                curMoveSpeed = 2.5f;
-                UpdateVelocity();
-            }
-        }
-
-        if ((other.tag == "PipeCornerLeft" || other.tag == "PipeCornerRight") && other.name != "Blocker") {
-            _stuckTimer += Time.deltaTime;
-            if (_stuckTimer >= _stuckTime) {
-                // If we're stuck in the collider for some reason, get set back to a good spot
-                transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.06f, transform.position.z);
-
-                // Turn
-                if (inRightPipe) {
-                    FaceLeft();
-                } else {
-                    FaceRight();
-                }
-
-                _stuckTimer = 0f;
-            }
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other) {
-        // We have stopped overlapping with another hamster
-        if (other.tag == "Hamster" && exitedLine) {
-            // Resume normal speed
-            curMoveSpeed = moveSpeed;
-        }
     }
 
     void ReenterPipe(Transform pipe) {
@@ -353,6 +345,23 @@ public class Hamster : Entity {
 
         // Go down pipe
         FaceDown();
+    }
+
+    protected void LineCollisions(Collider2D other) {
+        // If we run into another hamster in line, stop moving
+        if (other.tag == "Hamster" && !exitedLine) {
+            if (other.GetComponent<Hamster>().CurState == 0) {
+                inLine = true;
+                SetState(0);
+            }
+        }
+        // Or if we run into a power up
+        if (other.tag == "PowerUp" && !exitedLine) {
+            if (other.GetComponent<PowerUp>().CurState == 0) {
+                inLine = true;
+                SetState(0);
+            }
+        }
     }
 
     public void ExitLine() {
@@ -383,7 +392,7 @@ public class Hamster : Entity {
                 _longIdleTimer = 0f;
                 break;
             case 1: // Walk
-                curMoveSpeed = moveSpeed;
+                curMoveSpeed = _moveSpeed;
                 break;
             case 2: // Fall
                 break;

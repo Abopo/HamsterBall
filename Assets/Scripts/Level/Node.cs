@@ -111,7 +111,7 @@ public class Node : MonoBehaviour {
         for (int i = 0; i < 4; ++i) {
             hitCount = 0;
 
-            for (float j = -0.2f; j < 0.4f; j += 0.2f) {
+            for (float j = -0.3f; j < 0.6f; j += 0.3f) {
                 rayDir = new Vector2(-1 + (i * 0.45f) + j / 2, -1);
                 origin = new Vector2(transform.position.x + j, transform.position.y);
                 hit = Physics2D.Raycast(origin, rayDir, 50f, checkMask);
@@ -121,7 +121,7 @@ public class Node : MonoBehaviour {
                         Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
                     }
                 }
-                Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
+                //Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
             }
 
             if (hitCount > 2) {

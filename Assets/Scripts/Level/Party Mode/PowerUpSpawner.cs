@@ -5,16 +5,21 @@ using UnityEngine;
 // Spawns power ups just like hamsters, only used in Party mode
 public class PowerUpSpawner : MonoBehaviour {
     public GameObject powerUpObj;
-    public bool rightSidePipe;
 
     public float _spawnTime;
     float _spawnTimer;
 
     Vector3 _spawnPosition;
 
-    GameObject _powerUp; // reference to the currently spawned power up
+    GameObject _powerUp;
+
+    // There can only be one power up per side of the stage
+    // References to the currently spawned power up
+    public static GameObject _leftPowerUp;
+    public static GameObject _rightPowerUp;
 
     GameManager _gameManager;
+    HamsterSpawner _hamsterSpawner;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +31,7 @@ public class PowerUpSpawner : MonoBehaviour {
         _spawnPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z + 5f);
 
         _gameManager = FindObjectOfType<GameManager>();
+        _hamsterSpawner = GetComponent<HamsterSpawner>();
     }
 
     void ResetSpawnTime() {
@@ -40,29 +46,55 @@ public class PowerUpSpawner : MonoBehaviour {
             return;
         }
 
-        if (_powerUp == null) {
+        if(_hamsterSpawner.team == 1 && _rightPowerUp == null) {
             _spawnTimer += Time.deltaTime;
-            if (_spawnTimer >= _spawnTime) {
-                SpawnPowerUp();
-
-                // Choose the next power up right now
-
-                _spawnTimer = 0;
-            }
+        } else if(_hamsterSpawner.team == 0 && _leftPowerUp == null) {
+            _spawnTimer += Time.deltaTime;
         }
     }
 
+    public bool TrySpawnPowerUp() {
+        if (_spawnTimer >= _spawnTime) {
+            SpawnPowerUp();
+
+            // Choose the next power up right now (for networking?)
+
+            _spawnTimer = 0;
+
+            return true;
+        }
+
+        return false;
+    }
+
     void SpawnPowerUp() {
-        _powerUp = Instantiate(powerUpObj, _spawnPosition, Quaternion.identity) as GameObject;
-        PowerUp pUp = ChoosePowerUp(_powerUp);
-        //PowerUp pUp = _powerUp.GetComponent<PowerUp>();
-        if (rightSidePipe) {
+        PowerUp pUp;
+        if(_hamsterSpawner.team == 1) {
+            _rightPowerUp = Instantiate(powerUpObj, _spawnPosition, Quaternion.identity) as GameObject;
+            pUp = ChoosePowerUp(_rightPowerUp);
+        } else {
+            _leftPowerUp = Instantiate(powerUpObj, _spawnPosition, Quaternion.identity) as GameObject;
+            pUp = ChoosePowerUp(_leftPowerUp);
+        }
+        if (_hamsterSpawner.rightSidePipe) {
             pUp.Flip();
             pUp.inRightPipe = true;
+            if (_hamsterSpawner.twoTubes) {
+                pUp.FaceRight();
+            } else {
+                pUp.FaceLeft();
+            }
         } else {
             pUp.inRightPipe = false;
+            if (_hamsterSpawner.twoTubes) {
+                pUp.FaceLeft();
+            } else {
+                pUp.FaceRight();
+            }
         }
-        pUp.FaceUp();
+        pUp.ParentSpawner = _hamsterSpawner;
+
+        _hamsterSpawner.HamsterLine.Add(pUp);
     }
 
     PowerUp ChoosePowerUp(GameObject powUp) {

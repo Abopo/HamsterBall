@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 50337038204378126}
   - component: {fileID: 61358802831972752}
   m_Layer: 0
-  m_Name: Story Door
+  m_Name: Versus Door
   m_TagString: Village Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1780229601441928}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.72, y: -4.16, z: 3.5}
+  m_LocalPosition: {x: -2.85, y: -4.99, z: 3.5}
   m_LocalScale: {x: 2.7188103, y: 2.6226811, z: 1}
   m_Children:
   - {fileID: 4519495208602788}
@@ -107,7 +107,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1868523718941702}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.102, y: -0.269, z: -1}
+  m_LocalPosition: {x: 0.108, y: -0.269, z: -1}
   m_LocalScale: {x: 0.2990333, y: 0.46886465, z: 1}
   m_Children: []
   m_Father: {fileID: 4218946232890156}
@@ -122,11 +122,12 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 668001655d773d84fbc55fcd4073d5fd, type: 2}
+  - {fileID: 2100000, guid: 7d30162cbe5257f4987ab41c44fc697d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -137,6 +138,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -154,6 +156,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -169,6 +172,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -243,7 +247,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000023841858, y: 0.19975048}
+  m_Offset: {x: -0.00000031292439, y: 0.19975048}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -254,7 +258,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.60049903}
+  m_Size: {x: 0.7683718, y: 0.60049903}
   m_EdgeRadius: 0
 --- !u!68 &68805496565902720
 EdgeCollider2D:
@@ -342,7 +346,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Story
+  m_Text: Local Play
 --- !u!114 &114829944073881918
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -354,7 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a07b457711a5b54d86565595c9a58d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneToLoad: StorySelect
+  _sceneToLoad: LocalPlay
 --- !u!222 &222469633013791232
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -388,7 +392,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1693533357345452}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.45}
+  m_LocalPosition: {x: -1.0482788, y: 1.9026489, z: -1.45}
   m_LocalScale: {x: 0.0043592053, y: 0.0045189834, z: 0.011851852}
   m_Children:
   - {fileID: 224990119048270716}
@@ -407,7 +411,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1734491944867120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 240, y: -366, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224791797903263594}

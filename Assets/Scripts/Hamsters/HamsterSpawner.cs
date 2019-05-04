@@ -39,6 +39,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     GameManager _gameManager;
     LevelManager _levelManager;
     HamsterScan _hamsterScan;
+    PowerUpSpawner _powerUpSpawner;
 
     public int NextHamsterType {
         get { return _nextHamsterType; }
@@ -48,6 +49,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     public Vector3 SpawnPosition {
         get { return _spawnPosition; }
+    }
+
+    public List<Hamster> HamsterLine {
+        get { return _hamsterLine; }
     }
 
     // Use this for initialization
@@ -78,7 +83,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         // If we are in Party mode
         if (_gameManager.gameMode == GAME_MODE.MP_PARTY) {
             // Add the power up spawner
-            gameObject.AddComponent<PowerUpSpawner>();
+            _powerUpSpawner = gameObject.AddComponent<PowerUpSpawner>();
         }
 
         Transform spawnPoint = transform.GetChild(0);
@@ -154,7 +159,18 @@ public class HamsterSpawner : Photon.PunBehaviour {
         _spawnTimer += Time.deltaTime;
 		if (_spawnTimer >= _spawnTime) {
             if (_hamsterLine.Count < _hamsterLineMax) {
-                SpawnHamster();
+                // If we are in party mode
+                if (_powerUpSpawner != null) {
+                    // Try to spawn a power up first
+                    bool spawned = _powerUpSpawner.TrySpawnPowerUp();
+                    if (!spawned) {
+                        SpawnHamster();
+                    }
+                // Otherwise
+                } else {
+                    // Just spawn a hamster
+                    SpawnHamster();
+                }
 
                 // Choose the next hamster type right now
                 _nextHamsterType = GetValidType();

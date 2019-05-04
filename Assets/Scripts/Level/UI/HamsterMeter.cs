@@ -141,7 +141,7 @@ public class HamsterMeter : MonoBehaviour {
         while (inc != 0 && shields != 0) {
             inc -= 1;
             //shields -= 1;
-            _nextTallyIndex -= 1;
+            //_nextTallyIndex -= 1;
             LoseShield();
         }
 		SoundManager.mainAudio.HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
