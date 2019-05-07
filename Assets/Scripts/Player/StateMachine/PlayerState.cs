@@ -43,13 +43,15 @@ public class PlayerState {
                 _direction = 1;
                 playerController.Flip();
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            //playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            XMovement();
         } else if (inputState.left.isDown) {
             if (_direction > 0) {
                 _direction = -1;
                 playerController.Flip();
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            //playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            XMovement();
         } else {
             playerController.velocity.x /= 1.05f;
         }
@@ -61,14 +63,20 @@ public class PlayerState {
             if (_direction < 0) {
                 _direction = 1;
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            //playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            XMovement();
         } else if (inputState.left.isDown) {
             if (_direction > 0) {
                 _direction = -1;
             }
-            playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            //playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
+            XMovement();
         } else {
             playerController.velocity.x /= 1.05f;
         }
+    }
+
+    void XMovement() {
+        playerController.velocity.x += playerController.jumpMoveForce * playerController.WaterMultiplier * playerController.speedModifier * Time.deltaTime * _direction;
     }
 }

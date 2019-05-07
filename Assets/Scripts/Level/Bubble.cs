@@ -382,13 +382,14 @@ public class Bubble : MonoBehaviour {
         locked = true;
 
         Debug.Log("connect with board");
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnect);
 
         // Make super sure the bubble is visible
         DisplaySprites();
 
         // Remove the held bubble of the player controller
-        _playerController.heldBall = null;
+        if (_playerController != null) {
+            _playerController.heldBall = null;
+        }
 
         // If we hit a different board, make that one our bubbleManager
         _homeBubbleManager = bubbleManager;
@@ -405,9 +406,26 @@ public class Bubble : MonoBehaviour {
             GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, node);
         }
 
+        // Loop through adjbubbles to see if we connected with a matching color
+        bool sameType = false;
+        foreach (Bubble bub in adjBubbles) {
+            if(bub.type == type) {
+                // Play same color connect sound
+                sameType = true;
+                break;
+            }
+        }
+
+        if (sameType) {
+            // Play same color connect sound
+        } else {
+            // Play normal connect sound
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnect);
+        }
+
         // Check if was a LongShot
         //Debug.Log(_airTime);
-        if(_airTime > 0.76f) {
+        if (_airTime > 0.76f) {
             // Increase score
             _playerController.HomeBubbleManager.IncreaseScore(200);
 

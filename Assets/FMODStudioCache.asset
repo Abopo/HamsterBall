@@ -37,6 +37,7 @@ MonoBehaviour:
   - {fileID: 114503323234878252}
   - {fileID: 114222785803922480}
   - {fileID: 114754933540486166}
+  - {fileID: 114543524140132134}
   MasterBanks:
   - {fileID: 114463103330479880}
   - {fileID: 114570037072349014}
@@ -45,7 +46,7 @@ MonoBehaviour:
   - {fileID: 114834560753960548}
   StringsBanks:
   - {fileID: 114169718387466888}
-  stringsBankWriteTime: 636925842867561215
+  stringsBankWriteTime: 636928254121670875
   cacheVersion: 3
 --- !u!114 &114001462217497760
 MonoBehaviour:
@@ -1298,11 +1299,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: Hamster Scramble_FMODProject\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636925842867561215
+  lastModified: 636928254121670875
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1812
+    Value: 1862
   Exists: 1
 --- !u!114 &114173358168721722
 MonoBehaviour:
@@ -1800,6 +1801,21 @@ MonoBehaviour:
   Max: 3
   Default: 0
 --- !u!114 &114238010573140552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
+--- !u!114 &114238523673819768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -3298,6 +3314,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114420006366564440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114421291582692212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4472,6 +4503,21 @@ MonoBehaviour:
   Min: 0
   Max: 3
   Default: 0
+--- !u!114 &114540544089465496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114540648042737930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4502,6 +4548,28 @@ MonoBehaviour:
   Min: 0
   Max: 3
   Default: 0
+--- !u!114 &114543524140132134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/New Event
+  guid: fa221b88d80e90468cf8d87d28d615db
+  Banks:
+  - {fileID: 114616154888332356}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &114545242841415266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4596,7 +4664,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 114414361692959772}
+  - {fileID: 114238523673819768}
   MinDistance: 11
   MaxDistance: 14
   Length: 9363
@@ -4719,7 +4787,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114402032981624184}
+  - {fileID: 114420006366564440}
   MinDistance: 0
   MaxDistance: 0
   Length: 151000
@@ -5087,11 +5155,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\WorkingCopy\trunk\Hamster
     Scramble_FMODProject\Build\Desktop\Master Bank.bank
-  lastModified: 636925842867322716
+  lastModified: 636928254121160363
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 6215200
+    Value: 6215808
   Exists: 1
 --- !u!114 &114623097097834382
 MonoBehaviour:
@@ -5336,7 +5404,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114100826870647622}
+  - {fileID: 114540544089465496}
   MinDistance: 0
   MaxDistance: 0
   Length: 1108

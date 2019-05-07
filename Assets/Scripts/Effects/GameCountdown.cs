@@ -24,6 +24,7 @@ public class GameCountdown : MonoBehaviour {
 		//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
         _displayText = transform.GetChild(0).GetComponent<Text>();
         _displayText.enabled = true;
+        _displayText.text = "3";
 
         _minScale = 4f;
         _maxScale = _displayText.transform.localScale.x;
@@ -66,7 +67,8 @@ public class GameCountdown : MonoBehaviour {
                     break;
                 case 3:
 					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDownGo);
-                    _displayText.text = "GO!";
+                    _displayText.text = "Scramble!";
+                    _minScale = 3f;
                     GameStart();
                     break;
                 case 4:

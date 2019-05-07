@@ -10,13 +10,16 @@ public class ResultsScreen : MonoBehaviour {
 
     MenuOption[] _menuOptions;
 
-    float winTime = 0.75f;
+    float winTime = 1f;
     float winTimer = 0.0f;
+    bool _canInteract = false;
 
     GameManager _gameManager;
+    LevelManager _levelManager;
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
     }
 
     // Use this for initialization
@@ -29,6 +32,8 @@ public class ResultsScreen : MonoBehaviour {
     void Update() {
         winTimer += Time.unscaledDeltaTime;
         if(winTimer > winTime) {
+            _canInteract = true;
+
             foreach (MenuOption mo in _menuOptions) {
                 if (mo != null) {
                     mo.isReady = true;
@@ -94,9 +99,22 @@ public class ResultsScreen : MonoBehaviour {
         }
 
         winTimer = 0f;
+        _canInteract = false;
+    }
+
+    public void PlayAgain() {
+        if(!_canInteract) {
+            return;
+        }
+
+        _gameManager.PlayAgainButton();
     }
 
     public void ReturnToPreviousScene() {
+        if(!_canInteract) {
+            return;
+        }
+
         // Return to the scene before this one
         switch (_gameManager.prevMenu) {
             case MENU.STORY:
@@ -108,6 +126,44 @@ public class ResultsScreen : MonoBehaviour {
             case MENU.EDITOR:
                 _gameManager.BoardEditorButton();
                 break;
+        }
+    }
+
+    public void ContinueToNextLevel() {
+        if (!_canInteract) {
+            return;
+        }
+
+        _gameManager.Unpause();
+        if (_gameManager.nextLevel != "") {
+            if (_gameManager.nextLevel == "Puzzle Challenge") {
+                // Find a new puzzle and load it
+                _gameManager.LoadPuzzleChallenge();
+            } else {
+                // Load the next level
+                _levelManager.GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
+            }
+        } else if (_gameManager.nextCutscene != "") {
+            // If we are in a verus stage
+            if (_gameManager.gameMode == GAME_MODE.MP_VERSUS) {
+                // Make sure the entire set is done before playing the cutscene
+                if (_levelManager.setOver) {
+                    // Load a cutscene
+                    CutsceneManager.fileToLoad = _gameManager.nextCutscene;
+                    SceneManager.LoadScene("Cutscene");
+                    // Otherwise, play the next game in the set
+                } else {
+                    _levelManager.NextGame();
+                }
+            } else {
+                // Load a cutscene
+                CutsceneManager.fileToLoad = _gameManager.nextCutscene;
+                SceneManager.LoadScene("Cutscene");
+            }
+        } else {
+            // It's probably a versus match so
+            // Replay the current level
+            _levelManager.NextGame();
         }
     }
 }

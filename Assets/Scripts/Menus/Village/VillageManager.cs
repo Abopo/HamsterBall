@@ -42,7 +42,7 @@ public class VillageManager : MonoBehaviour {
             // Stages
             PlayerPrefs.SetInt("Forest", 1);
             PlayerPrefs.SetInt("Mountain", 1);
-            PlayerPrefs.SetInt("Beach", 0);
+            PlayerPrefs.SetInt("Beach", 1);
             PlayerPrefs.SetInt("City2", 0);
             PlayerPrefs.SetInt("Sewers", 0);
             PlayerPrefs.SetInt("Laboratory", 0);

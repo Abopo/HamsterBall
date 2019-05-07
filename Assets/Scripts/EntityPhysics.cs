@@ -171,6 +171,7 @@ public class EntityPhysics : MonoBehaviour {
                 isTouchingFloor = true;
                 entity.Grounded = true;
                 floorHitCount++;
+                entity.CollisionResponseY(_hit.collider);
             }
         }
     }
