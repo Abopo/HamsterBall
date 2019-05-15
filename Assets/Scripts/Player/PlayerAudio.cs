@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class PlayerAudio : MonoBehaviour {
+	public static PlayerAudio playerAudioScript;
+
     // Sound effects
     AudioClip _jumpClip;
     AudioClip _bubbleClip;
@@ -15,6 +17,8 @@ public class PlayerAudio : MonoBehaviour {
 
 	public FMOD.Studio.EventInstance PlayerJumpEvent;
 	public FMOD.Studio.EventInstance ShiftEvent;
+	public FMOD.Studio.EventInstance PlayerLandEvent;
+
 
     // Use this for initialization
     void Start () {
@@ -22,6 +26,7 @@ public class PlayerAudio : MonoBehaviour {
         LoadSFX ();
 		PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
 		ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
+		PlayerLandEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerLand);
     }
 
     void LoadSFX() {
@@ -37,11 +42,13 @@ public class PlayerAudio : MonoBehaviour {
     void OnEnable(){
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerJumpEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(ShiftEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerLandEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
     // Update is called once per frame
     void Update () {
 		PlayerJumpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 		ShiftEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+		PlayerLandEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 	}
 
     public void PlayJumpClip() {

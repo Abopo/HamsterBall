@@ -77,6 +77,7 @@ public class Bubble : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
     public void Initialize(HAMSTER_TYPES inType) {
@@ -122,6 +123,9 @@ public class Bubble : MonoBehaviour {
         _bankedPos = Vector3.zero;
 
         SetType((int)type);
+
+		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
+	
 	}
 
     public void SetType(int inType) {
@@ -148,8 +152,8 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
-
+		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+    	
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
         }
@@ -418,6 +422,7 @@ public class Bubble : MonoBehaviour {
 
         if (sameType) {
             // Play same color connect sound
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectSameColor);
         } else {
             // Play normal connect sound
             FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnect);
@@ -728,9 +733,6 @@ public class Bubble : MonoBehaviour {
 	}
 
 	public void Drop() {
-		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-
 		locked = false;
         _velocity = new Vector2 (0.0f, -10f);
 		gameObject.layer = 15; // GhostBubble

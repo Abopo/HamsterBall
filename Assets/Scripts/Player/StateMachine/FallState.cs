@@ -2,11 +2,15 @@
 using System.Collections;
 
 public class FallState : PlayerState {
+
+	public GameObject foundPlayer;
+
 	// Use this for initialization
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
         playerController.Traction = 1.0f;
+        //foundPlayer = GameObject.Find("Player(Clone)");
     }
 
     // Update is called once per frame
@@ -21,6 +25,8 @@ public class FallState : PlayerState {
 		// check if the player has landed
 		if(playerController.Physics.IsTouchingFloor) {
 			playerController.ChangeState(PLAYER_STATE.IDLE);
+			//foundPlayer.GetComponent<PlayerAudio>().PlayerLandEvent.start();
+			//foundPlayer.GetComponent<PlayerAudio>().PlayerLandEvent.release();
 		}
 	}
 

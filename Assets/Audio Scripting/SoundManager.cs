@@ -11,6 +11,7 @@ public class SoundManager : MonoBehaviour {
 
 	//Hamster Sounds
 	public string HamsterConnect;
+	public string HamsterConnectSameColor;
 	public string HamsterFillBall;
 	public string HamsterCollectSuccessOneshot;
 	public string BallBreak;
@@ -32,6 +33,7 @@ public class SoundManager : MonoBehaviour {
 	public string ThrowEndOneShot;
 	public string PlayerAttack;
 	public string PlayerJump;
+	public string PlayerLand;
 
 	//Other Sounds
 	public string Shift;

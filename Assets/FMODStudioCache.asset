@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 114169718387466888}
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   EditorEvents:
   - {fileID: 114787053286361888}
   - {fileID: 114950079260751348}
@@ -38,6 +38,8 @@ MonoBehaviour:
   - {fileID: 114222785803922480}
   - {fileID: 114754933540486166}
   - {fileID: 114543524140132134}
+  - {fileID: 114667606564624126}
+  - {fileID: 114331742995172262}
   MasterBanks:
   - {fileID: 114463103330479880}
   - {fileID: 114570037072349014}
@@ -46,7 +48,7 @@ MonoBehaviour:
   - {fileID: 114834560753960548}
   StringsBanks:
   - {fileID: 114169718387466888}
-  stringsBankWriteTime: 636928254121670875
+  stringsBankWriteTime: 636935313237862190
   cacheVersion: 3
 --- !u!114 &114001462217497760
 MonoBehaviour:
@@ -321,7 +323,7 @@ MonoBehaviour:
   Path: event:/ThrowStart
   guid: cc75a9c7e8eba743a59be867260182d0
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -344,6 +346,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114047474313827716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114048823156701486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +488,25 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114064737716748740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: E:\Github\Hamster Scramble\HamsterBall\Hamster Scramble_FMODProject\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636935313237772262
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 6231264
+  Exists: 1
 --- !u!114 &114067263870590962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,7 +573,7 @@ MonoBehaviour:
   Path: event:/Throw
   guid: 20f40eeb16826340a802de382e85c365
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -966,6 +1002,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114134929920476786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114135024561444858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1163,7 +1214,7 @@ MonoBehaviour:
   Path: event:/SwingNet
   guid: 3703ad12d291c045932296c17ce247bd
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -1299,11 +1350,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: Hamster Scramble_FMODProject\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636928254121670875
+  lastModified: 636935313237862190
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1862
+    Value: 1958
   Exists: 1
 --- !u!114 &114173358168721722
 MonoBehaviour:
@@ -1340,6 +1391,21 @@ MonoBehaviour:
     Value: 20512
   Exists: 1
 --- !u!114 &114175902526681372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
+--- !u!114 &114176053645183648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1548,6 +1614,21 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114198319061901214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114198396983992552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1593,6 +1674,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114212221543121052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114212886871071812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1696,7 +1792,7 @@ MonoBehaviour:
   Path: event:/Countdown_321
   guid: 5032d30433eab041b06e5e6fc7f934dc
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -2031,6 +2127,21 @@ MonoBehaviour:
   MinDistance: 90
   MaxDistance: 4850
   Length: 1408
+--- !u!114 &114263828228650646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114269010557828314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2046,6 +2157,21 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114271065288285982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114271532966186248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2411,7 +2537,7 @@ MonoBehaviour:
   Path: event:/Shift
   guid: ad65237ab2dcb14b9eef133bf4de5ff1
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -2464,6 +2590,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114327344919597338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114328153086391404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2539,6 +2680,28 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114331742995172262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Footstep Land
+  guid: c5f956e63a8b7f43ab69d3ff34374565
+  Banks:
+  - {fileID: 114064737716748740}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 13
+  MaxDistance: 16
+  Length: 1298
 --- !u!114 &114336755662145324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2853,7 +3016,7 @@ MonoBehaviour:
   Path: event:/WallBounce
   guid: cbd2b8cfecb9c54fa612f3463aba1526
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -2897,6 +3060,21 @@ MonoBehaviour:
   Name: RowDanger
   Min: 0
   Max: 3
+  Default: 0
+--- !u!114 &114386563741718668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
   Default: 0
 --- !u!114 &114389985170756802
 MonoBehaviour:
@@ -3472,7 +3650,7 @@ MonoBehaviour:
   guid: a35513f06f96a243b372c0f5ccfc359a
   Banks:
   - {fileID: 114039507602358758}
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -3620,6 +3798,21 @@ MonoBehaviour:
   Name: LaunchAngle
   Min: 0
   Max: 1
+  Default: 0
+--- !u!114 &114450784773758784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
   Default: 0
 --- !u!114 &114452108559357450
 MonoBehaviour:
@@ -3957,6 +4150,36 @@ MonoBehaviour:
   - Name: 
     Value: 720
   Exists: 1
+--- !u!114 &114472327916360828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
+--- !u!114 &114473488195906078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114479132566960500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4181,7 +4404,7 @@ MonoBehaviour:
   Path: event:/BubblesDrop
   guid: 453d806d428c2f42aa09408b704fb37b
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4363,7 +4586,7 @@ MonoBehaviour:
   Path: event:/PlayerJump
   guid: 0ca792d2bce9954e877dbbeed6a0ab28
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -4562,7 +4785,7 @@ MonoBehaviour:
   Path: event:/New Event
   guid: fa221b88d80e90468cf8d87d28d615db
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4659,12 +4882,12 @@ MonoBehaviour:
   Path: event:/ThrowLaunchAngleLoop
   guid: 3b4ad594edf5ff4186e45e75391fada7
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 114238523673819768}
+  - {fileID: 114198319061901214}
   MinDistance: 11
   MaxDistance: 14
   Length: 9363
@@ -4738,6 +4961,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114574700063209002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114577182554972592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4782,12 +5020,12 @@ MonoBehaviour:
   Path: event:/MainMusic
   guid: c8fad95ae3e5834aba40f90a2ea97ea2
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114420006366564440}
+  - {fileID: 114983602661756850}
   MinDistance: 0
   MaxDistance: 0
   Length: 151000
@@ -4928,7 +5166,7 @@ MonoBehaviour:
   Path: event:/SingleFootstepEvent
   guid: 40241db92afe094e918ef28ded9d06c4
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -4980,7 +5218,7 @@ MonoBehaviour:
   Path: event:/HammsterConnect
   guid: 319333a7a43a644ea0f80c618f5e0686
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -5108,6 +5346,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114612566505671780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114613409770957470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5175,7 +5428,7 @@ MonoBehaviour:
   Path: event:/MenuMusic
   guid: 2cf21b362e30d3479fbe7422efaaa90e
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -5399,12 +5652,12 @@ MonoBehaviour:
   Path: event:/HamsterFillingBall
   guid: 16324c33b822474793a86a7c28678928
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114540544089465496}
+  - {fileID: 114047474313827716}
   MinDistance: 0
   MaxDistance: 0
   Length: 1108
@@ -5483,6 +5736,28 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114667606564624126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/SameColorHamsterConnect
+  guid: 49a01754dfb020438bdb6f0aba4e1c08
+  Banks:
+  - {fileID: 114064737716748740}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 674
 --- !u!114 &114669646995685486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5719,6 +5994,21 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 768
+--- !u!114 &114703448209413718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114706461265026892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5808,7 +6098,7 @@ MonoBehaviour:
   Path: event:/NewLine
   guid: c3aa25e1ea24e14fb327947482b0e92f
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -5860,7 +6150,7 @@ MonoBehaviour:
   Path: event:/PlayerAttack
   guid: 0803ebb90520aa4c8b787044952400b9
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -5897,7 +6187,7 @@ MonoBehaviour:
   Path: event:/BallBreak
   guid: 9e13551e1cbbb7438609422c280e106a
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6053,7 +6343,7 @@ MonoBehaviour:
   Path: event:/Countdown_Go
   guid: c6e6920cd255db42ba7b5e970c076e75
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6155,6 +6445,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114767260728773190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
+  Default: 0
 --- !u!114 &114767409494617950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6259,7 +6564,7 @@ MonoBehaviour:
   Path: event:/TestSound
   guid: 8ef062b0078f424199d107dbaa382412
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6402,6 +6707,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114803609447773096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114804864975967658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6813,6 +7133,21 @@ MonoBehaviour:
   - Name: Desktop
     Value: 3443488
   Exists: 1
+--- !u!114 &114862231375957402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114863877097792082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7125,6 +7460,21 @@ MonoBehaviour:
   Min: 0
   Max: 24
   Default: 0
+--- !u!114 &114908003005831764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114910168469352706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7371,7 +7721,7 @@ MonoBehaviour:
   Path: event:/HamsterTravel
   guid: 101a4452b015204eb3f71c7211a37c91
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -7547,7 +7897,7 @@ MonoBehaviour:
   Path: event:/HamsterCollected
   guid: be233711dff4d747921efdd18403a375
   Banks:
-  - {fileID: 114616154888332356}
+  - {fileID: 114064737716748740}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -7683,6 +8033,21 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114975170980265330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114977076104451494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7790,6 +8155,21 @@ MonoBehaviour:
   Name: CurrentStock
   Min: 0
   Max: 24
+  Default: 0
+--- !u!114 &114983602661756850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
   Default: 0
 --- !u!114 &114987646687300898
 MonoBehaviour:
