@@ -409,7 +409,7 @@ public class Bubble : MonoBehaviour {
         // Loop through adjbubbles to see if we connected with a matching color
         bool sameType = false;
         foreach (Bubble bub in adjBubbles) {
-            if(bub.type == type) {
+            if(bub != null && bub.type == type) {
                 // Play same color connect sound
                 sameType = true;
                 break;

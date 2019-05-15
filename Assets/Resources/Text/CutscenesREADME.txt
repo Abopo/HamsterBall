@@ -30,3 +30,5 @@ B - Board to load
 
 E - Ends the cutscene
 *Used for in-game cutscenes that don't need to load a new level at the end*
+
+Done - This cutscene doesn't load into a level because it's at the end of a level so it will just load into the story select scene.

@@ -97,34 +97,6 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
 
         controller = Resources.Load(path) as RuntimeAnimatorController;
 
-        /*
-        switch (character) {
-            case CHARACTERNAMES.BOY1:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY2:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY3:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.BOY4:
-                controller = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL1:
-                controller = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.GIRL2:
-                controller = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.ROOSTER1:
-                controller = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster") as RuntimeAnimatorController;
-                break;
-            case CHARACTERNAMES.ROOSTER2:
-                controller = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
-                break;
-        }
-        */
         return controller;
     }
 

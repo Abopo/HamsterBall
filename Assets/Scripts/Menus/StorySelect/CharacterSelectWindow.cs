@@ -5,22 +5,15 @@ using UnityEngine.UI;
 using Rewired;
 
 // This enum is only used for selecting between the Boy and Girl in story mode
-public enum CHARACTERCOLORS { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, NUM_COLORS }
+public enum CHARACTERCOLORS { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, GIRL3, GIRL4, NUM_COLORS }
 
 public class CharacterSelectWindow : MonoBehaviour {
-    //protected CHARACTERNAMES _boyName = CHARACTERNAMES.BOY2;
-    //protected CHARACTERNAMES _girlName = CHARACTERNAMES.GIRL1;
     protected CHARACTERCOLORS _boyColor = CHARACTERCOLORS.BOY2;
     protected CHARACTERCOLORS _girlColor = CHARACTERCOLORS.GIRL1;
 
     public Image boySprite;
     public Image girlSprite;
-    protected Sprite[] _characterSprites = new Sprite[6];
-    //protected Sprite[] _boySprites = new Sprite[4];
-    //protected Sprite[] _girlSprites = new Sprite[2];
-
-    //public CHARACTERNAMES _alreadyChosen1 = CHARACTERNAMES.BOY1;
-    //public CHARACTERNAMES _alreadyChosen2 = CHARACTERNAMES.NUM_CHARACTERS;
+    protected Sprite[] _characterSprites = new Sprite[8];
 
     public CHARACTERCOLORS _alreadyChosen1 = CHARACTERCOLORS.BOY1;
     public CHARACTERCOLORS _alreadyChosen2 = CHARACTERCOLORS.NUM_COLORS;
@@ -49,6 +42,8 @@ public class CharacterSelectWindow : MonoBehaviour {
         _characterSprites[3] = boySprites[3];
         _characterSprites[4] = girlSprites[0];
         _characterSprites[5] = girlSprites[1];
+        _characterSprites[6] = girlSprites[2];
+        _characterSprites[7] = girlSprites[3];
 
         boySprite.sprite = _characterSprites[(int)_boyColor];
         girlSprite.sprite = _characterSprites[(int)_girlColor];
@@ -102,8 +97,8 @@ public class CharacterSelectWindow : MonoBehaviour {
             // Move down the list one
             _girlColor = _girlColor + dir;
             if (_girlColor < CHARACTERCOLORS.GIRL1) {
-                _girlColor = CHARACTERCOLORS.GIRL2;
-            } else if (_girlColor > CHARACTERCOLORS.GIRL2) {
+                _girlColor = CHARACTERCOLORS.GIRL4;
+            } else if (_girlColor > CHARACTERCOLORS.GIRL4) {
                 _girlColor = CHARACTERCOLORS.GIRL1;
             }
         } while (_girlColor == _alreadyChosen1 || _girlColor == _alreadyChosen2);
@@ -155,7 +150,7 @@ public class CharacterSelectWindow : MonoBehaviour {
             // Set the boy to the correct name and sprite
             _boyColor = charaColor;
             boySprite.sprite = _characterSprites[(int)_boyColor];
-        } else if (charaColor >= CHARACTERCOLORS.GIRL1 && charaColor <= CHARACTERCOLORS.GIRL2) {
+        } else if (charaColor >= CHARACTERCOLORS.GIRL1 && charaColor <= CHARACTERCOLORS.GIRL4) {
             // Highlight the girl
             _options[1].Highlight();
 

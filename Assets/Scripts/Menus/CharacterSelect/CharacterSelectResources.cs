@@ -66,6 +66,14 @@ public class CharacterSelectResources : MonoBehaviour {
         girl2.animator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
         girl2.isTaken = false;
         _charaAnimators[1].Add(girl2);
+        CharaSelectInfo girl3 = new CharaSelectInfo();
+        girl3.animator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl3") as RuntimeAnimatorController;
+        girl3.isTaken = false;
+        _charaAnimators[1].Add(girl3);
+        CharaSelectInfo girl4 = new CharaSelectInfo();
+        girl4.animator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl4") as RuntimeAnimatorController;
+        girl4.isTaken = false;
+        _charaAnimators[1].Add(girl4);
 
         // Rooster
         _charaAnimators[2] = new List<CharaSelectInfo>();
@@ -78,6 +86,14 @@ public class CharacterSelectResources : MonoBehaviour {
         rooster2.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
         rooster2.isTaken = false;
         _charaAnimators[2].Add(rooster2);
+        CharaSelectInfo rooster3 = new CharaSelectInfo();
+        rooster3.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster3") as RuntimeAnimatorController;
+        rooster3.isTaken = false;
+        _charaAnimators[2].Add(rooster3);
+        CharaSelectInfo rooster4 = new CharaSelectInfo();
+        rooster4.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster4") as RuntimeAnimatorController;
+        rooster4.isTaken = false;
+        _charaAnimators[2].Add(rooster4);
 
         // Lackey
         _charaAnimators[3] = new List<CharaSelectInfo>();
@@ -114,6 +130,8 @@ public class CharacterSelectResources : MonoBehaviour {
         // Rooster
         _charaPortraits[2] = new List<Sprite>();
         sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
+        _charaPortraits[2].Add(sprites[0]);
+        _charaPortraits[2].Add(sprites[1]);
         _charaPortraits[2].Add(sprites[0]);
         _charaPortraits[2].Add(sprites[1]);
 

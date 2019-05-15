@@ -201,9 +201,6 @@ public class CutsceneManager : MonoBehaviour {
             case "L":
                 ReadLocation();
                 break;
-            case "B":
-                ReadBoard();
-                break;
             case "CL1":
             case "CL2":
             case "CR1":
@@ -218,6 +215,9 @@ public class CutsceneManager : MonoBehaviour {
                 break;
             case "E":
                 EndScene();
+                break;
+            case "B":
+                ReadBoard();
                 break;
             case "Done":
                 ReturnToStorySelect();
