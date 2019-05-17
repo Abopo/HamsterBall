@@ -157,6 +157,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{690a0814-ed59-4d19-83a9-0a05b178a40d}">
+        <property name="volume">
+            <value>1</value>
+        </property>
         <relationship name="effectChain">
             <destination>{800c2c5e-7fc1-40cc-99df-f3124d02b502}</destination>
         </relationship>
@@ -214,7 +217,7 @@
     </object>
     <object class="EventMixerGroup" id="{d563e8fd-5059-4ed5-b792-78f3be284754}">
         <property name="volume">
-            <value>0.5</value>
+            <value>-10.5</value>
         </property>
         <property name="name">
             <value>Audio 1</value>
@@ -418,8 +421,11 @@
     </object>
     <object class="SingleSound" id="{726b6d24-7439-4917-93e9-15b34fc37139}">
         <property name="length">
-            <value>0.67464852607709747</value>
+            <value>0.4921875</value>
         </property>
+        <relationship name="fadeOutCurve">
+            <destination>{b8e8cfda-456f-438b-bc15-8480672b3a77}</destination>
+        </relationship>
         <relationship name="audioFile">
             <destination>{47fbd071-4eea-439b-9e4f-131f20306ce1}</destination>
         </relationship>
@@ -523,6 +529,7 @@
     <object class="MixerBusEffectChain" id="{eb2a860a-393f-4f6f-b2ff-f556bea9d9ec}">
         <relationship name="effects">
             <destination>{1fa00b98-5b09-4ad6-a452-76f7cc2b0d97}</destination>
+            <destination>{53726bf6-252a-4c62-b992-a17e19966dff}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{0400c41c-24ac-4bbe-ac2a-19fe4fe1d86a}"/>
@@ -571,13 +578,23 @@
     <object class="MixerBusEffectChain" id="{fec4a222-dc77-44ef-b6b3-55f3d3b26345}">
         <relationship name="effects">
             <destination>{23306c27-6070-4094-9110-2166f5010363}</destination>
+            <destination>{9e33d16c-38c8-46d1-8b29-549edefcb3f1}</destination>
             <destination>{778305d6-fa68-49a8-9db5-238ea3e00304}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{ecfb8c78-3fba-4e03-afa5-1612ada51ca9}"/>
+    <object class="FadeCurve" id="{b8e8cfda-456f-438b-bc15-8480672b3a77}">
+        <relationship name="startPoint">
+            <destination>{6ecc1cbe-f4ec-45a1-b7c2-725b0609add1}</destination>
+        </relationship>
+        <relationship name="endPoint">
+            <destination>{b7c25c3c-e2a2-4a66-a6e5-7d14fc0ac82e}</destination>
+        </relationship>
+    </object>
     <object class="MixerBusEffectChain" id="{73022390-120c-4c7b-b3ee-080c381750a8}">
         <relationship name="effects">
             <destination>{718f0965-9a14-4822-ad25-0c8584fcdc70}</destination>
+            <destination>{dacb9260-8c32-486e-bfed-f36e8386aba1}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{c7fd990a-e809-40f7-a9c4-b196b7b3439b}"/>
@@ -742,6 +759,17 @@
         </property>
     </object>
     <object class="MixerBusFader" id="{1fa00b98-5b09-4ad6-a452-76f7cc2b0d97}"/>
+    <object class="PitchShifterEffect" id="{53726bf6-252a-4c62-b992-a17e19966dff}">
+        <property name="pitch">
+            <value>1.10000002</value>
+        </property>
+        <property name="fftSize">
+            <value>256</value>
+        </property>
+        <property name="overlap">
+            <value>1</value>
+        </property>
+    </object>
     <object class="AutomationPoint" id="{be21c141-31ce-4e9a-acb4-dbdece284646}">
         <property name="position">
             <value>0.02088662131519279</value>
@@ -803,6 +831,17 @@
         </property>
     </object>
     <object class="MixerBusFader" id="{23306c27-6070-4094-9110-2166f5010363}"/>
+    <object class="PitchShifterEffect" id="{9e33d16c-38c8-46d1-8b29-549edefcb3f1}">
+        <property name="pitch">
+            <value>0.630000055</value>
+        </property>
+        <property name="fftSize">
+            <value>256</value>
+        </property>
+        <property name="overlap">
+            <value>1</value>
+        </property>
+    </object>
     <object class="MultibandEqEffect" id="{778305d6-fa68-49a8-9db5-238ea3e00304}">
         <property name="filterTypeA">
             <value>0</value>
@@ -817,7 +856,55 @@
             <value>4.13792992</value>
         </property>
     </object>
+    <object class="AutomationPoint" id="{6ecc1cbe-f4ec-45a1-b7c2-725b0609add1}">
+        <property name="position">
+            <value>0.234375</value>
+        </property>
+        <property name="value">
+            <value>1</value>
+        </property>
+        <property name="curveShape">
+            <value>-0.368517011</value>
+        </property>
+    </object>
+    <object class="AutomationPoint" id="{b7c25c3c-e2a2-4a66-a6e5-7d14fc0ac82e}">
+        <property name="position">
+            <value>0.4921875</value>
+        </property>
+        <property name="value">
+            <value>0</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{718f0965-9a14-4822-ad25-0c8584fcdc70}"/>
+    <object class="MultibandEqEffect" id="{dacb9260-8c32-486e-bfed-f36e8386aba1}">
+        <property name="filterTypeA">
+            <value>7</value>
+        </property>
+        <property name="filterTypeC">
+            <value>9</value>
+        </property>
+        <property name="filterTypeD">
+            <value>9</value>
+        </property>
+        <property name="frequencyA">
+            <value>126.435799</value>
+        </property>
+        <property name="frequencyC">
+            <value>1948.19666</value>
+        </property>
+        <property name="frequencyD">
+            <value>8482.13477</value>
+        </property>
+        <property name="gainA">
+            <value>4.13792992</value>
+        </property>
+        <property name="gainC">
+            <value>-7.24137878</value>
+        </property>
+        <property name="gainD">
+            <value>7.24137783</value>
+        </property>
+    </object>
     <object class="Automator" id="{5f9c13c6-492d-461c-a6be-243a0afb6ab5}">
         <property name="nameOfPropertyBeingAutomated">
             <value>pitch</value>
