@@ -9,7 +9,6 @@ public class JumpState : PlayerState {
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 
-
         _jumped = false;
         _jumpForce = playerController.jumpForce;
 
@@ -18,6 +17,8 @@ public class JumpState : PlayerState {
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
 
         playerController.Traction = 1.0f;
+
+        playerIn.PlayerEffects.PlayJumping();
     }
 
     // Update is called once per frame

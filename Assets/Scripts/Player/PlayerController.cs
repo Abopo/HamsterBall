@@ -116,22 +116,26 @@ public class PlayerController : Entity {
 
     SpriteRenderer _targetArrow; // an arrow that appears when shifted
 
-    SpriteRenderer _spriteRenderer;
     protected GameManager _gameManager;
-    LevelManager _levelManager;
     PlayerAudio _playerAudio;
-    BubbleManager _homeBubbleManager;
     Vector3 _spawnPos;
 
+    BubbleManager _homeBubbleManager;
     public BubbleManager HomeBubbleManager {
         get { return _homeBubbleManager; }
     }
+    LevelManager _levelManager;
     public LevelManager LevelManager {
         get { return _levelManager; }
     }
-
+    SpriteRenderer _spriteRenderer;
     public SpriteRenderer SpriteRenderer {
         get { return _spriteRenderer; }
+    }
+
+    PlayerEffects _playerEffects;
+    public PlayerEffects PlayerEffects {
+        get { return _playerEffects; }
     }
 
     protected bool _justChangedState; // Can only change state once per frame
@@ -150,6 +154,7 @@ public class PlayerController : Entity {
         _playerAudio = GetComponent<PlayerAudio>();
         _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         _animator = GetComponentInChildren<Animator>();
+        _playerEffects = GetComponentInChildren<PlayerEffects>();
 
         inputState = new InputState();
 
@@ -521,10 +526,14 @@ public class PlayerController : Entity {
 		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 13/*Grate*/) {
 			velocity.y = 0.0f;
             _onFallThrough = false;
+
+            PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
         } else if(collider.gameObject.layer == 18/*Fallthrough*/) {
 			velocity.y = 0.0f;
             // This is a fall through platform
             _onFallThrough = true;
+
+            PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
         }
 
         if (collider.name == "Ice Platform") {
@@ -533,6 +542,12 @@ public class PlayerController : Entity {
             _traction = 1f;
         }
 	}
+
+    void PlatformTypeCheck(Platform plat) {
+        if (plat != null) {
+            _playerEffects.particleIndex = plat.particleIndex;
+        }
+    }
 
     public override void Spring(float springForce) {
         base.Spring(springForce);

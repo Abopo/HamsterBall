@@ -9,6 +9,8 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     CatchState _bubbleState;
     AttackState _attackState;
 
+    PlayerEffects _playerEffects;
+
 	FMODUnity.StudioEventEmitter footstepEmitter;
 	//FMODUnity.StudioEventEmitter netSwingEmitter;
 
@@ -22,6 +24,8 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
         _bubbleState = (CatchState)_playerController.GetPlayerState(PLAYER_STATE.CATCH);
         _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
+
+        _playerEffects = transform.parent.GetComponentInChildren<PlayerEffects>();
 
 		SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
 		PlayerFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerFootstep);
@@ -84,5 +88,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     }
     public void Footstep() {
 		PlayerFootstepEvent.start();
+
+        _playerEffects.PlayFootstep();
     }
 }
