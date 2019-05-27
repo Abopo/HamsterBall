@@ -343,11 +343,20 @@ public class PlayerController : Entity {
 
         if(_physics.IsTouchingFloor && _onFallThrough && inputState.down.isJustPressed) {
             // Move player slightly downward to pass through certain platforms
-            transform.Translate(0f, -0.03f, 0f);
+            transform.Translate(0f, -0.05f, 0f);
         }
     }
 
-	void UpdateBubbles() {
+    public override void Flip() {
+        base.Flip();
+
+        // Also flip the effects so particles generate properly
+        Vector3 theScale = _playerEffects.transform.localScale;
+        theScale.x *= -1;
+        _playerEffects.transform.localScale = theScale;
+    }
+
+    void UpdateBubbles() {
 		float dir = facingRight ? 1 : -1;
 		//swingObj.transform.position = new Vector3 (transform.position.x + 0.5f * dir,
 		//                                               transform.position.y,

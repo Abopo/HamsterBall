@@ -41,6 +41,8 @@ public class AttackState : PlayerState {
         playerController.velocity.x = _attackSpeed * _direction;
         playerController.velocity.y = 0f;
         playerController.attackCooldownTimer = 0;
+
+        playerIn.PlayerEffects.PlayDash();
     }
 
     // Update is called once per frame

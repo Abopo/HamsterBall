@@ -35,8 +35,8 @@ public class WaterBubble : MonoBehaviour {
         // If just spawned
         if (_isSpawning) {
             // Expand until normal size
-            transform.localScale = new Vector3(transform.localScale.x + 0.2f * Time.deltaTime,
-                                                transform.localScale.y + 0.2f * Time.deltaTime,
+            transform.localScale = new Vector3(transform.localScale.x + 1f * Time.deltaTime,
+                                                transform.localScale.y + 1f * Time.deltaTime,
                                                 transform.localScale.z);
             if (transform.localScale.x >= 1f) {
                 transform.localScale = new Vector3(1, 1, 1);

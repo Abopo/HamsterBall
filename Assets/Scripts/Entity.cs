@@ -77,7 +77,7 @@ public class Entity : MonoBehaviour {
 		velocity.y -= gravity * _waterGravMultiplier * Time.deltaTime;
 	}
 	
-	public void Flip ()
+	public virtual void Flip ()
 	{
 		// Switch the way the player is labelled as facing.
 		facingRight = !facingRight;
