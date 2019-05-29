@@ -24,7 +24,8 @@ public class FallState : PlayerState {
 
 		// check if the player has landed
 		if(playerController.Physics.IsTouchingFloor) {
-			playerController.ChangeState(PLAYER_STATE.IDLE);
+            playerController.PlayerEffects.PlayLanding();
+            playerController.ChangeState(PLAYER_STATE.IDLE);
 			//foundPlayer.GetComponent<PlayerAudio>().PlayerLandEvent.start();
 			//foundPlayer.GetComponent<PlayerAudio>().PlayerLandEvent.release();
 		}
