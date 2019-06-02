@@ -10,7 +10,6 @@ public class FallState : PlayerState {
 		base.Initialize(playerIn);
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
         playerController.Traction = 1.0f;
-        //foundPlayer = GameObject.Find("Player(Clone)");
     }
 
     // Update is called once per frame

@@ -423,7 +423,7 @@ public class Bubble : MonoBehaviour {
         if (sameType) {
             // Play same color connect sound
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectSameColor);
-        } else {
+			} else {
             // Play normal connect sound
             FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnect);
         }
@@ -441,6 +441,8 @@ public class Bubble : MonoBehaviour {
         if (type == HAMSTER_TYPES.RAINBOW) {
             DoCrazyRainbowMatches();
             type = HAMSTER_TYPES.RAINBOW;
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectRainbow);
+			Debug.Log("Rainbow Hamster Connect");
         } else if (type == HAMSTER_TYPES.BOMB) {
             // Explode
             BombExplode();

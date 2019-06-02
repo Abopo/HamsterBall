@@ -211,17 +211,19 @@ public class MenuOption : MonoBehaviour {
     }
 
     public void PlayHighlightSound() {
-        if (_audioSource != null) {
-            _audioSource.clip = _highlightClip;
-            _audioSource.Play();
-        }
+        //if (_audioSource != null) {
+            //_audioSource.clip = _highlightClip;
+            //_audioSource.Play();
+        //}
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuHighlight);
     }
 
     public void PlaySelectSound() {
-        if (_audioSource != null) {
-            _audioSource.clip = _selectClip;
-            _audioSource.Play();
-        }
+        //if (_audioSource != null) {
+            //_audioSource.clip = _selectClip;
+            //_audioSource.Play();
+        //}
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuSelect);
     }
 
     void OnMouseEnter() {

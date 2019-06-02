@@ -82,6 +82,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{3230f8d6-58c4-4ac8-976f-c6d5e3559527}">
+        <property name="volume">
+            <value>-3</value>
+        </property>
         <relationship name="effectChain">
             <destination>{687c12c2-6581-4e7a-86cc-c1038a08ff04}</destination>
         </relationship>
@@ -100,8 +103,11 @@
     <object class="MixerBusPanner" id="{60f91300-7b3c-4d59-a2fc-1242c9e8366d}"/>
     <object class="MultiSound" id="{44ac60d1-7159-421f-bd0f-61fe495af432}">
         <property name="length">
-            <value>1.2335600907029478</value>
+            <value>0.25</value>
         </property>
+        <relationship name="fadeOutCurve">
+            <destination>{b970457a-937b-4725-bd7b-b481685c42c0}</destination>
+        </relationship>
         <relationship name="sounds">
             <destination>{72ee5271-ef0d-4020-9fda-f5a826c41481}</destination>
             <destination>{25fa488e-8a00-4289-b021-0f92364877bf}</destination>
@@ -135,6 +141,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{7ff968c1-0230-42f1-968b-0506d30eca67}">
+        <property name="volume">
+            <value>-80</value>
+        </property>
         <property name="name">
             <value>Audio 2</value>
         </property>
@@ -151,10 +160,19 @@
     <object class="MixerBusEffectChain" id="{687c12c2-6581-4e7a-86cc-c1038a08ff04}">
         <relationship name="effects">
             <destination>{b0a0d589-4ed2-4898-a30a-ed2d82baaaf2}</destination>
+            <destination>{88ebd422-c5d8-4fe7-af90-ea3d312593cd}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{0eb5d6bf-6fc3-4cdc-94d1-becfe704b2b1}"/>
     <object class="MixerBusFader" id="{d45382ad-3dc7-41eb-9fda-737920da1e1e}"/>
+    <object class="FadeCurve" id="{b970457a-937b-4725-bd7b-b481685c42c0}">
+        <relationship name="startPoint">
+            <destination>{63157f0f-baa0-4b25-b5b4-d854cd6a9cf0}</destination>
+        </relationship>
+        <relationship name="endPoint">
+            <destination>{5097c6cf-469f-46c4-9c84-0e08d214c28d}</destination>
+        </relationship>
+    </object>
     <object class="SingleSound" id="{72ee5271-ef0d-4020-9fda-f5a826c41481}">
         <relationship name="audioFile">
             <destination>{e14b838f-893b-4a93-a025-fa1d8cb18ede}</destination>
@@ -210,8 +228,50 @@
     </object>
     <object class="MixerBusPanner" id="{cc3cfbb0-8af8-4765-91cf-2cabec9296cc}"/>
     <object class="MixerBusFader" id="{b0a0d589-4ed2-4898-a30a-ed2d82baaaf2}"/>
+    <object class="MultibandEqEffect" id="{88ebd422-c5d8-4fe7-af90-ea3d312593cd}">
+        <property name="filterTypeA">
+            <value>7</value>
+        </property>
+        <property name="filterTypeE">
+            <value>8</value>
+        </property>
+        <property name="frequencyA">
+            <value>207.88681</value>
+        </property>
+        <property name="frequencyE">
+            <value>2396.7063</value>
+        </property>
+        <property name="gainA">
+            <value>-3.10344887</value>
+        </property>
+        <property name="gainE">
+            <value>3.10344815</value>
+        </property>
+    </object>
+    <object class="AutomationPoint" id="{63157f0f-baa0-4b25-b5b4-d854cd6a9cf0}">
+        <property name="position">
+            <value>0.10607084028579983</value>
+        </property>
+        <property name="value">
+            <value>1</value>
+        </property>
+        <property name="curveShape">
+            <value>-1.00000048</value>
+        </property>
+    </object>
+    <object class="AutomationPoint" id="{5097c6cf-469f-46c4-9c84-0e08d214c28d}">
+        <property name="position">
+            <value>0.25</value>
+        </property>
+        <property name="value">
+            <value>0</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{078a9fa7-4168-4b3e-8177-e6e3bbf682c8}"/>
     <object class="PitchShifterEffect" id="{fc00b0a2-ff6b-4b0d-b060-b23ea018fe15}">
+        <property name="bypass">
+            <value>true</value>
+        </property>
         <property name="pitch">
             <value>1.04000008</value>
         </property>

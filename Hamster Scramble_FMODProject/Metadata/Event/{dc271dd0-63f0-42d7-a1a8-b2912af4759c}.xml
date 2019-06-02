@@ -92,6 +92,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{7d78e2ed-57a7-4408-9ab0-3c9319500902}">
+        <property name="volume">
+            <value>-4</value>
+        </property>
         <relationship name="effectChain">
             <destination>{e5092c15-d7f4-4f57-8e6e-b3724c75af73}</destination>
         </relationship>
@@ -120,7 +123,7 @@
     </object>
     <object class="EventMixerGroup" id="{99f385f4-d898-4142-8bf4-7e457a2ef222}">
         <property name="volume">
-            <value>-5.5</value>
+            <value>-80</value>
         </property>
         <property name="name">
             <value>Audio 1</value>
@@ -148,6 +151,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{655a16d6-eebb-4e9d-b689-b6c3d0bf5f1b}">
+        <property name="volume">
+            <value>-80</value>
+        </property>
         <property name="name">
             <value>Audio 2</value>
         </property>
@@ -190,6 +196,7 @@
     <object class="MixerBusEffectChain" id="{e5092c15-d7f4-4f57-8e6e-b3724c75af73}">
         <relationship name="effects">
             <destination>{e3463188-9509-42cc-a89b-9ea9b5bca37b}</destination>
+            <destination>{6bcc8e8a-e2ce-4800-848d-af805f7f9020}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{5f8f982e-18ad-45e0-b5a3-e75510174abb}"/>
@@ -282,6 +289,14 @@
     </object>
     <object class="MixerBusPanner" id="{46d519c6-4551-4357-a2a8-1921ae0d7835}"/>
     <object class="MixerBusFader" id="{e3463188-9509-42cc-a89b-9ea9b5bca37b}"/>
+    <object class="MultibandEqEffect" id="{6bcc8e8a-e2ce-4800-848d-af805f7f9020}">
+        <property name="frequencyA">
+            <value>3338.7666</value>
+        </property>
+        <property name="qualityA">
+            <value>0.644206941</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{7dd57793-c7d9-4176-835f-0e6144eea7d7}"/>
     <object class="PitchShifterEffect" id="{d75fd715-5e90-4f8b-805a-959cb4d75de5}">
         <property name="pitch">
@@ -302,10 +317,10 @@
             <value>8</value>
         </property>
         <property name="frequencyE">
-            <value>2556.19287</value>
+            <value>2720.12085</value>
         </property>
         <property name="gainE">
-            <value>-13.4482765</value>
+            <value>5.17241478</value>
         </property>
     </object>
     <object class="MixerBusFader" id="{a6bd792a-e4a5-475c-92e0-52e4ef0c5ef2}"/>

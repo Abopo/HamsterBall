@@ -131,7 +131,11 @@ public class CatchHitbox : MonoBehaviour {
         // For now this is only for the AI
         _playerController.significantEvent.Invoke();
 
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectSuccessOneshot);
+		if (hamster.type == HAMSTER_TYPES.RAINBOW){
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectRainbow);
+		} else {
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectSuccessOneshot);
+		}
     }
 
     void InstantiateNetworkBubble(Hamster hamster) {
