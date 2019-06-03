@@ -37,7 +37,6 @@ public class SoundManager : MonoBehaviour {
 	public string PlayerJump;
 	public string PlayerLand;
 
-
 	//Menu Sounds
 	public string MainMenuSelect;
 	public string MainMenuBack;
