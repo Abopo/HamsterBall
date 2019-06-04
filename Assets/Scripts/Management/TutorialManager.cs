@@ -9,11 +9,20 @@ public class TutorialManager : MonoBehaviour {
     float _tutorialTime;
     float _tutorialTimer = 0;
 
+    bool _tutorialFinished = false;
+
     PlayerController _playerController;
     PlayerController _aiController;
 
-	// Use this for initialization
-	void Start () {
+    GameManager _gameManager;
+    LevelManager _levelManager;
+
+    private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
+    }
+    // Use this for initialization
+    void Start () {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach(GameObject p in players) {
             if(!p.GetComponent<PlayerController>().aiControlled) {
@@ -31,6 +40,10 @@ public class TutorialManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(_tutorialFinished) {
+            return;
+        }
+
         if (_tutorialTime != -1) {
             _tutorialTimer += Time.deltaTime;
             if (_tutorialTimer >= _tutorialTime) {
@@ -96,7 +109,7 @@ public class TutorialManager : MonoBehaviour {
                 break;
             case 8:
                 // End level
-                GameObject.FindObjectOfType<BubbleManager>().EndGame(1);
+                EndGame();
                 break;
         }
     }
@@ -107,5 +120,22 @@ public class TutorialManager : MonoBehaviour {
         //}
 
         return baseTutorial;
+    }
+
+    // We kind of have to fake a game end scenario
+    void EndGame() {
+        _tutorialFinished = true;
+
+        FindObjectOfType<BubbleManager>().wonGame = true;
+
+        _levelManager.GameEnd();
+
+        // Pretend we are in a single player mode
+        _gameManager.isSinglePlayer = true;
+        _gameManager.gameMode = GAME_MODE.SP_CLEAR;
+
+        _levelManager.ActivateResultsScreen(0, 1);
+
+        _gameManager.EndGame(0, 100);
     }
 }

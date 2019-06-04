@@ -43,8 +43,10 @@ public class HamsterDialogue : MonoBehaviour {
     }
 
     void DisplayDialogue() {
-        _dialogueBox.SetActive(true);
-        _textWriter.StartWriting(dialogue);
+        if (dialogue != "") {
+            _dialogueBox.SetActive(true);
+            _textWriter.StartWriting(dialogue);
+        }
     }
 
     void HideDialogue() {

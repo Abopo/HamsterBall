@@ -9,8 +9,6 @@ public class CatchState : PlayerState {
     public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
 
-        playerController.PlayerAudio.PlayBubbleClip();
-
 		_direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
 
         playerController.bubbleCooldownTimer = 0;

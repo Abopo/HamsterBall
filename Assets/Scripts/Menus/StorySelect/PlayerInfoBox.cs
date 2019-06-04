@@ -25,7 +25,6 @@ public class PlayerInfoBox : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _characterSelectWindow = FindObjectOfType<StorySelectMenu>().characterSelectWindow;
         _gameManager = FindObjectOfType<GameManager>();
 
         SceneManager.sceneLoaded += OnLevelLoaded;
@@ -61,6 +60,7 @@ public class PlayerInfoBox : MonoBehaviour {
         // Get the first player
         _player1 = ReInput.players.GetPlayer(0);
 
+        _characterSelectWindow = FindObjectOfType<StorySelectMenu>().characterSelectWindow;
     }
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode) {

@@ -232,10 +232,10 @@ public class GameManager : MonoBehaviour {
         int worldInt = int.Parse(stage[0].ToString());
         int levelInt = int.Parse(stage[2].ToString());
         string newStoryPos = "";
-        if (levelInt == 9) {
+        if (levelInt == 10) {
             newStoryPos += (worldInt + 1).ToString();
             newStoryPos += "-";
-            newStoryPos += "0";
+            newStoryPos += "1";
         } else {
             newStoryPos += worldInt.ToString();
             newStoryPos += "-";
@@ -246,9 +246,11 @@ public class GameManager : MonoBehaviour {
         string storyProgress = PlayerPrefs.GetString("StoryProgress");
         int furthestWorld = int.Parse(storyProgress[0].ToString());
         int furthestLevel = int.Parse(storyProgress[2].ToString());
+        int newWorldInt = int.Parse(newStoryPos[0].ToString());
+        int newLevelInt = int.Parse(newStoryPos[2].ToString());
 
         // If the new position is further than the player has gotten so far
-        if((levelInt >= furthestLevel && worldInt >= furthestWorld) || (worldInt > furthestWorld)) {
+        if((newLevelInt >= furthestLevel && newWorldInt >= furthestWorld) || (newWorldInt > furthestWorld)) {
             // Update the story progress
             PlayerPrefs.SetString("StoryProgress", newStoryPos);
         }

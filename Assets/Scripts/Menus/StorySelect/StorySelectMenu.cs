@@ -65,7 +65,7 @@ public class StorySelectMenu : MonoBehaviour {
             worlds[i-1].Unlock(9);
         }
         // Unlock the partially completed world
-        worlds[_furthestWorld-1].Unlock(_furthestLevel);
+        worlds[_furthestWorld-1].Unlock(_furthestLevel-1);
 
         // Load where the player last left off
         string storyPos = PlayerPrefs.GetString("StoryPos");
@@ -78,7 +78,7 @@ public class StorySelectMenu : MonoBehaviour {
 
         // Set the new world into the right position
         worlds[world-1].transform.localPosition = new Vector3(0, _worldYPos, 0);
-        worlds[world-1].Activate(level);
+        worlds[world-1].Activate(level-1);
 
         // Set curWorld to new world
         _curWorld = world-1;

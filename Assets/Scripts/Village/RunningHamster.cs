@@ -4,10 +4,9 @@ using UnityEngine;
 
 // These hamsters will run back and forth between two points
 // They may or may not have dialogue text
-public class RunningHamster : MonoBehaviour {
+public class RunningHamster : VillageHamster {
 
     public HAMSTER_TYPES type;
-    public string dialogue;
 
     public Transform[] boundries = new Transform[2];
 
@@ -16,7 +15,9 @@ public class RunningHamster : MonoBehaviour {
     float moveSpeed = 3;
 
     // Use this for initialization
-    void Start() {
+    protected override void Start() {
+        base.Start();
+
         _animator = GetComponentInChildren<Animator>();
     }
 

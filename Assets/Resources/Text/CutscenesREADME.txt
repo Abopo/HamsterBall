@@ -27,6 +27,7 @@ D - Dialogue to be said, multiple lines can be done in a row.
 S - Sound effect to play
 
 B - Board to load
+* If the board to load is set to "InGame" that means this cutscene is playing within a stage, so we should not load a new scene
 
 E - Ends the cutscene
 *Used for in-game cutscenes that don't need to load a new level at the end*

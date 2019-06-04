@@ -16,8 +16,6 @@ public class AttackState : PlayerState {
     public override void Initialize(PlayerController playerIn) {
         base.Initialize(playerIn);
 
-        playerController.PlayerAudio.PlayAttackClip();
-
         if(playerController.inputState.left.isDown) {
             _direction = -1;
             if(playerController.Animator.GetBool("FacingRight")) {

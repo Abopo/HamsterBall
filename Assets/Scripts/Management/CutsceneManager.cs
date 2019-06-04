@@ -112,6 +112,24 @@ public class CutsceneManager : MonoBehaviour {
         ReadEscapeCharacter();
     }
 
+    void EndCutscene() {
+        // Turn off objects in the scene
+        titleText.gameObject.SetActive(false);
+        leftChara1.gameObject.SetActive(false);
+        leftChara2.gameObject.SetActive(false);
+        rightChara1.gameObject.SetActive(false);
+        rightChara2.gameObject.SetActive(false);
+        backgroundSprite.gameObject.SetActive(false);
+        textBacker.gameObject.SetActive(false);
+        dialoguetext.gameObject.SetActive(false);
+
+        // Move characters off screen as well
+        leftChara1.GoOffscreen();
+        leftChara2.GoOffscreen();
+        rightChara1.GoOffscreen();
+        rightChara2.GoOffscreen();
+    }
+
     // Update is called once per frame
     void Update() {
         // If a character is sliding, wait for them to finish
@@ -357,7 +375,10 @@ public class CutsceneManager : MonoBehaviour {
         // Since we are about to leave, clean up
         CleanUp();
 
-        if(_boardToLoad != "") {
+        if(_boardToLoad == "InGame") {
+            // Just end the cutscene and stay in the stage
+            EndCutscene();
+        } else if(_boardToLoad != "") {
             LoadBoard();
         } else {
             ReturnToStorySelect();

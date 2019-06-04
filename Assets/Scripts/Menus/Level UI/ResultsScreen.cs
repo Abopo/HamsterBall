@@ -49,7 +49,7 @@ public class ResultsScreen : MonoBehaviour {
     }
 
     public void SetWinningTeamText(int winTeam) {
-        if(winTeam == 0) {
+        if(winTeam == -1) {
             winningTeamText.text = "Left Team Wins";
             winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[5];
         } else if(winTeam == 1) {
@@ -62,40 +62,41 @@ public class ResultsScreen : MonoBehaviour {
         }
     }
 
-    // team = the winning team
-    public void Activate(int team) {
+    public void SetSinglePlayerResultsText(int result) {
+        if (winningTeamSprite != null) {
+            winningTeamSprite.gameObject.SetActive(false);
+        }
+        if (winningTeamText != null) {
+            winningTeamText.gameObject.SetActive(true);
+            if (result == -1) {
+                winningTeamText.text = "You did it!";
+            } else {
+                winningTeamText.text = "You failed...";
+            }
+        }
+    }
+
+    // result: -1 = left team wins, 0 = draw, 1 = right team wins
+    public void Activate(int result) {
         gameObject.SetActive(true);
-        SetWinningTeamText(team);
+
+        if (_gameManager.isSinglePlayer) {
+            SetSinglePlayerResultsText(result);
+        } else {
+            SetWinningTeamText(result);
+        }
+
         _menuOptions = transform.GetComponentsInChildren<MenuOption>();
         foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;
         }
 
         // If we are online and not the master client
-        if(PhotonNetwork.connectedAndReady && !PhotonNetwork.isMasterClient) {
+        if (PhotonNetwork.connectedAndReady && !PhotonNetwork.isMasterClient) {
             // We shouldn't be able to use any of the buttons here
-            foreach(MenuOption mo in _menuOptions) {
+            foreach (MenuOption mo in _menuOptions) {
                 mo.gameObject.SetActive(false);
             }
-        }
-
-        winTimer = 0f;
-    }
-
-    // used for single player
-    public void Activate(bool won) {
-        gameObject.SetActive(true);
-        winningTeamSprite.gameObject.SetActive(false);
-        winningTeamText.gameObject.SetActive(true);
-        if (won) {
-            winningTeamText.text = "You did it!";
-        } else {
-            winningTeamText.text = "You failed...";
-        }
-
-        _menuOptions = transform.GetComponentsInChildren<MenuOption>();
-        foreach (MenuOption mo in _menuOptions) {
-            mo.isReady = false;
         }
 
         winTimer = 0f;
@@ -164,6 +165,17 @@ public class ResultsScreen : MonoBehaviour {
             // It's probably a versus match so
             // Replay the current level
             _levelManager.NextGame();
+        }
+    }
+
+    public void Retry() {
+        if (_gameManager.LevelDoc != null) {
+            _gameManager.CleanUp(false);
+
+            BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
+            boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
+        } else {
+            _gameManager.PlayAgainButton();
         }
     }
 }

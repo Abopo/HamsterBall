@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RetryButton : MenuOption {
+public class RetryButton : MenuButton {
     BoardLoader _boardLoader;
     GameManager _gameManager;
 

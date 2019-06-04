@@ -132,6 +132,11 @@ public class CutsceneCharacter : MonoBehaviour {
         _slidingIn = false;
     }
 
+    public void GoOffscreen() {
+        _rectTransform.localPosition = new Vector3(offScreenPos, _rectTransform.localPosition.y, _rectTransform.localPosition.z);
+        onScreen = false;
+    }
+
     public void SetCharacter(string chara, string expression) {
         curCharacter = chara;
 

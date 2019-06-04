@@ -84,7 +84,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 2.5f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
-            Debug.DrawRay(_ray.origin, _ray.direction * Mathf.Abs(deltaX));
+            //Debug.DrawRay(_ray.origin, _ray.direction * Mathf.Abs(deltaX));
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX), collisionMask1);
             if (_hit) {
                 float dst = Vector2.Distance(_ray.origin, _hit.point);
@@ -112,9 +112,10 @@ public class EntityPhysics : MonoBehaviour {
         floorHitCount = 0;
         float deltaY = inDeltaY;
         _pos = transform.position;
+        isTouchingFloor = false;
 
         // If we are moving upward
-        if(inDeltaY > 0) {
+        if (inDeltaY > 0) {
             collisionMask1 = collisionMask1 & ~(1 << 18); // Remove the "Passthrough" layer from the mask
         } else {
             collisionMask1 = collisionMask1 | (1 << 18); // Add the "Passthrough" layer to the mask
@@ -146,8 +147,9 @@ public class EntityPhysics : MonoBehaviour {
                     deltaY = 0;
                 }
 
+                isTouchingFloor = true;
+                entity.Grounded = true;
                 entity.CollisionResponseY(_hit.collider);
-                //break;
             }
         }
 
@@ -158,19 +160,19 @@ public class EntityPhysics : MonoBehaviour {
     public void CheckBelow() {
         _pos = transform.position;
         isTouchingFloor = false;
-        floorHitCount = 0;
+        //floorHitCount = 0;
 
         for (int i = 0; i < 3; ++i) {
             float x = (_pos.x + _offset.x - _scaledRadiusX / 2) + _scaledRadiusX / 2 * i;
             float y = _pos.y + _offset.y + _scaledRadiusY * -1;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
-            Debug.DrawRay(_ray.origin, _ray.direction * 0.05f);
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.05f, collisionMask1);
+            //Debug.DrawRay(_ray.origin, _ray.direction * 0.01f);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.01f, collisionMask1);
             if (_hit) {
                 isTouchingFloor = true;
                 entity.Grounded = true;
-                floorHitCount++;
+                //floorHitCount++;
                 entity.CollisionResponseY(_hit.collider);
             }
         }
@@ -190,7 +192,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 1.25f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right);
-            Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
+            ///Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMask2);
             if (_hit) {
                 rightHitCount++;
@@ -204,7 +206,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 1.25f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * -1);
-            Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
+            //Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMask2);
             if (_hit) {
                 isTouchingWallLeft = true;

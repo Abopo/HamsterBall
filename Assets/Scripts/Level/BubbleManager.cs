@@ -1051,6 +1051,8 @@ public class BubbleManager : MonoBehaviour {
         _levelManager.GameEnd();
         _scoreManager.CombineScore();
 
+        _levelManager.ActivateResultsScreen(team, result);
+
         // Send the winning team and score to the game manager
         if (result == 1) {
             _gameManager.EndGame(team, _scoreManager.TotalScore);
@@ -1059,10 +1061,6 @@ public class BubbleManager : MonoBehaviour {
         } else if (result == 0) {
             _gameManager.EndGame(-1, 0);
         }
-
-        _levelManager.ActivateResultsScreen(team, result);
-
-        _gameOver = true;
     }
 
     void OnBoardChanged() {

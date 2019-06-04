@@ -217,117 +217,93 @@ public class LevelManager : MonoBehaviour {
     // TODO: All of this results screen activation code is pretty unreadable, especially with the singleplayer/versus continue overlaps and crap
     // Need to somehow refactor this to make it less all over the place.
 
-    // result: -1 = loss, 0 = draw, 1 = win
+    // result: -1 = left team wins, 0 = draw, 1 = right team wins
     public void ActivateResultsScreen(int team, int result) {
+        int finalResult = DetermineFinalResult(team, result);
+
         // If this was a versus match
         if (!_gameManager.isSinglePlayer || _gameManager.gameMode == GAME_MODE.MP_VERSUS) {
             // Deal with best 2/3 stuff
             // Draw
-            if (result == 0) {
+            if(finalResult == 0) {
                 IncreaseLeftTeamGames();
                 IncreaseRightTeamGames();
                 if (_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
                     // the whole set was a draw
-                    ActivateFinalResultsScreen(team, 0);
+                    ActivateFinalResultsScreen(0);
                 } else if (_gameManager.leftTeamGames >= 2) {
                     // Left team has won the set
                     // Activate final results screen
-                    ActivateFinalResultsScreen(team, result);
+                    ActivateFinalResultsScreen(-1);
                 } else if (_gameManager.rightTeamGames >= 2) {
                     // Right team has won the set
                     // Activate final results screen
-                    ActivateFinalResultsScreen(team, result);
+                    ActivateFinalResultsScreen(1);
                 } else {
                     // Set not done so activate continue screen
-                    ActivateContinueScreen(0, 0);
+                    continueScreen.Activate(finalResult);
                 }
             } else {
-                // If Left team wins
-                if (team == 0 && result == 1 || team == 1 && result == -1) {
+                // If the left team has won
+                if(finalResult == -1) {
                     IncreaseLeftTeamGames();
-                    if (_gameManager.leftTeamGames >= 2) {
+                    if(_gameManager.leftTeamGames >= 2) {
                         // Left team has won the set
-                        // Activate final results screen with left team winning
-                        ActivateFinalResultsScreen(0, 1);
+                        ActivateFinalResultsScreen(-1);
                     } else {
                         // Set still not won
                         // Activate Continue screen
-                        ActivateContinueScreen(0, 1);
+                        continueScreen.Activate(finalResult);
                     }
-                    // If Right team wins
-                } else if (team == 1 && result == 1 || team == 0 && result == -1) {
+                // If right team has won
+                } else if(finalResult == 1) {
                     IncreaseRightTeamGames();
                     if (_gameManager.rightTeamGames >= 2) {
                         // Right team has won the set
                         // Activate final results screen with right team winning
-                        ActivateFinalResultsScreen(1, 1);
+                        ActivateFinalResultsScreen(1);
                     } else {
                         // Set still not won
                         // Activate Continue screen
-                        ActivateContinueScreen(1, 1);
+                        continueScreen.Activate(finalResult);
                     }
                 }
             }
         } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             // TODO: make a different results screen for these modes
-            ActivateFinalResultsScreen(team, 1);
-            // If this was a single player level
+            ActivateFinalResultsScreen(finalResult);
+        // If this was a single player level
         } else {
             if (continueLevel) {
-                ActivateContinueScreen(team, result);
+                continueScreen.Activate(finalResult);
             } else {
-                ActivateFinalResultsScreen(team, result);
+                ActivateFinalResultsScreen(finalResult);
             }
         }
     }
 
-    void ActivateContinueScreen(int team, int result) {
-        if (continueScreen != null) {
-            if (_gameManager.IsStoryLevel() && _gameManager.gameMode != GAME_MODE.MP_VERSUS) {
-                // If it's the player
-                if (team == 0) {
-                    continueScreen.Activate(result == 1);
-
-                    // If it's the enemy
-                } else {
-                    continueScreen.Activate(result == -1);
-                }
-            } else {
-                if (result == 1) {
-                    continueScreen.Activate(team);
-                } else if (result == -1) {
-                    // The other team won so send that team
-                    continueScreen.Activate(team == 1 ? 0 : 1);
-                } else {
-                    // It's a draw so display that
-                    continueScreen.Activate(-1);
-                }
-            }
-        }
-    }
-
-    void ActivateFinalResultsScreen(int team, int result) {
+    // result: -1 = left team wins, 0 = draw, 1 = right team wins
+    void ActivateFinalResultsScreen(int result) {
         setOver = true;
+
+        // If we're in a single player mode
         if (_gameManager.IsStoryLevel() && spResultsScreen != null) {
-            // If it's the player
-            if (team == 0) {
-                // If there is a cutscene after this stage, show a continue screen instead
+            // If the player lost
+            if (result != -1) {
+                // Show a normal results screen
+                spResultsScreen.Activate(result);
+                // If the player won
+            } else {
                 if (_gameManager.nextCutscene != "") {
-                    continueScreen.Activate(true);
-                } else if (_gameManager.gameMode == GAME_MODE.MP_VERSUS && !setOver) {
-                    continueScreen.Activate(team);
+                    continueScreen.Activate(result);
                 } else {
-                    spResultsScreen.Activate(result == 1);
+                    // Show a normal results screen
+                    spResultsScreen.Activate(result);
                 }
-            } else {
-                spResultsScreen.Activate(result == -1);
             }
+        // If we are in multiplayer
         } else if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
-            if (result != 0) {
-                mpResultsScreen.Activate(team);
-            } else {
-                mpResultsScreen.Activate(-1);
-            }
+            mpResultsScreen.Activate(result);
         }
     }
 
@@ -339,6 +315,32 @@ public class LevelManager : MonoBehaviour {
     void IncreaseRightTeamGames() {
         _gameManager.rightTeamGames++;
         _levelUI.FillInGameMarker(1);
+    }
+
+    // Returns a result: -1 = left team wins, 0 = draw, 1 = right team wins
+    int DetermineFinalResult(int team, int result) {
+        int finalResult = 0;
+        if (result == 0) {
+            finalResult = 0;
+        } else if (team == 0) {
+            if (result == -1) {
+                // Left team lost/Right team won
+                finalResult = 1;
+            } else if (result == 1) {
+                // Left team won/Right team lost
+                finalResult = -1;
+            }
+        } else if (team == 1) {
+            if (result == -1) {
+                // Left team won/Right team lost
+                finalResult = -1;
+            } else if (result == 1) {
+                // Left team lost/Right team won
+                finalResult = 1;
+            }
+        }
+
+        return finalResult;
     }
 
     public void NextGame() {
