@@ -4,12 +4,14 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using Rewired;
 
+public enum MENUTYPE { MAIN = 0, SUB, NUM_TYPES };
+
 // A base class for all menu options, i.e. buttons, sliders, etc.
 // Mostly allows for any menu option to move the selector to any other kind of menu option.
-[RequireComponent (typeof(AudioSource))]
 public class MenuOption : MonoBehaviour {
     public GameObject selector;
     public MenuOption[] adjOptions = new MenuOption[4]; // 0 - right, 1 - down, 2 - left, 3 - up
+    public MENUTYPE menuType;
     public bool isFirstSelection;
     public bool isReady = true;
 
@@ -19,10 +21,6 @@ public class MenuOption : MonoBehaviour {
     protected bool _moved;
 
     protected Player _player;
-
-    protected AudioSource _audioSource;
-    AudioClip _highlightClip;
-    AudioClip _selectClip;
 
     MenuOption[] _allOtherOptions;
 
@@ -44,10 +42,6 @@ public class MenuOption : MonoBehaviour {
         if (_player == null) {
             _player = ReInput.players.GetPlayer(0);
         }
-
-        _audioSource = GetComponent<AudioSource>();
-        _highlightClip = Resources.Load<AudioClip>("Audio/SFX/Highlight");
-        _selectClip = Resources.Load<AudioClip>("Audio/SFX/Blip_Select");
 
         _allOtherOptions = FindObjectsOfType<MenuOption>();
     }
@@ -109,6 +103,10 @@ public class MenuOption : MonoBehaviour {
     }
 
     public virtual void Highlight() {
+        if(!isReady) {
+            return;
+        }
+
         if (selector != null) {
             selector.transform.position = new Vector3(transform.position.x,
                                                        transform.position.y,
@@ -212,18 +210,32 @@ public class MenuOption : MonoBehaviour {
 
     public void PlayHighlightSound() {
         //if (_audioSource != null) {
-            //_audioSource.clip = _highlightClip;
-            //_audioSource.Play();
+        //_audioSource.clip = _highlightClip;
+        //_audioSource.Play();
         //}
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuHighlight);
+        switch (menuType) {
+            case MENUTYPE.MAIN:
+                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuHighlight);
+                break;
+            case MENUTYPE.SUB:
+                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
+                break;
+        }
     }
 
     public void PlaySelectSound() {
         //if (_audioSource != null) {
-            //_audioSource.clip = _selectClip;
-            //_audioSource.Play();
+        //_audioSource.clip = _selectClip;
+        //_audioSource.Play();
         //}
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuSelect);
+        switch (menuType) {
+            case MENUTYPE.MAIN:
+                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuSelect);
+                break;
+            case MENUTYPE.SUB:
+                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuSelect);
+                break;
+        }
     }
 
     void OnMouseEnter() {

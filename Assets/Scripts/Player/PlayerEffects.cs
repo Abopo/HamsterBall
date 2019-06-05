@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerEffects : MonoBehaviour {
 
-    public int particleIndex; // This changes based on the kind of platform the player is standing on
+    PlayerController _playerController;
 
     ParticleSystem footstepParticles1;
     ParticleSystem jumpingParticles1;
@@ -16,6 +16,10 @@ public class PlayerEffects : MonoBehaviour {
     ParticleSystem jumpingParticles2;
     ParticleSystem landingParticles2;
     ParticleSystem dashParticles2;
+
+    private void Awake() {
+        _playerController = GetComponent<PlayerController>();
+    }
 
     // Use this for initialization
     void Start () {
@@ -74,7 +78,7 @@ public class PlayerEffects : MonoBehaviour {
     }
 
     public void PlayFootstep() {
-        switch(particleIndex) {
+        switch(_playerController.platformIndex) {
             case 0:
                 if (footstepParticles1 != null) {
                     PlayEffect(footstepParticles1);
@@ -89,7 +93,7 @@ public class PlayerEffects : MonoBehaviour {
     }
 
     public void PlayJumping() {
-        switch(particleIndex) {
+        switch(_playerController.platformIndex) {
             case 0:
                 if (jumpingParticles1 != null) {
                     PlayEffect(jumpingParticles1);
@@ -104,7 +108,7 @@ public class PlayerEffects : MonoBehaviour {
     }
 
     public void PlayLanding() {
-        switch(particleIndex) {
+        switch(_playerController.platformIndex) {
             case 0:
                 if (landingParticles1 != null) {
                     PlayEffect(landingParticles1);
@@ -119,7 +123,7 @@ public class PlayerEffects : MonoBehaviour {
     }
 
     public void PlayDash() {
-        switch (particleIndex) {
+        switch (_playerController.platformIndex) {
             case 0:
                 if (dashParticles1 != null) {
                     PlayEffect(dashParticles1);

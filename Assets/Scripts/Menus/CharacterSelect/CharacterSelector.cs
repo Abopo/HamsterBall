@@ -27,9 +27,6 @@ public class CharacterSelector : MonoBehaviour {
         get { return gameObject.activeSelf; }
     }
 
-    float _moveTime = 0.3f;
-    float _moveTimer = 0f;
-
     // these are only used by the first player to control the selections of ai players
     public List<CharacterSelector> aiList = new List<CharacterSelector>();
     CharacterSelector parentSelector;
@@ -148,8 +145,6 @@ public class CharacterSelector : MonoBehaviour {
         if (isLocal && takeInput) {
             CheckInput();
         }
-
-        _moveTimer += Time.deltaTime;
     }
 
     public void CheckInput() {
@@ -158,13 +153,12 @@ public class CharacterSelector : MonoBehaviour {
             return;
         }
 
-        if (!lockedIn && CanMove()) {
+        if (!lockedIn) {
             // Right
             if (_player.GetButtonDown("Right")) {
                 if (curCharacterIcon.adjOptions[0] != null && curCharacterIcon.adjOptions[0].isReady) {
                     // move selector to adjOptions[0]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[0]);
-                    _moveTimer = 0f;
                 }
             }
             // Left
@@ -172,7 +166,6 @@ public class CharacterSelector : MonoBehaviour {
                 if (curCharacterIcon.adjOptions[2] != null && curCharacterIcon.adjOptions[2].isReady) {
                     // move selector to adjOptions[2]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[2]);
-                    _moveTimer = 0f;
                 }
             }
             // Up
@@ -180,7 +173,6 @@ public class CharacterSelector : MonoBehaviour {
                 if (curCharacterIcon.adjOptions[3] != null && curCharacterIcon.adjOptions[3].isReady) {
                     // move selector to adjOptions[3]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[3]);
-                    _moveTimer = 0f;
                 }
             }
             // Down
@@ -188,10 +180,9 @@ public class CharacterSelector : MonoBehaviour {
                 if (curCharacterIcon.adjOptions[1] != null && curCharacterIcon.adjOptions[1].isReady) {
                     // move selector to adjOptions[1]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[1]);
-                    _moveTimer = 0f;
                 }
             }
-        } else if(lockedIn && !isReady && CanMove()) {
+        } else if(lockedIn && !isReady) {
             if(_player.GetButtonDown("Right")) {
                 // Change Color to the right
                 ChangeColorRight();
@@ -200,10 +191,6 @@ public class CharacterSelector : MonoBehaviour {
                 // Change color to the left
                 ChangeColorLeft();
             }
-        }
-
-        if (!_player.GetButton("Right") && !_player.GetButton("Left") && !_player.GetButton("Up") && !_player.GetButton("Down")) {
-            _moveTimer = _moveTime + 1f;
         }
 
         if ((_player.GetButtonDown("Submit") || _player.GetButtonDown("Shift")) && (!lockedIn || !isReady)) {
@@ -339,14 +326,6 @@ public class CharacterSelector : MonoBehaviour {
         characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
         _audioSource.Play();
-    }
-
-    bool CanMove() {
-        if(_moveTimer >= _moveTime) {
-            return true;
-        }
-
-        return false;
     }
 
     public void ControlNextAI() {

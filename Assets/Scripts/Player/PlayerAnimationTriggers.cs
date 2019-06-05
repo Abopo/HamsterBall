@@ -86,6 +86,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _playerController.Animator.SetBool("LongIdle", false);
         _playerController.ChangeState(PLAYER_STATE.IDLE);
     }
+
     public void Footstep() {
 		PlayerFootstepEvent.start();
 

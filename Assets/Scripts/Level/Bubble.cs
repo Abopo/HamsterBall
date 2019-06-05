@@ -45,6 +45,7 @@ public class Bubble : MonoBehaviour {
 
     bool _popping = false;
     float _popTimer = 0f;
+    int _popIndex = 0; // When in the match this bubble will pop
     float _popDelay = 0f; // Time to wait before popping
     int _popType; // Type of pop to do (normal, bomb, ice)
     public bool Popping {
@@ -613,14 +614,13 @@ public class Bubble : MonoBehaviour {
 
         // Pop matches
         float pDelay = 0.1f;
+        int pIndex = 0;
         foreach (Bubble b in matches) {
             if (b != this) {
                 if (b.type == HAMSTER_TYPES.BOMB && !b.popped) {
-                    //b.BombExplode();
-                    b.StartPop(pDelay, 1);
+                    b.StartPop(pIndex, pDelay, 1);
                 } else {
-                    //b.Pop();
-                    b.StartPop(pDelay, 0);
+                    b.StartPop(pIndex, pDelay, 0);
                 }
             }
             pDelay += 0.1f;
@@ -696,7 +696,8 @@ public class Bubble : MonoBehaviour {
         return comboBonus;
     }
 
-    public void StartPop(float pDelay, int pType) {
+    public void StartPop(int pIndex, float pDelay, int pType) {
+        _popIndex = pIndex;
         _popDelay = pDelay;
         _popType = pType;
         _popping = true;
@@ -728,10 +729,6 @@ public class Bubble : MonoBehaviour {
                 }
             }
         }
-
-        // PlayPopClip();
-
-		//DestroyObject (this.gameObject);
 	}
 
 	public void Drop() {
@@ -789,8 +786,7 @@ public class Bubble : MonoBehaviour {
                     // Break the ice
                     BreakIce();
                 } else if (adjBubbles[i].type == HAMSTER_TYPES.BOMB && !adjBubbles[i].popped) {
-                    //adjBubbles[i].BombExplode();
-                    adjBubbles[i].StartPop(0.1f, 1);
+                    adjBubbles[i].StartPop(i, 0.1f, 1);
                 } else {
                     adjBubbles[i].Pop();
                 }

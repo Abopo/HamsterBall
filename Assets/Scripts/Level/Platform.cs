@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour {
 
-    public int particleIndex; // This is used to tell the player what particles to create on footsteps/jumps/lands
+    public int platformIndex; // This is used to tell the player what particles to create on footsteps/jumps/lands
 
 	// Use this for initialization
 	void Start () {

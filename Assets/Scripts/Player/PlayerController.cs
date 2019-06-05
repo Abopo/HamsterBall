@@ -100,6 +100,7 @@ public class PlayerController : Entity {
         set { _traction = value; }
     }
     protected bool _onFallThrough;
+    public int platformIndex; // This changes based on the kind of platform the player is standing on
 
     public bool aiControlled;
     public bool springing;
@@ -554,7 +555,7 @@ public class PlayerController : Entity {
 
     void PlatformTypeCheck(Platform plat) {
         if (plat != null) {
-            _playerEffects.particleIndex = plat.particleIndex;
+            platformIndex = plat.platformIndex;
         }
     }
 
