@@ -18,7 +18,7 @@ public class PlayerEffects : MonoBehaviour {
     ParticleSystem dashParticles2;
 
     private void Awake() {
-        _playerController = GetComponent<PlayerController>();
+        _playerController = transform.parent.GetComponent<PlayerController>();
     }
 
     // Use this for initialization
