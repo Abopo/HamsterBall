@@ -20,7 +20,7 @@ public class PlayerController : Entity {
     public int direction;
     public bool aimAssist;
     public bool canBeHit;
-    
+
 	//public bool isLeftTeam;
     public int team; // -1 = no team, 0 = left team, 1 = right team
     public int playerNum;
@@ -318,7 +318,7 @@ public class PlayerController : Entity {
             attackObj.gameObject.SetActive(false);
         }
 
-		//PlayerAnimationTriggers.PlayerFootstepEvent.setParameterValue("Surface", platformIndex);
+		//_playerAnimationTriggers.PlayerFootstepEvent.setParameterValue("Surface", platformIndex);
 	}
 
     protected virtual void CheckInput() {
