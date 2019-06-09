@@ -317,6 +317,8 @@ public class PlayerController : Entity {
         if(curState != PLAYER_STATE.ATTACK && attackObj.gameObject.activeSelf) {
             attackObj.gameObject.SetActive(false);
         }
+
+		//PlayerAnimationTriggers.PlayerFootstepEvent.setParameterValue("Surface", platformIndex);
 	}
 
     protected virtual void CheckInput() {

@@ -52,6 +52,9 @@ public class Bubble : MonoBehaviour {
         get { return _popping; }
     }
 
+	public FMOD.Studio.EventInstance BallBreakEvent;
+
+
     BubbleManager _homeBubbleManager;
     GameManager _gameManager;
 
@@ -79,6 +82,8 @@ public class Bubble : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
     public void Initialize(HAMSTER_TYPES inType) {
@@ -154,7 +159,14 @@ public class Bubble : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-    	
+		BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+
+		if (_popIndex <= 10){
+			BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
+		} else {
+			BallBreakEvent.setParameterValue("PoppedCount", 10);
+		}
+
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
         }
@@ -708,7 +720,8 @@ public class Bubble : MonoBehaviour {
 		popped = true;
         _popping = false;
 
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.BallBreak);
+		BallBreakEvent.start();
+
 		Debug.Log("Pop");
         // Instaed of destroying, do a nice animation of the bubble opening.
         _popAnimation.Pop();

@@ -88,6 +88,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     }
 
     public void Footstep() {
+		PlayerFootstepEvent.setParameterValue("Surface", _playerController.platformIndex);
 		PlayerFootstepEvent.start();
 
         _playerEffects.PlayFootstep();
