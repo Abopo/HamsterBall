@@ -161,11 +161,13 @@ public class Bubble : MonoBehaviour {
 		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 		BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 
-		if (_popIndex <= 10){
-			BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
-		} else {
-			BallBreakEvent.setParameterValue("PoppedCount", 10);
-		}
+		//if (_popIndex <= 10){
+		//	BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
+		//} else {
+		//	BallBreakEvent.setParameterValue("PoppedCount", 10);
+		//}
+		BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
+		Debug.Log("PopIndex " + _popIndex);
 
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
@@ -436,7 +438,12 @@ public class Bubble : MonoBehaviour {
         if (sameType) {
             // Play same color connect sound
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectSameColor);
-			} else {
+		} else if(type == HAMSTER_TYPES.RAINBOW){
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectRainbow);
+		} else if(type == HAMSTER_TYPES.DEAD){
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectSkull);
+		}
+		else {
             // Play normal connect sound
             FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnect);
         }
@@ -719,6 +726,7 @@ public class Bubble : MonoBehaviour {
 		_homeBubbleManager.RemoveBubble (node);
 		popped = true;
         _popping = false;
+
 
 		BallBreakEvent.start();
 
