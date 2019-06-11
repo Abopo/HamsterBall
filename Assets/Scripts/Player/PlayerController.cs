@@ -308,6 +308,7 @@ public class PlayerController : Entity {
             _physics.MoveY(velocity.y * Time.deltaTime);
 
             _justChangedState = false;
+
         }
 
         // Failsafe checks

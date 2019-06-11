@@ -28,6 +28,9 @@ public class SoundManager : MonoBehaviour {
 	public string CountDownGo;
 
 	//Generic Player Sounds
+	public string WoodPlayerFootstep;
+	public string GrassPlayerFootstep;
+
 	public string PlayerFootstep;
 	public string SwingNetOneshot;
 	public string ThrowStartOneshot;

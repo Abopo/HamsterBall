@@ -16,7 +16,12 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
 	//public FMOD.Studio.EventInstance PlayerFootstepEvent
 	public FMOD.Studio.EventInstance SwingNetEvent;
-	public FMOD.Studio.EventInstance PlayerFootstepEvent;
+
+	public FMOD.Studio.EventInstance GrassFootstepEvent;
+	public FMOD.Studio.EventInstance WoodFootstepEvent;
+
+	public FMOD.Studio.ParameterInstance ParameterInstance;
+	public int test;
 
 	// Use this for initialization
 	void Start () {
@@ -27,8 +32,12 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
         _playerEffects = transform.parent.GetComponentInChildren<PlayerEffects>();
 
+
+
 		SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
-		PlayerFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerFootstep);
+		GrassFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.GrassPlayerFootstep);
+		WoodFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.WoodPlayerFootstep);
+		//FMOD.Studio.EventInstance.getParameterValue("Surface", out _playerController.platformIndex, out test);
     }
 
 	public void OnEnable(){
@@ -36,13 +45,15 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 		footstepEmitter = target1.GetComponent<FMODUnity.StudioEventEmitter>();
 		//netSwingEmitter = target1.GetComponent<FMODUnity.StudioEventEmitter.>();
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(SwingNetEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerFootstepEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(GrassFootstepEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(WoodFootstepEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
 	}
 
     // Update is called once per frame
     void Update () {
 		SwingNetEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-		PlayerFootstepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+		GrassFootstepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+		WoodFootstepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 	}
 
     public void ThrowBall() {
@@ -88,9 +99,16 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     }
 
     public void Footstep() {
-		PlayerFootstepEvent.setParameterValue("Surface", _playerController.platformIndex);
-		PlayerFootstepEvent.start();
+		//PlayerFootstepEvent.getParameter("Surface", PlayerFootstepEvent);
 
+		if(_playerController.platformIndex == 0){
+			GrassFootstepEvent.start();
+			Debug.Log("Grass");
+		} else if (_playerController.platformIndex == 1){
+			WoodFootstepEvent.start();
+			Debug.Log("Wood");
+		}
+		Debug.Log(_playerController.platformIndex);
         _playerEffects.PlayFootstep();
     }
 }
