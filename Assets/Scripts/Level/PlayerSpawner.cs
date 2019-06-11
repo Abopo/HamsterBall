@@ -136,7 +136,7 @@ public class PlayerSpawner : MonoBehaviour {
         }
     }
 
-    Vector2 FindSpawnPosition(int team) {
+    Vector3 FindSpawnPosition(int team) {
         if(team == 0) {
             return spawns[leftSpawned++].position;
         } else if (team == 1) {

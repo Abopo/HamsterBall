@@ -63,9 +63,9 @@ public class HamsterWheel : MonoBehaviour {
         _mapNames[1] = "Mountain";
         _mapNames[2] = "Beach";
         _mapNames[3] = "City2";
-        _mapNames[4] = "Sewers";
+        _mapNames[4] = "Corporation";
         _mapNames[5] = "Laboratory";
-        _mapNames[6] = "DarkForest";
+        _mapNames[6] = "Corporation";
         _mapNames[7] = "Airship";
 
         curMapText.text = _mapNames[_index];
