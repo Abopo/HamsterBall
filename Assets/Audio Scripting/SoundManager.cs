@@ -13,9 +13,11 @@ public class SoundManager : MonoBehaviour {
 	public string HamsterConnect;
 	public string HamsterConnectSameColor;
 	public string HamsterConnectRainbow;
+	public string HamsterConnectSkull;
 	public string HamsterFillBall;
 	public string HamsterCollectSuccessOneshot;
 	public string HamsterCollectRainbow;
+	public string HamsterCollectSkull;
 	public string BallBreak;
 	public string HamsterTravel;
 	public string HamsterOrbCreate;

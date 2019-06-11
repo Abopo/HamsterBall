@@ -134,7 +134,7 @@ public class CatchHitbox : MonoBehaviour {
 		if (hamster.type == HAMSTER_TYPES.RAINBOW){
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectRainbow);
 		} else if (hamster.type ==HAMSTER_TYPES.DEAD){
-			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectRainbow);
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectSkull);
 		}
 		else {
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterCollectSuccessOneshot);
