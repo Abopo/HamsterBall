@@ -513,7 +513,12 @@ public class PlayerController : Entity {
 			//_shiftCooldownTimer = 0;
 		}
 
-        if(collider.name == "Ice Platform") {
+        if(collider.tag == "LightningBolt") {
+            ChangeState(PLAYER_STATE.HIT);
+            ((HitState)GetPlayerState(PLAYER_STATE.HIT)).Knockback((int)Mathf.Sign(transform.position.x - collider.transform.position.x));
+        }
+
+        if (collider.name == "Ice Platform") {
             _traction = 0.2f;
         }
 
