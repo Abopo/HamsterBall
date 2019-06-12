@@ -226,7 +226,7 @@ public class EntityPhysics : MonoBehaviour {
     void OnTriggerStay2D(Collider2D collider) {
         // If we are in a wall (layer 9) or platform (layer 21) with a box collider
         if ((collider.gameObject.layer == 9 || collider.gameObject.layer == 21) && collider.GetComponent<BoxCollider2D>() != null) {
-            //_stuckTimer += Time.deltaTime;
+            _stuckTimer += Time.deltaTime;
             if(_stuckTimer < _stuckTime) {
                 return;
             }

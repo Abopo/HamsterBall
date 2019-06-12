@@ -429,7 +429,7 @@ public class BoardEditor : MonoBehaviour {
             _readLine = _linesFromFile[fileIndex++];
         }
         _readLine = _linesFromFile[fileIndex];
-        GameObject levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/SinglePlayer/" + _readLine);
+        GameObject levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/" + _readLine);
         GameObject newLevel = GameObject.Instantiate(levelPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         HamsterSpawner[] spawners = newLevel.GetComponentsInChildren<HamsterSpawner>();
         foreach (HamsterSpawner hS in spawners) {

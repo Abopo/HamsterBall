@@ -8,10 +8,15 @@ public class Ceiling : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        GameObject tempBubbleObj = null;
 		if(team == 0) {
-            bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
-        } else {
-            bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
+            tempBubbleObj = GameObject.FindGameObjectWithTag("BubbleManager1");
+        } else if(team == 1) {
+            tempBubbleObj = GameObject.FindGameObjectWithTag("BubbleManager2");
+        }
+
+        if(tempBubbleObj != null) {
+            bubbleManager = tempBubbleObj.GetComponent<BubbleManager>();
         }
     }
 	
