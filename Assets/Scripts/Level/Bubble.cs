@@ -161,13 +161,6 @@ public class Bubble : MonoBehaviour {
 		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 		BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 
-		//if (_popIndex <= 10){
-		//	BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
-		//} else {
-		//	BallBreakEvent.setParameterValue("PoppedCount", 10);
-		//}
-		BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
-		Debug.Log("PopIndex " + _popIndex);
 
         if(_destroy && !_audioSource.isPlaying) {
             DestroyObject(this.gameObject);
@@ -633,7 +626,7 @@ public class Bubble : MonoBehaviour {
 
         // Pop matches
         float pDelay = 0.1f;
-        int pIndex = 0;
+        int pIndex = 1;
         foreach (Bubble b in matches) {
             if (b != this) {
                 if (b.type == HAMSTER_TYPES.BOMB && !b.popped) {
@@ -643,6 +636,7 @@ public class Bubble : MonoBehaviour {
                 }
             }
             pDelay += 0.1f;
+            pIndex += 1;
         }
     }
 
@@ -727,8 +721,14 @@ public class Bubble : MonoBehaviour {
 		popped = true;
         _popping = false;
 
+        if (_popIndex <= 10){
+        	BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
+        } else {
+        	BallBreakEvent.setParameterValue("PoppedCount", 10);
+        }
+        Debug.Log("PopIndex " + _popIndex);
 
-		BallBreakEvent.start();
+        BallBreakEvent.start();
 
 		Debug.Log("Pop");
         // Instaed of destroying, do a nice animation of the bubble opening.
