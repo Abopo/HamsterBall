@@ -46,7 +46,7 @@ public class ShiftState : PlayerState {
 
         float shiftDistance = 12.5f;
         //if(playerController.LevelManager.mirroredLevel) {
-        shiftDistance = Mathf.Abs(playerController.transform.position.x) * 2;
+        //shiftDistance = Mathf.Abs(playerController.transform.position.x) * 2;
         //}
 
         // Find landing point

@@ -19,7 +19,7 @@ public class CutsceneCharacter : MonoBehaviour {
 
     public bool IsSliding {
         get {
-            if(_slidingIn || _slidingOut) {
+            if(_slidingIn || _slidingOut || _walkingScript.isWalking) {
                 return true;
             } else {
                 return false;
@@ -27,33 +27,46 @@ public class CutsceneCharacter : MonoBehaviour {
         }
     }
 
-    float _slideSpeed = 20.0f;
+
+    float _slideSpeed = 15.0f;
     bool _slidingIn = false;
     bool _slidingOut = false;
 
     bool _isSpeaking;
 
+    float _fakeDeltaTime = 0.02f;
+
     Image _image;
     SpriteRenderer _speakerArrow;
-    RectTransform _rectTransform;
     CutsceneManager _cutsceneManager;
+    RectTransform _rectTransform;
+    public RectTransform RectTransform {
+        get { return _rectTransform; }
+    }
+
+    // Event scripts
+    WalkingScript _walkingScript;
 
     private void Awake() {
         _image = GetComponent<Image>();
         _speakerArrow = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        _rectTransform = GetComponent<RectTransform>();
         _cutsceneManager = FindObjectOfType<CutsceneManager>();
+        _rectTransform = GetComponent<RectTransform>();
+
+        _walkingScript = GetComponent<WalkingScript>();
 
         SetIsSpeaking(false);
     }
 
     // Use this for initialization
     void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(_slidingIn) {
+        _rectTransform.Translate(_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
+        _rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (_slidingIn) {
             _speakerArrow.enabled = false;
             SlidingIn();
         } else if (_slidingOut) {
@@ -61,23 +74,23 @@ public class CutsceneCharacter : MonoBehaviour {
             SlidingOut();
         }
     }
-
+    
     void SlidingIn() {
         if (side < 0) {
-            _rectTransform.Translate(_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
-            if (_rectTransform.localPosition.x >= screenPos) {
+            _rectTransform.Translate(_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (_rectTransform.anchoredPosition.x >= screenPos) {
                 SlideInFinish();
             }
         } else if (side > 0) {
-            _rectTransform.Translate(-_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
-            if (_rectTransform.localPosition.x <= screenPos) {
+            _rectTransform.Translate(-_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (_rectTransform.anchoredPosition.x <= screenPos) {
                 SlideInFinish();
             }
         }
     }
 
     void SlideInFinish() {
-        _rectTransform.localPosition = new Vector3(screenPos, _rectTransform.localPosition.y, _rectTransform.localPosition.z);
+        _rectTransform.anchoredPosition = new Vector2(screenPos, _rectTransform.localPosition.y);
         _slidingIn = false;
         onScreen = true;
 
@@ -92,20 +105,20 @@ public class CutsceneCharacter : MonoBehaviour {
 
     void SlidingOut() {
         if (side < 0) {
-            _rectTransform.Translate(-_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
-            if (_rectTransform.localPosition.x <= offScreenPos) {
+            _rectTransform.Translate(-_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (_rectTransform.anchoredPosition.x <= offScreenPos) {
                 SlideOutFinish();
             }
         } else if(side > 0) {
-            _rectTransform.Translate(_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
-            if (_rectTransform.localPosition.x >= offScreenPos) {
+            _rectTransform.Translate(_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (_rectTransform.anchoredPosition.x >= offScreenPos) {
                 SlideOutFinish();
             }
         }
     }
 
     void SlideOutFinish() {
-        _rectTransform.localPosition = new Vector3(offScreenPos, _rectTransform.localPosition.y, _rectTransform.localPosition.z);
+        _rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
         _slidingOut = false;
         onScreen = false;
 
@@ -132,8 +145,13 @@ public class CutsceneCharacter : MonoBehaviour {
         _slidingIn = false;
     }
 
+    public void StopSliding() {
+        _slidingIn = false;
+        _slidingOut = false;
+    }
+
     public void GoOffscreen() {
-        _rectTransform.localPosition = new Vector3(offScreenPos, _rectTransform.localPosition.y, _rectTransform.localPosition.z);
+        _rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
         onScreen = false;
     }
 
@@ -175,5 +193,9 @@ public class CutsceneCharacter : MonoBehaviour {
         } else {
             _speakerArrow.enabled = false;
         }
+    }
+
+    public void Translate(float deltaX, float deltaY) {
+        _rectTransform.Translate(deltaX, deltaY, 0f);
     }
 }

@@ -68,6 +68,11 @@ public class PlayerSpawner : MonoBehaviour {
     void SpawnPlayers() {
         GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         PlayerInfo tempPlayerInfo;
+
+        if(_playerManager.NumPlayers == 0) {
+            _playerManager.MakeBackupPlayers();
+        }
+
         for(int i = 0; i < _playerManager.NumPlayers; ++i) {
             tempPlayerInfo = _playerManager.GetPlayerByIndex(i);
 

@@ -23,6 +23,7 @@ public class BoardEditor : MonoBehaviour {
     string _levelPrefab;
 
     GameManager _gameManager;
+    PlayerManager _playerManager;
 
     // Use this for initialization
     void Start () {
@@ -54,6 +55,8 @@ public class BoardEditor : MonoBehaviour {
         if (_gameManager.prevBoard != "") {
             LoadBoard(_gameManager.prevBoard);
         }
+
+        _playerManager = FindObjectOfType<PlayerManager>();
     }
 
     // Update is called once per frame
@@ -494,6 +497,7 @@ public class BoardEditor : MonoBehaviour {
     public void TestLevel() {
         if (_fileName != "") {
             _gameManager.prevBoard = _fileName;
+            _gameManager.isSinglePlayer = true;
             SaveBoard();
             GetComponent<BoardLoader>().ReadCreatedBoard(_fileName);
         } else {

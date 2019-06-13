@@ -15,7 +15,6 @@ public class PlayerInfo {
 }
 
 public class PlayerManager : MonoBehaviour {
-    public bool backup;
     List<PlayerInfo> _players = new List<PlayerInfo>();
 
     public int NumPlayers {
@@ -31,26 +30,28 @@ public class PlayerManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         DontDestroyOnLoad(transform.gameObject);
-        if (backup) {
-            BackupPlayers();
-        }
 
         SceneManager.sceneLoaded += SceneChanged;
         //NumPlayers = 0;
     }
 
-    void BackupPlayers() {
+    public void MakeBackupPlayers() {
         PlayerInfo newPlayer = new PlayerInfo();
-        newPlayer.playerNum = 1;
+        newPlayer.playerNum = 0;
+        newPlayer.charaInfo.name = CHARACTERS.BOY;
         newPlayer.isAI = false;
         newPlayer.team = 0;
         _players.Add(newPlayer);
 
-        PlayerInfo newPlayer2 = new PlayerInfo();
-        newPlayer2.playerNum = 2;
-        newPlayer.isAI = true;
-        newPlayer2.team = 1;
-        _players.Add(newPlayer2);
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (!gameManager.isSinglePlayer) {
+            PlayerInfo newPlayer2 = new PlayerInfo();
+            newPlayer2.playerNum = 1;
+            newPlayer.charaInfo.name = CHARACTERS.GIRL;
+            newPlayer.isAI = true;
+            newPlayer2.team = 1;
+            _players.Add(newPlayer2);
+        }
     }
 
     // Update is called once per frame

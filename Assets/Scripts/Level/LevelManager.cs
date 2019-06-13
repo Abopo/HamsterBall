@@ -64,6 +64,8 @@ public class LevelManager : MonoBehaviour {
             }
         }
 
+        pauseMenu = FindObjectOfType<PauseMenu>();
+
         SceneManager.sceneUnloaded += OnSceneExit;
     }
 
@@ -148,6 +150,17 @@ public class LevelManager : MonoBehaviour {
                         _bubbleManager.StartShaking();
                     }
                 }
+            }
+        }
+
+        // Testing stuff
+        if(Input.GetKeyDown(KeyCode.M)) {
+            bool paused;
+            SoundManager.mainAudio.MusicMainEvent.getPaused(out paused);
+            if (paused) {
+                SoundManager.mainAudio.MusicMainEvent.setPaused(false);
+            } else {
+                SoundManager.mainAudio.MusicMainEvent.setPaused(true);
             }
         }
     }

@@ -106,6 +106,10 @@ public class CharacterSelectResources : MonoBehaviour {
         lackey2.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey2") as RuntimeAnimatorController;
         lackey2.isTaken = false;
         _charaAnimators[3].Add(lackey2);
+        CharaSelectInfo lackey3 = new CharaSelectInfo();
+        lackey3.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey3") as RuntimeAnimatorController;
+        lackey3.isTaken = false;
+        _charaAnimators[3].Add(lackey3);
 
     }
 
@@ -139,6 +143,7 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaPortraits[3] = new List<Sprite>();
         sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
         _charaPortraits[3].Add(sprites[0]);
+        _charaPortraits[3].Add(sprites[1]);
         _charaPortraits[3].Add(sprites[1]);
     }
 

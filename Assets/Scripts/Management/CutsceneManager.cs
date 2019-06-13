@@ -33,6 +33,8 @@ public class CutsceneManager : MonoBehaviour {
 
     string _boardToLoad;
 
+    CutsceneCharacter _curCharacter;
+
     bool _ready;
     bool _playedAudio;
     bool _isPlaying;
@@ -52,6 +54,7 @@ public class CutsceneManager : MonoBehaviour {
 
         _fileIndex = 0;
 
+        fileToLoad = "";
         _boardToLoad = "";
 
         _ready = true;
@@ -78,6 +81,9 @@ public class CutsceneManager : MonoBehaviour {
 
     void Start() {
         if (fileToLoad != "") {
+            StartCutscene(fileToLoad);
+        } else {
+            fileToLoad = "World1/1-1/ExampleCutscene";
             StartCutscene(fileToLoad);
         }
     }
@@ -199,9 +205,6 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     public void ReadEscapeCharacter() {
-        //do {
-        //    _escapeChar = _linesFromFile[_fileIndex++];
-        //} while (_escapeChar == "");
         if (_linesFromFile == null || _linesFromFile.Length == 0) {
             return;
         }
@@ -225,11 +228,18 @@ public class CutsceneManager : MonoBehaviour {
             case "CR2":
                 ReadCharacters();
                 break;
+            case "OBJ_L":
+            case "OBJ_R":
+
+                break;
             case "D":
                 ReadDialogue();
                 break;
             case "S":
                 ReadSound();
+                break;
+            case "Event":
+                ReadEvent();
                 break;
             case "E":
                 EndScene();
@@ -293,6 +303,7 @@ public class CutsceneManager : MonoBehaviour {
     void SetCharacter(CutsceneCharacter character) {
         // Read in the character's expression
         string expressionText = _linesFromFile[_fileIndex++];
+        _curCharacter = character;
 
         if (_readText == "Clear") {
             // Move off screen
@@ -345,6 +356,10 @@ public class CutsceneManager : MonoBehaviour {
         }
     }
 
+    void ReadObject() {
+
+    }
+
     void ReadDialogue() {
         _ready = false;
 
@@ -359,6 +374,16 @@ public class CutsceneManager : MonoBehaviour {
         _audioSource.clip = Resources.Load<AudioClip>("Audio/Cutscenes/" + _readText);
         _audioSource.Play();
         _playedAudio = true;
+    }
+
+    void ReadEvent() {
+        _readText = _linesFromFile[_fileIndex++];
+
+        switch(_readText) {
+            case "Walk":
+                WalkEvent();
+                break;
+        }
     }
 
     void CleanUp() {
@@ -391,5 +416,13 @@ public class CutsceneManager : MonoBehaviour {
 
     void ReturnToStorySelect() {
         SceneManager.LoadScene("StorySelect");
+    }
+
+
+    // Events
+    void WalkEvent() {
+
+
+        _curCharacter.GetComponent<WalkingScript>().StartWalking();
     }
 }

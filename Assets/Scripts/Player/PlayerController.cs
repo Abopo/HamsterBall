@@ -400,58 +400,6 @@ public class PlayerController : Entity {
         }
     }
 
-    public void Shift() {
-        //if(_levelManager.mirroredLevel) {
-            MirrorShift();
-        //} else {
-        //    SymmetricalShift();
-        //}
-    }
-
-    // This shift is used on symmetrical stages
-    public void SymmetricalShift() {
-        if (!shifted) {
-            if (team == 0) {
-                transform.Translate(12.5f, 0.0f, 0.0f);
-            } else if (team == 1) {
-                transform.Translate(-12.5f, 0.0f, 0.0f);
-            }
-            shifted = true;
-            _targetArrow.enabled = true;
-        } else {
-            if (team == 0) {
-                transform.Translate(-12.5f, 0.0f, 0.0f);
-            } else if (team == 1) {
-                transform.Translate(12.5f, 0.0f, 0.0f);
-            }
-            shifted = false;
-            _targetArrow.enabled = false;
-        }
-    }
-
-    // This shift is used on mirrored stages to help keep players out of level collision
-    public void MirrorShift() {
-        float shiftDistance = Mathf.Abs(transform.position.x) * 2;
-        
-        if (!shifted) {
-            if (team == 0) {
-                transform.Translate(shiftDistance, 0.0f, 0.0f);
-            } else if (team == 1) {
-                transform.Translate(-shiftDistance, 0.0f, 0.0f);
-            }
-            shifted = true;
-            _targetArrow.enabled = true;
-        } else {
-            if (team == 0) {
-                transform.Translate(-shiftDistance, 0.0f, 0.0f);
-            } else if (team == 1) {
-                transform.Translate(shiftDistance, 0.0f, 0.0f);
-            }
-            shifted = false;
-            _targetArrow.enabled = false;
-        }
-    }
-
     protected void InvulnerabilityState() {
         _blinkTimer += Time.deltaTime;
         if (_blinkTimer > _blinkTime) {
