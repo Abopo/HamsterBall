@@ -88,7 +88,7 @@ public class LevelManager : MonoBehaviour {
             gameStarted = true;
         }
 		SoundManager.mainAudio.MusicMainEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MusicMain);
-
+		SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
         SetStageMusic();
     }
 
@@ -98,6 +98,8 @@ public class LevelManager : MonoBehaviour {
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
 				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
+				SoundManager.mainAudio.ForestAmbienceEvent.start();
+				Debug.Log("Forest Ambience Start");
                 break;
             case STAGES.MOUNTAIN:
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
@@ -381,5 +383,6 @@ public class LevelManager : MonoBehaviour {
         // Stop looping sounds here
         SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+		SoundManager.mainAudio.ForestAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

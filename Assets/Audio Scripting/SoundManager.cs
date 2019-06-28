@@ -57,6 +57,7 @@ public class SoundManager : MonoBehaviour {
 
 	//Ambience
 	public string ForestAmbience;
+	public FMOD.Studio.EventInstance ForestAmbienceEvent;
 
 	//Other Sounds
 	public string Shift;

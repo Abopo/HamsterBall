@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.01.10.00">
     <object class="Event" id="{2cbb6548-6cb7-45e4-8961-1712db4dfacc}">
         <property name="name">
-            <value>New Event</value>
+            <value>Forest Ambience</value>
         </property>
         <property name="outputFormat">
             <value>1</value>
@@ -31,6 +31,9 @@
         </relationship>
         <relationship name="timeline">
             <destination>{293a92a2-438f-4d53-be67-a72f4b1b853e}</destination>
+        </relationship>
+        <relationship name="banks">
+            <destination>{3af05227-d1bf-4060-a295-7eccf2850cff}</destination>
         </relationship>
     </object>
     <object class="EventMixer" id="{d898fe8d-ad0b-4a98-bd47-ff5e0038a7af}">
@@ -82,6 +85,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{c359a696-b767-47ba-917e-03083ca1c4a6}">
+        <property name="volume">
+            <value>-14.5</value>
+        </property>
         <relationship name="effectChain">
             <destination>{f73be53f-0ed3-4f0e-b524-c339e85ed43a}</destination>
         </relationship>
@@ -107,6 +113,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{53d3e8e7-73ea-457d-9d26-8f070fddcb17}">
+        <property name="volume">
+            <value>1</value>
+        </property>
         <property name="name">
             <value>Audio 1</value>
         </property>
@@ -129,6 +138,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{771d5da4-9a3c-44c5-9496-470143de3324}">
+        <property name="volume">
+            <value>-10.5</value>
+        </property>
         <property name="name">
             <value>Audio 2</value>
         </property>
@@ -159,6 +171,7 @@
     <object class="MixerBusEffectChain" id="{f73be53f-0ed3-4f0e-b524-c339e85ed43a}">
         <relationship name="effects">
             <destination>{5c4cf976-0fd3-4bee-b4b9-6d11c4eed5bb}</destination>
+            <destination>{18f1e90c-e9a1-466d-b191-fe2f337a6fe7}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{1243a3c7-6d55-4040-91fd-97b69e2d0345}"/>
@@ -166,6 +179,7 @@
     <object class="MixerBusEffectChain" id="{9a228598-bbe2-47a7-b4c2-fa7c53e06805}">
         <relationship name="effects">
             <destination>{c8b17efc-da9e-4257-8297-304227ab37e6}</destination>
+            <destination>{f001d3a2-b2a8-4955-ae90-7a0039dfc935}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{e4dd643e-602c-4463-b133-f15745e5acf3}"/>
@@ -176,6 +190,40 @@
     </object>
     <object class="MixerBusPanner" id="{af302d99-1046-44a7-ab82-01c9e445aaab}"/>
     <object class="MixerBusFader" id="{5c4cf976-0fd3-4bee-b4b9-6d11c4eed5bb}"/>
+    <object class="MultibandEqEffect" id="{18f1e90c-e9a1-466d-b191-fe2f337a6fe7}">
+        <property name="filterTypeA">
+            <value>7</value>
+        </property>
+        <property name="filterTypeE">
+            <value>1</value>
+        </property>
+        <property name="frequencyA">
+            <value>235.405243</value>
+        </property>
+        <property name="frequencyE">
+            <value>7970.95898</value>
+        </property>
+        <property name="qualityE">
+            <value>0.974517226</value>
+        </property>
+        <property name="gainA">
+            <value>-26.3793106</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{c8b17efc-da9e-4257-8297-304227ab37e6}"/>
+    <object class="MultibandEqEffect" id="{f001d3a2-b2a8-4955-ae90-7a0039dfc935}">
+        <property name="filterTypeA">
+            <value>0</value>
+        </property>
+        <property name="filterTypeE">
+            <value>8</value>
+        </property>
+        <property name="frequencyE">
+            <value>2347.55957</value>
+        </property>
+        <property name="gainE">
+            <value>7.24137783</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{2a0b49cd-b264-46d5-a1b1-da81c709cc0a}"/>
 </objects>
