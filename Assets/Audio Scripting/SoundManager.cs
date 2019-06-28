@@ -32,6 +32,8 @@ public class SoundManager : MonoBehaviour {
 	//Generic Player Sounds
 	public string WoodPlayerFootstep;
 	public string GrassPlayerFootstep;
+	public string IcePlayerFootstep;
+	public string SnowPlayerFootstep;
 
 	public string PlayerFootstep;
 	public string SwingNetOneshot;
@@ -39,6 +41,7 @@ public class SoundManager : MonoBehaviour {
 	//public string ThrowAngleLoop;
 	public string ThrowEndOneShot;
 	public string PlayerAttack;
+	public string PlayerAttackConnect;
 	public string PlayerJump;
 	public string PlayerLand;
 
@@ -46,10 +49,14 @@ public class SoundManager : MonoBehaviour {
 	public string MainMenuSelect;
 	public string MainMenuBack;
 	public string MainMenuHighlight;
+	public string MainMenuGameStart;
 
 	public string SubMenuSelect;
 	public string SubMenuBack;
 	public string SubMenuHighlight;
+
+	//Ambience
+	public string ForestAmbience;
 
 	//Other Sounds
 	public string Shift;
