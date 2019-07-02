@@ -8,6 +8,8 @@ public class HitState : PlayerState {
     float _hitTime;
 	float _hitTimer;
 
+	public FMOD.Studio.EventInstance DamageSoundEvent;
+
 	// Use this for initialization
 	public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
@@ -38,6 +40,12 @@ public class HitState : PlayerState {
         //hitTime = 3.0f;
         _hitTime = 0.25f;
         _hitTimer = 0f;
+
+		DamageSoundEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerAttackConnect);
+		//DamageSoundEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(FMOD.ATTRIBUTES_3D));
+		DamageSoundEvent.start();
+		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(DamageSoundEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		//SwingNetEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 	}
 
     void DropHamster() {
@@ -130,6 +138,8 @@ public class HitState : PlayerState {
             // Destroy the held bubble
             Object.Destroy(playerController.heldBall.gameObject);
         }
+
+
     }
 
     public override void CheckInput(InputState inputState) {

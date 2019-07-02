@@ -239,6 +239,7 @@ public class HamsterWheel : MonoBehaviour {
         } else {
             SceneManager.LoadScene(levelName);
         }
+		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuGameStart);
     }
 
     public void LoadCharacterSelect() {
