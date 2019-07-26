@@ -9,8 +9,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     PlayerController _playerController;
     InputState _serializedInput;
-    //List<InputState> _writingInputList = new List<InputState>();
-    //List<InputState> _readingInputList = new List<InputState>();
 
     int _correctState;
 
@@ -23,6 +21,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     public void Start() {
+        _serializedInput.SetPlayerID(0);
+
         // Get instantiation data
         PhotonView photonView = GetComponent<PhotonView>();
         _playerController.playerNum = (int)photonView.instantiationData[0];
@@ -219,7 +219,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     // When this player catches a hamster
     void MeCatchHamster() {
         if (_playerController.heldBall == null) {
-            //_playerController.attackBubble.GetComponent<AttackBubble>().CatchHamster(tryingToCatchHamster);
+            _playerController.swingObj.GetComponent<CatchHitbox>().CatchHamster(tryingToCatchHamster);
 
             // For some reason, the client side player will sometimes go straight into the throw state after catching a hamster
             // Trying to prevent that

@@ -66,7 +66,6 @@ public class VillageManager : MonoBehaviour {
             // TODO: Remove for final build
             PlayerPrefs.SetInt("FirstTimePlaying", 0);
         }
-        //PlayerPrefs.SetInt("FirstTimePlaying", 0);
 
         // These prefs reset on every game close/launch.
         PlayerPrefs.SetInt("Player1Character", (int)CHARACTERCOLORS.BOY1);
@@ -83,8 +82,7 @@ public class VillageManager : MonoBehaviour {
             PlayerPrefs.SetInt("Beach", 1);
             PlayerPrefs.SetInt("City2", 1);
             PlayerPrefs.SetInt("Corporation", 1);
-            PlayerPrefs.SetInt("Laboratory", 1);
-            PlayerPrefs.SetInt("Dark Forest", 1);
+            PlayerPrefs.SetInt("Laboratory", 0);
             PlayerPrefs.SetInt("Airship", 1);
 
             // Highscores

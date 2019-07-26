@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon;
 
 [RequireComponent(typeof(PhotonView))]
-public class NetworkedCharacterSelect :Photon.MonoBehaviour {
+public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     public Animator[] charaAnimators;
     public GameObject[] readySprites;
 
@@ -54,7 +54,7 @@ public class NetworkedCharacterSelect :Photon.MonoBehaviour {
                     // If it hasn't been initialize yet
                     if (charaSelectors[j].playerNum == -1 || charaSelectors[j].characterAnimator == null) {
                         // Initialize it
-                        charaSelectors[j].Initialize();
+                        charaSelectors[j].NetworkInitialize();
                        
                         // If we own this selector
                         if (charaSelectors[j].ownerId == PhotonNetwork.player.ID) {

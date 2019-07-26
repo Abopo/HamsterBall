@@ -86,22 +86,24 @@ public class CharacterSelector : MonoBehaviour {
         playerController.characterSelector = this;
     }
 
-    public void Initialize() {
+    // Currently only used when networking
+    public void NetworkInitialize() {
         // Get player number
         CharacterSelect characterSelect = FindObjectOfType<CharacterSelect>();
         playerNum = characterSelect.NumPlayers;
-        _player = ReInput.players.GetPlayer(playerNum);
+        // Controller should just always be first player cuz it's online
+        _player = ReInput.players.GetPlayer(0);
 
         // With player number, get correct border sprite, character animator, and ready sprite
-        Sprite[] selectorSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterSelectors");
-        GetComponent<SpriteRenderer>().sprite = selectorSprites[playerNum];
-        Transform child = transform.GetChild(0);
-        child.GetComponent<SpriteRenderer>().sprite = selectorSprites[playerNum + 4];
-        child.transform.Translate(0.66f*playerNum, 0f, 0f);
+        //Sprite[] selectorSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterSelectors");
+        //GetComponent<SpriteRenderer>().sprite = selectorSprites[playerNum];
+        //Transform child = transform.GetChild(0);
+        //child.GetComponent<SpriteRenderer>().sprite = selectorSprites[playerNum + 4];
+        //child.transform.Translate(0.66f*playerNum, 0f, 0f);
 
-        NetworkedCharacterSelect networkedCharaSelect = FindObjectOfType<NetworkedCharacterSelect>();
-        characterAnimator = networkedCharaSelect.charaAnimators[playerNum];
-        characterAnimator.gameObject.SetActive(true);
+        //NetworkedCharacterSelect networkedCharaSelect = FindObjectOfType<NetworkedCharacterSelect>();
+        //characterAnimator = networkedCharaSelect.charaAnimators[playerNum];
+        //characterAnimator.gameObject.SetActive(true);
 
         _charaIcons = FindObjectsOfType<CharacterIcon>();
         HighlightIcon(_charaIcons[playerNum]);
@@ -367,7 +369,15 @@ public class CharacterSelector : MonoBehaviour {
     }
 
     public void SetColor(int color) {
+        // Set to the new color
+        charaColor = color;
 
+        // Change portrait to correct character
+        characterPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
+        // Change animator to correct character
+        characterAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+
+        _audioSource.Play();
     }
 
     public void ShowCOMText() {

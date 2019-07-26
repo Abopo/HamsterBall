@@ -8,7 +8,7 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     public ShiftMeter[] shiftMeters = new ShiftMeter[4];
     int leftMeters = 0;
     int rightMeters = 0;
-    Sprite[] bubSprites;
+    Sprite[,] playerIcons = new Sprite[4, 4];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -20,7 +20,33 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     // Use this for initialization
     void Start() {
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
-        bubSprites = Resources.LoadAll<Sprite>("Art/Hamsters_and_Bubbles/Bub_Sheet");
+        // Get sprites
+
+        // Boy
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        playerIcons[0, 0] = sprites[0];
+        playerIcons[0, 1] = sprites[1];
+        playerIcons[0, 2] = sprites[2];
+        playerIcons[0, 3] = sprites[3];
+        // Girl
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
+        playerIcons[1, 0] = sprites[0];
+        playerIcons[1, 1] = sprites[1];
+        playerIcons[1, 2] = sprites[2];
+        playerIcons[1, 3] = sprites[3];
+        // Rooster
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
+        playerIcons[2, 0] = sprites[0];
+        playerIcons[2, 1] = sprites[1];
+        playerIcons[2, 2] = sprites[0];
+        playerIcons[2, 3] = sprites[1];
+        // Lackey
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
+        playerIcons[3, 0] = sprites[0];
+        playerIcons[3, 1] = sprites[1];
+        playerIcons[3, 2] = sprites[0];
+        playerIcons[3, 3] = sprites[1];
+
         GetSpawnLocations();
 
         // Only spawn characters on the master client
@@ -31,10 +57,9 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
 
     void GetSpawnLocations() {
         SpawnPoint[] spawnPoints = GetComponentsInChildren<SpawnPoint>();
-        spawns[0] = spawnPoints[0].transform;
-        spawns[1] = spawnPoints[1].transform;
-        spawns[2] = spawnPoints[2].transform;
-        spawns[3] = spawnPoints[3].transform;
+        for (int i = 0; i < spawnPoints.Length; ++i) {
+            spawns[i] = spawnPoints[i].transform;
+        }
     }
 
     void SpawnPlayers() {
@@ -49,16 +74,15 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
             } else {
                 Vector2 spawnPos = FindSpawnPosition(tempPlayerInfo.team);
-                newPlayer = PhotonNetwork.Instantiate("Prefabs/Networking/Bub_PUN", spawnPos, Quaternion.identity, 0, 
+                newPlayer = PhotonNetwork.Instantiate("Prefabs/Networking/Player_PUN", spawnPos, Quaternion.identity, 0, 
                                                       new object[] { tempPlayerInfo.playerNum, tempPlayerInfo.team, tempPlayerInfo.charaInfo.name, tempPlayerInfo.charaInfo.color }).GetComponent<PlayerController>();
                 // Transfer ownership to appropriate player
                 newPlayer.GetComponent<PhotonView>().TransferOwnership(tempPlayerInfo.ownerID);
                 Debug.Log("Spawned player " + tempPlayerInfo.playerNum + "on Team " + tempPlayerInfo.team);
             }
-            newPlayer.playerNum = tempPlayerInfo.playerNum;
+            newPlayer.SetPlayerNum(tempPlayerInfo.playerNum);
             newPlayer.team = tempPlayerInfo.team;
-            //newPlayer.transform.position = FindSpawnPosition(newPlayer.team);
-            newPlayer.GetComponentInChildren<Animator>().runtimeAnimatorController = FindAnimatorController(tempPlayerInfo.charaInfo);
+            newPlayer.SetCharacterInfo(tempPlayerInfo.charaInfo);
 
             SetupSwitchMeter(newPlayer);
 
@@ -76,44 +100,18 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
         }
     }
 
-    RuntimeAnimatorController FindAnimatorController(CharaInfo charaInfo) {
-        RuntimeAnimatorController controller = null;
-
-        string path = "Art/Animations/Player/";
-        switch (charaInfo.name) {
-            case CHARACTERS.BOY:
-                path += "Boy/Animation Objects/Boy" + charaInfo.color;
-                break;
-            case CHARACTERS.GIRL:
-                path += "Girl/Animation Objects/Girl" + charaInfo.color;
-                break;
-            case CHARACTERS.ROOSTER:
-                path += "Rooster/Animation Objects/Rooster" + charaInfo.color;
-                break;
-            case CHARACTERS.LACKEY:
-                path += "Lackey/Animation Objects/Lackey" + charaInfo.color;
-                break;
-        }
-
-        controller = Resources.Load(path) as RuntimeAnimatorController;
-
-        return controller;
-    }
-
     // TODO: this function is a little gross still, fix it up a bit
     public void SetupSwitchMeter(PlayerController player) {
-        if(player.team == 0) {
-            shiftMeters[leftMeters].GetMeterFront().enabled = true;
-            //shiftMeters[leftMeters].GetMeterBack().enabled = true;
+        if (player.team == 0) {
+            shiftMeters[leftMeters].gameObject.SetActive(true);
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
-            shiftMeters[leftMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1) * 12];
+            shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color - 1];
             shiftMeters[leftMeters++].GetIcon().enabled = true;
-        } else if(player.team == 1) {
-            shiftMeters[2+rightMeters].GetMeterFront().enabled = true;
-            //shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
-            player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2+rightMeters]);
-            shiftMeters[2+rightMeters].GetIcon().sprite = bubSprites[(player.playerNum - 1) * 12];
-            shiftMeters[2+rightMeters++].GetIcon().enabled = true;
+        } else if (player.team == 1) {
+            shiftMeters[2 + rightMeters].gameObject.SetActive(true);
+            player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2 + rightMeters]);
+            shiftMeters[2 + rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color - 1];
+            shiftMeters[2 + rightMeters++].GetIcon().enabled = true;
         }
     }
 

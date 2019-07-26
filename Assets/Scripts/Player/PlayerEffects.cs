@@ -7,6 +7,7 @@ public class PlayerEffects : MonoBehaviour {
 
     PlayerController _playerController;
 
+    // Particles
     ParticleSystem footstepParticles1;
     ParticleSystem jumpingParticles1;
     ParticleSystem landingParticles1;
@@ -17,6 +18,11 @@ public class PlayerEffects : MonoBehaviour {
     ParticleSystem landingParticles2;
     ParticleSystem dashParticles2;
 
+    // Sounds
+    public FMOD.Studio.EventInstance footstepEvent1;
+    public FMOD.Studio.EventInstance footstepEvent2;
+
+
     private void Awake() {
         _playerController = transform.parent.GetComponent<PlayerController>();
     }
@@ -25,15 +31,10 @@ public class PlayerEffects : MonoBehaviour {
     void Start () {
         // TODO: Change particles based on stage
 
-        LoadParticles();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+        LoadEffects();
 	}
 
-    void LoadParticles() {
+    void LoadEffects() {
         GameObject tempPrefab;
         GameObject tempObject;
 
@@ -55,6 +56,11 @@ public class PlayerEffects : MonoBehaviour {
             tempPrefab = Resources.Load("Prefabs/Effects/Environmental/GrassDash") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
             dashParticles1 = tempObject.GetComponent<ParticleSystem>();
+            // Sounds
+            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.GrassPlayerFootstep);
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
+            footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.WoodPlayerFootstep);
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
         }
         // Mountain
         if (activeScene.name.Contains("Mountain")) {
@@ -72,9 +78,20 @@ public class PlayerEffects : MonoBehaviour {
             tempPrefab = Resources.Load("Prefabs/Effects/Environmental/SnowDash") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
             dashParticles1 = tempObject.GetComponent<ParticleSystem>();
+            // Sounds
+            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowPlayerFootstep);
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
+            footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.IcePlayerFootstep);
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
         }
 
         // Beach
+    }
+
+    // Update is called once per frame
+    void Update () {
+        footstepEvent1.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        footstepEvent2.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
     }
 
     public void PlayFootstep() {
@@ -83,11 +100,13 @@ public class PlayerEffects : MonoBehaviour {
                 if (footstepParticles1 != null) {
                     PlayEffect(footstepParticles1);
                 }
+                footstepEvent1.start();
                 break;
             case 1:
                 if (footstepParticles2 != null) {
                     PlayEffect(footstepParticles2);
                 }
+                footstepEvent2.start();
                 break;
         }
     }

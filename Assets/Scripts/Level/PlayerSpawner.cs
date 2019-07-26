@@ -59,10 +59,6 @@ public class PlayerSpawner : MonoBehaviour {
         for(int i = 0; i < spawnPoints.Length; ++i) {
             spawns[i] = spawnPoints[i].transform;
         }
-        //spawns[0] = spawnPoints[0].transform;
-        //spawns[1] = spawnPoints[1].transform;
-        //spawns[2] = spawnPoints[2].transform;
-        //spawns[3] = spawnPoints[3].transform;
     }
 
     void SpawnPlayers() {
@@ -155,18 +151,12 @@ public class PlayerSpawner : MonoBehaviour {
     public void SetupSwitchMeter(PlayerController player) {
         if(player.team == 0) {
             shiftMeters[leftMeters].gameObject.SetActive(true);
-            //shiftMeters[leftMeters].GetMeterFront().enabled = true;
-            //shiftMeters[leftMeters].GetMeterBack().enabled = true;
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
-            //shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharacterName];
             shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color-1];
             shiftMeters[leftMeters++].GetIcon().enabled = true;
         } else if(player.team == 1) {
             shiftMeters[2 + rightMeters].gameObject.SetActive(true);
-            //shiftMeters[2+rightMeters].GetMeterFront().enabled = true;
-            //shiftMeters[2+rightMeters].GetMeterBack().enabled = true;
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2+rightMeters]);
-            //shiftMeters[2+rightMeters].GetIcon().sprite = playerIcons[(int)player.CharacterName];
             shiftMeters[2+rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color-1];
             shiftMeters[2+rightMeters++].GetIcon().enabled = true;
         }

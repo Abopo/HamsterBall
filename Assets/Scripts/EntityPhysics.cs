@@ -61,8 +61,8 @@ public class EntityPhysics : MonoBehaviour {
             _scaledRadiusY = _scaledRadius;
         } else {
             _collider = GetComponent<BoxCollider2D>();
-            _scaledRadiusX = Mathf.Abs(((BoxCollider2D)_collider).size.x / 2 * transform.lossyScale.x);
-            _scaledRadiusY = Mathf.Abs(((BoxCollider2D)_collider).size.y / 2 * transform.lossyScale.y);
+            _scaledRadiusX = Mathf.Abs(((BoxCollider2D)_collider).size.x / 2.2f * transform.lossyScale.x);
+            _scaledRadiusY = Mathf.Abs(((BoxCollider2D)_collider).size.y / 2f * transform.lossyScale.y);
         }
 
         _offset = _collider.offset;
@@ -81,10 +81,10 @@ public class EntityPhysics : MonoBehaviour {
         for (int i = 0; i < 5; ++i) {
             float dir = Mathf.Sign(deltaX);
             float x = _pos.x + _offset.x + _scaledRadiusX * dir;
-            float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 2.5f * i;
+            float y = (_pos.y + _offset.y - _scaledRadiusY/1.1f) + _scaledRadiusY / 2.1f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
-            //Debug.DrawRay(_ray.origin, _ray.direction * Mathf.Abs(deltaX));
+            Debug.DrawRay(_ray.origin, _ray.direction * Mathf.Abs(deltaX));
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX), collisionMask1);
             if (_hit) {
                 float dst = Vector2.Distance(_ray.origin, _hit.point);
@@ -113,18 +113,21 @@ public class EntityPhysics : MonoBehaviour {
         float deltaY = inDeltaY;
         _pos = transform.position;
         isTouchingFloor = false;
+        float offsetY;
 
         // If we are moving upward
         if (inDeltaY > 0) {
             collisionMask1 = collisionMask1 & ~(1 << 18); // Remove the "Passthrough" layer from the mask
+            offsetY = 0;
         } else {
             collisionMask1 = collisionMask1 | (1 << 18); // Add the "Passthrough" layer to the mask
+            offsetY = _offset.y;
         }
 
         for (int i = 0; i < 3; ++i) {
             float dir = Mathf.Sign(inDeltaY);
-            float x = (_pos.x + _offset.x - _scaledRadiusX / 2) + _scaledRadiusX / 2 * i;
-            float y = _pos.y + _offset.y + _scaledRadiusY * dir;
+            float x = (_pos.x + _offset.x - _scaledRadiusX/1.1f) + (_scaledRadiusX/1.1f) * i;
+            float y = _pos.y + offsetY + _scaledRadiusY * dir;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * dir);
             Debug.DrawRay(_ray.origin, _ray.direction * Mathf.Abs(inDeltaY));
@@ -163,7 +166,7 @@ public class EntityPhysics : MonoBehaviour {
         //floorHitCount = 0;
 
         for (int i = 0; i < 3; ++i) {
-            float x = (_pos.x + _offset.x - _scaledRadiusX / 2) + _scaledRadiusX / 2 * i;
+            float x = (_pos.x + _offset.x - _scaledRadiusX / 1.1f) + _scaledRadiusX / 1.1f * i;
             float y = _pos.y + _offset.y + _scaledRadiusY * -1;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
