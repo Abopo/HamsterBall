@@ -9,9 +9,9 @@ public class CharaSelectInfo {
 
 public class CharacterSelectResources : MonoBehaviour {
 
-    List<CharaSelectInfo>[] _charaAnimators = new List<CharaSelectInfo>[4];
+    List<CharaSelectInfo>[] _charaAnimators = new List<CharaSelectInfo>[5];
 
-    List<Sprite>[] _charaPortraits = new List<Sprite>[4];
+    List<Sprite>[] _charaPortraits = new List<Sprite>[5];
 
     Sprite[] _charaNames;
 
@@ -95,22 +95,29 @@ public class CharacterSelectResources : MonoBehaviour {
         rooster4.isTaken = false;
         _charaAnimators[2].Add(rooster4);
 
-        // Lackey
+        // Snail
         _charaAnimators[3] = new List<CharaSelectInfo>();
+
+        CharaSelectInfo snail1 = new CharaSelectInfo();
+        snail1.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
+        snail1.isTaken = false;
+        _charaAnimators[3].Add(snail1);
+
+        // Lackey
+        _charaAnimators[4] = new List<CharaSelectInfo>();
 
         CharaSelectInfo lackey1 = new CharaSelectInfo();
         lackey1.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey1") as RuntimeAnimatorController;
         lackey1.isTaken = false;
-        _charaAnimators[3].Add(lackey1);
+        _charaAnimators[4].Add(lackey1);
         CharaSelectInfo lackey2 = new CharaSelectInfo();
         lackey2.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey2") as RuntimeAnimatorController;
         lackey2.isTaken = false;
-        _charaAnimators[3].Add(lackey2);
+        _charaAnimators[4].Add(lackey2);
         CharaSelectInfo lackey3 = new CharaSelectInfo();
         lackey3.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey3") as RuntimeAnimatorController;
         lackey3.isTaken = false;
-        _charaAnimators[3].Add(lackey3);
-
+        _charaAnimators[4].Add(lackey3);
     }
 
     void LoadCharacterPortraits() {
@@ -139,12 +146,17 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaPortraits[2].Add(sprites[0]);
         _charaPortraits[2].Add(sprites[1]);
 
-        // Lackey
+        // Snail
         _charaPortraits[3] = new List<Sprite>();
         sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
         _charaPortraits[3].Add(sprites[0]);
-        _charaPortraits[3].Add(sprites[1]);
-        _charaPortraits[3].Add(sprites[1]);
+
+        // Lackey
+        _charaPortraits[4] = new List<Sprite>();
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
+        _charaPortraits[4].Add(sprites[0]);
+        _charaPortraits[4].Add(sprites[1]);
+        _charaPortraits[4].Add(sprites[1]);
     }
 
     void LoadCharacterNames() {

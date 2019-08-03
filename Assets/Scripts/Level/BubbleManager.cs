@@ -55,6 +55,8 @@ public class BubbleManager : MonoBehaviour {
     public int matchCount = 0;
     public bool wonGame;
     protected bool _gameOver = false;
+    int _roundResult;
+    protected bool _gameEndingSequence = false;
 
     GameObject _bubbleObj;
     GameObject _nodeObj;
@@ -375,21 +377,6 @@ public class BubbleManager : MonoBehaviour {
         bubble.locked = true;
     }
 
-    /*
-    void ReadyHamsterMeter() {
-        int handicap = 9;
-
-        // Get team handicap from Game Manager.
-        if (team == 0) {
-            handicap = _gameManager.leftTeamHandicap;
-        } else if (team == 1) {
-            handicap = _gameManager.rightTeamHandicap;
-        }
-
-        _hamsterMeter.Initialize(_baseLineLength, this);
-    }
-    */
-
     // Assign adjBubbles for each bubble and empty node
     protected void UpdateAllAdjBubbles() {
         for (int i = 0; i < nodeList.Count; ++i) {
@@ -604,6 +591,26 @@ public class BubbleManager : MonoBehaviour {
         // Wait until the game starts to update
         if (!_levelManager.gameStarted) {
             return;
+        }
+
+        if(_gameEndingSequence) {
+            // Wait until all the bubbles are petrified
+            if(!wonGame) {
+                foreach(Bubble bub in _bubbles) {
+                    // If a bubble still isn't petrified
+                    if(bub != null && !bub.Petrified) {
+                        return;
+                    }
+                }
+
+                _gameEndingSequence = false;
+
+                // Make sure the final score is fully updated
+                _levelManager.GameEnd();
+                _scoreManager.CombineScore();
+
+                _levelManager.ActivateResultsScreen(team, _roundResult);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.L)) {
@@ -1001,6 +1008,8 @@ public class BubbleManager : MonoBehaviour {
 
         // If there's a bubble on the bottom line
         if (CheckBottomLine()) {
+            _gameEndingSequence = true;
+
             // Check for a tie
             if (_enemyBubbleManager != null && _enemyBubbleManager.CheckBottomLine()) {
                 // It's a tie!
@@ -1018,6 +1027,9 @@ public class BubbleManager : MonoBehaviour {
         for (int i = _bottomRowStart; i < nodeList.Count; ++i) {
             if (_bubbles[i] != null) {
                 bubbleOnBottomLine = true;
+
+                // Game is over, begin petrification
+                StartCoroutine(_bubbles[i].Petrify());
             }
         }
 
@@ -1029,7 +1041,9 @@ public class BubbleManager : MonoBehaviour {
     public void EndGame(int result) {
         _gameOver = true;
 
-        if (result == 0 || result == 1) {
+        _roundResult = result;
+
+        if (_roundResult == 0 || _roundResult == 1) {
             wonGame = true;
         } else {
             wonGame = false;
@@ -1037,7 +1051,7 @@ public class BubbleManager : MonoBehaviour {
 
         if (_enemyBubbleManager != null) {
             _enemyBubbleManager._gameOver = true;
-            if (result == 0) {
+            if (_roundResult == 0) {
                 _enemyBubbleManager.wonGame = true;
             } else {
                 _enemyBubbleManager.wonGame = !wonGame;
@@ -1047,18 +1061,12 @@ public class BubbleManager : MonoBehaviour {
         // Clear data for next round
         ClearAllData();
 
-        // Make sure the final score is fully updated
-        _levelManager.GameEnd();
-        _scoreManager.CombineScore();
-
-        _levelManager.ActivateResultsScreen(team, result);
-
         // Send the winning team and score to the game manager
-        if (result == 1) {
+        if (_roundResult == 1) {
             _gameManager.EndGame(team, _scoreManager.TotalScore);
-        } else if (result == -1) {
+        } else if (_roundResult == -1) {
             _gameManager.EndGame(team == 0 ? 1 : 0, _scoreManager.TotalScore);
-        } else if (result == 0) {
+        } else if (_roundResult == 0) {
             _gameManager.EndGame(-1, 0);
         }
     }

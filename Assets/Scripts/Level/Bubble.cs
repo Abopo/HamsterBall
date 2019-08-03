@@ -54,6 +54,7 @@ public class Bubble : MonoBehaviour {
 
 	public FMOD.Studio.EventInstance BallBreakEvent;
 
+    protected bool _petrified; // Only used during game end sequence
 
     BubbleManager _homeBubbleManager;
     GameManager _gameManager;
@@ -76,6 +77,10 @@ public class Bubble : MonoBehaviour {
 
     public BubbleManager HomeBubbleManager {
         get { return _homeBubbleManager; }
+    }
+
+    public bool Petrified {
+        get { return _petrified; }
     }
 
 
@@ -131,7 +136,6 @@ public class Bubble : MonoBehaviour {
         SetType((int)type);
 
 		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
-	
 	}
 
     public void SetType(int inType) {
@@ -949,6 +953,30 @@ public class Bubble : MonoBehaviour {
 
         return dropCount;
     }
+
+    // Petrification sequence happens when a player loses a round, bubbles are petrified starting from the bubble(s) that lost the round
+    public IEnumerator Petrify() {
+        _petrified = true;
+        GetComponent<Animator>().SetBool("Petrified", _petrified); 
+        // Set the type to a not used type so the animator doesn't freak out
+        GetComponent<Animator>().SetInteger("Type", 20);
+
+        // Darken hamster sprite 
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
+
+        Debug.Log("Petrify");
+
+        yield return new WaitForSeconds(0.2f);
+
+        // Petrify all adjacent bubbles
+        foreach(Bubble bub in adjBubbles) {
+            if(bub != null && !bub._petrified) {
+                StartCoroutine(bub.Petrify());
+            }
+        }
+    }
+
+    // Miscelleanous functions
 
     void PlayDropClip() {
         if (!_audioSource.isPlaying) {

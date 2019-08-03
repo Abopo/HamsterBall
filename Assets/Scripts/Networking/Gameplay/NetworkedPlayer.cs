@@ -175,6 +175,9 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             case CHARACTERS.ROOSTER:
                 path += "Rooster/Animation Objects/Rooster" + charaInfo.color;
                 break;
+            case CHARACTERS.SNAIL:
+                path += "Snail/Animation Objects/Snail" + charaInfo.color;
+                break;
             case CHARACTERS.LACKEY:
                 path += "Lackey/Animation Objects/Lackey" + charaInfo.color;
                 break;
