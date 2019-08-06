@@ -704,6 +704,7 @@ public class Bubble : MonoBehaviour {
         if(_bankedPos.x != 0 && _bankedPos.y != 0) {
             comboBonus += 2;
             _homeBubbleManager.BubbleEffects.BankShot(_bankedPos);
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.WallBounceSuccess);
         }
 
         return comboBonus;

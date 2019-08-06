@@ -88,7 +88,6 @@ public class LevelManager : MonoBehaviour {
             gameStarted = true;
         }
 		SoundManager.mainAudio.MusicMainEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MusicMain);
-		SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
         SetStageMusic();
     }
 
@@ -96,6 +95,7 @@ public class LevelManager : MonoBehaviour {
         switch (stage) {
             case STAGES.FOREST:
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
 				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
 				SoundManager.mainAudio.ForestAmbienceEvent.start();
@@ -103,11 +103,15 @@ public class LevelManager : MonoBehaviour {
                 break;
             case STAGES.MOUNTAIN:
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
+				SoundManager.mainAudio.SnowAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
 				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
+				SoundManager.mainAudio.SnowAmbienceEvent.start();
                 break;
             case STAGES.BEACH:
                 break;
+				SoundManager.mainAudio.BeachAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+				SoundManager.mainAudio.BeachAmbienceEvent.start();
             case STAGES.CITY:
                 break;
             case STAGES.CORPORATION:
@@ -384,5 +388,7 @@ public class LevelManager : MonoBehaviour {
         SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 		SoundManager.mainAudio.ForestAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+		SoundManager.mainAudio.SnowAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+		SoundManager.mainAudio.BeachAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

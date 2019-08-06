@@ -23,6 +23,7 @@ public class SoundManager : MonoBehaviour {
 	public string HamsterOrbCreate;
 	public string NewLine;
 	public string WallBounce;
+	public string WallBounceSuccess;
 
 	//Game Sounds
 	public string BubbleDrop;
@@ -58,6 +59,12 @@ public class SoundManager : MonoBehaviour {
 	//Ambience
 	public string ForestAmbience;
 	public FMOD.Studio.EventInstance ForestAmbienceEvent;
+
+	public string SnowAmbience;
+	public FMOD.Studio.EventInstance SnowAmbienceEvent;
+
+	public string BeachAmbience;
+	public FMOD.Studio.EventInstance BeachAmbienceEvent;
 
 	//Other Sounds
 	public string Shift;
