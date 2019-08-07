@@ -46,6 +46,9 @@ public class PlayerEffects : MonoBehaviour {
             tempPrefab = Resources.Load("Prefabs/Effects/Environmental/GrassFootstep") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
             footstepParticles1 = tempObject.GetComponent<ParticleSystem>();
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/DustFootstep1") as GameObject;
+            tempObject = Instantiate(tempPrefab, this.transform, false);
+            footstepParticles2 = tempObject.GetComponent<ParticleSystem>();
             // Jump
             tempPrefab = Resources.Load("Prefabs/Effects/Environmental/GrassJump") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
