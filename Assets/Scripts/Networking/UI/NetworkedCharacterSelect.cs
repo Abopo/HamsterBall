@@ -41,6 +41,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 	}
 
     void InitializeSelectors() {
+        Debug.Log("Initialize Selectors");
+
         // Find all the selectors
         CharacterSelector[] charaSelectors = FindObjectsOfType<CharacterSelector>();
 
@@ -52,7 +54,9 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
                 if(charaSelectors[j].ownerId == PhotonNetwork.playerList[i].ID) {
 
                     // If it hasn't been initialize yet
-                    if (charaSelectors[j].playerNum == -1 || charaSelectors[j].characterAnimator == null) {
+                    if (charaSelectors[j].playerNum == -1) {
+                        Debug.Log("Initizalizing selector");
+
                         // Initialize it
                         charaSelectors[j].NetworkInitialize();
                        
@@ -85,7 +89,7 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     public void CreateNetworkedCharacterSelector() {
         // Make new selector
         //GameObject selectorObj = Resources.Load<GameObject>("Prefabs/UI/Character Select/NetworkedCharacterSelector");
-        CharacterSelector newSelector = PhotonNetwork.Instantiate("Prefabs/UI/Character Select/NetworkedCharacterSelector", transform.position, Quaternion.identity, 0).GetComponent<CharacterSelector>();
+        CharacterSelector newSelector = PhotonNetwork.Instantiate("Prefabs/Menus/Character Select/NetworkedCharacterSelector", transform.position, Quaternion.identity, 0).GetComponent<CharacterSelector>();
         //newSelector.Initialize();
         /*
         // TODO: Move selector to emtpy character?

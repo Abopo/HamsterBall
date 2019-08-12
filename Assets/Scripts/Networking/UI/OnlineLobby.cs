@@ -18,6 +18,8 @@ public class OnlineLobby : MonoBehaviour {
         PhotonNetwork.ConnectUsingSettings("0.1");
 
         roomName = "myRoom";
+
+        FindObjectOfType<GameManager>().isOnline = true;
 	}
 
     void ShowRooms() {

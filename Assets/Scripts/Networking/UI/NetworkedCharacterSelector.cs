@@ -15,6 +15,7 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     int characterName;
     int characterColor;
     bool islockedIn;
+    bool isReady;
 
     GameManager _gameManager;
 
@@ -54,6 +55,8 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
 
             islockedIn = _selector.lockedIn;
             stream.Serialize(ref islockedIn);
+            isReady = _selector.isReady;
+            stream.Serialize(ref isReady);
         } else {
             stream.Serialize(ref characterName);
             stream.Serialize(ref characterColor);
@@ -67,6 +70,13 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
                 _selector.LockIn();
             } else if(!islockedIn && _selector.lockedIn) {
                 _selector.Unlock();
+            }
+
+            stream.Serialize(ref isReady);
+            if(isReady && !_selector.isReady) {
+                _selector.ShiftCSPlayer();
+            } else if(!isReady && _selector.isReady) {
+                _selector.Unready();
             }
         }
     }

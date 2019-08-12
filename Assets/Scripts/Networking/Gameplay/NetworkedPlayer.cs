@@ -25,20 +25,24 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
         // Get instantiation data
         PhotonView photonView = GetComponent<PhotonView>();
-        _playerController.playerNum = (int)photonView.instantiationData[0];
-        _playerController.team = (int)photonView.instantiationData[1];
+        // If we have instantiation data
+        if (photonView.instantiationData != null) {
+            // Then we were spawned by the Player Spawner and need to initialize stuff
 
-        CharaInfo tempInfo = new CharaInfo();
-        tempInfo.name = (CHARACTERS)photonView.instantiationData[2];
-        tempInfo.color = (int)photonView.instantiationData[3];
-        SetAnimatorController(tempInfo);
-        //SetAnimatorController((CHARACTERNAMES)photonView.instantiationData[2]);
+            _playerController.playerNum = (int)photonView.instantiationData[0];
+            _playerController.team = (int)photonView.instantiationData[1];
 
-        // Make sure our player spawner has us in its list
-        NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();
-        playerSpawner.AddPlayer(_playerController);
-        if (!PhotonNetwork.isMasterClient) {
-            playerSpawner.SetupSwitchMeter(_playerController);
+            CharaInfo tempInfo = new CharaInfo();
+            tempInfo.name = (CHARACTERS)photonView.instantiationData[2];
+            tempInfo.color = (int)photonView.instantiationData[3];
+            SetAnimatorController(tempInfo);
+
+            // Make sure our player spawner has us in its list
+            NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();
+            playerSpawner.AddPlayer(_playerController);
+            if (!PhotonNetwork.isMasterClient) {
+                playerSpawner.SetupSwitchMeter(_playerController);
+            }
         }
     }
 

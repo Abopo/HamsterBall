@@ -26,6 +26,7 @@ public class VillageManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _gameManager.isSinglePlayer = true;
+        _gameManager.isOnline = false;
 
         _player = ReInput.players.GetPlayer(0);
 	}
