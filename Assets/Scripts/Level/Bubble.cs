@@ -958,11 +958,11 @@ public class Bubble : MonoBehaviour {
     // Petrification sequence happens when a player loses a round, bubbles are petrified starting from the bubble(s) that lost the round
     public IEnumerator Petrify() {
         _petrified = true;
-        GetComponent<Animator>().SetBool("Petrified", _petrified); 
-        // Set the type to a not used type so the animator doesn't freak out
-        GetComponent<Animator>().SetInteger("Type", 20);
+        // Set the type to Gray
+        GetComponent<Animator>().SetInteger("Type", 3);
 
-        // Darken hamster sprite 
+        // Darken bubble and hamster sprite 
+        GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
 
         Debug.Log("Petrify");

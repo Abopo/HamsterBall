@@ -6,17 +6,8 @@ public class HamsterStockSprite : MonoBehaviour {
 
     SpriteRenderer[] _sprites;
 
-    Animator _animator;
-
-    public int Type {
-        get {
-            return _animator.GetInteger("Type");
-        }
-    }
-
     private void Awake() {
         _sprites = GetComponentsInChildren<SpriteRenderer>();
-        _animator = GetComponentInChildren<Animator>();
     }
     // Use this for initialization
     void Start () {

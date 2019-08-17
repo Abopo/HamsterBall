@@ -113,7 +113,7 @@ public class MainMenu : MonoBehaviour {
     }
 
     void InitDirectories() {
-        Directory.CreateDirectory(Application.dataPath + "/Created Boards");
+        System.IO.Directory.CreateDirectory(Application.dataPath + "/Created Boards");
     }
 
     // Update is called once per frame

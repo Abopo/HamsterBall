@@ -28,7 +28,7 @@ public class VillageHamster : MonoBehaviour {
             gameObject.SetActive(false);
         } else {
             hamsterDialogue = GetComponentInChildren<HamsterDialogue>();
-            if (hamsterDialogue != null) {
+            if (hamsterDialogue != null && _villageIndex < dialogueDictionary.Count) {
                 hamsterDialogue.dialogue = dialogueDictionary[_villageIndex];
             }
         }

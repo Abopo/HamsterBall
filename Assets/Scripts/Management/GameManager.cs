@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public bool isCoop = false;
     public bool gameIsOver = false;
     public string stage; // if level is "" it's a local multiplayer match, otherwise it's a story level
+    public BOARDS selectedBoard;
     public string nextLevel; // level to load next
     public string nextCutscene; // cutscene to load next
 

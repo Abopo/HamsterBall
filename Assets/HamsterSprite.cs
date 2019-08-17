@@ -15,6 +15,9 @@ public class HamsterSprite : MonoBehaviour {
     }
 
     public void Pop() {
+        // Make sure sprite is solid
+        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 5f);
         _rigidbody.GetComponent<Animator>().SetInteger("State", 1);
 

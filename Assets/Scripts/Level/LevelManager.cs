@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using Rewired;
 
-public enum STAGES { FOREST = 0, MOUNTAIN, BEACH, CITY, CORPORATION, LABORATORY, AIRSHIP, NUM_STAGES };
+public enum BOARDS { FOREST = 0, MOUNTAIN, BEACH, CITY, CORPORATION, LABORATORY, AIRSHIP, NUM_STAGES };
 public class LevelManager : MonoBehaviour {
     public ResultsScreen mpResultsScreen;
     public ResultsScreen spResultsScreen;
@@ -12,10 +12,9 @@ public class LevelManager : MonoBehaviour {
     public PauseMenu pauseMenu;
     public Text marginMultiplierText;
 
-    public STAGES stage;
+    public BOARDS board;
 
     public bool continueLevel;
-    public bool mirroredLevel;
     public float marginMultiplier = 1f;
 
     public bool gameStarted = false;
@@ -41,28 +40,8 @@ public class LevelManager : MonoBehaviour {
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
-
-        // Set up correct ceiling
-        Ceiling[] ceilings = FindObjectsOfType<Ceiling>();
-        if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
-            // Turn on big ceiling
-            foreach (Ceiling c in ceilings) {
-                if (c.name == "Big Ceiling") {
-                    c.gameObject.SetActive(true);
-                } else {
-                    c.gameObject.SetActive(false);
-                }
-            }
-        } else {
-            foreach (Ceiling c in ceilings) {
-                if (c.name == "Big Ceiling") {
-                    c.gameObject.SetActive(false);
-                } else {
-                    c.gameObject.SetActive(true);
-                }
-
-            }
-        }
+        board = _gameManager.selectedBoard;
+        LoadStagePrefab();
 
         pauseMenu = FindObjectOfType<PauseMenu>();
 
@@ -91,9 +70,39 @@ public class LevelManager : MonoBehaviour {
         SetStageMusic();
     }
 
+    void LoadStagePrefab() {
+        string prefabPath = "Prefabs/Level/Boards/Multiplayer/";
+
+        switch (board) {
+            case BOARDS.FOREST:
+                prefabPath += "ForestBoard";
+                break;
+            case BOARDS.MOUNTAIN:
+                prefabPath += "MountainBoard";
+                break;
+            case BOARDS.BEACH:
+                prefabPath += "BeachBoard";
+                break;
+            case BOARDS.CITY:
+                prefabPath += "City Board";
+                break;
+            case BOARDS.CORPORATION:
+                prefabPath += "CorporationBoard";
+                break;
+            case BOARDS.LABORATORY:
+                break;
+            case BOARDS.AIRSHIP:
+                prefabPath += "Airship Board";
+                break;
+        }
+
+        Object stageObj = Resources.Load(prefabPath);
+        Instantiate(stageObj);
+    }
+
     void SetStageMusic() {
-        switch (stage) {
-            case STAGES.FOREST:
+        switch (board) {
+            case BOARDS.FOREST:
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
 				SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
 				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -101,24 +110,24 @@ public class LevelManager : MonoBehaviour {
 				SoundManager.mainAudio.ForestAmbienceEvent.start();
 				Debug.Log("Forest Ambience Start");
                 break;
-            case STAGES.MOUNTAIN:
+            case BOARDS.MOUNTAIN:
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
 				SoundManager.mainAudio.SnowAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
 				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				SoundManager.mainAudio.MusicMainEvent.start();
 				SoundManager.mainAudio.SnowAmbienceEvent.start();
                 break;
-            case STAGES.BEACH:
+            case BOARDS.BEACH:
+                SoundManager.mainAudio.BeachAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+                SoundManager.mainAudio.BeachAmbienceEvent.start();
                 break;
-				SoundManager.mainAudio.BeachAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
-				SoundManager.mainAudio.BeachAmbienceEvent.start();
-            case STAGES.CITY:
+            case BOARDS.CITY:
                 break;
-            case STAGES.CORPORATION:
+            case BOARDS.CORPORATION:
                 break;
-            case STAGES.LABORATORY:
+            case BOARDS.LABORATORY:
                 break;
-            case STAGES.AIRSHIP:
+            case BOARDS.AIRSHIP:
                 break;
         }
     }
@@ -138,7 +147,7 @@ public class LevelManager : MonoBehaviour {
                     _marginTime = 30f;
                     _marginTimer = 0f;
                 }
-                // If we are playing the single player Clear mode
+            // If we are playing the single player Clear mode
             } else if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
                 // Update pushing down the board stuff
                 if (_gameManager.conditionLimit == 0) {

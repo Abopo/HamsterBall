@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 // Used to select the level in multiplayer
 public class HamsterWheel : MonoBehaviour {
     public float baseRotSpeed;
-    public Text curMapText;
     public Animator hamster;
 
     float _curRotSpeed = 0;
@@ -20,7 +19,7 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     int _index = 0;
-    string[] _mapNames = new string[8];
+    BOARDS[] _stages = new BOARDS[8];
     StageIcon[] _stageIcons;
 
     float _longIdleTimer = 0f;
@@ -59,17 +58,14 @@ public class HamsterWheel : MonoBehaviour {
         _possibleRotations[7] = 45;
 
 
-        _mapNames[0] = "Forest";
-        _mapNames[1] = "Mountain";
-        _mapNames[2] = "Beach";
-        _mapNames[3] = "City2";
-        _mapNames[4] = "Corporation";
-        _mapNames[5] = "Laboratory";
-        _mapNames[6] = "Corporation";
-        _mapNames[7] = "Airship";
-
-        curMapText.text = _mapNames[_index];
-        SetTextColor();
+        _stages[0] = BOARDS.FOREST;
+        _stages[1] = BOARDS.MOUNTAIN;
+        _stages[2] = BOARDS.BEACH;
+        _stages[3] = BOARDS.CITY;
+        _stages[4] = BOARDS.CORPORATION;
+        _stages[5] = BOARDS.LABORATORY;
+        _stages[6] = BOARDS.CORPORATION;
+        _stages[7] = BOARDS.AIRSHIP;
 
         _curRotSpeed = 0;
         _desiredRotation = transform.rotation.eulerAngles.z;
@@ -117,10 +113,8 @@ public class HamsterWheel : MonoBehaviour {
     void CheckInput() {
         if (_gameManager.playerInput.GetAxis("Horizontal0") < -0.3f || _gameManager.playerInput.GetButtonDown("Left")) {
             RotateLeft();
-            UpdateText();
         } else if (_gameManager.playerInput.GetAxis("Horizontal0") > 0.3f || _gameManager.playerInput.GetButtonDown("Right")) {
             RotateRight();
-            UpdateText();
         }
 
         if (_gameManager.playerInput.GetButtonDown("Cancel")) {
@@ -193,11 +187,6 @@ public class HamsterWheel : MonoBehaviour {
         _rotatingRight = false;
     }
 
-    void UpdateText() {
-        curMapText.text = _mapNames[_index];
-        SetTextColor();
-    }
-
     void EndRotation() {
         // End the rotation
         _rotatingRight = false;
@@ -224,15 +213,16 @@ public class HamsterWheel : MonoBehaviour {
         _gameManager.stage = "";
         string levelName = "";
         if (_gameManager.isOnline) {
-            levelName = "Networked ";
-        }
-        levelName += _mapNames[_index];
-
-        if (_gameManager.isSinglePlayer) {
-            levelName += " - SinglePlayer";
+            levelName = "NetworkedMultiplayer";
+        } else if (_gameManager.isSinglePlayer) {
+            levelName = "SinglePlayer";
         } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-            levelName += " - Team Survival";
+            levelName = "TeamSurvival";
+        } else {
+            levelName = "VersusMultiplayer";
         }
+
+        _gameManager.selectedBoard = _stages[_index];
 
         if (_gameManager.isOnline && PhotonNetwork.connectedAndReady) {
             PhotonNetwork.LoadLevel(levelName);
@@ -274,26 +264,6 @@ public class HamsterWheel : MonoBehaviour {
         } else {
             return _index - 1;
         }
-    }
-
-    void SetTextColor() {
-        Color newColor = new Color();
-        switch (curMapText.text) {
-            case "Forest":
-                ColorUtility.TryParseHtmlString("#00FF4CFF", out newColor);
-                break;
-            case "Mountain":
-                ColorUtility.TryParseHtmlString("#11FFEBFF", out newColor);
-                break;
-            case "Beach":
-                ColorUtility.TryParseHtmlString("#FBEC99FF", out newColor);
-                break;
-            default:
-                ColorUtility.TryParseHtmlString("#FFFFFFFF", out newColor);
-                break;
-        }
-
-        curMapText.color = newColor;
     }
 
     // Networking

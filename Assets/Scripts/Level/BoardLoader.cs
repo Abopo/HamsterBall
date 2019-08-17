@@ -306,6 +306,35 @@ public class BoardLoader : MonoBehaviour {
     void LoadBoard() {
         //_readText = _reader.ReadLine();
         _readText = _linesFromFile[_fileIndex++];
-        SceneManager.LoadScene(_readText);
+
+        switch(_readText) {
+            case "Forest":
+                _gameManager.selectedBoard = BOARDS.FOREST;
+                break;
+            case "Mountain":
+                _gameManager.selectedBoard = BOARDS.MOUNTAIN;
+                break;
+            case "Beach":
+                _gameManager.selectedBoard = BOARDS.BEACH;
+                break;
+            case "City":
+                _gameManager.selectedBoard = BOARDS.CITY;
+                break;
+            case "Corporation":
+                _gameManager.selectedBoard = BOARDS.CORPORATION;
+                break;
+            case "Laboratory":
+                _gameManager.selectedBoard = BOARDS.LABORATORY;
+                break;
+            case "Airship":
+                _gameManager.selectedBoard = BOARDS.AIRSHIP;
+                break;
+        }
+
+        if(_gameManager.isSinglePlayer) {
+            SceneManager.LoadScene("SinglePlayer");
+        } else {
+            SceneManager.LoadScene("VersusMultiplayer");
+        }
     }
 }
