@@ -24,6 +24,9 @@ public class SoundManager : MonoBehaviour {
 	public string NewLine;
 	public string WallBounce;
 	public string WallBounceSuccess;
+	public string HamsterTalk;
+	public string HamsterTalkHigh;
+	public string HamsterTalkLow;
 
 	//Game Sounds
 	public string BubbleDrop;
@@ -89,9 +92,32 @@ public class SoundManager : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
 
             HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(HamsterFillBall);
-            //ThrowAngleEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
+
         }
 	}
+
+	//HAMSTER SQUEAK SOUNDS
+	//TO DECLARE PUBLICLY IN RESPECTIVE COLORED SCRIPTS
+	//public FMOD.Studio.EventInstance HamsterTalkEvent;
+	//public FMOD.Studio.EventInstance HamsterTalkHighEvent;
+	//public FMOD.Studio.EventInstance HamsterTalkLowEvent;
+
+	//IN START()
+	//HamsterTalkEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTalk);
+	//HamsterTalkHighEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTalkHigh);
+	//HamsterTalkLowEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterFillBallLow);
+
+	//TO START SOUNDS
+	//HamsterTalkEvent.start();
+	//HamsterTalkHighEvent.start();
+	//HamsterTalkLowEvent.start();
+
+	//TO STOP SOUNDS
+	//HamsterTalkEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+	//HamsterTalkHighEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+	//HamsterTalkLowEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+
 
 	void Footstep (){
 		FMODUnity.RuntimeManager.PlayOneShot("event:/SingleFootstepEvent");
