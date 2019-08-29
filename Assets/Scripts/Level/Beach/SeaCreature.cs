@@ -6,7 +6,7 @@ public class SeaCreature : MonoBehaviour {
     public float moveSpeed;
     public bool left;
 
-    protected int species = 0; // 0-jellyfish, 1-octopus, 2-shark, 3-whale
+    public int species = 0; // 0-jellyfish, 1-octopus, 2-shark, 3-whale
 
     protected Animator _animator;
 
@@ -15,6 +15,8 @@ public class SeaCreature : MonoBehaviour {
     }
     // Use this for initialization
     protected void Start () {
+        _animator.SetInteger("Species", species);
+
 		if(!left) {
             moveSpeed = -Mathf.Abs(moveSpeed);
         } else {

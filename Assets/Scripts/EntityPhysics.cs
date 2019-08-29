@@ -229,10 +229,10 @@ public class EntityPhysics : MonoBehaviour {
     void OnTriggerStay2D(Collider2D collider) {
         // If we are in a wall (layer 9) or platform (layer 21) with a box collider
         if ((collider.gameObject.layer == 9 || collider.gameObject.layer == 21) && collider.GetComponent<BoxCollider2D>() != null) {
-            _stuckTimer += Time.deltaTime;
-            if(_stuckTimer < _stuckTime) {
-                return;
-            }
+            //_stuckTimer += Time.deltaTime;
+            //if(_stuckTimer < _stuckTime) {
+            //    return;
+            //}
 
             // Figure out from which direction we are colliding
             int tempLayer = gameObject.layer;
@@ -280,6 +280,8 @@ public class EntityPhysics : MonoBehaviour {
             if (sideCount >= 3) {
                 // The entity is probably completely inside a wall and needs to be respawned
                 entity.Respawn();
+               
+                // TODO: instead of respawning, attempt to push out in the direction of least resistance
             } else {
                 // Move out of it
                 switch (dir) {

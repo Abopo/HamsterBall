@@ -114,6 +114,18 @@ public class CharacterSelectResources : MonoBehaviour {
         snail1.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
         snail1.isTaken = false;
         _charaAnimators[3].Add(snail1);
+        CharaSelectInfo snail2 = new CharaSelectInfo();
+        snail2.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
+        snail2.isTaken = false;
+        _charaAnimators[3].Add(snail2);
+        CharaSelectInfo snail3 = new CharaSelectInfo();
+        snail3.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail3") as RuntimeAnimatorController;
+        snail3.isTaken = false;
+        _charaAnimators[3].Add(snail3);
+        CharaSelectInfo snail4 = new CharaSelectInfo();
+        snail4.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail3") as RuntimeAnimatorController;
+        snail4.isTaken = false;
+        _charaAnimators[3].Add(snail4);
 
         // Lackey
         _charaAnimators[4] = new List<CharaSelectInfo>();
@@ -160,8 +172,11 @@ public class CharacterSelectResources : MonoBehaviour {
 
         // Snail
         _charaPortraits[3] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Snail-Icon");
         _charaPortraits[3].Add(sprites[0]);
+        _charaPortraits[3].Add(sprites[1]);
+        _charaPortraits[3].Add(sprites[2]);
+        _charaPortraits[3].Add(sprites[3]);
 
         // Lackey
         _charaPortraits[4] = new List<Sprite>();

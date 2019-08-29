@@ -56,7 +56,7 @@ public class WaterBubbleGenerator : MonoBehaviour {
     }
 
     public void SpawnBubble() {
-        float x = Random.Range(-1.5f, 1.5f);
+        float x = Random.Range(-2f, 2f);
         Vector3 newSpawnPos = new Vector3(_spawnPos.x + x, _spawnPos.y, _spawnPos.z);
         GameObject waterBubble = Instantiate(waterBubbleObj, newSpawnPos, Quaternion.identity);
         waterBubble.GetComponent<WaterBubble>().team = team;

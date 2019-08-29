@@ -402,9 +402,14 @@ public class Hamster : Entity {
     public override void Respawn() {
         base.Respawn();
 
-        // Respawn into the hamster pipe
-        transform.position = _parentSpawner.SpawnPosition;
-        exitedPipe = false;
-        FaceUp();
+        // Respawn into the center of the stage
+        if(team == 0) {
+            transform.position = new Vector3(-6.44f, -5.5f, transform.position.z);
+            FaceRight();
+        } else {
+            transform.position = new Vector3(6.44f, -5.5f, transform.position.z);
+            FaceLeft();
+        }
+        exitedPipe = true;
     }
 }

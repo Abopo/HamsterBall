@@ -53,10 +53,10 @@ public class SeaCreatureSpawner : MonoBehaviour {
         float randf = Random.Range(-1f, 1f);
         if(left) {
             _onScreenCreature.transform.position = new Vector3(transform.position.x + 1.0f, transform.position.y + randf, _onScreenCreature.transform.position.z);
-            _onScreenCreature.GetComponent<SeaCreature>().left = true;
+            _onScreenCreature.GetComponentInChildren<SeaCreature>().left = true;
         } else {
             _onScreenCreature.transform.position = new Vector3(transform.position.x - 1.0f, transform.position.y + randf, _onScreenCreature.transform.position.z);
-            _onScreenCreature.GetComponent<SeaCreature>().left = false;
+            _onScreenCreature.GetComponentInChildren<SeaCreature>().left = false;
         }
     }
 }
