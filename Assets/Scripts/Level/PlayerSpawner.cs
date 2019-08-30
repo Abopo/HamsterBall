@@ -10,7 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
     int leftMeters = 0;
     int rightMeters = 0;
 
-    Sprite[,] playerIcons = new Sprite[4,4];
+    Sprite[,] playerIcons = new Sprite[5,4];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -43,12 +43,18 @@ public class PlayerSpawner : MonoBehaviour {
         playerIcons[2, 1] = sprites[1];
         playerIcons[2, 2] = sprites[0];
         playerIcons[2, 3] = sprites[1];
-        // Lackey
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
+        // Snail
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Snail-Icon");
         playerIcons[3, 0] = sprites[0];
         playerIcons[3, 1] = sprites[1];
         playerIcons[3, 2] = sprites[0];
         playerIcons[3, 3] = sprites[1];
+        // Lackey
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
+        playerIcons[4, 0] = sprites[0];
+        playerIcons[4, 1] = sprites[1];
+        playerIcons[4, 2] = sprites[0];
+        playerIcons[4, 3] = sprites[1];
 
         GetSpawnLocations();
         SpawnPlayers();
