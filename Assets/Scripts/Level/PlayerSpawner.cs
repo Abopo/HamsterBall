@@ -61,9 +61,26 @@ public class PlayerSpawner : MonoBehaviour {
     }
 
     void GetSpawnLocations() {
-        SpawnPoint[] spawnPoints = GetComponentsInChildren<SpawnPoint>();
-        for(int i = 0; i < spawnPoints.Length; ++i) {
-            spawns[i] = spawnPoints[i].transform;
+        SpawnPoint[] spawnPoints = FindObjectsOfType<SpawnPoint>();
+        // Get the spawn points in the correct order
+        int team = 0, order = 0, i = 0, j = 0;
+        while(j < 4) {
+            if(spawnPoints[i].team == team && spawnPoints[i].order == order) {
+                spawns[j] = spawnPoints[i].transform;
+                ++j;
+
+                if(order == 1) {
+                    order = 0;
+                    team++;
+                } else {
+                    order++;
+                }
+            }
+
+            ++i;
+            if(i >= spawnPoints.Length) {
+                i = 0;
+            }
         }
     }
 

@@ -227,6 +227,8 @@ public class HamsterWheel : MonoBehaviour {
         if (_gameManager.isOnline && PhotonNetwork.connectedAndReady) {
             PhotonNetwork.LoadLevel(levelName);
         } else {
+            //LoadingScreen.sceneToLoad = levelName;
+            //SceneManager.LoadScene("LoadingScreen");
             SceneManager.LoadScene(levelName);
         }
 		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuGameStart);

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour {
 
+    public int team;
+    public int order;
+
 	// Use this for initialization
 	void Start () {
 		

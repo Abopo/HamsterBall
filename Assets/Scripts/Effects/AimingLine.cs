@@ -66,7 +66,7 @@ public class AimingLine : MonoBehaviour {
         _ray = new Ray2D(transform.position, _dir.normalized);
         //_hit = Physics2D.Raycast(_ray.origin, _ray.direction, 20, collisionMask1);
         _hit = Physics2D.CircleCast(_ray.origin, 0.34f, _ray.direction, 20, collisionMask1);
-        Debug.DrawRay(_ray.origin, _ray.direction * _hit.distance, Color.black);
+        //Debug.DrawRay(_ray.origin, _ray.direction * _hit.distance, Color.black);
 
         if (_hit && _hit.collider.tag == "Wall") {
             // Bounce off the wall
@@ -78,7 +78,7 @@ public class AimingLine : MonoBehaviour {
             _dir2 = Vector2.Reflect(_dir, _hit.normal);
             _ray2 = new Ray2D(_hit.centroid, _dir2);
             _hit2 = Physics2D.Raycast(_ray2.origin, _ray2.direction, 20, collisionMask1);
-            Debug.DrawRay(_ray2.origin, _ray2.direction * _hit2.distance, Color.blue);
+            //Debug.DrawRay(_ray2.origin, _ray2.direction * _hit2.distance, Color.blue);
 
             //_hit.collider.enabled = true;
         } else {

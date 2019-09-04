@@ -170,7 +170,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = _pos.y + _offset.y + _scaledRadiusY * -1;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
-            //Debug.DrawRay(_ray.origin, _ray.direction * 0.01f);
+            Debug.DrawRay(_ray.origin, _ray.direction * 0.01f);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.01f, collisionMask1);
             if (_hit) {
                 isTouchingFloor = true;
@@ -195,7 +195,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 1.25f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right);
-            ///Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
+            Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMask2);
             if (_hit) {
                 rightHitCount++;
@@ -209,7 +209,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = (_pos.y + _offset.y - _scaledRadiusY / 1.25f) + _scaledRadiusY / 1.25f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * -1);
-            //Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
+            Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMask2);
             if (_hit) {
                 isTouchingWallLeft = true;
@@ -227,6 +227,8 @@ public class EntityPhysics : MonoBehaviour {
     }
 
     void OnTriggerStay2D(Collider2D collider) {
+        return;
+
         // If we are in a wall (layer 9) or platform (layer 21) with a box collider
         if ((collider.gameObject.layer == 9 || collider.gameObject.layer == 21) && collider.GetComponent<BoxCollider2D>() != null) {
             //_stuckTimer += Time.deltaTime;
@@ -235,15 +237,18 @@ public class EntityPhysics : MonoBehaviour {
             //}
 
             // Figure out from which direction we are colliding
-            int tempLayer = gameObject.layer;
-            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            //int tempLayer = gameObject.layer;
+            //gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+            // Only search for the collided object
+            int layerMask = 1 << collider.gameObject.layer;
 
             int dir = -1;
             int hitCount = -1;
             int sideCount = 0;
 
             // Bottom check
-            RaycastHit2D hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _offset.y - _scaledRadiusY), new Vector2(0, -1), 0.1f);
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _offset.y - _scaledRadiusY), new Vector2(0, -1), 0.1f, layerMask);
             //Debug.DrawRay(new Vector2(_pos.x, _pos.y + _center.y - _scaledRadius), new Vector2(0, -1));
             if (hit && hit.collider == collider && hitCount <= floorHitCount) {
                 dir = 2;
@@ -251,7 +256,7 @@ public class EntityPhysics : MonoBehaviour {
                 sideCount++;
             }
             // Top check
-            hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _offset.y + _scaledRadiusY), new Vector2(0, 1), 0.1f);
+            hit = Physics2D.Raycast(new Vector2(_pos.x, _pos.y + _offset.y + _scaledRadiusY), new Vector2(0, 1), 0.1f, layerMask);
             //Debug.DrawRay(new Vector2(_pos.x, _pos.y + _center.y + _scaledRadius), new Vector2(0, 1));
             if (hit && hit.collider == collider && hitCount <= ceilingHitCount) {
                 dir = 3;
@@ -259,7 +264,7 @@ public class EntityPhysics : MonoBehaviour {
                 sideCount++;
             }
             // Right side check
-            hit = Physics2D.Raycast(new Vector2(_pos.x + _offset.x + _scaledRadiusX, _pos.y), new Vector2(1, 0), 0.1f);
+            hit = Physics2D.Raycast(new Vector2(_pos.x + _offset.x + _scaledRadiusX, _pos.y), new Vector2(1, 0), 0.1f, layerMask);
             //Debug.DrawRay(new Vector2(_pos.x + _center.x + _scaledRadius, _pos.y), new Vector2(1, 0));
             if(hit && hit.collider == collider && hitCount <= rightHitCount) {
                 dir = 0;
@@ -267,7 +272,7 @@ public class EntityPhysics : MonoBehaviour {
                 sideCount++;
             }
             // left side check
-            hit = Physics2D.Raycast(new Vector2(_pos.x + _offset.x - _scaledRadiusX, _pos.y), new Vector2(-1, 0), 0.1f);
+            hit = Physics2D.Raycast(new Vector2(_pos.x + _offset.x - _scaledRadiusX, _pos.y), new Vector2(-1, 0), 0.1f, layerMask);
             //Debug.DrawRay(new Vector2(_pos.x + _center.x - _scaledRadius, _pos.y), new Vector2(-1, 0));
             if (hit && hit.collider == collider && hitCount <= leftHitCount) {
                 dir = 1;
@@ -275,7 +280,7 @@ public class EntityPhysics : MonoBehaviour {
                 sideCount++;
             }
 
-            gameObject.layer = tempLayer;
+            //gameObject.layer = tempLayer;
 
             if (sideCount >= 3) {
                 // The entity is probably completely inside a wall and needs to be respawned
@@ -283,39 +288,44 @@ public class EntityPhysics : MonoBehaviour {
                
                 // TODO: instead of respawning, attempt to push out in the direction of least resistance
             } else {
+                BoxCollider2D collided = collider.GetComponent<BoxCollider2D>();
                 // Move out of it
                 switch (dir) {
-                    case 0:
+                    case 0: // Right
                         float curXPos = transform.position.x + _scaledRadiusX;
-                        float wantXPos = collider.transform.position.x - (collider.GetComponent<BoxCollider2D>().size.x * Mathf.Abs(collider.transform.lossyScale.x)) / 2f;
+                        float wantXPos = collider.transform.position.x + collided.offset.x - 
+                                        (collided.size.x * Mathf.Abs(collider.transform.lossyScale.x)) / 2f;
                         float xMove = wantXPos - curXPos;
-                        if (Mathf.Abs(xMove) > _scaledRadiusX / 4) {
+                        //if (Mathf.Abs(xMove) > _scaledRadiusX / 4) {
                             MoveX(xMove);
-                        }
+                        //}
                         break;
-                    case 1:
+                    case 1: // Left
                         curXPos = transform.position.x - _scaledRadiusX;
-                        wantXPos = collider.transform.position.x + (collider.GetComponent<BoxCollider2D>().size.x * Mathf.Abs(collider.transform.lossyScale.x)) / 2f;
+                        wantXPos = collider.transform.position.x + collided.offset.x + 
+                                    (collided.size.x * Mathf.Abs(collider.transform.lossyScale.x)) / 2f;
                         xMove = wantXPos - curXPos;
-                        if (Mathf.Abs(xMove) > _scaledRadiusX / 4) {
+                        //if (Mathf.Abs(xMove) > _scaledRadiusX / 4) {
                             MoveX(xMove);
-                        }
+                        //}
                         break;
-                    case 2:
+                    case 2: // Below
                         float curYPos = transform.position.y - _scaledRadiusY;
-                        float wantYPos = collider.transform.position.y + (collider.GetComponent<BoxCollider2D>().size.y * Mathf.Abs(collider.transform.lossyScale.y)) / 2f;
+                        float wantYPos = collider.transform.position.y + collided.offset.y + 
+                                        (collided.size.y * Mathf.Abs(collider.transform.lossyScale.y)) / 2f;
                         float yMove = wantYPos - curYPos;
-                        if (Mathf.Abs(yMove) > _scaledRadiusY / 4) {
+                        //if (Mathf.Abs(yMove) > _scaledRadiusY / 4) {
                             MoveY(yMove);
-                        }
+                        //}
                         break;
-                    case 3:
+                    case 3: // Above
                         curYPos = transform.position.y + _scaledRadiusY;
-                        wantYPos = collider.transform.position.y - (collider.GetComponent<BoxCollider2D>().size.y * Mathf.Abs(collider.transform.lossyScale.y)) / 2f;
+                        wantYPos = collider.transform.position.y + collided.offset.y - 
+                                    (collided.size.y * Mathf.Abs(collider.transform.lossyScale.y)) / 2f;
                         yMove = wantYPos - curYPos;
-                        if (Mathf.Abs(yMove) > _scaledRadiusY / 4) {
+                        //if (Mathf.Abs(yMove) > _scaledRadiusY / 4) {
                             MoveY(yMove);
-                        }
+                        //}
                         break;
                 }
             }

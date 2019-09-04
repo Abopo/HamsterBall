@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 // Script in charge of displaying the countdown before the game starts
 public class GameCountdown : MonoBehaviour {
+    public bool started;
 
     Text _displayText;
 
@@ -31,12 +32,13 @@ public class GameCountdown : MonoBehaviour {
 
         _stage = 0;
 
+        started = true;
         _done = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if(_done) {
+        if(_done || !started) {
             return;
         }
 
