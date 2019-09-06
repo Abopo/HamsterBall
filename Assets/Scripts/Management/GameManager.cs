@@ -155,6 +155,9 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        if(Input.GetKeyDown(KeyCode.U)) {
+            Debug.Break();
+        }
     }
 
     // 0 = left team; 1 = right team

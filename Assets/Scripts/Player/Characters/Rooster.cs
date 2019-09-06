@@ -35,8 +35,5 @@ public class Rooster : MonoBehaviour {
             //_boxCollider.offset = _baseOffset;
             _boxCollider.size = _baseSize;
         }
-
-        // Update the physic's collision data
-        _entityPhysics.UpdateCollisionData();
     }
 }
