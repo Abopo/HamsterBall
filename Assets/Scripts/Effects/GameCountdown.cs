@@ -89,7 +89,6 @@ public class GameCountdown : MonoBehaviour {
     }
 
     void GameStart() {
-        FindObjectOfType<LevelManager>().gameStarted = true;
-		SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 1f);
+        FindObjectOfType<LevelManager>().GameStart();
     }
 }

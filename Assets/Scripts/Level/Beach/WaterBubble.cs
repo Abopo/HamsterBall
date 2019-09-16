@@ -11,10 +11,15 @@ public class WaterBubble : MonoBehaviour {
     CircleCollider2D _circleCollider;
 
     bool _isSpawning;
+    bool _popped;
 
     float _xMoveTime = 1.0f;
     float _xMoveTimer = 0.5f;
     float _xMoveDir = 0.5f;
+
+    float _baseScale;
+
+    Animator _animator;
 
     public Bubble CaughtBubble {
         get  {return _caughtBubble; }
@@ -28,6 +33,11 @@ public class WaterBubble : MonoBehaviour {
     void Start () {
         _circleCollider = GetComponent<CircleCollider2D>();
         _isSpawning = true;
+
+        _baseScale = transform.localScale.x;
+        transform.localScale = new Vector3(_baseScale / 4, _baseScale / 4, _baseScale / 4);
+
+        _animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -38,12 +48,12 @@ public class WaterBubble : MonoBehaviour {
             transform.localScale = new Vector3(transform.localScale.x + 1f * Time.deltaTime,
                                                 transform.localScale.y + 1f * Time.deltaTime,
                                                 transform.localScale.z);
-            if (transform.localScale.x >= 1f) {
-                transform.localScale = new Vector3(1, 1, 1);
+            if (transform.localScale.x >= _baseScale) {
+                transform.localScale = new Vector3(_baseScale, _baseScale, _baseScale);
                 _isSpawning = false;
                 _circleCollider.enabled = true;
             }
-        } else {
+        } else if(!_popped) {
             // Float upward
             transform.Translate(_xMoveDir * Time.deltaTime, 1f * Time.deltaTime, 0f, Space.World);
 
@@ -70,8 +80,7 @@ public class WaterBubble : MonoBehaviour {
                 DropHamster();
             }
 
-            // Destroy self
-            DestroyObject(this.gameObject);
+            Pop();
         }
     }
 
@@ -79,7 +88,8 @@ public class WaterBubble : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady) {
             //InstantiateNetworkBubble(hamster);
         } else {
-            GameObject bubble = Instantiate(bubbleObj, this.transform) as GameObject;
+            GameObject bubble = Instantiate(bubbleObj) as GameObject;
+            bubble.transform.parent = this.transform;
             _caughtBubble = bubble.GetComponent<Bubble>();
             _caughtBubble.transform.localPosition = new Vector3(0f, 0f, 0f);
             _caughtBubble.team = team;
@@ -109,8 +119,7 @@ public class WaterBubble : MonoBehaviour {
             _caughtBubble.CollisionWithBoard(bubbleManager);
         }
 
-        // Destroy self
-        DestroyObject(this.gameObject);
+        Pop();
     }
 
     void DropHamster() {
@@ -142,5 +151,21 @@ public class WaterBubble : MonoBehaviour {
         if (Random.Range(0, 11) > 5) {
             hamster.Flip();
         }
+    }
+
+    void Pop() {
+        _circleCollider.enabled = false;
+        _animator.Play("BubblePop", 0);
+        _popped = true;
+
+        if(_caughtBubble != null && !_caughtBubble.locked) {
+            // destroy the caught bubble during the pop animation
+            Destroy(_caughtBubble.gameObject);
+        }
+    }
+
+    public void DestroySelf() {
+        // Destroy self
+        Destroy(gameObject);
     }
 }

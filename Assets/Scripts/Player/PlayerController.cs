@@ -495,12 +495,14 @@ public class PlayerController : Entity {
 		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 13/*Grate*/) {
 			velocity.y = 0.0f;
             _onFallThrough = false;
+            _collidedY = true;
 
             PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
-        } else if(collider.gameObject.layer == 18/*Fallthrough*/) {
+        } else if(collider.gameObject.layer == 18/*Fallthrough*/ && !_collidedY) {
 			velocity.y = 0.0f;
             // This is a fall through platform
             _onFallThrough = true;
+            _collidedY = true;
 
             PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
         }

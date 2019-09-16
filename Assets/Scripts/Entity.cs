@@ -11,6 +11,7 @@ public class Entity : MonoBehaviour {
     protected bool grounded;
     protected bool facingRight = true;
     protected bool _springing;
+    protected bool _collidedY;
 
     protected EntityPhysics _physics;
 	public EntityPhysics Physics {
@@ -73,7 +74,11 @@ public class Entity : MonoBehaviour {
         }
 	}
 
-	public void ApplyGravity() {
+    private void LateUpdate() {
+        _collidedY = false;
+    }
+
+    public void ApplyGravity() {
 		velocity.y -= gravity * _waterGravMultiplier * Time.deltaTime;
 	}
 	

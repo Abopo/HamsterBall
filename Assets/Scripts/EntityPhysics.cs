@@ -59,12 +59,12 @@ public class EntityPhysics : MonoBehaviour {
             return;
         }
 
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 10; ++i) {
             float dir = Mathf.Sign(deltaX);
             //float x = _pos.x + _offset.x + _scaledRadiusX * dir;
             float x = _myCollider.bounds.center.x + _myCollider.bounds.extents.x*dir;
             //float y = (_pos.y + _offset.y - _scaledRadiusY/1.1f) + _scaledRadiusY / 2.1f * i;
-            float y = (_myCollider.bounds.center.y - _myCollider.bounds.extents.y / 1.05f) + _myCollider.bounds.extents.y / 2.2f * i;
+            float y = (_myCollider.bounds.center.y - _myCollider.bounds.extents.y / 1.05f) + _myCollider.bounds.extents.y / 4.7f * i;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
             // Draw last so it matches position

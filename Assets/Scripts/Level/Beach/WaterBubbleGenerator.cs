@@ -7,8 +7,13 @@ public class WaterBubbleGenerator : MonoBehaviour {
     public GameObject waterBubbleObj;
     public GameObject bubbleFishObj;
 
-    float _baseSpawnTime = 8.0f;
-    float _retrySpawnTime = 4.0f;
+    public float spawnDist;
+    public int spawnCount;
+
+    public WaterBubbleGenerator otherBubbleGenerator;
+
+    float _baseSpawnTime = 4.0f;
+    float _retrySpawnTime = 1.0f;
     float _curSpawnTime = 8.0f;
     float _spawnTimer = 0f;
 
@@ -30,6 +35,7 @@ public class WaterBubbleGenerator : MonoBehaviour {
             if(ShouldSpawn()) {
                 //SpawnBubble();
                 SpawnBubbleFish();
+                spawnCount++;
                 _curSpawnTime = _baseSpawnTime;
             } else {
                 _curSpawnTime = _retrySpawnTime;
@@ -37,14 +43,26 @@ public class WaterBubbleGenerator : MonoBehaviour {
 
             _spawnTimer = 0f;
         }
-	}
+
+        // If we've spawned more bubbles than the opposing side
+        if(otherBubbleGenerator.spawnCount < spawnCount) {
+            // Slow down our spawn rate
+            _baseSpawnTime = 6.0f;
+            _retrySpawnTime = 2.0f;
+        } else {
+            // Normal spawn rate
+            // Slow down our spawn rate
+            _baseSpawnTime = 4.0f;
+            _retrySpawnTime = 1.0f;
+        }
+    }
 
     bool ShouldSpawn() {
         bool spawn = false;
 
         // TODO: Somehow make this more consistently fair for both sides, so everyone gets the same spawn rate (in terms of like, spawns per minute)
-        int rand = Random.Range(0 + _spawnOffset, 11);
-        if(rand == 10) {
+        int rand = Random.Range(0 + _spawnOffset, 21);
+        if(rand == 20) {
             // We should spawn
             spawn = true;
             _spawnOffset = 0;
@@ -55,14 +73,8 @@ public class WaterBubbleGenerator : MonoBehaviour {
         return spawn;
     }
 
-    public void SpawnBubble() {
-        float x = Random.Range(-2f, 2f);
-        Vector3 newSpawnPos = new Vector3(_spawnPos.x + x, _spawnPos.y, _spawnPos.z);
-        GameObject waterBubble = Instantiate(waterBubbleObj, newSpawnPos, Quaternion.identity);
-        waterBubble.GetComponent<WaterBubble>().team = team;
-    }
     public void SpawnBubbleFish() {
-        float x = Random.Range(-1.5f, 1.5f);
+        float x = Random.Range(-spawnDist, spawnDist);
         Vector3 newSpawnPos = new Vector3(_spawnPos.x + x, -7.65f, _spawnPos.z);
         GameObject bubbleFish = Instantiate(bubbleFishObj, newSpawnPos, Quaternion.identity);
         bubbleFish.GetComponent<BubbleFish>().team = team;

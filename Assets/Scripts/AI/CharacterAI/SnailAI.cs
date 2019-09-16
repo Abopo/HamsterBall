@@ -36,7 +36,7 @@ public class SnailAI : CharacterAI {
             _spawnTimer += Time.deltaTime;
             if(_spawnTimer >= _spawnTime) {
                 int rand = Random.Range(0, 2);
-                _bubbleGenerators[rand].SpawnBubble();
+                _bubbleGenerators[rand].SpawnBubbleFish();
                 _spawnTimer = 0f;
 
                 _spawnCount++;

@@ -233,7 +233,7 @@ public class Hamster : Entity {
             wasCaught = true;
 
             // Destroy self
-            DestroyObject(this.gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -307,12 +307,12 @@ public class Hamster : Entity {
 
         if (other.tag == "PipeCornerLeft") {
             FaceRight();
-            if (other.name == "Blocker") {
+            if (other.name == "PipeExit") {
                 exitedPipe = true;
             }
         } else if (other.tag == "PipeCornerRight") {
             FaceLeft();
-            if (other.name == "Blocker") {
+            if (other.name == "PipeExit") {
                 exitedPipe = true;
             }
         } else if (other.tag == "Pipe Turn 1") {
@@ -361,6 +361,12 @@ public class Hamster : Entity {
                 inLine = true;
                 SetState(0);
             }
+        }
+    }
+
+    public override void CollisionResponseY(Collider2D collider) {
+        if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/ || collider.gameObject.layer == 19/*HamOnly*/) {
+            velocity.y = 0.0f;
         }
     }
 

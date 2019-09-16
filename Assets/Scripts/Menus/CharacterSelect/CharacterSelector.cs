@@ -282,7 +282,7 @@ public class CharacterSelector : MonoBehaviour {
         charaWindow.pullDownWindow.Show();
 
         // Play a sound
-        //_audioSource.Play();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuHighlight);
     }
     public void Unlock() {
         lockedIn = false;
@@ -336,7 +336,7 @@ public class CharacterSelector : MonoBehaviour {
         charaIcon.Highlight();
 
         // Play a sound
-        //_audioSource.Play();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
 
     void ChangeColorRight() {
@@ -361,7 +361,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change animator to correct character
         charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
-        _audioSource.Play();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
     void ChangeColorLeft() {
         int curColor = charaColor;
@@ -385,7 +385,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change animator to correct character
         charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
-        _audioSource.Play();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
 
     public void ControlNextAI() {

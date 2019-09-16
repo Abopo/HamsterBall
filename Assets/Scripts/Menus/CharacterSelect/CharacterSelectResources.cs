@@ -187,7 +187,14 @@ public class CharacterSelectResources : MonoBehaviour {
     }
 
     void LoadCharacterNames() {
-        _charaNames = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterNames");
+        _charaNames = new Sprite[5];
+
+        Sprite[] names = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterNames");
+        _charaNames[0] = names[0];
+        _charaNames[1] = names[1];
+        _charaNames[2] = names[2];
+        _charaNames[3] = names[3];
+        _charaNames[4] = names[3];
     }
 
     // Use this for initialization

@@ -5,12 +5,12 @@ using UnityEngine;
 public class SeaCreatureSpawner : MonoBehaviour {
     public bool left;
 
-    GameObject[] _seaCreatureObjs = new GameObject[4];
+    GameObject[] _seaCreatureObjs = new GameObject[5];
 
     GameObject _onScreenCreature; // Can only have one at a time
 
-    float _time = 1.0f;
-    float _timer = 0f;
+    float _time = 2.0f;
+    float _timer = -10f;
     int rand;
 
 	// Use this for initialization
@@ -18,8 +18,9 @@ public class SeaCreatureSpawner : MonoBehaviour {
         // Load the sea creatures
         _seaCreatureObjs[0] = Resources.Load<GameObject>("Prefabs/Effects/Environmental/SeaCreatures/Jellyfish");
         _seaCreatureObjs[1] = Resources.Load<GameObject>("Prefabs/Effects/Environmental/SeaCreatures/Octopus");
-        _seaCreatureObjs[2] = Resources.Load<GameObject>("Prefabs/Effects/Environmental/SeaCreatures/Shark");
-        _seaCreatureObjs[3] = Resources.Load<GameObject>("Prefabs/Effects/Environmental/SeaCreatures/Whale");
+        _seaCreatureObjs[2] = Resources.Load<GameObject>("Prefabs/Effects/Environmental/SeaCreatures/Turtle");
+        _seaCreatureObjs[3] = Resources.Load<GameObject>("Prefabs/Effects/Environmental/SeaCreatures/Shark");
+        _seaCreatureObjs[4] = Resources.Load<GameObject>("Prefabs/Effects/Environmental/SeaCreatures/Whale");
 
         _onScreenCreature = new GameObject();
         _onScreenCreature.transform.position = new Vector3(18f, 0f);
@@ -48,9 +49,11 @@ public class SeaCreatureSpawner : MonoBehaviour {
         // Destroy the old creature
         Destroy(_onScreenCreature);
 
-        rand = Random.Range(0, 4);
-        _onScreenCreature = Instantiate(_seaCreatureObjs[rand], this.transform);
-        float randf = Random.Range(-1f, 1f);
+        // TODO: don't spawn the same screature on screen twice
+
+        int type = GetSpawnType();
+        _onScreenCreature = Instantiate(_seaCreatureObjs[type], this.transform);
+        float randf = Random.Range(-0.75f, 0.75f);
         if(left) {
             _onScreenCreature.transform.position = new Vector3(transform.position.x + 1.0f, transform.position.y + randf, _onScreenCreature.transform.position.z);
             _onScreenCreature.GetComponentInChildren<SeaCreature>().left = true;
@@ -58,5 +61,19 @@ public class SeaCreatureSpawner : MonoBehaviour {
             _onScreenCreature.transform.position = new Vector3(transform.position.x - 1.0f, transform.position.y + randf, _onScreenCreature.transform.position.z);
             _onScreenCreature.GetComponentInChildren<SeaCreature>().left = false;
         }
+    }
+
+    int GetSpawnType() {
+        rand = Random.Range(0, 5);
+
+        SeaCreature seaCreature = FindObjectOfType<SeaCreature>();
+        if (seaCreature != null) {
+            // Make sure we don't spawn the same kind of creature
+            while (rand == seaCreature.species) {
+                rand = Random.Range(0, 5);
+            }
+        }
+
+        return rand;
     }
 }

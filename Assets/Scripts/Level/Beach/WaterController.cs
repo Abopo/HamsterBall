@@ -7,7 +7,7 @@ public class WaterController : MonoBehaviour {
 
     public float WaterHeight {
         get {
-            return transform.position.y + 5.0f;
+            return transform.position.y + 1.9f;
         }
     }
 
@@ -34,7 +34,7 @@ public class WaterController : MonoBehaviour {
         if (_gameManager.gameIsOver) {
             return;
         }
-
+        /*
         _moveTimer += Time.deltaTime;
         if(_moveTimer >= _moveTime && _moveDir == 0) {
             // Change position
@@ -53,6 +53,7 @@ public class WaterController : MonoBehaviour {
         if(_moveDir == 1f && transform.position.y > -7.2f) {
             StopMoving();
         }
+        */
 	}
 
     void MoveWaterUp() {

@@ -18,6 +18,11 @@ public class PlayerEffects : MonoBehaviour {
     ParticleSystem landingParticles2;
     ParticleSystem dashParticles2;
 
+    ParticleSystem footstepParticles3;
+    ParticleSystem jumpingParticles3;
+    ParticleSystem landingParticles3;
+    ParticleSystem dashParticles3;
+
     // Sounds
     public FMOD.Studio.EventInstance footstepEvent1;
     public FMOD.Studio.EventInstance footstepEvent2;
@@ -45,22 +50,27 @@ public class PlayerEffects : MonoBehaviour {
         // Forest
         if (_gameManager.selectedBoard == BOARDS.FOREST || activeScene.name.Contains("Village")) {
             // Footstep
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/GrassFootstep") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/GrassFootstep") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             footstepParticles1 = tempObject.GetComponent<ParticleSystem>();
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/DustFootstep1") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/DustFootstep1") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             footstepParticles2 = tempObject.GetComponent<ParticleSystem>();
             // Jump
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/GrassJump") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/GrassJump") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             jumpingParticles1 = tempObject.GetComponent<ParticleSystem>();
             // Land
             landingParticles1 = jumpingParticles1;
             // Dash
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/GrassDash") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/GrassDash") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             dashParticles1 = tempObject.GetComponent<ParticleSystem>();
+            
             // Sounds
             footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.GrassPlayerFootstep);
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
@@ -70,19 +80,23 @@ public class PlayerEffects : MonoBehaviour {
         // Mountain
         if (_gameManager.selectedBoard == BOARDS.MOUNTAIN) {
             // Footstep
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/SnowFootstep") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/SnowFootstep") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             footstepParticles1 = tempObject.GetComponent<ParticleSystem>();
             // Jump
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/SnowJump") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/SnowJump") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             jumpingParticles1 = tempObject.GetComponent<ParticleSystem>();
             // Land
             landingParticles1 = jumpingParticles1;
             // Dash
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/SnowDash") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/SnowDash") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             dashParticles1 = tempObject.GetComponent<ParticleSystem>();
+            
             // Sounds
             footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowPlayerFootstep);
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
@@ -92,22 +106,42 @@ public class PlayerEffects : MonoBehaviour {
         // Beach
         if (_gameManager.selectedBoard == BOARDS.BEACH) {
             // Footstep
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/DustFootstep1") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/DustFootstep1") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             footstepParticles1 = tempObject.GetComponent<ParticleSystem>();
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/SplashFootstep") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/SplashFootstep") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             footstepParticles2 = tempObject.GetComponent<ParticleSystem>();
-            // Jump
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/SplashJump") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/BubbleFootstep") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
+            footstepParticles3 = tempObject.GetComponent<ParticleSystem>();
+            // Jump
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/SplashJump") as GameObject;
+            tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
             jumpingParticles2 = tempObject.GetComponent<ParticleSystem>();
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/BubbleJump") as GameObject;
+            tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
+            jumpingParticles3 = tempObject.GetComponent<ParticleSystem>();
             // Land
             landingParticles2 = jumpingParticles2;
-            // Dash
-            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/SnowDash") as GameObject;
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/BubbleLand") as GameObject;
             tempObject = Instantiate(tempPrefab, this.transform, false);
-            dashParticles1 = tempObject.GetComponent<ParticleSystem>();
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
+            landingParticles3 = tempObject.GetComponent<ParticleSystem>();
+            // Dash
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/SnowDash") as GameObject;
+            tempObject = Instantiate(tempPrefab, this.transform, false);
+            tempObject.transform.localPosition = new Vector3(0f, -0.9f, -1f);
+            //dashParticles1 = tempObject.GetComponent<ParticleSystem>();
+            tempPrefab = Resources.Load("Prefabs/Effects/Environmental/Footsteps/BubbleDash") as GameObject;
+            tempObject = Instantiate(tempPrefab, this.transform, false);
+            dashParticles3 = tempObject.GetComponent<ParticleSystem>();
+
             // Sounds
             footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowPlayerFootstep);
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
@@ -136,6 +170,12 @@ public class PlayerEffects : MonoBehaviour {
                 }
                 footstepEvent2.start();
                 break;
+            case 2:
+                if (footstepParticles3 != null) {
+                    PlayEffect(footstepParticles3);
+                }
+                footstepEvent2.start();
+                break;
         }
     }
 
@@ -149,6 +189,11 @@ public class PlayerEffects : MonoBehaviour {
             case 1:
                 if (jumpingParticles2 != null) {
                     PlayEffect(jumpingParticles2);
+                }
+                break;
+            case 2:
+                if (jumpingParticles3 != null) {
+                    PlayEffect(jumpingParticles3);
                 }
                 break;
         }
@@ -166,6 +211,11 @@ public class PlayerEffects : MonoBehaviour {
                     PlayEffect(landingParticles2);
                 }
                 break;
+            case 2:
+                if (landingParticles3 != null) {
+                    PlayEffect(landingParticles3);
+                }
+                break;
         }
     }
 
@@ -179,6 +229,11 @@ public class PlayerEffects : MonoBehaviour {
             case 1:
                 if (dashParticles2 != null) {
                     PlayEffect(dashParticles2);
+                }
+                break;
+            case 2:
+                if (dashParticles3 != null) {
+                    PlayEffect(dashParticles3);
                 }
                 break;
         }
@@ -197,6 +252,22 @@ public class PlayerEffects : MonoBehaviour {
             Vector3 theScale = particles.transform.localScale;
             theScale.x *= -1;
             particles.transform.localScale = theScale;
+        }
+    }
+
+    public void Flip() {
+        // Since changing the scale of the particle system does jack shit, we have to change the rotation instead
+        float rotOffset = Mathf.Abs(transform.rotation.x) - 90;
+
+        // If we are facing right
+        if(transform.localScale.x > 0) {
+            // For now only footsteps and dashes should really be affected
+            transform.rotation = Quaternion.Euler(-90 - rotOffset, transform.rotation.y, transform.rotation.z);
+            
+            // Flip the scale anyway so we can keep track of facing
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
         }
     }
 }
