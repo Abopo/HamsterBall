@@ -102,34 +102,24 @@ public class LevelManager : MonoBehaviour {
     }
 
     void SetStageMusic() {
-        AudioClip audioClip;
         switch (board) {
             case BOARDS.FOREST:
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
 				SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
-				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-				//SoundManager.mainAudio.MusicMainEvent.start();
+				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+				SoundManager.mainAudio.MusicMainEvent.start();
 				SoundManager.mainAudio.ForestAmbienceEvent.start();
-
-                audioClip = Resources.Load<AudioClip>("Audio/BGM/Board Tracks/Forest_Gameplay");
-                GetComponent<AudioSource>().clip = audioClip;
                 break;
             case BOARDS.MOUNTAIN:
 			    SoundManager.mainAudio.MusicMainEvent.setParameterValue("RowDanger", 0f);
 				SoundManager.mainAudio.SnowAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
-				//SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-				//SoundManager.mainAudio.MusicMainEvent.start();
+				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+				SoundManager.mainAudio.MusicMainEvent.start();
 				SoundManager.mainAudio.SnowAmbienceEvent.start();
-
-                audioClip = Resources.Load<AudioClip>("Audio/BGM/Board Tracks/Mountain_Gameplay");
-                GetComponent<AudioSource>().clip = audioClip;
                 break;
             case BOARDS.BEACH:
                 SoundManager.mainAudio.BeachAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
                 SoundManager.mainAudio.BeachAmbienceEvent.start();
-
-                audioClip = Resources.Load<AudioClip>("Audio/BGM/Board Tracks/Beach_Gameplay");
-                GetComponent<AudioSource>().clip = audioClip;
                 break;
             case BOARDS.CITY:
                 break;
