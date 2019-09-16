@@ -79,6 +79,18 @@ public class SoundManager : MonoBehaviour {
 	public string HappyDaysMusic;
 	public FMOD.Studio.EventInstance HappyDaysMusicEvent;
 
+	public string VillageMusic;
+	public FMOD.Studio.EventInstance VillageMusicEvent;
+
+	public string ForestMusic;
+	public FMOD.Studio.EventInstance ForestMusicEvent;
+
+	public string BeachMusic;
+	public FMOD.Studio.EventInstance BeachMusicEvent;
+
+	public string MountainMusic;
+	public FMOD.Studio.EventInstance MountainMusicEvent;
+
 	//public FMOD.Studio.EventInstance ThrowAngleEvent;
 	public FMOD.Studio.EventInstance HamsterFillBallEvent;
 	//Generic Player Sounds EventInstance
