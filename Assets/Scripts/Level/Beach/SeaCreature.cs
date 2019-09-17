@@ -20,10 +20,7 @@ public class SeaCreature : MonoBehaviour {
 		if(!left) {
             moveSpeed = -Mathf.Abs(moveSpeed);
         } else {
-            // Face the other way
-            Vector3 theScale = transform.localScale;
-            theScale.x *= -1;
-            transform.localScale = theScale;
+            Flip();
         }
     }
 	
@@ -31,4 +28,11 @@ public class SeaCreature : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    protected virtual void Flip() {
+        // Face the other way
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
 }

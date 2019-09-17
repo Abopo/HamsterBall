@@ -326,7 +326,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change animator to correct character
         charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][0].animator;
         // Change name to correct character
-        charaWindow.charaName.sprite = _resources.CharaNames[(int)charaIcon.charaName];
+        charaWindow.charaName.text = _resources.CharaNames[(int)charaIcon.charaName];
 
         // Play idle animation
         charaWindow.charaAnimator.SetInteger("PlayerState", 0);

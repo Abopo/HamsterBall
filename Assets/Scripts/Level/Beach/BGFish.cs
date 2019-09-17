@@ -20,7 +20,7 @@ public class BGFish : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start() {
-        _rand = Random.Range(0, 6);
+        _rand = Random.Range(0, 5);
         _animator.SetInteger("Fish", _rand);
     }
 
@@ -77,18 +77,24 @@ public class BGFish : MonoBehaviour {
             }
 
             if(_moveDir == 1) {
-                // Face right
-                Vector3 theScale = transform.localScale;
-                theScale.x = -Mathf.Abs(theScale.x);
-                transform.localScale = theScale;
+                FaceRight();
             } else {
-                // Face left
-                Vector3 theScale = transform.localScale;
-                theScale.x = Mathf.Abs(theScale.x);
-                transform.localScale = theScale;
+                FaceLeft();
             }
 
             _stopped = false;
         }
+    }
+
+    public void FaceRight() {
+        Vector3 theScale = transform.localScale;
+        theScale.x = -Mathf.Abs(theScale.x);
+        transform.localScale = theScale;
+    }
+
+    public void FaceLeft() {
+        Vector3 theScale = transform.localScale;
+        theScale.x = Mathf.Abs(theScale.x);
+        transform.localScale = theScale;
     }
 }

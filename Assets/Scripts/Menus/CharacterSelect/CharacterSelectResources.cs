@@ -15,7 +15,7 @@ public class CharacterSelectResources : MonoBehaviour {
 
     List<Sprite>[] _charaPortraits = new List<Sprite>[5];
 
-    Sprite[] _charaNames;
+    string[] _charaNames;
 
     public Sprite[] CharaSelectors {
         get { return _charaSelectors; }
@@ -29,7 +29,7 @@ public class CharacterSelectResources : MonoBehaviour {
         get { return _charaPortraits; }
     }
 
-    public Sprite[] CharaNames {
+    public string[] CharaNames {
         get { return _charaNames; }
     }
 
@@ -123,7 +123,7 @@ public class CharacterSelectResources : MonoBehaviour {
         snail3.isTaken = false;
         _charaAnimators[3].Add(snail3);
         CharaSelectInfo snail4 = new CharaSelectInfo();
-        snail4.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail3") as RuntimeAnimatorController;
+        snail4.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail4") as RuntimeAnimatorController;
         snail4.isTaken = false;
         _charaAnimators[3].Add(snail4);
 
@@ -187,14 +187,14 @@ public class CharacterSelectResources : MonoBehaviour {
     }
 
     void LoadCharacterNames() {
-        _charaNames = new Sprite[5];
+        _charaNames = new string[5];
 
-        Sprite[] names = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterNames");
-        _charaNames[0] = names[0];
-        _charaNames[1] = names[1];
-        _charaNames[2] = names[2];
-        _charaNames[3] = names[3];
-        _charaNames[4] = names[3];
+        //Sprite[] names = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterNames");
+        _charaNames[0] = "KADEN";
+        _charaNames[1] = "QUINN";
+        _charaNames[2] = "ROOBEN";
+        _charaNames[3] = "DON";
+        _charaNames[4] = "CARL";
     }
 
     // Use this for initialization
