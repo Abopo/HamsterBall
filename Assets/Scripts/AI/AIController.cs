@@ -282,7 +282,7 @@ public class AIController : MonoBehaviour {
     }
 
     void BeginMovingUp() {
-        if(_mapScan.ClosestJump == null) {
+        if(_mapScan.ClosestJump == null || _mapScan.ClosestJump.GetComponent<PlatformEndCap>() == null) {
             return;
         }
 

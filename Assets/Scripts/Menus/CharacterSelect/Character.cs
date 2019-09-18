@@ -9,7 +9,7 @@ public class CharaInfo {
     public int team;
 }
 
-public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, SNAIL, LACKEY, NUM_CHARACTER };
+public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, SNAIL, LACKEY, NUM_CHARACTERS };
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
