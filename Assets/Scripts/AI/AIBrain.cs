@@ -458,7 +458,7 @@ public class AIBrain : MonoBehaviour {
     void DecideVertWant() {
         if (_playerController.heldBall == null) {
             if (curAction.hamsterWant != null) {
-                VerticalChase(curAction.hamsterWant.gameObject);
+                VerticalChase(curAction.hamsterWant);
             } else if (curAction.opponent != null) {
                 VerticalChase(curAction.opponent.gameObject);
             } else if(curAction.waterBubble != null) {
@@ -534,6 +534,22 @@ public class AIBrain : MonoBehaviour {
             curAction.vertWant = -1;
         } else {
             curAction.vertWant = 0;
+        }
+    }
+    void VerticalChase(Hamster hamster) {
+        // If the hamster is out of the pipe and running in the stage
+        if (hamster.exitedPipe) {
+            if (Mathf.Abs(hamster.transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
+                curAction.vertWant = 1;
+            } else if (Mathf.Abs(hamster.transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
+                curAction.vertWant = -1;
+            } else {
+                curAction.vertWant = 0;
+            }
+        // If the hamster is in the pipe
+        } else {
+            // Run to the pipe exit to meet the hamster as it comes out
+            curAction.vertWant = 1;
         }
     }
 

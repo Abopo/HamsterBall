@@ -198,14 +198,16 @@ public class Hamster : Entity {
         if (!_springing) {
             UpdateVelocity();
         }
-
-        if (_curState != 0) {
+	}
+    
+    private void FixedUpdate() {
+        if (_curState != 0 && !_gameManager.isPaused) {
             _physics.MoveX(velocity.x * Time.deltaTime);
             _physics.MoveY(velocity.y * Time.deltaTime);
         }
-	}
+    }
 
-	protected void UpdateVelocity() {
+    protected void UpdateVelocity() {
 		if (facingRight) {
 			velocity.x = curMoveSpeed * (exitedPipe ? WaterMultiplier : 1) + moveSpeedModifier;
 		} else {

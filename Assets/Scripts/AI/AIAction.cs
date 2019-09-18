@@ -50,10 +50,8 @@ public class AIAction {
                     requiresShift = true;
                 }
             }
-        }
-
         // also keep track of if an action requires a shift
-        if(nodeWant != null) {
+        } else if(nodeWant != null) {
             // As long as the player and the node we want are on the same side of the stage, it doesn't require a shift
             if((nodeWant.transform.position.x > 0 && _playerController.transform.position.x > 0) || 
                 (nodeWant.transform.position.x < 0 && _playerController.transform.position.x < 0)) {
