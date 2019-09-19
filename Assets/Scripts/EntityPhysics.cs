@@ -50,6 +50,9 @@ public class EntityPhysics : MonoBehaviour {
     }
 
     void Update() {
+    }
+
+    private void FixedUpdate() {
         CheckBelow();
         WallCheck();
     }

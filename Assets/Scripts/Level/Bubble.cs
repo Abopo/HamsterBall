@@ -165,9 +165,8 @@ public class Bubble : MonoBehaviour {
 		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 		BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 
-
         if(_destroy && !_audioSource.isPlaying) {
-            DestroyObject(this.gameObject);
+            Destroy(gameObject);
         }
 
         if(_popping) {
@@ -189,6 +188,15 @@ public class Bubble : MonoBehaviour {
         }
 	}
 
+    private void FixedUpdate() {
+        if (!locked) {
+            // Move
+            _deltaX = _velocity.x * Time.deltaTime;
+            _deltaY = _velocity.y * Time.deltaTime;
+            transform.Translate(_deltaX, _deltaY, 0.0f);
+        }
+    }
+
     private void LateUpdate() {
         if (locked) {
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -206,11 +214,6 @@ public class Bubble : MonoBehaviour {
                 _boardChanged = false;
             }
         } else {
-            // Move
-            _deltaX = _velocity.x * Time.deltaTime;
-            _deltaY = _velocity.y * Time.deltaTime;
-            transform.Translate(_deltaX, _deltaY, 0.0f);
-
             // Count time from throw to land
             if (wasThrown) {
                 _airTime += Time.deltaTime;

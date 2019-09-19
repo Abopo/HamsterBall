@@ -158,6 +158,13 @@ public class GameManager : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.U)) {
             Debug.Break();
         }
+        
+        if(Input.GetKeyDown(KeyCode.I)) {
+            Application.targetFrameRate = 5;
+        } else if(Input.GetKeyUp(KeyCode.I)) {
+            Application.targetFrameRate = 60;
+        }
+        
     }
 
     // 0 = left team; 1 = right team

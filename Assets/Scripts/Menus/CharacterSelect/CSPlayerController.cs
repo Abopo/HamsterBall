@@ -55,11 +55,16 @@ public class CSPlayerController : PlayerController {
                 ChangeState(PLAYER_STATE.IDLE);
             }
 
-            _physics.MoveX(velocity.x * Time.deltaTime);
-            _physics.MoveY(velocity.y * Time.deltaTime);
+            if (underControl) {
+                _physics.MoveX(velocity.x * Time.deltaTime);
+                _physics.MoveY(velocity.y * Time.deltaTime);
+            }
 
             _justChangedState = false;
         }
+    }
+
+    private void FixedUpdate() {
     }
 
     protected override void CheckInput() {

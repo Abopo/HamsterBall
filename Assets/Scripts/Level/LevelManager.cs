@@ -67,9 +67,6 @@ public class LevelManager : MonoBehaviour {
             gameStarted = true;
         }
 
-
-
-
         SetStageMusic();
     }
 
@@ -411,8 +408,11 @@ public class LevelManager : MonoBehaviour {
         // Stop looping sounds here
         SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-		SoundManager.mainAudio.ForestAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-		SoundManager.mainAudio.SnowAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-		SoundManager.mainAudio.BeachAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.ForestMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.ForestAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.MountainMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.SnowAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.BeachMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.BeachAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

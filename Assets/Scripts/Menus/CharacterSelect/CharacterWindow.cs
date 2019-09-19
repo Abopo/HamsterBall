@@ -8,7 +8,7 @@ public class CharacterWindow : MonoBehaviour {
     public CSPlayerController playerController;
     public Animator charaAnimator;
     public SpriteRenderer charaPortrait;
-    public SpriteRenderer charaName;
+    public SuperTextMesh charaName;
     public PullDownWindow pullDownWindow;
     public GameObject colorArrows;
 

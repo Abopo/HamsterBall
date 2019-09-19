@@ -20,12 +20,16 @@ public class WaterController : MonoBehaviour {
     EdgeCollider2D[] _floatingObjects;
     GameManager _gameManager;
 
+    PlayerController[] _players;
+
     // Use this for initialization
     void Start () {
         _floatingObjects = GetComponentsInChildren<EdgeCollider2D>();
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         TurnOffFloatingObjects();
+
+        _players = FindObjectsOfType<PlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -34,6 +38,19 @@ public class WaterController : MonoBehaviour {
         if (_gameManager.gameIsOver) {
             return;
         }
+
+        // Handle players water effects
+        if(_players.Length == 0) {
+            _players = FindObjectsOfType<PlayerController>();
+        }
+        foreach (PlayerController player in _players) {
+            if(player.transform.position.y < WaterHeight) {
+                player.platformIndex = 2;
+            } else if(player.platformIndex == 2) {
+                player.platformIndex = 0;
+            }
+        }
+
         /*
         _moveTimer += Time.deltaTime;
         if(_moveTimer >= _moveTime && _moveDir == 0) {

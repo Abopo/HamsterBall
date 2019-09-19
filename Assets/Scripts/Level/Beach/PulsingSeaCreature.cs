@@ -42,6 +42,13 @@ public class PulsingSeaCreature : SeaCreature {
         }
     }
 
+    protected override void Flip() {
+        // Face the other way
+        Vector3 theScale = transform.parent.localScale;
+        theScale.x *= -1;
+        transform.parent.localScale = theScale;
+    }
+
     public void StartMove() {
         _moveSpeed = moveSpeed;
         _move = true;

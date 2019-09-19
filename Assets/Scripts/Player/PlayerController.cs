@@ -307,11 +307,7 @@ public class PlayerController : Entity {
                 ChangeState(PLAYER_STATE.IDLE);
             }
 
-            _physics.MoveX(velocity.x * Time.deltaTime);
-            _physics.MoveY(velocity.y * Time.deltaTime);
-
             _justChangedState = false;
-
         }
 
         // Failsafe checks
@@ -324,6 +320,15 @@ public class PlayerController : Entity {
 
 		//_playerAnimationTriggers.PlayerFootstepEvent.setParameterValue("Surface", platformIndex);
 	}
+
+    private void FixedUpdate() {
+        // Don't do any of this stuff if the game is paused
+        if (!_gameManager.isPaused) {
+            _physics.MoveX(velocity.x * Time.deltaTime);
+            _physics.MoveY(velocity.y * Time.deltaTime);
+        }
+
+    }
 
     protected virtual void CheckInput() {
         if (!aiControlled) {

@@ -595,22 +595,20 @@ public class BubbleManager : MonoBehaviour {
 
         if(_gameEndingSequence) {
             // Wait until all the bubbles are petrified
-            if(!wonGame) {
-                foreach(Bubble bub in _bubbles) {
-                    // If a bubble still isn't petrified
-                    if(bub != null && !bub.Petrified) {
-                        return;
-                    }
+            foreach(Bubble bub in _bubbles) {
+                // If a bubble still isn't petrified
+                if(bub != null && !bub.Petrified) {
+                    return;
                 }
-
-                _gameEndingSequence = false;
-
-                // Make sure the final score is fully updated
-                _levelManager.GameEnd();
-                _scoreManager.CombineScore();
-
-                _levelManager.ActivateResultsScreen(team, _roundResult);
             }
+
+            _gameEndingSequence = false;
+
+            // Make sure the final score is fully updated
+            _levelManager.GameEnd();
+            _scoreManager.CombineScore();
+
+            _levelManager.ActivateResultsScreen(team, _roundResult);
         }
 
         if (Input.GetKeyDown(KeyCode.L)) {
