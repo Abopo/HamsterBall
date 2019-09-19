@@ -53,6 +53,7 @@ public class DividerFlash : MonoBehaviour {
     public void StopFlashing() {
         isFlashing = false;
         _material.color = brown;
+        Debug.Log("Stop Flash");
 		SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);
 		SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 1f);
 		SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 1f);
