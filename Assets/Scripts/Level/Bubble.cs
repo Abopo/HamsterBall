@@ -737,6 +737,7 @@ public class Bubble : MonoBehaviour {
         Debug.Log("PopIndex " + _popIndex);
 
         BallBreakEvent.start();
+		BallBreakEvent.release();
 
 		Debug.Log("Pop");
         // Instaed of destroying, do a nice animation of the bubble opening.

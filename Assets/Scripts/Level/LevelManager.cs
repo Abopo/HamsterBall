@@ -414,5 +414,14 @@ public class LevelManager : MonoBehaviour {
         SoundManager.mainAudio.SnowAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         SoundManager.mainAudio.BeachMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         SoundManager.mainAudio.BeachAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+		SoundManager.mainAudio.MusicMainEvent.release();
+        //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SoundManager.mainAudio.ForestMusicEvent.release();
+		SoundManager.mainAudio.ForestAmbienceEvent.release();
+		SoundManager.mainAudio.MountainMusicEvent.release();
+		SoundManager.mainAudio.SnowAmbienceEvent.release();
+		SoundManager.mainAudio.BeachMusicEvent.release();
+		SoundManager.mainAudio.BeachAmbienceEvent.release();
     }
 }

@@ -65,6 +65,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     public void NetSwingOn() {
         _bubbleState.Activate();
 		SwingNetEvent.start();
+		SwingNetEvent.release();
 		//netSwingEmitter.Play();
     }
 
