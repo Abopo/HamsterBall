@@ -375,8 +375,8 @@ public class PlayerController : Entity {
 		//                                               transform.position.z);
 
 		if (heldBall != null && !heldBall.wasThrown) {
-			walkSpeed = 3;
-			jumpMoveMax = 3;
+			walkSpeed = 3.25f;
+			jumpMoveMax = 3.25f;
 			heldBall.transform.position = new Vector3 (bubblePosition.position.x,
                                                          bubblePosition.position.y,
                                                          bubblePosition.position.z-10);

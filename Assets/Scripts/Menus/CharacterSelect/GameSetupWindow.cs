@@ -28,6 +28,8 @@ public class GameSetupWindow : MonoBehaviour {
 
     public void Initialize() {
         gameObject.SetActive(true);
+
+        _gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
     }
 
     private void Awake() {
@@ -57,18 +59,8 @@ public class GameSetupWindow : MonoBehaviour {
     public void OptionsSetup() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
-        //_gameManager.leftTeamHandicap = 9;
-        //S_gameManager.rightTeamHandicap = 9;
         _gameManager.leftTeamHandicap = 10;
         _gameManager.rightTeamHandicap = 10;
-        //for (int i = 0; i < leftHandicap; ++i) {
-        //    teamLeft.DecreaseHandicap();
-        //}
-        //for (int i = 0; i < rightHandicap; ++i) {
-        //    teamRight.DecreaseHandicap();
-        //}
-        //lthNumberText.text = teamLeft.handicap.ToString();
-        //rthNumberText.text = teamRight.handicap.ToString();
 
         _aimAssist = false;
         aaText.text = "Off";
@@ -125,34 +117,6 @@ public class GameSetupWindow : MonoBehaviour {
 
         return false;
     }
-
-    // Increase the Left team's handicap.
-    /*
-    public void IncreaseLTH() {
-        teamLeft.IncreaseHandicap();
-        teamLeft.FailCheckHandicap();
-        lthNumberText.text = teamLeft.handicap.ToString();
-    }
-    // Decrease the Left team's handicap.
-    public void DecreaseLTH() {
-        teamLeft.DecreaseHandicap();
-        teamLeft.FailCheckHandicap();
-        lthNumberText.text = teamLeft.handicap.ToString();
-    }
-
-    // Increase the Right team's handicap.
-    public void IncreaseRTH() {
-        teamRight.IncreaseHandicap();
-        teamRight.FailCheckHandicap();
-        rthNumberText.text = teamRight.handicap.ToString();
-    }
-    // Decrease the Right team's handicap.
-    public void DecreaseRTH() {
-        teamRight.DecreaseHandicap();
-        teamRight.FailCheckHandicap();
-        rthNumberText.text = teamRight.handicap.ToString();
-    }
-    */
 
     public void AimAssistButton() {
         _aimAssist = !_aimAssist;

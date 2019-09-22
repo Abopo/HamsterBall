@@ -938,7 +938,7 @@ public class BubbleManager : MonoBehaviour {
         for (int i = 0; i < nodeList.Count; ++i) {
             // Delete bottom line nodes
             if (i >= tempBottomRowStart) {
-                DestroyObject(nodeList[i].gameObject);
+                Destroy(nodeList[i].gameObject);
             }
         }
 

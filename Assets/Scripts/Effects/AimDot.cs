@@ -46,12 +46,12 @@ public class AimDot : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
-        if(collider.tag == "SolidBubble" || collider.tag == "Ceiling") {
+        if(collider.tag == "Bubble" || collider.tag == "Ceiling") {
             // Remove self from aiming line
             _aimingLine.RemoveAimDot(this);
 
             // Destory self
-            DestroyObject(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

@@ -8,6 +8,7 @@ public class CSPlayerController : PlayerController {
     public CharacterSelector characterSelector;
 
     public bool underControl;
+    public bool inPlayArea;
 
     PullDownWindow pullDownWindow;
 
@@ -104,6 +105,7 @@ public class CSPlayerController : PlayerController {
 
     public void EnterPlayArea() {
         underControl = true;
+        inPlayArea = true;
     }
 
     public void EnterPullDownWindow() {

@@ -144,7 +144,9 @@ public class CharacterSelect : MonoBehaviour {
             charaSelector.takeInput = true;
         }
         foreach(CSPlayerController player in _players) {
-            player.underControl = true;
+            if (player.inPlayArea) {
+                player.underControl = true;
+            }
         }
 
         // Clear players from player manager
