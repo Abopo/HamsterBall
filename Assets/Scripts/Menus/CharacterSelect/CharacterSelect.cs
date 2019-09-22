@@ -28,14 +28,18 @@ public class CharacterSelect : MonoBehaviour {
         get { return _numAI; }
     }
 
+    private void Awake() {
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameManager.selectedBoard = BOARDS.NUM_STAGES;
+
+        _playerManager = _gameManager.GetComponent<PlayerManager>();
+    }
     // Use this for initialization
     void Start () {
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.prevMenu = MENU.VERSUS;
         _numPlayers = _gameManager.numPlayers;
         _numAI = _gameManager.numAI;
 
-        _playerManager = _gameManager.GetComponent<PlayerManager>();
         _playerManager.ClearAllPlayers();
 
         _players = FindObjectsOfType<CSPlayerController>();

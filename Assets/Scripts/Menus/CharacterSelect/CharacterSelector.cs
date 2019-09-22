@@ -89,13 +89,6 @@ public class CharacterSelector : MonoBehaviour {
             GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum];
             transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum + 4];
 
-            if (!isAI) {
-                _player = ReInput.players.GetPlayer(playerNum);
-            } else {
-                _player = ReInput.players.GetPlayer(0);
-                charaWindow.playerController.SetInputPlayer(0);
-            }
-
             charaWindow.playerController.characterSelector = this;
         }
     }
@@ -168,7 +161,14 @@ public class CharacterSelector : MonoBehaviour {
         if(ai) {
             isAI = true;
             takeInput = false;
+
+            _player = ReInput.players.GetPlayer(0);
+            charaWindow.playerController.SetInputPlayer(0);
+        } else {
+            _player = ReInput.players.GetPlayer(playerNum);
+
         }
+
         gameObject.SetActive(true);
         charaWindow.charaAnimator.gameObject.SetActive(true);
         charaWindow.charaPortrait.enabled = true;
@@ -178,7 +178,13 @@ public class CharacterSelector : MonoBehaviour {
         if (ai) {
             isAI = true;
             takeInput = false;
+
+            _player = ReInput.players.GetPlayer(0);
+            charaWindow.playerController.SetInputPlayer(0);
+        } else {
+            _player = ReInput.players.GetPlayer(playerNum);
         }
+
         gameObject.SetActive(true);
         charaWindow.charaAnimator.gameObject.SetActive(true);
         charaWindow.charaPortrait.enabled = true;
@@ -397,6 +403,7 @@ public class CharacterSelector : MonoBehaviour {
             aiList[aiIndex].frameskip = true;
             aiList[aiIndex].aiList = aiList;
             aiList[aiIndex].parentSelector = this;
+            //aiList[aiIndex]._player = _player; // Use same player input as us
             aiList[aiIndex].HideCOMText();
             aiIndex++;
         }

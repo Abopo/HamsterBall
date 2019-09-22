@@ -604,10 +604,6 @@ public class BubbleManager : MonoBehaviour {
 
             _gameEndingSequence = false;
 
-            // Make sure the final score is fully updated
-            _levelManager.GameEnd();
-            _scoreManager.CombineScore();
-
             _levelManager.ActivateResultsScreen(team, _roundResult);
         }
 
@@ -820,7 +816,7 @@ public class BubbleManager : MonoBehaviour {
         for (int i = 0; i < nodeList.Count; ++i) {
             // Delete bottom line
             if (i >= _bottomRowStart) {
-                DestroyObject(nodeList[i].gameObject);
+                Destroy(nodeList[i].gameObject);
                 // Move nodes down
             } else {
                 nodeList[i].transform.Translate(new Vector3(0.0f, -_nodeHeight, 0.0f));
@@ -1038,6 +1034,8 @@ public class BubbleManager : MonoBehaviour {
     // result - -1 = lost; 0 = tied; 1 = won
     public void EndGame(int result) {
         _gameOver = true;
+        _levelManager.GameEnd();
+        _scoreManager.CombineScore();
 
         _roundResult = result;
 

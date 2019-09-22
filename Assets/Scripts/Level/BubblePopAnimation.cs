@@ -27,7 +27,7 @@ public class BubblePopAnimation : MonoBehaviour {
         if(_popped) {
             _destroyTimer += Time.deltaTime;
             if(_destroyTimer >= _destroyTime) {
-                DestroyObject(this.gameObject);
+                Destroy(gameObject);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using System.Collections;
 using Rewired;
 
@@ -32,10 +33,13 @@ public class LevelManager : MonoBehaviour {
     BubbleManager _bubbleManager;
     LevelUI _levelUI;
 
-    //Music
-
     public float LevelTimer {
         get { return _levelTimer; }
+    }
+
+    public bool GameOver {
+        get { return _gameOver; }
+        set { _gameOver = value; }
     }
 
     private void Awake() {

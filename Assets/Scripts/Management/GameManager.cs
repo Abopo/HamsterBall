@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour {
 
         playerInput = ReInput.players.GetPlayer(0);
 
+        selectedBoard = BOARDS.NUM_STAGES;
         prevBoard = "";
 
         isPaused = false;

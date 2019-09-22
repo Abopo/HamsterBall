@@ -27,7 +27,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     HamsterDoor[] _hamsterDoors; // Anything that moves/activates when a hamster leaves the spawn line
 
     public static bool canBeRainbow = true;
-    public static bool canBeDead = false;
+    public static bool canBeDead = true;
     public static bool canBeGravity = false;
     public static bool canBeBomb = false;
     List<int> specialTypes = new List<int>();

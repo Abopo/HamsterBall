@@ -153,7 +153,7 @@ public class WaterBubble : MonoBehaviour {
         }
     }
 
-    void Pop() {
+    public void Pop() {
         _circleCollider.enabled = false;
         _animator.Play("BubblePop", 0);
         _popped = true;

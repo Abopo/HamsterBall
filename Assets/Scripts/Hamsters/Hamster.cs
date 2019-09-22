@@ -201,7 +201,7 @@ public class Hamster : Entity {
 	}
     
     private void FixedUpdate() {
-        if (_curState != 0 && !_gameManager.isPaused) {
+        if (_curState != 0 && !_gameManager.isPaused && !_gameManager.gameIsOver) {
             _physics.MoveX(velocity.x * Time.deltaTime);
             _physics.MoveY(velocity.y * Time.deltaTime);
         }
