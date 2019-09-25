@@ -45,17 +45,19 @@ public class DividerFlash : MonoBehaviour {
             isFlashing = true;
             _flashTimer = 0f;
         }
-		SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 2f);
-		SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 2f);
-		SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 2f);
+
+		//SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 2f);
+		//SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 2f);
+		//SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 2f);
     }
 
     public void StopFlashing() {
         isFlashing = false;
         _material.color = brown;
         Debug.Log("Stop Flash");
-		SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);
-		SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 1f);
-		SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 1f);
+
+		//SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);
+		//SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 1f);
+		//SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 1f);
     }
 }

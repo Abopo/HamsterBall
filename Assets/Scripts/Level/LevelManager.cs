@@ -70,8 +70,6 @@ public class LevelManager : MonoBehaviour {
         if (gc == null) {
             gameStarted = true;
         }
-
-        SetStageMusic();
     }
 
     void LoadStagePrefab() {
@@ -102,45 +100,6 @@ public class LevelManager : MonoBehaviour {
 
         Object stageObj = Resources.Load(prefabPath);
         Instantiate(stageObj);
-    }
-
-    void SetStageMusic() {
-        switch (board) {
-            case BOARDS.FOREST:
-				SoundManager.mainAudio.ForestMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);
-				SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
-				SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 1f);
-				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-				SoundManager.mainAudio.ForestMusicEvent.start();
-				SoundManager.mainAudio.ForestAmbienceEvent.start();
-                break;
-            case BOARDS.MOUNTAIN:
-				SoundManager.mainAudio.MountainMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MountainMusic);
-				SoundManager.mainAudio.SnowAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
-				SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 1f);
-				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-				SoundManager.mainAudio.MountainMusicEvent.start();
-				SoundManager.mainAudio.SnowAmbienceEvent.start();
-                break;
-            case BOARDS.BEACH:
-                SoundManager.mainAudio.BeachAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
-				SoundManager.mainAudio.BeachMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachMusic);
-				SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);
-				SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-				SoundManager.mainAudio.BeachMusicEvent.start();
-                SoundManager.mainAudio.BeachAmbienceEvent.start();
-
-
-                break;
-            case BOARDS.CITY:
-                break;
-            case BOARDS.CORPORATION:
-                break;
-            case BOARDS.LABORATORY:
-                break;
-            case BOARDS.AIRSHIP:
-                break;
-        }
     }
 
     public void GameStart() {

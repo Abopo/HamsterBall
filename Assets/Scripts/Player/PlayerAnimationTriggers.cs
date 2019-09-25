@@ -114,4 +114,8 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         */
         _playerEffects.PlayFootstep();
     }
+
+    public void WinLoopStart() {
+        _playerController.Animator.SetBool("WinLoop", true);
+    }
 }
