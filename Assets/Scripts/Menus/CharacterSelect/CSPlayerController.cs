@@ -11,9 +11,12 @@ public class CSPlayerController : PlayerController {
     public bool inPlayArea;
 
     PullDownWindow pullDownWindow;
+    CharacterSelect _charaSelect;
 
     protected override void Awake() {
         base.Awake();
+
+        _charaSelect = FindObjectOfType<CharacterSelect>();
 
         // Make sure input is set up to the correct player
         SetPlayerNum(playerNum);
@@ -77,13 +80,18 @@ public class CSPlayerController : PlayerController {
         }
 
         // If we're first player or an ai and press select while in a team box
-        if(inputState.select.isJustPressed && inputState.playerID == 0 && team != -1) {
+        if(inputState.select.isJustPressed && team != -1) {
+            // Create AI Player
+            _charaSelect.ActivateAI(characterSelector);
+
             // Control AI player
-            characterSelector.ControlNextAI();
+            //characterSelector.ControlNextAI();
             underControl = false;
 
             // Set to invulnerable so they can't be messed with
             _isInvuln = true;
+
+            ChangeState(PLAYER_STATE.IDLE);
         }
 
         if (_physics.IsTouchingFloor && _onFallThrough && inputState.down.isJustPressed) {

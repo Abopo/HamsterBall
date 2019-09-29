@@ -2,45 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Rewired;
 
 public class CharacterSelect : MonoBehaviour {
     public GameObject pressStartText;
     public AISetupWindow aiSetupWindow;
     public GameSetupWindow gameSetupWindow;
+    public ExitMenu exitMenu;
 
     public TeamBox leftTeam;
     public TeamBox rightTeam;
 
-    int _numPlayers = 0;
-    int _numAI = 0;
+    public int numPlayers = 0;
+    public int numAI = 0;
     CharacterSelector[] _charaSelectors = new CharacterSelector[4];
     CSPlayerController[] _players;
 
+    Player _tempPlayer;
+    List<Player> _assignedPlayers = new List<Player>();
+    int _waitFrames;
+
     bool _isActive;
 
-    PlayerManager _playerManager;
     GameManager _gameManager;
-
-    public int NumPlayers {
-        get { return _numPlayers; }
-    }
-    public int NumAI {
-        get { return _numAI; }
-    }
 
     private void Awake() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.selectedBoard = BOARDS.NUM_STAGES;
-
-        _playerManager = _gameManager.GetComponent<PlayerManager>();
     }
     // Use this for initialization
     void Start () {
         _gameManager.prevMenu = MENU.VERSUS;
-        _numPlayers = _gameManager.numPlayers;
-        _numAI = _gameManager.numAI;
 
-        _playerManager.ClearAllPlayers();
+        _gameManager.playerManager.ClearAllPlayers();
 
         _players = FindObjectsOfType<CSPlayerController>();
         // Sort players by playerNum
@@ -81,6 +75,7 @@ public class CharacterSelect : MonoBehaviour {
             }
         }
 
+        /*
         // Setup and activate selectors that have controllers
         for (int i = 0; i < _numPlayers; ++i) {
             _charaSelectors[i].Activate(false);
@@ -98,11 +93,30 @@ public class CharacterSelect : MonoBehaviour {
         for (int i = _numPlayers+_numAI; i < 4; ++i) {
             _charaSelectors[i].Deactivate();
         }
+        */
     }
 
     // Update is called once per frame
     void Update () {
-        if (_isActive) {
+        if (_isActive && _waitFrames > 5) {
+            // If any player hits back while no characters are active
+            if (numPlayers == 0 && !_gameManager.demoMode) {
+                if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
+                    // Show menu asking if player really wants to go back
+                    exitMenu.Activate();
+                    Deactivate();
+                    return;
+                }
+            }
+            // If there's still space for a player
+            if (IsStillSpace()) {
+                // Look for player inputs
+                _tempPlayer = InputState.AnyButtonOnAnyControllerPressed();
+                if (_tempPlayer != null && !_assignedPlayers.Contains(_tempPlayer)) {
+                    // Somehow make sure a player is only assigned once?
+                    ActivateCharacter();
+                }
+            }
             if (pressStartText.activeSelf == true) {
                 // Look for input to start game
                 if (_gameManager.playerInput.GetButtonDown("Start")) {
@@ -112,12 +126,14 @@ public class CharacterSelect : MonoBehaviour {
             }
 
             UpdateUI();
+        } else {
+            _waitFrames++;
         }
     }
 
     public void OpenSetupMenu() {
         // If there are AI players, open the AI Setup Window
-        if (_numAI > 0) {
+        if (numAI > 0) {
             Deactivate();
             aiSetupWindow.Initialize();
         }
@@ -137,8 +153,31 @@ public class CharacterSelect : MonoBehaviour {
         }
     }
 
+    public void ActivateCharacter() {
+        // Activate character selector
+        _charaSelectors[numPlayers].Activate(_tempPlayer);
+
+        // Add player to list of assigned
+        _assignedPlayers.Add(_tempPlayer);
+
+        numPlayers++;
+
+        // Reset tempController to null
+        _tempPlayer = null;
+    }
+    public void ActivateAI(CharacterSelector activatingPlayer) {
+        // Activate the AI character selector
+        _charaSelectors[numPlayers].ActivateAsAI(activatingPlayer);
+
+        // Stop the activating player from receiving input
+        activatingPlayer.takeInput = false;
+
+        numAI++;
+    }
+
     public void Reactivate() {
         _isActive = true;
+        _waitFrames = 0;
 
         foreach (CharacterSelector charaSelector in _charaSelectors) {
             charaSelector.takeInput = true;
@@ -150,7 +189,7 @@ public class CharacterSelect : MonoBehaviour {
         }
 
         // Clear players from player manager
-        _playerManager.ClearAllPlayers();
+        _gameManager.playerManager.ClearAllPlayers();
     }
     void Deactivate() {
          _isActive = false;
@@ -164,7 +203,7 @@ public class CharacterSelect : MonoBehaviour {
 
         // Load the chosen characters to the player manager
         foreach (CharacterSelector charaSelector in _charaSelectors) {
-            if (charaSelector.gameObject.activeSelf) {
+            if (charaSelector.isActive) {
                 charaSelector.LoadCharacter();
             }
         }
@@ -194,7 +233,7 @@ public class CharacterSelect : MonoBehaviour {
 
     bool AllPlayersOnTeams() {
         // If any players are not on a team
-        for(int i = 0; i < NumPlayers+NumAI; i++) {
+        for(int i = 0; i < numPlayers+numAI; i++) {
             if(_players[i].team < 0) {
                 return false;
             }
@@ -209,7 +248,7 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     bool AllPlayersSelected() {
-        for (int i = 0; i < NumPlayers + NumAI; ++i) {
+        for (int i = 0; i < numPlayers + numAI; ++i) {
             // If there is a player that's not underControl yet
             if (!_players[i].underControl) {
                 return false;
@@ -217,6 +256,11 @@ public class CharacterSelect : MonoBehaviour {
         }
 
         return true;
+    }
+
+    public void RemovePlayer(Player player) {
+        _assignedPlayers.Remove(player);
+        _waitFrames = 0;
     }
 
     // Only used for networking
@@ -231,21 +275,29 @@ public class CharacterSelect : MonoBehaviour {
         // If no duplicates were found
 
         // Add it to the array
-        _charaSelectors[_numPlayers] = selector;
+        _charaSelectors[numPlayers] = selector;
 
-        _numPlayers++;
+        numPlayers++;
 
-        Debug.Log("Added player" + " Num players: " + _numPlayers);
+        Debug.Log("Added player" + " Num players: " + numPlayers);
     }
     public void RemoveSelector(int ownerId) {
         // Find the selector with the same owner
-        for (int i = 0; i < _numPlayers; ++i) {
+        for (int i = 0; i < numPlayers; ++i) {
             if (_charaSelectors[i].ownerId == ownerId) {
                 // Deactivate that selector
                 _charaSelectors[i].Deactivate();
-                _numPlayers--;
+                numPlayers--;
                 break;
             }
         }
+    }
+
+    public bool IsStillSpace() {
+        if(numPlayers + numAI < _gameManager.maxPlayers) {
+            return true;
+        }
+
+        return false;
     }
 }

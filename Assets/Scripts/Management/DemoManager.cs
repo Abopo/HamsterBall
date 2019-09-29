@@ -7,7 +7,7 @@ using Rewired;
 public class DemoManager : MonoBehaviour {
 
     string _curScene;
-    float _waitTime = 10f;
+    float _waitTime = 30f;
     float _waitTimer = 0f;
 
     GameManager _gameManager;

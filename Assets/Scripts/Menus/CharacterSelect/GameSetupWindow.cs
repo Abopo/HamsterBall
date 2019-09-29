@@ -93,7 +93,7 @@ public class GameSetupWindow : MonoBehaviour {
     void Update () {
         if (_gameManager.playerInput.GetButtonDown("Cancel") && !IsAnyOptionSelected()) {
             // If there's AI's
-            if (_gameManager.numAI > 0) {
+            if (_characterSelect.numAI > 0) {
                 // Go back to AI setup
                 aiSetupWindow.gameObject.SetActive(true);
                 gameObject.SetActive(false);

@@ -22,6 +22,7 @@ public class DemoModeToggle : MonoBehaviour {
 	}
 
     public void ToggleDemoMode() {
-        _gameManager.demoMode = theToggle.isOn;
+        _gameManager.SetDemoMode(theToggle.isOn);
+        //_gameManager.demoMode = theToggle.isOn;
     }
 }

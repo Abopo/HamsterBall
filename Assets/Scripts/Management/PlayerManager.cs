@@ -19,11 +19,19 @@ public class PlayerManager : MonoBehaviour {
 
     public int NumPlayers {
         get {
-            //if (backup) {
-            //    return _backupPlayers.Count;
-            //} else {
-                return _players.Count;
-            //}
+            return _players.Count;
+        }
+    }
+
+    public bool AreAI {
+        get {
+            foreach(PlayerInfo pI in _players) {
+                if(pI.isAI) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

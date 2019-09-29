@@ -130,4 +130,23 @@ public class InputState {
 
         return false;
     }
+
+    public static Player AnyButtonOnAnyControllerPressed() {
+        foreach (Player player in ReInput.players.AllPlayers) {
+            if (player.GetAnyButtonDown()) {
+                return player;
+            }
+        }
+
+        return null;
+    }
+    public static bool GetButtonOnAnyControllerPressed(string button) {
+        foreach(Player player in ReInput.players.AllPlayers) {
+            if(player.GetButtonDown(button)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

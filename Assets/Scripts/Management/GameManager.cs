@@ -26,8 +26,7 @@ public class GameManager : MonoBehaviour {
     public int conditionLimit; // the condition limit to achieve the goal i.e. time limit, throw limit, etc.
     public int scoreOverflow = 0; // this variable holds onto the player's score between stages with multiple boards
 
-    public int numPlayers;
-    public int numAI;
+    public int maxPlayers;
 
     // How many games each team has won
     public int leftTeamGames = 0;
@@ -67,7 +66,7 @@ public class GameManager : MonoBehaviour {
         set { _levelDoc = value; }
     }
 
-    public PlayerManager _playerManager;
+    public PlayerManager playerManager;
 
     public UnityEvent gameOverEvent;
 
@@ -106,7 +105,7 @@ public class GameManager : MonoBehaviour {
 
         SceneManager.sceneLoaded += SceneLoad;
 
-        _playerManager = GetComponent<PlayerManager>();
+        playerManager = GetComponent<PlayerManager>();
 
         Random.InitState(System.Environment.TickCount);
 
@@ -356,11 +355,11 @@ public class GameManager : MonoBehaviour {
         BubbleManager.ClearAllData();
 
         if(full) {
-            if (_playerManager == null) {
+            if (playerManager == null) {
                 // Must fully find game object for the script because the button stuff is dumb.
-                _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
+                playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
             }
-            _playerManager.ClearAllPlayers();
+            playerManager.ClearAllPlayers();
 
             ResetGames();
             prevPuzzles.Clear();
@@ -395,5 +394,15 @@ public class GameManager : MonoBehaviour {
         nextLevel = levels[i].name;
         prevPuzzles.Add(nextLevel);
         GetComponent<BoardLoader>().ReadBoardSetup("Puzzle Challenge/Forest/" + nextLevel);
+    }
+
+    public void SetDemoMode(bool on) {
+        if(on) {
+            GetComponentInChildren<DemoManager>().enabled = true;
+            demoMode = true;
+        } else {
+            GetComponentInChildren<DemoManager>().enabled = false;
+            demoMode = false;
+        }
     }
 }

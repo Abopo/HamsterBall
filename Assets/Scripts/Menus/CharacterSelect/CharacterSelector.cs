@@ -6,14 +6,16 @@ using Rewired;
 public class CharacterSelector : MonoBehaviour {
     public CharacterWindow charaWindow;
     public CharacterIcon curCharacterIcon;
-    public GameObject comText;
 
+    public bool isActive = false;
     public int playerNum = -1;
     public bool lockedIn = false;
     public bool isReady = false;
     public bool takeInput = true;
     public bool isAI = false;
     public int charaColor = 1;
+
+    SpriteRenderer[] _sprites;
 
     // Input
     Player _player;
@@ -37,7 +39,9 @@ public class CharacterSelector : MonoBehaviour {
         }
     }
 
+    GameManager _gameManager;
     PlayerManager _playerManager;
+    CharacterSelect _charaSelect;
     AudioSource _audioSource;
 
     // Networking stuff
@@ -55,9 +59,16 @@ public class CharacterSelector : MonoBehaviour {
     private void Awake() {
         _photonView = GetComponent<PhotonView>();
 
+        _gameManager = FindObjectOfType<GameManager>();
         _playerManager = FindObjectOfType<PlayerManager>();
+        _charaSelect = FindObjectOfType<CharacterSelect>();
         _audioSource = GetComponent<AudioSource>();
         _resources = FindObjectOfType<CharacterSelectResources>();
+
+        _sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach(SpriteRenderer sr in _sprites) {
+            sr.enabled = false;
+        }
 
         // If we have a playerNum already
         if (playerNum > -1) {
@@ -99,7 +110,7 @@ public class CharacterSelector : MonoBehaviour {
 
         // Get player number
         CharacterSelect characterSelect = FindObjectOfType<CharacterSelect>();
-        playerNum = characterSelect.NumPlayers;
+        playerNum = characterSelect.numPlayers;
 
         // Set color stuff based on playerNum
         GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum];
@@ -157,46 +168,79 @@ public class CharacterSelector : MonoBehaviour {
         //characterAnimator.gameObject.SetActive(true);
     }
 
-    public void Activate(bool ai) {
-        if(ai) {
-            isAI = true;
-            takeInput = false;
+    public void Activate(Player player) {
+        isActive = true;
 
-            _player = ReInput.players.GetPlayer(0);
-            charaWindow.playerController.SetInputPlayer(0);
-        } else {
-            _player = ReInput.players.GetPlayer(playerNum);
+        _player = player;
 
+        foreach (SpriteRenderer sr in _sprites) {
+            sr.enabled = true;
         }
 
-        gameObject.SetActive(true);
-        charaWindow.charaAnimator.gameObject.SetActive(true);
-        charaWindow.charaPortrait.enabled = true;
+        charaWindow.Activate(false, playerNum);
+    }
+
+    // For AI
+    public void ActivateAsAI(CharacterSelector pSelector) {
+        isActive = true;
+
+        isAI = true;
+
+        parentSelector = pSelector;
+        _player = ReInput.players.GetPlayer(pSelector.playerNum);
+        charaWindow.playerController.SetInputPlayer(pSelector.playerNum);
+
+        foreach (SpriteRenderer sr in _sprites) {
+            sr.enabled = true;
+        }
+
+        charaWindow.Activate(true, playerNum);
     }
 
     public void Activate(bool ai, bool local) {
+        isActive = true;
+
         if (ai) {
             isAI = true;
             takeInput = false;
 
             _player = ReInput.players.GetPlayer(0);
             charaWindow.playerController.SetInputPlayer(0);
+
+            _charaSelect.numAI++;
         } else {
             _player = ReInput.players.GetPlayer(playerNum);
         }
 
-        gameObject.SetActive(true);
-        charaWindow.charaAnimator.gameObject.SetActive(true);
-        charaWindow.charaPortrait.enabled = true;
+        foreach (SpriteRenderer sr in _sprites) {
+            sr.enabled = true;
+        }
+
+        charaWindow.Activate(ai, playerNum);
         isLocal = local;
     }
 
     public void Deactivate() {
-        gameObject.SetActive(false);
-        charaWindow.charaAnimator.gameObject.SetActive(false);
-        charaWindow.charaPortrait.enabled = false;
-    }
+        isActive = false;
 
+        foreach (SpriteRenderer sr in _sprites) {
+            sr.enabled = false;
+        }
+
+        // Make this player available to be used again
+        _charaSelect.RemovePlayer(_player);
+        _player = null;
+
+        _charaSelect.numPlayers--;
+        if (isAI) {
+            _charaSelect.numAI--;
+            // Give parent input back
+            parentSelector.takeInput = true;
+        }
+
+        charaWindow.Deactivate();
+    }
+    
     // Update is called once per frame
     void Update () {
         // This is an attempt to prevent input from overflowing to ai selectors when activating them
@@ -205,7 +249,7 @@ public class CharacterSelector : MonoBehaviour {
             return;
         }
 
-        if (isLocal && takeInput) {
+        if (_player != null && takeInput && isLocal) {
             CheckInput();
         }
     }
@@ -267,15 +311,9 @@ public class CharacterSelector : MonoBehaviour {
         if (_player.GetButtonDown("Cancel")) {
             if (lockedIn) {
                 Unlock();
-            } else if (isAI) {
-                // Revert input to parent
-                takeInput = false;
-                parentSelector.takeInput = true;
-                parentSelector.charaWindow.playerController.RegainControl();
-                aiIndex--;
             } else {
-                // Back out to local play menu
-                FindObjectOfType<GameManager>().LocalPlayButton();
+                // Deactivate
+                Deactivate();
             }
         }
     }
@@ -284,6 +322,11 @@ public class CharacterSelector : MonoBehaviour {
         lockedIn = true;
         //curCharacterIcon.Lock();
         charaWindow.colorArrows.SetActive(true);
+
+        // If the base color is taken, change to the right
+        if(_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
+            ChangeColorRight();
+        }
 
         charaWindow.pullDownWindow.Show();
 
@@ -394,21 +437,6 @@ public class CharacterSelector : MonoBehaviour {
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
 
-    public void ControlNextAI() {
-        // If first player or an ai
-        if ((playerNum == 0 || isAI) && aiList.Count > 0 && aiIndex < aiList.Count) {
-            // Gain control of next AI player
-            takeInput = false;
-            aiList[aiIndex].takeInput = true;
-            aiList[aiIndex].frameskip = true;
-            aiList[aiIndex].aiList = aiList;
-            aiList[aiIndex].parentSelector = this;
-            //aiList[aiIndex]._player = _player; // Use same player input as us
-            aiList[aiIndex].HideCOMText();
-            aiIndex++;
-        }
-    }
-
     public void LoadCharacter() {
         CharaInfo tempInfo = new CharaInfo();
         tempInfo.name = curCharacterIcon.charaName;
@@ -443,12 +471,5 @@ public class CharacterSelector : MonoBehaviour {
         charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
         //_audioSource.Play();
-    }
-
-    public void ShowCOMText() {
-        comText.SetActive(true);
-    }
-    public void HideCOMText() {
-        comText.SetActive(false);
     }
 }

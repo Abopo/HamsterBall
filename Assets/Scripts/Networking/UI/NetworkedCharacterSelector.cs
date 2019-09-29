@@ -5,8 +5,6 @@ using Photon;
 
 [RequireComponent(typeof(PhotonView))]
 public class NetworkedCharacterSelector : Photon.MonoBehaviour {
-    NetworkedCharacterSelect _characterSelect;
-
     CharacterSelector _selector;
 
     string _nickname;
@@ -18,6 +16,8 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     bool isReady;
 
     GameManager _gameManager;
+    NetworkedCharacterSelect _netCharaSelect;
+    CharacterSelect _charaSelect;
 
     private void Awake() {
         _selector = GetComponent<CharacterSelector>();
@@ -27,9 +27,10 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-        _characterSelect = FindObjectOfType<NetworkedCharacterSelect>();
         _gameManager = FindObjectOfType<GameManager>();
-        _gameManager.numPlayers++;
+        _netCharaSelect = FindObjectOfType<NetworkedCharacterSelect>();
+        _charaSelect = FindObjectOfType<CharacterSelect>();
+        _charaSelect.numPlayers++;
 
         _nickname = PhotonNetwork.playerName;
 
@@ -85,9 +86,9 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
         // If this character was owned by the disconnected player
         // TODO: maybe make this based on ownerID instead of nickname (it's possible for two players to have the same name?)
         if (otherPlayer.NickName == _nickname) {
-            _characterSelect.RemoveNetworkedCharacter(otherPlayer.ID);
+            _netCharaSelect.RemoveNetworkedCharacter(otherPlayer.ID);
         }
 
-        _gameManager.numPlayers--;
+        _charaSelect.numPlayers--;
     }
 }

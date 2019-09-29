@@ -16,8 +16,8 @@ public class SurvivalManager : MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
 
         // Adjust addLineTime based on the number of players in the game
-        _addLineTime = 60f - _gameManager.numPlayers * 10;
-        _addLineTime = 2f - _gameManager.numPlayers * 0.25f;
+        _addLineTime = 60f - _gameManager.playerManager.NumPlayers * 10;
+        _addLineTime = 2f - _gameManager.playerManager.NumPlayers * 0.25f;
 	}
 
     // Update is called once per frame

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PullDownWindow : MonoBehaviour {
     public GameObject changeText;
-    public GameObject comText;
 
     bool _isShowing = false;
     bool _isHiding = false;

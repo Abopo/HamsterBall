@@ -47,17 +47,9 @@ public class TeamBox : MonoBehaviour {
         if(_player1 == false || _player2 == false) {
             if(collision.tag == "Player") {
                 CSPlayerController player = collision.gameObject.GetComponent<CSPlayerController>();
+
                 if(player.team == -1) {
                     TakePlayer(player);
-
-                    // if this is the first player (or an AI) and they got on the team
-                    if ((player.playerNum == 0 || player.characterSelector.isAI) && player.team != -1) {
-                        // If there's an ai player available
-                        if (player.characterSelector.NextAI != null) {
-                            // Show it's com text
-                            player.characterSelector.NextAI.ShowCOMText();
-                        }
-                    }
                 }
             }
         }
@@ -70,15 +62,6 @@ public class TeamBox : MonoBehaviour {
             // If the leaving player was assigned to this team
             if (player.team == team) {
                 LosePlayer(player);
-
-                // if this is the first player (or an AI) and they got off the team
-                if ((player.playerNum == 0 || player.characterSelector.isAI) && player.team == -1) {
-                    // If there's an ai player available
-                    if (player.characterSelector.NextAI != null) {
-                        // Show it's com text
-                        player.characterSelector.NextAI.HideCOMText();
-                    }
-                }
             }
         }
     }

@@ -66,7 +66,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
             lpMenu.Activate();
         }
     }
-
+/*
     public void OnePlayer() {
         Debug.Log("One Player");
 
@@ -175,4 +175,5 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         _gameManager.CharacterSelectButton();
     }
 
+    */
 }

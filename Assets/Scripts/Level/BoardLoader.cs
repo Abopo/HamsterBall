@@ -256,7 +256,7 @@ public class BoardLoader : MonoBehaviour {
             playerManager.AddPlayer(aiPlayer);
 
             // Make sure the game manager knows there's an AI
-            _gameManager.numAI += 1;
+            //_gameManager.numAI += 1;
         }
     }
 

@@ -115,6 +115,7 @@ public class BubbleManager : MonoBehaviour {
 
     BubbleManager _enemyBubbleManager;
     GameManager _gameManager;
+    PlayerManager _playerManager;
     LevelManager _levelManager;
     AudioSource _audioSource;
     AudioClip _addLineClip;
@@ -1071,7 +1072,7 @@ public class BubbleManager : MonoBehaviour {
         //Debug.Log("Board has changed");
 
         // If we have AI
-        if (_gameManager.numAI > 0) {
+        if (_gameManager.playerManager.AreAI) {
             // Update important bubble information
             if (_checkbubbleDropPotentials != null) {
                 StopCoroutine(_checkbubbleDropPotentials);

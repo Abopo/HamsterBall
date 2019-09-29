@@ -220,7 +220,7 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaNames[(int)CHARACTERS.BOY] = "KADEN";
         _charaNames[(int)CHARACTERS.GIRL] = "QUINN";
         _charaNames[(int)CHARACTERS.ROOSTER] = "ROOBEN";
-        _charaNames[(int)CHARACTERS.ROOSTER] = "CARMELA";
+        _charaNames[(int)CHARACTERS.BAT] = "CARMELA";
         _charaNames[(int)CHARACTERS.SNAIL] = "DON";
         _charaNames[(int)CHARACTERS.LACKEY] = "CARL";
     }
