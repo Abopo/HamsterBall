@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 public class CSPlayerController : PlayerController {
     public Transform shiftLandingPos;
@@ -128,6 +129,9 @@ public class CSPlayerController : PlayerController {
 
     public void SetInputPlayer(int playerNum) {
         inputState.SetPlayerID(playerNum);
+    }
+    public void SetInputPlayer(Player player) {
+        inputState.SetPlayer(player);
     }
 
     public void RegainControl() {

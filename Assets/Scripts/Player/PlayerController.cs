@@ -275,6 +275,8 @@ public class PlayerController : Entity {
             _physics.MoveX(velocity.x * Time.deltaTime);
             _physics.MoveY(velocity.y * Time.deltaTime);
 
+            _justChangedState = false;
+
             return;
         }
 

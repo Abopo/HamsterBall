@@ -187,8 +187,8 @@ public class CharacterSelector : MonoBehaviour {
         isAI = true;
 
         parentSelector = pSelector;
-        _player = ReInput.players.GetPlayer(pSelector.playerNum);
-        charaWindow.playerController.SetInputPlayer(pSelector.playerNum);
+        _player = pSelector._player;
+        charaWindow.playerController.SetInputPlayer(pSelector._player);
 
         foreach (SpriteRenderer sr in _sprites) {
             sr.enabled = true;

@@ -63,6 +63,9 @@ public class InputState {
         playerID = iD;
         _player = ReInput.players.GetPlayer(playerID);
     }
+    public void SetPlayer(Player player) {
+        _player = player;
+    }
 
     public void Map() {
         _player.controllers.maps.SetMapsEnabled(false, "Gameplay");

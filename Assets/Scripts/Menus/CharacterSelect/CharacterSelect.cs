@@ -167,7 +167,7 @@ public class CharacterSelect : MonoBehaviour {
     }
     public void ActivateAI(CharacterSelector activatingPlayer) {
         // Activate the AI character selector
-        _charaSelectors[numPlayers].ActivateAsAI(activatingPlayer);
+        _charaSelectors[numPlayers+numAI].ActivateAsAI(activatingPlayer);
 
         // Stop the activating player from receiving input
         activatingPlayer.takeInput = false;

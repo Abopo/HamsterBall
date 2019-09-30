@@ -233,15 +233,18 @@ public class LevelManager : MonoBehaviour {
                 IncreaseRightTeamGames();
                 if (_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
                     // the whole set was a draw
-                    ActivateFinalResultsScreen(0);
+                    FindObjectOfType<GameEndSequence>().StartSequence(0);
+                    //ActivateFinalResultsScreen(0);
                 } else if (_gameManager.leftTeamGames >= 2) {
                     // Left team has won the set
                     // Activate final results screen
-                    ActivateFinalResultsScreen(-1);
+                    FindObjectOfType<GameEndSequence>().StartSequence(-1);
+                    //ActivateFinalResultsScreen(-1);
                 } else if (_gameManager.rightTeamGames >= 2) {
                     // Right team has won the set
                     // Activate final results screen
-                    ActivateFinalResultsScreen(1);
+                    FindObjectOfType<GameEndSequence>().StartSequence(1);
+                    //ActivateFinalResultsScreen(1);
                 } else {
                     // Set not done so activate continue screen
                     continueScreen.Activate(finalResult);
@@ -252,7 +255,8 @@ public class LevelManager : MonoBehaviour {
                     IncreaseLeftTeamGames();
                     if(_gameManager.leftTeamGames >= 2) {
                         // Left team has won the set
-                        ActivateFinalResultsScreen(-1);
+                        FindObjectOfType<GameEndSequence>().StartSequence(-1);
+                        //ActivateFinalResultsScreen(-1);
                     } else {
                         // Set still not won
                         // Activate Continue screen
@@ -264,7 +268,8 @@ public class LevelManager : MonoBehaviour {
                     if (_gameManager.rightTeamGames >= 2) {
                         // Right team has won the set
                         // Activate final results screen with right team winning
-                        ActivateFinalResultsScreen(1);
+                        FindObjectOfType<GameEndSequence>().StartSequence(1);
+                        //ActivateFinalResultsScreen(1);
                     } else {
                         // Set still not won
                         // Activate Continue screen
@@ -286,7 +291,7 @@ public class LevelManager : MonoBehaviour {
     }
 
     // result: -1 = left team wins, 0 = draw, 1 = right team wins
-    void ActivateFinalResultsScreen(int result) {
+    public void ActivateFinalResultsScreen(int result) {
         setOver = true;
 
         // If we're in a single player mode

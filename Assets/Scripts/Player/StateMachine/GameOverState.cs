@@ -5,12 +5,15 @@ using UnityEngine;
 // The player enters this state when the game has finished
 public class GameOverState : PlayerState {
     float sign;
+
+    bool _stopped;
     
     // Use this for initialization
     public override void Initialize(PlayerController playerIn) {
         base.Initialize(playerIn);
 
         _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
+        playerController.Animator.SetBool("WinLoop", false);
 
         // Hide held bubble if there is one
         if(playerController.heldBall != null) {
@@ -20,6 +23,10 @@ public class GameOverState : PlayerState {
 
     // Update is called once per frame
     public override void Update() {
+        if(_stopped) {
+            return;
+        }
+
         if (Mathf.Abs(playerController.velocity.x) > 0.5f) {
             sign = Mathf.Sign(playerController.velocity.x);
             playerController.velocity.x -= sign * (playerController.walkForce / 1.5f) * Time.deltaTime;
@@ -39,6 +46,8 @@ public class GameOverState : PlayerState {
             playerController.ApplyGravity();
 
             playerController.Physics.CheckBelow();
+        } else if(playerController.velocity.x == 0) {
+            _stopped = true;
         }
     }
 
