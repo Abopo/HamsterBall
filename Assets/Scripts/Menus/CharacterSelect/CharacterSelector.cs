@@ -172,6 +172,7 @@ public class CharacterSelector : MonoBehaviour {
         isActive = true;
 
         _player = player;
+        charaWindow.playerController.SetInputPlayer(_player);
 
         foreach (SpriteRenderer sr in _sprites) {
             sr.enabled = true;
@@ -227,17 +228,17 @@ public class CharacterSelector : MonoBehaviour {
             sr.enabled = false;
         }
 
-        // Make this player available to be used again
-        _charaSelect.RemovePlayer(_player);
-        _player = null;
-
-        _charaSelect.numPlayers--;
         if (isAI) {
             _charaSelect.numAI--;
-            // Give parent input back
-            parentSelector.takeInput = true;
+            // Give parent player input back
+            parentSelector.charaWindow.playerController.underControl = true;
+        } else {
+            _charaSelect.numPlayers--;
+            // Make this player available to be used again
+            _charaSelect.RemovePlayer(_player);
         }
 
+        _player = null;
         charaWindow.Deactivate();
     }
     
@@ -357,8 +358,10 @@ public class CharacterSelector : MonoBehaviour {
     }
     public void Unready() {
         isReady = false;
+        takeInput = true;
+
         charaWindow.colorArrows.SetActive(true);
-        
+
         // Free up that color
         _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = false;
     }
@@ -446,7 +449,7 @@ public class CharacterSelector : MonoBehaviour {
         if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SURVIVAL) {
             tempInfo.team = -1;
         }
-        _playerManager.AddPlayer(playerNum, isAI, tempInfo);
+        _playerManager.AddPlayer(_player.id, isAI, tempInfo);
     }
 
     public void SetIcon(CharaInfo charaInfo) {

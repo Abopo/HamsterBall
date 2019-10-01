@@ -119,6 +119,7 @@ public class CSPlayerController : PlayerController {
 
     public void EnterPullDownWindow() {
         underControl = false;
+        inPlayArea = false;
 
         // Reattach parent
         transform.SetParent(pullDownWindow.transform);

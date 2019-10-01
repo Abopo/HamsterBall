@@ -15,6 +15,10 @@ public class CharacterSelect : MonoBehaviour {
 
     public int numPlayers = 0;
     public int numAI = 0;
+    public int ActivePlayers {
+        get { return numPlayers + numAI; }
+    }
+
     CharacterSelector[] _charaSelectors = new CharacterSelector[4];
     CSPlayerController[] _players;
 
@@ -74,33 +78,13 @@ public class CharacterSelect : MonoBehaviour {
                 }
             }
         }
-
-        /*
-        // Setup and activate selectors that have controllers
-        for (int i = 0; i < _numPlayers; ++i) {
-            _charaSelectors[i].Activate(false);
-        }
-
-        // Do the same for AI
-        for (int i = _numPlayers; i < _numPlayers+_numAI; ++i) {
-            // Set ai to have same controller as Player 1
-            _charaSelectors[i].Activate(true);
-            // Add ai to player 1's list
-            _charaSelectors[0].aiList.Add(_charaSelectors[i]);
-        }
-
-        // Deactivate the other selectors
-        for (int i = _numPlayers+_numAI; i < 4; ++i) {
-            _charaSelectors[i].Deactivate();
-        }
-        */
     }
 
     // Update is called once per frame
     void Update () {
         if (_isActive && _waitFrames > 5) {
             // If any player hits back while no characters are active
-            if (numPlayers == 0 && !_gameManager.demoMode) {
+            if (ActivePlayers == 0 && !_gameManager.demoMode) {
                 if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
                     // Show menu asking if player really wants to go back
                     exitMenu.Activate();
@@ -155,7 +139,7 @@ public class CharacterSelect : MonoBehaviour {
 
     public void ActivateCharacter() {
         // Activate character selector
-        _charaSelectors[numPlayers].Activate(_tempPlayer);
+        _charaSelectors[ActivePlayers].Activate(_tempPlayer);
 
         // Add player to list of assigned
         _assignedPlayers.Add(_tempPlayer);
@@ -167,7 +151,7 @@ public class CharacterSelect : MonoBehaviour {
     }
     public void ActivateAI(CharacterSelector activatingPlayer) {
         // Activate the AI character selector
-        _charaSelectors[numPlayers+numAI].ActivateAsAI(activatingPlayer);
+        _charaSelectors[ActivePlayers].ActivateAsAI(activatingPlayer);
 
         // Stop the activating player from receiving input
         activatingPlayer.takeInput = false;
@@ -233,7 +217,7 @@ public class CharacterSelect : MonoBehaviour {
 
     bool AllPlayersOnTeams() {
         // If any players are not on a team
-        for(int i = 0; i < numPlayers+numAI; i++) {
+        for(int i = 0; i < ActivePlayers; i++) {
             if(_players[i].team < 0) {
                 return false;
             }
@@ -248,7 +232,7 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     bool AllPlayersSelected() {
-        for (int i = 0; i < numPlayers + numAI; ++i) {
+        for (int i = 0; i < ActivePlayers; ++i) {
             // If there is a player that's not underControl yet
             if (!_players[i].underControl) {
                 return false;
@@ -294,7 +278,7 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     public bool IsStillSpace() {
-        if(numPlayers + numAI < _gameManager.maxPlayers) {
+        if(ActivePlayers < _gameManager.maxPlayers) {
             return true;
         }
 

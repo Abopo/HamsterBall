@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Rewired;
 
 // Used to select the level in multiplayer
 public class HamsterWheel : MonoBehaviour {
     public float baseRotSpeed;
     public Animator hamster;
+    public SuperTextMesh stageDescription;
 
     float _curRotSpeed = 0;
     public float _desiredRotation;
@@ -39,6 +41,11 @@ public class HamsterWheel : MonoBehaviour {
         int type = Random.Range(0, 7);
         hamster.SetInteger("Type", type);
         hamster.SetInteger("State", 1);
+
+        _gameManager = FindObjectOfType<GameManager>();
+        _audioSource = GetComponent<AudioSource>();
+
+        _photonView = GetComponent<PhotonView>();
     }
     // Use this for initialization
     void Start() {
@@ -70,11 +77,6 @@ public class HamsterWheel : MonoBehaviour {
         _curRotSpeed = 0;
         _desiredRotation = transform.rotation.eulerAngles.z;
         _rotatingRight = true;
-
-        _gameManager = FindObjectOfType<GameManager>();
-        _audioSource = GetComponent<AudioSource>();
-
-        _photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -117,6 +119,10 @@ public class HamsterWheel : MonoBehaviour {
             RotateRight();
         }
 
+        if(_gameManager.playerInput.GetButtonDown("Submit")) {
+            // Load the selected stage
+            LoadSelectedMap();
+        }
         if (_gameManager.playerInput.GetButtonDown("Cancel")) {
             _audioSource.Play();
             LoadCharacterSelect();
@@ -146,6 +152,8 @@ public class HamsterWheel : MonoBehaviour {
 
         hamster.SetInteger("State", 1);
         FlipHamster(true);
+
+        stageDescription.text = "";
 
         if (_photonView != null && PhotonNetwork.connectedAndReady) {
             _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, false);
@@ -179,6 +187,8 @@ public class HamsterWheel : MonoBehaviour {
         hamster.SetInteger("State", 1);
         FlipHamster(false);
 
+        stageDescription.text = "";
+
         if (_photonView != null && PhotonNetwork.connectedAndReady) {
             _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, true);
         }
@@ -203,6 +213,7 @@ public class HamsterWheel : MonoBehaviour {
         if (!Rotating) {
             // Fully stop
             //hamster.SetInteger("State", 0);
+            stageDescription.text = _stageIcons[_index].stageDescription;
         }
 
         // Reset long idle timer
@@ -231,6 +242,7 @@ public class HamsterWheel : MonoBehaviour {
             //SceneManager.LoadScene("LoadingScreen");
             SceneManager.LoadScene(levelName);
         }
+
 		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuGameStart);
     }
 

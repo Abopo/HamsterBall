@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using Rewired;
 using Photon;
 using System.Collections;
 
@@ -231,7 +232,6 @@ public class PlayerController : Entity {
     public void SetPlayerNum(int pNum) {
         playerNum = pNum;
         inputState.SetPlayerID(playerNum);
-        //inputState.controllerNum = _playerManager.GetControllerNum(playerNum);
     }
 
     public void SetCharacterInfo(CharaInfo charaInfo) {

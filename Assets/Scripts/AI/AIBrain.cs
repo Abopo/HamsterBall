@@ -25,7 +25,7 @@ public class AIBrain : MonoBehaviour {
     List<AIAction> _actions = new List<AIAction>();
     public AIAction curAction;
 
-    int _difficulty = 3; // 0 - Easy, 1 - Medium, 2 - Hard, 3 - Expert
+    int _difficulty = 3; // Scale from 1 (easy) to 10 (difficult)
 
     float _decisionTime = 0.1f;
     float _decisionTimer = 0.0f;
@@ -41,7 +41,12 @@ public class AIBrain : MonoBehaviour {
 
     public int Difficulty {
         get { return _difficulty; }
-        set { _difficulty = value; }
+        set {
+            _difficulty = value;
+            if(_difficulty < 1) {
+                _difficulty = 1;
+            }
+        }
     }
 
     // Use this for initialization
@@ -58,22 +63,6 @@ public class AIBrain : MonoBehaviour {
 
     void SetupDifficultySettings() {
         _decisionTime = 0.5f - (0.045f * _difficulty);
-        /*
-        switch (_difficulty) {
-            case 0:
-                _decisionTime = 0.5f;
-                break;
-            case 1:
-                _decisionTime = 0.3f;
-                break;
-            case 2:
-                _decisionTime = 0.2f;
-                break;
-            case 3:
-                _decisionTime = 0.1f;
-                break;
-        }
-        */
     }
 
     void GetOpponents() {

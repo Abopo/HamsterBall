@@ -6,6 +6,7 @@ public class StageIcon : MonoBehaviour {
 
     public bool isLocked;
     public string stageName;
+    public string stageDescription;
 
     Vector3[] _startScale = new Vector3[3];
     bool _downScaled = false;

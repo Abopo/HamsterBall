@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ResultsScreen : MonoBehaviour {
-    public Text winningTeamText;
+    public SuperTextMesh winningTeamText;
     public Image winningTeamSprite;
     public MenuButton mainMenuButton;
 

@@ -374,6 +374,7 @@ public class BubbleManager : MonoBehaviour {
     void InitBubble(Bubble bubble, int Type) {
         //bubble.leftTeam = leftTeam;
         bubble.team = team;
+        bubble.HomeBubbleManager = this;
         bubble.Initialize((HAMSTER_TYPES)Type);
         bubble.locked = true;
     }

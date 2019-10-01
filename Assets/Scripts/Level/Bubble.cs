@@ -77,6 +77,7 @@ public class Bubble : MonoBehaviour {
 
     public BubbleManager HomeBubbleManager {
         get { return _homeBubbleManager; }
+        set { _homeBubbleManager = value; }
     }
 
     public bool Petrified {
@@ -98,6 +99,7 @@ public class Bubble : MonoBehaviour {
         _popAnimation.LoadPieces(inType);
 
         _gameManager = FindObjectOfType<GameManager>();
+        /*
         if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
         } else {
@@ -109,6 +111,7 @@ public class Bubble : MonoBehaviour {
         }
 
         _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
+        */
 
         _audioSource = GetComponent<AudioSource>();
         _popClip = Resources.Load<AudioClip>("Audio/SFX/Pop");
@@ -410,13 +413,11 @@ public class Bubble : MonoBehaviour {
             _playerController.heldBall = null;
         }
 
-        // If we hit a different board, make that one our bubbleManager
+        // Set our team and home bubble manager
         _homeBubbleManager = bubbleManager;
         team = _homeBubbleManager.team;
 
-        if (_homeBubbleManager.LastBubbleAdded != null) {
-            _homeBubbleManager.LastBubbleAdded.canCombo = true;
-        }
+        _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
 
         if (!PhotonNetwork.connectedAndReady) {
             _homeBubbleManager.AddBubble(this);
@@ -772,8 +773,8 @@ public class Bubble : MonoBehaviour {
             // If this bubble can combo, a local player threw the bubble, the bubble causing the drop was the last bubble thrown, and it was thrown by a different player
             if (canCombo && _homeBubbleManager.LastBubbleAdded.PlayerController.team == _homeBubbleManager.team && _homeBubbleManager.LastBubbleAdded != null &&
                 _homeBubbleManager.LastBubbleAdded.popped && _playerController != null && _homeBubbleManager.LastBubbleAdded.PlayerController != _playerController) {
-                // If a different team threw the last bubble
-                if (_homeBubbleManager.LastBubbleAdded.PlayerController.team != _playerController.team) {
+                // If this bubble was thrown by an opponent
+                if (_playerController.team != _homeBubbleManager.team) {
                     // Then it's a counter!
                     _homeBubbleManager.BubbleEffects.CounterDropEffect(transform.position);
                     _dropCombo = true;
@@ -850,7 +851,10 @@ public class Bubble : MonoBehaviour {
         */
         dropPotential = 0;
 
-        canCombo = false;
+        // If we aren't the last bubble added
+        if(this != _homeBubbleManager.LastBubbleAdded) {
+            canCombo = false;
+        }
 
         _boardChanged = true;
     }
