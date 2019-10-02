@@ -13,8 +13,8 @@ public class GameEndSequence : MonoBehaviour {
     public SuperTextMesh leftText;
     public SuperTextMesh rightText;
 
-    List<PlayerController> _leftTeam = new List<PlayerController>();
-    List<PlayerController> _rightTeam = new List<PlayerController>();
+    public List<PlayerController> _leftTeam = new List<PlayerController>();
+    public List<PlayerController> _rightTeam = new List<PlayerController>();
 
     int _gameResult;
     int _sequence = 0;
@@ -24,15 +24,17 @@ public class GameEndSequence : MonoBehaviour {
         // Make sure banners are above stage
         leftBanner.transform.position = new Vector3(leftBanner.transform.position.x, 22f, leftBanner.transform.position.z);
         rightBanner.transform.position = new Vector3(rightBanner.transform.position.x, 22f, rightBanner.transform.position.z);
+    }
 
+    void GetPlayers() {
         // Get players
         PlayerController[] _playerControllers = FindObjectsOfType<PlayerController>();
 
         // Sort players by team
-        foreach(PlayerController pC in _playerControllers) {
-            if(pC.team == 0) {
+        foreach (PlayerController pC in _playerControllers) {
+            if (pC.team == 0) {
                 _leftTeam.Add(pC);
-            } else if(pC.team == 1) {
+            } else if (pC.team == 1) {
                 _rightTeam.Add(pC);
             }
         }
@@ -45,6 +47,8 @@ public class GameEndSequence : MonoBehaviour {
 
     public void StartSequence(int winningTeam) {
         _gameResult = winningTeam;
+
+        GetPlayers();
 
         // Set the banner sprites and text
         switch(winningTeam) {
@@ -88,15 +92,6 @@ public class GameEndSequence : MonoBehaviour {
             tempShiftState.endGameShift = true;
             _rightTeam[0].ChangeState(PLAYER_STATE.SHIFT);
             tempShiftState.SetLandingPosition(new Vector3(playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
-
-            /*
-            _leftTeam[0].transform.position = new Vector3(-playerPos1.position.x, playerPos1.position.y, playerPos1.position.z);
-            _leftTeam[0].transform.localScale = new Vector3(2f, 2f, 2f);
-            _leftTeam[0].SpriteRenderer.sortingOrder = 25;
-            _rightTeam[0].transform.position = playerPos1.position;
-            _rightTeam[0].SpriteRenderer.sortingOrder = 25;
-            _rightTeam[0].transform.localScale = new Vector3(2f, 2f, 2f);
-            */
 
             _sequence++;
         }

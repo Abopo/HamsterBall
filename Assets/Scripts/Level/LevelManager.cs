@@ -157,12 +157,12 @@ public class LevelManager : MonoBehaviour {
 
     void IncreaseMarginMultiplier() {
         marginMultiplier += 0.5f;
-        if (marginMultiplier > 9) {
-            marginMultiplier = 9;
+        if (marginMultiplier > 5) {
+            marginMultiplier = 5;
         }
 
         marginMultiplierText.text = "x" + marginMultiplier.ToString();
-        marginMultiplierText.fontSize = 10 + 2 * Mathf.CeilToInt(marginMultiplier);
+        marginMultiplierText.fontSize = 9 + Mathf.CeilToInt(marginMultiplier);
         if (marginMultiplier == 1f) {
             marginMultiplierText.color = Color.black;
         } else if (marginMultiplier == 1.5f) {
@@ -175,11 +175,7 @@ public class LevelManager : MonoBehaviour {
             marginMultiplierText.color = Color.magenta;
         } else if (marginMultiplier == 3.5f) {
             marginMultiplierText.color = Color.yellow;
-        } else if (marginMultiplier == 4f) {
-            marginMultiplierText.color = Color.red;
-        } else if (marginMultiplier == 4.5f) {
-            marginMultiplierText.color = Color.red;
-        } else if (marginMultiplier == 5f) {
+        } else if (marginMultiplier >= 4f) {
             marginMultiplierText.color = Color.red;
         }
     }

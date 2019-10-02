@@ -100,8 +100,10 @@ public class ShiftState : PlayerState {
 
         // Save the current scale to return to at the end
         _oldScale = playerController.transform.localScale;
+
+        playerController.PlayerEffects.PlayShiftWind();
     }
-    
+
     // Update is called once per frame
     public override void Update() {
         _shiftTimer += _totalShiftTime * Time.deltaTime;

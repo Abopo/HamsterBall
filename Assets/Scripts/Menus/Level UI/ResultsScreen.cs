@@ -50,13 +50,19 @@ public class ResultsScreen : MonoBehaviour {
 
     public void SetWinningTeamText(int winTeam) {
         if(winTeam == -1) {
-            winningTeamText.text = "Left Team Wins";
+            if (winningTeamText != null) {
+                winningTeamText.text = "Left Team Wins";
+            }
             winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[5];
         } else if(winTeam == 1) {
-            winningTeamText.text = "Right Team Wins";
+            if (winningTeamText != null) {
+                winningTeamText.text = "Right Team Wins";
+            }
             winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[9];
         } else {
-            winningTeamText.text = "Draw";
+            if (winningTeamText != null) {
+                winningTeamText.text = "Draw";
+            }
             winningTeamText.gameObject.SetActive(true);
             winningTeamSprite.enabled = false;
         }

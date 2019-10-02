@@ -8,6 +8,8 @@ public class PlayerEffects : MonoBehaviour {
     PlayerController _playerController;
 
     // Particles
+    public ParticleSystem shiftWindParticles;
+
     ParticleSystem footstepParticles1;
     ParticleSystem jumpingParticles1;
     ParticleSystem landingParticles1;
@@ -37,8 +39,6 @@ public class PlayerEffects : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        // TODO: Change particles based on stage
-
         LoadEffects();
 	}
 
@@ -254,6 +254,10 @@ public class PlayerEffects : MonoBehaviour {
                 }
                 break;
         }
+    }
+
+    public void PlayShiftWind() {
+        PlayEffect(shiftWindParticles);
     }
 
     void PlayEffect(ParticleSystem particles) {

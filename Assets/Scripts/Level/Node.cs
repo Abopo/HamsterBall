@@ -28,7 +28,6 @@ public class Node : MonoBehaviour {
         }
     }
 
-
     void Awake() {
         adjBubbles = new Bubble[6];
     }

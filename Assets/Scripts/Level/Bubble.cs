@@ -8,6 +8,7 @@ public class Bubble : MonoBehaviour {
 	// Array of 6 adjacent bubbles.
 	// 0 - top left, increases clockwise.
 	public Bubble[] adjBubbles;
+    public Node[] adjNodes;
 
     public List<Bubble> matches;
     public int numMatches;
@@ -58,6 +59,7 @@ public class Bubble : MonoBehaviour {
 
     BubbleManager _homeBubbleManager;
     GameManager _gameManager;
+    Rigidbody2D _rigidbody;
 
     AudioSource _audioSource;
     AudioClip _popClip;
@@ -84,7 +86,9 @@ public class Bubble : MonoBehaviour {
         get { return _petrified; }
     }
 
-
+    private void Awake() {
+        _rigidbody = GetComponent<Rigidbody2D>();
+    }
     // Use this for initialization
     void Start () {
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
@@ -94,6 +98,7 @@ public class Bubble : MonoBehaviour {
 
     public void Initialize(HAMSTER_TYPES inType) {
 		adjBubbles = new Bubble[6];
+        adjNodes = new Node[6];
 		
         _popAnimation = GetComponent<BubblePopAnimation>();
         _popAnimation.LoadPieces(inType);
@@ -165,8 +170,6 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-		BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 
         if(_destroy && !_audioSource.isPlaying) {
             Destroy(gameObject);
@@ -202,7 +205,7 @@ public class Bubble : MonoBehaviour {
 
     private void LateUpdate() {
         if (locked) {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             checkedForMatches = false;
             checkedForAnchor = false;
             foundAnchor = false;
@@ -401,6 +404,7 @@ public class Bubble : MonoBehaviour {
     public void CollisionWithBoard(BubbleManager bubbleManager) {
         // Stop moving and sit in place.
         _velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         locked = true;
 
         Debug.Log("connect with board");
@@ -425,7 +429,7 @@ public class Bubble : MonoBehaviour {
             _homeBubbleManager.AddBubble(this);
             GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, node);
         }
-
+     
         // Loop through adjbubbles to see if we connected with a matching color
         bool sameType = false;
         foreach (Bubble bub in adjBubbles) {
@@ -856,7 +860,27 @@ public class Bubble : MonoBehaviour {
             canCombo = false;
         }
 
+        UpdateRigidbodyStatus();
+
+        BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
+        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
+
         _boardChanged = true;
+    }
+
+    void UpdateRigidbodyStatus() {
+        // We don't need to update rigidbodies on bubbles that are impossible to hit
+        // So If we have no open adj nodes set rigidbody to kinematic
+        foreach (Node node in adjNodes) {
+            if (node != null && node.bubble != null) {
+                // We have an open node so turn on rigidbody
+                _rigidbody.isKinematic = false;
+                return;
+            }
+        }
+
+        // We had no open nodes so sleep the rigidbody
+        _rigidbody.isKinematic = true;
     }
 
     // This function scans around the bubble to check whether or not it's possible to be hit by the player.

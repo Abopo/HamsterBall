@@ -1664,7 +1664,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224340106530931538}
   - component: {fileID: 222887225864754728}
-  - component: {fileID: 114867922232093354}
+  - component: {fileID: 7002913644078698864}
   m_Layer: 5
   m_Name: Victory Text
   m_TagString: Untagged
@@ -1699,7 +1699,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161154794614560}
   m_CullTransparentMesh: 0
---- !u!114 &114867922232093354
+--- !u!114 &7002913644078698864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1708,31 +1708,133 @@ MonoBehaviour:
   m_GameObject: {fileID: 1161154794614560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ffcfb6d0266347848bf69a03919f483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.6413793, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
+  showAppearanceFoldout: 1
+  showMaterialFoldout: 1
+  showPositionFoldout: 1
+  showTimingFoldout: 0
+  showFunctionalityFoldout: 0
+  showAudioFoldout: 0
+  showEventFoldout: 0
+  info: []
+  _text: 
+  drawText: 
+  hyphenedText: 
+  font: {fileID: 0}
+  color:
+    serializedVersion: 2
+    rgba: 4294967295
+  richText: 1
+  readDelay: 0
+  speedReadScale: 2
+  ignoreTimeScale: 1
+  disableAnimatedText: 0
+  drawAnimName: Appear
+  unreadDelay: 0.05
+  undrawOrder: 1
+  undrawAnimName: Appear
+  audioSource: {fileID: 0}
+  audioClips: []
+  stopPreviousSound: 1
+  pitchMode: 0
+  overridePitch: 1
+  minPitch: 0.9
+  maxPitch: 1.2
+  speedReadPitch: 0
+  perlinPitchMulti: 1
+  reading: 0
+  unreading: 0
+  size: 1
+  bestFitMulti: 1
+  quality: 64
+  filterMode: 1
+  maskMode: 0
+  style: 0
+  baseOffset: {x: 0, y: 0, z: 0}
+  relativeBaseOffset: 1
+  lineSpacing: 1
+  characterSpacing: 0
+  tabSize: 4
+  autoWrap: 12
+  uiWrap: 1
+  uiLimit: 1
+  breakText: 0
+  insertHyphens: 1
+  anchor: 0
+  alignment: 0
+  verticalLimit: 0
+  verticalLimitMode: 2
+  leftoverText: 
+  textMaterial: {fileID: 0}
+  textMesh: {fileID: 0}
+  rawTopLeftBounds: {x: 0, y: 0, z: 0}
+  rawBottomRightBounds: {x: 0, y: 0, z: 0}
+  rawBottomRightTextBounds: {x: 0, y: 0, z: 0}
+  topLeftBounds: {x: 0, y: 0, z: 0}
+  topRightBounds: {x: 0, y: 0, z: 0}
+  bottomLeftBounds: {x: 0, y: 0, z: 0}
+  bottomRightBounds: {x: 0, y: 0, z: 0}
+  centerBounds: {x: 0, y: 0, z: 0}
+  topLeftTextBounds: {x: 0, y: 0, z: 0}
+  topRightTextBounds: {x: 0, y: 0, z: 0}
+  bottomLeftTextBounds: {x: 0, y: 0, z: 0}
+  bottomRightTextBounds: {x: 0, y: 0, z: 0}
+  centerTextBounds: {x: 0, y: 0, z: 0}
+  finalTopLeftTextBounds: {x: 0, y: 0, z: 0}
+  finalTopRightTextBounds: {x: 0, y: 0, z: 0}
+  finalBottomLeftTextBounds: {x: 0, y: 0, z: 0}
+  finalBottomRightTextBounds: {x: 0, y: 0, z: 0}
+  finalCenterTextBounds: {x: 0, y: 0, z: 0}
+  unwrappedBottomRightTextBounds: {x: 0, y: 0, z: 0}
+  onCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 4cef79e3794c15e43956d875ccf465d8, type: 3}
-    m_FontSize: 16
-    m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 300
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: Right Team Wins
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onUndrawnEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onRebuildEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onPrintEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SuperTextMesh+CustomEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onVertexMod:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SuperTextMesh+VertexMod, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onPreParse:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SuperTextMesh+PreParse, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  debugMode: 0
+  totalReadTime: 0
+  totalUnreadTime: 0
+  currentReadTime: 0
+  autoRead: 1
+  rememberReadPosition: 1
+  autoQuality: 0
+  drawOrder: 0
+  bestFit: 0
+  latestNumber: -1
+  currentUnReadTime: 0
+  preParsedText: 
 --- !u!1 &1168936292159584
 GameObject:
   m_ObjectHideFlags: 0
@@ -4191,7 +4293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d0fc62ceb3d3d4c96bf4cb306bed51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winningTeamText: {fileID: 0}
+  winningTeamText: {fileID: 6416686460810979979}
   winningTeamSprite: {fileID: 114430300160145234}
   mainMenuButton: {fileID: 114887796754692724}
 --- !u!1 &1481123418756428
@@ -5217,7 +5319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d0fc62ceb3d3d4c96bf4cb306bed51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winningTeamText: {fileID: 0}
+  winningTeamText: {fileID: 7002913644078698864}
   winningTeamSprite: {fileID: 114198424875239332}
   mainMenuButton: {fileID: 114657681221207294}
 --- !u!1 &1652696247340136
@@ -5390,7 +5492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224365636465219196}
   - component: {fileID: 222311121933694928}
-  - component: {fileID: 114217639079450804}
+  - component: {fileID: 6416686460810979979}
   m_Layer: 5
   m_Name: Victory Text
   m_TagString: Untagged
@@ -5425,7 +5527,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1673661521679936}
   m_CullTransparentMesh: 0
---- !u!114 &114217639079450804
+--- !u!114 &6416686460810979979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5434,31 +5536,133 @@ MonoBehaviour:
   m_GameObject: {fileID: 1673661521679936}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ffcfb6d0266347848bf69a03919f483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.9705882, b: 0.16734283, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
+  showAppearanceFoldout: 1
+  showMaterialFoldout: 1
+  showPositionFoldout: 1
+  showTimingFoldout: 0
+  showFunctionalityFoldout: 0
+  showAudioFoldout: 0
+  showEventFoldout: 0
+  info: []
+  _text: 
+  drawText: 
+  hyphenedText: 
+  font: {fileID: 0}
+  color:
+    serializedVersion: 2
+    rgba: 4294967295
+  richText: 1
+  readDelay: 0
+  speedReadScale: 2
+  ignoreTimeScale: 1
+  disableAnimatedText: 0
+  drawAnimName: Appear
+  unreadDelay: 0.05
+  undrawOrder: 1
+  undrawAnimName: Appear
+  audioSource: {fileID: 0}
+  audioClips: []
+  stopPreviousSound: 1
+  pitchMode: 0
+  overridePitch: 1
+  minPitch: 0.9
+  maxPitch: 1.2
+  speedReadPitch: 0
+  perlinPitchMulti: 1
+  reading: 0
+  unreading: 0
+  size: 1
+  bestFitMulti: 1
+  quality: 64
+  filterMode: 1
+  maskMode: 0
+  style: 0
+  baseOffset: {x: 0, y: 0, z: 0}
+  relativeBaseOffset: 1
+  lineSpacing: 1
+  characterSpacing: 0
+  tabSize: 4
+  autoWrap: 12
+  uiWrap: 1
+  uiLimit: 1
+  breakText: 0
+  insertHyphens: 1
+  anchor: 0
+  alignment: 0
+  verticalLimit: 0
+  verticalLimitMode: 2
+  leftoverText: 
+  textMaterial: {fileID: 0}
+  textMesh: {fileID: 0}
+  rawTopLeftBounds: {x: 0, y: 0, z: 0}
+  rawBottomRightBounds: {x: 0, y: 0, z: 0}
+  rawBottomRightTextBounds: {x: 0, y: 0, z: 0}
+  topLeftBounds: {x: 0, y: 0, z: 0}
+  topRightBounds: {x: 0, y: 0, z: 0}
+  bottomLeftBounds: {x: 0, y: 0, z: 0}
+  bottomRightBounds: {x: 0, y: 0, z: 0}
+  centerBounds: {x: 0, y: 0, z: 0}
+  topLeftTextBounds: {x: 0, y: 0, z: 0}
+  topRightTextBounds: {x: 0, y: 0, z: 0}
+  bottomLeftTextBounds: {x: 0, y: 0, z: 0}
+  bottomRightTextBounds: {x: 0, y: 0, z: 0}
+  centerTextBounds: {x: 0, y: 0, z: 0}
+  finalTopLeftTextBounds: {x: 0, y: 0, z: 0}
+  finalTopRightTextBounds: {x: 0, y: 0, z: 0}
+  finalBottomLeftTextBounds: {x: 0, y: 0, z: 0}
+  finalBottomRightTextBounds: {x: 0, y: 0, z: 0}
+  finalCenterTextBounds: {x: 0, y: 0, z: 0}
+  unwrappedBottomRightTextBounds: {x: 0, y: 0, z: 0}
+  onCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 4cef79e3794c15e43956d875ccf465d8, type: 3}
-    m_FontSize: 20
-    m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 300
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: You did it!
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onUndrawnEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onRebuildEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onPrintEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SuperTextMesh+CustomEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onVertexMod:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SuperTextMesh+VertexMod, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onPreParse:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SuperTextMesh+PreParse, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  debugMode: 0
+  totalReadTime: 0
+  totalUnreadTime: 0
+  currentReadTime: 0
+  autoRead: 1
+  rememberReadPosition: 1
+  autoQuality: 0
+  drawOrder: 0
+  bestFit: 0
+  latestNumber: -1
+  currentUnReadTime: 0
+  preParsedText: 
 --- !u!1 &1675051012626312
 GameObject:
   m_ObjectHideFlags: 0
@@ -9057,16 +9261,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.7790607
       objectReference: {fileID: 0}
-    - target: {fileID: 1494455953111150183, guid: 446e406c20865e545b6eba99615da297,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 36.369995
-      objectReference: {fileID: 0}
-    - target: {fileID: 5026531572687140947, guid: 446e406c20865e545b6eba99615da297,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 8.039993
-      objectReference: {fileID: 0}
     - target: {fileID: 5370374357910456199, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -9083,6 +9277,16 @@ PrefabInstance:
       value: 5.6499996
       objectReference: {fileID: 0}
     - target: {fileID: 2539975966703377797, guid: 446e406c20865e545b6eba99615da297,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 36.369995
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026531572687140947, guid: 446e406c20865e545b6eba99615da297,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 8.039993
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494455953111150183, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 36.369995
@@ -9232,26 +9436,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.5696843
       objectReference: {fileID: 0}
-    - target: {fileID: 1494455953111150183, guid: 446e406c20865e545b6eba99615da297,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 170.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 1494455953111150183, guid: 446e406c20865e545b6eba99615da297,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 1.3699951
-      objectReference: {fileID: 0}
-    - target: {fileID: 5026531572687140947, guid: 446e406c20865e545b6eba99615da297,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -26.960007
-      objectReference: {fileID: 0}
-    - target: {fileID: 5026531572687140947, guid: 446e406c20865e545b6eba99615da297,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 216
-      objectReference: {fileID: 0}
     - target: {fileID: 5370374357910456199, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -9262,15 +9446,20 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 207
       objectReference: {fileID: 0}
+    - target: {fileID: 5511559930464200661, guid: 446e406c20865e545b6eba99615da297,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -170.63
+      objectReference: {fileID: 0}
     - target: {fileID: 5511559930643370247, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 216
       objectReference: {fileID: 0}
-    - target: {fileID: 5511559930464200661, guid: 446e406c20865e545b6eba99615da297,
+    - target: {fileID: 2950858501546029959, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -170.63
+      value: 170.63
       objectReference: {fileID: 0}
     - target: {fileID: 5511559931349094006, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
@@ -9302,10 +9491,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 1.3699951
       objectReference: {fileID: 0}
-    - target: {fileID: 2950858501546029959, guid: 446e406c20865e545b6eba99615da297,
+    - target: {fileID: 5026531572687140947, guid: 446e406c20865e545b6eba99615da297,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -26.960007
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026531572687140947, guid: 446e406c20865e545b6eba99615da297,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 216
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494455953111150183, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 170.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494455953111150183, guid: 446e406c20865e545b6eba99615da297,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.3699951
       objectReference: {fileID: 0}
     - target: {fileID: 2863599784232292869, guid: 446e406c20865e545b6eba99615da297,
         type: 3}
@@ -9467,15 +9671,15 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 94
       objectReference: {fileID: 0}
-    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -149.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
+    - target: {fileID: 5511559930643370247, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 288
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511559930464200661, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -228.2
       objectReference: {fileID: 0}
     - target: {fileID: 5511559931349094006, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}
@@ -9487,16 +9691,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 94
       objectReference: {fileID: 0}
-    - target: {fileID: 5511559930643370247, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 288
-      objectReference: {fileID: 0}
-    - target: {fileID: 5511559930464200661, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -228.2
-      objectReference: {fileID: 0}
     - target: {fileID: 5370374357910456199, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -9507,6 +9701,21 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 344
       objectReference: {fileID: 0}
+    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -149.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 288
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950858501546029959, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 228.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2539975966703377797, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -9516,11 +9725,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -103.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2950858501546029959, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 228.2
       objectReference: {fileID: 0}
     - target: {fileID: 1494455953111150183, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}

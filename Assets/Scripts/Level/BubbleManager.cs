@@ -537,6 +537,7 @@ public class BubbleManager : MonoBehaviour {
         if (node - _baseLineLength >= 0) {
             if (bubble != null) {
                 bubble.adjBubbles[0] = _bubbles[node - _baseLineLength]; // top left
+                bubble.adjNodes[0] = nodeList[node - _baseLineLength];
             } else {
                 nodeList[node].AdjBubbles[0] = _bubbles[node - _baseLineLength];
             }
@@ -546,6 +547,7 @@ public class BubbleManager : MonoBehaviour {
         if (node - (_baseLineLength - 1) >= 0) {
             if (bubble != null) {
                 bubble.adjBubbles[1] = _bubbles[node - (_baseLineLength - 1)]; // top right
+                bubble.adjNodes[1] = nodeList[node - (_baseLineLength - 1)]; // top right
             } else {
                 nodeList[node].AdjBubbles[1] = _bubbles[node - (_baseLineLength - 1)];
             }
@@ -555,6 +557,7 @@ public class BubbleManager : MonoBehaviour {
         if (node - 1 >= 0) {
             if (bubble != null) {
                 bubble.adjBubbles[5] = _bubbles[node - 1]; // middle left
+                bubble.adjNodes[5] = nodeList[node - 1]; // middle left
             } else {
                 nodeList[node].AdjBubbles[5] = _bubbles[node - 1];
             }
@@ -564,6 +567,7 @@ public class BubbleManager : MonoBehaviour {
         if (node + 1 < nodeList.Count) {
             if (bubble != null) {
                 bubble.adjBubbles[2] = _bubbles[node + 1]; // middle right
+                bubble.adjNodes[2] = nodeList[node + 1]; // middle right
             } else {
                 nodeList[node].AdjBubbles[2] = _bubbles[node + 1];
             }
@@ -573,6 +577,7 @@ public class BubbleManager : MonoBehaviour {
         if (node + (_baseLineLength - 1) < nodeList.Count) {
             if (bubble != null) {
                 bubble.adjBubbles[4] = _bubbles[node + (_baseLineLength - 1)]; // bottom left
+                bubble.adjNodes[4] = nodeList[node + (_baseLineLength - 1)]; // bottom left
             } else {
                 nodeList[node].AdjBubbles[4] = _bubbles[node + (_baseLineLength - 1)];
             }
@@ -582,6 +587,7 @@ public class BubbleManager : MonoBehaviour {
         if (node + _baseLineLength < nodeList.Count) {
             if (bubble != null) {
                 bubble.adjBubbles[3] = _bubbles[node + _baseLineLength]; // bottom right
+                bubble.adjNodes[3] = nodeList[node + _baseLineLength]; // bottom right
             } else {
                 nodeList[node].AdjBubbles[3] = _bubbles[node + _baseLineLength];
             }
