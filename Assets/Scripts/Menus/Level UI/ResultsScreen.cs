@@ -10,9 +10,11 @@ public class ResultsScreen : MonoBehaviour {
 
     MenuOption[] _menuOptions;
 
-    float winTime = 1f;
-    float winTimer = 0.0f;
+    float _winTime = 1f;
+    float _winTimer = 0.0f;
     bool _canInteract = false;
+
+    float _demoWaitTime = 5f;
 
     GameManager _gameManager;
     LevelManager _levelManager;
@@ -30,8 +32,8 @@ public class ResultsScreen : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        winTimer += Time.unscaledDeltaTime;
-        if(winTimer > winTime) {
+        _winTimer += Time.unscaledDeltaTime;
+        if(_winTimer > _winTime) {
             _canInteract = true;
 
             foreach (MenuOption mo in _menuOptions) {
@@ -45,6 +47,18 @@ public class ResultsScreen : MonoBehaviour {
         if (mainMenuButton != null && _gameManager.demoMode) {
             mainMenuButton.isReady = false;
             mainMenuButton.gameObject.SetActive(false);
+        }
+
+        // If we are in demo mode
+        if(_gameManager.demoMode && _winTimer >= _demoWaitTime) {
+            // If the whole set is over
+            if(_levelManager.setOver) {
+                // Start a new random com match
+                _gameManager.GetComponentInChildren<DemoManager>().StartComMatch();
+            } else {
+                // Continue to next game of the match
+                _levelManager.NextGame();
+            }
         }
     }
 
@@ -105,7 +119,7 @@ public class ResultsScreen : MonoBehaviour {
             }
         }
 
-        winTimer = 0f;
+        _winTimer = 0f;
         _canInteract = false;
     }
 

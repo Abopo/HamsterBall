@@ -10,6 +10,8 @@ public class DemoManager : MonoBehaviour {
     float _waitTime = 30f;
     float _waitTimer = 0f;
 
+    SuperTextMesh _controllerText;
+
     GameManager _gameManager;
     PlayerManager _playerManager;
 
@@ -17,12 +19,14 @@ public class DemoManager : MonoBehaviour {
         _gameManager = transform.parent.GetComponent<GameManager>();
         _playerManager = transform.parent.GetComponent<PlayerManager>();
 
+        _controllerText = GetComponentInChildren<SuperTextMesh>();
+
         SceneManager.sceneLoaded += OnSceneChange;
     }
 
     // Start is called before the first frame update
     void Start() {
-        
+        _controllerText.enabled = false;
     }
 
     // Update is called once per frame
@@ -31,6 +35,7 @@ public class DemoManager : MonoBehaviour {
             // If we're on the character select screen for too long (without any input)
             _waitTimer += Time.deltaTime;
             if(_waitTimer >= _waitTime) {
+                _waitTimer = 0f;
                 // Start up a random match with cpu's
                 StartComMatch();
             }
@@ -39,10 +44,20 @@ public class DemoManager : MonoBehaviour {
             if(AnyButtonPressed()) {
                 _waitTimer = 0f;
             }
+        // If we're in the versus scene
+        } else if(_curScene == "VersusMultiplayer") {
+            // And any button is pressed
+            if(AnyButtonPressed()) {
+                // Turn off the text
+                _controllerText.enabled = false;
+
+                // Return to the character select screen
+                _gameManager.CharacterSelectButton();
+            }
         }
     }
 
-    void StartComMatch() {
+    public void StartComMatch() {
         // Make two random com players
         PlayerInfo com1 = new PlayerInfo();
         com1.playerNum = 1;
@@ -60,10 +75,14 @@ public class DemoManager : MonoBehaviour {
         com2.team = 1;
         com2.isAI = true;
         com2.difficulty = Random.Range(3, 8);
-        
+
         // Add the players to the player manager
+        _playerManager.ClearAllPlayers();
         _playerManager.AddPlayer(com1);
         _playerManager.AddPlayer(com2);
+
+        // Show the text
+        _controllerText.enabled = true;
 
         // Load a random stage
         int board = Random.Range(0, 3);

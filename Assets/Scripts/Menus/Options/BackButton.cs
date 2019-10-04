@@ -44,9 +44,9 @@ public class BackButton : MenuButton {
 
     public void BackToMainMenu() {
         // Don't go back while in demo mode
-        if (!_gameManager.demoMode) {
+        //if (!_gameManager.demoMode) {
             _gameManager.MainMenuButton();
-        }
+        //}
     }
 
     public void BackToLocalPlay() {

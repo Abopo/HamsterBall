@@ -155,8 +155,8 @@ public class ThrowState : PlayerState {
             // Reset aim cooldown
             playerController.aimCooldownTimer = 0f;
 
-            // Return to idle state
-            playerController.ChangeState(PLAYER_STATE.IDLE);
+            // Return to fall state
+            playerController.ChangeState(PLAYER_STATE.FALL);
         }
 	}
 

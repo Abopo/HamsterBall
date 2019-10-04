@@ -9,7 +9,7 @@ public class Banner : MonoBehaviour {
     public SpriteRenderer end;
 
     bool _moving;
-    float _moveSpd = -8f;
+    float _moveSpd = -10f;
 
     Sprite[] _bannerSprites;
 
