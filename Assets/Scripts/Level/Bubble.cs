@@ -92,7 +92,7 @@ public class Bubble : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-		BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
+
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
@@ -170,6 +170,8 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
+        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
 
         if(_destroy && !_audioSource.isPlaying) {
             Destroy(gameObject);
@@ -740,7 +742,7 @@ public class Bubble : MonoBehaviour {
         	BallBreakEvent.setParameterValue("PoppedCount", 10);
         }
         Debug.Log("PopIndex " + _popIndex);
-
+		BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
         BallBreakEvent.start();
 		BallBreakEvent.release();
 
@@ -862,8 +864,7 @@ public class Bubble : MonoBehaviour {
 
         UpdateRigidbodyStatus();
 
-        BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
-        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
+
 
         _boardChanged = true;
     }

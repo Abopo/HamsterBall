@@ -33,7 +33,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _playerEffects = transform.parent.GetComponentInChildren<PlayerEffects>();
 
 
-		SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
+		
 		GrassFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.GrassPlayerFootstep);
 		WoodFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.WoodPlayerFootstep);
         //FMOD.Studio.EventInstance.getParameterValue("Surface", out _playerController.platformIndex, out test);
@@ -64,6 +64,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void NetSwingOn() {
         _bubbleState.Activate();
+		SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
 		SwingNetEvent.start();
 		SwingNetEvent.release();
 		//netSwingEmitter.Play();

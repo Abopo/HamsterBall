@@ -145,6 +145,7 @@ public class HamsterMeter : MonoBehaviour {
             LoseShield();
         }
 		SoundManager.mainAudio.HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
+		SoundManager.mainAudio.HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterFillBall);
         SoundManager.mainAudio.HamsterFillBallEvent.start();
 		SoundManager.mainAudio.HamsterFillBallEvent.release();
         _curStock += inc;

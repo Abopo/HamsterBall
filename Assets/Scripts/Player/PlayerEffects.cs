@@ -168,9 +168,9 @@ public class PlayerEffects : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        footstepEvent1.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
-        footstepEvent2.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
-        footstepEvent3.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        //footstepEvent1.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        //footstepEvent2.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        //footstepEvent3.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
     }
 
     public void PlayFootstep() {
@@ -186,6 +186,7 @@ public class PlayerEffects : MonoBehaviour {
                     PlayEffect(footstepParticles2);
                 }
                 footstepEvent2.start();
+                footstepEvent2.release();
                 break;
             case 2:
                 if (footstepParticles3 != null) {

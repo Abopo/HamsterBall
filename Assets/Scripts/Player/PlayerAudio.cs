@@ -19,9 +19,8 @@ public class PlayerAudio : MonoBehaviour {
     void Start () {
         _audioSource = GetComponent<AudioSource>();
         LoadSFX ();
-		PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
-		ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
-		PlayerLandEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerLand);
+		//PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
+		//PlayerLandEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerLand);
     }
 
     void LoadSFX() {
@@ -30,9 +29,9 @@ public class PlayerAudio : MonoBehaviour {
     }
 
     void OnEnable(){
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerJumpEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(ShiftEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerLandEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerJumpEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(ShiftEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerLandEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
     // Update is called once per frame
     void Update () {
@@ -42,12 +41,16 @@ public class PlayerAudio : MonoBehaviour {
 	}
 
     public void PlayJumpClip() {
+		PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
 		PlayerJumpEvent.start();
+		PlayerJumpEvent.release();
     }
 
 
     public void PlayShiftClip() {
+		ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
 		ShiftEvent.start();
+		ShiftEvent.release();
     }
 
     public void PlayShiftReadyClip() {

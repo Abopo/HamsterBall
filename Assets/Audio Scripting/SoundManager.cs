@@ -103,9 +103,9 @@ public class SoundManager : MonoBehaviour {
 
             DontDestroyOnLoad(gameObject);
 
-            HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(HamsterFillBall);
 
         }
+
 	}
 
 	//HAMSTER SQUEAK SOUNDS
