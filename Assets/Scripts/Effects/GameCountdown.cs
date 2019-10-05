@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class GameCountdown : MonoBehaviour {
     public bool started;
 
-    Text _displayText;
+    SuperTextMesh _displayText;
 
     float _minScale;
     float _maxScale;
@@ -23,7 +23,7 @@ public class GameCountdown : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
-        _displayText = transform.GetChild(0).GetComponent<Text>();
+        _displayText = transform.GetChild(0).GetComponent<SuperTextMesh>();
         _displayText.enabled = true;
         _displayText.text = "3";
 
@@ -69,7 +69,7 @@ public class GameCountdown : MonoBehaviour {
                     break;
                 case 3:
 					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDownGo);
-                    _displayText.text = "Scramble!";
+                    _displayText.text = "<c=rainbow><j=once>Scramble!";
                     _minScale = 3f;
                     GameStart();
                     break;

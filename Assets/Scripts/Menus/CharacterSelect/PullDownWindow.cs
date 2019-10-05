@@ -16,6 +16,8 @@ public class PullDownWindow : MonoBehaviour {
 	void Start () {
         // Make sure the window is up at the start
         transform.localPosition = new Vector3(transform.localPosition.x, _upYPos, transform.localPosition.z);
+
+        changeText.SetActive(false);
     }
 
     // Update is called once per frame

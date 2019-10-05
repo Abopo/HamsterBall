@@ -847,18 +847,10 @@ public class Bubble : MonoBehaviour {
 
     // Is called when the board is changed
     void BoardChanged() {
-        /*
-        if (CouldMaybeBeHit()) {
-            StartCoroutine(CheckDropPotential());
-            //CheckDropPotential();
-        } else {
-            dropPotential = 0;
-        }
-        */
         dropPotential = 0;
 
         // If we aren't the last bubble added
-        if(this != _homeBubbleManager.LastBubbleAdded) {
+        if(_homeBubbleManager != null && this != _homeBubbleManager.LastBubbleAdded) {
             canCombo = false;
         }
 
