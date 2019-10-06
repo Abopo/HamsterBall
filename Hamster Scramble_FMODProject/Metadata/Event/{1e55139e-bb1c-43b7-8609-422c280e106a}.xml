@@ -116,7 +116,7 @@
     </object>
     <object class="EventMixerMaster" id="{9b9ff2c6-058c-4cf4-8bc3-0a50b4a00883}">
         <property name="volume">
-            <value>-11</value>
+            <value>-10</value>
         </property>
         <relationship name="effectChain">
             <destination>{c597e7c2-0735-4ac3-be8f-884e042546b3}</destination>
@@ -142,13 +142,8 @@
             <destination>{12d2bb34-fea1-43b2-8789-56ab7e8a6895}</destination>
         </relationship>
         <relationship name="sounds">
-            <destination>{b2918e7b-5fbd-4b5a-adde-715392d02644}</destination>
             <destination>{03145547-6e5f-4900-b565-6df3fdc42fc3}</destination>
             <destination>{4b8d10f4-91bd-4b6b-83d8-2900ba1e5509}</destination>
-            <destination>{7170f3fd-7e6f-4670-9529-d421e9d02de3}</destination>
-        </relationship>
-        <relationship name="playPercentages">
-            <destination>{9f3e9e79-6769-4d1b-be3b-7a25c23ea82d}</destination>
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{8f0493c1-a4e8-4264-9565-efe8f59a4a70}">
@@ -317,11 +312,6 @@
             <destination>{41c2a825-875a-45d3-afbb-73373a3beb58}</destination>
         </relationship>
     </object>
-    <object class="SingleSound" id="{b2918e7b-5fbd-4b5a-adde-715392d02644}">
-        <relationship name="audioFile">
-            <destination>{ebae74df-4da2-4188-ae67-bdf52e514d30}</destination>
-        </relationship>
-    </object>
     <object class="SingleSound" id="{03145547-6e5f-4900-b565-6df3fdc42fc3}">
         <relationship name="audioFile">
             <destination>{a651080b-0389-4c44-969a-7392615fbf47}</destination>
@@ -330,19 +320,6 @@
     <object class="SingleSound" id="{4b8d10f4-91bd-4b6b-83d8-2900ba1e5509}">
         <relationship name="audioFile">
             <destination>{b7bb0e3b-d641-4928-98fa-0243109553ef}</destination>
-        </relationship>
-    </object>
-    <object class="SingleSound" id="{7170f3fd-7e6f-4670-9529-d421e9d02de3}">
-        <relationship name="audioFile">
-            <destination>{e649f9a7-e20d-4f28-818d-9c3d05efb5d7}</destination>
-        </relationship>
-    </object>
-    <object class="PlayPercentage" id="{9f3e9e79-6769-4d1b-be3b-7a25c23ea82d}">
-        <property name="percentage">
-            <value>0</value>
-        </property>
-        <relationship name="sound">
-            <destination>{b2918e7b-5fbd-4b5a-adde-715392d02644}</destination>
         </relationship>
     </object>
     <object class="MixerBusEffectChain" id="{408dcd50-9eda-4e7c-a9a9-9e324918ac80}">
@@ -364,8 +341,8 @@
     <object class="MixerBusEffectChain" id="{86768f98-a000-48ea-8255-f43cd75a7524}">
         <relationship name="effects">
             <destination>{caf6f99a-cf24-454b-aac6-6130c2894531}</destination>
-            <destination>{9e96b19a-a34e-414b-a5a5-a165e53b650b}</destination>
             <destination>{a635a3a3-7692-49b3-bcb4-38f4d6cb881e}</destination>
+            <destination>{9e96b19a-a34e-414b-a5a5-a165e53b650b}</destination>
             <destination>{9e51535e-b8ce-4e19-81dd-32643997fb5e}</destination>
         </relationship>
     </object>
@@ -554,11 +531,17 @@
         <property name="filterTypeA">
             <value>7</value>
         </property>
+        <property name="filterTypeB">
+            <value>9</value>
+        </property>
         <property name="filterTypeE">
             <value>8</value>
         </property>
         <property name="frequencyA">
-            <value>172.521454</value>
+            <value>158.799927</value>
+        </property>
+        <property name="frequencyB">
+            <value>98.6033401</value>
         </property>
         <property name="frequencyE">
             <value>2396.7063</value>
@@ -567,7 +550,10 @@
             <value>0.7961725</value>
         </property>
         <property name="gainA">
-            <value>6.72413731</value>
+            <value>3.62068892</value>
+        </property>
+        <property name="gainB">
+            <value>9.82758522</value>
         </property>
         <property name="gainE">
             <value>-9.82758713</value>
@@ -610,17 +596,6 @@
         </property>
     </object>
     <object class="MixerBusFader" id="{caf6f99a-cf24-454b-aac6-6130c2894531}"/>
-    <object class="CompressorEffect" id="{9e96b19a-a34e-414b-a5a5-a165e53b650b}">
-        <property name="threshold">
-            <value>-15.5</value>
-        </property>
-        <property name="ratio">
-            <value>3.0999999</value>
-        </property>
-        <property name="gain">
-            <value>18.5</value>
-        </property>
-    </object>
     <object class="MultibandEqEffect" id="{a635a3a3-7692-49b3-bcb4-38f4d6cb881e}">
         <property name="filterTypeA">
             <value>0</value>
@@ -628,17 +603,29 @@
         <property name="filterTypeC">
             <value>9</value>
         </property>
+        <property name="filterTypeD">
+            <value>9</value>
+        </property>
         <property name="filterTypeE">
             <value>8</value>
         </property>
         <property name="frequencyC">
-            <value>104.926758</value>
+            <value>102.775131</value>
+        </property>
+        <property name="frequencyD">
+            <value>1314.21655</value>
         </property>
         <property name="frequencyE">
             <value>2030.62256</value>
         </property>
+        <property name="qualityD">
+            <value>2.5999999</value>
+        </property>
         <property name="gainC">
-            <value>13.965519</value>
+            <value>10.3448257</value>
+        </property>
+        <property name="gainD">
+            <value>17.5862083</value>
         </property>
         <property name="gainE">
             <value>6.72413731</value>
@@ -646,6 +633,17 @@
         <relationship name="automators">
             <destination>{24b0b995-ec06-41fa-ac34-be873945bc01}</destination>
         </relationship>
+    </object>
+    <object class="CompressorEffect" id="{9e96b19a-a34e-414b-a5a5-a165e53b650b}">
+        <property name="threshold">
+            <value>-15</value>
+        </property>
+        <property name="ratio">
+            <value>3.0999999</value>
+        </property>
+        <property name="gain">
+            <value>18.5</value>
+        </property>
     </object>
     <object class="PitchShifterEffect" id="{9e51535e-b8ce-4e19-81dd-32643997fb5e}">
         <property name="pitch">
