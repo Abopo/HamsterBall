@@ -26,6 +26,10 @@ public class PlayerEffects : MonoBehaviour {
     ParticleSystem dashParticles3;
 
     // Sounds
+	public string footstepString1;
+	public string footstepString2;
+	public string footstepString3;
+
     public FMOD.Studio.EventInstance footstepEvent1;
     public FMOD.Studio.EventInstance footstepEvent2;
     public FMOD.Studio.EventInstance footstepEvent3;
@@ -73,9 +77,11 @@ public class PlayerEffects : MonoBehaviour {
             dashParticles1 = tempObject.GetComponent<ParticleSystem>();
             
             // Sounds
-            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.GrassPlayerFootstep);
+			footstepString1 = SoundManager.mainAudio.GrassPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-            footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.WoodPlayerFootstep);
+			footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+
+			footstepString2 = SoundManager.mainAudio.WoodPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
 
         // Mountain
@@ -99,9 +105,10 @@ public class PlayerEffects : MonoBehaviour {
             dashParticles1 = tempObject.GetComponent<ParticleSystem>();
             
             // Sounds
-            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowPlayerFootstep);
+			footstepString1 = SoundManager.mainAudio.SnowPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-            footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.IcePlayerFootstep);
+
+			footstepString2 = SoundManager.mainAudio.IcePlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
         // Beach
         } else if (_gameManager.selectedBoard == BOARDS.BEACH) {
@@ -139,11 +146,13 @@ public class PlayerEffects : MonoBehaviour {
             dashParticles3 = tempObject.GetComponent<ParticleSystem>();
 
             // Sounds
-            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.WoodPlayerFootstep);
+			footstepString1 = SoundManager.mainAudio.WoodPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-            footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.IcePlayerFootstep);
+
+			footstepString2 = SoundManager.mainAudio.IcePlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-            footstepEvent3 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowPlayerFootstep);
+
+			footstepString3 = SoundManager.mainAudio.SnowPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent3, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
         } else {
             footstepParticles1 = null;
@@ -159,18 +168,19 @@ public class PlayerEffects : MonoBehaviour {
             dashParticles2 = null;
             dashParticles3 = null;
 
-            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.GrassPlayerFootstep);
+			footstepString1 = SoundManager.mainAudio.GrassPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-            footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.WoodPlayerFootstep);
+
+			footstepString2 = SoundManager.mainAudio.WoodPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
         }
     }
 
     // Update is called once per frame
     void Update () {
-        //footstepEvent1.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
-        //footstepEvent2.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
-        //footstepEvent3.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        footstepEvent1.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        footstepEvent2.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        footstepEvent3.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
     }
 
     public void PlayFootstep() {
@@ -185,13 +195,14 @@ public class PlayerEffects : MonoBehaviour {
                 if (footstepParticles2 != null) {
                     PlayEffect(footstepParticles2);
                 }
+				footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
                 footstepEvent2.start();
-                footstepEvent2.release();
                 break;
             case 2:
                 if (footstepParticles3 != null) {
                     PlayEffect(footstepParticles3);
                 }
+				footstepEvent3 = FMODUnity.RuntimeManager.CreateInstance(footstepString3);
                 footstepEvent3.start();
                 break;
         }

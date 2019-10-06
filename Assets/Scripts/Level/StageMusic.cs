@@ -34,14 +34,14 @@ public class StageMusic : MonoBehaviour {
                 //SoundManager.mainAudio.ForestMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);
                 //SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
                 //SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 1f);
-                //SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                //SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 //SoundManager.mainAudio.ForestMusicEvent.start();
                 //SoundManager.mainAudio.ForestAmbienceEvent.start();
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
                 // Stop menu music
-                SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 _stageMusic.start();
                 _stageAmbience.start();
 
@@ -50,7 +50,7 @@ public class StageMusic : MonoBehaviour {
                 //SoundManager.mainAudio.MountainMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MountainMusic);
                 //SoundManager.mainAudio.SnowAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
                 //SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 1f);
-                //SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                //SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 //SoundManager.mainAudio.MountainMusicEvent.start();
                 //SoundManager.mainAudio.SnowAmbienceEvent.start();
 
@@ -58,7 +58,7 @@ public class StageMusic : MonoBehaviour {
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
                 // Stop menu music
-                SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 _stageMusic.start();
                 _stageAmbience.start();
 
@@ -67,7 +67,7 @@ public class StageMusic : MonoBehaviour {
                 //SoundManager.mainAudio.BeachAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
                 //SoundManager.mainAudio.BeachMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachMusic);
                 //SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);
-                //SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                //SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 //SoundManager.mainAudio.BeachMusicEvent.start();
                 //SoundManager.mainAudio.BeachAmbienceEvent.start();
 
@@ -75,7 +75,7 @@ public class StageMusic : MonoBehaviour {
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
                 // Stop menu music
-                SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 _stageMusic.start();
                 _stageAmbience.start();
 

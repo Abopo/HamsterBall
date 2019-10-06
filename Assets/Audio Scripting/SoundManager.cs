@@ -9,6 +9,9 @@ public class SoundManager : MonoBehaviour {
 
 	public string testSound = "event:/TestSound";
 
+	//Busses
+	public FMOD.Studio.Bus MasterBus;
+
 	//Hamster Sounds
 	public string HamsterConnect;
 	public string HamsterConnectSameColor;
@@ -71,26 +74,21 @@ public class SoundManager : MonoBehaviour {
 
 	//Other Sounds
 	public string Shift;
+	public string Petrify;
 
 	//Music
 	public string MusicMain;
 	public FMOD.Studio.EventInstance MusicMainEvent;
-
 	public string HappyDaysMusic;
 	public FMOD.Studio.EventInstance HappyDaysMusicEvent;
-
 	public string VillageMusic;
 	public FMOD.Studio.EventInstance VillageMusicEvent;
-
 	public string ForestMusic;
 	public FMOD.Studio.EventInstance ForestMusicEvent;
-
 	public string BeachMusic;
 	public FMOD.Studio.EventInstance BeachMusicEvent;
-
 	public string MountainMusic;
 	public FMOD.Studio.EventInstance MountainMusicEvent;
-
 	//public FMOD.Studio.EventInstance ThrowAngleEvent;
 	public FMOD.Studio.EventInstance HamsterFillBallEvent;
 	//Generic Player Sounds EventInstance
@@ -100,10 +98,7 @@ public class SoundManager : MonoBehaviour {
             DestroyImmediate(this);
         } else {
             mainAudio = this;
-
             DontDestroyOnLoad(gameObject);
-
-
         }
 
 	}
@@ -130,9 +125,9 @@ public class SoundManager : MonoBehaviour {
 	//HamsterTalkLowEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
 
-
 	void Footstep (){
 		FMODUnity.RuntimeManager.PlayOneShot("event:/SingleFootstepEvent");
+
 	}
 	//SoundManager.mainAudio.Footstep()
 	//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);

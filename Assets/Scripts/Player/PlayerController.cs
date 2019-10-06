@@ -323,6 +323,12 @@ public class PlayerController : Entity {
             attackObj.gameObject.SetActive(false);
         }
 
+		if(Input.GetKeyDown(KeyCode.Y))
+		{
+			Debug.Log("Stop All Events");
+			//SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+		}
+
 		//_playerAnimationTriggers.PlayerFootstepEvent.setParameterValue("Surface", platformIndex);
 	}
 

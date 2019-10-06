@@ -75,6 +75,10 @@ public class LevelManager : MonoBehaviour {
     void LoadStagePrefab() {
         string prefabPath = "Prefabs/Level/Boards/Multiplayer/";
 
+		Debug.Log("Stop all events on Scene Switch");
+        SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+        SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
         switch (board) {
             case BOARDS.FOREST:
                 prefabPath += "ForestBoard";
@@ -370,22 +374,27 @@ public class LevelManager : MonoBehaviour {
 
     void OnSceneExit(Scene scene) {
         // Stop looping sounds here
-        SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.ForestMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.ForestAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.MountainMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.SnowAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.BeachMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.BeachAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        Debug.Log("Stop all events on Scene Exit");
+		SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+        SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
-		SoundManager.mainAudio.MusicMainEvent.release();
+        //SoundManager.mainAudio.MusicMainEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SoundManager.mainAudio.ForestMusicEvent.release();
-		SoundManager.mainAudio.ForestAmbienceEvent.release();
-		SoundManager.mainAudio.MountainMusicEvent.release();
-		SoundManager.mainAudio.SnowAmbienceEvent.release();
-		SoundManager.mainAudio.BeachMusicEvent.release();
-		SoundManager.mainAudio.BeachAmbienceEvent.release();
+        //SoundManager.mainAudio.ForestMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //SoundManager.mainAudio.ForestAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //SoundManager.mainAudio.MountainMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //SoundManager.mainAudio.SnowAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //SoundManager.mainAudio.BeachMusicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //SoundManager.mainAudio.BeachAmbienceEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+		//SoundManager.mainAudio.MusicMainEvent.release();
+        //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //SoundManager.mainAudio.ForestMusicEvent.release();
+		//SoundManager.mainAudio.ForestAmbienceEvent.release();
+		//SoundManager.mainAudio.MountainMusicEvent.release();
+		//SoundManager.mainAudio.SnowAmbienceEvent.release();
+		//SoundManager.mainAudio.BeachMusicEvent.release();
+		//SoundManager.mainAudio.BeachAmbienceEvent.release();
+	
     }
 }
