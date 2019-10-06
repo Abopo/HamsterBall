@@ -50,7 +50,7 @@ public class HitState : PlayerState {
 
     void DropHamster() {
         GameObject hamsterGO = GameObject.Instantiate(_hamsterObj, playerController.heldBall.transform.position, Quaternion.identity) as GameObject;
-        hamsterGO.transform.position = new Vector3(hamsterGO.transform.position.x, hamsterGO.transform.position.y, -0.5f);
+        hamsterGO.transform.position = new Vector3(hamsterGO.transform.position.x, hamsterGO.transform.position.y, 0.5f);
         Hamster hamster = hamsterGO.GetComponent<Hamster>();
         // Set the correct team and parent spawner
         if (playerController.shifted) {

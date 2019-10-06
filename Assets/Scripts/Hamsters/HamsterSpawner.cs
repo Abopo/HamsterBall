@@ -87,7 +87,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
 
         Transform spawnPoint = transform.GetChild(0);
-        _spawnPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z);
+        _spawnPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y, 0.5f);
 
         _nextHamsterType = -1;
         SetupSpecialTypes();

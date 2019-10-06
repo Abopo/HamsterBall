@@ -261,6 +261,7 @@ public class Hamster : Entity {
             }
         }
 
+        /*
         if ((other.tag == "PipeCornerLeft" || other.tag == "PipeCornerRight") && other.name != "Blocker") {
             _stuckTimer += Time.deltaTime;
             if (_stuckTimer >= _stuckTime) {
@@ -277,6 +278,7 @@ public class Hamster : Entity {
                 _stuckTimer = 0f;
             }
         }
+        */
     }
 
     void OnTriggerExit2D(Collider2D other) {
