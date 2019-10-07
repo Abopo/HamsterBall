@@ -115,7 +115,7 @@ public class CharacterSelectResources : MonoBehaviour {
         bat1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat1);
         CharaSelectInfo bat2 = new CharaSelectInfo();
-        bat2.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat1") as RuntimeAnimatorController;
+        bat2.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat2") as RuntimeAnimatorController;
         bat2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat2);
         CharaSelectInfo bat3 = new CharaSelectInfo();

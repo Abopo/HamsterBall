@@ -86,11 +86,13 @@ public class GameEndSequence : MonoBehaviour {
             tempShiftState = (ShiftState)_leftTeam[0].GetPlayerState(PLAYER_STATE.SHIFT);
             tempShiftState.endGameShift = true;
             _leftTeam[0].ChangeState(PLAYER_STATE.SHIFT);
+            _leftTeam[0].Animator.SetBool("Won Game", _gameResult == -1 || _gameResult == 0);
             tempShiftState.SetLandingPosition(new Vector3(-playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
 
             tempShiftState = (ShiftState)_rightTeam[0].GetPlayerState(PLAYER_STATE.SHIFT);
             tempShiftState.endGameShift = true;
             _rightTeam[0].ChangeState(PLAYER_STATE.SHIFT);
+            _rightTeam[0].Animator.SetBool("Won Game", _gameResult == 1 || _gameResult == 0);
             tempShiftState.SetLandingPosition(new Vector3(playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
 
             _sequence++;
@@ -104,6 +106,7 @@ public class GameEndSequence : MonoBehaviour {
                 tempShiftState = (ShiftState)_leftTeam[1].GetPlayerState(PLAYER_STATE.SHIFT);
                 tempShiftState.endGameShift = true;
                 _leftTeam[1].ChangeState(PLAYER_STATE.SHIFT);
+                _leftTeam[1].Animator.SetBool("Won Game", _gameResult == -1 || _gameResult == 0);
                 tempShiftState.SetLandingPosition(new Vector3(-playerPos2.position.x, playerPos2.position.y, playerPos2.position.z));
 
                 //_leftTeam[1].transform.position = new Vector3(-playerPos2.position.x, playerPos2.position.y, playerPos2.position.z);
@@ -114,6 +117,7 @@ public class GameEndSequence : MonoBehaviour {
                 tempShiftState = (ShiftState)_rightTeam[1].GetPlayerState(PLAYER_STATE.SHIFT);
                 tempShiftState.endGameShift = true;
                 _rightTeam[1].ChangeState(PLAYER_STATE.SHIFT);
+                _rightTeam[1].Animator.SetBool("Won Game", _gameResult == 1 || _gameResult == 0);
                 tempShiftState.SetLandingPosition(new Vector3(playerPos2.position.x, playerPos2.position.y, playerPos2.position.z));
                 
                 //_rightTeam[1].transform.position = playerPos2.position;
