@@ -78,6 +78,7 @@ public class LevelManager : MonoBehaviour {
 		Debug.Log("Stop all events on Scene Switch");
         SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
         SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+		//Bubble.MusicVolume = Mathf.Lerp(Bubble.MusicVolume, 1f, Time.deltaTime = 5f);
 
         switch (board) {
             case BOARDS.FOREST:

@@ -35,8 +35,12 @@ public class HamsterMeter : MonoBehaviour {
     BubbleManager _bubbleManager;
     AudioSource _audioSource;
 
+	public FMOD.Studio.EventInstance HamsterFillBallEvent;
+
     private void Awake() {
         _audioSource = GetComponent<AudioSource>();
+
+		
     }
     // Use this for initialization
     void Start() {
@@ -144,12 +148,14 @@ public class HamsterMeter : MonoBehaviour {
             //_nextTallyIndex -= 1;
             LoseShield();
         }
-		SoundManager.mainAudio.HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
-		SoundManager.mainAudio.HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterFillBall);
-        SoundManager.mainAudio.HamsterFillBallEvent.start();
-		SoundManager.mainAudio.HamsterFillBallEvent.release();
+		
+		Debug.Log(_curStock);
+		HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterFillBall);
+		HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
+       	HamsterFillBallEvent.start();
+		HamsterFillBallEvent.release();
         _curStock += inc;
-
+		
         // If we've filled the entire meter
         if (_curStock >= _meterSize) {
             while (_curStock >= _meterSize) {

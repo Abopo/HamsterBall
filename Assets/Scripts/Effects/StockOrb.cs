@@ -19,6 +19,9 @@ public class StockOrb : MonoBehaviour {
     SpriteRenderer _spriteRenderer;
     TrailRenderer _trailRenderer;
 
+
+	public FMOD.Studio.EventInstance HamsterOrbCreateEvent;
+	//public FMOD.Studio.EventInstance HamsterTravelEvent;
     //public bool HamsterTravelStart = false;
 	//public FMOD.Studio.EventInstance HamsterTravelEvent;
 
@@ -29,6 +32,7 @@ public class StockOrb : MonoBehaviour {
        
 
 		//HamsterTravelEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTravel);
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(HamsterOrbCreateEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
 		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(HamsterTravelEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
 
 	}
@@ -39,11 +43,18 @@ public class StockOrb : MonoBehaviour {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _trailRenderer = GetComponent<TrailRenderer>();
 
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterOrbCreate);
+
+		HamsterOrbCreateEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterOrbCreate);
+		HamsterOrbCreateEvent.start();
+		HamsterOrbCreateEvent.release();
+		//HamsterTravelEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTravel);
     }
 
     public void Launch(Transform target, int type)
     {
+		//HamsterTravelEvent.start();
+		//HamsterTravelEvent.release();
+
         targetTransform = target;
 
         // Set colors based on type
@@ -97,6 +108,10 @@ public class StockOrb : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		HamsterOrbCreateEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+		//HamsterTravelEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+
         // Don't update if the game is over
         if (_gameManager.gameIsOver) {
             return;

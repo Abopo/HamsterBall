@@ -90,7 +90,7 @@ public class SoundManager : MonoBehaviour {
 	public string MountainMusic;
 	public FMOD.Studio.EventInstance MountainMusicEvent;
 	//public FMOD.Studio.EventInstance ThrowAngleEvent;
-	public FMOD.Studio.EventInstance HamsterFillBallEvent;
+	//public FMOD.Studio.EventInstance HamsterFillBallEvent;
 	//Generic Player Sounds EventInstance
 
 	void Awake () {

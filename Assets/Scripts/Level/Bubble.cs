@@ -70,7 +70,8 @@ public class Bubble : MonoBehaviour {
     bool _boardChanged = false;
 
 	public FMOD.Studio.EventInstance BubbleDropEvent;
-		
+	public FMOD.Studio.EventInstance PetrifyEvent;
+
     PlayerController _playerController;
     public PlayerController PlayerController {
         get { return _playerController; }
@@ -194,6 +195,7 @@ public class Bubble : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.U)) {
             BoardChanged();
         }
+
 	}
 
     private void FixedUpdate() {
@@ -991,6 +993,10 @@ public class Bubble : MonoBehaviour {
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
 
         Debug.Log("Petrify");
+
+		PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Petrify);
+		PetrifyEvent.start();
+		//PetrifyEvent.release();
 
         yield return new WaitForSeconds(0.2f);
 
