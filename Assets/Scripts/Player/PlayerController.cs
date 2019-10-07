@@ -249,7 +249,7 @@ public class PlayerController : Entity {
                 path += "Rooster/Animation Objects/Rooster" + _charaInfo.color;
                 break;
             case CHARACTERS.BAT:
-                path += "Bat/Animation Objects/Bat1";
+                path += "Bat/Animation Objects/Bat" + _charaInfo.color;
                 break;
             case CHARACTERS.SNAIL:
                 path += "Snail/Animation Objects/Snail" + charaInfo.color;

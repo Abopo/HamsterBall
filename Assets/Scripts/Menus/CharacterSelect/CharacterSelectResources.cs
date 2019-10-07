@@ -119,11 +119,11 @@ public class CharacterSelectResources : MonoBehaviour {
         bat2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat2);
         CharaSelectInfo bat3 = new CharaSelectInfo();
-        bat3.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat1") as RuntimeAnimatorController;
+        bat3.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat3") as RuntimeAnimatorController;
         bat3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat3);
         CharaSelectInfo bat4 = new CharaSelectInfo();
-        bat4.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat1") as RuntimeAnimatorController;
+        bat4.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat4") as RuntimeAnimatorController;
         bat4.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat4);
 
