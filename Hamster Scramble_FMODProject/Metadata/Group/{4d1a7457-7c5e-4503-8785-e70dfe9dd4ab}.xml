@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="MixerGroup" id="{4d1a7457-7c5e-4503-8785-e70dfe9dd4ab}">
+        <property name="name">
+            <value>BallFillOverRide</value>
+        </property>
+        <relationship name="effectChain">
+            <destination>{86efc27e-754e-41ec-9d39-e163da47aacc}</destination>
+        </relationship>
+        <relationship name="panner">
+            <destination>{a5340da3-d28a-446e-8a1a-e0148435a19b}</destination>
+        </relationship>
+        <relationship name="output">
+            <destination>{823de6c4-e6e6-4c53-afef-2e535be01a91}</destination>
+        </relationship>
+    </object>
+    <object class="MixerBusEffectChain" id="{86efc27e-754e-41ec-9d39-e163da47aacc}">
+        <relationship name="effects">
+            <destination>{98f79fc2-acd5-48d0-849a-483ea5ef9d4d}</destination>
+        </relationship>
+    </object>
+    <object class="MixerBusPanner" id="{a5340da3-d28a-446e-8a1a-e0148435a19b}"/>
+    <object class="MixerBusFader" id="{98f79fc2-acd5-48d0-849a-483ea5ef9d4d}"/>
+</objects>
