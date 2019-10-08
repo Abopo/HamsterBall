@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour {
 
     public GameObject optionsMenu;
     public GameObject pauseMenu;
+    public Text aimAssist;
 
     bool _isActive;
     bool _justActivated;
@@ -74,6 +75,8 @@ public class PauseMenu : MonoBehaviour {
             option.SetPlayer(playerID);
         }
 
+        SetAimAssistText();
+
         pauseMenu.SetActive(true);
 
         // Pause the game
@@ -98,6 +101,19 @@ public class PauseMenu : MonoBehaviour {
 
         // Disable options menu
         optionsMenu.SetActive(false);
+    }
+
+    public void AimAssistButton() {
+        _gameManager.aimAssist = !_gameManager.aimAssist;
+        PlayerController[] players = FindObjectsOfType<PlayerController>();
+        foreach(PlayerController pC in players) {
+            pC.aimAssist = _gameManager.aimAssist;
+        }
+        SetAimAssistText();
+    }
+
+    void SetAimAssistText() {
+        aimAssist.text = "Aim Assist: " + (_gameManager.aimAssist ? "ON" : "OFF");
     }
 
     public void ReturnToPreviousScene() {

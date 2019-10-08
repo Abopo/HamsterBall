@@ -6,6 +6,8 @@ using Rewired;
 
 public class DemoManager : MonoBehaviour {
 
+    bool _comMatch;
+
     string _curScene;
     float _waitTime = 30f;
     float _waitTimer = 0f;
@@ -26,6 +28,7 @@ public class DemoManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        _comMatch = false;
         _controllerText.enabled = false;
     }
 
@@ -45,9 +48,11 @@ public class DemoManager : MonoBehaviour {
                 _waitTimer = 0f;
             }
         // If we're in the versus scene
-        } else if(_curScene == "VersusMultiplayer") {
+        } else if(_comMatch && _curScene == "VersusMultiplayer") {
             // And any button is pressed
             if(AnyButtonPressed()) {
+                _comMatch = false;
+
                 // Turn off the text
                 _controllerText.enabled = false;
 
@@ -83,6 +88,8 @@ public class DemoManager : MonoBehaviour {
 
         // Show the text
         _controllerText.enabled = true;
+
+        _comMatch = true;
 
         // Load a random stage
         int board = Random.Range(0, 3);
