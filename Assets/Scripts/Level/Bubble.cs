@@ -71,6 +71,7 @@ public class Bubble : MonoBehaviour {
 
 	public FMOD.Studio.EventInstance BubbleDropEvent;
 	public FMOD.Studio.EventInstance PetrifyEvent;
+	public FMOD.Studio.EventInstance PetrifyBubbleEvent;
 
     PlayerController _playerController;
     public PlayerController PlayerController {
@@ -993,6 +994,8 @@ public class Bubble : MonoBehaviour {
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
 
         Debug.Log("Petrify");
+		PetrifyBubbleEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PetrifyBubble);
+		PetrifyBubbleEvent.start();
 
 		PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Petrify);
 		PetrifyEvent.start();

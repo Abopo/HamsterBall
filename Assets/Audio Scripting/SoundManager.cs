@@ -35,12 +35,15 @@ public class SoundManager : MonoBehaviour {
 	public string BubbleDrop;
 	public string CountDown321;
 	public string CountDownGo;
+	public string PetrifyBubble;
+	public string MatchCombo;
 
 	//Generic Player Sounds
 	public string WoodPlayerFootstep;
 	public string GrassPlayerFootstep;
 	public string IcePlayerFootstep;
 	public string SnowPlayerFootstep;
+	public string UmbrellaPlayerFootstep;
 
 	public string PlayerFootstep;
 	public string SwingNetOneshot;

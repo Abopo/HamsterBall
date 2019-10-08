@@ -39,6 +39,10 @@ public class BubbleEffects : MonoBehaviour {
     GameObject _bombExplosionObj;
     List<GameObject> _bombExplosionObjects = new List<GameObject>();
 
+    //FMOD
+	public FMOD.Studio.EventInstance MatchComboEvent;
+
+
     //SFX
     AudioSource _teamAudioSource;
     AudioClip _teamComboClip;
@@ -157,7 +161,7 @@ public class BubbleEffects : MonoBehaviour {
             _teamEffectObj.SetActive(true);
 
             _teamAudioSource.clip = _teamComboClip;
-            _teamAudioSource.Play();
+            //_teamAudioSource.Play();
 
             _teamEffectTimer = 0.0f;
         }
@@ -171,7 +175,7 @@ public class BubbleEffects : MonoBehaviour {
             _teamEffectObj.SetActive(true);
 
             _teamAudioSource.clip = _teamDropClip;
-            _teamAudioSource.Play();
+            //_teamAudioSource.Play();
 
             _teamEffectTimer = 0.0f;
         }
@@ -184,8 +188,10 @@ public class BubbleEffects : MonoBehaviour {
             _counterEffectObj.SetActive(true);
 
             _teamAudioSource.clip = _teamComboClip;
-            _teamAudioSource.Play();
-
+            //_teamAudioSource.Play();
+			MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
+			MatchComboEvent.start();
+			MatchComboEvent.release();
             _counterEffectTimer = 0.0f;
         }
     }
@@ -197,8 +203,10 @@ public class BubbleEffects : MonoBehaviour {
             _counterEffectObj.SetActive(true);
 
             _teamAudioSource.clip = _teamDropClip;
-            _teamAudioSource.Play();
-
+            //_teamAudioSource.Play();
+			MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
+			MatchComboEvent.start();
+			MatchComboEvent.release();
             _counterEffectTimer = 0.0f;
         }
     }
@@ -208,7 +216,7 @@ public class BubbleEffects : MonoBehaviour {
         GameObject mMatch = GameObject.Instantiate(_multiMatchEffectObj, position, Quaternion.identity);
         mMatch.SetActive(true);
 
-        _multiMatchEffectObj.GetComponent<AudioSource>().Play();
+        //_multiMatchEffectObj.GetComponent<AudioSource>().Play();
     }
 
     public void MatchComboEffect(Vector2 pos, int combo) {
@@ -221,8 +229,10 @@ public class BubbleEffects : MonoBehaviour {
             _comboEffectObj.SetActive(true);
 
             _teamAudioSource.clip = _teamComboClip;
-            _teamAudioSource.Play();
-
+            //_teamAudioSource.Play();
+			MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
+			MatchComboEvent.start();
+			MatchComboEvent.release();
             _comboEffectTimer = 0.0f;
         }
     }
@@ -238,8 +248,11 @@ public class BubbleEffects : MonoBehaviour {
         } else if (pos.z == -1) {
             bank.transform.localScale = new Vector3(1, 1, 1);
         }
-
-        _bankEffectObj.GetComponent<AudioSource>().Play();
+        Debug.Log("Bank Shot");
+		MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
+			MatchComboEvent.start();
+			MatchComboEvent.release();
+        //_bankEffectObj.GetComponent<AudioSource>().Play();
     }
 
     public void StockOrbEffect(int spawnAmount, Vector3 pos) {

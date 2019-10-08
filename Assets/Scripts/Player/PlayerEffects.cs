@@ -44,6 +44,7 @@ public class PlayerEffects : MonoBehaviour {
     // Use this for initialization
     void Start () {
         LoadEffects();
+
 	}
 
     void LoadEffects() {
@@ -79,10 +80,13 @@ public class PlayerEffects : MonoBehaviour {
             // Sounds
 			footstepString1 = SoundManager.mainAudio.GrassPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-			footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+			//footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
 
 			footstepString2 = SoundManager.mainAudio.WoodPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
+
+			footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+			footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
 
         // Mountain
         } else if (_gameManager.selectedBoard == BOARDS.MOUNTAIN) {
@@ -110,6 +114,9 @@ public class PlayerEffects : MonoBehaviour {
 
 			footstepString2 = SoundManager.mainAudio.IcePlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
+
+			footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+			footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
         // Beach
         } else if (_gameManager.selectedBoard == BOARDS.BEACH) {
             // Footstep
@@ -146,14 +153,18 @@ public class PlayerEffects : MonoBehaviour {
             dashParticles3 = tempObject.GetComponent<ParticleSystem>();
 
             // Sounds
-			footstepString1 = SoundManager.mainAudio.WoodPlayerFootstep;
+			footstepString1 = SoundManager.mainAudio.UmbrellaPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent1, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
 
-			footstepString2 = SoundManager.mainAudio.IcePlayerFootstep;
+			footstepString2 = SoundManager.mainAudio.WoodPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
 
 			footstepString3 = SoundManager.mainAudio.SnowPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent3, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
+
+			footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+			footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
+			footstepEvent3 = FMODUnity.RuntimeManager.CreateInstance(footstepString3);
         } else {
             footstepParticles1 = null;
             footstepParticles2 = null;
@@ -173,6 +184,9 @@ public class PlayerEffects : MonoBehaviour {
 
 			footstepString2 = SoundManager.mainAudio.WoodPlayerFootstep;
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
+
+			footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+		footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
         }
     }
 
@@ -181,6 +195,7 @@ public class PlayerEffects : MonoBehaviour {
         footstepEvent1.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
         footstepEvent2.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
         footstepEvent3.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+       
     }
 
     public void PlayFootstep() {
@@ -190,19 +205,19 @@ public class PlayerEffects : MonoBehaviour {
                     PlayEffect(footstepParticles1);
                 }
                 footstepEvent1.start();
+				
+                Debug.Log("Footstep 1");
                 break;
             case 1:
                 if (footstepParticles2 != null) {
                     PlayEffect(footstepParticles2);
                 }
-				footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
                 footstepEvent2.start();
                 break;
             case 2:
                 if (footstepParticles3 != null) {
                     PlayEffect(footstepParticles3);
                 }
-				footstepEvent3 = FMODUnity.RuntimeManager.CreateInstance(footstepString3);
                 footstepEvent3.start();
                 break;
         }
