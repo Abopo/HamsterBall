@@ -87,9 +87,6 @@ public class CharacterSelector : MonoBehaviour {
     // Use this for initialization
     void Start () {
         aiIndex = 0;
-        if (curCharacterIcon != null) {
-            HighlightIcon(curCharacterIcon);
-        }
 
         // If we haven't been set up properly
         if (playerNum == -1 || charaWindow.charaAnimator == null) { // Should probably only happen when networking
@@ -97,7 +94,7 @@ public class CharacterSelector : MonoBehaviour {
             //Initialize();
         } else {
             // Set color stuff based on playerNum
-            GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum];
+            //GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum];
             transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum + 4];
 
             charaWindow.playerController.characterSelector = this;
@@ -178,6 +175,10 @@ public class CharacterSelector : MonoBehaviour {
             sr.enabled = true;
         }
 
+        if (curCharacterIcon != null) {
+            HighlightIcon(curCharacterIcon);
+        }
+
         charaWindow.Activate(false, playerNum);
     }
 
@@ -238,6 +239,8 @@ public class CharacterSelector : MonoBehaviour {
             _charaSelect.RemovePlayer(_player);
         }
 
+        curCharacterIcon.Unhighlight();
+
         _player = null;
         charaWindow.Deactivate();
     }
@@ -250,8 +253,15 @@ public class CharacterSelector : MonoBehaviour {
             return;
         }
 
-        if (_player != null && takeInput && isLocal) {
-            CheckInput();
+        if (isActive) {
+            // Make sure our icon stays highlighted
+            if (!curCharacterIcon.isHighlighted) {
+                curCharacterIcon.isHighlighted = true;
+            }
+
+            if (_player != null && takeInput && isLocal) {
+                CheckInput();
+            }
         }
     }
 
@@ -367,6 +377,9 @@ public class CharacterSelector : MonoBehaviour {
     }
 
     void HighlightIcon(CharacterIcon charaIcon) {
+        // Unhighlight current icon
+        curCharacterIcon.Unhighlight();
+
         // Get new icon
         curCharacterIcon = charaIcon;
 

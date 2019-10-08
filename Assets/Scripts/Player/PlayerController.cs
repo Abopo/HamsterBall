@@ -43,7 +43,7 @@ public class PlayerController : Entity {
 	}
 	float _shiftCooldownTimer;
 	public float ShiftCooldownTimer {
-		get {return _shiftCooldownTimer;	}
+		get { return _shiftCooldownTimer;	}
         set { _shiftCooldownTimer = value; }
 	}
 

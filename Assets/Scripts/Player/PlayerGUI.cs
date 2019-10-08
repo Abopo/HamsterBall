@@ -7,13 +7,15 @@ public class PlayerGUI : MonoBehaviour {
 
     ShiftMeter _shiftMeter;
     Material _meterMaterial;
-    SpriteRenderer _shiftMeterEnd;
+    Image _shiftMeterEnd;
 
     Sprite _fullSprite;
     Sprite _emptySprite;
 
     static int teamLeftPlayers;
     static int teamRightPlayers;
+
+    float tempFloat;
 
     void Awake() {
         teamLeftPlayers = 0;
@@ -34,9 +36,9 @@ public class PlayerGUI : MonoBehaviour {
             }
         }
 
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
-        _fullSprite = sprites[6];
-        _emptySprite = sprites[5];
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/New-Shift-assets");
+        _fullSprite = sprites[5];
+        _emptySprite = sprites[8];
 
         if (_shiftMeter != null) {
             _meterMaterial = _shiftMeter.GetMeterFront().GetComponent<Image>().material;
@@ -46,12 +48,24 @@ public class PlayerGUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (_shiftMeter != null) {
-            _meterMaterial.SetFloat("_Cutoff", (_playerController.ShiftCooldownTimer / _playerController.ShiftCooldownTime));
+            //_meterMaterial.SetFloat("_Cutoff", (_playerController.ShiftCooldownTimer / _playerController.ShiftCooldownTime));
 
+            if (_shiftMeter.meterBar != null) {
+                tempFloat = (_playerController.ShiftCooldownTimer / _playerController.ShiftCooldownTime);
+                // Avoid dividing by zero
+                if (tempFloat == 0) {
+                    tempFloat = 0.001f;
+                }
+                _shiftMeter.meterBar.rectTransform.sizeDelta = new Vector2(_shiftMeter.meterBar.rectTransform.rect.width, 770 - 770 * tempFloat);
+            }
+
+            // TODO: Shouldn't be doing this every frame
             if(_playerController.ShiftCooldownTimer >= _playerController.ShiftCooldownTime) {
                 _shiftMeterEnd.sprite = _fullSprite;
+                _shiftMeter.Full();
             } else {
                 _shiftMeterEnd.sprite = _emptySprite;
+                _shiftMeter.Empty();
             }
         }
 	}

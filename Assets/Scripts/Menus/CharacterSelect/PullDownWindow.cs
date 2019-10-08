@@ -48,7 +48,7 @@ public class PullDownWindow : MonoBehaviour {
     public void Hide() {
         _isHiding = true;
         // make sure player sprite is behind ui
-        GetComponentInChildren<CSPlayerController>().SpriteRenderer.sortingOrder = -6;
+        GetComponentInChildren<CSPlayerController>().SpriteRenderer.sortingOrder = -12;
     }
 
     public void PlayerLeft() {

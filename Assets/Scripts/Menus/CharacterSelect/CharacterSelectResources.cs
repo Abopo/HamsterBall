@@ -135,7 +135,7 @@ public class CharacterSelectResources : MonoBehaviour {
         snail1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.SNAIL].Add(snail1);
         CharaSelectInfo snail2 = new CharaSelectInfo();
-        snail2.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
+        snail2.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail2") as RuntimeAnimatorController;
         snail2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.SNAIL].Add(snail2);
         CharaSelectInfo snail3 = new CharaSelectInfo();
@@ -165,37 +165,39 @@ public class CharacterSelectResources : MonoBehaviour {
     }
 
     void LoadCharacterPortraits() {
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Portraits-and-windows");
+
         // Boy
         _charaPortraits[(int)CHARACTERS.BOY] = new List<Sprite>();
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
-        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[1]);
-        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[2]);
-        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[3]);
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[4]);
+        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[5]);
+        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[6]);
+        _charaPortraits[(int)CHARACTERS.BOY].Add(sprites[7]);
 
         // Girl
         _charaPortraits[(int)CHARACTERS.GIRL] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[1]);
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[2]);
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[3]);
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[21]);
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[22]);
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[23]);
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[24]);
 
         // Rooster
         _charaPortraits[(int)CHARACTERS.ROOSTER] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[1]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[1]);
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[37]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[38]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[39]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[40]);
 
         // Bat
         _charaPortraits[(int)CHARACTERS.BAT] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/Animations/Player/Bat/bat-hit_784x784");
+        //sprites = Resources.LoadAll<Sprite>("Art/Animations/Player/Bat/bat-hit_784x784");
         _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[0]);
+        _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[1]);
+        _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[2]);
+        _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[3]);
 
         // Snail
         _charaPortraits[(int)CHARACTERS.SNAIL] = new List<Sprite>();
