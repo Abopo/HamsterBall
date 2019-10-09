@@ -196,6 +196,7 @@ public class Bubble : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.U)) {
             BoardChanged();
         }
+       
 
 	}
 
@@ -996,10 +997,11 @@ public class Bubble : MonoBehaviour {
         Debug.Log("Petrify");
 		PetrifyBubbleEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PetrifyBubble);
 		PetrifyBubbleEvent.start();
+		PetrifyBubbleEvent.release();
 
 		PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Petrify);
 		PetrifyEvent.start();
-		PetrifyEvent.release();
+		//PetrifyEvent.release();
 
         yield return new WaitForSeconds(0.2f);
 

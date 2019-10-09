@@ -24,6 +24,9 @@ public class GameEndSequence : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         // Make sure banners are above stage
+		SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+        SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
         leftBanner.transform.position = new Vector3(leftBanner.transform.position.x, 22f, leftBanner.transform.position.z);
         rightBanner.transform.position = new Vector3(rightBanner.transform.position.x, 22f, rightBanner.transform.position.z);
 
@@ -99,6 +102,7 @@ public class GameEndSequence : MonoBehaviour {
             _rightTeam[0].ChangeState(PLAYER_STATE.SHIFT);
             _rightTeam[0].Animator.SetBool("Won Game", _gameResult == 1 || _gameResult == 0);
             tempShiftState.SetLandingPosition(new Vector3(playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
+
 
             _matchEndMusic.start();
 
