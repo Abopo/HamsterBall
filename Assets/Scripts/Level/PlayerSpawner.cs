@@ -27,37 +27,44 @@ public class PlayerSpawner : MonoBehaviour {
         _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
 
         // Get sprites
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-Master-File");
 
         // Boy
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         playerIcons[(int)CHARACTERS.BOY, 0] = sprites[0];
         playerIcons[(int)CHARACTERS.BOY, 1] = sprites[1];
         playerIcons[(int)CHARACTERS.BOY, 2] = sprites[2];
         playerIcons[(int)CHARACTERS.BOY, 3] = sprites[3];
         // Girl
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
-        playerIcons[(int)CHARACTERS.GIRL, 0] = sprites[0];
-        playerIcons[(int)CHARACTERS.GIRL, 1] = sprites[1];
-        playerIcons[(int)CHARACTERS.GIRL, 2] = sprites[2];
-        playerIcons[(int)CHARACTERS.GIRL, 3] = sprites[3];
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
+        playerIcons[(int)CHARACTERS.GIRL, 0] = sprites[4];
+        playerIcons[(int)CHARACTERS.GIRL, 1] = sprites[5];
+        playerIcons[(int)CHARACTERS.GIRL, 2] = sprites[6];
+        playerIcons[(int)CHARACTERS.GIRL, 3] = sprites[7];
         // Rooster
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
-        playerIcons[(int)CHARACTERS.ROOSTER, 0] = sprites[0];
-        playerIcons[(int)CHARACTERS.ROOSTER, 1] = sprites[1];
-        playerIcons[(int)CHARACTERS.ROOSTER, 2] = sprites[0];
-        playerIcons[(int)CHARACTERS.ROOSTER, 3] = sprites[1];
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
+        playerIcons[(int)CHARACTERS.ROOSTER, 0] = sprites[12];
+        playerIcons[(int)CHARACTERS.ROOSTER, 1] = sprites[13];
+        playerIcons[(int)CHARACTERS.ROOSTER, 2] = sprites[14];
+        playerIcons[(int)CHARACTERS.ROOSTER, 3] = sprites[15];
+        // Bat
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
+        playerIcons[(int)CHARACTERS.BAT, 0] = sprites[8];
+        playerIcons[(int)CHARACTERS.BAT, 1] = sprites[9];
+        playerIcons[(int)CHARACTERS.BAT, 2] = sprites[10];
+        playerIcons[(int)CHARACTERS.BAT, 3] = sprites[11];
         // Snail
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Snail-Icon");
-        playerIcons[(int)CHARACTERS.SNAIL, 0] = sprites[0];
-        playerIcons[(int)CHARACTERS.SNAIL, 1] = sprites[1];
-        playerIcons[(int)CHARACTERS.SNAIL, 2] = sprites[0];
-        playerIcons[(int)CHARACTERS.SNAIL, 3] = sprites[1];
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Snail-Icon");
+        playerIcons[(int)CHARACTERS.SNAIL, 0] = sprites[20];
+        playerIcons[(int)CHARACTERS.SNAIL, 1] = sprites[21];
+        playerIcons[(int)CHARACTERS.SNAIL, 2] = sprites[22];
+        playerIcons[(int)CHARACTERS.SNAIL, 3] = sprites[23];
         // Lackey
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
-        playerIcons[(int)CHARACTERS.LACKEY, 0] = sprites[0];
-        playerIcons[(int)CHARACTERS.LACKEY, 1] = sprites[1];
-        playerIcons[(int)CHARACTERS.LACKEY, 2] = sprites[0];
-        playerIcons[(int)CHARACTERS.LACKEY, 3] = sprites[1];
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
+        playerIcons[(int)CHARACTERS.LACKEY, 0] = sprites[16];
+        playerIcons[(int)CHARACTERS.LACKEY, 1] = sprites[17];
+        playerIcons[(int)CHARACTERS.LACKEY, 2] = sprites[18];
+        playerIcons[(int)CHARACTERS.LACKEY, 3] = sprites[19];
 
         GetSpawnLocations();
         SpawnPlayers();
