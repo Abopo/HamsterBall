@@ -109,7 +109,7 @@ public class LevelManager : MonoBehaviour {
 
     public void GameStart() {
         gameStarted = true;
-        GetComponent<AudioSource>().Play();
+        //GetComponent<AudioSource>().Play();
     }
 
     // Update is called once per frame
@@ -195,6 +195,9 @@ public class LevelManager : MonoBehaviour {
 
     public void GameEnd() {
         _gameOver = true;
+
+        // Stop the music
+        SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
         // If we won and are in a timed mode, set the time highscore
         if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {

@@ -16,6 +16,8 @@ public class GameEndSequence : MonoBehaviour {
     public List<PlayerController> _leftTeam = new List<PlayerController>();
     public List<PlayerController> _rightTeam = new List<PlayerController>();
 
+    FMOD.Studio.EventInstance _matchEndMusic;
+
     int _gameResult;
     int _sequence = 0;
 
@@ -24,6 +26,8 @@ public class GameEndSequence : MonoBehaviour {
         // Make sure banners are above stage
         leftBanner.transform.position = new Vector3(leftBanner.transform.position.x, 22f, leftBanner.transform.position.z);
         rightBanner.transform.position = new Vector3(rightBanner.transform.position.x, 22f, rightBanner.transform.position.z);
+
+        _matchEndMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchEndMusic);
     }
 
     void GetPlayers() {
@@ -49,6 +53,7 @@ public class GameEndSequence : MonoBehaviour {
         _gameResult = winningTeam;
 
         GetPlayers();
+
 
         // Set the banner sprites and text
         switch(winningTeam) {
@@ -94,6 +99,8 @@ public class GameEndSequence : MonoBehaviour {
             _rightTeam[0].ChangeState(PLAYER_STATE.SHIFT);
             _rightTeam[0].Animator.SetBool("Won Game", _gameResult == 1 || _gameResult == 0);
             tempShiftState.SetLandingPosition(new Vector3(playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
+
+            _matchEndMusic.start();
 
             _sequence++;
         }

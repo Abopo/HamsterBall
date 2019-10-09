@@ -11,11 +11,21 @@ public class DividerFlash : MonoBehaviour {
     float _flashTime = 0.2f;
     float _flashTimer = 0f;
 
+    SpriteRenderer _dangerFlash;
+    float _dangerTimer = 0f;
+    float _dangerTime = 0.75f;
+    bool _dangerUp = true;
+
     Color brown = new Color(188, 97, 0);
 
 	// Use this for initialization
 	void Start () {
         _material = GetComponent<MeshRenderer>().material;
+
+        _dangerFlash = GetComponentInChildren<SpriteRenderer>();
+        if (_dangerFlash != null) {
+            _dangerFlash.enabled = false;
+        }
 
         isFlashing = false;
 	}
@@ -24,13 +34,30 @@ public class DividerFlash : MonoBehaviour {
 	void Update () {
         if(isFlashing) {
             _flashTimer += Time.deltaTime;
-            if(_flashTimer >= _flashTime) {
+
+            if (_flashTimer >= _flashTime) {
                 Flash();
                 _flashTimer = 0f;
             }
+
+            // New flash testing
+            if (_dangerFlash != null) {
+                if (_dangerUp) {
+                    _dangerTimer += Time.deltaTime;
+                    if (_dangerTimer >= _dangerTime) {
+                        _dangerUp = false;
+                    }
+                } else {
+                    _dangerTimer -= Time.deltaTime;
+                    if (_dangerTimer <= 0) {
+                        _dangerUp = true;
+                    }
+                }
+                _dangerFlash.color = new Color(_dangerFlash.color.r, _dangerFlash.color.g, _dangerFlash.color.b, (75 + 125 * (_dangerTimer / _dangerTime)) / 255);
+            }
         }
-		
-	}
+
+    }
 
     void Flash() {
         if (_material.color == brown) {
@@ -44,6 +71,10 @@ public class DividerFlash : MonoBehaviour {
         if (!isFlashing) {
             isFlashing = true;
             _flashTimer = 0f;
+
+            if (_dangerFlash != null) {
+                _dangerFlash.enabled = true;
+            }
         }
 
 		//SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 2f);
@@ -54,6 +85,10 @@ public class DividerFlash : MonoBehaviour {
     public void StopFlashing() {
         isFlashing = false;
         _material.color = brown;
+
+        if (_dangerFlash != null) {
+            _dangerFlash.enabled = false;
+        }
         Debug.Log("Stop Flash");
 
 		//SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);

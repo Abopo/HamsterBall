@@ -999,7 +999,7 @@ public class Bubble : MonoBehaviour {
 
 		PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Petrify);
 		PetrifyEvent.start();
-		//PetrifyEvent.release();
+		PetrifyEvent.release();
 
         yield return new WaitForSeconds(0.2f);
 

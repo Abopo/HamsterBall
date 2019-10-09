@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StageMusic : MonoBehaviour {
 
-
     FMOD.Studio.EventInstance _stageMusic;
     FMOD.Studio.EventInstance _stageAmbience;
 
@@ -31,12 +30,6 @@ public class StageMusic : MonoBehaviour {
     void SetStageMusic() {
         switch (_gameManager.selectedBoard) {
             case BOARDS.FOREST:
-                //SoundManager.mainAudio.ForestMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);
-                //SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
-                //SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 1f);
-                //SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                //SoundManager.mainAudio.ForestMusicEvent.start();
-                //SoundManager.mainAudio.ForestAmbienceEvent.start();
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
@@ -47,13 +40,6 @@ public class StageMusic : MonoBehaviour {
 
                 break;
             case BOARDS.MOUNTAIN:
-                //SoundManager.mainAudio.MountainMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MountainMusic);
-                //SoundManager.mainAudio.SnowAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
-                //SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 1f);
-                //SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                //SoundManager.mainAudio.MountainMusicEvent.start();
-                //SoundManager.mainAudio.SnowAmbienceEvent.start();
-
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MountainMusic);
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
@@ -64,13 +50,6 @@ public class StageMusic : MonoBehaviour {
 
                 break;
             case BOARDS.BEACH:
-                //SoundManager.mainAudio.BeachAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
-                //SoundManager.mainAudio.BeachMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachMusic);
-                //SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);
-                //SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                //SoundManager.mainAudio.BeachMusicEvent.start();
-                //SoundManager.mainAudio.BeachAmbienceEvent.start();
-
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachMusic);
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
@@ -125,6 +104,6 @@ public class StageMusic : MonoBehaviour {
 
     void GameEnd() {
         // Stop the music
-        //_stageMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        _stageMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }
