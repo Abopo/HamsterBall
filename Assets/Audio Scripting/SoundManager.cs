@@ -94,6 +94,8 @@ public class SoundManager : MonoBehaviour {
 	public FMOD.Studio.EventInstance MountainMusicEvent;
 	public string MatchEndMusic;
 	public FMOD.Studio.EventInstance MatchEndMusicEvent;
+	public string MenuGeneral;
+	public FMOD.Studio.EventInstance MenuGeneralEvent;
 	//public FMOD.Studio.EventInstance ThrowAngleEvent;
 	//public FMOD.Studio.EventInstance HamsterFillBallEvent;
 	//Generic Player Sounds EventInstance

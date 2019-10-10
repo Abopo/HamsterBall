@@ -18,7 +18,10 @@ public class AudioManager : MonoBehaviour {
         LoadBGM();
 
         if (sceneIndex < 15) {
-            SoundManager.mainAudio.HappyDaysMusicEvent.start();
+			SoundManager.mainAudio.HappyDaysMusicEvent.start();
+			SoundManager.mainAudio.MenuGeneralEvent.start();
+            SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(false);
+			SoundManager.mainAudio.MenuGeneralEvent.setPaused(true);
             alreadyPlaying = true;
         }
     }
@@ -26,6 +29,7 @@ public class AudioManager : MonoBehaviour {
     void LoadBGM() {
         Debug.Log("Load Menu Music");
 		SoundManager.mainAudio.HappyDaysMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HappyDaysMusic);
+		SoundManager.mainAudio.MenuGeneralEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MenuGeneral);
     }
 
     // Update is called once per frame
@@ -43,6 +47,10 @@ public class AudioManager : MonoBehaviour {
                 // We're in a menu so play menu music
                 Debug.Log("Play Menu Music");
                 SoundManager.mainAudio.HappyDaysMusicEvent.start();
+				SoundManager.mainAudio.MenuGeneralEvent.start();
+                SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(true);
+				SoundManager.mainAudio.MenuGeneralEvent.setPaused(false);
+				
                 alreadyPlaying = true;
             } else if (sceneIndex > 12) {
                 // We're in a level so play level music

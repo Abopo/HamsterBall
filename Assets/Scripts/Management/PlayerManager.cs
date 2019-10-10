@@ -64,7 +64,7 @@ public class PlayerManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	
+
 	}
 
     public PlayerInfo GetPlayerByIndex(int index) {
@@ -196,6 +196,16 @@ public class PlayerManager : MonoBehaviour {
             // Clear players
             ClearAllPlayers();
         }
+
+		if (scene.name == "LocalPlay")
+		{
+			SoundManager.mainAudio.MenuGeneralEvent.setPaused(false);
+			SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(true);
+		} else if (scene.name == "VillageScene")
+		{
+			SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(false);
+			SoundManager.mainAudio.MenuGeneralEvent.setPaused(true);
+		}
 
         // Debugging
         if(scene.name == "NetworkedMapSelectWheel") {
