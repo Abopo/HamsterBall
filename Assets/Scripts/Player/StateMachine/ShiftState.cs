@@ -18,6 +18,8 @@ public class ShiftState : PlayerState {
 
     float _initialZPos;
 
+    SpriteRenderer _targetArrow;
+
     void Start() {
     }
 
@@ -75,6 +77,9 @@ public class ShiftState : PlayerState {
                 }
             }
         }
+
+        // Make sure the target arrow is off by default
+        playerController.PlayerEffects.targetArrow.enabled = false;
 
         // Push the player's sprite higher on the draw order (so it renders above the stage)
         playerController.SpriteRenderer.sortingOrder = 25;
@@ -174,6 +179,13 @@ public class ShiftState : PlayerState {
             playerController.transform.localScale = _oldScale;
 
             playerController.shifted = !playerController.shifted;
+
+            // If we are in the opponents area
+            if(playerController.shifted) {
+                // Turn on out target arrows
+                playerController.PlayerEffects.targetArrow.enabled = true;
+            }
+
             // Return player's z pos to normal
             playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, _initialZPos);
 

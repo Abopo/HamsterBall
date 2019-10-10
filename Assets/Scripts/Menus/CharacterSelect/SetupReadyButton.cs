@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent(typeof(Button))]
-public class SetupReadyButton : MenuOption {
+public class SetupReadyButton : MenuButton {
     public GameObject infoBox;
 
     // Use this for initialization

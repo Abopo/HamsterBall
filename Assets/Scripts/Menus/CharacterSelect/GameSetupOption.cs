@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Rewired;
 using System.Collections;
 
@@ -95,6 +96,8 @@ public class GameSetupOption : MenuOption {
     }
 
     protected override void Select() {
+        base.Select();
+
         selector.transform.position = new Vector3(valuePosition.position.x,
                                                    valuePosition.position.y,
                                                    selector.transform.position.z);

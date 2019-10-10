@@ -7,6 +7,8 @@ public class PlayerEffects : MonoBehaviour {
 
     PlayerController _playerController;
 
+    public SpriteRenderer targetArrow;
+
     // Particles
     public ParticleSystem shiftWindParticles;
 

@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour {
 
     public GameObject optionsMenu;
     public GameObject pauseMenu;
-    public Text aimAssist;
+    public SuperTextMesh aimAssist;
 
     bool _isActive;
     bool _justActivated;

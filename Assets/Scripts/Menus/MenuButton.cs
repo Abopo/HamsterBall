@@ -6,7 +6,7 @@ using System.Collections;
 [RequireComponent (typeof(Button))]
 public class MenuButton : MenuOption {
 
-    Button _button;
+    protected Button _button;
 
     public Vector3 _baseScale;
     public Vector3 _selectedScale;

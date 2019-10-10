@@ -116,8 +116,6 @@ public class PlayerController : Entity {
         get { return _charaInfo; }
     }
 
-    SpriteRenderer _targetArrow; // an arrow that appears when shifted
-
     protected GameManager _gameManager;
     PlayerAudio _playerAudio;
     Vector3 _spawnPos;
@@ -171,14 +169,6 @@ public class PlayerController : Entity {
 
         swingObj = transform.Find("CatchBubble").gameObject;
         swingObj.SetActive (false);
-
-        _targetArrow = transform.Find("Target Arrow").GetComponent<SpriteRenderer>();
-        //_targetArrow.enabled = false;
-        if(team == 0) {
-            _targetArrow.color = new Color(242f/255f, 152f/255f, 18f/255f);
-        } else if(team == 1) {
-            _targetArrow.color = new Color(18f/255f, 103f/255f, 242f/255f);
-        }
 
         _canShift = false;
 		_shiftCooldownTime = 12.0f;
