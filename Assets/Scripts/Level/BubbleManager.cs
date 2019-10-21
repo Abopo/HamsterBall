@@ -616,7 +616,7 @@ public class BubbleManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.L)) {
-            AddLine();
+            TryAddLine();
         }
         if(Input.GetKeyDown(KeyCode.P)) {
             boardChangedEvent.Invoke();
@@ -653,7 +653,7 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // If the board is waiting to add a line
-        if (linesToAdd > 0) {
+        if (linesToAdd > 0 && !_gameOver) {
             // Shake the board
             StartShaking();
 
@@ -805,7 +805,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void TryAddLine() {
-        if (!_boardIsStable) {
+        if (!_boardIsStable || _gameOver) {
             ++linesToAdd;
         } else {
             AddLine();

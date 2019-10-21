@@ -48,17 +48,17 @@ public class GameSetupOption : MenuOption {
 
         if(_isSelected && !_justSelected) {
             // Right
-            if (!_justMoved && InputRight()) {
+            if (!_justMoved && InputState.GetButtonOnAnyControllerPressed("MoveRight")) {
                 rightButton.onClick.Invoke();
                 _justMoved = true;
             }
             // Left
-            if (!_justMoved && InputLeft()) {
+            if (!_justMoved && InputState.GetButtonOnAnyControllerPressed("MoveLeft")) {
                 leftButton.onClick.Invoke();
                 _justMoved = true;
             }
             // B
-            if (_player.GetButtonDown("Cancel") || _player.GetButtonDown("Submit")) {
+            if (InputState.GetButtonOnAnyControllerPressed("Cancel") || InputState.GetButtonOnAnyControllerPressed("Submit")) {
                 Highlight();
             }
         }

@@ -18,10 +18,12 @@ public class ResultsScreen : MonoBehaviour {
 
     GameManager _gameManager;
     LevelManager _levelManager;
+    DemoManager _demoManager;
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
+        _demoManager = _gameManager.GetComponentInChildren<DemoManager>();
     }
 
     // Use this for initialization
@@ -49,12 +51,12 @@ public class ResultsScreen : MonoBehaviour {
             mainMenuButton.gameObject.SetActive(false);
         }
 
-        // If we are in demo mode
-        if(_gameManager.demoMode && _winTimer >= _demoWaitTime) {
+        // If we are in demo mode and it's a com match
+        if(_gameManager.demoMode && _demoManager.ComMatch && _winTimer >= _demoWaitTime) {
             // If the whole set is over
             if(_levelManager.setOver) {
                 // Start a new random com match
-                _gameManager.GetComponentInChildren<DemoManager>().StartComMatch();
+                _demoManager.StartComMatch();
             } else {
                 // Continue to next game of the match
                 _levelManager.NextGame();

@@ -57,26 +57,26 @@ public class MenuOption : MonoBehaviour {
         }
 
         if (isHighlighted && !_justHighlighted) {
-            if (_player.GetButtonDown("Submit")) {
+            if (InputState.GetButtonOnAnyControllerPressed("Submit")) {
                 Select();
             }
         }
 
         if (!_moved && isHighlighted && !_justHighlighted) {
             // Right
-            if (InputRight()) {
+            if (InputState.GetButtonOnAnyControllerPressed("MoveRight")) {
                 TryHighlight(0);
             }
             // Down
-            if (InputDown()) {
+            if (InputState.GetButtonOnAnyControllerPressed("MoveDown")) {
                 TryHighlight(1);
             }
             // Left
-            if (InputLeft()) {
+            if (InputState.GetButtonOnAnyControllerPressed("MoveLeft")) {
                 TryHighlight(2);
             }
             // Up
-            if (InputUp()) {
+            if (InputState.GetButtonOnAnyControllerPressed("MoveUp")) {
                 TryHighlight(3);
             }
         } else {
@@ -167,41 +167,21 @@ public class MenuOption : MonoBehaviour {
         isHighlighted = false;
     }
 
-    protected bool InputRight() {
-        if (_player.GetAxis("Horizontal0") > 0.3f) {
+    protected bool AnyInput() {
+        if (InputState.GetButtonOnAnyControllerPressed("MoveRight") ||
+            InputState.GetButtonOnAnyControllerPressed("MoveLeft") ||
+            InputState.GetButtonOnAnyControllerPressed("MoveUp") ||
+            InputState.GetButtonOnAnyControllerPressed("MoveDown")) {
             return true;
         }
 
         return false;
     }
-
-    protected bool InputLeft() {
-        if (_player.GetAxis("Horizontal0") < -0.3f) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected bool InputUp() {
-        if(_player.GetAxis("Vertical") > 0.3f) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected bool InputDown() {
-        if (_player.GetAxis("Vertical") < -0.3f) {
-            return true;
-        }
-
-        return false;
-    }
-
     protected bool InputReset() {
-        if(_player.GetAxis("Horizontal0") < 0.3f && _player.GetAxis("Horizontal0") > -0.3f &&
-           _player.GetAxis("Vertical") < 0.3f && _player.GetAxis("Vertical") > -0.3f) {
+        if(!InputState.GetButtonOnAnyControllerPressed("MoveRight") && 
+            !InputState.GetButtonOnAnyControllerPressed("MoveLeft") &&
+            !InputState.GetButtonOnAnyControllerPressed("MoveUp") && 
+            !InputState.GetButtonOnAnyControllerPressed("MoveDown")) {
             return true;
         }
 

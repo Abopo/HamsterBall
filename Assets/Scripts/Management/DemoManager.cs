@@ -8,7 +8,7 @@ public class DemoManager : MonoBehaviour {
 
     bool _comMatch;
 
-    string _curScene;
+    public string _curScene;
     float _waitTime = 30f;
     float _waitTimer = 0f;
 
@@ -16,6 +16,10 @@ public class DemoManager : MonoBehaviour {
 
     GameManager _gameManager;
     PlayerManager _playerManager;
+
+    public bool ComMatch {
+        get { return _comMatch; }
+    }
 
     private void Awake() {
         _gameManager = transform.parent.GetComponent<GameManager>();
@@ -67,19 +71,21 @@ public class DemoManager : MonoBehaviour {
         PlayerInfo com1 = new PlayerInfo();
         com1.playerNum = 1;
         com1.charaInfo.name = (CHARACTERS)Random.Range(0, (int)CHARACTERS.NUM_CHARACTERS);
-        com1.charaInfo.color = Random.Range(0, 4);
+        com1.charaInfo.color = Random.Range(1, 4);
         com1.charaInfo.team = 0;
         com1.team = 0;
         com1.isAI = true;
         com1.difficulty = Random.Range(3, 8);
+        Debug.Log("Spawned " + com1.charaInfo.name.ToString() + " as " + com1.charaInfo.color.ToString());
         PlayerInfo com2 = new PlayerInfo();
         com2.playerNum = 2;
         com2.charaInfo.name = (CHARACTERS)Random.Range(0, (int)CHARACTERS.NUM_CHARACTERS);
-        com2.charaInfo.color = Random.Range(1, 5);
+        com2.charaInfo.color = Random.Range(1, 4);
         com2.charaInfo.team = 1;
         com2.team = 1;
         com2.isAI = true;
         com2.difficulty = Random.Range(3, 8);
+        Debug.Log("Spawned " + com2.charaInfo.name.ToString() + " as " + com2.charaInfo.color.ToString());
 
         // Add the players to the player manager
         _playerManager.ClearAllPlayers();

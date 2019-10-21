@@ -28,12 +28,12 @@ public class AISetupOption : MenuOption {
 
         if (isHighlighted && !_justMoved) {
             // Right
-            if (InputRight()) {
+            if (InputState.GetButtonOnAnyControllerPressed("MoveRight")) {
                 IncreaseAIDifficulty();
                 _justMoved = true;
             }
             // Left
-            if (InputLeft()) {
+            if (InputState.GetButtonOnAnyControllerPressed("MoveLeft")) {
                 DecreaseAIDifficulty();
                 _justMoved = true;
             }

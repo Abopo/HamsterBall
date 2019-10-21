@@ -165,7 +165,7 @@ public class CharacterSelectResources : MonoBehaviour {
     }
 
     void LoadCharacterPortraits() {
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Portraits-and-windows");
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Portraits");
 
         // Boy
         _charaPortraits[(int)CHARACTERS.BOY] = new List<Sprite>();
@@ -178,18 +178,18 @@ public class CharacterSelectResources : MonoBehaviour {
         // Girl
         _charaPortraits[(int)CHARACTERS.GIRL] = new List<Sprite>();
         //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[21]);
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[22]);
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[23]);
-        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[24]);
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[8]);
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[9]);
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[10]);
+        _charaPortraits[(int)CHARACTERS.GIRL].Add(sprites[11]);
 
         // Rooster
         _charaPortraits[(int)CHARACTERS.ROOSTER] = new List<Sprite>();
         //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Rooster-Icon");
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[37]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[38]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[39]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[40]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[15]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[16]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[17]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[18]);
 
         // Bat
         _charaPortraits[(int)CHARACTERS.BAT] = new List<Sprite>();
@@ -201,18 +201,18 @@ public class CharacterSelectResources : MonoBehaviour {
 
         // Snail
         _charaPortraits[(int)CHARACTERS.SNAIL] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Snail-Icon");
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[1]);
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[2]);
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[3]);
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Snail-Icon");
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[19]);
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[22]);
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[20]);
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[21]);
 
         // Lackey
         _charaPortraits[(int)CHARACTERS.LACKEY] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
-        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[1]);
-        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[1]);
+        //sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Carl-Icons");
+        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[12]);
+        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[13]);
+        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[14]);
     }
 
     void LoadCharacterNames() {

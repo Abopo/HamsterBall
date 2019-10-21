@@ -91,7 +91,7 @@ public class GameSetupWindow : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (_gameManager.playerInput.GetButtonDown("Cancel") && !IsAnyOptionSelected()) {
+        if (InputState.GetButtonOnAnyControllerPressed("Cancel") && !IsAnyOptionSelected()) {
             // If there's AI's
             if (_characterSelect.numAI > 0) {
                 // Go back to AI setup
@@ -198,7 +198,7 @@ public class GameSetupWindow : MonoBehaviour {
         _gameManager.GetComponent<PlayerManager>().SetAimAssist(false);
         _gameManager.HamsterSpawnMax = 8;
         HamsterSpawner.canBeRainbow = true;
-        HamsterSpawner.canBeDead = false;
+        HamsterSpawner.canBeDead = true;
         HamsterSpawner.canBeBomb = false;
         HamsterSpawner.canBeGravity = false;
 

@@ -312,7 +312,7 @@ public class AIController : MonoBehaviour {
         }
 
         // If the target is above us
-        if (_targetEndCap.transform.position.y > transform.position.y) {
+        if (_targetEndCap != null && _targetEndCap.transform.position.y > transform.position.y) {
             // We should try to move toward it
 
             // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)

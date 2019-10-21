@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour {
     public int conditionLimit; // the condition limit to achieve the goal i.e. time limit, throw limit, etc.
     public int scoreOverflow = 0; // this variable holds onto the player's score between stages with multiple boards
 
-    public int maxPlayers;
+    public int maxPlayers = 4;
 
     // How many games each team has won
     public int leftTeamGames = 0;
@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour {
     void Awake() {
         SingletonCheck();
 
+        playerManager = GetComponent<PlayerManager>();
+
         PlayerPrefSetup();
 
         //QualitySettings.vSyncCount = 0;
@@ -105,8 +107,6 @@ public class GameManager : MonoBehaviour {
 
         SceneManager.sceneLoaded += SceneLoad;
 
-        playerManager = GetComponent<PlayerManager>();
-
         Random.InitState(System.Environment.TickCount);
 
         PhotonNetwork.automaticallySyncScene = true;
@@ -115,6 +115,8 @@ public class GameManager : MonoBehaviour {
 
         selectedBoard = BOARDS.NUM_STAGES;
         prevBoard = "";
+
+        SetDemoMode(demoMode);
 
         isPaused = false;
     }
@@ -165,6 +167,10 @@ public class GameManager : MonoBehaviour {
             Application.targetFrameRate = 60;
         }
         
+        // Failsafe for if anything goes really wrong, reloads to character select
+        if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.P)) {
+            CharacterSelectButton();
+        }
     }
 
     // 0 = left team; 1 = right team

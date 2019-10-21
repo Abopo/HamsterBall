@@ -39,16 +39,16 @@ public class MenuButton : MenuOption {
         base.Start();
 
         isReady = _button.interactable;
-	}
-	
-	// Update is called once per frame
-	protected override void Update () {
+    }
+
+    // Update is called once per frame
+    protected override void Update () {
         base.Update();
 
         // If nothing is selected and we are the default selection
         if (EventSystem.current.GetComponent<EventSystem>().currentSelectedGameObject == null && isFirstSelection) {
             // If we get any button input
-            if (InputRight() || InputLeft() || InputUp() || InputDown()) {
+            if (AnyInput()) {
                 // Highlight the first selection
                 Highlight();
             }

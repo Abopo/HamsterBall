@@ -113,17 +113,17 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     void CheckInput() {
-        if (_gameManager.playerInput.GetAxis("Horizontal0") < -0.3f || _gameManager.playerInput.GetButtonDown("Left")) {
+        if (InputState.GetButtonOnAnyControllerPressed("MoveLeft")) {
             RotateLeft();
-        } else if (_gameManager.playerInput.GetAxis("Horizontal0") > 0.3f || _gameManager.playerInput.GetButtonDown("Right")) {
+        } else if (InputState.GetButtonOnAnyControllerPressed("MoveRight")) {
             RotateRight();
         }
 
-        if(_gameManager.playerInput.GetButtonDown("Submit")) {
+        if(InputState.GetButtonOnAnyControllerPressed("Submit")) {
             // Load the selected stage
             LoadSelectedMap();
         }
-        if (_gameManager.playerInput.GetButtonDown("Cancel")) {
+        if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             _audioSource.Play();
             LoadCharacterSelect();
         }

@@ -103,7 +103,7 @@ public class CharacterSelect : MonoBehaviour {
             }
             if (pressStartText.activeSelf == true) {
                 // Look for input to start game
-                if (_gameManager.playerInput.GetButtonDown("Start")) {
+                if (InputState.GetButtonOnAnyControllerPressed("Start")) {
                     //LoadNextScene();
                     OpenSetupMenu();
                 }
@@ -138,8 +138,13 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     public void ActivateCharacter() {
-        // Activate character selector
-        _charaSelectors[ActivePlayers].Activate(_tempPlayer);
+        // Find the next available character selector
+        foreach(CharacterSelector cs in _charaSelectors) {
+            if(!cs.isActive) {
+                cs.Activate(_tempPlayer);
+                break;
+            }
+        }
 
         // Add player to list of assigned
         _assignedPlayers.Add(_tempPlayer);
