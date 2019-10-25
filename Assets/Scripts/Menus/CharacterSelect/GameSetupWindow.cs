@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+public enum SPECIALSPAWNMETHOD { BOTH = 0, BALLS, PIPE, NONE, NUM_METHODS };
+
 public class GameSetupWindow : MonoBehaviour {
 
     //public Team teamLeft;
@@ -16,29 +18,33 @@ public class GameSetupWindow : MonoBehaviour {
     public Text deadText;
     public Text gravityText;
     public Text bombText;
+    public Text spawnMethodText;
     public AISetupWindow aiSetupWindow;
 
     bool _aimAssist;
+
+    SPECIALSPAWNMETHOD _specialSpawnMethod;
 
     GameManager _gameManager;
     CharacterSelect _characterSelect;
 
     //string[] hsrTexts = new string[3];
-    GameSetupOption[] _options = new GameSetupOption[8];
+    GameSetupOption[] _options = new GameSetupOption[9];
 
     public void Initialize() {
         gameObject.SetActive(true);
 
+        _gameManager = FindObjectOfType<GameManager>();
         _gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
     }
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
-        _characterSelect = FindObjectOfType<CharacterSelect>();
     }
 
     // Use this for initialization
     void Start () {
+        _characterSelect = FindObjectOfType<CharacterSelect>();
+
         GetOptions();
 
         OptionsSetup();
@@ -175,6 +181,43 @@ public class GameSetupWindow : MonoBehaviour {
         } else {
             bombText.text = "Off";
         }
+    }
+
+    public void ChangeSpawnMethodUp() {
+        _specialSpawnMethod++;
+        if(_specialSpawnMethod >= SPECIALSPAWNMETHOD.NUM_METHODS) {
+            _specialSpawnMethod = SPECIALSPAWNMETHOD.BOTH;
+        }
+
+        SetSpawnMethod();
+    }
+
+    public void ChanceSpawnMethodDown() {
+        _specialSpawnMethod--;
+        if (_specialSpawnMethod < SPECIALSPAWNMETHOD.BOTH) {
+            _specialSpawnMethod = SPECIALSPAWNMETHOD.NONE;
+        }
+
+        SetSpawnMethod();
+    }
+
+    void SetSpawnMethod() {
+        switch(_specialSpawnMethod) {
+            case SPECIALSPAWNMETHOD.BOTH:
+                spawnMethodText.text = "Both";
+                break;
+            case SPECIALSPAWNMETHOD.BALLS:
+                spawnMethodText.text = "Balls";
+                break;
+            case SPECIALSPAWNMETHOD.PIPE:
+                spawnMethodText.text = "Pipe";
+                break;
+            case SPECIALSPAWNMETHOD.NONE:
+                spawnMethodText.text = "None";
+                break;
+        }
+
+        _gameManager.specialSpawnMethod = _specialSpawnMethod;
     }
 
     public void LoadNextScene() {

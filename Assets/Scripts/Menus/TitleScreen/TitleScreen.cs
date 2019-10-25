@@ -11,15 +11,15 @@ public class TitleScreen : MonoBehaviour {
 
     private void Awake() {
         _input = new InputState(0);
-        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Use this for initialization
     void Start () {
+        _gameManager = FindObjectOfType<GameManager>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         _input.GetInput();
         if(_input.select.isJustPressed) {
             // Load in demo mode

@@ -59,8 +59,6 @@ public class CharacterSelector : MonoBehaviour {
     private void Awake() {
         _photonView = GetComponent<PhotonView>();
 
-        _gameManager = FindObjectOfType<GameManager>();
-        _playerManager = FindObjectOfType<PlayerManager>();
         _charaSelect = FindObjectOfType<CharacterSelect>();
         _audioSource = GetComponent<AudioSource>();
         _resources = FindObjectOfType<CharacterSelectResources>();
@@ -86,6 +84,9 @@ public class CharacterSelector : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        _gameManager = FindObjectOfType<GameManager>();
+        _playerManager = FindObjectOfType<PlayerManager>();
+
         aiIndex = 0;
 
         // If we haven't been set up properly

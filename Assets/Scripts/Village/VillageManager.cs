@@ -16,7 +16,6 @@ public class VillageManager : MonoBehaviour {
 
     private void Awake() {
         _pauseMenu = FindObjectOfType<PauseMenu>();
-        _gameManager = FindObjectOfType<GameManager>();
 
         InitPlayerPrefs();
 
@@ -25,6 +24,7 @@ public class VillageManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        _gameManager = FindObjectOfType<GameManager>();
         _gameManager.isSinglePlayer = true;
         _gameManager.isOnline = false;
 

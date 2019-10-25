@@ -185,7 +185,7 @@ public class HamsterScan : MonoBehaviour {
                         _typeCounts[6]++;
                         break;
                     case HAMSTER_TYPES.RAINBOW:
-                    case HAMSTER_TYPES.DEAD:
+                    case HAMSTER_TYPES.SKULL:
                         _typeCounts[7]++;
                         break;
                 }
@@ -221,7 +221,7 @@ public class HamsterScan : MonoBehaviour {
                         _typeCounts[6]++;
                         break;
                     case HAMSTER_TYPES.RAINBOW:
-                    case HAMSTER_TYPES.DEAD:
+                    case HAMSTER_TYPES.SKULL:
                     case HAMSTER_TYPES.BOMB:
                         _typeCounts[7]++;
                         break;
@@ -277,7 +277,7 @@ public class HamsterScan : MonoBehaviour {
                         _typeCounts[6]++;
                         break;
                     case HAMSTER_TYPES.RAINBOW:
-                    case HAMSTER_TYPES.DEAD:
+                    case HAMSTER_TYPES.SKULL:
                     case HAMSTER_TYPES.BOMB:
                         _typeCounts[7]++;
                         break;

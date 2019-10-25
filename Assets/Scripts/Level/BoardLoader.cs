@@ -144,7 +144,7 @@ public class BoardLoader : MonoBehaviour {
                         bubbles[bubIndex].type = (HAMSTER_TYPES)char.GetNumericValue(_readChar);
                         break;
                     case 'D': // Dead
-                        bubbles[bubIndex].type = HAMSTER_TYPES.DEAD;
+                        bubbles[bubIndex].type = HAMSTER_TYPES.SKULL;
                         break;
                     case 'R': // Rainbow
                         bubbles[bubIndex].type = HAMSTER_TYPES.RAINBOW;

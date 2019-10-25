@@ -24,7 +24,7 @@ public class BubbleManager : MonoBehaviour {
     // alternating between 13 and 12 columns
     // should specify top and bottom rows
     public List<Node> nodeList = new List<Node>();
-    protected int _baseLineLength = 13;
+    protected int _baseLineLength = 13; // The longest a line will be
     protected int _topLineLength = 13;
     public int TopLineLength {
         get { return _topLineLength; }
@@ -48,7 +48,11 @@ public class BubbleManager : MonoBehaviour {
     protected static List<int> _nextLineBubbles = new List<int>();
     protected int _nextLineIndex = 0; // counts up as new lines are added
     protected bool _setupDone;
+
     protected System.Random _random;
+    protected System.Random _bubbleSeed;
+    protected System.Random _specialSeed;
+    int _linesSinceSpecial = 3; // How many lines have been added since the last special spawn
 
     protected int _comboCount = -1;
     //int _scoreTotal = 0;
@@ -179,6 +183,8 @@ public class BubbleManager : MonoBehaviour {
         // Get the next line of bubbles
         if (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
             _random = new System.Random((int)Time.realtimeSinceStartup);
+            _bubbleSeed = new System.Random((int)Time.realtimeSinceStartup);
+            _specialSeed = new System.Random((int)Time.realtimeSinceStartup + 1);
             SeedNextLineBubbles();
         }
 
@@ -264,8 +270,10 @@ public class BubbleManager : MonoBehaviour {
         if (!startingBubbleInfo[0].isSet) {
             int tempType = 0;
             int[] typeCounts = new int[7]; // keeps track of how many of a type has been spawned
+            bool specialSpawned = false; // if we've made a special bubble or not, only 1 can be spawned initially
             List<Bubble> tempMatches = new List<Bubble>();
             List<int> okTypes = new List<int>();
+
             for (int i = 0; i < numBubbles; ++i) {
                 // Create and initialize a new bubble
                 GameObject bub = Instantiate(_bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
@@ -277,7 +285,7 @@ public class BubbleManager : MonoBehaviour {
                 _bubbles[i] = bubble;
 
                 // Temporarily initialize new bubble as a Dead bubble to prevent inaccurate match calculations.
-                InitBubble(bubble, (int)HAMSTER_TYPES.DEAD);
+                InitBubble(bubble, (int)HAMSTER_TYPES.SKULL);
 
                 // Update the adjacent bubbles
                 UpdateAllAdjBubbles();
@@ -311,14 +319,33 @@ public class BubbleManager : MonoBehaviour {
                     }
                 }
 
-                // Randomly choose type for the new bubble based on available types
-                tempType = Random.Range(0, okTypes.Count);
+                // If we can spawn special balls and we are within the first line
+                if (_gameManager.SpecialBallsOn && i <= _baseLineLength && !specialSpawned) {
+                    // There's a chance to spawn a special bubble
+                    int rand = Random.Range(0, 20);
+                    if (rand == 0) {
+                        startingBubbleInfo[i].type = HAMSTER_TYPES.SPECIAL;
+                        specialSpawned = true;
+                        _linesSinceSpecial = 0;
+                        // Actually initialize the bubble with the correct type
+                        InitBubble(bubble, (int)HAMSTER_TYPES.SPECIAL);
+                    } else {
+                        // Randomly choose type for the new bubble based on available types
+                        tempType = Random.Range(0, okTypes.Count);
+                        startingBubbleInfo[i].type = (HAMSTER_TYPES)okTypes[tempType];
+                        typeCounts[okTypes[tempType]] += 1;
+                        // Actually initialize the bubble with the correct type
+                        InitBubble(bubble, okTypes[tempType]);
+                    }
+                } else {
+                    // Randomly choose type for the new bubble based on available types
+                    tempType = Random.Range(0, okTypes.Count);
+                    startingBubbleInfo[i].type = (HAMSTER_TYPES)okTypes[tempType];
+                    typeCounts[okTypes[tempType]] += 1;
+                    // Actually initialize the bubble with the correct type
+                    InitBubble(bubble, okTypes[tempType]);
+                }
                 startingBubbleInfo[i].isSet = true;
-                startingBubbleInfo[i].type = (HAMSTER_TYPES)okTypes[tempType];
-                typeCounts[okTypes[tempType]] += 1;
-
-                // Actually initialize the bubble with the correct type
-                InitBubble(bubble, okTypes[tempType]);
 
                 // Reset for next check
                 for (int j = 0; j < numBubbles; ++j) {
@@ -906,7 +933,7 @@ public class BubbleManager : MonoBehaviour {
 
     protected void SeedNextLineBubbles() {
         int[] lineBubbles;
-        int lineLength = _topLineLength == _baseLineLength ? _baseLineLength -1 : _baseLineLength;
+        int lineLength = _topLineLength == _baseLineLength ? _baseLineLength - 1 : _baseLineLength;
         for (int i = 0; i < 10; ++i) {
             lineBubbles = DecideNextLine(lineLength);
             foreach (int bub in lineBubbles) {
@@ -914,6 +941,8 @@ public class BubbleManager : MonoBehaviour {
             }
             // swap to next line length
             lineLength = lineLength == _baseLineLength ? _baseLineLength - 1 : _baseLineLength;
+
+            _linesSinceSpecial++;
         }
     }
 
@@ -921,20 +950,34 @@ public class BubbleManager : MonoBehaviour {
         int[] nextLineBubbles = new int[lineLength];
         int[] typeCounts = new int[7]; // Keeps track of how many of each color has been made
         int tempType = 0;
+        bool special = false;
 
         for (int i = 0; i < lineLength; ++i) {
-            // If the line already has too many of the type, try again
-            // TODO: This could potentially be really slow, maybe optimize it sometime
-            do {
-                //tempType = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
-                tempType = _random.Next(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
-            } while (typeCounts[tempType] > 2);
+            // If we've added enough lines since the last special ball
+            if (_gameManager.SpecialBallsOn && _linesSinceSpecial >= 3) {
+                // Theres a chance to spawn another one
+                if (_specialSeed.Next(0, 30 - 2 * _linesSinceSpecial) == 0) {
+                    special = true;
+                    _linesSinceSpecial = 0;
+                }
+            }
 
-            // Increase count of type
-            typeCounts[tempType] += 1;
+            if (special) {
+                nextLineBubbles[i] = (int)HAMSTER_TYPES.SPECIAL;
+                special = false;
+            } else {
+                // If the line already has too many of the type, try again
+                // TODO: This could potentially be really slow, maybe optimize it sometime
+                do {
+                    tempType = _bubbleSeed.Next(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
+                } while (typeCounts[tempType] > 2);
 
-            // Save type for next line
-            nextLineBubbles[i] = tempType;
+                // Increase count of type
+                typeCounts[tempType] += 1;
+
+                // Save type for next line
+                nextLineBubbles[i] = tempType;
+            }
         }
 
         return nextLineBubbles;

@@ -36,6 +36,14 @@ public class GameManager : MonoBehaviour {
     public int rightTeamHandicap = 9;
     public bool aimAssist;
     public AIMASSIST aimAssistSetting = AIMASSIST.AFTERLOSS;
+    public SPECIALSPAWNMETHOD specialSpawnMethod = SPECIALSPAWNMETHOD.BOTH;
+    public bool SpecialBallsOn {
+        get { return specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.BALLS; }
+    }
+    public bool SpecialPipeOn {
+        get { return specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.PIPE; }
+    }
+
 
     public bool isPaused;
 
@@ -70,15 +78,19 @@ public class GameManager : MonoBehaviour {
 
     public UnityEvent gameOverEvent;
 
+    bool _alive;
+
     void Awake() {
         SingletonCheck();
 
-        playerManager = GetComponent<PlayerManager>();
+        if (_alive) {
+            playerManager = GetComponent<PlayerManager>();
 
-        PlayerPrefSetup();
+            PlayerPrefSetup();
 
-        //QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 200;
+            //QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 200;
+        }
     }
 
     void PlayerPrefSetup() {
@@ -124,7 +136,10 @@ public class GameManager : MonoBehaviour {
     void SingletonCheck() {
         GameObject obj = GameObject.FindGameObjectWithTag("GameManager");
         if(obj != null && obj != this.gameObject) {
+            _alive = false;
             DestroyImmediate(this.gameObject);
+        } else {
+            _alive = true;
         }
     }
 

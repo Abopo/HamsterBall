@@ -38,7 +38,7 @@ public class BubbleSprite : MonoBehaviour {
                     DropOntoBoard();
                 } else {
                     // Destroy this
-                    DestroyObject(this.gameObject);
+                    Destroy(gameObject);
                 }
             }
         }
@@ -49,8 +49,8 @@ public class BubbleSprite : MonoBehaviour {
 
     public void SetType(int inType) {
         // If this should be gravity
-        if (inType >= 11) {
-            inType -= 11;
+        if (inType >= (int)HAMSTER_TYPES.GRAVITY) {
+            inType -= (int)HAMSTER_TYPES.GRAVITY;
             SetIsGravity(true);
         }
         type = (HAMSTER_TYPES)inType;
@@ -91,7 +91,7 @@ public class BubbleSprite : MonoBehaviour {
             DropOntoBoard();
         } else {
             // Destroy this
-            DestroyObject(this.gameObject);
+            Destroy(gameObject);
         }
     }
 

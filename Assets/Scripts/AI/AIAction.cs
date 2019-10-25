@@ -104,7 +104,7 @@ public class AIAction {
         int addWeight = 0;
 
         // if we want a bubble on our board that matches the hamster we want/have.
-        if (bubbleWant != null && bubbleWant.team == _playerController.team && (type == bubbleWant.type || type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.DEAD)) {
+        if (bubbleWant != null && bubbleWant.team == _playerController.team && (type == bubbleWant.type || type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.SKULL)) {
             addWeight += 10;
 
             // increase weight based on how many matches the bubble currently has
@@ -133,7 +133,7 @@ public class AIAction {
                 //addWeight += type == HAMSTER_TYPES.DEAD ? 20 : 0;
 
             // If this action doesn't require a shift and the hamster we want/have is DEAD
-            } else if (type == HAMSTER_TYPES.DEAD) {
+            } else if (type == HAMSTER_TYPES.SKULL) {
                 // If we're on the opponent's side
                 if (_playerController.shifted) {
                     // We wanna throw that dead hamster
@@ -146,7 +146,7 @@ public class AIAction {
 
             // If any adjBubbles is a Dead bubble (try to match and drop it)
             foreach (Bubble b in bubbleWant.adjBubbles) {
-                if (b != null && b.type == HAMSTER_TYPES.DEAD) {
+                if (b != null && b.type == HAMSTER_TYPES.SKULL) {
                     addWeight += 20;
                 }
             }
@@ -224,7 +224,7 @@ public class AIAction {
             if (type == HAMSTER_TYPES.RAINBOW) {
                 // don't give your opponent a rainbow, come on!
                 addWeight -= 500;
-            } else if (type == HAMSTER_TYPES.DEAD) {
+            } else if (type == HAMSTER_TYPES.SKULL) {
                 // increase weight based on how many matches the bubble currently has
                 addWeight += (10 * bubbleWant.numMatches);
                 addWeight += bubbleWant.numMatches > 5 ? 20 : 0;

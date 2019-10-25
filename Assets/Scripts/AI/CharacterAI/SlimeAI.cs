@@ -36,7 +36,7 @@ public class SlimeAI : CharacterAI {
         List<int> validIndexes = new List<int>();
         for (int i = 0; i < _hamsterScan.AllLeftHamsters.Count; ++i) {
             // Don't choose already dead hamsters
-            if (_hamsterScan.AllLeftHamsters[i].type != HAMSTER_TYPES.DEAD) {
+            if (_hamsterScan.AllLeftHamsters[i].type != HAMSTER_TYPES.SKULL) {
                 validIndexes.Add(i);
             }
         }
@@ -48,7 +48,7 @@ public class SlimeAI : CharacterAI {
             tempIndex = validIndexes[Random.Range(0, validIndexes.Count)];
 
             // Ice the chosen bubble
-            _hamsterScan.AllLeftHamsters[tempIndex].SetType((int)HAMSTER_TYPES.DEAD);
+            _hamsterScan.AllLeftHamsters[tempIndex].SetType((int)HAMSTER_TYPES.SKULL);
 
             // Remove chosen index from valid indexes
             validIndexes.Remove(tempIndex);

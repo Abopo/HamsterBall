@@ -270,7 +270,7 @@ public class AIBrain : MonoBehaviour {
                 foreach (Bubble b in n.AdjBubbles) {
                     // Other side's hamsters
                     foreach (Hamster h in _theirHamsters) {
-                        if ((b != null && b.type == h.type) || h.type == HAMSTER_TYPES.RAINBOW || h.type == HAMSTER_TYPES.DEAD) {
+                        if ((b != null && b.type == h.type) || h.type == HAMSTER_TYPES.RAINBOW || h.type == HAMSTER_TYPES.SKULL) {
                             AIAction newAction = new AIAction(_playerController, h, b, n, _playerController.shifted ? false : true);
                             _actions.Add(newAction);
                         }
@@ -322,7 +322,7 @@ public class AIBrain : MonoBehaviour {
                     if (ob == null) {
                         continue;
                     }
-                    if (ob.type != _playerController.heldBall.type || _playerController.heldBall.type == HAMSTER_TYPES.DEAD) {
+                    if (ob.type != _playerController.heldBall.type || _playerController.heldBall.type == HAMSTER_TYPES.SKULL) {
                         AIAction newAction = new AIAction(_playerController, null, ob, n, _playerController.shifted ? false : true);
                         _actions.Add(newAction);
                     }

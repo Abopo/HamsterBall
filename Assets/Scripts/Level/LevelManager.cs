@@ -43,10 +43,6 @@ public class LevelManager : MonoBehaviour {
     }
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
-        board = _gameManager.selectedBoard;
-        LoadStagePrefab();
-
         pauseMenu = FindObjectOfType<PauseMenu>();
 
         SceneManager.sceneUnloaded += OnSceneExit;
@@ -54,6 +50,10 @@ public class LevelManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        _gameManager = FindObjectOfType<GameManager>();
+        board = _gameManager.selectedBoard;
+        LoadStagePrefab();
+
         if (_gameManager.isSinglePlayer) {
             _bubbleManager = FindObjectOfType<BubbleManager>();
         }

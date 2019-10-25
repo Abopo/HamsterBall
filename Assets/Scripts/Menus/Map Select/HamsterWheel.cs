@@ -42,13 +42,14 @@ public class HamsterWheel : MonoBehaviour {
         hamster.SetInteger("Type", type);
         hamster.SetInteger("State", 1);
 
-        _gameManager = FindObjectOfType<GameManager>();
         _audioSource = GetComponent<AudioSource>();
 
         _photonView = GetComponent<PhotonView>();
     }
     // Use this for initialization
     void Start() {
+        _gameManager = FindObjectOfType<GameManager>();
+
         _stageIcons = GetComponentsInChildren<StageIcon>();
         // Scale down all the stage icons
         for (int i = 0; i < _stageIcons.Length; ++i) {

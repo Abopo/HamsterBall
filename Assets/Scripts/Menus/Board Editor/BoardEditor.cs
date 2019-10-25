@@ -203,7 +203,7 @@ public class BoardEditor : MonoBehaviour {
                         case HAMSTER_TYPES.PURPLE:
                             tempLine += "6";
                             break;
-                        case HAMSTER_TYPES.DEAD:
+                        case HAMSTER_TYPES.SKULL:
                             tempLine += "D";
                             break;
                         case HAMSTER_TYPES.RAINBOW:
@@ -376,7 +376,7 @@ public class BoardEditor : MonoBehaviour {
                         CreateBubbleSprite((int)char.GetNumericValue(_readChar), nodeIndex);
                         break;
                     case 'D': // Dead
-                        CreateBubbleSprite((int)HAMSTER_TYPES.DEAD, nodeIndex);
+                        CreateBubbleSprite((int)HAMSTER_TYPES.SKULL, nodeIndex);
                         break;
                     case 'R': // Rainbow
                         CreateBubbleSprite((int)HAMSTER_TYPES.RAINBOW, nodeIndex);

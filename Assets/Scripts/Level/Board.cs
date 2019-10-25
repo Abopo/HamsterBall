@@ -21,6 +21,9 @@ public class Board : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
+    }
+    // Start is called before the first frame update
+    void Start() {
         _gameManager = FindObjectOfType<GameManager>();
 
         switch (_gameManager.gameMode) {
@@ -48,10 +51,10 @@ public class Board : MonoBehaviour {
 
             case GAME_MODE.SP_CLEAR:
             case GAME_MODE.SURVIVAL:
-                if(leftCeiling != null) {
+                if (leftCeiling != null) {
                     leftCeiling.SetActive(false);
                 }
-                if(rightCeiling != null) {
+                if (rightCeiling != null) {
                     rightCeiling.SetActive(false);
                 }
                 if (bigCeiling != null) {
@@ -86,9 +89,6 @@ public class Board : MonoBehaviour {
                 }
                 break;
         }
-    }
-    // Start is called before the first frame update
-    void Start() {
     }
 
     // Update is called once per frame

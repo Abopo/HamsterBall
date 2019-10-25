@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{4B42EDA6-0BC7-16AA-CD83-C9E23A198A8E}</ProjectGuid>
+    <ProjectGuid>{C9C5ACED-AF37-B251-9AC8-2374AADD4A08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -84,7 +84,6 @@
     <Compile Include="Assets\Clavian\SuperTextMesh\Scripts\SuperTextMeshData.cs" />
     <Compile Include="Assets\Clavian\SuperTextMesh\Utility\STMChangeSortingOrder.cs" />
     <Compile Include="Assets\Clavian\SuperTextMesh\Utility\STMCurveGenerator.cs" />
-    <Compile Include="Assets\HamsterSprite.cs" />
     <Compile Include="Assets\Photon\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
     <Compile Include="Assets\Photon\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
     <Compile Include="Assets\Photon\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />
@@ -197,6 +196,7 @@
     <Compile Include="Assets\Scripts\Hamsters\HamsterLineStop.cs" />
     <Compile Include="Assets\Scripts\Hamsters\HamsterScan.cs" />
     <Compile Include="Assets\Scripts\Hamsters\HamsterSpawner.cs" />
+    <Compile Include="Assets\Scripts\Hamsters\HamsterSprite.cs" />
     <Compile Include="Assets\Scripts\Hamsters\Lever.cs" />
     <Compile Include="Assets\Scripts\Hamsters\LoadingHamster.cs" />
     <Compile Include="Assets\Scripts\Level\Beach\BGFish.cs" />
@@ -546,10 +546,10 @@
     <None Include="Assets\Resources\Text\World1\1-9\Fence.txt" />
     <None Include="Assets\Resources\Text\Created Boards\Crossection.txt" />
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -753,25 +753,25 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.2f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Assets/Plugins/Photon3Unity3D.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Assets/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Core">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Assets/Plugins/Rewired/Internal/Libraries/Runtime/Rewired_Core.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Assets/Plugins/Rewired/Internal/Libraries/Runtime/Rewired_Core.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Windows_Lib">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Assets/Plugins/Rewired/Internal/Libraries/Runtime/Rewired_Windows_Lib.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Assets/Plugins/Rewired/Internal/Libraries/Runtime/Rewired_Windows_Lib.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>C:/Users/kmcco/Documents/GitHub/HamsterBall/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>D:/Users/Kevin/Documents/My Games/MY Games/HamsterScramble/BaseCopy/trunk/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.2f1/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>
@@ -803,7 +803,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{9F73057D-6A2C-DBD6-9C18-DE4DF60E371E}</Project>
+      <Project>{1ECCC056-403F-DE82-16EC-800D8F942A9F}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>

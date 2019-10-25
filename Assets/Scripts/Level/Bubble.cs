@@ -106,19 +106,6 @@ public class Bubble : MonoBehaviour {
         _popAnimation.LoadPieces(inType);
 
         _gameManager = FindObjectOfType<GameManager>();
-        /*
-        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-            _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
-        } else {
-            if (team == 0) {
-                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
-            } else if (team == 1) {
-                _homeBubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();
-            }
-        }
-
-        _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
-        */
 
         _audioSource = GetComponent<AudioSource>();
         _popClip = Resources.Load<AudioClip>("Audio/SFX/Pop");
@@ -126,8 +113,8 @@ public class Bubble : MonoBehaviour {
         _iceClip = Resources.Load<AudioClip>("Audio/SFX/IceBreak");
 
         // If the type says this should be a gravity
-        if ((int)inType >= 11) {
-            type = inType - 11;
+        if ((int)inType >= (int)HAMSTER_TYPES.GRAVITY) {
+            type = inType - (int)HAMSTER_TYPES.GRAVITY;
             SetGravity(true);
         } else {
 		    type = inType;
@@ -188,6 +175,9 @@ public class Bubble : MonoBehaviour {
                         break;
                     case 1:
                         BombExplode();
+                        break;
+                    case 2:
+                        SpecialPop();
                         break;
                 }
             }
@@ -361,7 +351,7 @@ public class Bubble : MonoBehaviour {
             CollisionWithBoard(other.GetComponent<Ceiling>().bubbleManager);
         }
         if (other.tag == "Bottom") {
-            if (type == HAMSTER_TYPES.DEAD) {
+            if (type == HAMSTER_TYPES.SKULL) {
                 int inc = 1 * (_dropCombo ? 3 : 1);
 
                 // Calculate score before the margin multiplier
@@ -387,8 +377,6 @@ public class Bubble : MonoBehaviour {
 
             // Remove self from bubble manager
             _homeBubbleManager.RemoveBubble(node);
-
-            PlayDropClip();
 
             _destroy = true;
 		}
@@ -451,7 +439,7 @@ public class Bubble : MonoBehaviour {
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectSameColor);
 		} else if(type == HAMSTER_TYPES.RAINBOW){
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectRainbow);
-		} else if(type == HAMSTER_TYPES.DEAD){
+		} else if(type == HAMSTER_TYPES.SKULL){
 			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectSkull);
 		}
 		else {
@@ -602,7 +590,7 @@ public class Bubble : MonoBehaviour {
 
 	public List<Bubble> CheckMatches(List<Bubble> matches) {
 		for (int i = 0; i < 6; ++i) {
-			if(adjBubbles[i] != null && adjBubbles[i].type != HAMSTER_TYPES.DEAD &&adjBubbles[i].type != HAMSTER_TYPES.BOMB && !adjBubbles[i].isIce) {
+			if(adjBubbles[i] != null && adjBubbles[i].type != HAMSTER_TYPES.SKULL && adjBubbles[i].type != HAMSTER_TYPES.BOMB && !adjBubbles[i].isIce) {
                 if (adjBubbles[i].type == type) {
 					if(!adjBubbles[i].checkedForMatches) {
 						adjBubbles[i].checkedForMatches = true;
@@ -745,14 +733,14 @@ public class Bubble : MonoBehaviour {
         } else {
         	BallBreakEvent.setParameterValue("PoppedCount", 10);
         }
-        Debug.Log("PopIndex " + _popIndex);
+        //Debug.Log("PopIndex " + _popIndex);
 		BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
         BallBreakEvent.start();
 		BallBreakEvent.release();
 
-		Debug.Log("Pop");
+		//Debug.Log("Pop");
         // Instaed of destroying, do a nice animation of the bubble opening.
-        _popAnimation.Pop();
+        _popAnimation.Pop(false);
 
         // Run through adjBubbles
         foreach(Bubble b in adjBubbles) {
@@ -768,11 +756,30 @@ public class Bubble : MonoBehaviour {
                 if (b.isIce) {
                     b.BreakIce();
                 }
+                // If special, pop if
+                if (b.type == HAMSTER_TYPES.SPECIAL) {
+                    b.StartPop(0, 0, 2);
+                }
             }
         }
 	}
 
-	public void Drop() {
+    public void SpecialPop() {
+        _homeBubbleManager.RemoveBubble(node);
+        popped = true;
+        _popping = false;
+
+        BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
+        BallBreakEvent.start();
+        BallBreakEvent.release();
+
+        Debug.Log("Special Pop!");
+
+        // Instead of destroying, do a nice animation of the bubble opening.
+        _popAnimation.Pop(true);
+    }
+
+    public void Drop() {
 		locked = false;
         _velocity = new Vector2 (0.0f, -10f);
 		gameObject.layer = 15; // GhostBubble
@@ -1015,20 +1022,6 @@ public class Bubble : MonoBehaviour {
 
     // Miscelleanous functions
 
-    void PlayDropClip() {
-        if (!_audioSource.isPlaying) {
-            _audioSource.clip = _dropClip;
-            _audioSource.Play();
-        }
-    }
-
-    void PlayPopClip() {
-        if (!_audioSource.isPlaying) {
-            _audioSource.clip = _popClip;
-            _audioSource.Play();
-        }
-    }
-
     void PlayIceClip() {
         if (!_audioSource.isPlaying) {
             _audioSource.clip = _iceClip;
@@ -1040,7 +1033,6 @@ public class Bubble : MonoBehaviour {
         _velocity = new Vector2(speed * dir.x, speed * dir.y);
         GetComponent<CircleCollider2D>().enabled = true;
         wasThrown = true;
-
     }
 
     public void HideSprites() {
@@ -1060,11 +1052,10 @@ public class Bubble : MonoBehaviour {
     }
 
     public bool IsSpecialType() {
-        if(type == HAMSTER_TYPES.DEAD || type == HAMSTER_TYPES.RAINBOW) {
+        if(type == HAMSTER_TYPES.SKULL || type == HAMSTER_TYPES.RAINBOW) {
             return true;
         }
 
         return false;
     }
-
 }

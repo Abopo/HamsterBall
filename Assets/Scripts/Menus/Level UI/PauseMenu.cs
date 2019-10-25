@@ -18,13 +18,12 @@ public class PauseMenu : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
-
         _buttons = GetComponentsInChildren<MenuButton>();
     }
 
     // Use this for initialization
     void Start() {
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame

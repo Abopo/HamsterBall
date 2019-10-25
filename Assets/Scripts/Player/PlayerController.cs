@@ -148,9 +148,6 @@ public class PlayerController : Entity {
     protected override void Awake() {
         canBeHit = true;
 
-        _gameManager = FindObjectOfType<GameManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
-        _gameManager.gameOverEvent.AddListener(GameEnded);
         _playerAudio = GetComponent<PlayerAudio>();
         _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         _animator = GetComponentInChildren<Animator>();
@@ -164,6 +161,10 @@ public class PlayerController : Entity {
     // Use this for initialization
     protected override void Start () {
 		base.Start ();
+
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
+        _gameManager.gameOverEvent.AddListener(GameEnded);
 
         _spawnPos = transform.position;
 

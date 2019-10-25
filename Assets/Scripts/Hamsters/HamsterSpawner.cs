@@ -77,7 +77,6 @@ public class HamsterSpawner : Photon.PunBehaviour {
                     hS.SeedRandom(seed);
                 }
             }
-            //_random = new System.Random((int)Time.realtimeSinceStartup);
         }
 
         // If we are in Party mode
@@ -94,11 +93,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
         _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         if (team == 0) {
             _hamsterInfo = _hamsterScan.leftHamsterInfo;
-            //_okTypes = _hamsterScan.OkTypesLeft;
-            //_specialSpawnOffset = _hamsterScan.specialSpawnOffsetLeft;
         } else if (team == 1) {
             _hamsterInfo = _hamsterScan.rightHamsterInfo;
-            //_okTypes = _hamsterScan.OkTypesRight;
         }
 
         // Team survival mode does not need hamsters to be equally seeded
@@ -121,10 +117,14 @@ public class HamsterSpawner : Photon.PunBehaviour {
     }
 
     void SetupSpecialTypes() {
-        //_specialSpawnOffset = -6;
+        // If we can't spawn specials via the pipe
+        if (!_gameManager.SpecialPipeOn) {
+            // Bail
+            return;
+        }
 
         if (canBeDead) {
-            specialTypes.Add((int)HAMSTER_TYPES.DEAD);
+            specialTypes.Add((int)HAMSTER_TYPES.SKULL);
         }
         if (canBeRainbow) {
             specialTypes.Add((int)HAMSTER_TYPES.RAINBOW);
@@ -223,7 +223,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
     }
 
-    void SpawnHamster() {
+    public void SpawnHamster() {
         GameObject hamsterGO;
         
         // If we are online and connected
@@ -256,7 +256,16 @@ public class HamsterSpawner : Photon.PunBehaviour {
             hamster.Initialize(team);
             hamster.testMode = testMode;
             hamster.ParentSpawner = this;
-            if (_nextHamsterType != -1) {
+            if (_nextHamsterType == (int)HAMSTER_TYPES.SPECIAL) {
+                // This hamster was spawned via a special bubble
+
+                // Choose a random special type
+                int randType = Random.Range((int)HAMSTER_TYPES.RAINBOW, (int)HAMSTER_TYPES.BOMB);
+                hamster.SetType(randType);
+                hamster.special = true;
+
+                _nextHamsterType = -1;
+            } else if(_nextHamsterType != -1) {
                 hamster.SetType(_nextHamsterType);
                 _nextHamsterType = -1;
             } else {
@@ -298,21 +307,19 @@ public class HamsterSpawner : Photon.PunBehaviour {
                 int special = _random.Next(_hamsterInfo.SpecialSpawnOffset, 16);
                 if (special == 15 && specialTypes.Count > 0) {
                     // Choose which special hamster it will be
-                    //int sType = _random.Next(0, specialTypes.Count);
-                    // We don't use the set _random variable because we want players to get different special types
-                    int sType = Random.Range(0, specialTypes.Count);
+                    int sType = Random.Range(0, specialTypes.Count); // We don't use the set _random variable because we want players to get different special types
                     switch (specialTypes[sType]) {
                         case 8: // Rainbow
                             rType = (int)HAMSTER_TYPES.RAINBOW;
                             break;
                         case 9: // Dead
-                            rType = (int)HAMSTER_TYPES.DEAD;
+                            rType = (int)HAMSTER_TYPES.SKULL;
                             break;
                         case 10: // Bomb
                             rType = (int)HAMSTER_TYPES.BOMB;
                             break;
                         case 0: // Gravity
-                            rType = 11;
+                            rType = (int)HAMSTER_TYPES.GRAVITY;
                             break;
                     }
 
@@ -396,6 +403,30 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
             // Move the line forward
             HamsterLineMove();
+        }
+    }
+
+    // Used to let special hamsters through
+    public void ReleaseSpecificHamster(Hamster ham) {
+        foreach (Hamster h in _hamsterLine) {
+            if (h == ham) {
+                // Release this hamster
+                // Set hamster to run up
+                h.SetState(1);
+                h.FaceUp();
+
+                h.ExitLine();
+
+                // Open the hamster doors
+                foreach (HamsterDoor hamDoor in _hamsterDoors) {
+                    hamDoor.Open();
+                }
+
+                // Remove the released hamster from the list
+                _hamsterLine.Remove(h);
+
+                return;
+            }
         }
     }
 

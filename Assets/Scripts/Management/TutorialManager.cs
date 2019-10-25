@@ -18,11 +18,12 @@ public class TutorialManager : MonoBehaviour {
     LevelManager _levelManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
     }
     // Use this for initialization
     void Start () {
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
+
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach(GameObject p in players) {
             if(!p.GetComponent<PlayerController>().aiControlled) {

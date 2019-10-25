@@ -79,7 +79,7 @@ public class ResultsScreen : MonoBehaviour {
             if (winningTeamText != null) {
                 winningTeamText.text = "Draw";
             }
-            winningTeamText.gameObject.SetActive(true);
+            //winningTeamText.gameObject.SetActive(true);
             winningTeamSprite.enabled = false;
         }
     }

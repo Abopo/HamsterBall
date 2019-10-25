@@ -29,11 +29,13 @@ public class CharacterSelectWindow : MonoBehaviour {
     StorySelectMenu _storySelectMenu;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
     }
+
     // Use this for initialization
     protected virtual void Start () {
+        _gameManager = FindObjectOfType<GameManager>();
+
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
         _characterSprites[0] = boySprites[0];

@@ -62,7 +62,7 @@ public class BubblePopAnimation : MonoBehaviour {
             case HAMSTER_TYPES.BOMB:
                 _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/RedBubblePieces");
                 break;
-            case HAMSTER_TYPES.DEAD:
+            case HAMSTER_TYPES.SKULL:
                 _bubblePiecesSprites = Resources.LoadAll<Sprite>("Art/Effects/Bubbles/GrayBubblePieces");
                 break;
         }
@@ -109,7 +109,7 @@ public class BubblePopAnimation : MonoBehaviour {
         }
     }
 
-    public void Pop() {
+    public void Pop(bool special) {
         // Create 4 bubble pieces, and set the appropriate sprites.
         for(int i = 0; i < 4; ++i) {
             _bubblePieces[i] = GameObject.Instantiate(bubblePieceObj, this.transform) as GameObject;
@@ -142,16 +142,18 @@ public class BubblePopAnimation : MonoBehaviour {
         _bubblePieces[3].GetComponent<Rigidbody2D>().velocity = new Vector2(2f + rX, 2f + rY);
         _bubblePieces[3].GetComponent<Rigidbody2D>().rotation = Random.Range(-20f, 20f);
 
-        // Launch off hamster sprite
-        _hamsterSprite.Pop();
+        if (special) {
+            _hamsterSprite.SpecialPop();
+        } else {
+            // Launch off hamster sprite
+            _hamsterSprite.Pop();
+            // Start destroy timer
+            _popped = true;
+        }
 
         // Turn off normal bubble sprite and collision
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<CircleCollider2D>().enabled = false;
-
-
-        // Start destroy timer
-        _popped = true;
     }
 
 }

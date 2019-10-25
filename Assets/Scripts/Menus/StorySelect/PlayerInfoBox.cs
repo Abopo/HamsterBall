@@ -25,12 +25,13 @@ public class PlayerInfoBox : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
-
         SceneManager.sceneLoaded += OnLevelLoaded;
     }
+
     // Use this for initialization
     void Start () {
+        _gameManager = FindObjectOfType<GameManager>();
+
         _player = ReInput.players.GetPlayer(playerID);
 
         _sprite = GetComponentInChildren<SpriteRenderer>(true);

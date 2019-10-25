@@ -9,12 +9,12 @@ public class ExitMenu : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _charaSelect = FindObjectOfType<CharacterSelect>();
-        _gameManager = FindObjectOfType<GameManager>();
     }
+
     // Start is called before the first frame update
     void Start() {
-        
+        _charaSelect = FindObjectOfType<CharacterSelect>();
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame

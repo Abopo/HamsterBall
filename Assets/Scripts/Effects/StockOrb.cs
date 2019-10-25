@@ -52,9 +52,6 @@ public class StockOrb : MonoBehaviour {
 
     public void Launch(Transform target, int type)
     {
-		//HamsterTravelEvent.start();
-		//HamsterTravelEvent.release();
-
         targetTransform = target;
 
         // Set colors based on type
@@ -145,7 +142,7 @@ public class StockOrb : MonoBehaviour {
                 // Add stock to the hamster meter
                 hMeter.IncreaseStock(1);
 
-                DestroyObject(this.gameObject);
+                Destroy(gameObject);
 
                 _destroy = true;
             }

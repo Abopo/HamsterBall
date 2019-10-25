@@ -92,7 +92,7 @@ public class GameSetupOption : MenuOption {
         _isSelected = false;
 
         // Make sure it's adjacent options are NOT highlighted
-        DeHighlightAdjOptions();
+        DeHighlightOtherOptions();
     }
 
     protected override void Select() {

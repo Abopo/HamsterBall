@@ -75,7 +75,7 @@ public class BoardDisplay : MonoBehaviour {
                         CreateBubbleSprite((int)char.GetNumericValue(_readChar), nodeIndex);
                         break;
                     case 'D': // Dead
-                        CreateBubbleSprite((int)HAMSTER_TYPES.DEAD, nodeIndex);
+                        CreateBubbleSprite((int)HAMSTER_TYPES.SKULL, nodeIndex);
                         break;
                     case 'R': // Rainbow
                         CreateBubbleSprite((int)HAMSTER_TYPES.RAINBOW, nodeIndex);

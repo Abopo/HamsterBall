@@ -40,13 +40,13 @@ public class PlayerEffects : MonoBehaviour {
 
     private void Awake() {
         _playerController = transform.parent.GetComponent<PlayerController>();
-        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Use this for initialization
     void Start () {
-        LoadEffects();
+        _gameManager = FindObjectOfType<GameManager>();
 
+        LoadEffects();
 	}
 
     void LoadEffects() {

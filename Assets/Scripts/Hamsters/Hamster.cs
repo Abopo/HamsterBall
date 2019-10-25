@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 
 public enum HAMSTER_TYPES { NO_TYPE = -1, GREEN = 0, RED, YELLOW, GRAY, BLUE, PINK, PURPLE, NUM_NORM_TYPES,
-						   RAINBOW = 8, DEAD, BOMB, NUM_SPEC_TYPES = 3};
+                            RAINBOW = 8, SKULL, BOMB, GRAVITY = 50, NUM_SPEC_TYPES = 4,
+                            SPECIAL = 15}; // SPECIAL is only used for special bubbles
 
 public class Hamster : Entity {
     public HAMSTER_TYPES type;
     public int team;
     public int hamsterNum; // just a number specifying each individual hamster
     public bool wasCaught; // used to prevent the same hamster from being caught twice ont he same frame.
+    public bool special; // Specifically hamsters spawned via a special bubble, they ignore the hamster line
 
-	public GameObject spiralEffectObj;
+    public GameObject spiralEffectObj;
 	public GameObject spiralEffectInstance;
 	public bool isGravity;
 
@@ -31,7 +33,7 @@ public class Hamster : Entity {
     List<int> _okTypes;
 
     float rainbowMoveSpeed = 4f;
-    float deadMoveSpeed = 2.25f;
+    float skullMoveSpeed = 2.25f;
     float gravityMoveSpeed = 3.5f;
 
     float _stuckTimer = 0f;
@@ -48,8 +50,15 @@ public class Hamster : Entity {
         get { return _curState; }
     }
 
+    SpriteOutline _spriteOutline;
+
     GameManager _gameManager;
-    
+
+    protected override void Awake() {
+        base.Awake();
+
+        _spriteOutline = GetComponentInChildren<SpriteOutline>();
+    }
     // Use this for initialization
     protected override void Start () {
 		base.Start ();
@@ -90,9 +99,9 @@ public class Hamster : Entity {
     public void SetType(int setType) {
         if(setType == (int)HAMSTER_TYPES.RAINBOW) {
             _moveSpeed = rainbowMoveSpeed;
-        } else if(setType == (int)HAMSTER_TYPES.DEAD) {
-            _moveSpeed = deadMoveSpeed;
-        } else if(setType == 11) {
+        } else if(setType == (int)HAMSTER_TYPES.SKULL) {
+            _moveSpeed = skullMoveSpeed;
+        } else if(setType == (int)HAMSTER_TYPES.GRAVITY) {
             isGravity = true;
             spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
             spiralEffectInstance.transform.parent = transform;
@@ -108,12 +117,14 @@ public class Hamster : Entity {
         }
         _animator.SetInteger("Type", (int)type);
 
+        SetOutlineColor();
+
         curMoveSpeed = _moveSpeed;
     }
 
     // This overload is specifically used to set a special type with a color.
     public void SetType(int sType, HAMSTER_TYPES cType) {
-        if (sType == 11) {
+        if (sType == (int)HAMSTER_TYPES.GRAVITY) {
             isGravity = true;
             spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
             spiralEffectInstance.transform.parent = transform;
@@ -127,7 +138,41 @@ public class Hamster : Entity {
         }
         _animator.SetInteger("Type", (int)type);
 
+        SetOutlineColor();
+
         curMoveSpeed = _moveSpeed;
+    }
+
+    void SetOutlineColor() {
+        switch(type) {
+            case HAMSTER_TYPES.BLUE:
+                _spriteOutline.color = Color.blue;
+                break;
+            case HAMSTER_TYPES.GRAY:
+                _spriteOutline.color = Color.gray;
+                break;
+            case HAMSTER_TYPES.GREEN:
+                _spriteOutline.color = Color.green;
+                break;
+            case HAMSTER_TYPES.PINK:
+                _spriteOutline.color = new Color(1.0f, 0f, 0.5f);
+                break;
+            case HAMSTER_TYPES.PURPLE:
+                _spriteOutline.color = new Color(0.8f, 0f, 1f);
+                break;
+            case HAMSTER_TYPES.RED:
+                _spriteOutline.color = Color.red;
+                break;
+            case HAMSTER_TYPES.YELLOW:
+                _spriteOutline.color = Color.yellow;
+                break;
+            case HAMSTER_TYPES.SKULL:
+                _spriteOutline.color = Color.black;
+                break;
+            case HAMSTER_TYPES.RAINBOW:
+                _spriteOutline.color = Color.white;
+                break;
+        }
     }
 
     int SelectValidNormalType() {
@@ -243,8 +288,10 @@ public class Hamster : Entity {
         // Pipe traversal
         PipeMovement(other);
 
-        // Line collisions
-        LineCollisions(other);
+        if (!special) {
+            // Line collisions
+            LineCollisions(other);
+        }
     }
 
     void OnTriggerStay2D(Collider2D other) {
@@ -260,25 +307,6 @@ public class Hamster : Entity {
                 UpdateVelocity();
             }
         }
-
-        /*
-        if ((other.tag == "PipeCornerLeft" || other.tag == "PipeCornerRight") && other.name != "Blocker") {
-            _stuckTimer += Time.deltaTime;
-            if (_stuckTimer >= _stuckTime) {
-                // If we're stuck in the collider for some reason, get set back to a good spot
-                transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 0.06f, transform.position.z);
-
-                // Turn
-                if (inRightPipe) {
-                    FaceLeft();
-                } else {
-                    FaceRight();
-                }
-
-                _stuckTimer = 0f;
-            }
-        }
-        */
     }
 
     void OnTriggerExit2D(Collider2D other) {
@@ -379,8 +407,8 @@ public class Hamster : Entity {
         exitedLine = true;
     }
     
-    public bool IsSpecial() {
-        if (type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.DEAD || isGravity) {
+    public bool IsSpecialType() {
+        if (type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.SKULL || isGravity) {
             return true;
         }
 

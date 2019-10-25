@@ -46,18 +46,22 @@ public class MenuButton : MenuOption {
         base.Update();
 
         // If nothing is selected and we are the default selection
-        if (EventSystem.current.GetComponent<EventSystem>().currentSelectedGameObject == null && isFirstSelection) {
-            // If we get any button input
-            if (AnyInput()) {
-                // Highlight the first selection
-                Highlight();
-            }
-        }
+        //if (EventSystem.current.GetComponent<EventSystem>().currentSelectedGameObject == null && isFirstSelection) {
+        //    // If we get any button input
+        //    if (AnyInput()) {
+        //        // Highlight the first selection
+        //        Highlight();
+        //    }
+        //}
     }
 
     protected override void Select() {
         if (isReady && _button.interactable) {
             base.Select();
+
+            if (isReady) {
+                GetComponent<Button>().onClick.Invoke();
+            }
         }
     }
 

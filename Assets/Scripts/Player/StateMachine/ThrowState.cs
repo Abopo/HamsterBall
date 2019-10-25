@@ -70,7 +70,7 @@ public class ThrowState : PlayerState {
             playerController.heldBall = null;
             
             // Leave the Throw state
-            playerController.ChangeState(PLAYER_STATE.IDLE);
+            playerController.ChangeState(PLAYER_STATE.FALL);
         } else if(!_hasThrown && playerController.heldBall != null) {
             // Make sure the player can't get stuck in the aim state before throwing
             playerController.Animator.SetBool("HoldingBall", true);

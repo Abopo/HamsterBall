@@ -126,9 +126,6 @@ public class MenuOption : MonoBehaviour {
 
     protected virtual void Select() {
         //PlaySelectSound();
-        if (isReady) {
-            GetComponent<Button>().onClick.Invoke();
-        }
     }
 
     protected void DeHighlightAdjOptions() {
@@ -204,10 +201,6 @@ public class MenuOption : MonoBehaviour {
     }
 
     public void PlaySelectSound() {
-        //if (_audioSource != null) {
-        //_audioSource.clip = _selectClip;
-        //_audioSource.Play();
-        //}
         switch (menuType) {
             case MENUTYPE.MAIN:
                 FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuSelect);
