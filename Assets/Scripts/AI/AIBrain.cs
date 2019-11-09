@@ -77,7 +77,7 @@ public class AIBrain : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         _decisionTimer += Time.deltaTime;
-        if (_decisionTimer >= _decisionTime && _playerController.curState != PLAYER_STATE.THROW) {
+        if (_decisionTimer >= _decisionTime && _playerController.CurState != PLAYER_STATE.THROW) {
             // Clear out old actions
             _actions.Clear();
 
@@ -114,7 +114,7 @@ public class AIBrain : MonoBehaviour {
         // If the opponent is on our side and we aren't already holding a bubble
         if (_playerController.heldBall == null) {
             foreach(PlayerController opp in _opponents) {
-                if(opp.shifted && !_playerController.shifted && _playerController.curState != PLAYER_STATE.SHIFT) {
+                if(opp.shifted && !_playerController.shifted && _playerController.CurState != PLAYER_STATE.SHIFT) {
                     // Go after the opponent!
                     AIAction newAction = new AIAction(_playerController);
                     newAction.opponent = opp;

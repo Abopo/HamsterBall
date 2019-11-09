@@ -55,13 +55,13 @@ public class TutorialManager : MonoBehaviour {
 
         if (_tutorialIndex == 2 && _playerController.heldBall != null) {
             ShowNextTutorial();
-        } else if (_tutorialIndex == 3 && _playerController.curState == PLAYER_STATE.THROW) {
+        } else if (_tutorialIndex == 3 && _playerController.CurState == PLAYER_STATE.THROW) {
             ShowNextTutorial();
-        } else if (_tutorialIndex == 4 && _playerController.curState != PLAYER_STATE.THROW) {
+        } else if (_tutorialIndex == 4 && _playerController.CurState != PLAYER_STATE.THROW) {
             ShowNextTutorial();
-        } else if (_tutorialIndex == 6 && _playerController.transform.position.x > 0 && _playerController.curState != PLAYER_STATE.SHIFT) {
+        } else if (_tutorialIndex == 6 && _playerController.transform.position.x > 0 && _playerController.CurState != PLAYER_STATE.SHIFT) {
             ShowNextTutorial();
-        } else if (_tutorialIndex == 7 && _playerController.transform.position.x < 0 && _playerController.curState != PLAYER_STATE.SHIFT) {
+        } else if (_tutorialIndex == 7 && _playerController.transform.position.x < 0 && _playerController.CurState != PLAYER_STATE.SHIFT) {
             ShowNextTutorial();
         }
     }

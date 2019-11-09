@@ -89,85 +89,20 @@ public class CharacterSelector : MonoBehaviour {
 
         aiIndex = 0;
 
-        // If we haven't been set up properly
-        if (playerNum == -1 || charaWindow.charaAnimator == null) { // Should probably only happen when networking
-            // Find correct stuff
-            //Initialize();
-        } else {
-            // Set color stuff based on playerNum
-            //GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum];
-            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum + 4];
-
-            charaWindow.playerController.characterSelector = this;
-        }
+        charaWindow.playerController.characterSelector = this;
     }
 
     // Currently only used when networking
     public void NetworkInitialize() {
         Debug.Log("Network Initialize");
 
-        // Get player number
-        CharacterSelect characterSelect = FindObjectOfType<CharacterSelect>();
-        playerNum = characterSelect.numPlayers;
-
-        // Set color stuff based on playerNum
-        GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum];
-        transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = _resources.CharaSelectors[playerNum + 4];
-
         // Controller should just always be first player cuz it's online
         _player = ReInput.players.GetPlayer(0);
-
-        // Find the correct window
-        CharacterWindow[] charaWindows = FindObjectsOfType<CharacterWindow>();
-        foreach (CharacterWindow cw in charaWindows) {
-            if (cw.num == playerNum) {
-                charaWindow = cw;
-                break;
-            }
-        }
-        charaWindow.playerController.characterSelector = this;
-
-        // Highlight an icon based on playerNum
-        CharacterIcon[] charaIcons = FindObjectsOfType<CharacterIcon>();
-        foreach(CharacterIcon ci in charaIcons) {
-            switch(playerNum) {
-                case 0:
-                    if(ci.charaName == CHARACTERS.BOY) {
-                        HighlightIcon(ci);
-                    }
-                    break;
-                case 1:
-                    if (ci.charaName == CHARACTERS.GIRL) {
-                        HighlightIcon(ci);
-                    }
-                    break;
-                case 2:
-                    if (ci.charaName == CHARACTERS.ROOSTER) {
-                        HighlightIcon(ci);
-                    }
-                    break;
-                case 3:
-                    if (ci.charaName == CHARACTERS.LACKEY) {
-                        HighlightIcon(ci);
-                    }
-                    break;
-            }
-        }
-
-        // With player number, get correct border sprite, character animator, and ready sprite
-        //Sprite[] selectorSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterSelectors");
-        //GetComponent<SpriteRenderer>().sprite = selectorSprites[playerNum];
-        //Transform child = transform.GetChild(0);
-        //child.GetComponent<SpriteRenderer>().sprite = selectorSprites[playerNum + 4];
-        //child.transform.Translate(0.66f*playerNum, 0f, 0f);
-
-        //NetworkedCharacterSelect networkedCharaSelect = FindObjectOfType<NetworkedCharacterSelect>();
-        //characterAnimator = networkedCharaSelect.charaAnimators[playerNum];
-        //characterAnimator.gameObject.SetActive(true);
     }
 
     public void Activate(Player player) {
         isActive = true;
+        isLocal = true;
 
         _player = player;
         charaWindow.playerController.SetInputPlayer(_player);
@@ -186,6 +121,7 @@ public class CharacterSelector : MonoBehaviour {
     // For AI
     public void ActivateAsAI(CharacterSelector pSelector) {
         isActive = true;
+        isLocal = true;
 
         isAI = true;
 
@@ -200,9 +136,11 @@ public class CharacterSelector : MonoBehaviour {
         charaWindow.Activate(true, playerNum);
     }
 
+    // For Networking
     public void Activate(bool ai, bool local) {
         isActive = true;
 
+        /*
         if (ai) {
             isAI = true;
             takeInput = false;
@@ -214,13 +152,35 @@ public class CharacterSelector : MonoBehaviour {
         } else {
             _player = ReInput.players.GetPlayer(playerNum);
         }
+        */
+
+        // Controller should always be 0 since we're online
+        _player = ReInput.players.GetPlayer(0);
+        charaWindow.playerController.SetInputPlayer(_player);
 
         foreach (SpriteRenderer sr in _sprites) {
             sr.enabled = true;
         }
+        if (curCharacterIcon != null) {
+            HighlightIcon(curCharacterIcon);
+        }
 
         charaWindow.Activate(ai, playerNum);
         isLocal = local;
+
+        _charaSelect.numPlayers++;
+
+        // If we are the local player
+        if(local) {
+            takeInput = true;
+            // Send an rpc to activate this selector for everyone else
+            GetComponent<PhotonView>().RPC("NetworkActivate", PhotonTargets.OthersBuffered);
+        }
+    }
+
+    [PunRPC]
+    public void NetworkActivate() {
+        Activate(false, false);
     }
 
     public void Deactivate() {
@@ -324,8 +284,13 @@ public class CharacterSelector : MonoBehaviour {
             if (lockedIn) {
                 Unlock();
             } else {
-                // Deactivate
-                Deactivate();
+                if(!_gameManager.isOnline) {
+                    // Deactivate
+                    Deactivate();
+                } else {
+                    // Ask disconnect message
+                    _charaSelect.exitMenu.Activate();
+                }
             }
         }
     }
@@ -361,6 +326,9 @@ public class CharacterSelector : MonoBehaviour {
         if (!_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
             // Take it
             _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = true;
+
+            // Make sure player has correct controller
+            charaWindow.playerController.SetInputPlayer(_player.id);
 
             // Shift this player into the play area
             charaWindow.playerController.ShiftIntoPlayArea();

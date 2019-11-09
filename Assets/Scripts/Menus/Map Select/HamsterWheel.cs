@@ -237,6 +237,7 @@ public class HamsterWheel : MonoBehaviour {
         _gameManager.selectedBoard = _stages[_index];
 
         if (_gameManager.isOnline && PhotonNetwork.connectedAndReady) {
+            PhotonNetwork.RPC(GetComponent<PhotonView>(), "SetStage", PhotonTargets.Others, false, (int)_stages[_index]);
             PhotonNetwork.LoadLevel(levelName);
         } else {
             //LoadingScreen.sceneToLoad = levelName;
@@ -292,5 +293,10 @@ public class HamsterWheel : MonoBehaviour {
         } else {
             RotateRight();
         }
+    }
+
+    [PunRPC]
+    void SetStage(int selectedBoard) {
+        _gameManager.selectedBoard = (BOARDS)selectedBoard;
     }
 }

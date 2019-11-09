@@ -19,6 +19,9 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     NetworkedCharacterSelect _netCharaSelect;
     CharacterSelect _charaSelect;
 
+    //float _bufferTime = 3f;
+    //float _bufferTimer = 0f;
+
     private void Awake() {
         _selector = GetComponent<CharacterSelector>();
 
@@ -30,7 +33,6 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
         _netCharaSelect = FindObjectOfType<NetworkedCharacterSelect>();
         _charaSelect = FindObjectOfType<CharacterSelect>();
-        _charaSelect.numPlayers++;
 
         _nickname = PhotonNetwork.playerName;
 
@@ -54,6 +56,7 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
             stream.Serialize(ref characterName);
             stream.Serialize(ref characterColor);
 
+
             islockedIn = _selector.lockedIn;
             stream.Serialize(ref islockedIn);
             isReady = _selector.isReady;
@@ -64,21 +67,33 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
 
             charaInfo.name = (CHARACTERS)characterName;
             charaInfo.color = characterColor;
-            _selector.SetIcon(charaInfo);
+            _selector.SetColor(charaInfo.color);
 
             stream.Serialize(ref islockedIn);
-            if(islockedIn && !_selector.lockedIn) {
+
+            stream.Serialize(ref isReady);
+        }
+    }
+
+    private void FixedUpdate() {
+        if(PhotonNetwork.connectedAndReady && !photonView.isMine) {
+            if (islockedIn && !_selector.lockedIn) {
                 _selector.LockIn();
-            } else if(!islockedIn && _selector.lockedIn) {
+            } else if (!islockedIn && _selector.lockedIn) {
                 _selector.Unlock();
             }
 
-            stream.Serialize(ref isReady);
-            if(isReady && !_selector.isReady) {
-                _selector.ShiftCSPlayer();
-            } else if(!isReady && _selector.isReady) {
-                _selector.Unready();
+            if(!_selector.lockedIn) {
+                if(_selector.curCharacterIcon.charaName != charaInfo.name) {
+                    _selector.SetIcon(charaInfo);
+                }
             }
+
+            //if (isReady && !_selector.isReady) {
+                //_selector.ShiftCSPlayer();
+            //} else if (!isReady && _selector.isReady) {
+                //_selector.Unready();
+            //}
         }
     }
 

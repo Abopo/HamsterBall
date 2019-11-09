@@ -31,7 +31,7 @@ public class InputState {
     bool leftJustPressed;
     bool rightJustPressed;
 
-    public int playerID;
+    public int playerID = -1;
     Player _player;
 
 	public InputState(){
@@ -119,6 +119,8 @@ public class InputState {
             select.isDown = _player.GetButton("Select");
             select.isJustPressed = _player.GetButtonDown("Select");
             select.isJustReleased = _player.GetButtonUp("Select");
+        } else if(playerID >= 0) {
+            _player = ReInput.players.GetPlayer(playerID);
         }
     }
 

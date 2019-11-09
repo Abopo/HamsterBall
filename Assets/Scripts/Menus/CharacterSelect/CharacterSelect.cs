@@ -57,10 +57,7 @@ public class CharacterSelect : MonoBehaviour {
         _isActive = true;
         pressStartText.SetActive(false);
 
-        // If we are online, the selectors will be made elsewhere
-        if (!_gameManager.isOnline) {
-            SetupSelectors();
-        }
+        SetupSelectors();
 	}
 
     // Assign controllers to every player
@@ -92,8 +89,8 @@ public class CharacterSelect : MonoBehaviour {
                     return;
                 }
             }
-            // If there's still space for a player
-            if (IsStillSpace()) {
+            // If there's still space for a player (and we're not online)
+            if (IsStillSpace() && (!PhotonNetwork.connectedAndReady || Input.GetKey(KeyCode.O))) {
                 // Look for player inputs
                 _tempPlayer = InputState.AnyButtonOnAnyControllerPressed();
                 if (_tempPlayer != null && !_assignedPlayers.Contains(_tempPlayer)) {
@@ -133,7 +130,7 @@ public class CharacterSelect : MonoBehaviour {
         }
 
         if (_gameManager.isOnline) {
-            GetComponent<PhotonView>().RPC("GameSetup", PhotonTargets.AllBuffered, true);
+            GetComponent<PhotonView>().RPC("GameSetupStart", PhotonTargets.AllBuffered, true);
         }
     }
 
@@ -250,36 +247,6 @@ public class CharacterSelect : MonoBehaviour {
     public void RemovePlayer(Player player) {
         _assignedPlayers.Remove(player);
         _waitFrames = 0;
-    }
-
-    // Only used for networking
-    public void AddSelector(CharacterSelector selector) {
-        // Make sure we don't add a duplicate selector
-        foreach (CharacterSelector charaSelector in _charaSelectors) {
-            if(charaSelector == selector) {
-                return;
-            }
-        }
-
-        // If no duplicates were found
-
-        // Add it to the array
-        _charaSelectors[numPlayers] = selector;
-
-        numPlayers++;
-
-        Debug.Log("Added player" + " Num players: " + numPlayers);
-    }
-    public void RemoveSelector(int ownerId) {
-        // Find the selector with the same owner
-        for (int i = 0; i < numPlayers; ++i) {
-            if (_charaSelectors[i].ownerId == ownerId) {
-                // Deactivate that selector
-                _charaSelectors[i].Deactivate();
-                numPlayers--;
-                break;
-            }
-        }
     }
 
     public bool IsStillSpace() {

@@ -50,7 +50,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         if (stream.isWriting) {
             Vector3 pos = transform.localPosition;
             Quaternion rot = transform.localRotation;
-            int state = (int)_playerController.curState;
+            int state = (int)_playerController.CurState;
 
             //stream.Serialize(ref pos);
             //stream.Serialize(ref rot);
@@ -67,7 +67,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.right.isJustReleased);
             stream.Serialize(ref _serializedInput.swing.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isDown);
-            stream.Serialize(ref _serializedInput.shift.isJustPressed);
+            //stream.Serialize(ref _serializedInput.shift.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isJustReleased);
             //stream.Serialize(ref _serializedInput.attack.isDown);
             stream.Serialize(ref _serializedInput.attack.isJustPressed);
@@ -90,7 +90,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.right.isJustReleased);
             stream.Serialize(ref _serializedInput.swing.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isDown);
-            stream.Serialize(ref _serializedInput.shift.isJustPressed);
+            //stream.Serialize(ref _serializedInput.shift.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isJustReleased);
             //stream.Serialize(ref _serializedInput.attack.isDown);
             stream.Serialize(ref _serializedInput.attack.isJustPressed);
@@ -104,17 +104,19 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        if (!photonView.isMine && _correctState != (int)_playerController.curState) {
-            _bufferTimer += Time.deltaTime;
-            if (_bufferTimer >= _bufferTime) {
-                _playerController.ChangeState((PLAYER_STATE)_correctState);
+        if (PhotonNetwork.connectedAndReady) {
+            if (!photonView.isMine && _correctState != (int)_playerController.CurState) {
+                _bufferTimer += Time.deltaTime;
+                if (_bufferTimer >= _bufferTime) {
+                    //_playerController.ChangeState((PLAYER_STATE)_correctState);
+                }
+            } else {
+                _bufferTimer = 0f;
             }
-        } else {
-            _bufferTimer = 0f;
-        }
 
-        if (_playerController.inputState != null) {
-            GetOwnerInput();
+            if (_playerController.inputState != null) {
+                GetOwnerInput();
+            }
         }
     }
 
@@ -272,7 +274,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         if (PhotonNetwork.isMasterClient) {
             // Check if the player has been punched or not
             // If we're still in the throw state we're good
-            if (_playerController.curState == PLAYER_STATE.THROW) {
+            if (_playerController.CurState == PLAYER_STATE.THROW) {
                 // Throw the bubble!
                 ThrowBubble(arrowRot);
 
@@ -284,5 +286,10 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
                 // TODO: send a response?
             }
         }
+    }
+
+    [PunRPC]
+    void ShiftPlayer() {
+        _playerController.StartShift();
     }
 }

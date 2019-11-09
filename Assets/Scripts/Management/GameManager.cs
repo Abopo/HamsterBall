@@ -186,6 +186,9 @@ public class GameManager : MonoBehaviour {
         if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.P)) {
             CharacterSelectButton();
         }
+        if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.O)) {
+            MainMenuButton();
+        }
     }
 
     // 0 = left team; 1 = right team

@@ -85,12 +85,12 @@ public class OnlineLobby : MonoBehaviour {
     }
 
     public void OnCreatedRoom() {
-        PhotonNetwork.LoadLevel("NetworkedCharacterSelect");
+        PhotonNetwork.LoadLevel("NetworkedCharacterSelect"); 
     }
-    
+
     public void OnReceivedRoomListUpdate() {
         foreach(GameObject gO in rooms) {
-            DestroyObject(gO);
+            Destroy(gO);
         }
         rooms.Clear();
 

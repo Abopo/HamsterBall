@@ -10,14 +10,16 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 
     CharacterSelect _characterSelect;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
+        FindObjectOfType<GameManager>().gameMode = GAME_MODE.MP_VERSUS;
+    }
+    // Use this for initialization
+    void Start () {
         _characterSelect = GetComponent<CharacterSelect>();
 
-        CreateNetworkedCharacterSelector();
-
+        InitializeSelector(PhotonNetwork.player.ID);
         //InitializeSelectors();
-        StartCoroutine(TryInitializeSelectors());
+        //StartCoroutine(TryInitializeSelectors());
 	}
 
     IEnumerator TryInitializeSelectors() {
@@ -32,7 +34,7 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 
         // Once all the selectors have been created by the server
         // Initialize them
-        InitializeSelectors();
+        //InitializeSelectors();
     }
 	
 	// Update is called once per frame
@@ -51,8 +53,12 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
         for (int i = 0; i < PhotonNetwork.playerList.Length; ++i) {
             // Find the matching selector
             for(int j = 0; j < charaSelectors.Length; ++j) {
-                if(charaSelectors[j].ownerId == PhotonNetwork.playerList[i].ID) {
+                if(charaSelectors[j].playerNum == PhotonNetwork.playerList[i].ID) {
 
+                    charaSelectors[j].NetworkInitialize();
+                    charaSelectors[j].Activate(false, true);
+
+                    /*
                     // If it hasn't been initialize yet
                     if (charaSelectors[j].playerNum == -1) {
                         Debug.Log("Initizalizing selector");
@@ -72,39 +78,64 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
                         // Add it to the character select
                         _characterSelect.AddSelector(charaSelectors[j]);
                     }
+                    */
                 }
+            }
+        }
+    }
+
+    void InitializeSelector(int playerID) {
+        Debug.Log("Initialize player " + playerID);
+
+        // Find all the selectors
+        CharacterSelector[] charaSelectors = FindObjectsOfType<CharacterSelector>();
+    
+        foreach(CharacterSelector cs in charaSelectors) {
+            if(cs.playerNum == playerID-1) {
+                // Take ownership of the selector and the associated player
+                cs.GetComponent<PhotonView>().TransferOwnership(playerID);
+                cs.charaWindow.playerController.GetComponent<PhotonView>().TransferOwnership(playerID);
+
+                // Activate it
+                cs.Activate(false, true);
             }
         }
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer otherPlayer) {
         // Wait for their selector to spawn, then initialize it
-        StartCoroutine(TryInitializeSelectors());
+        //StartCoroutine(TryInitializeSelectors());
+        //InitializeSelector(otherPlayer.ID);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
     }
 
-    // Networking
-    public void CreateNetworkedCharacterSelector() {
-        // Make new selector
-        //GameObject selectorObj = Resources.Load<GameObject>("Prefabs/UI/Character Select/NetworkedCharacterSelector");
-        CharacterSelector newSelector = PhotonNetwork.Instantiate("Prefabs/Menus/Character Select/NetworkedCharacterSelector", transform.position, Quaternion.identity, 0).GetComponent<CharacterSelector>();
-        //newSelector.Initialize();
-        /*
-        // TODO: Move selector to emtpy character?
-        CharacterIcon[] charaIcons = FindObjectsOfType<CharacterIcon>();
-        newSelector.transform.position = new Vector3(charaIcons[_characterSelect.NumPlayers].transform.position.x,
-                                                    charaIcons[_characterSelect.NumPlayers].transform.position.y,
-                                                    charaIcons[_characterSelect.NumPlayers].transform.position.z - 2f);
-        newSelector.curCharacterIcon = charaIcons[_characterSelect.NumPlayers];
-        newSelector.characterAnimator = charaAnimators[_characterSelect.NumPlayers];
-        newSelector.readySprite = readySprites[_characterSelect.NumPlayers];
-        */
+    public void RemoveNetworkedCharacter(int ownerID) {
 
     }
 
-    public void RemoveNetworkedCharacter(int ownerID) {
+    [PunRPC]
+    public void GameSetupStart() {
+        // Master client has started setting up the game, so freeze player and show some text
+        CSPlayerController[] allPlayers = FindObjectsOfType<CSPlayerController>();
+        foreach(CSPlayerController cspc in allPlayers) {
+            cspc.underControl = false;
+        }
 
+        _characterSelect.pressStartText.GetComponent<SuperTextMesh>().text = "Game is being set up...";
+        _characterSelect.pressStartText.SetActive(true);
+    }
+
+    [PunRPC]
+    public void GameSetupCancel() {
+        // Master client backed out of game setup
+        CSPlayerController[] allPlayers = FindObjectsOfType<CSPlayerController>();
+        foreach (CSPlayerController cspc in allPlayers) {
+            cspc.underControl = true;
+        }
+
+        //_characterSelect.pressStartText.GetComponent<SuperTextMesh>().text = "Game is being set up...";
+        _characterSelect.pressStartText.SetActive(false);
     }
 }

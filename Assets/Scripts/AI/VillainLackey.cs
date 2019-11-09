@@ -29,7 +29,7 @@ public class VillainLackey : CharacterAI {
         }
 
         // If entered into hit state, lower health by one
-        if(_playerController.curState == PLAYER_STATE.HIT && !_inHitState) {
+        if(_playerController.CurState == PLAYER_STATE.HIT && !_inHitState) {
             _health -= 1;
             _inHitState = true;
 
@@ -37,7 +37,7 @@ public class VillainLackey : CharacterAI {
             if(_health <= 0) {
                 DestroyObject(this.gameObject);
             }
-        } else if(_playerController.curState != PLAYER_STATE.HIT) {
+        } else if(_playerController.CurState != PLAYER_STATE.HIT) {
             _inHitState = false;
         }
     }

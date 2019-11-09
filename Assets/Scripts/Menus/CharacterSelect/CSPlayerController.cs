@@ -10,14 +10,20 @@ public class CSPlayerController : PlayerController {
 
     public bool underControl;
     public bool inPlayArea;
+    public int playerInputID = -1;
 
     PullDownWindow pullDownWindow;
     CharacterSelect _charaSelect;
+
+    // Networking
+    NetworkedCSPlayer _networkedCSPlayer;
+    Vector3 _baseScale;
 
     protected override void Awake() {
         base.Awake();
 
         _charaSelect = FindObjectOfType<CharacterSelect>();
+        _networkedCSPlayer = GetComponent<NetworkedCSPlayer>();
 
         // Make sure input is set up to the correct player
         SetPlayerNum(playerNum);
@@ -34,10 +40,18 @@ public class CSPlayerController : PlayerController {
 
         _justChangedState = false;
         _canShift = true;
+
+        _baseScale = transform.lossyScale;
     }
 
     // Update is called once per frame
     protected override void Update() {
+        if (inputState != null) {
+            playerInputID = inputState.playerID;
+        } else {
+            playerInputID = -1;
+        }
+
         if (underControl) {
             CheckInput();
             direction = _animator.GetBool("FacingRight") ? 1 : -1;
@@ -65,7 +79,21 @@ public class CSPlayerController : PlayerController {
                 _physics.MoveY(velocity.y * Time.deltaTime);
             }
 
+            _canShift = true; // Make sure we can shift at any time
+
             _justChangedState = false;
+        } else {
+            // Make absolute fucking 100% sure we are in the goddamn idle state when we are in the pull down window jesus fucking christ
+            if(CurState != PLAYER_STATE.IDLE) {
+                ChangeState(PLAYER_STATE.IDLE);
+            }
+
+            // Also make sure we are the correct scale
+            if(transform.lossyScale != _baseScale) {
+                transform.SetParent(null);
+                transform.localScale = _baseScale;
+                transform.SetParent(pullDownWindow.transform);
+            }
         }
     }
 
@@ -77,11 +105,11 @@ public class CSPlayerController : PlayerController {
 
         if (inputState.shift.isJustPressed && CanShift) {
             // Shift back to pull down window
-            ChangeState(PLAYER_STATE.SHIFT);
+            StartShift();
         }
 
         // If we're first player or an ai and press select while in a team box
-        if(inputState.select.isJustPressed && team != -1) {
+        if (inputState.select.isJustPressed && team != -1) {
             // Create AI Player
             _charaSelect.ActivateAI(characterSelector);
 
@@ -106,23 +134,64 @@ public class CSPlayerController : PlayerController {
         returnPos = transform.position;
 
         // Break off from parent
-        transform.SetParent(null);
+        //transform.SetParent(null);
         pullDownWindow.PlayerLeft();
 
-        ChangeState(PLAYER_STATE.SHIFT);
+        Shift();
+
+        if (_photonView != null && _photonView.isMine) {
+            _photonView.RPC("CSShift", PhotonTargets.Others);
+        }
     }
 
     public void EnterPlayArea() {
+        PlayArea();
+
+        if(_networkedCSPlayer != null && _networkedCSPlayer.photonView.isMine) {
+            _networkedCSPlayer.photonView.RPC("EnterPlayArea", PhotonTargets.Others);
+        }
+    }
+    public void PlayArea() {
         underControl = true;
         inPlayArea = true;
+
+        // Make sure our shifted variable is accurate
+        shifted = true;
+
+        transform.SetParent(null);
+        transform.localScale = _baseScale;
     }
 
     public void EnterPullDownWindow() {
+        PullDownWindow();
+
+        if (_networkedCSPlayer != null && _networkedCSPlayer.photonView.isMine) {
+            _networkedCSPlayer.photonView.RPC("EnterPullDownWindow", PhotonTargets.Others);
+        }
+    }
+    public void PullDownWindow() {
         underControl = false;
         inPlayArea = false;
 
+        // Make sure our shifted variable is accurate
+        shifted = false;
+
+        // Make sure we are in idle
+        ChangeState(PLAYER_STATE.IDLE);
+
+        // Set self to return position
+        transform.position = returnPos;
+        transform.localScale = _baseScale;
+
+        if(transform.localScale.x > 0) {
+            facingRight = true;
+        } else {
+            facingRight = false;
+        }
+
         // Reattach parent
         transform.SetParent(pullDownWindow.transform);
+
         pullDownWindow.PlayerReturned();
 
         characterSelector.Unready();

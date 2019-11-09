@@ -15,7 +15,7 @@ public class CharacterWindow : MonoBehaviour {
     public PullDownWindow pullDownWindow;
     public GameObject colorArrows;
 
-    bool _active;
+    bool _active = false;
 
     TeamBox[] _teamBoxes;
 
@@ -23,8 +23,10 @@ public class CharacterWindow : MonoBehaviour {
 	void Start () {
         _teamBoxes = FindObjectsOfType<TeamBox>();
 
-        // Make sure associated sprites are hidden
-        Deactivate();
+        if (!_active) {
+            // Make sure associated sprites are hidden
+            Deactivate();
+        }
     }
 
     // Update is called once per frame
@@ -38,10 +40,12 @@ public class CharacterWindow : MonoBehaviour {
     public void Activate(bool ai, int playerNum) {
         _active = true;
 
+        Debug.Log("Chara Window Activate");
+
         charaAnimator.gameObject.SetActive(true);
         charaPortrait.enabled = true;
         charaName.gameObject.SetActive(true);
-        pressAnyButton.enabled = false;
+        pressAnyButton.gameObject.SetActive(false);
         pNum.gameObject.SetActive(true);
         comText.enabled = false;
 
@@ -53,12 +57,13 @@ public class CharacterWindow : MonoBehaviour {
     }
     public void Deactivate() {
         _active = false;
+        Debug.Log("Chara Window Deactivate");
 
         charaAnimator.gameObject.SetActive(false);
         charaPortrait.enabled = false;
         charaName.gameObject.SetActive(false);
         pNum.gameObject.SetActive(false);
-        pressAnyButton.enabled = true;
+        pressAnyButton.gameObject.SetActive(true);
     }
 
     void CheckTeams() {

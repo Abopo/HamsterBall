@@ -13,7 +13,6 @@ public class PlayerController : Entity {
 	public float jumpMoveForce; // 50
 	public float jumpMoveMax; // 5
 	public PlayerState currentState;
-	public PLAYER_STATE curState;
 	public GameObject swingObj;
     public Transform bubblePosition;
     public GameObject attackObj;
@@ -29,13 +28,16 @@ public class PlayerController : Entity {
 
     public int atkModifier; // Modifies the amount of junk generated when making matches
 
+    public PLAYER_STATE CurState {
+        get { return currentState.getStateType(); }
+    }
     public bool CanJump {
         get { return GetComponent<EntityPhysics>().IsTouchingFloor; }
     }
 	public bool shifted;
     protected bool _canShift;
     public bool CanShift {
-        get { return (_canShift && !_isInvuln && (curState == PLAYER_STATE.IDLE || curState == PLAYER_STATE.WALK || curState == PLAYER_STATE.JUMP || curState == PLAYER_STATE.FALL)); }
+        get { return (_canShift && !_isInvuln && (CurState == PLAYER_STATE.IDLE || CurState == PLAYER_STATE.WALK || CurState == PLAYER_STATE.JUMP || CurState == PLAYER_STATE.FALL)); }
     }
     float _shiftCooldownTime;
 	public float ShiftCooldownTime {
@@ -106,11 +108,6 @@ public class PlayerController : Entity {
     public bool aiControlled;
     public bool springing;
 
-    //CHARACTERNAMES _characterName;
-    //public CHARACTERNAMES CharacterName {
-    //    get { return _characterName; }
-    //}
-
     protected CharaInfo _charaInfo = new CharaInfo();
     public CharaInfo CharaInfo {
         get { return _charaInfo; }
@@ -140,6 +137,12 @@ public class PlayerController : Entity {
 
     protected bool _justChangedState; // Can only change state once per frame
 
+    // Networking
+    protected PhotonView _photonView;
+    public PhotonView PhotonView {
+        get { return _photonView; }
+    }
+
     // Events
     public UnityEvent significantEvent;
 
@@ -154,6 +157,8 @@ public class PlayerController : Entity {
         _playerEffects = GetComponentInChildren<PlayerEffects>();
 
         inputState = new InputState();
+
+        _photonView = GetComponent<PhotonView>();
 
         InitStates();
     }
@@ -310,7 +315,7 @@ public class PlayerController : Entity {
         if(heldBall != null && heldBall.locked) {
             heldBall = null;
         }
-        if(curState != PLAYER_STATE.ATTACK && attackObj.gameObject.activeSelf) {
+        if(CurState != PLAYER_STATE.ATTACK && attackObj.gameObject.activeSelf) {
             attackObj.gameObject.SetActive(false);
         }
 
@@ -339,12 +344,8 @@ public class PlayerController : Entity {
         }
 
         if (inputState.shift.isJustPressed && CanShift) {
-			// Shift to opposite field.
-			if(shifted) {
-                _shiftCooldownTimer = 0f;
-                _canShift = false;
-			}
-            ChangeState(PLAYER_STATE.SHIFT);
+            // Shift to opposite field.
+            StartShift();
         }
 
         // If start is pressed
@@ -359,6 +360,24 @@ public class PlayerController : Entity {
             // Move player slightly downward to pass through certain platforms
             transform.Translate(0f, -0.05f, 0f);
         }
+    }
+
+    public void StartShift() {
+        if (CurState != PLAYER_STATE.SHIFT) {
+            Shift();
+
+            if (_photonView != null && _photonView.isMine) {
+                _photonView.RPC("ShiftPlayer", PhotonTargets.Others);
+            }
+        }
+    }
+
+    protected void Shift() {
+        if (shifted) {
+            _shiftCooldownTimer = 0f;
+            _canShift = false;
+        }
+        ChangeState(PLAYER_STATE.SHIFT);
     }
 
     public override void Flip() {
@@ -390,7 +409,7 @@ public class PlayerController : Entity {
 	}
 
     void ShiftUpdates() {
-        if (shifted && curState != PLAYER_STATE.SHIFT) {
+        if (shifted && CurState != PLAYER_STATE.SHIFT) {
             _shiftCooldownTimer -= Time.deltaTime * 2;
             if (_shiftCooldownTimer <= 0) {
                 //Shift ();
@@ -444,27 +463,28 @@ public class PlayerController : Entity {
 
 	//	Call to switch from one state to another
 	public void ChangeState(PLAYER_STATE state){
-        if (!_justChangedState) {
+        //if (!_justChangedState) {
             //Debug.Log("Change state: " + state.ToString());
             if (null != currentState) {
                 currentState.End();
             }
             currentState = GetPlayerState(state);
             if (null != currentState) {
-                curState = state;
-                _animator.SetInteger("PlayerState", (int)curState);
+                _animator.SetInteger("PlayerState", (int)CurState);
                 _animator.speed = 1;
                 currentState.Initialize(this);
             }
             _justChangedState = true;
-        }
+
+            Debug.Log("State Changed to: " + currentState.getStateType().ToString());
+        //}
     }
 
 	void OnTriggerEnter2D(Collider2D collider) {
         // Attack Object
 		if (collider.gameObject.layer == 12 && collider.gameObject != attackObj && 
             (team != collider.GetComponentInParent<PlayerController>().team || team == -1) && 
-            !_isInvuln && curState != PLAYER_STATE.SHIFT && canBeHit) {
+            !_isInvuln && CurState != PLAYER_STATE.SHIFT && canBeHit) {
 			ChangeState(PLAYER_STATE.HIT);
             ((HitState)GetPlayerState(PLAYER_STATE.HIT)).Knockback((int)Mathf.Sign(transform.position.x - collider.transform.position.x));
             

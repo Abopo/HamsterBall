@@ -50,7 +50,7 @@ public class RoosterAI : CharacterAI {
 
     void OnTriggerEnter2D(Collider2D collider) {
         // If Rooster gets punched
-        if (collider.gameObject.layer == 12 && _pController.team != collider.GetComponent<AttackObject>().team && _pController.curState != PLAYER_STATE.SHIFT) {
+        if (collider.gameObject.layer == 12 && _pController.team != collider.GetComponent<AttackObject>().team && _pController.CurState != PLAYER_STATE.SHIFT) {
             // TODO: Play some effect to show it doesn't affect him
         }
     }

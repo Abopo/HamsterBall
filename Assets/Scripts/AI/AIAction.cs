@@ -274,7 +274,7 @@ public class AIAction {
         // If we are on their board
         if(_playerController.shifted == true) {
             // If the player hasn't been punched yet
-            if (opponent.curState != PLAYER_STATE.HIT) {
+            if (opponent.CurState != PLAYER_STATE.HIT) {
                 addWeight += 20;
 
                 // If the opponent is holding a bubble, try to stop them before they throw it!
@@ -286,7 +286,7 @@ public class AIAction {
         // If they are on our board
         } else {
             // If the player hasn't been punched yet
-            if (opponent.curState != PLAYER_STATE.HIT) {
+            if (opponent.CurState != PLAYER_STATE.HIT) {
                 addWeight += 75;
 
                 // If the opponent is holding a bubble, try to stop them before they throw it!

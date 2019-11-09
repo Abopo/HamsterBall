@@ -207,8 +207,6 @@ public class PlayerEffects : MonoBehaviour {
                     PlayEffect(footstepParticles1);
                 }
                 footstepEvent1.start();
-				
-                Debug.Log("Footstep 1");
                 break;
             case 1:
                 if (footstepParticles2 != null) {

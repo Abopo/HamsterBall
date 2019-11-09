@@ -45,7 +45,7 @@ public class CSShiftState : PlayerState {
         //}
 
         // Find landing point
-        if(playerController.shifted) {
+        if (playerController.shifted) {
             _landingPosition = ((CSPlayerController)playerController).returnPos;
         } else {
             _landingPosition = ((CSPlayerController)playerController).shiftLandingPos.position;
@@ -73,6 +73,8 @@ public class CSShiftState : PlayerState {
 
         // Save the current scale to return to at the end
         _oldScale = playerController.transform.localScale;
+
+        playerController.shifted = !playerController.shifted;
     }
 
     // Update is called once per frame
@@ -98,6 +100,12 @@ public class CSShiftState : PlayerState {
 
         if (_shiftTimer >= _totalShiftTime) {
             playerController.ChangeState(PLAYER_STATE.IDLE);
+
+            if (playerController.shifted) {
+                ((CSPlayerController)playerController).EnterPlayArea();
+            } else {
+                ((CSPlayerController)playerController).EnterPullDownWindow();
+            }
         }
     }
 
@@ -120,13 +128,6 @@ public class CSShiftState : PlayerState {
         playerController.transform.rotation = Quaternion.identity;
         playerController.transform.localScale = _oldScale;
         //playerController.shiftPortal.Deactivate();
-
-        playerController.shifted = !playerController.shifted;
-        if (playerController.shifted) {
-            ((CSPlayerController)playerController).EnterPlayArea();
-        } else {
-            ((CSPlayerController)playerController).EnterPullDownWindow();
-        }
 
         // Return player's sprite's draw order back to normal
         playerController.SpriteRenderer.sortingOrder = 0;

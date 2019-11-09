@@ -68,12 +68,12 @@ public class AIController : MonoBehaviour {
 
         ShiftIfNeeded();
 
-        if (_playerController.curState != PLAYER_STATE.THROW && _playerController.curState != PLAYER_STATE.SHIFT) {
+        if (_playerController.CurState != PLAYER_STATE.THROW && _playerController.CurState != PLAYER_STATE.SHIFT) {
             if (_actionTimer > _actionTime) {
                 HorizontalMovement();
                 Jumping();
             }
-        } else if(_playerController.curState == PLAYER_STATE.THROW) {
+        } else if(_playerController.CurState == PLAYER_STATE.THROW) {
             if (_curAction.nodeWant != null && _playerController.heldBall != null) {
                 _toNodeWant = _curAction.nodeWant.transform.position - _playerController.heldBall.transform.position;
             }
@@ -215,7 +215,7 @@ public class AIController : MonoBehaviour {
             // If we are close to the object
             if (Mathf.Abs(chaseObj.transform.position.x - transform.position.x) < 0.5f) { 
                 // If we are chasing a hamster and don't already have one
-                if (_curAction.hamsterWant != null && _playerController.heldBall == null && _playerController.curState != PLAYER_STATE.CATCH) {
+                if (_curAction.hamsterWant != null && _playerController.heldBall == null && _playerController.CurState != PLAYER_STATE.CATCH) {
                     // The hamster(or opponent) is right here! Catch it!
                     _input.swing.isJustPressed = true;
                     // Make a new decision based on what hamster we caught
@@ -306,7 +306,7 @@ public class AIController : MonoBehaviour {
 
     void ContinueMovingUp() {
         // If we aren't jumping
-        if (_playerController.curState != PLAYER_STATE.JUMP) {
+        if (_playerController.CurState != PLAYER_STATE.JUMP) {
             // Update where the closest jump is
             _targetEndCap = _mapScan.ClosestJump.GetComponent<PlatformEndCap>();
         }
@@ -318,7 +318,7 @@ public class AIController : MonoBehaviour {
             // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
             // If the target is to our left
             if ((_moveDir == 1 && _targetEndCap.transform.position.x < transform.position.x + 1f &&
-                (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP))
+                (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP))
                 /*|| GetComponent<EntityPhysics>().IsTouchingWallRight*/) {
                 // Change direction to the left
                 _input.left.isDown = true;
@@ -327,7 +327,7 @@ public class AIController : MonoBehaviour {
 
                 // If the target is to our right
             } else if ((_moveDir == -1 && _targetEndCap.transform.position.x > transform.position.x - 1f &&
-                       (!_mapScan.IsUnderCeiling || _playerController.curState == PLAYER_STATE.JUMP))
+                       (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP))
                        /*|| GetComponent<EntityPhysics>().IsTouchingWallLeft*/) {
                 // Change direction to the right
                 _input.left.isDown = false;
@@ -362,18 +362,18 @@ public class AIController : MonoBehaviour {
     void Jumping() {
         // If we want to move horizontally but there is a step in the way.
         if(_curAction.horWant == 1 && _mapScan.RightStepDistance > 0 && _mapScan.RightStepDistance < 0.5f) {
-            if(_playerController.curState != PLAYER_STATE.JUMP) {
+            if(_playerController.CurState != PLAYER_STATE.JUMP) {
                 _input.jump.isDown = true;
             }
         } else if(_curAction.horWant == -1 && _mapScan.LeftStepDistance > 0 && _mapScan.LeftStepDistance < 0.5f) {
-            if (_playerController.curState != PLAYER_STATE.JUMP) {
+            if (_playerController.CurState != PLAYER_STATE.JUMP) {
                 _input.jump.isDown = true;
             }
         }
 
         // If we are already jumping, go for the highest jump!
         // TODO: Don't do this for small steps
-        if(_playerController.curState == PLAYER_STATE.JUMP) {
+        if(_playerController.CurState == PLAYER_STATE.JUMP) {
             _input.jump.isDown = true;
         }
         // If you don't want to go up, don't jump
@@ -422,7 +422,7 @@ public class AIController : MonoBehaviour {
 
     void AimThrow() {
         // First put the player into throw state if not already there.
-        if(_playerController.curState != PLAYER_STATE.THROW) {
+        if(_playerController.CurState != PLAYER_STATE.THROW) {
             _input.swing.isJustPressed = true;
             return;
         }

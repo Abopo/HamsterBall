@@ -97,7 +97,7 @@ public class AIMapScan : MonoBehaviour {
         _pos = transform.position;
         // Wall distances
         CheckWallDistances();
-        if (_playerController.curState != PLAYER_STATE.JUMP && _playerController.curState != PLAYER_STATE.FALL) {
+        if (_playerController.CurState != PLAYER_STATE.JUMP && _playerController.CurState != PLAYER_STATE.FALL) {
             CheckJumpDistancesNew();
         }
         CheckDropDistances();
