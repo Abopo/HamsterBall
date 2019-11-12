@@ -100,13 +100,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f7b5a2d8aaba7429f40b439b40e9d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionMask1:
+  collisionMaskX:
     serializedVersion: 2
-    m_Bits: 2107136
-  collisionMask2:
+    m_Bits: 2106112
+  collisionMaskY:
     serializedVersion: 2
-    m_Bits: 2107136
+    m_Bits: 10495744
+  collisionMaskSlope:
+    serializedVersion: 2
+    m_Bits: 8388608
   wallCheckDist: 0
+  snappedToSlope: 0
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +148,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.065267175}
+  m_Offset: {x: 0.06, y: -0.065267175}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -155,7 +159,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0797335, y: 1.6307912}
+  m_Size: {x: 0.9, y: 1.6307912}
   m_EdgeRadius: 0
 --- !u!50 &50417822867570464
 Rigidbody2D:
@@ -768,7 +772,7 @@ Animator:
   m_GameObject: {fileID: 1574525037623790}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 7ea3b321151927e458791ea9f7c31c23, type: 2}
+  m_Controller: {fileID: 22100000, guid: 05d76ce28ae00754f914c56e17917fea, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

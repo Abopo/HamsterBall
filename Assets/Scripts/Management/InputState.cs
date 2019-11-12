@@ -154,4 +154,13 @@ public class InputState {
 
         return false;
     }
+    public static bool GetButtonOnAnyController(string button) {
+        foreach (Player player in ReInput.players.AllPlayers) {
+            if (player.GetButton(button)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -121,7 +121,6 @@ public class Entity : MonoBehaviour {
     }
 
     public virtual void CollisionResponseX(Collider2D collider) {
-
 	}
 	public virtual void CollisionResponseY(Collider2D collider) {
         if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/) {

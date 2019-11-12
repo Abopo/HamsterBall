@@ -195,8 +195,7 @@ public class Hamster : Entity {
             return;
         }
 
-        _physics.CheckBelow ();
-		_physics.WallCheck ();
+        _physics.SnapToSlope();
 
         if (exitedPipe) {
             if (!_physics.IsTouchingFloor) {

@@ -308,6 +308,13 @@ public class PlayerController : Entity {
                 ChangeState(PLAYER_STATE.IDLE);
             }
 
+            // Snap to any slopes as long as we aren't jumping
+            if(CurState != PLAYER_STATE.JUMP) {
+                _physics.SnapToSlope();
+            } else {
+                _physics.snappedToSlope = false;
+            }
+
             _justChangedState = false;
         }
 
@@ -452,7 +459,7 @@ public class PlayerController : Entity {
     }
 
 	public void CheckPosition() {
-		if (!_physics.IsTouchingFloor) {
+		if (!_physics.IsTouchingFloor && !_physics.snappedToSlope) {
 			ChangeState(PLAYER_STATE.FALL);
 		}
 	}
@@ -476,7 +483,7 @@ public class PlayerController : Entity {
             }
             _justChangedState = true;
 
-            Debug.Log("State Changed to: " + currentState.getStateType().ToString());
+            //Debug.Log("State Changed to: " + currentState.getStateType().ToString());
         //}
     }
 
@@ -514,12 +521,16 @@ public class PlayerController : Entity {
     }
 
     public override void CollisionResponseX(Collider2D collider) {
-		if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
+        base.CollisionResponseX(collider);
+
+        if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
 			velocity.x = 0.0f;
 		}
 	}
 	public override void CollisionResponseY(Collider2D collider) {
-		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 13/*Grate*/) {
+        base.CollisionResponseY(collider);
+
+		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 13/*Grate*/ || collider.gameObject.layer == 23/*Stair Step*/) {
 			velocity.y = 0.0f;
             _onFallThrough = false;
             _collidedY = true;

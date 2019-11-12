@@ -19,7 +19,7 @@ public class FallState : PlayerState {
         // Fall
         playerController.ApplyGravity();
 
-		playerController.Physics.CheckBelow ();
+		//playerController.Physics.CheckBelow ();
 
 		// check if the player has landed
 		if(playerController.Physics.IsTouchingFloor) {

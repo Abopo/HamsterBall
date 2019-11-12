@@ -4,8 +4,9 @@ using System.Collections;
 [RequireComponent(typeof(Entity))]
 [RequireComponent(typeof(Collider2D))]
 public class EntityPhysics : MonoBehaviour {
-    public LayerMask collisionMask1;
-    public LayerMask collisionMask2;
+    public LayerMask collisionMaskX;
+    public LayerMask collisionMaskY;
+    public LayerMask collisionMaskSlope;
     public float wallCheckDist;
 
     private Entity entity;
@@ -26,6 +27,8 @@ public class EntityPhysics : MonoBehaviour {
     private int leftHitCount; // this is a counter for how much of the top of the player is colliding
     private bool isTouchingWallRight;
     private int rightHitCount; // this is a counter for how much of the top of the player is colliding
+
+    public bool snappedToSlope;
 
     public bool IsTouchingFloor {
         get { return isTouchingFloor; }
@@ -72,7 +75,7 @@ public class EntityPhysics : MonoBehaviour {
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
             // Draw last so it matches position
             //Debug.DrawRay(new Vector2(_ray.origin.x+deltaX, _ray.origin.y), _ray.direction * Mathf.Abs(deltaX));
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX), collisionMask1);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX), collisionMaskX);
             if (_hit) {
                 float dst = Vector2.Distance(_ray.origin, _hit.point);
 
@@ -98,13 +101,16 @@ public class EntityPhysics : MonoBehaviour {
         ceilingHitCount = 0;
         floorHitCount = 0;
         float deltaY = inDeltaY;
-        isTouchingFloor = false;
+
+        if (!snappedToSlope) {
+            isTouchingFloor = false;
+        }
 
         // If we are moving upward
         if (inDeltaY > 0) {
-            collisionMask1 = collisionMask1 & ~(1 << 18); // Remove the "Passthrough" layer from the mask
+            collisionMaskY = collisionMaskY & ~(1 << 18); // Remove the "Passthrough" layer from the mask
         } else {
-            collisionMask1 = collisionMask1 | (1 << 18); // Add the "Passthrough" layer to the mask
+            collisionMaskY = collisionMaskY | (1 << 18); // Add the "Passthrough" layer to the mask
         }
 
         for (int i = 0; i < 3; ++i) {
@@ -119,7 +125,7 @@ public class EntityPhysics : MonoBehaviour {
             // Add the delta so it lines up with where the player will move
             //Debug.DrawLine(new Vector3(_ray.origin.x - 0.1f, _ray.origin.y + deltaY), new Vector3(_ray.origin.x + 0.1f, _ray.origin.y + deltaY), Color.green);
             //Debug.DrawRay(new Vector2(_ray.origin.x, _ray.origin.y + deltaY), _ray.direction * Mathf.Abs(inDeltaY));
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(inDeltaY), collisionMask1);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(inDeltaY), collisionMaskY);
             if (_hit) {
                 if (dir == 1) {
                     ceilingHitCount++;
@@ -144,12 +150,17 @@ public class EntityPhysics : MonoBehaviour {
             }
         }
 
-        transform.Translate(0.0f, deltaY, 0.0f);
-
+        if (!snappedToSlope) {
+            transform.Translate(0.0f, deltaY, 0.0f);
+        }
     }
 
     // Checks if there is anything below the player
     public void CheckBelow() {
+        if(snappedToSlope) {
+            return;
+        }
+
         isTouchingFloor = false;
         //floorHitCount = 0;
 
@@ -160,13 +171,13 @@ public class EntityPhysics : MonoBehaviour {
             float y = _myCollider.bounds.center.y - _myCollider.bounds.extents.y;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
-            //Debug.DrawRay(_ray.origin, _ray.direction * 0.01f);
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.01f, collisionMask1);
+            Debug.DrawRay(_ray.origin, _ray.direction * 0.01f);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.05f, collisionMaskY);
             if (_hit) {
                 isTouchingFloor = true;
                 entity.Grounded = true;
                 //floorHitCount++;
-                entity.CollisionResponseY(_hit.collider);
+                //entity.CollisionResponseY(_hit.collider);
             }
         }
     }
@@ -186,7 +197,7 @@ public class EntityPhysics : MonoBehaviour {
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right);
             //Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMask2);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMaskX);
             if (_hit) {
                 rightHitCount++;
                 isTouchingWallRight = true;
@@ -202,7 +213,7 @@ public class EntityPhysics : MonoBehaviour {
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * -1);
             //Debug.DrawRay(_ray.origin, _ray.direction * wallCheckDist);
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMask2);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, wallCheckDist, collisionMaskX);
             if (_hit) {
                 isTouchingWallLeft = true;
                 leftHitCount++;
@@ -220,7 +231,7 @@ public class EntityPhysics : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D collider) {
         // If we are in a wall (layer 9) or platform (layer 21) with a box collider
-        if ((collider.gameObject.layer == 9 || collider.gameObject.layer == 21) && collider.GetComponent<BoxCollider2D>() != null) {
+        if ((collider.gameObject.layer == 9 || collider.gameObject.layer == 21 || collider.gameObject.layer == 23) && collider.GetComponent<BoxCollider2D>() != null) {
             _stuckTimer += Time.deltaTime;
             if(_stuckTimer < _stuckTime) {
                 return;
@@ -316,6 +327,27 @@ public class EntityPhysics : MonoBehaviour {
             }
 
             _stuckTimer = 0f;
+        }
+    }
+
+    public void SnapToSlope() {
+        snappedToSlope = false;
+        float curYPos = _myCollider.bounds.center.y - _myCollider.bounds.extents.y;
+
+        _ray = new Ray2D(new Vector2(_myCollider.bounds.center.x, transform.position.y), Vector2.up * -1);
+        Debug.DrawRay(_ray.origin, _ray.direction * 1f);
+        _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 1f, collisionMaskSlope);
+        if(_hit && _hit.distance-_myCollider.bounds.extents.y < 0.3f) {
+            //Debug.Log("Snap to Slope");
+
+            isTouchingFloor = true;
+            entity.Grounded = true;
+            snappedToSlope = true;
+
+            float wantYPos = _hit.point.y+0.02f;
+            float yMove = wantYPos - curYPos;
+            transform.Translate(0.0f, yMove, 0.0f);
+            entity.CollisionResponseY(_hit.collider);
         }
     }
 }

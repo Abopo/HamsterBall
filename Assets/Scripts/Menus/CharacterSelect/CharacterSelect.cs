@@ -218,19 +218,23 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     bool AllPlayersOnTeams() {
-        // If any players are not on a team
-        for(int i = 0; i < ActivePlayers; i++) {
-            if(_players[i].team < 0) {
-                return false;
-            }
-        }
-
-        // Or any team doesn't have a player
+        // If any team doesn't have a player
         if (leftTeam.numPlayers == 0 || rightTeam.numPlayers == 0) {
             return false;
         }
 
-        return true;
+        int readyPlayers = 0;
+        foreach(CSPlayerController csPlayer in _players) {
+            if(csPlayer.team >= 0) {
+                readyPlayers++;
+            }
+        }
+        // If we have the same number of ready players as active players
+        if(readyPlayers >= ActivePlayers) {
+            return true;
+        }
+
+        return false;
     }
 
     bool AllPlayersSelected() {
