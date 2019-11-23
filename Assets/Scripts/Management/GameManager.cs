@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour {
         get { return specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.PIPE; }
     }
 
-
     public bool isPaused;
 
     public bool demoMode;

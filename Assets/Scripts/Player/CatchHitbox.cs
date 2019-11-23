@@ -50,15 +50,15 @@ public class CatchHitbox : MonoBehaviour {
             // If we are networked
             if (PhotonNetwork.connectedAndReady) {
                 // If we are the local client and aren't already trying to catch a hamster
-                if (_playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
+                if (_playerController.PhotonView.owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
                     // Catch the hamster
                     CatchHamster(_closestHamster);
                     if (PhotonNetwork.isMasterClient) {
                         // Tell other clients that a hamster was caught
-                        _playerController.GetComponent<PhotonView>().RPC("HamsterCaught", PhotonTargets.All, _closestHamster.hamsterNum);
+                        _playerController.PhotonView.RPC("HamsterCaught", PhotonTargets.Others, _closestHamster.hamsterNum);
                     } else {
                         // Have the master client double check that it's ok
-                        _playerController.GetComponent<PhotonView>().RPC("CheckHamster", PhotonTargets.MasterClient, _closestHamster.hamsterNum);
+                        _playerController.PhotonView.RPC("CheckHamster", PhotonTargets.MasterClient, _closestHamster.hamsterNum);
                     }
                 }
             } else {

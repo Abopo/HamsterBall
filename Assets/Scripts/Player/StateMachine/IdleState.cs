@@ -17,6 +17,7 @@ public class IdleState : PlayerState {
         // Double check holding bubble
         if (playerController.heldBall != null) {
             playerController.Animator.SetBool("HoldingBall", true);
+            playerController.heldBall.DisplaySprites(); // Make sure the sprites are visible
         } else {
             playerController.Animator.SetBool("HoldingBall", false);
         }

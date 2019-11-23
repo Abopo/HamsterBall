@@ -45,7 +45,7 @@ public class MonochromePower : PowerUp {
     protected override void Deactivate() {
         //base.Deactivate();
 
-        DestroyObject(this.gameObject);
+        Destroy(gameObject);
     }
 
     void Monochrome(List<Hamster> hamsters) {
@@ -57,7 +57,7 @@ public class MonochromePower : PowerUp {
             }
 
             if (ham.isGravity) {
-                ham.SetType(11, (HAMSTER_TYPES)rType);
+                ham.SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)rType);
             } else {
                 ham.SetType(rType);
             }

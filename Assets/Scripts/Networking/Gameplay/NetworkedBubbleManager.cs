@@ -69,6 +69,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     [PunRPC]
     void SyncLineBubbles(int[] lineBubblesList) {
         _bubbleManager.SetNextLineBubbles(lineBubblesList);
+        _bubbleManager.HamsterMeter.RefreshStockSprites();
     }
 
     [PunRPC]

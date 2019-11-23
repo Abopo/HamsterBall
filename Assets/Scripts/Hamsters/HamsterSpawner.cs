@@ -252,7 +252,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
                     hamster.FaceRight();
                 }
             }
-            //hamster.FaceUp();
+
             hamster.Initialize(team);
             hamster.testMode = testMode;
             hamster.ParentSpawner = this;

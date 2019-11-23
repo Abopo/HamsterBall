@@ -130,7 +130,7 @@ public class CharacterSelect : MonoBehaviour {
         }
 
         if (_gameManager.isOnline) {
-            GetComponent<PhotonView>().RPC("GameSetupStart", PhotonTargets.AllBuffered, true);
+            GetComponent<PhotonView>().RPC("GameSetupStart", PhotonTargets.AllBuffered);
         }
     }
 

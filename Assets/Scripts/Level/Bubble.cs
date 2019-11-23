@@ -186,8 +186,6 @@ public class Bubble : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.U)) {
             BoardChanged();
         }
-       
-
 	}
 
     private void FixedUpdate() {
@@ -421,7 +419,7 @@ public class Bubble : MonoBehaviour {
             _homeBubbleManager.AddBubble(this);
         } else if (GetComponent<PhotonView>().owner == PhotonNetwork.player) { // if we own this bubble
             _homeBubbleManager.AddBubble(this);
-            GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, node);
+            GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, team, node);
         }
      
         // Loop through adjbubbles to see if we connected with a matching color

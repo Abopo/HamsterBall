@@ -13,13 +13,17 @@ public class OnlineLobby : MonoBehaviour {
 
     List<GameObject> rooms = new List<GameObject>();
 
+    GameManager _gameManager;
+
 	// Use this for initialization
 	void Start () {
         PhotonNetwork.ConnectUsingSettings("0.1");
 
         roomName = "myRoom";
 
-        FindObjectOfType<GameManager>().isOnline = true;
+        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager.isOnline = true;
+        _gameManager.isSinglePlayer = false;
 	}
 
     void ShowRooms() {

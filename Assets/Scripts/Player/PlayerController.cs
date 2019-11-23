@@ -29,7 +29,13 @@ public class PlayerController : Entity {
     public int atkModifier; // Modifies the amount of junk generated when making matches
 
     public PLAYER_STATE CurState {
-        get { return currentState.getStateType(); }
+        get {
+            if(currentState != null) {
+                return currentState.getStateType();
+            } else {
+                return PLAYER_STATE.IDLE;
+            }
+        }
     }
     public bool CanJump {
         get { return GetComponent<EntityPhysics>().IsTouchingFloor; }
@@ -227,7 +233,12 @@ public class PlayerController : Entity {
 
     public void SetPlayerNum(int pNum) {
         playerNum = pNum;
-        inputState.SetPlayerID(playerNum);
+    }
+
+    public void SetInputID(int id) {
+        if (id >= 0) {
+            inputState.SetPlayerID(id);
+        }
     }
 
     public void SetCharacterInfo(CharaInfo charaInfo) {

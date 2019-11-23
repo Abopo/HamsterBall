@@ -431,7 +431,14 @@ public class CharacterSelector : MonoBehaviour {
         if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SURVIVAL) {
             tempInfo.team = -1;
         }
-        _playerManager.AddPlayer(_player.id, isAI, tempInfo);
+
+        // If we're online
+        if (PhotonNetwork.connectedAndReady) {
+            // We should store the owners id and add to the player manager
+            _playerManager.AddPlayer(_player.id, tempInfo, _photonView.ownerId);
+        } else {
+            _playerManager.AddPlayer(_player.id, isAI, tempInfo);
+        }
     }
 
     public void SetIcon(CharaInfo charaInfo) {

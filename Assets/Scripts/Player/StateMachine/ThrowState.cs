@@ -129,24 +129,19 @@ public class ThrowState : PlayerState {
         if (inputState.swing.isJustPressed && throwTimer >= throwTime) {
             // Networking
             if (PhotonNetwork.connectedAndReady) {
-                if(playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player) {
+                if(playerController.PhotonView.owner == PhotonNetwork.player) {
                     // If we are the master client
                     if (PhotonNetwork.isMasterClient) {
                         // Just go ahead and throw
-                        playerController.GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.Others, aimingArrow.localRotation);
-                        Throw();
+                        playerController.PhotonView.RPC("ThrowBubble", PhotonTargets.Others, aimingArrow.localRotation);
+                        StartThrow();
                     } else {
                         // Check with the master client to see if we are ok to throw
-                        playerController.GetComponent<PhotonView>().RPC("TryThrowBubble", PhotonTargets.MasterClient, aimingArrow.localRotation);
+                        playerController.PhotonView.RPC("TryThrowBubble", PhotonTargets.MasterClient, aimingArrow.localRotation);
                     }
                 }
             } else {
-                // Tell the animator we don't have a bubble anymore
-                playerController.Animator.SetBool("HoldingBall", false);
-
-                _hasThrown = true;
-                // Throw bubble!
-                // Throw();
+                StartThrow();
             }
         }
 
@@ -167,6 +162,13 @@ public class ThrowState : PlayerState {
         if (aimingArrow.localEulerAngles.z > 135) {
             aimingArrow.localEulerAngles = new Vector3(0.0f, 0.0f, 135f);
         }
+    }
+
+    public void StartThrow() {
+        // Tell the animator we don't have a bubble anymore
+        playerController.Animator.SetBool("HoldingBall", false);
+
+        _hasThrown = true;
     }
 
     public void Throw() {

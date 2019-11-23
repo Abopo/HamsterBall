@@ -142,7 +142,7 @@ public class WaterBubble : MonoBehaviour {
 
         // Set the correct type
         if (_caughtBubble.isGravity) {
-            hamster.SetType(11, _caughtBubble.type);
+            hamster.SetType(HAMSTER_TYPES.GRAVITY, _caughtBubble.type);
         } else {
             hamster.SetType((int)_caughtBubble.type);
         }

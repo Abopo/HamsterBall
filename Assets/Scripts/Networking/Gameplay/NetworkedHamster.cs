@@ -28,28 +28,29 @@ public class NetworkedHamster : Photon.MonoBehaviour {
     }
 
     void Initialize() {
-        _hamster.Initialize((int)_photonView.instantiationData[2]);
-
-        _nextHamsterType = (int)_photonView.instantiationData[3];
-        if (_nextHamsterType != -1) {
-            // If this hamster should be gravity
-            if ((bool)_photonView.instantiationData[4]) {
-                _hamster.SetType(11, (HAMSTER_TYPES)_nextHamsterType);
-            } else {
-                _hamster.SetType(_nextHamsterType);
-            }
-        }
-
+        // Figure out proper facing
         if (!(bool)_photonView.instantiationData[0]) { // if has not exited pipe
+            HamsterSpawner hSpawner = FindObjectOfType<HamsterSpawner>();
             // TODO: for some reason the hamsters in the right pipe are walking backwards
             if ((bool)_photonView.instantiationData[1]) { // right side pipe
                 _hamster.Flip();
-                _hamster.transform.Rotate(0f, 0f, -90f);
                 _hamster.inRightPipe = true;
+                if(hSpawner.twoTubes) {
+                    _hamster.FaceRight();
+                } else {
+                    _hamster.FaceLeft();
+                }
             } else {
-                _hamster.transform.Rotate(0f, 0f, 90f);
                 _hamster.inRightPipe = false;
+                if(hSpawner.twoTubes) {
+                    _hamster.FaceLeft();
+                } else {
+                    _hamster.FaceRight();
+                }
             }
+
+            // Initialize hamster with team info
+            _hamster.Initialize((int)_photonView.instantiationData[2]);
 
             // Set a parent spawner based on pipe info
             GameObject[] spawners = GameObject.FindGameObjectsWithTag("Hamster Spawner");
@@ -58,7 +59,18 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                 hS = s.GetComponent<HamsterSpawner>();
                 if (hS.team == _hamster.team && hS.rightSidePipe == _hamster.inRightPipe) {
                     _hamster.ParentSpawner = hS;
-                    hS.releasedHamsterCount++;
+                    hS.HamsterLine.Add(_hamster);
+                }
+            }
+
+            // Set the hamsters type
+            _nextHamsterType = (int)_photonView.instantiationData[3];
+            if (_nextHamsterType != -1) {
+                // If this hamster should be gravity
+                if ((bool)_photonView.instantiationData[4]) {
+                    _hamster.SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)_nextHamsterType);
+                } else {
+                    _hamster.SetType(_nextHamsterType);
                 }
             }
         } else {
@@ -71,7 +83,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                 hS = s.GetComponent<HamsterSpawner>();
                 if (hS.team == _hamster.team) {
                     _hamster.ParentSpawner = hS;
-                    hS.releasedHamsterCount++;
+                    hS.HamsterLine.Add(_hamster);
                 }
             }
         }
@@ -88,17 +100,13 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             _hamsterType = (int)stream.ReceiveNext();
             if(_hamsterType != (int)_hamster.type) {
                 if(_hamster.isGravity) {
-                    _hamster.SetType(11, (HAMSTER_TYPES)_hamsterType);
+                    _hamster.SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)_hamsterType);
                 } else {
                     _hamster.SetType(_hamsterType);
                 }
             }
 
             corFacing = (int)stream.ReceiveNext();
-
-            //bool exitedPipe;
-            //exitedPipe = (bool)stream.ReceiveNext();
-            //_hamster.exitedPipe = exitedPipe;
         }
     }
 

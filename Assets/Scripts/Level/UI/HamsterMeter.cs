@@ -166,7 +166,6 @@ public class HamsterMeter : MonoBehaviour {
                 foreach (GameObject sprite in _stockSprites) {
                     Destroy(sprite);
                 }
-                _stockSprites.Clear();
 
                 // Update meter size
                 if (_meterSize == _baseMeterSize) {
@@ -176,21 +175,19 @@ public class HamsterMeter : MonoBehaviour {
                 }
 
                 // Add line to bubble manager
-                if (_bubbleManager != null && !PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)) {
+                if (_bubbleManager != null /*&& !PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)*/) {
                     _bubbleManager.TryAddLine();
                 }
 
                 // Add new stock sprites if we need to
                 if (_curStock > 0) {
                     for (int i = 0; i < _curStock; ++i) {
-                        //CreateNewStockSprite();
                         FillInStockSprite();
                     }
                 }
             }
         } else { // Otherwise just create new stock sprites based on inc
             for (int i = 0; i < inc; ++i) {
-                //CreateNewStockSprite();
                 FillInStockSprite();
             }
         }
@@ -199,6 +196,8 @@ public class HamsterMeter : MonoBehaviour {
     }
 
     void CreateNewStockSprites() {
+        _stockSprites.Clear();
+
         int i = 0;
         for (i = 0; i < _meterSize; ++i) {
             // Create a new stock sprite.
@@ -318,7 +317,7 @@ public class HamsterMeter : MonoBehaviour {
         while(_shieldSprites[index] == null) {
             index++;
         }
-        DestroyObject(_shieldSprites[index]);
+        Destroy(_shieldSprites[index]);
     }
 
     public void LoseAllShields() {
@@ -326,7 +325,27 @@ public class HamsterMeter : MonoBehaviour {
 
         for(int i = 0; i < _shieldSprites.Length; ++i) {
             if(_shieldSprites[i] != null) {
-                DestroyObject(_shieldSprites[i]);
+                Destroy(_shieldSprites[i]);
+            }
+        }
+    }
+
+    // This is mainly used for networking
+    // Refreshes the stock sprites to make sure they are the correct types
+    public void RefreshStockSprites() {
+        Debug.Log("Refreshing hamster meter");
+
+        int tempLineIndex = _nextLineIndex - _meterSize;
+
+        for(int i = 0; i < _meterSize; ++i) {
+            // Set each stock sprite to correct color.
+            int type = 0;
+            if (_bubbleManager != null) {
+                type = _bubbleManager.GetNextLineBubble(tempLineIndex + i);
+            }
+            Animator[] animators = _stockSprites[tempLineIndex + i].GetComponentsInChildren<Animator>();
+            foreach (Animator anim in animators) {
+                anim.SetInteger("Type", type);
             }
         }
     }

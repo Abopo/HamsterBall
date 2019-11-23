@@ -128,6 +128,7 @@ public class PlayerSpawner : MonoBehaviour {
                 newPlayer = Instantiate(playerObj).GetComponentInChildren<PlayerController>();
             }
             newPlayer.SetPlayerNum(tempPlayerInfo.playerNum);
+            newPlayer.SetInputID(tempPlayerInfo.playerNum);
             newPlayer.team = tempPlayerInfo.team;
             // Default player to left team if they aren't assigned one
             if (newPlayer.team == -1) {

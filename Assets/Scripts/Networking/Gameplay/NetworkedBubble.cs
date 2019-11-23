@@ -23,6 +23,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
         playerController.heldBall.PlayerController = playerController;
         playerController.heldBall.Initialize((HAMSTER_TYPES)photonView.instantiationData[1]);
         playerController.heldBall.GetComponent<CircleCollider2D>().enabled = false;
+        playerController.heldBall.HideSprites();
 
         // if it's a gravity hamster
         if ((bool)photonView.instantiationData[2]) {
@@ -48,7 +49,17 @@ public class NetworkedBubble : Photon.MonoBehaviour {
 	}
     
     [PunRPC]
-    void AddToBoard(int node) {
+    void AddToBoard(int team, int node) {
+        // Find the proper bubble manager
+        _bubble.team = team;
+        BubbleManager[] bubManagers = FindObjectsOfType<BubbleManager>();
+        foreach(BubbleManager bMan in bubManagers) {
+            if(bMan.team == team) {
+                _bubble.HomeBubbleManager = bMan;
+                break;
+            }
+        }
+
         _bubble.HomeBubbleManager.AddBubble(_bubble, node);
         _bubble.CollisionWithBoard(_bubble.HomeBubbleManager);
     }

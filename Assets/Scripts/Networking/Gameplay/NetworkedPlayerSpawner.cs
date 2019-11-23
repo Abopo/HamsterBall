@@ -74,8 +74,8 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
                 newPlayer.GetComponent<AIBrain>().Difficulty = tempPlayerInfo.difficulty;
             } else {
                 Vector2 spawnPos = FindSpawnPosition(tempPlayerInfo.team);
-                newPlayer = PhotonNetwork.Instantiate("Prefabs/Networking/Player_PUN", spawnPos, Quaternion.identity, 0, 
-                                                      new object[] { tempPlayerInfo.playerNum, tempPlayerInfo.team, tempPlayerInfo.charaInfo.name, tempPlayerInfo.charaInfo.color }).GetComponent<PlayerController>();
+                newPlayer = PhotonNetwork.Instantiate("Prefabs/Networking/Player_PUN2", spawnPos, Quaternion.identity, 0, 
+                                                      new object[] { i, tempPlayerInfo.team, tempPlayerInfo.charaInfo.name, tempPlayerInfo.charaInfo.color }).GetComponent<PlayerController>();
                 // Transfer ownership to appropriate player
                 newPlayer.GetComponent<PhotonView>().TransferOwnership(tempPlayerInfo.ownerID);
                 Debug.Log("Spawned player " + tempPlayerInfo.playerNum + "on Team " + tempPlayerInfo.team);

@@ -219,8 +219,6 @@ public class BubbleManager : MonoBehaviour {
             GetComponent<PhotonView>().RPC("SyncLineBubbles", PhotonTargets.Others, _nextLineBubbles.ToArray());
         }
 
-        _ceiling = GameObject.FindGameObjectWithTag("Ceiling").transform;
-
         boardChangedEvent.AddListener(UpdateAllAdjBubbles);
         boardChangedEvent.AddListener(OnBoardChanged);
 
@@ -1000,6 +998,9 @@ public class BubbleManager : MonoBehaviour {
         transform.Translate(0f, -0.67f, 0f, Space.World);
 
         // Spawn/push down the ceiling
+        if(_ceiling == null) {
+            _ceiling = GameObject.FindGameObjectWithTag("Ceiling").transform;
+        }
         _ceiling.Translate(0f, -0.67f, 0f, Space.World);
 
         UpdateAllAdjBubbles();
@@ -1251,6 +1252,9 @@ public class BubbleManager : MonoBehaviour {
     }
 
     bool AreThereBubblesMidAir() {
+        if(players == null || players.Length == 0) {
+            players = FindObjectsOfType<PlayerController>();
+        }
         // TODO: If players (or AI) are created mid-match, this will be inaccurate
         foreach (PlayerController p in players) {
             // If the player is on our side

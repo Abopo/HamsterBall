@@ -32,12 +32,18 @@ public class GameCountdown : MonoBehaviour {
 
         _stage = 0;
 
-        started = true;
+        if (!PhotonNetwork.connectedAndReady) {
+            StartCountdown();
+        }
         _done = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    public void StartCountdown() {
+        started = true;
+    }
+
+    // Update is called once per frame
+    void Update () {
         if(_done || !started) {
             return;
         }

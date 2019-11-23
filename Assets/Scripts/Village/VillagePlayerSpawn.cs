@@ -23,6 +23,7 @@ public class VillagePlayerSpawn : MonoBehaviour {
 
         newPlayer = Instantiate(playerObj).GetComponentInChildren<PlayerController>();
         newPlayer.SetPlayerNum(0);
+        newPlayer.SetInputID(0);
         newPlayer.team = 0;
         newPlayer.transform.position = transform.position;
         newPlayer.transform.localScale = new Vector3(0.7f, 0.7f, 1f);

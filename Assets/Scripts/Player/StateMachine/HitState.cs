@@ -73,7 +73,7 @@ public class HitState : PlayerState {
 
         // Set the correct type
         if (playerController.heldBall.isGravity) {
-            hamster.SetType(11, playerController.heldBall.type);
+            hamster.SetType(HAMSTER_TYPES.GRAVITY, playerController.heldBall.type);
         } else {
             hamster.SetType((int)playerController.heldBall.type);
         }

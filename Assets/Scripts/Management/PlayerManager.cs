@@ -144,12 +144,13 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // For networking
-    public void AddPlayer(int playerNum, bool isAI, int ownerID) {
+    public void AddPlayer(int playerNum, CharaInfo charaInfo, int ownerID) {
         if (playerNum != -1) {
             PlayerInfo newPlayer = new PlayerInfo();
             newPlayer.playerNum = playerNum;
-            newPlayer.isAI = isAI;
-            newPlayer.team = -1;
+            newPlayer.isAI = false;
+            newPlayer.charaInfo = charaInfo;
+            newPlayer.team = charaInfo.team;
             newPlayer.difficulty = 0;
             newPlayer.ownerID = ownerID;
             _players.Add(newPlayer);

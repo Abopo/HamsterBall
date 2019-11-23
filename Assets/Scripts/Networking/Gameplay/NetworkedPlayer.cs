@@ -12,7 +12,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     int _correctState;
 
-    float _bufferTime = 0.2f;
+    float _bufferTime = 1f;
     float _bufferTimer = 0f;
 
     private void Awake() {
@@ -29,7 +29,10 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         if (photonView.instantiationData != null) {
             // Then we were spawned by the Player Spawner and need to initialize stuff
 
-            _playerController.playerNum = (int)photonView.instantiationData[0];
+            if (photonView.owner == PhotonNetwork.player) {
+                _playerController.SetInputID(0);
+            }
+            _playerController.SetPlayerNum((int)photonView.instantiationData[0]);
             _playerController.team = (int)photonView.instantiationData[1];
 
             CharaInfo tempInfo = new CharaInfo();
@@ -108,7 +111,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             if (!photonView.isMine && _correctState != (int)_playerController.CurState) {
                 _bufferTimer += Time.deltaTime;
                 if (_bufferTimer >= _bufferTime) {
-                    //_playerController.ChangeState((PLAYER_STATE)_correctState);
+                    _playerController.ChangeState((PLAYER_STATE)_correctState);
                 }
             } else {
                 _bufferTimer = 0f;
@@ -202,10 +205,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
             if (hamster != null && !hamster.wasCaught) {
                 // Tell rest of players that a hamster was caught
-                photonView.RPC("HamsterCaught", PhotonTargets.All, hamster.hamsterNum);
+                photonView.RPC("HamsterCaught", PhotonTargets.Others, hamster.hamsterNum);
+                OtherCatchHamster(hamster.hamsterNum);
             } else {
                 // Tell original player that they can't catch that hamster
-                photonView.RPC("HamsterMissed", PhotonTargets.All);
+                photonView.RPC("HamsterMissed", PhotonTargets.Others);
             }
         }
     }
@@ -217,7 +221,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         } else {
             OtherCatchHamster(hamsterNum);
         }
-
 
         _playerController.aimCooldownTimer = 0.0f;
 
@@ -265,7 +268,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     void ThrowBubble(Quaternion arrowRot) {
         ThrowState throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
         throwState.aimingArrow.localRotation = arrowRot;
-        throwState.Throw();
+        throwState.StartThrow();
     }
 
     [PunRPC]

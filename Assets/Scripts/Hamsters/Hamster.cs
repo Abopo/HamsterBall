@@ -68,7 +68,7 @@ public class Hamster : Entity {
 
         if (type == HAMSTER_TYPES.NO_TYPE) {
             if(isGravity) {
-                SetType(11, (HAMSTER_TYPES)SelectValidNormalType());
+                SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)SelectValidNormalType());
             }
         }
 
@@ -123,8 +123,8 @@ public class Hamster : Entity {
     }
 
     // This overload is specifically used to set a special type with a color.
-    public void SetType(int sType, HAMSTER_TYPES cType) {
-        if (sType == (int)HAMSTER_TYPES.GRAVITY) {
+    public void SetType(HAMSTER_TYPES sType, HAMSTER_TYPES cType) {
+        if (sType == HAMSTER_TYPES.GRAVITY) {
             isGravity = true;
             spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
             spiralEffectInstance.transform.parent = transform;
@@ -144,34 +144,36 @@ public class Hamster : Entity {
     }
 
     void SetOutlineColor() {
-        switch(type) {
-            case HAMSTER_TYPES.BLUE:
-                _spriteOutline.color = Color.blue;
-                break;
-            case HAMSTER_TYPES.GRAY:
-                _spriteOutline.color = Color.gray;
-                break;
-            case HAMSTER_TYPES.GREEN:
-                _spriteOutline.color = Color.green;
-                break;
-            case HAMSTER_TYPES.PINK:
-                _spriteOutline.color = new Color(1.0f, 0f, 0.5f);
-                break;
-            case HAMSTER_TYPES.PURPLE:
-                _spriteOutline.color = new Color(0.8f, 0f, 1f);
-                break;
-            case HAMSTER_TYPES.RED:
-                _spriteOutline.color = Color.red;
-                break;
-            case HAMSTER_TYPES.YELLOW:
-                _spriteOutline.color = Color.yellow;
-                break;
-            case HAMSTER_TYPES.SKULL:
-                _spriteOutline.color = Color.black;
-                break;
-            case HAMSTER_TYPES.RAINBOW:
-                _spriteOutline.color = Color.white;
-                break;
+        if(_spriteOutline != null) {
+            switch (type) {
+                case HAMSTER_TYPES.BLUE:
+                    _spriteOutline.color = Color.blue;
+                    break;
+                case HAMSTER_TYPES.GRAY:
+                    _spriteOutline.color = Color.gray;
+                    break;
+                case HAMSTER_TYPES.GREEN:
+                    _spriteOutline.color = Color.green;
+                    break;
+                case HAMSTER_TYPES.PINK:
+                    _spriteOutline.color = new Color(1.0f, 0f, 0.5f);
+                    break;
+                case HAMSTER_TYPES.PURPLE:
+                    _spriteOutline.color = new Color(0.8f, 0f, 1f);
+                    break;
+                case HAMSTER_TYPES.RED:
+                    _spriteOutline.color = Color.red;
+                    break;
+                case HAMSTER_TYPES.YELLOW:
+                    _spriteOutline.color = Color.yellow;
+                    break;
+                case HAMSTER_TYPES.SKULL:
+                    _spriteOutline.color = Color.black;
+                    break;
+                case HAMSTER_TYPES.RAINBOW:
+                    _spriteOutline.color = Color.white;
+                    break;
+            }
         }
     }
 

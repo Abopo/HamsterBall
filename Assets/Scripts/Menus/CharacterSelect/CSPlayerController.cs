@@ -27,6 +27,7 @@ public class CSPlayerController : PlayerController {
 
         // Make sure input is set up to the correct player
         SetPlayerNum(playerNum);
+        SetInputID(playerNum);
     }
 
     // Use this for initialization
