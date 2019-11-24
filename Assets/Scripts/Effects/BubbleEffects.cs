@@ -41,6 +41,8 @@ public class BubbleEffects : MonoBehaviour {
 
     //FMOD
 	public FMOD.Studio.EventInstance MatchComboEvent;
+	public FMOD.Studio.EventInstance CounterMatchEvent;
+	public FMOD.Studio.EventInstance TeamComboEvent;
 
 
     //SFX
@@ -162,9 +164,9 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamComboClip;
             //_teamAudioSource.Play();
-            MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
-            MatchComboEvent.start();
-            MatchComboEvent.release();
+			TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
+			TeamComboEvent.start();
+			TeamComboEvent.release();
 
             _teamEffectTimer = 0.0f;
         }
@@ -179,9 +181,9 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamDropClip;
             //_teamAudioSource.Play();
-            MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
-            MatchComboEvent.start();
-            MatchComboEvent.release();
+			TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
+			TeamComboEvent.start();
+			TeamComboEvent.release();
 
             _teamEffectTimer = 0.0f;
         }
@@ -195,9 +197,9 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamComboClip;
             //_teamAudioSource.Play();
-			MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
-			MatchComboEvent.start();
-			MatchComboEvent.release();
+			CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
+			CounterMatchEvent.start();
+			CounterMatchEvent.release();
             _counterEffectTimer = 0.0f;
         }
     }
@@ -210,9 +212,9 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamDropClip;
             //_teamAudioSource.Play();
-			MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
-			MatchComboEvent.start();
-			MatchComboEvent.release();
+			CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
+			CounterMatchEvent.start();
+			CounterMatchEvent.release();
             _counterEffectTimer = 0.0f;
         }
     }

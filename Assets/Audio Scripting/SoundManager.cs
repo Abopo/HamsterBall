@@ -36,7 +36,12 @@ public class SoundManager : MonoBehaviour {
 	public string CountDown321;
 	public string CountDownGo;
 	public string PetrifyBubble;
+	public string ShiftMeterFilled;
+
+	//Match Combo
 	public string MatchCombo;
+	public string CounterMatch;
+	public string TeamCombo;
 
 	//Generic Player Sounds
 	public string WoodPlayerFootstep;
@@ -109,6 +114,8 @@ public class SoundManager : MonoBehaviour {
             mainAudio = this;
             DontDestroyOnLoad(gameObject);
         }
+
+
 
 	}
 

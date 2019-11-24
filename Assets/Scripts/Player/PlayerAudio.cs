@@ -12,6 +12,7 @@ public class PlayerAudio : MonoBehaviour {
 
 	public FMOD.Studio.EventInstance PlayerJumpEvent;
 	public FMOD.Studio.EventInstance ShiftEvent;
+	public FMOD.Studio.EventInstance ShiftMeterFilledEvent;
 	public FMOD.Studio.EventInstance PlayerLandEvent;
 
 
@@ -54,8 +55,9 @@ public class PlayerAudio : MonoBehaviour {
     }
 
     public void PlayShiftReadyClip() {
-        _audioSource.clip = _shiftReadyClip;
-        _audioSource.Play();
+		ShiftMeterFilledEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ShiftMeterFilled);
+		ShiftMeterFilledEvent.start();
+		ShiftMeterFilledEvent.release();
     }
 
     public void PlayHitClip() {
