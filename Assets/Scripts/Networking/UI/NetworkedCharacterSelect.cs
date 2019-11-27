@@ -94,7 +94,7 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
             if(cs.playerNum == playerID-1) {
                 // Take ownership of the selector and the associated player
                 cs.GetComponent<PhotonView>().TransferOwnership(playerID);
-                cs.charaWindow.playerController.PhotonView.TransferOwnership(playerID);
+                cs.charaWindow.PlayerController.PhotonView.TransferOwnership(playerID);
 
                 // Activate it
                 cs.Activate(false, true);

@@ -89,7 +89,7 @@ public class CharacterSelector : MonoBehaviour {
 
         aiIndex = 0;
 
-        charaWindow.playerController.characterSelector = this;
+        charaWindow.PlayerController.characterSelector = this;
     }
 
     // Currently only used when networking
@@ -105,7 +105,7 @@ public class CharacterSelector : MonoBehaviour {
         isLocal = true;
 
         _player = player;
-        charaWindow.playerController.SetInputPlayer(_player);
+        charaWindow.PlayerController.SetInputPlayer(_player);
 
         foreach (SpriteRenderer sr in _sprites) {
             sr.enabled = true;
@@ -127,7 +127,10 @@ public class CharacterSelector : MonoBehaviour {
 
         parentSelector = pSelector;
         _player = pSelector._player;
-        charaWindow.playerController.SetInputPlayer(pSelector._player);
+        charaWindow.PlayerController.SetInputPlayer(pSelector._player);
+        if (curCharacterIcon != null) {
+            HighlightIcon(curCharacterIcon);
+        }
 
         foreach (SpriteRenderer sr in _sprites) {
             sr.enabled = true;
@@ -156,7 +159,7 @@ public class CharacterSelector : MonoBehaviour {
 
         // Controller should always be 0 since we're online
         _player = ReInput.players.GetPlayer(0);
-        charaWindow.playerController.SetInputPlayer(_player);
+        charaWindow.PlayerController.SetInputPlayer(_player);
 
         foreach (SpriteRenderer sr in _sprites) {
             sr.enabled = true;
@@ -193,7 +196,7 @@ public class CharacterSelector : MonoBehaviour {
         if (isAI) {
             _charaSelect.numAI--;
             // Give parent player input back
-            parentSelector.charaWindow.playerController.underControl = true;
+            parentSelector.charaWindow.PlayerController.underControl = true;
         } else {
             _charaSelect.numPlayers--;
             // Make this player available to be used again
@@ -228,7 +231,7 @@ public class CharacterSelector : MonoBehaviour {
 
     public void CheckInput() {
         // Don't take any input if the player is being controlled
-        if(charaWindow.playerController.underControl) {
+        if(charaWindow.PlayerController.underControl) {
             return;
         }
 
@@ -328,10 +331,10 @@ public class CharacterSelector : MonoBehaviour {
             _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = true;
 
             // Make sure player has correct controller
-            charaWindow.playerController.SetInputPlayer(_player.id);
+            charaWindow.PlayerController.SetInputPlayer(_player.id);
 
             // Shift this player into the play area
-            charaWindow.playerController.ShiftIntoPlayArea();
+            charaWindow.PlayerController.ShiftIntoPlayArea();
             isReady = true;
         }
     }
@@ -358,13 +361,13 @@ public class CharacterSelector : MonoBehaviour {
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)charaIcon.charaName][0];
         // Change animator to correct character
-        charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][0].animator;
+        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][0].animator;
         // Change name to correct character
         charaWindow.charaName.text = _resources.CharaNames[(int)charaIcon.charaName];
 
         // Play idle animation
-        charaWindow.charaAnimator.SetInteger("PlayerState", 0);
-        charaWindow.charaAnimator.speed = 1;
+        charaWindow.CharaAnimator.SetInteger("PlayerState", 0);
+        charaWindow.CharaAnimator.speed = 1;
 
         // Highlight the icon
         charaIcon.Highlight();
@@ -393,7 +396,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         // Change animator to correct character
-        charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
@@ -417,7 +420,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         // Change animator to correct character
-        charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
@@ -426,7 +429,7 @@ public class CharacterSelector : MonoBehaviour {
         CharaInfo tempInfo = new CharaInfo();
         tempInfo.name = curCharacterIcon.charaName;
         tempInfo.color = charaColor;
-        tempInfo.team = charaWindow.playerController.team;
+        tempInfo.team = charaWindow.PlayerController.team;
         // TODO: Make it so they can't get a team at all in the character select
         if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SURVIVAL) {
             tempInfo.team = -1;
@@ -460,7 +463,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         // Change animator to correct character
-        charaWindow.charaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
 
         //_audioSource.Play();
     }

@@ -185,9 +185,9 @@ public class CSPlayerController : PlayerController {
         transform.localScale = _baseScale;
 
         if(transform.localScale.x > 0) {
-            facingRight = true;
+            FacingRight = true;
         } else {
-            facingRight = false;
+            FacingRight = false;
         }
 
         // Reattach parent

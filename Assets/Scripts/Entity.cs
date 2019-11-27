@@ -29,7 +29,13 @@ public class Entity : MonoBehaviour {
 
     public bool FacingRight {
         get { return facingRight; }
-        set { facingRight = value;}
+        set {
+            facingRight = value;
+            if (_animator == null) {
+                _animator = GetComponentInChildren<Animator>();
+            }
+            _animator.SetBool("FacingRight", facingRight);
+        }
     }
 
     public float WaterMultiplier {
@@ -83,19 +89,18 @@ public class Entity : MonoBehaviour {
 	}
 	
 	public virtual void Flip ()	{
-		// Switch the way the entity is labelled as facing.
-		facingRight = !facingRight;
-
-		if (_animator == null) {
-			_animator = GetComponentInChildren<Animator> ();
-		}
-		_animator.SetBool ("FacingRight", facingRight);
-
 		// Multiply the player's x local scale by -1.
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
-	}
+
+        // Switch the way the entity is labelled as facing.
+        if (transform.localScale.x > 0) {
+            FacingRight = true;
+        } else {
+            FacingRight = false;
+        }
+    }
 
     public void FaceUp() {
         transform.eulerAngles = new Vector3(0f, 0f, Mathf.Sign(transform.localScale.x) * 90f);
@@ -107,16 +112,18 @@ public class Entity : MonoBehaviour {
     }
     public void FaceLeft() {
         transform.eulerAngles = new Vector3(0f, 0f, 0f);
-        if (facingRight) {
+        if (transform.localScale.x > 0) {
             Flip();
         }
+        FacingRight = false;
         curFacing = 2;
     }
     public void FaceRight() {
         transform.eulerAngles = new Vector3(0f, 0f, 0f);
-        if (!facingRight) {
+        if (transform.localScale.x < 0) {
             Flip();
         }
+        FacingRight = true;
         curFacing = 0;
     }
 

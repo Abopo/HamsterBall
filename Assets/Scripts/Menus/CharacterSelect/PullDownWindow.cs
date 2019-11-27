@@ -5,6 +5,11 @@ using UnityEngine;
 public class PullDownWindow : MonoBehaviour {
     public GameObject changeText;
 
+    CSPlayerController _playerController;
+    public CSPlayerController PlayerController {
+        get { return _playerController; }
+    }
+
     bool _isShowing = false;
     bool _isHiding = false;
 
@@ -12,8 +17,11 @@ public class PullDownWindow : MonoBehaviour {
     float _upYPos = 5.8f;
     float _downYPos = 1.86f;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
+        _playerController = GetComponentInChildren<CSPlayerController>();
+    }
+    // Use this for initialization
+    void Start () {
         // Make sure the window is up at the start
         transform.localPosition = new Vector3(transform.localPosition.x, _upYPos, transform.localPosition.z);
 

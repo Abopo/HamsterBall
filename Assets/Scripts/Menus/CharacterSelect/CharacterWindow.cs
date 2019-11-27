@@ -5,9 +5,7 @@ using UnityEngine;
 public class CharacterWindow : MonoBehaviour {
 
     public int num;
-    public CSPlayerController playerController;
     public SuperTextMesh pressAnyButton;
-    public Animator charaAnimator;
     public SpriteRenderer charaPortrait;
     public SuperTextMesh charaName;
     public SuperTextMesh pNum;
@@ -15,13 +13,29 @@ public class CharacterWindow : MonoBehaviour {
     public PullDownWindow pullDownWindow;
     public GameObject colorArrows;
 
+    public CSPlayerController PlayerController {
+        get { return pullDownWindow.PlayerController; }
+    }
+    public Animator CharaAnimator {
+        get { return pullDownWindow.PlayerController.Animator; }
+    }
+
     bool _active = false;
 
     TeamBox[] _teamBoxes;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
+    }
+    // Use this for initialization
+    void Start () {
+
         _teamBoxes = FindObjectsOfType<TeamBox>();
+
+        // If we're on the right side
+        if (num >= 2) {
+            // Make sure the character is facing left properly
+            pullDownWindow.PlayerController.FaceLeft();
+        }
 
         if (!_active) {
             // Make sure associated sprites are hidden
@@ -42,7 +56,9 @@ public class CharacterWindow : MonoBehaviour {
 
         Debug.Log("Chara Window Activate");
 
-        charaAnimator.gameObject.SetActive(true);
+        pullDownWindow.PlayerController.Animator.gameObject.SetActive(true);
+        pullDownWindow.PlayerController.Animator.SetBool("FacingRight", pullDownWindow.PlayerController.FacingRight);
+
         charaPortrait.enabled = true;
         charaName.gameObject.SetActive(true);
         pressAnyButton.gameObject.SetActive(false);
@@ -59,7 +75,7 @@ public class CharacterWindow : MonoBehaviour {
         _active = false;
         Debug.Log("Chara Window Deactivate");
 
-        charaAnimator.gameObject.SetActive(false);
+        pullDownWindow.PlayerController.Animator.gameObject.SetActive(false);
         charaPortrait.enabled = false;
         charaName.gameObject.SetActive(false);
         pNum.gameObject.SetActive(false);
