@@ -99,6 +99,8 @@ public class CatchHitbox : MonoBehaviour {
             _playerController.heldBall.Initialize(hamster.type);
             _playerController.heldBall.GetComponent<CircleCollider2D>().enabled = false;
             _playerController.heldBall.HideSprites();
+            _playerController.heldBall.gameObject.layer = LayerMask.NameToLayer("GhostBubble");
+            _playerController.heldBall.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
             if (hamster.isGravity) {
                 _playerController.heldBall.isGravity = true;

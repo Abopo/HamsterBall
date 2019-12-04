@@ -27,6 +27,7 @@ public class EntityPhysics : MonoBehaviour {
     private int leftHitCount; // this is a counter for how much of the top of the player is colliding
     private bool isTouchingWallRight;
     private int rightHitCount; // this is a counter for how much of the top of the player is colliding
+    private bool isOnPassthrough;
 
     public bool snappedToSlope;
 
@@ -38,6 +39,10 @@ public class EntityPhysics : MonoBehaviour {
     }
     public bool IsTouchingWallRight {
         get { return isTouchingWallRight; }
+    }
+
+    public bool IsOnPassthrough {
+        get { return isOnPassthrough; }
     }
 
     private void Awake() {
@@ -176,6 +181,10 @@ public class EntityPhysics : MonoBehaviour {
             if (_hit) {
                 isTouchingFloor = true;
                 entity.Grounded = true;
+
+                if(_hit.transform.gameObject.layer == 18 /*Passthrough*/) {
+                    isOnPassthrough = true;
+                }
                 //floorHitCount++;
                 //entity.CollisionResponseY(_hit.collider);
             }

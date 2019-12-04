@@ -96,6 +96,7 @@ public class LevelManager : MonoBehaviour {
                 prefabPath += "CorporationBoard";
                 break;
             case BOARDS.LABORATORY:
+                prefabPath += "LaboratoryBoard";
                 break;
             case BOARDS.AIRSHIP:
                 prefabPath += "Airship Board";

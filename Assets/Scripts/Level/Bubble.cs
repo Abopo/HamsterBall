@@ -186,6 +186,11 @@ public class Bubble : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.U)) {
             BoardChanged();
         }
+
+        // TODO: This really doesn't need to be happening every frame
+        if(locked) {
+            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        }
 	}
 
     private void FixedUpdate() {
@@ -309,8 +314,8 @@ public class Bubble : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Wall" && Mathf.Abs(_velocity.x) > 0.1f) {
+	void OnCollisionEnter2D(Collision2D other) {
+		if (other.gameObject.tag == "Wall" && Mathf.Abs(_velocity.x) > 0.1f) {
             // Make sure bubbles only bounce off of walls they are moving towards
             if(_velocity.x > 0 && other.transform.position.x > transform.position.x || 
                 _velocity.x < 0 && other.transform.position.x < transform.position.x) {
@@ -334,10 +339,10 @@ public class Bubble : MonoBehaviour {
                 _playerController.HomeBubbleManager.IncreaseScore(20);
             }
         }
-		if (other.tag == "Bubble") {
-			if(!locked && other.GetComponent<Bubble>().locked) {
+		if (other.gameObject.tag == "Bubble") {
+			if(!locked && other.transform.GetComponent<Bubble>().locked) {
                 if (!PhotonNetwork.connectedAndReady || (GetComponent<PhotonView>().owner == PhotonNetwork.player)) {
-                    CollisionWithBoard(other.GetComponent<Bubble>()._homeBubbleManager);
+                    CollisionWithBoard(other.transform.GetComponent<Bubble>()._homeBubbleManager);
                 } else {
                     // Stop moving and sit in place.
                     _velocity = Vector2.zero;
@@ -345,10 +350,10 @@ public class Bubble : MonoBehaviour {
                 }
             }
 		}
-        if(other.tag == "Ceiling" && !locked) {
-            CollisionWithBoard(other.GetComponent<Ceiling>().bubbleManager);
+        if(other.gameObject.tag == "Ceiling" && !locked) {
+            CollisionWithBoard(other.transform.GetComponent<Ceiling>().bubbleManager);
         }
-        if (other.tag == "Bottom") {
+        if (other.gameObject.tag == "Bottom") {
             if (type == HAMSTER_TYPES.SKULL) {
                 int inc = 1 * (_dropCombo ? 3 : 1);
 
@@ -396,7 +401,9 @@ public class Bubble : MonoBehaviour {
     public void CollisionWithBoard(BubbleManager bubbleManager) {
         // Stop moving and sit in place.
         _velocity = Vector2.zero;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        gameObject.layer = LayerMask.NameToLayer("SolidBubble");
         locked = true;
 
         Debug.Log("connect with board");
@@ -954,17 +961,6 @@ public class Bubble : MonoBehaviour {
             // If a bubble can't find an anchor without the matchedBubbles
             // matches aren't set up for inital bubbles
             if (b != null && !matches.Contains(b)) {
-                /*
-                b.foundAnchor = false;
-                foreach (Bubble b2 in b.adjBubbles) {
-                    if (b2 != null) {
-                        b2.checkedForAnchor = false;
-                        b2.foundAnchor = false;
-                        b2.checkedForMatches = false;
-                    }
-                }
-                */
-
                 if (!b.CheckForAnchor(bubbles, matches)) {
                     // Then add weight based on how many bubbles would be dropped
                     dropPotential = DropCount(b, matches);
@@ -1055,5 +1051,9 @@ public class Bubble : MonoBehaviour {
         }
 
         return false;
+    }
+
+    public void AddForce(Vector2 force) {
+        _velocity += force;
     }
 }

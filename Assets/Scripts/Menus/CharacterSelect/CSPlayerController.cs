@@ -124,10 +124,12 @@ public class CSPlayerController : PlayerController {
             ChangeState(PLAYER_STATE.IDLE);
         }
 
+        /* CSPlayer should never be on a fall through anyway
         if (_physics.IsTouchingFloor && _onFallThrough && inputState.down.isJustPressed) {
             // Move player slightly downward to pass through certain platforms
             transform.Translate(0f, -0.03f, 0f);
         }
+        */
     }
 
     public void ShiftIntoPlayArea() {

@@ -71,8 +71,8 @@ public class HamsterWheel : MonoBehaviour {
         _stages[2] = BOARDS.BEACH;
         _stages[3] = BOARDS.CITY;
         _stages[4] = BOARDS.CORPORATION;
-        _stages[5] = BOARDS.LABORATORY;
-        _stages[6] = BOARDS.CORPORATION;
+        _stages[5] = BOARDS.CORPORATION;
+        _stages[6] = BOARDS.LABORATORY;
         _stages[7] = BOARDS.AIRSHIP;
 
         _curRotSpeed = 0;
@@ -121,8 +121,12 @@ public class HamsterWheel : MonoBehaviour {
         }
 
         if(InputState.GetButtonOnAnyControllerPressed("Submit")) {
-            // Load the selected stage
-            LoadSelectedMap();
+            if (!_stageIcons[_index].isLocked) {
+                // Load the selected stage
+                LoadSelectedMap();
+            } else {
+                // Play a little error sound?
+            }
         }
         if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             _audioSource.Play();
@@ -131,7 +135,7 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void RotateRight() {
-        if (_rotatingRight || _stageIcons[NextIndex()].isLocked) {
+        if (_rotatingRight /*|| _stageIcons[NextIndex()].isLocked*/) {
             return;
         }
         _audioSource.Play();
@@ -165,7 +169,7 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void RotateLeft() {
-        if (_rotatingLeft || _stageIcons[PrevIndex()].isLocked) {
+        if (_rotatingLeft /*|| _stageIcons[PrevIndex()].isLocked*/) {
             return;
         }
         _audioSource.Play();
@@ -212,9 +216,11 @@ public class HamsterWheel : MonoBehaviour {
 
         // If we didn't keep rotating
         if (!Rotating) {
-            // Fully stop
-            //hamster.SetInteger("State", 0);
-            stageDescription.text = _stageIcons[_index].stageDescription;
+            if (!_stageIcons[_index].isLocked) {
+                stageDescription.text = _stageIcons[_index].stageDescription;
+            } else {
+                stageDescription.text = "???????";
+            }
         }
 
         // Reset long idle timer

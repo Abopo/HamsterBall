@@ -28,7 +28,7 @@ public class AIController : MonoBehaviour {
 
     bool _isMovingUp = false;
     int _moveDir = 0; // 1 - right, -1 - left
-    PlatformEndCap _targetEndCap; // the end cap of the platform we are trying to utilize for chase movement
+    Transform _targetPlatform; // the end cap of the platform we are trying to utilize for chase movement
 
     float _aimTime = 5.0f;
     float _aimTimer = 0f;
@@ -282,15 +282,12 @@ public class AIController : MonoBehaviour {
     }
 
     void BeginMovingUp() {
-        if(_mapScan.ClosestJump == null || _mapScan.ClosestJump.GetComponent<PlatformEndCap>() == null) {
+        if(_mapScan.ClosestJump == null) {
             return;
         }
 
-        // Get the closest jump from the map scan
-        _targetEndCap = _mapScan.ClosestJump.GetComponent<PlatformEndCap>();
-
         // If it's to our left
-        if (_targetEndCap.transform.position.x < transform.position.x) {
+        if (_mapScan.ClosestJump.transform.position.x < transform.position.x) {
             _input.left.isDown = true;
             _input.right.isDown = false;
             _moveDir = -1;
@@ -308,54 +305,59 @@ public class AIController : MonoBehaviour {
         // If we aren't jumping
         if (_playerController.CurState != PLAYER_STATE.JUMP) {
             // Update where the closest jump is
-            _targetEndCap = _mapScan.ClosestJump.GetComponent<PlatformEndCap>();
+            _targetPlatform = _mapScan.ClosestJump;
         }
 
-        // If the target is above us
-        if (_targetEndCap != null && _targetEndCap.transform.position.y > transform.position.y) {
-            // We should try to move toward it
+        if (_targetPlatform != null) {
+            // If the target is above us
+            if (_targetPlatform.transform.position.y > transform.position.y) {
+                // We should try to move toward it
 
-            // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
-            // If the target is to our left
-            if ((_moveDir == 1 && _targetEndCap.transform.position.x < transform.position.x + 1f &&
-                (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP))
-                /*|| GetComponent<EntityPhysics>().IsTouchingWallRight*/) {
-                // Change direction to the left
-                _input.left.isDown = true;
-                _input.right.isDown = false;
-                _moveDir = -1;
-
-                // If the target is to our right
-            } else if ((_moveDir == -1 && _targetEndCap.transform.position.x > transform.position.x - 1f &&
-                       (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP))
-                       /*|| GetComponent<EntityPhysics>().IsTouchingWallLeft*/) {
-                // Change direction to the right
-                _input.left.isDown = false;
-                _input.right.isDown = true;
-                _moveDir = 1;
-
-            } else {
-                // Keep moving the same direction
-                if (_moveDir == -1) {
+                // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
+                // If the target is to our left
+                if (_moveDir == 1 && _targetPlatform.transform.position.x < transform.position.x + 1f &&
+                    (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)) {
+                    // Change direction to the left
                     _input.left.isDown = true;
                     _input.right.isDown = false;
-                } else if (_moveDir == 1) {
+                    _moveDir = -1;
+
+                // If the target is to our right
+                } else if (_moveDir == -1 && _targetPlatform.transform.position.x > transform.position.x - 1f &&
+                           (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)) {
+                    // Change direction to the right
                     _input.left.isDown = false;
                     _input.right.isDown = true;
+                    _moveDir = 1;
+
+                } else {
+                    // Keep moving the same direction
+                    if (_moveDir == -1) {
+                        _input.left.isDown = true;
+                        _input.right.isDown = false;
+                    } else if (_moveDir == 1) {
+                        _input.left.isDown = false;
+                        _input.right.isDown = true;
+                    }
                 }
-            }
             // If the target is below us
-        } else {
-            // We should try to move to where the platform is
-            if (_targetEndCap.platformSide == SIDE.LEFT) {
-                _input.left.isDown = true;
-                _input.right.isDown = false;
-                _moveDir = -1;
+            } else if(_targetPlatform.GetComponent<PlatformEndCap>() != null) {
+                // We should try to move to where the platform is
+                if (_targetPlatform.GetComponent<PlatformEndCap>().platformSide == SIDE.LEFT) {
+                    _input.left.isDown = true;
+                    _input.right.isDown = false;
+                    _moveDir = -1;
+                } else {
+                    _input.left.isDown = false;
+                    _input.right.isDown = true;
+                    _moveDir = 1;
+                }
             } else {
-                _input.left.isDown = false;
-                _input.right.isDown = true;
-                _moveDir = 1;
+                // Just move towards the platform? (as it's probably a fallthrough)
+
             }
+        } else {
+            Debug.Log("Missing Endcap!");
         }
     }
 

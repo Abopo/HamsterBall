@@ -84,7 +84,7 @@ public class VillageManager : MonoBehaviour {
             PlayerPrefs.SetInt("City", 1);
             PlayerPrefs.SetInt("Sewers", 0);
             PlayerPrefs.SetInt("Corporation", 1);
-            PlayerPrefs.SetInt("Laboratory", 0);
+            PlayerPrefs.SetInt("Laboratory", 1);
             PlayerPrefs.SetInt("Airship", 1);
 
             // Highscores

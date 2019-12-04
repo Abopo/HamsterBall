@@ -234,8 +234,10 @@ public class AIMapScan : MonoBehaviour {
 
             // If there is a passthrough platform nearby
             if (_dropCheckHit && _dropCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
-                _rightDropDistance = rayOffsetX;
-                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
+                //_rightDropDistance = rayOffsetX;
+                // Set the distance to the center of the passthrough platform instead of the edge
+                _rightDropDistance = Mathf.Abs(transform.position.x - _dropCheckHit.transform.position.x);
+                Debug.DrawRay(new Vector2(transform.position.x + _rightDropDistance, _dropCheckRay.origin.y), _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
                 break;
             } else if (_dropCheckHit && _dropCheckHit.collider.tag == "Platform End Cap") {
                 _rightDropDistance = rayOffsetX;
@@ -252,8 +254,10 @@ public class AIMapScan : MonoBehaviour {
             _dropCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.down);
             _dropCheckHit = Physics2D.Raycast(_dropCheckRay.origin, _dropCheckRay.direction, 1.5f, collisionMask);
             if (_dropCheckHit && _dropCheckHit.transform.gameObject.layer == LayerMask.NameToLayer("Passthrough")) {
-                _leftDropDistance = rayOffsetX;
-                Debug.DrawRay(_dropCheckRay.origin, _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
+                //_leftDropDistance = rayOffsetX;
+                // Set the distance to the center of the passthrough platform instead of the edge
+                _leftDropDistance = Mathf.Abs(transform.position.x - _dropCheckHit.transform.position.x);
+                Debug.DrawRay(new Vector2(transform.position.x - _leftDropDistance, _dropCheckRay.origin.y), _dropCheckRay.direction * _dropCheckHit.distance, Color.blue);
                 break;
             } else if (_dropCheckHit && _dropCheckHit.collider.tag == "Platform End Cap") {
                 _leftDropDistance = rayOffsetX;

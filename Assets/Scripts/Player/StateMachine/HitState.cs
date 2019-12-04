@@ -20,7 +20,7 @@ public class HitState : PlayerState {
 
         _hamsterObj = Resources.Load("Prefabs/Entities/Hamster") as GameObject;
 
-        // TODO: Play SFX
+        // Play SFX
         playerController.PlayerAudio.PlayHitClip();
 
         // If the player is holding a hamster, drop it

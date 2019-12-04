@@ -103,12 +103,15 @@ public class PlayerController : Entity {
         get { return _isInvuln; }
     }
 
+    bool _freeze; // Stops all player movement and input
+    float _freezeTimer = 0f;
+    float _freezeTime = 0f;
+
     float _traction = 1.0f;
     public float Traction {
         get { return _traction; }
         set { _traction = value; }
     }
-    protected bool _onFallThrough;
     public int platformIndex; // This changes based on the kind of platform the player is standing on
 
     public bool aiControlled;
@@ -273,6 +276,19 @@ public class PlayerController : Entity {
     protected override void Update () {
         base.Update();
 
+        if(_freeze) {
+            _freezeTimer += Time.deltaTime;
+            if(_freezeTimer >= _freezeTime) {
+                _freeze = false;
+
+                // TODO: right now freeze only happens for airship, if it ends up being used elsewhere
+                // this will have to be reworked
+                Respawn();
+            } else {
+                return;
+            }
+        }
+
         // Don't update if the game is over or hasn't started yet
         if(_gameManager.gameIsOver || (_levelManager != null && !_levelManager.gameStarted)) {
             currentState.CheckInput(inputState);
@@ -348,7 +364,7 @@ public class PlayerController : Entity {
 
     private void FixedUpdate() {
         // Don't do any of this stuff if the game is paused
-        if (!_gameManager.isPaused) {
+        if (!_gameManager.isPaused && !_freeze) {
             _physics.MoveX(velocity.x * Time.deltaTime);
             _physics.MoveY(velocity.y * Time.deltaTime);
         }
@@ -374,7 +390,7 @@ public class PlayerController : Entity {
             }
         }
 
-        if(_physics.IsTouchingFloor && _onFallThrough && inputState.down.isJustPressed) {
+        if(_physics.IsTouchingFloor && _physics.IsOnPassthrough && inputState.down.isJustPressed) {
             // Move player slightly downward to pass through certain platforms
             transform.Translate(0f, -0.05f, 0f);
         }
@@ -519,6 +535,13 @@ public class PlayerController : Entity {
             _traction = 0.2f;
         }
 
+        // If we've fallen through the airship hole
+        if(collider.gameObject.tag == "Bottom") {
+            _freeze = true;
+            _freezeTimer = 0f;
+            _freezeTime = 2f;
+        }
+
         // If we somehow go out of bounds
         if(collider.gameObject.tag == "KillPlane") {
             Respawn();
@@ -541,16 +564,9 @@ public class PlayerController : Entity {
 	public override void CollisionResponseY(Collider2D collider) {
         base.CollisionResponseY(collider);
 
-		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 13/*Grate*/ || collider.gameObject.layer == 23/*Stair Step*/) {
+		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/ || 
+            collider.gameObject.layer == 13/*Grate*/ || collider.gameObject.layer == 23/*Stair Step*/) {
 			velocity.y = 0.0f;
-            _onFallThrough = false;
-            _collidedY = true;
-
-            PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
-        } else if(collider.gameObject.layer == 18/*Fallthrough*/ && !_collidedY) {
-			velocity.y = 0.0f;
-            // This is a fall through platform
-            _onFallThrough = true;
             _collidedY = true;
 
             PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
