@@ -34,6 +34,9 @@ public class Bubble : MonoBehaviour {
 
     public int is13Edge = 0; // If this bubble is on the edges of a 13 row. -1 = left; 0 = not; 1 = right
 
+    public Animator bubbleAnimator;
+    public Animator hamsterAnimator;
+
     private float _deltaX;
     private float _deltaY;
 
@@ -137,8 +140,8 @@ public class Bubble : MonoBehaviour {
 
     public void SetType(int inType) {
         type = (HAMSTER_TYPES)inType;
-        GetComponent<Animator>().SetInteger("Type", inType);
-        transform.GetChild(0).GetComponent<Animator>().SetInteger("Type", inType);
+        bubbleAnimator.SetInteger("Type", inType);
+        hamsterAnimator.SetInteger("Type", inType);
     }
 
     public void SetGravity(bool gravity) {

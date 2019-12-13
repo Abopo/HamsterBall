@@ -330,7 +330,9 @@ public class PlayerController : Entity {
             // State update stuff
             if (currentState != null) {
                 currentState.CheckInput(inputState);
-                currentState.Update();
+                if (!_justChangedState) { // Give the game a frame to update animations and stuff before heading into update
+                    currentState.Update();
+                }
             } else {
                 ChangeState(PLAYER_STATE.IDLE);
             }

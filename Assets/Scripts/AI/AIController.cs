@@ -213,7 +213,7 @@ public class AIController : MonoBehaviour {
             _input.right.isDown = false;
 
             // If we are close to the object
-            if (Mathf.Abs(chaseObj.transform.position.x - transform.position.x) < 0.5f) { 
+            if (Mathf.Abs(chaseObj.transform.position.x - transform.position.x) < 0.65f) { 
                 // If we are chasing a hamster and don't already have one
                 if (_curAction.hamsterWant != null && _playerController.heldBall == null && _playerController.CurState != PLAYER_STATE.CATCH) {
                     // The hamster(or opponent) is right here! Catch it!
@@ -315,16 +315,16 @@ public class AIController : MonoBehaviour {
 
                 // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
                 // If the target is to our left
-                if (_moveDir == 1 && _targetPlatform.transform.position.x < transform.position.x + 1f &&
-                    (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)) {
+                if (_moveDir == 1 && _targetPlatform.transform.position.x < transform.position.x - 1f /*&&
+                    (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)*/) {
                     // Change direction to the left
                     _input.left.isDown = true;
                     _input.right.isDown = false;
                     _moveDir = -1;
 
                 // If the target is to our right
-                } else if (_moveDir == -1 && _targetPlatform.transform.position.x > transform.position.x - 1f &&
-                           (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)) {
+                } else if (_moveDir == -1 && _targetPlatform.transform.position.x > transform.position.x + 1f /*&&
+                           (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)*/) {
                     // Change direction to the right
                     _input.left.isDown = false;
                     _input.right.isDown = true;
@@ -413,9 +413,9 @@ public class AIController : MonoBehaviour {
         }
 
         // Jump up if passing by a step since being higher is generally better
-        if (_mapScan.LeftJumpDistance < 1f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
+        if (_mapScan.LeftJumpDistance < 1.5f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
             _input.jump.isDown = true;
-        } else if (_mapScan.RightJumpDistance < 1f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
+        } else if (_mapScan.RightJumpDistance < 1.5f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
             _input.jump.isDown = true;
         } else {
             _input.jump.isDown = false;

@@ -6,7 +6,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     PlayerController _playerController;
     ThrowState _throwState;
-    CatchState _bubbleState;
+    CatchState _catchState;
     AttackState _attackState;
 
     PlayerEffects _playerEffects;
@@ -27,7 +27,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 	void Start () {
         _playerController = GetComponentInParent<PlayerController>();
         _throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
-        _bubbleState = (CatchState)_playerController.GetPlayerState(PLAYER_STATE.CATCH);
+        _catchState = (CatchState)_playerController.GetPlayerState(PLAYER_STATE.CATCH);
         _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
 
         _playerEffects = transform.parent.GetComponentInChildren<PlayerEffects>();
@@ -63,7 +63,7 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     }
 
     public void NetSwingOn() {
-        _bubbleState.Activate();
+        _catchState.Activate();
 		SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
 		SwingNetEvent.start();
 		SwingNetEvent.release();
@@ -71,11 +71,11 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     }
 
     public void NetSwingOff() {
-        _bubbleState.Deactivate();
+        _catchState.Deactivate();
     }
 
     public void NetSwingFinished() {
-        _bubbleState.Finish();
+        _catchState.Finish();
     }
 
     public void ShowBubble() {

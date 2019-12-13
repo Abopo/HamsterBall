@@ -152,7 +152,7 @@ public class BubblePopAnimation : MonoBehaviour {
         }
 
         // Turn off normal bubble sprite and collision
-        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Bubble>().bubbleAnimator.GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<CircleCollider2D>().enabled = false;
     }
 

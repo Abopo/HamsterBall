@@ -15,8 +15,11 @@ public class GameOverState : PlayerState {
         _direction = playerController.Animator.GetBool("FacingRight") ? 1 : -1;
         playerController.Animator.SetBool("WinLoop", false);
 
+        // Make sure sprite is solid
+        playerController.SpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+
         // Hide held bubble if there is one
-        if(playerController.heldBall != null) {
+        if (playerController.heldBall != null) {
             playerController.heldBall.gameObject.SetActive(false);
         }
     }

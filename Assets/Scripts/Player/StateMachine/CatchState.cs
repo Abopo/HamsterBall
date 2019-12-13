@@ -22,6 +22,12 @@ public class CatchState : PlayerState {
         
 		// Fall
 		playerController.ApplyGravity();
+
+        // Fail safe so Ai doesn't get stuck in this state
+        if(playerController.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) {
+            Debug.Log("Catch animation failsafe triggered");
+            playerController.ChangeState(PLAYER_STATE.IDLE);
+        }
 	}
 
 	public override void CheckInput(InputState inputState) {
