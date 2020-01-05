@@ -286,7 +286,8 @@ public class LevelManager : MonoBehaviour {
             ActivateFinalResultsScreen(finalResult);
         // If this was a single player level
         } else {
-            if (continueLevel) {
+            // If the player won and it's a continue level
+            if (finalResult == -1 && continueLevel) {
                 continueScreen.Activate(finalResult);
             } else {
                 ActivateFinalResultsScreen(finalResult);
@@ -299,7 +300,7 @@ public class LevelManager : MonoBehaviour {
         setOver = true;
 
         // If we're in a single player mode
-        if (_gameManager.IsStoryLevel() && spResultsScreen != null) {
+        if (_gameManager.isSinglePlayer && spResultsScreen != null) {
             // If the player lost
             if (result != -1) {
                 // Show a normal results screen
@@ -314,9 +315,9 @@ public class LevelManager : MonoBehaviour {
                 }
             }
         // If we are in multiplayer
-        } else if (!_gameManager.IsStoryLevel() && mpResultsScreen != null) {
+        } else if (!_gameManager.isSinglePlayer && mpResultsScreen != null) {
             mpResultsScreen.Activate(result);
-        }
+        } // TODO: failsafe some default results screen
     }
 
     void IncreaseLeftTeamGames() {

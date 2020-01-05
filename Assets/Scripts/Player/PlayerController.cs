@@ -122,7 +122,6 @@ public class PlayerController : Entity {
         get { return _charaInfo; }
     }
 
-    protected GameManager _gameManager;
     PlayerAudio _playerAudio;
     Vector3 _spawnPos;
 
@@ -426,11 +425,6 @@ public class PlayerController : Entity {
     }
 
     void UpdateBubbles() {
-		float dir = facingRight ? 1 : -1;
-		//swingObj.transform.position = new Vector3 (transform.position.x + 0.5f * dir,
-		//                                               transform.position.y,
-		//                                               transform.position.z);
-
 		if (heldBall != null && !heldBall.wasThrown) {
 			walkSpeed = 3.25f;
 			jumpMoveMax = 3.25f;

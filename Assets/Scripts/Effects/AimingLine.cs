@@ -112,7 +112,7 @@ public class AimingLine : MonoBehaviour {
                                                         _ray2.GetPoint(aimDot.RayPos).y,
                                                         aimDot.transform.position.z);
             } else {
-                DestroyObject(aimDot.gameObject);
+                Destroy(aimDot.gameObject);
             }
         }
     }
@@ -125,7 +125,7 @@ public class AimingLine : MonoBehaviour {
         // Destroy all aim dots
         foreach(AimDot aimDot in _aimDots) {
             if (aimDot != null) {
-                DestroyObject(aimDot.gameObject);
+                Destroy(aimDot.gameObject);
             }
         }
 

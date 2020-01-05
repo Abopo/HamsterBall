@@ -81,7 +81,7 @@ public class FilePicker : MonoBehaviour {
 
         // Delete the boardfiles
         foreach(GameObject file in files) {
-            DestroyObject(file);
+            Destroy(file);
         }
 
         files.Clear();
@@ -127,7 +127,7 @@ public class FilePicker : MonoBehaviour {
 
         // Delete the boardfiles
         foreach (GameObject file in files) {
-            DestroyObject(file);
+            Destroy(file);
         }
         // Reload the file data
         LoadFileData();

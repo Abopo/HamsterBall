@@ -19,6 +19,9 @@ public class BoardEditor : MonoBehaviour {
     string _fileName;
     int _timeLimit = 0;
 
+    int _numLines = 9;
+    int _lineLength = 12;
+
     string _levelScene;
     string _levelPrefab;
 
@@ -166,12 +169,12 @@ public class BoardEditor : MonoBehaviour {
         bool longLine = true;
         int lineLength = 0;
         int index = 0;
-        for(int i = 0; i < 10; ++i) {
+        for(int i = 0; i < _numLines; ++i) {
             if(longLine) {
-                lineLength += 13;
+                lineLength += _lineLength;
                 longLine = false;
             } else {
-                lineLength += 12;
+                lineLength += _lineLength-1;
                 longLine = true;
             }
 
@@ -239,6 +242,7 @@ public class BoardEditor : MonoBehaviour {
         // Gotta write out all the data so the board can be tested
 
         // Handicaps
+        /*
         tempLine = "Handicaps";
         streamWriter.WriteLine(tempLine);
         tempLine = "9";
@@ -247,6 +251,7 @@ public class BoardEditor : MonoBehaviour {
         streamWriter.WriteLine(tempLine);
         tempLine = "";
         streamWriter.WriteLine(tempLine);
+        */
 
         // Spawn Rate
         tempLine = "HSM";
@@ -309,9 +314,11 @@ public class BoardEditor : MonoBehaviour {
         streamWriter.WriteLine(tempLine);
 
         // Save the level
+        /*
         tempLine = "Level";
         streamWriter.WriteLine(tempLine);
         streamWriter.Write(_levelPrefab);
+        */
     #endregion
 
         tempLine = "\n";
@@ -449,7 +456,7 @@ public class BoardEditor : MonoBehaviour {
         // Delete all of the bubble sprites currently on the board
         BubbleSprite[] bSprites = FindObjectsOfType<BubbleSprite>();
         foreach(BubbleSprite bS in bSprites) {
-            DestroyObject(bS.gameObject);
+            Destroy(bS.gameObject);
         }
     }
 
@@ -463,7 +470,7 @@ public class BoardEditor : MonoBehaviour {
     }
 
     public void ChangeLevel(GameObject newLevel, string levelPrefab, string levelScene) {
-        DestroyObject(levelObj);
+        Destroy(levelObj);
         levelObj = newLevel;
         _levelScene = levelScene;
         _levelPrefab = levelPrefab;

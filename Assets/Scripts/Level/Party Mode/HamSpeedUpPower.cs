@@ -61,7 +61,7 @@ public class HamSpeedUpPower : PowerUp {
             DefaultHamsterSpeed(_hamScan.AllLeftHamsters);
         }
 
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 
     void IncreaseHamsterSpeed(List<Hamster> hamsters) {

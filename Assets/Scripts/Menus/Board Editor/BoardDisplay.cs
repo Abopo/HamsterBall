@@ -119,7 +119,7 @@ public class BoardDisplay : MonoBehaviour {
         // Delete all of the bubble sprites currently on the board
         BubbleSprite[] bSprites = FindObjectsOfType<BubbleSprite>();
         foreach (BubbleSprite bS in bSprites) {
-            DestroyObject(bS.gameObject);
+            Destroy(bS.gameObject);
         }
     }
     

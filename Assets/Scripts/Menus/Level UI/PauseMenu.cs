@@ -19,11 +19,11 @@ public class PauseMenu : MonoBehaviour {
 
     private void Awake() {
         _buttons = GetComponentsInChildren<MenuButton>();
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Use this for initialization
     void Start() {
-        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -112,7 +112,9 @@ public class PauseMenu : MonoBehaviour {
     }
 
     void SetAimAssistText() {
-        aimAssist.text = "Aim Assist: " + (_gameManager.aimAssist ? "ON" : "OFF");
+        if (aimAssist != null) {
+            aimAssist.text = "Aim Assist: " + (_gameManager.aimAssist ? "ON" : "OFF");
+        }
     }
 
     public void ReturnToPreviousScene() {

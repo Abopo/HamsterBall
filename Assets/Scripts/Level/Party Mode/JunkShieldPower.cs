@@ -45,6 +45,6 @@ public class JunkShieldPower : PowerUp {
 
         _hamMeter.LoseAllShields();
 
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

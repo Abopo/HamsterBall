@@ -23,7 +23,7 @@ public class IceSprite : MonoBehaviour {
                 DropOntoBoard();
             } else {
                 // Destroy this
-                DestroyObject(this.gameObject);
+                Destroy(this.gameObject);
             }
         }
 
@@ -45,7 +45,7 @@ public class IceSprite : MonoBehaviour {
             bSprite.SetIsIce(!bSprite.isIce);
 
             // Destroy this
-            DestroyObject(this.gameObject);
+            Destroy(this.gameObject);
         }
     }
 }

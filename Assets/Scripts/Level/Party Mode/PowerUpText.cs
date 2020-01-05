@@ -52,6 +52,6 @@ public class PowerUpText : MonoBehaviour {
         _isDisplaying = false;
         _powerUpText.enabled = false;
 
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

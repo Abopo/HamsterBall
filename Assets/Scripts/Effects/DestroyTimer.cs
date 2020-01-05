@@ -17,7 +17,7 @@ public class DestroyTimer : MonoBehaviour {
 	void Update () {
         _effectTimer += Time.deltaTime;
         if(_effectTimer > effectTime) {
-            DestroyObject(this.gameObject);
+            Destroy(this.gameObject);
         }
 	}
 }

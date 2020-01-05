@@ -24,8 +24,8 @@ public class BubbleManager : MonoBehaviour {
     // alternating between 13 and 12 columns
     // should specify top and bottom rows
     public List<Node> nodeList = new List<Node>();
-    protected int _baseLineLength = 13; // The longest a line will be
-    protected int _topLineLength = 13;
+    protected int _baseLineLength = 12; // The longest a line will be
+    protected int _topLineLength = 12;
     public int TopLineLength {
         get { return _topLineLength; }
     }
@@ -36,7 +36,7 @@ public class BubbleManager : MonoBehaviour {
     protected bool _justRemovedBubble = false;
     protected Transform _bubblesParent;
     protected Transform _nodesParent;
-    protected float _nodeHeight = 0.67f; // The height of a single node (i.e. how far down lines move)
+    protected float _nodeHeight = 0.73f; // The height of a single node (i.e. how far down lines move)
     protected int _bottomRowStart {
         get {
             return nodeList.Count - (_baseLineLength * 2 - 1) + _topLineLength;
@@ -244,9 +244,9 @@ public class BubbleManager : MonoBehaviour {
         float xOffset = baseXOffset;
         Vector3 nodeSpawnPos;
         GameObject newNode;
-        for(int i = 0; i < 12; ++i) {
+        for(int i = 0; i < 11; ++i) {
             for(int j = 0; j < lineLength; ++j) {
-                nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.77f * j), (transform.position.y + 2.9f) - (0.67f * i), -1);
+                nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.84f * j), (transform.position.y + 2.9f) - (_nodeHeight * i), -1);
                 newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
                 newNode.GetComponent<Node>().number = nodeList.Count;
                 nodeList.Add(newNode.GetComponent<Node>());
@@ -255,7 +255,7 @@ public class BubbleManager : MonoBehaviour {
 
             if(lineLength == _baseLineLength) {
                 lineLength = _baseLineLength - 1;
-                xOffset = baseXOffset + 0.385f;
+                xOffset = baseXOffset + 0.42f;
             } else {
                 lineLength = _baseLineLength;
                 xOffset = baseXOffset;
@@ -626,11 +626,11 @@ public class BubbleManager : MonoBehaviour {
             return;
         }
 
-        if(_gameEndingSequence) {
+        if (_gameEndingSequence) {
             // Wait until all the bubbles are petrified
-            foreach(Bubble bub in _bubbles) {
+            foreach (Bubble bub in _bubbles) {
                 // If a bubble still isn't petrified
-                if(bub != null && !bub.Petrified) {
+                if (bub != null && !bub.Petrified) {
                     return;
                 }
             }
@@ -850,7 +850,7 @@ public class BubbleManager : MonoBehaviour {
             // Delete bottom line
             if (i >= _bottomRowStart) {
                 Destroy(nodeList[i].gameObject);
-                // Move nodes down
+            // Move nodes down
             } else {
                 nodeList[i].transform.Translate(new Vector3(0.0f, -_nodeHeight, 0.0f));
                 nodeList[i].number += _topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength;
@@ -864,7 +864,7 @@ public class BubbleManager : MonoBehaviour {
         float xOffset;
         if (_topLineLength == _baseLineLength) {
             _topLineLength = _baseLineLength - 1;
-            xOffset = (_baseLineLength / 2) * -0.77f + 0.385f;
+            xOffset = (_baseLineLength / 2) * -0.77f + 0.42f;
         } else {
             _topLineLength = _baseLineLength;
             xOffset = (_baseLineLength / 2) * -0.77f;
@@ -874,7 +874,7 @@ public class BubbleManager : MonoBehaviour {
         Vector3 nodeSpawnPos;
         GameObject newNode;
         for (int j = _topLineLength-1; j >= 0; --j) {
-            nodeSpawnPos = new Vector3((transform.position.x + xOffset) + (0.77f * j), (transform.position.y + 2.9f), -5);
+            nodeSpawnPos = new Vector3((transform.position.x + xOffset) + (0.84f * j), (transform.position.y + 2.9f), -5);
             newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
             newNode.transform.parent = _nodesParent;
             newNode.transform.SetAsFirstSibling();
@@ -986,13 +986,13 @@ public class BubbleManager : MonoBehaviour {
         int tempBottomRowStart = _bottomRowStart;
         for (int i = 0; i < nodeList.Count; ++i) {
             // Delete bottom line nodes
-            if (i >= tempBottomRowStart) {
+            if (i >= tempBottomRowStart && nodeList[i] != null) {
                 Destroy(nodeList[i].gameObject);
             }
         }
 
         // Remove the deleted nodes from the nodeList
-        nodeList.RemoveRange(tempBottomRowStart, (_topLineLength == 13 ? 12 : 13));
+        nodeList.RemoveRange(tempBottomRowStart, (_topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength));
 
         // Move the entire bubble manager down one line
         transform.Translate(0f, -0.67f, 0f, Space.World);
@@ -1116,6 +1116,10 @@ public class BubbleManager : MonoBehaviour {
             _gameManager.EndGame(team == 0 ? 1 : 0, _scoreManager.TotalScore);
         } else if (_roundResult == 0) {
             _gameManager.EndGame(-1, 0);
+        }
+
+        if(!_gameEndingSequence) {
+            _levelManager.ActivateResultsScreen(team, _roundResult);
         }
     }
 

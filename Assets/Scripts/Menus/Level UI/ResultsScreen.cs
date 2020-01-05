@@ -7,6 +7,7 @@ public class ResultsScreen : MonoBehaviour {
     public SuperTextMesh winningTeamText;
     public Image winningTeamSprite;
     public MenuButton mainMenuButton;
+    public bool isContinue;
 
     MenuOption[] _menuOptions;
 
@@ -90,10 +91,15 @@ public class ResultsScreen : MonoBehaviour {
         }
         if (winningTeamText != null) {
             winningTeamText.gameObject.SetActive(true);
-            if (result == -1) {
-                winningTeamText.text = "You did it!";
+            if(isContinue) {
+                winningTeamText.text = "Board Clear!";
+                winningTeamText.textMaterial = Resources.Load<Material>("DefaultSTMMaterials/OutlineGreen");
+            } else if (result == -1) {
+                winningTeamText.text = "<w=simple>Stage Cleared";
+                winningTeamText.textMaterial = Resources.Load<Material>("DefaultSTMMaterials/OutlineGreen");
             } else {
-                winningTeamText.text = "You failed...";
+                winningTeamText.text = "Stage failed...";
+                winningTeamText.textMaterial = Resources.Load<Material>("DefaultSTMMaterials/OutlineRed");
             }
         }
     }
@@ -101,6 +107,9 @@ public class ResultsScreen : MonoBehaviour {
     // result: -1 = left team wins, 0 = draw, 1 = right team wins
     public void Activate(int result) {
         gameObject.SetActive(true);
+        if(_gameManager == null) {
+            _gameManager = FindObjectOfType<GameManager>();
+        }
 
         if (_gameManager.isSinglePlayer) {
             SetSinglePlayerResultsText(result);

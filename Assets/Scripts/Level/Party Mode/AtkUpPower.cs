@@ -39,6 +39,6 @@ public class AtkUpPower : PowerUp {
 
         _caughtPlayer.atkModifier = 0;
 
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

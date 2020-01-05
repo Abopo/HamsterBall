@@ -176,7 +176,7 @@ public class EntityPhysics : MonoBehaviour {
             float y = _myCollider.bounds.center.y - _myCollider.bounds.extents.y;
 
             _ray = new Ray2D(new Vector2(x, y), Vector2.up * -1);
-            Debug.DrawRay(_ray.origin, _ray.direction * 0.01f);
+            //Debug.DrawRay(_ray.origin, _ray.direction * 0.01f);
             _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.05f, collisionMaskY);
             if (_hit) {
                 isTouchingFloor = true;
@@ -344,7 +344,7 @@ public class EntityPhysics : MonoBehaviour {
         float curYPos = _myCollider.bounds.center.y - _myCollider.bounds.extents.y;
 
         _ray = new Ray2D(new Vector2(_myCollider.bounds.center.x, transform.position.y), Vector2.up * -1);
-        Debug.DrawRay(_ray.origin, _ray.direction * 1f);
+        //Debug.DrawRay(_ray.origin, _ray.direction * 1f);
         _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 1f, collisionMaskSlope);
         if(_hit && _hit.distance-_myCollider.bounds.extents.y < 0.3f) {
             //Debug.Log("Snap to Slope");

@@ -17,9 +17,9 @@ public class StagePicture : MonoBehaviour {
 
     private void Awake() {
         // Multiplayer images
-        locationImagesMP["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/BasicForest");
-        locationImagesMP["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/BasicMountain");
-        locationImagesMP["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
+        locationImagesMP["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/ForestImage");
+        locationImagesMP["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/MountainMap");
+        locationImagesMP["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/Beach-Picture");
         locationImagesMP["City"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City");
         locationImagesMP["Sewers"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Sewers");
         locationImagesMP["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");

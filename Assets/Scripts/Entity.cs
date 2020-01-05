@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour {
 
     private float _waterMultiplier; // Adjusts movement when in water
     private float _waterGravMultiplier; // Adjusts gravity when in water
+    private float _waterHeight = -3.1f; // the height of the water
     protected bool grounded;
     protected bool facingRight = true;
     protected bool _springing;
@@ -46,8 +47,9 @@ public class Entity : MonoBehaviour {
 
     public int curFacing; // 0 - Right, 1 - Down, 2 - Left, 3 - Up (usually only used for networking info)
 
-    private WaterController _waterController;
 
+    protected GameManager _gameManager;
+   
     protected virtual void Awake() {
 
     }
@@ -58,22 +60,26 @@ public class Entity : MonoBehaviour {
             _animator = GetComponentInChildren<Animator>();
         }
 
+        _gameManager = FindObjectOfType<GameManager>();
+
 		velocity = Vector2.zero;
 		_physics = GetComponent<EntityPhysics>();
 
         _waterMultiplier = 1f;
         _waterGravMultiplier = 1f;
-        _waterController = FindObjectOfType<WaterController>();
 	}
 	
 	// Update is called once per frame
 	protected virtual void Update () {
-	    if(_waterController != null) {
-            if(transform.position.y < _waterController.WaterHeight && _waterMultiplier == 1f) {
+        if (_gameManager.selectedBoard == BOARDS.BEACH) {
+            if (transform.position.y < _waterHeight && _waterMultiplier == 1f)
+            {
                 _waterMultiplier = 0.55f;
                 _waterGravMultiplier = 0.4f;
                 velocity.y = velocity.y * 0.25f;
-            } else if(transform.position.y > _waterController.WaterHeight && _waterMultiplier == 0.55f) {
+            }
+            else if (transform.position.y > _waterHeight && _waterMultiplier == 0.55f)
+            {
                 _waterMultiplier = 1f;
                 _waterGravMultiplier = 1f;
             }

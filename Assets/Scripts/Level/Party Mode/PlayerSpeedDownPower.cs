@@ -56,6 +56,6 @@ public class PlayerSpeedDownPower : PowerUp {
 
         //_caughtPlayer.speedModifier = 1.0f;
 
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

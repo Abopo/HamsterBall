@@ -164,6 +164,6 @@ public class PowerUp : Hamster {
     }
 
     protected virtual void Deactivate() {
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

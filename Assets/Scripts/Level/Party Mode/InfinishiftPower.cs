@@ -40,6 +40,6 @@ public class InfinishiftPower : PowerUp {
         //base.Deactivate();
 
 
-        DestroyObject(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

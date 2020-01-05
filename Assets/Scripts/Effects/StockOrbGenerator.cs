@@ -36,7 +36,7 @@ public class StockOrbGenerator : MonoBehaviour {
         }
         if (_spawnCount >= _spawnAmount) {
             // Once all spawning is finished, destroy
-            DestroyObject(this.gameObject);
+            Destroy(this.gameObject);
         }
 	}
 

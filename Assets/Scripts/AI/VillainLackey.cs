@@ -35,7 +35,7 @@ public class VillainLackey : CharacterAI {
 
             // If health is at 0, die
             if(_health <= 0) {
-                DestroyObject(this.gameObject);
+                Destroy(this.gameObject);
             }
         } else if(_playerController.CurState != PLAYER_STATE.HIT) {
             _inHitState = false;

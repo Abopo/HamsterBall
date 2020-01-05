@@ -992,11 +992,11 @@ public class Bubble : MonoBehaviour {
     public IEnumerator Petrify() {
         _petrified = true;
         // Set the type to Gray
-        GetComponent<Animator>().SetInteger("Type", 3);
+        bubbleAnimator.SetInteger("Type", 3);
 
         // Darken bubble and hamster sprite 
-        GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
-        transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
+        bubbleAnimator.GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
+        hamsterAnimator.GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
 
         Debug.Log("Petrify");
 		PetrifyBubbleEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PetrifyBubble);

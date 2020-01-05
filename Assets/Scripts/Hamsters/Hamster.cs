@@ -52,8 +52,6 @@ public class Hamster : Entity {
 
     SpriteOutline _spriteOutline;
 
-    GameManager _gameManager;
-
     protected override void Awake() {
         base.Awake();
 

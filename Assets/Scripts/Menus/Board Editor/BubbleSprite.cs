@@ -10,6 +10,8 @@ public class BubbleSprite : MonoBehaviour {
     public bool isGravity;
     public GameObject spiralEffectObj;
     public GameObject spiralEffectInstance;
+    public Animator bubbleAnimator;
+    public Animator hamsterAnimator;
     public bool isIce;
     public SpriteRenderer iceSprite;
 
@@ -54,8 +56,8 @@ public class BubbleSprite : MonoBehaviour {
             SetIsGravity(true);
         }
         type = (HAMSTER_TYPES)inType;
-        GetComponent<Animator>().SetInteger("Type", (int)inType);
-        transform.GetChild(0).GetComponent<Animator>().SetInteger("Type", (int)inType);
+        bubbleAnimator.SetInteger("Type", (int)inType);
+        hamsterAnimator.SetInteger("Type", (int)inType);
     }
 
     public void SetIsGravity(bool isGrav) {
