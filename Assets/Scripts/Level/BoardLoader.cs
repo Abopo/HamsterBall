@@ -312,15 +312,15 @@ public class BoardLoader : MonoBehaviour {
         } else if(_readText.Contains("Mountain")) {
             _gameManager.selectedBoard = BOARDS.MOUNTAIN;
         } else if (_readText.Contains("Beach")) {
-            _gameManager.selectedBoard = BOARDS.MOUNTAIN;
+            _gameManager.selectedBoard = BOARDS.BEACH;
         } else if (_readText.Contains("City")) {
-            _gameManager.selectedBoard = BOARDS.MOUNTAIN;
+            _gameManager.selectedBoard = BOARDS.CITY;
         } else if (_readText.Contains("Corporation")) {
-            _gameManager.selectedBoard = BOARDS.MOUNTAIN;
+            _gameManager.selectedBoard = BOARDS.CORPORATION;
         } else if (_readText.Contains("Laboratory")) {
-            _gameManager.selectedBoard = BOARDS.MOUNTAIN;
+            _gameManager.selectedBoard = BOARDS.LABORATORY;
         } else if (_readText.Contains("Airship")) {
-            _gameManager.selectedBoard = BOARDS.MOUNTAIN;
+            _gameManager.selectedBoard = BOARDS.AIRSHIP;
         }
 
         if(_gameManager.isSinglePlayer) {

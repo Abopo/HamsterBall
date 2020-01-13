@@ -10,8 +10,11 @@ public class StagePicture : MonoBehaviour {
     public Image locationImageMid;
     public Image locationImageBot;
 
+    public Image border;
+
     Dictionary<string, Sprite> locationImagesMP = new Dictionary<string, Sprite>();
     Dictionary<string, Sprite> locationImagesSP = new Dictionary<string, Sprite>();
+    Dictionary<string, Sprite> borderImages = new Dictionary<string, Sprite>();
 
     BoardDisplay _boardDisplay;
 
@@ -38,6 +41,12 @@ public class StagePicture : MonoBehaviour {
         locationImagesSP["DarkForest"] = Resources.Load<Sprite>("Art/UI/Map Select/OneTube - DarkForest");
         locationImagesSP["Airship"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
 
+        // Border images
+        Sprite[] borders = Resources.LoadAll<Sprite>("Art/UI/Map Select/Stage-Selection-List");
+        borderImages["Forest"] = borders[1];
+        borderImages["Mountain"] = borders[2];
+        borderImages["Beach"] = borders[0];
+
         _boardDisplay = FindObjectOfType<BoardDisplay>();
     }
 
@@ -56,6 +65,8 @@ public class StagePicture : MonoBehaviour {
         } else {
             SetupSinglePlayer(storyButton);
         }
+
+        SetBorder(storyButton);
     }
 
     void SetupMultiplayer(StoryButton storyButton) {
@@ -105,5 +116,9 @@ public class StagePicture : MonoBehaviour {
 
         // Clear any previews that may be showing
         _boardDisplay.ClearBoard();
+    }
+
+    void SetBorder(StoryButton storyButton) {
+        border.sprite = borderImages[storyButton.locationName];
     }
 }

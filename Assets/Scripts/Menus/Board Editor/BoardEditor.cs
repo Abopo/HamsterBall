@@ -309,7 +309,7 @@ public class BoardEditor : MonoBehaviour {
         // Save the board
         tempLine = "Board";
         streamWriter.WriteLine(tempLine);
-        streamWriter.Write(_levelScene);
+        streamWriter.Write(_levelScene+"Board");
         tempLine = "\n";
         streamWriter.WriteLine(tempLine);
 
@@ -424,22 +424,41 @@ public class BoardEditor : MonoBehaviour {
         _timeLimit = int.Parse(_readLine);
         timeLimitField.text = _readLine;
 
-        // Load the level
+        // Load the board
         _readLine = _linesFromFile[fileIndex];
         while(_readLine != "Board") {
             _readLine = _linesFromFile[fileIndex++];
         }
+        _readLine = _linesFromFile[fileIndex];
+        GameObject newLevel = LoadLevel(_readLine);
 
         // Get the scene name
         _readLine = _linesFromFile[fileIndex++];
         string newScene = _readLine;
 
-        // Load in the level geometry for this level
-        while (_readLine != "Level") {
-            _readLine = _linesFromFile[fileIndex++];
+        // Delete and replace the old level
+        ChangeLevel(newLevel, _readLine, newScene);
+    }
+
+    GameObject LoadLevel(string boardString) {
+        GameObject levelPrefab = null;
+
+        if (boardString.Contains("Forest")) {
+            levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/ForestBoard");
+        } else if (boardString.Contains("Mountain")) {
+            levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/MountainBoard");
+        } else if (boardString.Contains("Beach")) {
+            levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/BeachBoard");
+        } else if (boardString.Contains("City")) {
+            levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/CityBoard");
+        } else if (boardString.Contains("Corporation")) {
+            levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/CorporationBoard");
+        } else if (boardString.Contains("Laboratory")) {
+            levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/LaboratoryBoard");
+        } else if (boardString.Contains("Airship")) {
+            levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/AirshipBoard");
         }
-        _readLine = _linesFromFile[fileIndex];
-        GameObject levelPrefab = Resources.Load<GameObject>("Prefabs/Level/Boards/Multiplayer/" + _readLine);
+
         GameObject newLevel = GameObject.Instantiate(levelPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         HamsterSpawner[] spawners = newLevel.GetComponentsInChildren<HamsterSpawner>();
         foreach (HamsterSpawner hS in spawners) {
@@ -448,8 +467,7 @@ public class BoardEditor : MonoBehaviour {
         Ceiling ceiling = FindObjectOfType<Ceiling>();
         ceiling.enabled = false;
 
-        // Delete and replace the old level
-        ChangeLevel(newLevel, _readLine, newScene);
+        return newLevel;
     }
 
     public void ClearBoard() {
@@ -472,8 +490,8 @@ public class BoardEditor : MonoBehaviour {
     public void ChangeLevel(GameObject newLevel, string levelPrefab, string levelScene) {
         Destroy(levelObj);
         levelObj = newLevel;
-        _levelScene = levelScene;
         _levelPrefab = levelPrefab;
+        _levelScene = levelScene;
     }
 
     public void DisplayWarningText(string text) {

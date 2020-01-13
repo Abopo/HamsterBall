@@ -259,7 +259,7 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void FlipHamster(bool right) {
-        hamster.SetBool("FacingLeft", !right);
+        hamster.SetBool("FacingRight", right);
 
         if (right) {
             // Multiply the player's x local scale by -1.

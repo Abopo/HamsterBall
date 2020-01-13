@@ -34,7 +34,7 @@ public class WaterBubbleGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(_levelManager.GameOver) {
+        if(_levelManager == null || _levelManager.GameOver) {
             return;
         }
 
