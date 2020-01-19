@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Rewired;
 
 public class TextWriter : MonoBehaviour {
-    public Text displayText;
+    public SuperTextMesh displayText;
     public bool done;
     public bool paused;
 
@@ -43,6 +43,8 @@ public class TextWriter : MonoBehaviour {
                     _done = true;
                 }
             }
+        } else {
+            done = _done;
         }
 
         CheckInput();

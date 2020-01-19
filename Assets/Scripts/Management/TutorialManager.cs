@@ -33,8 +33,10 @@ public class TutorialManager : MonoBehaviour {
             }
         }
 
-        // Turn off ai for now
-        _aiController.GetComponent<AIController>().enabled = false;
+        if (_aiController != null) {
+            // Turn off ai for now
+            _aiController.GetComponent<AIController>().enabled = false;
+        }
 
         _tutorialTime = 0.5f;
 	}
@@ -113,6 +115,8 @@ public class TutorialManager : MonoBehaviour {
                 EndGame();
                 break;
         }
+
+        _gameManager.FullPause();
     }
 
     string GetCorrectTutorial(string baseTutorial) {
@@ -125,6 +129,8 @@ public class TutorialManager : MonoBehaviour {
 
     // We kind of have to fake a game end scenario
     void EndGame() {
+        _gameManager.Unpause();
+
         _tutorialFinished = true;
 
         FindObjectOfType<BubbleManager>().wonGame = true;

@@ -17,7 +17,7 @@ public class CutsceneCharacter : MonoBehaviour {
     public float screenPos;
     public float offScreenPos;
 
-    public bool IsSliding {
+    public bool IsMoving {
         get {
             if(_slidingIn || _slidingOut || _walkingScript.isWalking) {
                 return true;
@@ -36,22 +36,17 @@ public class CutsceneCharacter : MonoBehaviour {
 
     float _fakeDeltaTime = 0.02f;
 
-    Image _image;
+    SpriteRenderer _sprite;
     SpriteRenderer _speakerArrow;
     CutsceneManager _cutsceneManager;
-    RectTransform _rectTransform;
-    public RectTransform RectTransform {
-        get { return _rectTransform; }
-    }
 
     // Event scripts
     WalkingScript _walkingScript;
 
     private void Awake() {
-        _image = GetComponent<Image>();
-        _speakerArrow = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        _sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        _speakerArrow = transform.GetChild(1).GetComponent<SpriteRenderer>();
         _cutsceneManager = FindObjectOfType<CutsceneManager>();
-        _rectTransform = GetComponent<RectTransform>();
 
         _walkingScript = GetComponent<WalkingScript>();
 
@@ -60,8 +55,8 @@ public class CutsceneCharacter : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _rectTransform.Translate(_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
-        _rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
+        transform.Translate(_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
+        //_rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
     }
 
     // Update is called once per frame
@@ -77,20 +72,20 @@ public class CutsceneCharacter : MonoBehaviour {
     
     void SlidingIn() {
         if (side < 0) {
-            _rectTransform.Translate(_slideSpeed * _fakeDeltaTime, 0f, 0f);
-            if (_rectTransform.anchoredPosition.x >= screenPos) {
-                SlideInFinish();
+            transform.Translate(_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (transform.position.x >= screenPos) {
+                EnterFinish();
             }
         } else if (side > 0) {
-            _rectTransform.Translate(-_slideSpeed * _fakeDeltaTime, 0f, 0f);
-            if (_rectTransform.anchoredPosition.x <= screenPos) {
-                SlideInFinish();
+            transform.Translate(-_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (transform.position.x <= screenPos) {
+                EnterFinish();
             }
         }
     }
 
-    void SlideInFinish() {
-        _rectTransform.anchoredPosition = new Vector2(screenPos, _rectTransform.localPosition.y);
+    public void EnterFinish() {
+        transform.position = new Vector2(screenPos, 0);
         _slidingIn = false;
         onScreen = true;
 
@@ -105,20 +100,20 @@ public class CutsceneCharacter : MonoBehaviour {
 
     void SlidingOut() {
         if (side < 0) {
-            _rectTransform.Translate(-_slideSpeed * _fakeDeltaTime, 0f, 0f);
-            if (_rectTransform.anchoredPosition.x <= offScreenPos) {
+            transform.Translate(-_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (transform.position.x <= offScreenPos) {
                 SlideOutFinish();
             }
         } else if(side > 0) {
-            _rectTransform.Translate(_slideSpeed * _fakeDeltaTime, 0f, 0f);
-            if (_rectTransform.anchoredPosition.x >= offScreenPos) {
+            transform.Translate(_slideSpeed * _fakeDeltaTime, 0f, 0f);
+            if (transform.position.x >= offScreenPos) {
                 SlideOutFinish();
             }
         }
     }
 
     void SlideOutFinish() {
-        _rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
+        transform.position = new Vector2(offScreenPos, transform.position.y);
         _slidingOut = false;
         onScreen = false;
 
@@ -150,8 +145,13 @@ public class CutsceneCharacter : MonoBehaviour {
         _slidingOut = false;
     }
 
+    public void WalkIn() {
+        _speakerArrow.enabled = false;
+        _walkingScript.StartWalking();
+    }
+
     public void GoOffscreen() {
-        _rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
+        transform.position = new Vector2(offScreenPos, transform.position.y);
         onScreen = false;
     }
 
@@ -169,20 +169,23 @@ public class CutsceneCharacter : MonoBehaviour {
         */
 
         // Load the image of the character
-        // TODO: This is maybe inefficient? idk
-        string fullFilePath = "Art/Characters/" + curCharacter + "/" + curCharacter + "_" + expression;
-        _image.sprite = Resources.Load<Sprite>(fullFilePath);
-        _image.SetNativeSize();
+        SetExpression(expression);
     }
 
     public void SetExpression(string expression) {
+        // TODO: This is maybe inefficient? idk
         string fullFilePath = "Art/Characters/" + curCharacter + "/" + curCharacter + "_" + expression;
-        _image.sprite = Resources.Load<Sprite>(fullFilePath);
-        _image.SetNativeSize();
+        _sprite.sprite = Resources.Load<Sprite>(fullFilePath);
+        // If we tried to load an expression that doesn't exist
+        if (_sprite.sprite == null) {
+            // Just load the neutral expression
+            fullFilePath = "Art/Characters/" + curCharacter + "/" + curCharacter + "_Neutral";
+            _sprite.sprite = Resources.Load<Sprite>(fullFilePath);
+        }
     }
 
     public void SetFacing(int facing) {
-        _rectTransform.localScale = new Vector3(facing, _rectTransform.localScale.y, _rectTransform.localScale.z);
+        transform.localScale = new Vector3(facing, transform.localScale.y, transform.localScale.z);
     }
 
     public void SetIsSpeaking(bool speaking) {
@@ -196,6 +199,6 @@ public class CutsceneCharacter : MonoBehaviour {
     }
 
     public void Translate(float deltaX, float deltaY) {
-        _rectTransform.Translate(deltaX, deltaY, 0f);
+        transform.Translate(deltaX, deltaY, 0f);
     }
 }

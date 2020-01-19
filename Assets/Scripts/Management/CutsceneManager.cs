@@ -14,9 +14,9 @@ public class CutsceneManager : MonoBehaviour {
     public CutsceneCharacter rightChara1;
     public CutsceneCharacter rightChara2;
 
-    public Image backgroundSprite;
-    public Image textBacker;
-    public Text dialoguetext;
+    public SpriteRenderer backgroundSprite;
+    public SpriteRenderer textBacker;
+    public SuperTextMesh dialoguetext;
 
     static public string fileToLoad;
 
@@ -45,6 +45,7 @@ public class CutsceneManager : MonoBehaviour {
     // Use this for initialization
     private void Awake() {
         _textWriter = GetComponent<TextWriter>();
+        _textWriter.displayText = dialoguetext;
         _audioSource = GetComponent<AudioSource>();
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
@@ -54,7 +55,7 @@ public class CutsceneManager : MonoBehaviour {
 
         _fileIndex = 0;
 
-        fileToLoad = "";
+        //fileToLoad = "";
         _boardToLoad = "";
 
         _ready = true;
@@ -65,17 +66,17 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void CharaSetup() {
-        leftChara1.screenPos = -105f;
-        leftChara1.offScreenPos = -500f;
+        leftChara1.screenPos = transform.GetChild(0).position.x;
+        leftChara1.offScreenPos = leftChara1.transform.position.x;
         leftChara1.side = -1;
-        leftChara2.screenPos = -290f;
-        leftChara2.offScreenPos = -500f;
+        leftChara2.screenPos = transform.GetChild(1).position.x;
+        leftChara2.offScreenPos = leftChara2.transform.position.x;
         leftChara2.side = -1;
-        rightChara1.screenPos = 105f;
-        rightChara1.offScreenPos = 500;
+        rightChara1.screenPos = transform.GetChild(3).position.x;
+        rightChara1.offScreenPos = rightChara1.transform.position.x;
         rightChara1.side = 1;
-        rightChara2.screenPos = 290f;
-        rightChara2.offScreenPos = 500;
+        rightChara2.screenPos = transform.GetChild(4).position.x;
+        rightChara2.offScreenPos = rightChara1.transform.position.x;
         rightChara2.side = 1;
     }
 
@@ -83,17 +84,17 @@ public class CutsceneManager : MonoBehaviour {
         if (fileToLoad != "") {
             StartCutscene(fileToLoad);
         } else {
-            fileToLoad = "World1/1-1/ExampleCutscene";
-            StartCutscene(fileToLoad);
+            //fileToLoad = "World1/1-1/ExampleCutscene";
+            //StartCutscene(fileToLoad);
         }
     }
 
     public void StartCutscene(string textPath) {
         // Pause the game for the cutscene
-        _gameManager.FullPause();
+        //_gameManager.FullPause();
 
         // Make sure scene is visible
-        titleText.gameObject.SetActive(true);
+        //titleText.gameObject.SetActive(true);
         leftChara1.gameObject.SetActive(true);
         leftChara2.gameObject.SetActive(true);
         rightChara1.gameObject.SetActive(true);
@@ -101,6 +102,7 @@ public class CutsceneManager : MonoBehaviour {
         backgroundSprite.gameObject.SetActive(true);
         textBacker.gameObject.SetActive(true);
         dialoguetext.gameObject.SetActive(true);
+        dialoguetext.text = "";
 
         _textAsset = Resources.Load<TextAsset>("Text/" + textPath);
         _linesFromFile = _textAsset.text.Split("\n"[0]);
@@ -120,7 +122,7 @@ public class CutsceneManager : MonoBehaviour {
 
     void EndCutscene() {
         // Turn off objects in the scene
-        titleText.gameObject.SetActive(false);
+        //titleText.gameObject.SetActive(false);
         leftChara1.gameObject.SetActive(false);
         leftChara2.gameObject.SetActive(false);
         rightChara1.gameObject.SetActive(false);
@@ -134,12 +136,14 @@ public class CutsceneManager : MonoBehaviour {
         leftChara2.GoOffscreen();
         rightChara1.GoOffscreen();
         rightChara2.GoOffscreen();
+
+        _gameManager.Unpause();
     }
 
     // Update is called once per frame
     void Update() {
         // If a character is sliding, wait for them to finish
-        if (leftChara1.IsSliding || leftChara2.IsSliding || rightChara1.IsSliding || rightChara2.IsSliding) {
+        if (leftChara1.IsMoving || leftChara2.IsMoving || rightChara1.IsMoving || rightChara2.IsMoving) {
             return;
         }
 
@@ -256,7 +260,7 @@ public class CutsceneManager : MonoBehaviour {
     void ReadTitle() {
         // Read the title text
         _readText = _linesFromFile[_fileIndex++];
-        titleText.text = _readText;
+        //titleText.text = _readText;
 
         // Go straight to the next data
         ReadEscapeCharacter();
@@ -308,6 +312,7 @@ public class CutsceneManager : MonoBehaviour {
         if (_readText == "Clear") {
             // Move off screen
             character.SlideOut();
+            dialoguetext.text = "";
         } else {
             character.SetIsSpeaking(true);
 
@@ -334,12 +339,18 @@ public class CutsceneManager : MonoBehaviour {
 
                 ReadFacing(character);
 
-                // else, slide into place
+            // else, slide into place
             } else {
                 // Set the character
                 character.SetCharacter(_readText, expressionText);
-                // Slide in
-                character.SlideIn();
+
+                _readText = _linesFromFile[_fileIndex];
+                if (_readText == "Walk") {
+                    character.WalkIn();
+                } else {
+                    // Slide in
+                    character.SlideIn();
+                }
             }
         }
     }
@@ -377,6 +388,7 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void ReadEvent() {
+        // Read event type
         _readText = _linesFromFile[_fileIndex++];
 
         switch(_readText) {
@@ -418,11 +430,8 @@ public class CutsceneManager : MonoBehaviour {
         SceneManager.LoadScene("StorySelect");
     }
 
-
     // Events
     void WalkEvent() {
-
-
         _curCharacter.GetComponent<WalkingScript>().StartWalking();
     }
 }

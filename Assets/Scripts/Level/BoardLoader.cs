@@ -323,7 +323,9 @@ public class BoardLoader : MonoBehaviour {
             _gameManager.selectedBoard = BOARDS.AIRSHIP;
         }
 
-        if(_gameManager.isSinglePlayer) {
+        if(_readText.Contains("Tutorial")) {
+            SceneManager.LoadScene("OpeningTutorial");
+        } else if(_gameManager.isSinglePlayer) {
             SceneManager.LoadScene("SinglePlayer");
         } else {
             SceneManager.LoadScene("VersusMultiplayer");

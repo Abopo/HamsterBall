@@ -260,8 +260,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
                 // This hamster was spawned via a special bubble
 
                 // Choose a random special type
-                int randType = Random.Range((int)HAMSTER_TYPES.RAINBOW, (int)HAMSTER_TYPES.BOMB);
-                hamster.SetType(randType);
+                int randType = Random.Range(0, specialTypes.Count);
+                hamster.SetType(specialTypes[randType]);
                 hamster.special = true;
 
                 _nextHamsterType = -1;

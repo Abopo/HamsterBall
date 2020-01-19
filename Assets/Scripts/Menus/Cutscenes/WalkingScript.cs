@@ -8,17 +8,19 @@ public class WalkingScript : MonoBehaviour {
     public bool isDone;
     public bool isWalking = false;
 
-    float _walkSpeed = 5f;
-    float _bobSpeed = 3f;
+    float _walkSpeed = 4f;
+    float _bobSpeed = 1.5f;
 
     float _bobTime = 1f;
     float _bobTimer;
 
     CutsceneCharacter _character;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
         _character = GetComponent<CutsceneCharacter>();
+    }
+    // Use this for initialization
+    void Start () {
 	}
 	
 	// Update is called once per frame
@@ -29,14 +31,15 @@ public class WalkingScript : MonoBehaviour {
             _bobTimer += Time.deltaTime;
             if(_bobTimer >= _bobTime) {
                 _bobSpeed = -_bobSpeed;
+                _bobTimer = 0f;
             }
 
             if (_character.side < 0) {
-                if (_character.RectTransform.anchoredPosition.x >= _character.screenPos) {
+                if (_character.transform.position.x >= _character.screenPos) {
                     Finish();
                 }
             } else if (_character.side > 0) {
-                if (_character.RectTransform.anchoredPosition.x <= _character.screenPos) {
+                if (_character.transform.position.x <= _character.screenPos) {
                     Finish();
                 }
             }
@@ -53,6 +56,7 @@ public class WalkingScript : MonoBehaviour {
         isDone = true;
         isWalking = false;
 
-        _character.RectTransform.anchoredPosition = new Vector2(_character.screenPos, 0);
+        //_character.RectTransform.anchoredPosition = new Vector2(_character.screenPos, 0);
+        _character.EnterFinish();
     }
 }
