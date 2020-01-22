@@ -998,7 +998,7 @@ public class Bubble : MonoBehaviour {
         bubbleAnimator.GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
         hamsterAnimator.GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);
 
-        Debug.Log("Petrify");
+        //Debug.Log("Petrify");
 		PetrifyBubbleEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PetrifyBubble);
 		PetrifyBubbleEvent.start();
 		PetrifyBubbleEvent.release();

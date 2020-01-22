@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour {
     public AIMASSIST aimAssistSetting = AIMASSIST.AFTERLOSS;
     public SPECIALSPAWNMETHOD specialSpawnMethod = SPECIALSPAWNMETHOD.BOTH;
     public bool SpecialBallsOn {
-        get { return specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.BALLS; }
+        get { return (specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.BALLS) && HamsterSpawner.AnySpecials; }
     }
     public bool SpecialPipeOn {
         get { return specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.PIPE; }

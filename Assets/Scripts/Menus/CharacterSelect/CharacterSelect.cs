@@ -9,6 +9,7 @@ public class CharacterSelect : MonoBehaviour {
     public AISetupWindow aiSetupWindow;
     public GameSetupWindow gameSetupWindow;
     public ExitMenu exitMenu;
+    public PauseMenu pauseMenu;
 
     public TeamBox leftTeam;
     public TeamBox rightTeam;
@@ -98,11 +99,14 @@ public class CharacterSelect : MonoBehaviour {
                     ActivateCharacter();
                 }
             }
-            if (pressStartText.activeSelf == true) {
-                // Look for input to start game
-                if (InputState.GetButtonOnAnyControllerPressed("Start")) {
+            // Look for input to start game
+            if (InputState.GetButtonOnAnyControllerPressed("Start")) {
+                if (pressStartText.activeSelf == true) {
                     //LoadNextScene();
                     OpenSetupMenu();
+                } else {
+                    // Open up pause menu
+                    pauseMenu.Activate();
                 }
             }
 

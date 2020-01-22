@@ -158,6 +158,10 @@ public class LevelManager : MonoBehaviour {
                 SoundManager.mainAudio.MusicMainEvent.setPaused(true);
             }
         }
+        if(Input.GetKeyDown(KeyCode.K)) {
+            GameEnd();
+            ActivateResultsScreen(0, 1);
+        }
     }
 
     void IncreaseMarginMultiplier() {
@@ -224,7 +228,8 @@ public class LevelManager : MonoBehaviour {
     // TODO: All of this results screen activation code is pretty unreadable, especially with the singleplayer/versus continue overlaps and crap
     // Need to somehow refactor this to make it less all over the place.
 
-    // result: -1 = left team wins, 0 = draw, 1 = right team wins
+    // team: 0 = left team, 1 = right team
+    // result: -1 = lose, 0 = draw, 1 = win
     public void ActivateResultsScreen(int team, int result) {
         int finalResult = DetermineFinalResult(team, result);
 
@@ -299,8 +304,8 @@ public class LevelManager : MonoBehaviour {
     public void ActivateFinalResultsScreen(int result) {
         setOver = true;
 
-        // If we're in a single player mode
-        if (_gameManager.isSinglePlayer && spResultsScreen != null) {
+        // If we're in a story stage
+        if (_gameManager.stage != "" && spResultsScreen != null) {
             // If the player lost
             if (result != -1) {
                 // Show a normal results screen

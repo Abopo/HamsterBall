@@ -11,8 +11,10 @@ public class CutsceneManager : MonoBehaviour {
 
     public CutsceneCharacter leftChara1;
     public CutsceneCharacter leftChara2;
+    public CutsceneCharacter leftChara3;
     public CutsceneCharacter rightChara1;
     public CutsceneCharacter rightChara2;
+    public CutsceneCharacter rightChara3;
 
     public SpriteRenderer backgroundSprite;
     public SpriteRenderer textBacker;
@@ -72,12 +74,18 @@ public class CutsceneManager : MonoBehaviour {
         leftChara2.screenPos = transform.GetChild(1).position.x;
         leftChara2.offScreenPos = leftChara2.transform.position.x;
         leftChara2.side = -1;
+        leftChara3.screenPos = transform.GetChild(2).position.x;
+        leftChara3.offScreenPos = leftChara3.transform.position.x;
+        leftChara3.side = -1;
         rightChara1.screenPos = transform.GetChild(3).position.x;
         rightChara1.offScreenPos = rightChara1.transform.position.x;
         rightChara1.side = 1;
         rightChara2.screenPos = transform.GetChild(4).position.x;
-        rightChara2.offScreenPos = rightChara1.transform.position.x;
+        rightChara2.offScreenPos = rightChara2.transform.position.x;
         rightChara2.side = 1;
+        rightChara3.screenPos = transform.GetChild(5).position.x;
+        rightChara3.offScreenPos = rightChara3.transform.position.x;
+        rightChara3.side = 1;
     }
 
     void Start() {
@@ -204,8 +212,10 @@ public class CutsceneManager : MonoBehaviour {
         _ready = false;
         leftChara1.SetIsSpeaking(false);
         leftChara2.SetIsSpeaking(false);
+        leftChara3.SetIsSpeaking(false);
         rightChara1.SetIsSpeaking(false);
         rightChara2.SetIsSpeaking(false);
+        rightChara3.SetIsSpeaking(false);
     }
 
     public void ReadEscapeCharacter() {
@@ -228,13 +238,11 @@ public class CutsceneManager : MonoBehaviour {
                 break;
             case "CL1":
             case "CL2":
+            case "CL1.5":
             case "CR1":
             case "CR2":
+            case "CR1.5":
                 ReadCharacters();
-                break;
-            case "OBJ_L":
-            case "OBJ_R":
-
                 break;
             case "D":
                 ReadDialogue();
@@ -295,11 +303,17 @@ public class CutsceneManager : MonoBehaviour {
             case "CL2":
                 SetCharacter(leftChara2);
                 break;
+            case "CL1.5":
+                SetCharacter(leftChara3);
+                break;
             case "CR1":
                 SetCharacter(rightChara1);
                 break;
             case "CR2":
                 SetCharacter(rightChara2);
+                break;
+            case "CR1.5":
+                SetCharacter(rightChara3);
                 break;
         }
     }
@@ -314,7 +328,7 @@ public class CutsceneManager : MonoBehaviour {
             character.SlideOut();
             dialoguetext.text = "";
         } else {
-            character.SetIsSpeaking(true);
+            character.SetIsSpeaking(false);
 
             // If already in place
             if (character.onScreen) {
@@ -373,6 +387,8 @@ public class CutsceneManager : MonoBehaviour {
 
     void ReadDialogue() {
         _ready = false;
+
+        _curCharacter.SetIsSpeaking(true);
 
         // Read the dialogue
         _readText = _linesFromFile[_fileIndex++];

@@ -31,7 +31,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     private void LateUpdate() {
-        if (_isActive && _player.GetButtonDown("Pause") && !_justActivated) {
+        if (_isActive && (_player != null && _player.GetButtonDown("Pause")) && !_justActivated) {
             ResumeButton();
         }
 

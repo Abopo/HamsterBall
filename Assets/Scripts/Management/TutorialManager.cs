@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 public class TutorialManager : MonoBehaviour {
     public CutsceneManager cutsceneManager;
@@ -120,9 +121,9 @@ public class TutorialManager : MonoBehaviour {
     }
 
     string GetCorrectTutorial(string baseTutorial) {
-        //if(InputState.GetValidJoystick() > 0) {
+        if(ReInput.controllers.joystickCount > 0) {
             baseTutorial += "Controller";
-        //}
+        }
 
         return baseTutorial;
     }

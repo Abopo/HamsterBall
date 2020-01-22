@@ -28,9 +28,12 @@ public class PlayerController : Entity {
 
     public int atkModifier; // Modifies the amount of junk generated when making matches
 
+    [SerializeField]
+    private PLAYER_STATE _curState;
     public PLAYER_STATE CurState {
         get {
             if(currentState != null) {
+                _curState = currentState.getStateType();
                 return currentState.getStateType();
             } else {
                 return PLAYER_STATE.IDLE;
@@ -505,12 +508,13 @@ public class PlayerController : Entity {
                 currentState.Initialize(this);
             }
             _justChangedState = true;
+            _curState = currentState.getStateType();
 
-            //Debug.Log("State Changed to: " + currentState.getStateType().ToString());
+        //Debug.Log("State Changed to: " + currentState.getStateType().ToString());
         //}
     }
 
-	void OnTriggerEnter2D(Collider2D collider) {
+    void OnTriggerEnter2D(Collider2D collider) {
         // Attack Object
 		if (collider.gameObject.layer == 12 && collider.gameObject != attackObj && 
             (team != collider.GetComponentInParent<PlayerController>().team || team == -1) && 
