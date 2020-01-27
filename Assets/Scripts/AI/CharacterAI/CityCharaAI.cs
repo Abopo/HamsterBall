@@ -28,8 +28,6 @@ public class CityCharaAI : CharacterAI {
         // Set time for special move
         _specialMoveTime = 0f;
 
-        PlayerController pController = GetComponent<PlayerController>();
-
         _bubbleObj = Resources.Load<GameObject>("Prefabs/Level/Bubble");
 
         _bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2").GetComponent<BubbleManager>();

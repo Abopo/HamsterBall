@@ -8,7 +8,6 @@ public class HamsterSprite : MonoBehaviour {
 
     bool _specialMove;
     Vector3 _targetPoint;
-    float baseMoveSpeed = 10;
     float moveSpeed = 10f;
 
     HamsterSpawner _hamSpawner;

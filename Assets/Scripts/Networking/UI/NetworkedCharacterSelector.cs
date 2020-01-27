@@ -15,7 +15,6 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     bool islockedIn;
     bool isReady;
 
-    GameManager _gameManager;
     NetworkedCharacterSelect _netCharaSelect;
     CharacterSelect _charaSelect;
 
@@ -30,7 +29,6 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
         _netCharaSelect = FindObjectOfType<NetworkedCharacterSelect>();
         _charaSelect = FindObjectOfType<CharacterSelect>();
 

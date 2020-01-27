@@ -102,7 +102,7 @@ public class CatchHitbox : MonoBehaviour {
             _playerController.heldBall.gameObject.layer = LayerMask.NameToLayer("GhostBubble");
             _playerController.heldBall.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
-            if (hamster.isGravity) {
+            if (hamster.isPlasma) {
                 _playerController.heldBall.isGravity = true;
                 GameObject spiralEffect = hamster.spiralEffectInstance;
                 spiralEffect.transform.parent = _playerController.heldBall.transform;
@@ -147,7 +147,7 @@ public class CatchHitbox : MonoBehaviour {
         object[] data = new object[3];
         data[0] = _playerController.playerNum;
         data[1] = hamster.type;
-        data[2] = hamster.isGravity;
+        data[2] = hamster.isPlasma;
         PhotonNetwork.Instantiate("Prefabs/Networking/Bubble_PUN", _playerController.transform.position, Quaternion.identity, 0, data);
     }
 }

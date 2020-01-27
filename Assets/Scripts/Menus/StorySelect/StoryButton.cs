@@ -44,7 +44,7 @@ public class StoryButton : MenuOption {
 
     protected override void Select() {
         //base.Select();
-        if(!isReady) {
+        if(!IsReady) {
             // TODO: Play some sound to indicate the stage is locked
             return;
         }
@@ -74,7 +74,7 @@ public class StoryButton : MenuOption {
     }
 
     public override void Highlight() {
-        if(isReady) {
+        if(IsReady) {
             base.Highlight();
 
             // Change UI to display stuff about this event

@@ -41,7 +41,7 @@ public class GameSetupOption : MenuOption {
         CheckInput();
 	}
 
-    void CheckInput() {
+    new void CheckInput() {
         if (isHighlighted && !_isSelected) {
             base.Update();
         } 
@@ -90,6 +90,8 @@ public class GameSetupOption : MenuOption {
         isHighlighted = true;
         _justHighlighted = true;
         _isSelected = false;
+
+        _parentMenu.selectedOption = this;
 
         // Make sure it's adjacent options are NOT highlighted
         DeHighlightOtherOptions();

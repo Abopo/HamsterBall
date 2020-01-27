@@ -65,8 +65,6 @@ public class Bubble : MonoBehaviour {
     Rigidbody2D _rigidbody;
 
     AudioSource _audioSource;
-    AudioClip _popClip;
-    AudioClip _dropClip;
     AudioClip _iceClip;
 
     bool _destroy = false;
@@ -111,13 +109,11 @@ public class Bubble : MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
 
         _audioSource = GetComponent<AudioSource>();
-        _popClip = Resources.Load<AudioClip>("Audio/SFX/Pop");
-        _dropClip = Resources.Load<AudioClip>("Audio/SFX/Hamster_Fall2");
         _iceClip = Resources.Load<AudioClip>("Audio/SFX/IceBreak");
 
         // If the type says this should be a gravity
-        if ((int)inType >= (int)HAMSTER_TYPES.GRAVITY) {
-            type = inType - (int)HAMSTER_TYPES.GRAVITY;
+        if ((int)inType >= (int)HAMSTER_TYPES.PLASMA) {
+            type = inType - (int)HAMSTER_TYPES.PLASMA;
             SetGravity(true);
         } else {
 		    type = inType;

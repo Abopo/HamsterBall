@@ -68,7 +68,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             if (_nextHamsterType != -1) {
                 // If this hamster should be gravity
                 if ((bool)_photonView.instantiationData[4]) {
-                    _hamster.SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)_nextHamsterType);
+                    _hamster.SetType(HAMSTER_TYPES.PLASMA, (HAMSTER_TYPES)_nextHamsterType);
                 } else {
                     _hamster.SetType(_nextHamsterType);
                 }
@@ -99,8 +99,8 @@ public class NetworkedHamster : Photon.MonoBehaviour {
         } else {
             _hamsterType = (int)stream.ReceiveNext();
             if(_hamsterType != (int)_hamster.type) {
-                if(_hamster.isGravity) {
-                    _hamster.SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)_hamsterType);
+                if(_hamster.isPlasma) {
+                    _hamster.SetType(HAMSTER_TYPES.PLASMA, (HAMSTER_TYPES)_hamsterType);
                 } else {
                     _hamster.SetType(_hamsterType);
                 }

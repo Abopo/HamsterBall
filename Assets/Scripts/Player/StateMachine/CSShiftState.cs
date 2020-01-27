@@ -39,11 +39,6 @@ public class CSShiftState : PlayerState {
 
         _takeOffPosition = playerController.transform.position;
 
-        float shiftDistance = 12.5f;
-        //if(playerController.LevelManager.mirroredLevel) {
-        shiftDistance = Mathf.Abs(playerController.transform.position.x) * 2;
-        //}
-
         // Find landing point
         if (playerController.shifted) {
             _landingPosition = ((CSPlayerController)playerController).returnPos;

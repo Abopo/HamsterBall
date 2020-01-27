@@ -22,8 +22,6 @@ public class PowerUp : Hamster {
 
     protected PowerUpText _powerText;
 
-    protected GameManager _gameManager;
-
     protected override void Awake() {
         base.Awake();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Rewired;
 
-public class CharacterSelect : MonoBehaviour {
+public class CharacterSelect : Menu {
     public GameObject pressStartText;
     public AISetupWindow aiSetupWindow;
     public GameSetupWindow gameSetupWindow;
@@ -27,16 +27,12 @@ public class CharacterSelect : MonoBehaviour {
     List<Player> _assignedPlayers = new List<Player>();
     int _waitFrames;
 
-    bool _isActive;
-
-    GameManager _gameManager;
-
-    private void Awake() {
+    protected override void Awake() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _gameManager.selectedBoard = BOARDS.NUM_STAGES;
     }
     // Use this for initialization
-    void Start () {
+    protected override void Start () {
         _gameManager.prevMenu = MENU.VERSUS;
 
         _gameManager.playerManager.ClearAllPlayers();
@@ -55,7 +51,7 @@ public class CharacterSelect : MonoBehaviour {
             }
         }
 
-        _isActive = true;
+        //_isActive = true;
         pressStartText.SetActive(false);
 
         SetupSelectors();
@@ -79,13 +75,12 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-        if (_isActive && _waitFrames > 5) {
-            // If any player hits back while no characters are active
-            if (ActivePlayers == 0 && !_gameManager.demoMode) {
-                if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
+    protected override void Update () {
+        if (hasFocus && _waitFrames > 5) {
+            if (!_gameManager.demoMode) {
+                if (InputState.GetButtonOnAnyControllerPressed("Pause")) {
                     // Show menu asking if player really wants to go back
-                    exitMenu.Activate();
+                    pauseMenu.Activate();
                     Deactivate();
                     return;
                 }
@@ -104,9 +99,6 @@ public class CharacterSelect : MonoBehaviour {
                 if (pressStartText.activeSelf == true) {
                     //LoadNextScene();
                     OpenSetupMenu();
-                } else {
-                    // Open up pause menu
-                    pauseMenu.Activate();
                 }
             }
 
@@ -165,14 +157,15 @@ public class CharacterSelect : MonoBehaviour {
         numAI++;
     }
 
-    public void Reactivate() {
-        _isActive = true;
+    protected override void TakeFocus() {
+        base.TakeFocus();
+
         _waitFrames = 0;
 
         foreach (CharacterSelector charaSelector in _charaSelectors) {
             charaSelector.takeInput = true;
         }
-        foreach(CSPlayerController player in _players) {
+        foreach (CSPlayerController player in _players) {
             if (player.inPlayArea) {
                 player.underControl = true;
             }
@@ -181,15 +174,20 @@ public class CharacterSelect : MonoBehaviour {
         // Clear players from player manager
         _gameManager.playerManager.ClearAllPlayers();
     }
-    void Deactivate() {
-         _isActive = false;
+
+    public override void Activate() {
+        base.Activate();
+    }
+    public override void Deactivate() {
+        //base.Deactivate(); 
+        //_isActive = false;
 
         foreach (CharacterSelector charaSelector in _charaSelectors) {
             charaSelector.takeInput = false;
         }
-        foreach (CSPlayerController player in _players) {
-            player.underControl = false;
-        }
+        //foreach (CSPlayerController player in _players) {
+        //    player.underControl = false;
+        //}
 
         // Load the chosen characters to the player manager
         foreach (CharacterSelector charaSelector in _charaSelectors) {

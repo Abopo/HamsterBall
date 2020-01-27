@@ -11,12 +11,6 @@ public class WaterController : MonoBehaviour {
         }
     }
 
-    float _moveTime = 25f;
-    float _moveTimer = 0f;
-
-    float _moveDir = 0f;
-    float _moveSpeed = 1f;
-
     EdgeCollider2D[] _floatingObjects;
     GameManager _gameManager;
 
@@ -50,49 +44,7 @@ public class WaterController : MonoBehaviour {
                 player.platformIndex = 0;
             }
         }
-
-        /*
-        _moveTimer += Time.deltaTime;
-        if(_moveTimer >= _moveTime && _moveDir == 0) {
-            // Change position
-            if(transform.position.y > -8f) {
-                MoveWaterDown();
-            } else if(transform.position.y < -11f) {
-                MoveWaterUp();
-            }
-        }
-
-        transform.Translate(0f, _moveSpeed * _moveDir * Time.deltaTime, 0f, Space.World);
-
-        if(_moveDir == -1f && transform.position.y < -12f) {
-            StopMoving();
-        }
-        if(_moveDir == 1f && transform.position.y > -7.2f) {
-            StopMoving();
-        }
-        */
 	}
-
-    void MoveWaterUp() {
-        _moveDir = 1f;
-        TurnOffFloatingObjects();
-    }
-
-    void MoveWaterDown() {
-        _moveDir = -1f;
-        TurnOffFloatingObjects();
-    }
-
-    void StopMoving() {
-        if(_moveDir > 0) {
-            TurnOnFloatingObjects();
-        } else if (_moveDir < 0) {
-            TurnOffFloatingObjects();
-        }
-
-        _moveDir = 0f;
-        _moveTimer = 0f;
-    }
 
     void TurnOnFloatingObjects() {
         foreach (EdgeCollider2D obj in _floatingObjects) {

@@ -11,6 +11,8 @@ public class MenuButton : MenuOption {
     public Vector3 _baseScale;
     public Vector3 _selectedScale;
 
+    EventSystem _eventSystem;
+
     public bool IsInteractable {
         get { return _button.interactable; }
     }
@@ -20,9 +22,7 @@ public class MenuButton : MenuOption {
 
         Initialize();
 
-        if(isFirstSelection) {
-            ButtonHighlight();
-        }
+        _eventSystem = EventSystem.current.GetComponent<EventSystem>();
     }
 
     void Initialize() {
@@ -39,6 +39,11 @@ public class MenuButton : MenuOption {
         base.Start();
 
         isReady = _button.interactable;
+
+        // Make sure it's properly highlighted
+        if (isFirstSelection) {
+            ButtonHighlight();
+        }
     }
 
     // Update is called once per frame
@@ -56,16 +61,20 @@ public class MenuButton : MenuOption {
     }
 
     protected override void Select() {
-        if (isReady && _button.interactable) {
+        if (IsReady && _button.interactable) {
             base.Select();
 
-            if (isReady) {
+            if (IsReady) {
                 GetComponent<Button>().onClick.Invoke();
             }
         }
     }
 
     public override void Highlight() {
+        if(!IsReady) {
+            return;
+        }
+
         base.Highlight();
 
         ButtonHighlight();
@@ -79,11 +88,12 @@ public class MenuButton : MenuOption {
         _button.Select();
         transform.localScale = _selectedScale;
     }
-
     public override void Unhighlight() {
         base.Unhighlight();
 
-        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
+        if (_eventSystem != null) {
+            _eventSystem.SetSelectedGameObject(null);
+        }
         transform.localScale = _baseScale;
     }
 

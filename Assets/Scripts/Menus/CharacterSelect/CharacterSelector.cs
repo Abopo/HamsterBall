@@ -42,7 +42,6 @@ public class CharacterSelector : MonoBehaviour {
     GameManager _gameManager;
     PlayerManager _playerManager;
     CharacterSelect _charaSelect;
-    AudioSource _audioSource;
 
     // Networking stuff
     PhotonView _photonView;
@@ -60,7 +59,6 @@ public class CharacterSelector : MonoBehaviour {
         _photonView = GetComponent<PhotonView>();
 
         _charaSelect = FindObjectOfType<CharacterSelect>();
-        _audioSource = GetComponent<AudioSource>();
         _resources = FindObjectOfType<CharacterSelectResources>();
 
         _sprites = GetComponentsInChildren<SpriteRenderer>();
@@ -238,28 +236,28 @@ public class CharacterSelector : MonoBehaviour {
         if (!lockedIn) {
             // Right
             if (_player.GetButtonDown("Right")) {
-                if (curCharacterIcon.adjOptions[0] != null && curCharacterIcon.adjOptions[0].isReady) {
+                if (curCharacterIcon.adjOptions[0] != null && curCharacterIcon.adjOptions[0].IsReady) {
                     // move selector to adjOptions[0]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[0]);
                 }
             }
             // Left
             if (_player.GetButtonDown("Left")) {
-                if (curCharacterIcon.adjOptions[2] != null && curCharacterIcon.adjOptions[2].isReady) {
+                if (curCharacterIcon.adjOptions[2] != null && curCharacterIcon.adjOptions[2].IsReady) {
                     // move selector to adjOptions[2]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[2]);
                 }
             }
             // Up
             if (_player.GetButtonDown("Up")) {
-                if (curCharacterIcon.adjOptions[3] != null && curCharacterIcon.adjOptions[3].isReady) {
+                if (curCharacterIcon.adjOptions[3] != null && curCharacterIcon.adjOptions[3].IsReady) {
                     // move selector to adjOptions[3]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[3]);
                 }
             }
             // Down
             if (_player.GetButtonDown("Down")) {
-                if (curCharacterIcon.adjOptions[1] != null && curCharacterIcon.adjOptions[1].isReady) {
+                if (curCharacterIcon.adjOptions[1] != null && curCharacterIcon.adjOptions[1].IsReady) {
                     // move selector to adjOptions[1]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[1]);
                 }

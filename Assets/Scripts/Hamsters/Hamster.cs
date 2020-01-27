@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public enum HAMSTER_TYPES { NO_TYPE = -1, GREEN = 0, RED, YELLOW, GRAY, BLUE, PINK, PURPLE, NUM_NORM_TYPES,
-                            RAINBOW = 8, SKULL, BOMB, GRAVITY = 50, NUM_SPEC_TYPES = 4,
+                            RAINBOW = 8, SKULL, BOMB, PLASMA = 50, NUM_SPEC_TYPES = 4,
                             SPECIAL = 15}; // SPECIAL is only used for special bubbles
 
 public class Hamster : Entity {
@@ -14,7 +14,7 @@ public class Hamster : Entity {
 
     public GameObject spiralEffectObj;
 	public GameObject spiralEffectInstance;
-	public bool isGravity;
+	public bool isPlasma;
 
     public bool testMode;
 
@@ -65,8 +65,8 @@ public class Hamster : Entity {
         wasCaught = false;
 
         if (type == HAMSTER_TYPES.NO_TYPE) {
-            if(isGravity) {
-                SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)SelectValidNormalType());
+            if(isPlasma) {
+                SetType(HAMSTER_TYPES.PLASMA, (HAMSTER_TYPES)SelectValidNormalType());
             }
         }
 
@@ -99,13 +99,9 @@ public class Hamster : Entity {
             _moveSpeed = rainbowMoveSpeed;
         } else if(setType == (int)HAMSTER_TYPES.SKULL) {
             _moveSpeed = skullMoveSpeed;
-        } else if(setType == (int)HAMSTER_TYPES.GRAVITY) {
-            isGravity = true;
-            spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-            spiralEffectInstance.transform.parent = transform;
-            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+        } else if(setType == (int)HAMSTER_TYPES.PLASMA) {
             setType = SelectValidNormalType();
-            _moveSpeed = gravityMoveSpeed;
+            PlasmaInitialize();
         } else {
             _moveSpeed = 3;
         }
@@ -122,23 +118,30 @@ public class Hamster : Entity {
 
     // This overload is specifically used to set a special type with a color.
     public void SetType(HAMSTER_TYPES sType, HAMSTER_TYPES cType) {
-        if (sType == HAMSTER_TYPES.GRAVITY) {
-            isGravity = true;
-            spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-            spiralEffectInstance.transform.parent = transform;
-            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
-            _moveSpeed = gravityMoveSpeed;
-        }
-
-        type = cType;
         if (_animator == null) {
             _animator = GetComponentInChildren<Animator>();
         }
+
+        if (sType == HAMSTER_TYPES.PLASMA) {
+            PlasmaInitialize();
+        }
+
+        type = cType;
         _animator.SetInteger("Type", (int)type);
 
         SetOutlineColor();
 
         curMoveSpeed = _moveSpeed;
+    }
+
+    // Initialization for a plasma hamster
+    void PlasmaInitialize() {
+        isPlasma = true;
+        _animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/PlasmaHamster");
+        spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
+        spiralEffectInstance.transform.parent = transform;
+        spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+        _moveSpeed = gravityMoveSpeed;
     }
 
     void SetOutlineColor() {
@@ -407,7 +410,7 @@ public class Hamster : Entity {
     }
     
     public bool IsSpecialType() {
-        if (type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.SKULL || isGravity) {
+        if (type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.SKULL || isPlasma) {
             return true;
         }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System.Collections;
 using System.Collections.Generic;
 using Rewired;
 
@@ -202,7 +203,6 @@ public class GameManager : MonoBehaviour {
     public void FullPause() {
         // Pause the game via timeScale
         Time.timeScale = 0;
-
 
         isPaused = true;
     }

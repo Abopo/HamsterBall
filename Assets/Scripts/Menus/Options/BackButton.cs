@@ -5,14 +5,12 @@ using System.Collections;
 
 [RequireComponent(typeof(Button))]
 public class BackButton : MenuButton {
-    Image _image;
     GameManager _gameManager;
 
     // Use this for initialization
     protected override void Start () {
         base.Start();
 
-        _image = GetComponent<Image>();
         _gameManager = FindObjectOfType<GameManager>();
 	}
 

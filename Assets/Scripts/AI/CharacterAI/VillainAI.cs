@@ -16,8 +16,6 @@ public class VillainAI : CharacterAI {
         // Set time for special move
         _specialMoveTime = 20f;
 
-        PlayerController pController = GetComponent<PlayerController>();
-
         lackeyObj = Resources.Load<GameObject>("Prefabs/Entities/VillainLackey");
     }
 

@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExitMenu : MonoBehaviour {
+public class ExitMenu : Menu {
     public MenuButton yesButton;
 
-    CharacterSelect _charaSelect;
-    GameManager _gameManager;
-
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
     }
 
     // Start is called before the first frame update
-    void Start() {
-        _charaSelect = FindObjectOfType<CharacterSelect>();
+    protected override void Start() {
+        base.Start();
+
         _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
-    void Update() {
+    protected override void Update() {
+        base.Update();
+
         if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             Cancel();
         }
     }
 
-    public void Activate() {
+    public override void Activate() {
+        base.Activate();
+
         gameObject.SetActive(true);
 
         // Set YES button to selected
@@ -36,8 +39,9 @@ public class ExitMenu : MonoBehaviour {
         _gameManager.LocalPlayButton();
     }
     public void Cancel() {
+        base.Deactivate();
+
         // Close the menu
         gameObject.SetActive(false);
-        _charaSelect.Reactivate();
     }
 }

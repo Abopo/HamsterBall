@@ -8,8 +8,6 @@ public class HamsterDoor : MonoBehaviour {
     float _openTime = 0.5f;
     protected float _openTimer = 0f;
 
-    float _dir = 1f;
-
 	// Use this for initialization
 	void Start () {
 

@@ -137,7 +137,7 @@ public class InputState {
     }
 
     public static Player AnyButtonOnAnyControllerPressed() {
-        foreach (Player player in ReInput.players.AllPlayers) {
+        foreach (Player player in ReInput.players.Players) {
             if (player.GetAnyButtonDown()) {
                 return player;
             }

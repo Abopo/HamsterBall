@@ -17,11 +17,7 @@ public class Team : MonoBehaviour {
     Vector2 _char1Pos;
     Vector2 _char2Pos;
 
-    GameManager _gameManager;
-
     private void Awake() {
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-
         numPlayers = 0;
 
         _char1Pos = transform.GetChild(0).position;

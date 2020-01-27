@@ -11,8 +11,6 @@ public class OwlAI : CharacterAI {
         // Set time for special move
         _specialMoveTime = 25f;
 
-        PlayerController pController = GetComponent<PlayerController>();
-
         _hamsterScan = FindObjectOfType<HamsterScan>();
     }
 

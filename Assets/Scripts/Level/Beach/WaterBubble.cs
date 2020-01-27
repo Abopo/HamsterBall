@@ -97,7 +97,7 @@ public class WaterBubble : MonoBehaviour {
             _caughtBubble.Initialize(hamster.type);
             _caughtBubble.GetComponent<CircleCollider2D>().enabled = false;
 
-            if (hamster.isGravity) {
+            if (hamster.isPlasma) {
                 _caughtBubble.isGravity = true;
                 GameObject spiralEffect = hamster.spiralEffectInstance;
                 spiralEffect.transform.parent = _caughtBubble.transform;
@@ -142,7 +142,7 @@ public class WaterBubble : MonoBehaviour {
 
         // Set the correct type
         if (_caughtBubble.isGravity) {
-            hamster.SetType(HAMSTER_TYPES.GRAVITY, _caughtBubble.type);
+            hamster.SetType(HAMSTER_TYPES.PLASMA, _caughtBubble.type);
         } else {
             hamster.SetType((int)_caughtBubble.type);
         }

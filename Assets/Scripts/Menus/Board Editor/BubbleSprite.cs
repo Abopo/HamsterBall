@@ -51,8 +51,8 @@ public class BubbleSprite : MonoBehaviour {
 
     public void SetType(int inType) {
         // If this should be gravity
-        if (inType >= (int)HAMSTER_TYPES.GRAVITY) {
-            inType -= (int)HAMSTER_TYPES.GRAVITY;
+        if (inType >= (int)HAMSTER_TYPES.PLASMA) {
+            inType -= (int)HAMSTER_TYPES.PLASMA;
             SetIsGravity(true);
         }
         type = (HAMSTER_TYPES)inType;

@@ -159,7 +159,7 @@ public class HamsterScan : MonoBehaviour {
 
         // Left Update
         foreach(Hamster hamster in _allLeftHamsters) {
-            if (hamster.isGravity) {
+            if (hamster.isPlasma) {
                 _typeCounts[6]++;
             } else {
                 switch (hamster.type) {
@@ -195,7 +195,7 @@ public class HamsterScan : MonoBehaviour {
 
         // Right Update
         foreach (Hamster hamster in _allRightHamsters) {
-            if (hamster.isGravity) {
+            if (hamster.isPlasma) {
                 _typeCounts[6]++;
             } else {
                 switch (hamster.type) {
@@ -251,7 +251,7 @@ public class HamsterScan : MonoBehaviour {
         list.Clear();
 
         foreach (Hamster hamster in hamsters) {
-            if (hamster.isGravity) {
+            if (hamster.isPlasma) {
                 _typeCounts[7]++;
             } else {
                 switch (hamster.type) {

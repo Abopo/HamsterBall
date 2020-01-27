@@ -7,9 +7,7 @@ public class Rooster : MonoBehaviour {
 
     PlayerController _playerController;
     BoxCollider2D _boxCollider;
-    EntityPhysics _entityPhysics;
 
-    Vector2 _baseOffset;
     Vector2 _baseSize;
 
     Vector2 _ballSize = new Vector2(2.16f, 1.6f);
@@ -18,9 +16,7 @@ public class Rooster : MonoBehaviour {
 	void Start () {
         _playerController = GetComponent<PlayerController>();
         _boxCollider = GetComponent<BoxCollider2D>();
-        _entityPhysics = GetComponent<EntityPhysics>();
 
-        _baseOffset = _boxCollider.offset;
         _baseSize = _boxCollider.size;
 	}
 	

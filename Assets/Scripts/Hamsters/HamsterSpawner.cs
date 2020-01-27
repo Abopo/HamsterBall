@@ -322,7 +322,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
                             rType = (int)HAMSTER_TYPES.BOMB;
                             break;
                         case 0: // Gravity
-                            rType = (int)HAMSTER_TYPES.GRAVITY;
+                            rType = (int)HAMSTER_TYPES.PLASMA;
                             break;
                     }
 

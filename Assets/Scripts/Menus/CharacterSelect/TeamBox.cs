@@ -11,38 +11,16 @@ public class TeamBox : MonoBehaviour {
 
     GameMarker[] playerMarkers;
 
-    PlayerManager _playerManager;
-    CharacterSelect _characterSelect;
-
 	// Use this for initialization
 	void Start () {
         playerMarkers = GetComponentsInChildren<GameMarker>();
-
-        _playerManager = FindObjectOfType<PlayerManager>();
-        _characterSelect = FindObjectOfType<CharacterSelect>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-    /*
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.tag == "Player") {
-            // Add player to the team
-            CSPlayerController player = collision.gameObject.GetComponent<CSPlayerController>();
-            TakePlayer(player);
-            // if this is the first player (or an AI) and they got on the team
-            if((player.playerNum == 0 || player.characterSelector.isAI) && player.team != -1) {
-                // If there's an ai player available
-                if (player.characterSelector.NextAI != null) {
-                    // Show it's com text
-                    player.characterSelector.NextAI.ShowCOMText();
-                }
-            }
-        }
-    }
-    */
+
     private void OnTriggerStay2D(Collider2D collision) {
         if(_player1 == false || _player2 == false) {
             if(collision.tag == "Player") {

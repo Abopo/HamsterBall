@@ -19,7 +19,7 @@ public class CharacterIcon : MenuOption {
         isLocked = false;
         _sprites = GetComponentsInChildren<SpriteRenderer>();
 
-        if(!isReady) {
+        if(!IsReady) {
             Lock();
         }
 

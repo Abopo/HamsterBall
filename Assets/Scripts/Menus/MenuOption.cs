@@ -22,16 +22,25 @@ public class MenuOption : MonoBehaviour {
 
     protected Player _player;
 
+    protected Menu _parentMenu;
     MenuOption[] _allOtherOptions;
 
-    protected virtual void Awake() {
-        if (isFirstSelection) {
-            isHighlighted = true;
-            _justHighlighted = true;
-        } else {
-            isHighlighted = false;
-            _justHighlighted = false;
+    public bool IsReady {
+        get {
+            if(_parentMenu != null) {
+                return isReady && _parentMenu.hasFocus;
+            } else {
+                return isReady;
+            }
         }
+    }
+
+    protected virtual void Awake() {
+        if (_parentMenu == null) {
+            _parentMenu = transform.parent.GetComponent<Menu>();
+        }
+
+        GetAdjOptions();
     }
 
     // Use this for initialization
@@ -43,7 +52,49 @@ public class MenuOption : MonoBehaviour {
             _player = ReInput.players.GetPlayer(0);
         }
 
+        if (isFirstSelection) {
+            isHighlighted = true;
+            _justHighlighted = true;
+            if (_parentMenu != null) {
+                _parentMenu.selectedOption = this;
+            }
+        } else {
+            isHighlighted = false;
+            _justHighlighted = false;
+        }
+
         _allOtherOptions = FindObjectsOfType<MenuOption>();
+    }
+
+    public void SetParentMenu(Menu parentMenu) {
+        _parentMenu = parentMenu;
+    }
+
+    void GetAdjOptions() {
+        // automatically fill in adj options via selectable component
+        Selectable _selectable = GetComponent<Selectable>();
+        if(_selectable == null) {
+            return;
+        }
+
+        Selectable tempSelectable;
+
+        tempSelectable = _selectable.FindSelectableOnRight();
+        if (tempSelectable != null) {
+            adjOptions[0] = tempSelectable.GetComponent<MenuOption>();
+        }
+        tempSelectable = _selectable.FindSelectableOnDown();
+        if (tempSelectable != null) {
+            adjOptions[1] = tempSelectable.GetComponent<MenuOption>();
+        }
+        tempSelectable = _selectable.FindSelectableOnLeft();
+        if (tempSelectable != null) {
+            adjOptions[2] = tempSelectable.GetComponent<MenuOption>();
+        }
+        tempSelectable = _selectable.FindSelectableOnUp();
+        if (tempSelectable != null) {
+            adjOptions[3] = tempSelectable.GetComponent<MenuOption>();
+        }
     }
 
     public void SetPlayer(int playerID) {
@@ -52,10 +103,12 @@ public class MenuOption : MonoBehaviour {
 
     // Update is called once per frame
     protected virtual void Update () {
-        if(!isReady) {
+        if(!IsReady) {
             return;
         }
+    }
 
+    public void CheckInput() {
         if (isHighlighted && !_justHighlighted) {
             if (InputState.GetButtonOnAnyControllerPressed("Submit")) {
                 Select();
@@ -89,7 +142,7 @@ public class MenuOption : MonoBehaviour {
 
     void TryHighlight(int index) {
         if (adjOptions[index] != null) {
-            if (adjOptions[index].isReady) {
+            if (adjOptions[index].IsReady) {
                 _moved = true;
                 adjOptions[index].Highlight();
             } else {
@@ -103,7 +156,7 @@ public class MenuOption : MonoBehaviour {
     }
 
     public virtual void Highlight() {
-        if(!isReady) {
+        if(!IsReady) {
             return;
         }
 
@@ -119,6 +172,8 @@ public class MenuOption : MonoBehaviour {
         _moved = true;
         isHighlighted = true;
         _justHighlighted = true;
+
+        _parentMenu.selectedOption = this;
 
         // Make sure it's adjacent options are NOT highlighted
         DeHighlightOtherOptions();
@@ -140,7 +195,7 @@ public class MenuOption : MonoBehaviour {
         MenuOption validOption = adjOptions[index];
 
         while(validOption != null) {
-            if(validOption.isReady) {
+            if(validOption.IsReady) {
                 break;
             }
 
@@ -153,7 +208,7 @@ public class MenuOption : MonoBehaviour {
     protected void DeHighlightOtherOptions() {
         if (_allOtherOptions != null) {
             foreach (MenuOption mO in _allOtherOptions) {
-                if (mO != this && mO.isReady) {
+                if (mO != this && mO.IsReady) {
                     mO.Unhighlight();
                 }
             }
@@ -212,7 +267,7 @@ public class MenuOption : MonoBehaviour {
     }
 
     void OnMouseEnter() {
-        if (isReady) {
+        if (IsReady) {
             Highlight();
         }
     }

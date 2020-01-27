@@ -3,34 +3,38 @@ using UnityEngine.UI;
 using Rewired;
 using System.Collections;
 
-public class AISetupWindow : MonoBehaviour {
+public class AISetupWindow : Menu {
     public AISetupOption ai1Setup;
     public AISetupOption ai2Setup;
     public AISetupOption ai3Setup;
     public SetupReadyButton aiReadyButton;
 
-    public SpriteRenderer ai1Sprite;
-    public SpriteRenderer ai2Sprite;
-    public SpriteRenderer ai3Sprite;
+    public Image ai1Sprite;
+    public Image ai2Sprite;
+    public Image ai3Sprite;
 
     public GameSetupWindow gameSetupWindow;
 
     int _numAIs;
 
-    CharacterSelect _characterSelect;
     CharacterSelectResources _csResources;
     PlayerManager _playerManager;
 
-
     // Use this for initialization
-    void Start () {
-        _characterSelect = FindObjectOfType<CharacterSelect>();
+    protected override void Start () {
+        base.Start();
     }
 
     public void Initialize() {
         gameObject.SetActive(true);
         _playerManager = FindObjectOfType<PlayerManager>();
         _csResources = FindObjectOfType<CharacterSelectResources>();
+        _gameManager = FindObjectOfType<GameManager>();
+
+        // Make sure aisetups are inactive at first
+        ai1Setup.gameObject.SetActive(false);
+        ai2Setup.gameObject.SetActive(false);
+        ai3Setup.gameObject.SetActive(false);
 
         GetAIPlayerInfo();
         MenuMovementSetup();
@@ -48,6 +52,8 @@ public class AISetupWindow : MonoBehaviour {
             SetPlayerSprites(ai3Setup.aiInfo, ai3Sprite);
             _numAIs++;
         }
+
+        Activate();
     }
 
     void GetAIPlayerInfo() {
@@ -95,25 +101,32 @@ public class AISetupWindow : MonoBehaviour {
         }
     }
 
-    void SetPlayerSprites(PlayerInfo pi, SpriteRenderer sr) {
+    void SetPlayerSprites(PlayerInfo pi, Image sr) {
         sr.sprite = _csResources.CharaPortraits[(int)pi.charaInfo.name][pi.charaInfo.color-1];
     }
 	
 	// Update is called once per frame
-	void Update () {
-        if(ReInput.players.GetPlayer(0).GetButtonDown("Cancel")) {
+	protected override void Update () {
+        base.Update();
+
+        if(InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             // Turn off menu and turn back on team select stuff
             Deactivate();
         }
     }
 
-    void Deactivate() {
+    public override void Activate() {
+        base.Activate();
+    }
+    public override void Deactivate() {
+        base.Deactivate();
+
         ai1Setup.gameObject.SetActive(false);
         ai2Setup.gameObject.SetActive(false);
         ai3Setup.gameObject.SetActive(false);
         gameObject.SetActive(false);
 
-        _characterSelect.Reactivate();
+        //_characterSelect.Activate();
     }
 
     public void OpenGameSetup() {
@@ -124,27 +137,6 @@ public class AISetupWindow : MonoBehaviour {
             // Turn on GameSetupWindow
             gameSetupWindow.Initialize();
             gameObject.SetActive(false);
-        }
-    }
-
-    void UpdateText(PlayerInfo pInfo, Text text) {
-        switch(pInfo.difficulty) {
-            case 0:
-                text.text = "Easy";
-                text.color = Color.blue;
-                break;
-            case 1:
-                text.text = "Medium";
-                text.color = Color.green;
-                break;
-            case 2:
-                text.text = "Hard";
-                text.color = Color.yellow;
-                break;
-            case 3:
-                text.text = "Expert";
-                text.color = Color.red;
-                break;
         }
     }
 }

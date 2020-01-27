@@ -291,7 +291,7 @@ public class PlayerController : Entity {
             }
         }
 
-        // Don't update if the game is over or hasn't started yet
+        // Only update some stuff if the game is over or hasn't started yet
         if(_gameManager.gameIsOver || (_levelManager != null && !_levelManager.gameStarted)) {
             currentState.CheckInput(inputState);
             currentState.Update();

@@ -56,8 +56,8 @@ public class MonochromePower : PowerUp {
                 continue;
             }
 
-            if (ham.isGravity) {
-                ham.SetType(HAMSTER_TYPES.GRAVITY, (HAMSTER_TYPES)rType);
+            if (ham.isPlasma) {
+                ham.SetType(HAMSTER_TYPES.PLASMA, (HAMSTER_TYPES)rType);
             } else {
                 ham.SetType(rType);
             }

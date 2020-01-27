@@ -6,7 +6,6 @@ public class PlayerGUI : MonoBehaviour {
 	PlayerController _playerController;
 
     ShiftMeter _shiftMeter;
-    Material _meterMaterial;
     Image _shiftMeterEnd;
 
     Sprite _fullSprite;
@@ -40,16 +39,11 @@ public class PlayerGUI : MonoBehaviour {
         _fullSprite = sprites[5];
         _emptySprite = sprites[8];
 
-        if (_shiftMeter != null) {
-            _meterMaterial = _shiftMeter.GetMeterFront().GetComponent<Image>().material;
-        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (_shiftMeter != null) {
-            //_meterMaterial.SetFloat("_Cutoff", (_playerController.ShiftCooldownTimer / _playerController.ShiftCooldownTime));
-
             if (_shiftMeter.meterBar != null) {
                 tempFloat = (_playerController.ShiftCooldownTimer / _playerController.ShiftCooldownTime);
                 // Avoid dividing by zero

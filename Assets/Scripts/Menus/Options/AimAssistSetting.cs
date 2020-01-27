@@ -30,7 +30,7 @@ public class AimAssistSetting : MenuOption {
         }
     }
 
-    void CheckInput() {
+    new void CheckInput() {
         if(_player.GetButtonDown("Left")) {
             // Adjust setting to the left
             _gameManager.aimAssistSetting -= 1;

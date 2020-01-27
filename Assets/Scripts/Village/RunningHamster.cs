@@ -10,15 +10,11 @@ public class RunningHamster : VillageHamster {
 
     public Transform[] boundries = new Transform[2];
 
-    Animator _animator;
-
     float moveSpeed = 3;
 
     // Use this for initialization
     protected override void Start() {
         base.Start();
-
-        _animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame

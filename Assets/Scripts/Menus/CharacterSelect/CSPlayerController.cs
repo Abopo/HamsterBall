@@ -53,6 +53,11 @@ public class CSPlayerController : PlayerController {
             playerInputID = -1;
         }
 
+        // Don't update if the game in paused
+        if(_gameManager.isPaused) {
+            return;
+        }
+
         if (underControl) {
             CheckInput();
             direction = _animator.GetBool("FacingRight") ? 1 : -1;

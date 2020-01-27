@@ -23,10 +23,8 @@ public class BoardEditor : MonoBehaviour {
     int _lineLength = 12;
 
     string _levelScene;
-    string _levelPrefab;
 
     GameManager _gameManager;
-    PlayerManager _playerManager;
 
     // Use this for initialization
     void Start () {
@@ -50,7 +48,6 @@ public class BoardEditor : MonoBehaviour {
         _boundingRect = new Rect(x, y, width, height);
 
         _levelScene = "Laboratory - SinglePlayer";
-        _levelPrefab = "LaboratoryBoardSP";
         _fileName = "";
 
         _gameManager = FindObjectOfType<GameManager>();
@@ -58,8 +55,6 @@ public class BoardEditor : MonoBehaviour {
         if (_gameManager.prevBoard != "") {
             LoadBoard(_gameManager.prevBoard);
         }
-
-        _playerManager = FindObjectOfType<PlayerManager>();
     }
 
     // Update is called once per frame
@@ -490,7 +485,6 @@ public class BoardEditor : MonoBehaviour {
     public void ChangeLevel(GameObject newLevel, string levelPrefab, string levelScene) {
         Destroy(levelObj);
         levelObj = newLevel;
-        _levelPrefab = levelPrefab;
         _levelScene = levelScene;
     }
 

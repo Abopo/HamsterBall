@@ -5,7 +5,6 @@ public class PlayerAudio : MonoBehaviour {
 	public static PlayerAudio playerAudioScript;
 
     // Sound effects
-    AudioClip _shiftReadyClip;
     AudioClip _hitClip;
 
     AudioSource _audioSource;
@@ -25,7 +24,6 @@ public class PlayerAudio : MonoBehaviour {
     }
 
     void LoadSFX() {
-        _shiftReadyClip = Resources.Load<AudioClip>("Audio/SFX/ShiftReady");
         _hitClip = Resources.Load<AudioClip>("Audio/SFX/Hit_Hurt");
     }
 

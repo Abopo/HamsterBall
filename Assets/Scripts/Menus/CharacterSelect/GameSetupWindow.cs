@@ -5,7 +5,7 @@ using System.Collections;
 
 public enum SPECIALSPAWNMETHOD { BOTH = 0, BALLS, PIPE, NONE, NUM_METHODS };
 
-public class GameSetupWindow : MonoBehaviour {
+public class GameSetupWindow : Menu {
 
     //public Team teamLeft;
     //public Team teamRight;
@@ -25,24 +25,28 @@ public class GameSetupWindow : MonoBehaviour {
 
     SPECIALSPAWNMETHOD _specialSpawnMethod;
 
-    GameManager _gameManager;
     CharacterSelect _characterSelect;
 
     //string[] hsrTexts = new string[3];
-    GameSetupOption[] _options = new GameSetupOption[9];
+    GameSetupOption[] _options = new GameSetupOption[7];
 
     public void Initialize() {
         gameObject.SetActive(true);
 
         _gameManager = FindObjectOfType<GameManager>();
         _gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
+
+        Activate();
     }
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
     }
 
     // Use this for initialization
-    void Start () {
+    protected override void Start () {
+        base.Start();
+
         _characterSelect = FindObjectOfType<CharacterSelect>();
 
         GetOptions();
@@ -96,22 +100,34 @@ public class GameSetupWindow : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    protected override void Update () {
+        base.Update();
+
         if (InputState.GetButtonOnAnyControllerPressed("Cancel") && !IsAnyOptionSelected()) {
             // If there's AI's
             if (_characterSelect.numAI > 0) {
                 // Go back to AI setup
+                Deactivate();
                 aiSetupWindow.gameObject.SetActive(true);
-                gameObject.SetActive(false);
             } else {
                 // Go back to char select
-                _characterSelect.Reactivate();
-                gameObject.SetActive(false);
+                Deactivate();
+                _characterSelect.Activate();
             }
 
             // Make sure the button press doesn't overflow into the next menu.
             Input.ResetInputAxes();
         }
+    }
+
+    public override void Activate() {
+        base.Activate();
+    }
+
+    public override void Deactivate() {
+        base.Deactivate();
+
+        gameObject.SetActive(false);
     }
 
     bool IsAnyOptionSelected() {

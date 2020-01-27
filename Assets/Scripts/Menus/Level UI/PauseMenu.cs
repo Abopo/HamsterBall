@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using Rewired;
 
-public class PauseMenu : MonoBehaviour {
+public class PauseMenu : Menu {
 
     public GameObject optionsMenu;
     public GameObject pauseMenu;
@@ -15,19 +15,21 @@ public class PauseMenu : MonoBehaviour {
     Player _player;
 
     MenuButton[] _buttons;
-    GameManager _gameManager;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         _buttons = GetComponentsInChildren<MenuButton>();
         _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Use this for initialization
-    void Start() {
+    protected override void Start() {
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update() {
+    protected override void Update() {
+        base.Update();
     }
 
     private void LateUpdate() {
@@ -39,12 +41,12 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void ResumeButton() {
-        _gameManager.Unpause();
-        _isActive = false;
-        pauseMenu.SetActive(false);
+        Deactivate();
     }
 
-    public void Activate() {
+    public override void Activate() {
+        base.Activate();
+
         if (_isActive) {
             return;
         }
@@ -58,6 +60,8 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void Activate(int playerID) {
+        base.Activate();
+
         if(_isActive) {
             return;
         }
@@ -80,6 +84,14 @@ public class PauseMenu : MonoBehaviour {
 
         // Pause the game
         _gameManager.FullPause();
+    }
+
+    public override void Deactivate() {
+        base.Deactivate();
+
+        _gameManager.Unpause();
+        _isActive = false;
+        pauseMenu.SetActive(false);
     }
 
     public void OpenOptionsMenu() {

@@ -11,8 +11,6 @@ public class SlimeAI : CharacterAI {
         // Set time for special move
         _specialMoveTime = 30f;
 
-        PlayerController pController = GetComponent<PlayerController>();
-
         _hamsterScan = FindObjectOfType<HamsterScan>();
     }
 
