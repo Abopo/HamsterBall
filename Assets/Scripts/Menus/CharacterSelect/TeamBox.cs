@@ -14,7 +14,14 @@ public class TeamBox : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         playerMarkers = GetComponentsInChildren<GameMarker>();
-	}
+
+        if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SURVIVAL) {
+            // There are no teams for base survival, so turn off the team signs
+            GetComponent<SpriteRenderer>().enabled = false;
+            playerMarkers[0].GetComponent<SpriteRenderer>().enabled = false;
+            playerMarkers[1].GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -106,6 +106,10 @@ public class MenuOption : MonoBehaviour {
         if(!IsReady) {
             return;
         }
+
+        if(_parentMenu == null) {
+            CheckInput();
+        }
     }
 
     public void CheckInput() {
@@ -173,7 +177,9 @@ public class MenuOption : MonoBehaviour {
         isHighlighted = true;
         _justHighlighted = true;
 
-        _parentMenu.selectedOption = this;
+        if (_parentMenu != null) {
+            _parentMenu.selectedOption = this;
+        }
 
         // Make sure it's adjacent options are NOT highlighted
         DeHighlightOtherOptions();

@@ -1838,7 +1838,6 @@ Transform:
   - {fileID: 224070651418416464}
   - {fileID: 7943119251000687204}
   - {fileID: 224318292133034104}
-  - {fileID: 4118794126757916}
   m_Father: {fileID: 4394128401581296}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2846,16 +2845,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1412007827227550}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.7163136, z: -5}
-  m_LocalScale: {x: 0.8647716, y: 0.86477196, z: 0.86477196}
+  m_LocalPosition: {x: 0.35919493, y: -24.557222, z: -138.805}
+  m_LocalScale: {x: 23.142155, y: 23.142162, z: 23.142162}
   m_Children:
   - {fileID: 4719166454219294}
   - {fileID: 224383394352386368}
   - {fileID: 224508142567589122}
   - {fileID: 224343741541225742}
   - {fileID: 224832291999783094}
-  m_Father: {fileID: 4414494133667640}
-  m_RootOrder: 9
+  m_Father: {fileID: 224458251996088692}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1433679341368944
 GameObject:
@@ -6584,6 +6583,7 @@ RectTransform:
   - {fileID: 4870900363957134}
   - {fileID: 4556148742799302}
   - {fileID: 4394128401581296}
+  - {fileID: 4118794126757916}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7401,6 +7401,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c82214244862b714392c395fb7f07b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasFocus: 0
+  holdsSelection: 0
+  pauses: 0
+  selectedOption: {fileID: 0}
+  _prevMenu: {fileID: 0}
   optionsMenu: {fileID: 1412007827227550}
   pauseMenu: {fileID: 1270085736188782}
   aimAssist: {fileID: 1822116384083281313}
@@ -8926,21 +8931,21 @@ MonoBehaviour:
   rawTopLeftBounds: {x: 107.7, y: -50, z: 0}
   rawBottomRightBounds: {x: -107.7, y: 50, z: 0}
   rawBottomRightTextBounds: {x: 207.46667, y: -40, z: 0}
-  topLeftBounds: {x: -917.7025, y: 752.256, z: -3.775}
-  topRightBounds: {x: 1521.7025, y: 752.256, z: -3.775}
-  bottomLeftBounds: {x: -917.7025, y: -380.24396, z: -3.775}
-  bottomRightBounds: {x: 1521.7025, y: -380.24396, z: -3.775}
-  centerBounds: {x: 302, y: 186.00601, z: -3.775}
+  topLeftBounds: {x: -914.6637, y: 749.828, z: -3.7625}
+  topRightBounds: {x: 1516.6637, y: 749.828, z: -3.7625}
+  bottomLeftBounds: {x: -914.6637, y: -378.922, z: -3.7625}
+  bottomRightBounds: {x: 1516.6637, y: -378.922, z: -3.7625}
+  centerBounds: {x: 301, y: 185.453, z: -3.7625}
   topLeftTextBounds: {x: -872.78, y: 412.506, z: -3.775}
   topRightTextBounds: {x: 1476.78, y: 412.506, z: -3.775}
   bottomLeftTextBounds: {x: -872.78, y: -40.493988, z: -3.775}
   bottomRightTextBounds: {x: 1476.78, y: -40.493988, z: -3.775}
   centerTextBounds: {x: 302, y: 186.00601, z: -3.775}
-  finalTopLeftTextBounds: {x: -1482.6315, y: 752.256, z: -3.775}
-  finalTopRightTextBounds: {x: 866.9288, y: 752.256, z: -3.775}
-  finalBottomLeftTextBounds: {x: -1482.6315, y: 752.256, z: -3.775}
-  finalBottomRightTextBounds: {x: 866.9288, y: 752.256, z: -3.775}
-  finalCenterTextBounds: {x: -307.85135, y: 752.256, z: -3.775}
+  finalTopLeftTextBounds: {x: -1477.722, y: 749.828, z: -3.7625}
+  finalTopRightTextBounds: {x: 864.05817, y: 749.828, z: -3.7625}
+  finalBottomLeftTextBounds: {x: -1477.722, y: 749.828, z: -3.7625}
+  finalBottomRightTextBounds: {x: 864.05817, y: 749.828, z: -3.7625}
+  finalCenterTextBounds: {x: -306.83194, y: 749.828, z: -3.7625}
   unwrappedBottomRightTextBounds: {x: 207.46667, y: -40, z: 0}
   onCompleteEvent:
     m_PersistentCalls:
@@ -9689,21 +9694,21 @@ MonoBehaviour:
   rawTopLeftBounds: {x: 91.76, y: -50, z: 0}
   rawBottomRightBounds: {x: -91.76, y: 50, z: 0}
   rawBottomRightTextBounds: {x: 162.70311, y: -23.4, z: 0}
-  topLeftBounds: {x: 198.28265, y: 163.57405, z: -37.45408}
-  topRightBounds: {x: 312.6513, y: 163.57405, z: -37.45408}
-  bottomLeftBounds: {x: 198.28265, y: 101.25458, z: -37.45408}
-  bottomRightBounds: {x: 312.6513, y: 101.25458, z: -37.45408}
-  centerBounds: {x: 255.46698, y: 132.4143, z: -37.45408}
-  topLeftTextBounds: {x: 204.76915, y: 139.70569, z: -37.45408}
-  topRightTextBounds: {x: 306.16483, y: 139.70569, z: -37.45408}
-  bottomLeftTextBounds: {x: 204.76915, y: 125.12294, z: -37.45408}
-  bottomRightTextBounds: {x: 306.16483, y: 125.12294, z: -37.45408}
-  centerTextBounds: {x: 255.46698, y: 132.4143, z: -37.45408}
-  finalTopLeftTextBounds: {x: 204.76915, y: 139.70569, z: -37.45408}
-  finalTopRightTextBounds: {x: 306.16483, y: 139.70569, z: -37.45408}
-  finalBottomLeftTextBounds: {x: 204.76915, y: 125.12294, z: -37.45408}
-  finalBottomRightTextBounds: {x: 306.16483, y: 125.12294, z: -37.45408}
-  finalCenterTextBounds: {x: 255.46698, y: 132.4143, z: -37.45408}
+  topLeftBounds: {x: 233.13704, y: 192.5148, z: -44.037804}
+  topRightBounds: {x: 367.60956, y: 192.5148, z: -44.037804}
+  bottomLeftBounds: {x: 233.13704, y: 119.24074, z: -44.037804}
+  bottomRightBounds: {x: 367.60956, y: 119.24074, z: -44.037804}
+  centerBounds: {x: 300.3733, y: 155.87778, z: -44.037804}
+  topLeftTextBounds: {x: 240.76372, y: 164.45084, z: -44.037804}
+  topRightTextBounds: {x: 359.98285, y: 164.45084, z: -44.037804}
+  bottomLeftTextBounds: {x: 240.76372, y: 147.3047, z: -44.037804}
+  bottomRightTextBounds: {x: 359.98285, y: 147.3047, z: -44.037804}
+  centerTextBounds: {x: 300.3733, y: 155.87778, z: -44.037804}
+  finalTopLeftTextBounds: {x: 240.76372, y: 164.45084, z: -44.037804}
+  finalTopRightTextBounds: {x: 359.98285, y: 164.45084, z: -44.037804}
+  finalBottomLeftTextBounds: {x: 240.76372, y: 147.3047, z: -44.037804}
+  finalBottomRightTextBounds: {x: 359.98285, y: 147.3047, z: -44.037804}
+  finalCenterTextBounds: {x: 300.3733, y: 155.87778, z: -44.037804}
   unwrappedBottomRightTextBounds: {x: 162.70311, y: -46.8, z: 0}
   onCompleteEvent:
     m_PersistentCalls:
@@ -10016,21 +10021,21 @@ MonoBehaviour:
   rawTopLeftBounds: {x: 91.76, y: -50, z: 0}
   rawBottomRightBounds: {x: -91.76, y: 50, z: 0}
   rawBottomRightTextBounds: {x: 59.0625, y: -30, z: 0}
-  topLeftBounds: {x: 198.28265, y: 137.4864, z: -37.45408}
-  topRightBounds: {x: 312.65134, y: 137.4864, z: -37.45408}
-  bottomLeftBounds: {x: 198.28265, y: 75.16695, z: -37.45408}
-  bottomRightBounds: {x: 312.65134, y: 75.16695, z: -37.45408}
-  centerBounds: {x: 255.467, y: 106.326675, z: -37.45408}
-  topLeftTextBounds: {x: 237.06328, y: 115.67459, z: -37.45408}
-  topRightTextBounds: {x: 273.8707, y: 115.67459, z: -37.45408}
-  bottomLeftTextBounds: {x: 237.06328, y: 96.97875, z: -37.45408}
-  bottomRightTextBounds: {x: 273.8707, y: 96.97875, z: -37.45408}
-  centerTextBounds: {x: 255.46698, y: 106.326675, z: -37.45408}
-  finalTopLeftTextBounds: {x: 237.06328, y: 115.67459, z: -37.45408}
-  finalTopRightTextBounds: {x: 273.8707, y: 115.67459, z: -37.45408}
-  finalBottomLeftTextBounds: {x: 237.06328, y: 96.97875, z: -37.45408}
-  finalBottomRightTextBounds: {x: 273.8707, y: 96.97875, z: -37.45408}
-  finalCenterTextBounds: {x: 255.46698, y: 106.326675, z: -37.45408}
+  topLeftBounds: {x: 233.13702, y: 161.84143, z: -44.037804}
+  topRightBounds: {x: 367.6096, y: 161.84143, z: -44.037804}
+  bottomLeftBounds: {x: 233.13702, y: 88.56738, z: -44.037804}
+  bottomRightBounds: {x: 367.6096, y: 88.56738, z: -44.037804}
+  centerBounds: {x: 300.3733, y: 125.20441, z: -44.037804}
+  topLeftTextBounds: {x: 278.73456, y: 136.19551, z: -44.037804}
+  topRightTextBounds: {x: 322.01205, y: 136.19551, z: -44.037804}
+  bottomLeftTextBounds: {x: 278.73456, y: 114.213295, z: -44.037804}
+  bottomRightTextBounds: {x: 322.01205, y: 114.213295, z: -44.037804}
+  centerTextBounds: {x: 300.3733, y: 125.20441, z: -44.037804}
+  finalTopLeftTextBounds: {x: 278.73456, y: 136.19551, z: -44.037804}
+  finalTopRightTextBounds: {x: 322.01205, y: 136.19551, z: -44.037804}
+  finalBottomLeftTextBounds: {x: 278.73456, y: 114.213295, z: -44.037804}
+  finalBottomRightTextBounds: {x: 322.01205, y: 114.213295, z: -44.037804}
+  finalCenterTextBounds: {x: 300.3733, y: 125.20441, z: -44.037804}
   unwrappedBottomRightTextBounds: {x: 59.0625, y: -30, z: 0}
   onCompleteEvent:
     m_PersistentCalls:
@@ -10725,21 +10730,21 @@ MonoBehaviour:
   rawTopLeftBounds: {x: 60.985, y: -50, z: 0}
   rawBottomRightBounds: {x: -60.985, y: 50, z: 0}
   rawBottomRightTextBounds: {x: 115.5, y: -32, z: 0}
-  topLeftBounds: {x: 218.22432, y: 191.8356, z: -37.45408}
-  topRightBounds: {x: 294.23544, y: 191.8356, z: -37.45408}
-  bottomLeftBounds: {x: 218.22432, y: 129.51607, z: -37.45408}
-  bottomRightBounds: {x: 294.23544, y: 129.51607, z: -37.45408}
-  centerBounds: {x: 256.2299, y: 160.67584, z: -37.45408}
-  topLeftTextBounds: {x: 220.24036, y: 170.64696, z: -37.45408}
-  topRightTextBounds: {x: 292.21942, y: 170.64696, z: -37.45408}
-  bottomLeftTextBounds: {x: 220.24036, y: 150.70471, z: -37.45408}
-  bottomRightTextBounds: {x: 292.21942, y: 150.70471, z: -37.45408}
-  centerTextBounds: {x: 256.2299, y: 160.67584, z: -37.45408}
-  finalTopLeftTextBounds: {x: 220.24036, y: 170.64696, z: -37.45408}
-  finalTopRightTextBounds: {x: 292.21942, y: 170.64696, z: -37.45408}
-  finalBottomLeftTextBounds: {x: 220.24036, y: 150.70471, z: -37.45408}
-  finalBottomRightTextBounds: {x: 292.21942, y: 150.70471, z: -37.45408}
-  finalCenterTextBounds: {x: 256.2299, y: 160.67584, z: -37.45408}
+  topLeftBounds: {x: 256.58405, y: 225.7442, z: -44.037804}
+  topRightBounds: {x: 345.95654, y: 225.7442, z: -44.037804}
+  bottomLeftBounds: {x: 256.58405, y: 152.47008, z: -44.037804}
+  bottomRightBounds: {x: 345.95654, y: 152.47008, z: -44.037804}
+  centerBounds: {x: 301.2703, y: 189.10715, z: -44.037804}
+  topLeftTextBounds: {x: 258.95447, y: 200.831, z: -44.037804}
+  topRightTextBounds: {x: 343.58612, y: 200.831, z: -44.037804}
+  bottomLeftTextBounds: {x: 258.95447, y: 177.38327, z: -44.037804}
+  bottomRightTextBounds: {x: 343.58612, y: 177.38327, z: -44.037804}
+  centerTextBounds: {x: 301.2703, y: 189.10713, z: -44.037804}
+  finalTopLeftTextBounds: {x: 258.95447, y: 200.831, z: -44.037804}
+  finalTopRightTextBounds: {x: 343.58612, y: 200.831, z: -44.037804}
+  finalBottomLeftTextBounds: {x: 258.95447, y: 177.38327, z: -44.037804}
+  finalBottomRightTextBounds: {x: 343.58612, y: 177.38327, z: -44.037804}
+  finalCenterTextBounds: {x: 301.2703, y: 189.10713, z: -44.037804}
   unwrappedBottomRightTextBounds: {x: 115.5, y: -32, z: 0}
   onCompleteEvent:
     m_PersistentCalls:
@@ -11122,21 +11127,21 @@ MonoBehaviour:
   rawTopLeftBounds: {x: 60.985, y: -50, z: 0}
   rawBottomRightBounds: {x: -60.985, y: 50, z: 0}
   rawBottomRightTextBounds: {x: 116.5, y: -32, z: 0}
-  topLeftBounds: {x: 205.90298, y: 231.99565, z: -37.45408}
-  topRightBounds: {x: 306.5568, y: 231.99565, z: -37.45408}
-  bottomLeftBounds: {x: 205.90298, y: 149.47223, z: -37.45408}
-  bottomRightBounds: {x: 306.5568, y: 149.47223, z: -37.45408}
-  centerBounds: {x: 256.2299, y: 190.73395, z: -37.45408}
-  topLeftTextBounds: {x: 208.16, y: 203.93768, z: -37.45408}
-  topRightTextBounds: {x: 304.29977, y: 203.93768, z: -37.45408}
-  bottomLeftTextBounds: {x: 208.16, y: 177.5302, z: -37.45408}
-  bottomRightTextBounds: {x: 304.29977, y: 177.5302, z: -37.45408}
-  centerTextBounds: {x: 256.2299, y: 190.73395, z: -37.45408}
-  finalTopLeftTextBounds: {x: 208.16, y: 203.93768, z: -37.45408}
-  finalTopRightTextBounds: {x: 304.29977, y: 203.93768, z: -37.45408}
-  finalBottomLeftTextBounds: {x: 208.16, y: 177.5302, z: -37.45408}
-  finalBottomRightTextBounds: {x: 304.29977, y: 177.5302, z: -37.45408}
-  finalCenterTextBounds: {x: 256.2299, y: 190.73395, z: -37.45408}
+  topLeftBounds: {x: 242.09688, y: 272.96362, z: -44.037804}
+  topRightBounds: {x: 360.44373, y: 272.96362, z: -44.037804}
+  bottomLeftBounds: {x: 242.09688, y: 175.93414, z: -44.037804}
+  bottomRightBounds: {x: 360.44373, y: 175.93414, z: -44.037804}
+  centerBounds: {x: 301.2703, y: 224.44888, z: -44.037804}
+  topLeftTextBounds: {x: 244.75063, y: 239.9736, z: -44.037804}
+  topRightTextBounds: {x: 357.78998, y: 239.9736, z: -44.037804}
+  bottomLeftTextBounds: {x: 244.75063, y: 208.92416, z: -44.037804}
+  bottomRightTextBounds: {x: 357.78998, y: 208.92416, z: -44.037804}
+  centerTextBounds: {x: 301.2703, y: 224.44888, z: -44.037804}
+  finalTopLeftTextBounds: {x: 244.75063, y: 239.9736, z: -44.037804}
+  finalTopRightTextBounds: {x: 357.78998, y: 239.9736, z: -44.037804}
+  finalBottomLeftTextBounds: {x: 244.75063, y: 208.92416, z: -44.037804}
+  finalBottomRightTextBounds: {x: 357.78998, y: 208.92416, z: -44.037804}
+  finalCenterTextBounds: {x: 301.2703, y: 224.44888, z: -44.037804}
   unwrappedBottomRightTextBounds: {x: 116.5, y: -32, z: 0}
   onCompleteEvent:
     m_PersistentCalls:
@@ -15455,6 +15460,76 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dark Wood Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 8389163410785873914, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 268.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8389163410785873914, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 207
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -262.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 288
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511559931349094006, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -268.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511559931349094006, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 207
+      objectReference: {fileID: 0}
+    - target: {fileID: 5370374357910456199, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 538
+      objectReference: {fileID: 0}
+    - target: {fileID: 5370374357910456199, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 457
+      objectReference: {fileID: 0}
+    - target: {fileID: 2863599784232292869, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: width
+      value: 288
+      objectReference: {fileID: 0}
+    - target: {fileID: 2863599784232292869, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: height
+      value: 207
+      objectReference: {fileID: 0}
+    - target: {fileID: 2539975966703377797, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -228.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2539975966703377797, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -216.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494455953111150183, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 228.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494455953111150183, guid: f935b036d9aff7440abf0a51f913ac5f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -216.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3263020596723538049, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15575,16 +15650,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.016324501
       objectReference: {fileID: 0}
-    - target: {fileID: 8389163410785873914, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 268.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8389163410785873914, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 207
-      objectReference: {fileID: 0}
     - target: {fileID: 5511559930643370247, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -15595,70 +15660,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -228.2
       objectReference: {fileID: 0}
-    - target: {fileID: 5511559931349094006, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -268.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5511559931349094006, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 207
-      objectReference: {fileID: 0}
-    - target: {fileID: 5370374357910456199, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 538
-      objectReference: {fileID: 0}
-    - target: {fileID: 5370374357910456199, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 457
-      objectReference: {fileID: 0}
-    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -262.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5026531572687140947, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 288
-      objectReference: {fileID: 0}
     - target: {fileID: 2950858501546029959, guid: f935b036d9aff7440abf0a51f913ac5f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 228.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2539975966703377797, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -228.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2539975966703377797, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -216.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1494455953111150183, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 228.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1494455953111150183, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -216.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2863599784232292869, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: width
-      value: 288
-      objectReference: {fileID: 0}
-    - target: {fileID: 2863599784232292869, guid: f935b036d9aff7440abf0a51f913ac5f,
-        type: 3}
-      propertyPath: height
-      value: 207
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f935b036d9aff7440abf0a51f913ac5f, type: 3}

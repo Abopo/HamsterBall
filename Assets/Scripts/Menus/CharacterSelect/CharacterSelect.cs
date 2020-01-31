@@ -201,7 +201,7 @@ public class CharacterSelect : Menu {
         // When all players have locked their characters in,
         // show the press start screen.
         if (_gameManager.gameMode == GAME_MODE.MP_VERSUS || _gameManager.gameMode == GAME_MODE.MP_PARTY || _gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-            if (AllPlayersOnTeams()) {
+            if (AllPlayersOnBothTeams()) {
                 if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
                     pressStartText.SetActive(true);
                 } else if (!PhotonNetwork.connectedAndReady) {
@@ -219,7 +219,7 @@ public class CharacterSelect : Menu {
         }
     }
 
-    bool AllPlayersOnTeams() {
+    bool AllPlayersOnBothTeams() {
         // If any team doesn't have a player
         if (leftTeam.numPlayers == 0 || rightTeam.numPlayers == 0) {
             return false;
@@ -240,6 +240,10 @@ public class CharacterSelect : Menu {
     }
 
     bool AllPlayersSelected() {
+        if(ActivePlayers == 0) {
+            return false;
+        }
+
         for (int i = 0; i < ActivePlayers; ++i) {
             // If there is a player that's not underControl yet
             if (!_players[i].underControl) {

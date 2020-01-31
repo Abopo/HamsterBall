@@ -7,7 +7,7 @@ using Rewired;
 // This enum is only used for selecting between the Boy and Girl in story mode
 public enum CHARACTERCOLORS { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, GIRL3, GIRL4, NUM_COLORS }
 
-public class CharacterSelectWindow : MonoBehaviour {
+public class CharacterSelectWindow : Menu {
     protected CHARACTERCOLORS _boyColor = CHARACTERCOLORS.BOY2;
     protected CHARACTERCOLORS _girlColor = CHARACTERCOLORS.GIRL1;
 
@@ -25,16 +25,17 @@ public class CharacterSelectWindow : MonoBehaviour {
 
     protected bool _isActive;
 
-    protected GameManager _gameManager;
     StorySelectMenu _storySelectMenu;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
+
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
     }
 
     // Use this for initialization
-    protected virtual void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+    protected override void Start () {
+        base.Start();
 
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
@@ -52,7 +53,9 @@ public class CharacterSelectWindow : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    protected override void Update() {
+        base.Update();
+
         if (_isActive) {
             CheckInput();
         }
@@ -125,6 +128,8 @@ public class CharacterSelectWindow : MonoBehaviour {
         gameObject.SetActive(true);
         _isActive = true;
         _storySelectMenu.DisableUI();
+
+        TakeFocus();
     }
 
     // Makes sure that the character already chosen by the player will be displayed
@@ -162,7 +167,9 @@ public class CharacterSelectWindow : MonoBehaviour {
         }
     }
 
-    public virtual void Deactivate() {
+    public override void Deactivate() {
+        base.Deactivate();
+
         gameObject.SetActive(false);
         _isActive = false;
 

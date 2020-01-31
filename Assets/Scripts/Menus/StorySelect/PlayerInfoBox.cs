@@ -17,7 +17,7 @@ public class PlayerInfoBox : MonoBehaviour {
     Player _player;
 
     SpriteRenderer _sprite;
-    Sprite[] characterSprites = new Sprite[6];
+    Sprite[] characterSprites = new Sprite[8];
 
     Player _player1; // The first player's player object
 
@@ -43,6 +43,8 @@ public class PlayerInfoBox : MonoBehaviour {
         characterSprites[3] = boySprites[3];
         characterSprites[4] = girlSprites[0];
         characterSprites[5] = girlSprites[1];
+        characterSprites[6] = girlSprites[2];
+        characterSprites[7] = girlSprites[3];
 
         if (playerAssigned) {
             _player.controllers.GetController(ControllerType.Joystick, 0);

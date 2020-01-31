@@ -40,7 +40,14 @@ public class StoryButton : MenuOption {
     // Update is called once per frame
     protected override void Update () {
         base.Update();
-	}
+
+
+        if (isLocked) {
+            isReady = false;
+        } else {
+            isReady = true;
+        }
+    }
 
     protected override void Select() {
         //base.Select();
@@ -48,7 +55,6 @@ public class StoryButton : MenuOption {
             // TODO: Play some sound to indicate the stage is locked
             return;
         }
-
         // Open the character select window
         //_storySelectMenu.characterSelectWindow.Activate(this);
 

@@ -29,7 +29,7 @@ Bomb
 Y
 End
 ------------------------------------
-"AI" sets up the AI Players in this stage. The first number is it's name, which will determine it's sprites. Check the CHARACTERS enum for the number associated
+"AI" sets up the AI Players in this stage. The first number is it's name, which will determine it's sprites. Check the CHARACTERS enum (in Character.cs) for the number associated
 with each character. The next number is the characters color. The last number is the difficulty. The final string is it's AI type, which will have special
 personalities for different AI characters.
 

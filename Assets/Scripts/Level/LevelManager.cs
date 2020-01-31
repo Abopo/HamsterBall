@@ -286,7 +286,7 @@ public class LevelManager : MonoBehaviour {
                     }
                 }
             }
-        } else if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+        } else if (_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             // TODO: make a different results screen for these modes
             ActivateFinalResultsScreen(finalResult);
         // If this was a single player level
@@ -319,10 +319,12 @@ public class LevelManager : MonoBehaviour {
                     spResultsScreen.Activate(result);
                 }
             }
-        // If we are in multiplayer
+            // If we are in multiplayer
         } else if (!_gameManager.isSinglePlayer && mpResultsScreen != null) {
             mpResultsScreen.Activate(result);
-        } // TODO: failsafe some default results screen
+        } else {// TODO: failsafe some default results screen
+            spResultsScreen.Activate(-1);
+        }
     }
 
     void IncreaseLeftTeamGames() {
