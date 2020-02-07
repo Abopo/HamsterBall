@@ -8,12 +8,12 @@
 		[HideInInspector] _color("Color", Color) = (1.0,1.0,1.0,1.0)
 
 		_OriginalColor1("Original Color 1", Color) = (1.0,0,0,1.0)
-		_Threshold1("Threshold", Range(0,1)) = 0.1
 		_ColorReplacement1("Replacement Color 1", Color) = (1.0,0,0,1.0)
-		_OriginalColor2("Original Color 2", Color) = (0,1.0,0,1.0) 
-		_Threshold2("Threshold", Range(0,1)) = 0.1
+		_Threshold1("Threshold", Range(0,1)) = 0.1
+		_OriginalColor2("Original Color 2", Color) = (0,1.0,0,1.0)
 		_ColorReplacement2("Replacement Color 2", Color) = (0,1.0,0,1.0)
-		_OriginalColor3("Original Color 3", Color) = (0,0,1.0,1.0) 
+		_Threshold2("Threshold", Range(0,1)) = 0.1
+		_OriginalColor3("Original Color 3", Color) = (0,0,1.0,1.0)
 		_ColorReplacement3("Replacement Color 3", Color) = (0,0,1.0,1.0)
 		_Threshold3("Threshold", Range(0,1)) = 0.1
 		_OriginalColor4("Original Color 4", Color) = (1.0,1.0,0,1.0)
@@ -28,6 +28,9 @@
 		_OriginalColor7("Original Color 7", Color) = (1.0,1.0,1.0,1.0)
 		_ColorReplacement7("Replacement Color 7", Color) = (1.0,1.0,1.0,1.0) 
 		_Threshold7("Threshold", Range(0,1)) = 0.1
+		_OriginalColor8("Original Color 8", Color) = (1.0,1.0,1.0,1.0)
+		_ColorReplacement8("Replacement Color 8", Color) = (1.0,1.0,1.0,1.0)
+		_Threshold8("Threshold", Range(0,1)) = 0.1
 
 
 	}
@@ -57,6 +60,7 @@
 				uniform float4 _OriginalColor5;
 				uniform float4 _OriginalColor6;
 				uniform float4 _OriginalColor7;
+				uniform float4 _OriginalColor8;
 
 				//Colors Replacement
 				uniform float4 _ColorReplacement1;
@@ -66,6 +70,7 @@
 				uniform float4 _ColorReplacement5;
 				uniform float4 _ColorReplacement6;
 				uniform float4 _ColorReplacement7;
+				uniform float4 _ColorReplacement8;
 
 				uniform float _Threshold1;
 				uniform float _Threshold2;
@@ -74,6 +79,7 @@
 				uniform float _Threshold5;
 				uniform float _Threshold6;
 				uniform float _Threshold7;
+				uniform float _Threshold8;
 
 				struct appdata {
 					float4 vertex : POSITION;
@@ -122,6 +128,8 @@
 					 _color = (distance(_color.rgb, _OriginalColor6.rgb) < _Threshold6) ? _ColorReplacement6 : _color;
 					 //_color = all(_color == _OriginalColor7) ? _ColorReplacement7 : _color;
 					 _color = (distance(_color.rgb, _OriginalColor7.rgb) < _Threshold7) ? _ColorReplacement7 : _color;
+					 //
+					 _color = (distance(_color.rgb, _OriginalColor8.rgb) < _Threshold8) ? _ColorReplacement8 : _color;
 
 					 return _color;
 				}

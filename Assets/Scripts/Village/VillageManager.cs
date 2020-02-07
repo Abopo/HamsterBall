@@ -4,7 +4,7 @@ using UnityEngine;
 using Rewired;
 
 public class VillageManager : MonoBehaviour {
-    public bool resetPrefs;
+    public bool resetData;
 
     PauseMenu _pauseMenu;
     GameManager _gameManager;
@@ -63,9 +63,12 @@ public class VillageManager : MonoBehaviour {
     }
 
     void InitPlayerPrefs() {
-        if (resetPrefs) {
+        if (resetData) {
             // TODO: Remove for final build
             PlayerPrefs.SetInt("FirstTimePlaying", 0);
+
+            // Delete the save file
+            ES3.DeleteFile();
         }
 
         // These prefs reset on every game close/launch.
@@ -88,73 +91,118 @@ public class VillageManager : MonoBehaviour {
             PlayerPrefs.SetInt("Airship", 1);
 
             // Highscores
+            HighscorePrefs();
 
-            // World 1
-            PlayerPrefs.SetInt("1-1HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-1HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-2HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-2HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-3HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-3HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-4HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-4HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-5HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-5HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-6HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-6HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-7HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-7HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-8HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-8HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-9HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-9HighscoreCoop", 0);
-            PlayerPrefs.SetInt("1-10HighscoreSolo", 0);
-            PlayerPrefs.SetInt("1-10HighscoreCoop", 0);
-            // World 2
-            PlayerPrefs.SetInt("2-1HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-1HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-2HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-2HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-3HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-3HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-4HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-4HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-5HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-5HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-6HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-6HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-7HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-7HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-8HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-8HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-9HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-9HighscoreCoop", 0);
-            PlayerPrefs.SetInt("2-10HighscoreSolo", 0);
-            PlayerPrefs.SetInt("2-10HighscoreCoop", 0);
-            // World 3
-            PlayerPrefs.SetInt("3-1HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-1HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-2HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-2HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-3HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-3HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-4HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-4HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-5HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-5HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-6HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-6HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-7HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-7HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-8HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-8HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-9HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-9HighscoreCoop", 0);
-            PlayerPrefs.SetInt("3-10HighscoreSolo", 0);
-            PlayerPrefs.SetInt("3-10HighscoreCoop", 0);
+            // Shop items
+            ShopItems();
 
             PlayerPrefs.SetInt("FirstTimePlaying", 1);
         }
+    }
+
+    void HighscorePrefs() {
+        // World 1
+        PlayerPrefs.SetInt("1-1HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-1HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-2HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-2HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-3HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-3HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-4HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-4HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-5HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-5HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-6HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-6HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-7HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-7HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-8HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-8HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-9HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-9HighscoreCoop", 0);
+        PlayerPrefs.SetInt("1-10HighscoreSolo", 0);
+        PlayerPrefs.SetInt("1-10HighscoreCoop", 0);
+        // World 2
+        PlayerPrefs.SetInt("2-1HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-1HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-2HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-2HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-3HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-3HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-4HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-4HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-5HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-5HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-6HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-6HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-7HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-7HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-8HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-8HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-9HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-9HighscoreCoop", 0);
+        PlayerPrefs.SetInt("2-10HighscoreSolo", 0);
+        PlayerPrefs.SetInt("2-10HighscoreCoop", 0);
+        // World 3
+        PlayerPrefs.SetInt("3-1HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-1HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-2HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-2HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-3HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-3HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-4HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-4HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-5HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-5HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-6HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-6HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-7HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-7HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-8HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-8HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-9HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-9HighscoreCoop", 0);
+        PlayerPrefs.SetInt("3-10HighscoreSolo", 0);
+        PlayerPrefs.SetInt("3-10HighscoreCoop", 0);
+    }
+
+    void ShopItems() {
+        TextAsset palettes = Resources.Load<TextAsset>("Text/Shop/CharacterPalettes");
+        string[] linesFromFile = palettes.text.Split("\n"[0]);
+        int i = 0;
+        foreach (string line in linesFromFile) {
+            linesFromFile[i] = line.Replace("\r", "");
+            i++;
+        }
+
+        int index = 0;
+        string readLine = linesFromFile[index++];
+        string tempString;
+        bool[] values = new bool[2];
+
+        while (readLine != "End") {
+            if (readLine == "") {
+                readLine = linesFromFile[index++];
+                continue;
+            }
+
+            // Create data for the items
+            tempString = readLine;
+            readLine = linesFromFile[index++];
+            if(readLine == "0") {
+                // This item becomes available in the shop later
+                values[0] = false;
+            } else if(readLine == "1") {
+                // This item starts available in the shop
+                values[0] = true;
+            }
+
+            ES3.Save<bool[]>(tempString, values);
+        }
+    }
+
+    void GameStatPrefs() {
+
     }
 
     // Update is called once per frame

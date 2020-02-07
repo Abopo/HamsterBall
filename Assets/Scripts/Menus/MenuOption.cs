@@ -40,7 +40,7 @@ public class MenuOption : MonoBehaviour {
             _parentMenu = transform.parent.GetComponent<Menu>();
         }
 
-        GetAdjOptions();
+        FindAdjOptions();
     }
 
     // Use this for initialization
@@ -70,7 +70,7 @@ public class MenuOption : MonoBehaviour {
         _parentMenu = parentMenu;
     }
 
-    void GetAdjOptions() {
+    public void FindAdjOptions() {
         // automatically fill in adj options via selectable component
         Selectable _selectable = GetComponent<Selectable>();
         if(_selectable == null) {
