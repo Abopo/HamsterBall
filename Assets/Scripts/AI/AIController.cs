@@ -253,20 +253,9 @@ public class AIController : MonoBehaviour {
             }
         // If we want to go down, find closest drop and move towards it.
         } else if (_curAction.vertWant == -1) {
-            _isMovingUp = false;
+            // Move down towards want
+            MovingDown();
 
-            if (_mapScan.LeftDropDistance < _mapScan.RightDropDistance) {
-                _input.left.isDown = true;
-                _input.right.isDown = false;
-            } else {
-                _input.left.isDown = false;
-                _input.right.isDown = true;
-            }
-
-            // If we're are standing on a passthrough platform, just press down to fall through
-            if(_mapScan.IsOnPassthrough) {
-                _input.down.isJustPressed = true;
-            }    
         // If we want to go up, find closest step and move towards it.
         } else if (_curAction.vertWant == 1) {
             // if we're not already moving
@@ -278,6 +267,43 @@ public class AIController : MonoBehaviour {
             } else {
                 ContinueMovingUp();
             }
+        }
+    }
+
+    void MovingDown() {
+        _isMovingUp = false;
+
+        if (_mapScan.LeftDropDistance < _mapScan.RightDropDistance) {
+            // If we are currently moving right, 
+            if(_input.right.isDown) {
+                // make sure we aren't right on top of the drop
+                if(_mapScan.LeftDropDistance > 1f) {
+                    _input.left.isDown = true;
+                    _input.right.isDown = false;
+                }
+            // Otherwise just head left
+            } else {
+                _input.left.isDown = true;
+                _input.right.isDown = false;
+            }
+        } else {
+            // If we are currently moving Left, 
+            if (_input.left.isDown) {
+                // make sure we aren't right on top of the drop
+                if (_mapScan.RightDropDistance > 1f) {
+                    _input.left.isDown = false;
+                    _input.right.isDown = true;
+                }
+            // Otherwise just head right
+            } else {
+                _input.left.isDown = false;
+                _input.right.isDown = true;
+            }
+        }
+
+        // If we're are standing on a passthrough platform, just press down to fall through
+        if (_mapScan.IsOnPassthrough) {
+            _input.down.isJustPressed = true;
         }
     }
 

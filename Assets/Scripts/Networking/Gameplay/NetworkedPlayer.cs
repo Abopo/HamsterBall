@@ -15,6 +15,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     float _bufferTime = 1f;
     float _bufferTimer = 0f;
 
+    // Stupid input tracking stuff
+    bool jumpPressed = false;
+    bool swingPressed = false;
+    bool attackPressed = false;
+
     private void Awake() {
         _playerController = GetComponent<PlayerController>();
         _serializedInput = new InputState();
@@ -38,7 +43,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             CharaInfo tempInfo = new CharaInfo();
             tempInfo.name = (CHARACTERS)photonView.instantiationData[2];
             tempInfo.color = (int)photonView.instantiationData[3];
-            SetAnimatorController(tempInfo);
+            _playerController.SetCharacterInfo(tempInfo);
 
             // Make sure our player spawner has us in its list
             NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();
@@ -68,11 +73,12 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.right.isDown);
             stream.Serialize(ref _serializedInput.right.isJustPressed);
             stream.Serialize(ref _serializedInput.right.isJustReleased);
+            stream.Serialize(ref _serializedInput.swing.isDown);
             stream.Serialize(ref _serializedInput.swing.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isDown);
             //stream.Serialize(ref _serializedInput.shift.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isJustReleased);
-            //stream.Serialize(ref _serializedInput.attack.isDown);
+            stream.Serialize(ref _serializedInput.attack.isDown);
             stream.Serialize(ref _serializedInput.attack.isJustPressed);
             //stream.Serialize(ref _serializedInput.attack.isJustReleased);
 
@@ -91,18 +97,63 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             stream.Serialize(ref _serializedInput.right.isDown);
             stream.Serialize(ref _serializedInput.right.isJustPressed);
             stream.Serialize(ref _serializedInput.right.isJustReleased);
+            stream.Serialize(ref _serializedInput.swing.isDown);
             stream.Serialize(ref _serializedInput.swing.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isDown);
             //stream.Serialize(ref _serializedInput.shift.isJustPressed);
             //stream.Serialize(ref _serializedInput.shift.isJustReleased);
-            //stream.Serialize(ref _serializedInput.attack.isDown);
+            stream.Serialize(ref _serializedInput.attack.isDown);
             stream.Serialize(ref _serializedInput.attack.isJustPressed);
             //stream.Serialize(ref _serializedInput.attack.isJustReleased);
+
+            // Double check for "pressed" and "released" inputs
+            ParseInput();
+
+            if (_serializedInput.jump.isJustPressed) {
+                Debug.Log("Jump button pressed");
+            }
+            if (_serializedInput.jump.isDown) {
+                Debug.Log("Jump button down");
+            }
 
             // Take all the input built up between updates
             _playerController.TakeInput(_serializedInput);
 
             ResetInput();
+        }
+    }
+
+    void ParseInput() {
+        // Jump seems to be working great
+        if(_serializedInput.jump.isDown) {
+            if(!jumpPressed) {
+                _serializedInput.jump.isJustPressed = true;
+                jumpPressed = true;
+            }
+        } else {
+            if(jumpPressed) {
+                _serializedInput.jump.isJustReleased = true;
+                jumpPressed = false;
+            }
+        }
+
+        // But swing and attack are still not consistent
+        if(_serializedInput.swing.isDown) {
+            if(!swingPressed) {
+                _serializedInput.swing.isJustPressed = true;
+                swingPressed = true;
+            }
+        } else {
+            swingPressed = false;
+        }
+
+        if(_serializedInput.attack.isDown) {
+            if(!attackPressed) {
+                _serializedInput.attack.isJustPressed = true;
+                attackPressed = true;
+            }
+        } else {
+            attackPressed = false;
         }
     }
 
@@ -121,6 +172,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
                 GetOwnerInput();
             }
         }
+
     }
 
     void GetOwnerInput() {
@@ -172,27 +224,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         //_writingInputList.Clear();
     }
 
-    void SetAnimatorController(CharaInfo charaInfo) {
-        string path = "Art/Animations/Player/";
-        switch (charaInfo.name) {
-            case CHARACTERS.BOY:
-                path += "Boy/Animation Objects/Boy" + charaInfo.color;
-                break;
-            case CHARACTERS.GIRL:
-                path += "Girl/Animation Objects/Girl" + charaInfo.color;
-                break;
-            case CHARACTERS.ROOSTER:
-                path += "Rooster/Animation Objects/Rooster" + charaInfo.color;
-                break;
-            case CHARACTERS.SNAIL:
-                path += "Snail/Animation Objects/Snail" + charaInfo.color;
-                break;
-            case CHARACTERS.LACKEY:
-                path += "Lackey/Animation Objects/Lackey" + charaInfo.color;
-                break;
+    [PunRPC]
+    void ChangePlayerState(int state) {
+        if (_playerController.CurState != (PLAYER_STATE)state) {
+            _playerController.ChangeState((PLAYER_STATE)state);
         }
-
-        _playerController.Animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
     }
 
     [PunRPC]
@@ -206,7 +242,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             if (hamster != null && !hamster.wasCaught) {
                 // Tell rest of players that a hamster was caught
                 photonView.RPC("HamsterCaught", PhotonTargets.Others, hamster.hamsterNum);
-                OtherCatchHamster(hamster.hamsterNum);
+                OtherCatchHamster(hamster.hamsterNum); 
             } else {
                 // Tell original player that they can't catch that hamster
                 photonView.RPC("HamsterMissed", PhotonTargets.Others);

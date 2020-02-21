@@ -101,6 +101,13 @@ public class CSPlayerController : PlayerController {
                 transform.SetParent(pullDownWindow.transform);
             }
         }
+
+        if(inPlayArea) {
+            // Make sure sprite is on correct layer
+            if (_spriteRenderer.sortingOrder != 0) {
+                _spriteRenderer.sortingOrder = 0;
+            }
+        }
     }
 
     private void FixedUpdate() {

@@ -161,7 +161,7 @@ public class AIMapScan : MonoBehaviour {
         }
 
         // Check Right
-        rayOffsetX = 0.1f;
+        rayOffsetX = 0.01f;
         while (rayOffsetX < _rightWallCheckHit.distance) {
             _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
             _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);
@@ -183,7 +183,7 @@ public class AIMapScan : MonoBehaviour {
         }
 
         // Check Left
-        rayOffsetX = 0.1f;
+        rayOffsetX = 0.01f;
         while (rayOffsetX < _leftWallCheckHit.distance) {
             _jumpCheckRay = new Ray2D(new Vector2(_pos.x - rayOffsetX, _pos.y), Vector2.up);
             _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1.5f, collisionMask);

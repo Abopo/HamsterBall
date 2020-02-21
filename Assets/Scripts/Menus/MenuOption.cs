@@ -40,7 +40,6 @@ public class MenuOption : MonoBehaviour {
             _parentMenu = transform.parent.GetComponent<Menu>();
         }
 
-        FindAdjOptions();
     }
 
     // Use this for initialization
@@ -51,6 +50,8 @@ public class MenuOption : MonoBehaviour {
         if (_player == null) {
             _player = ReInput.players.GetPlayer(0);
         }
+
+        FindAdjOptions();
 
         if (isFirstSelection) {
             isHighlighted = true;

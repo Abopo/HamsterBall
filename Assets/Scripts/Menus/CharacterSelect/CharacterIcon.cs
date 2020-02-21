@@ -12,20 +12,25 @@ public class CharacterIcon : MenuOption {
     Sprite _backerBase;
     Sprite _backerHighlighted;
 
+
+    protected override void Awake() {
+        base.Awake();
+
+        _sprites = GetComponentsInChildren<SpriteRenderer>();
+
+        Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Portraits-and-windows");
+        _backerBase = spriteSheet[25];
+        _backerHighlighted = spriteSheet[26];
+    }
     // Use this for initialization
     protected override void Start() {
         base.Start();
 
         isLocked = false;
-        _sprites = GetComponentsInChildren<SpriteRenderer>();
 
         if(!IsReady) {
             Lock();
         }
-
-        Sprite[] spriteSheet = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Portraits-and-windows");
-        _backerBase = spriteSheet[25];
-        _backerHighlighted = spriteSheet[26];
     }
 
     public void Initialize(PlayerInfo pI) {

@@ -7,6 +7,10 @@ public class ShopMenu : Menu {
 
     public RectTransform content;
     public Image itemImage;
+    public SuperTextMesh itemDescription;
+
+    float _scrollTo;
+    float _scrollSpeed = 1000f;
 
     Object _shopItemObj;
     List<ShopItem> _items = new List<ShopItem>();
@@ -38,7 +42,7 @@ public class ShopMenu : Menu {
         GameObject tempItem;
 
         while (readLine != "End") {
-            if(readLine.Length < 5) {
+            if(readLine == "") {
                 readLine = linesFromFile[index++];
                 continue;
             }
@@ -53,18 +57,18 @@ public class ShopMenu : Menu {
                 // If the item has already been purchased
                 tempItem.GetComponent<ShopItem>().purchased = itemData[1];
                 _items.Add(tempItem.GetComponent<ShopItem>());
+
+                // Get the item description
+                readLine = linesFromFile[index++];
+                tempItem.GetComponent<ShopItem>().itemDescription = readLine;
             }
 
+            // Get to the next item
+            while (readLine != "") {
+                readLine = linesFromFile[index++];
+            }
             readLine = linesFromFile[index++];
         }
-
-        // Create the shop items
-        //GameObject tempItem;
-        //for (int i = 0; i < 15; ++i) {
-        //    tempItem = Instantiate(_shopItemObj, content) as GameObject;
-        //    ((RectTransform)tempItem.transform).anchoredPosition = new Vector3(0, -30 - (50 * i));
-        //    _items.Add(tempItem.GetComponent<ShopItem>());
-        //}
 
         // Run back through the items to properly set their adjacent options
         for (i = 0; i < _items.Count; ++i) {
@@ -75,6 +79,7 @@ public class ShopMenu : Menu {
 
         // Highlight the first item
         _items[0].isFirstSelection = true;
+        itemDescription.text = _items[0].itemDescription;
 
         // Properly size the content
         if (_items.Count > 5) {
@@ -86,6 +91,27 @@ public class ShopMenu : Menu {
     protected override void Update() {
         base.Update();
 
+        // Smooth scroll?
+        if(content.anchoredPosition.y != _scrollTo) {
+            // Scroll towards the position
+            if(content.anchoredPosition.y > _scrollTo) {
+                // Scroll down
+                content.anchoredPosition = new Vector2(content.anchoredPosition.x, content.anchoredPosition.y - (_scrollSpeed * Time.deltaTime));
+                // If we go too far
+                if (content.anchoredPosition.y < _scrollTo) {
+                    // just set to
+                    content.anchoredPosition = new Vector2(content.anchoredPosition.x, _scrollTo);
+                }
+            } else if(content.anchoredPosition.y < _scrollTo) {
+                // Scroll up
+                content.anchoredPosition = new Vector2(content.anchoredPosition.x, content.anchoredPosition.y + (_scrollSpeed * Time.deltaTime));
+                // If we go too far
+                if (content.anchoredPosition.y > _scrollTo) {
+                    // just set to
+                    content.anchoredPosition = new Vector2(content.anchoredPosition.x, _scrollTo);
+                }
+            }
+        }
     }
 
     public void SetCurItem(ShopItem item) {
@@ -94,7 +120,8 @@ public class ShopMenu : Menu {
         // Scroll down the content based on which item is selected
         int index = _items.IndexOf(item);
         if (index > 1 && index < _items.Count - 2) {
-            content.anchoredPosition = new Vector2(content.anchoredPosition.x, (index-2) * 50);
+            _scrollTo = (index - 2) * 50;
+            //content.anchoredPosition = new Vector2(content.anchoredPosition.x, (index-2) * 50);
         }
     }
 }

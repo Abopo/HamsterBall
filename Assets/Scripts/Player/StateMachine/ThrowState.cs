@@ -174,6 +174,7 @@ public class ThrowState : PlayerState {
     public void Throw() {
         if(playerController.heldBall == null) {
             playerController.ChangeState(PLAYER_STATE.IDLE);
+            return;
         }
 
         if (playerController.shifted) {

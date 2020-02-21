@@ -5,6 +5,9 @@ public class CatchState : PlayerState {
     bool _swingDone;
     float sign;
 
+    float _failsafeTime = 0.15f;
+    float _failsafeTimer = 0f;
+
     // Use this for initialization
     public override void Initialize(PlayerController playerIn){
 		base.Initialize(playerIn);
@@ -14,6 +17,8 @@ public class CatchState : PlayerState {
         playerController.bubbleCooldownTimer = 0;
 
         _swingDone = false;
+
+        _failsafeTimer = 0f;
     }
 
     // Update is called once per frame
@@ -25,8 +30,11 @@ public class CatchState : PlayerState {
 
         // Fail safe so Ai doesn't get stuck in this state
         if(playerController.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) {
-            Debug.Log("Catch animation failsafe triggered");
-            playerController.ChangeState(PLAYER_STATE.IDLE);
+            _failsafeTimer += Time.deltaTime;
+            if (_failsafeTimer > _failsafeTime) {
+                Debug.Log("Catch animation failsafe triggered");
+                playerController.ChangeState(PLAYER_STATE.IDLE);
+            }
         }
 	}
 

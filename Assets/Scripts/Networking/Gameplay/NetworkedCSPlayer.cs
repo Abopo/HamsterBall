@@ -13,9 +13,12 @@ public class NetworkedCSPlayer : MonoBehaviour {
     float _bufferTime = 3f;
     float _bufferTimer;
 
+    CharacterSelectResources _resources;
+
     private void Awake() {
         _csPlayer = GetComponent<CSPlayerController>();
         photonView = GetComponent<PhotonView>();
+        _resources = FindObjectOfType<CharacterSelectResources>();
     }
     // Start is called before the first frame update
     void Start() {
@@ -64,6 +67,9 @@ public class NetworkedCSPlayer : MonoBehaviour {
         Debug.Log("RPC Shift");
 
         _csPlayer.ShiftIntoPlayArea();
+
+        // Make sure our color is taken
+        _resources.CharaAnimators[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = true;
     }
 
     [PunRPC]
@@ -73,5 +79,8 @@ public class NetworkedCSPlayer : MonoBehaviour {
     [PunRPC]
     public void EnterPullDownWindow() {
         _csPlayer.PullDownWindow();
+
+        // Make sure our color is available
+        _resources.CharaAnimators[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = false;
     }
 }

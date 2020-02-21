@@ -32,14 +32,14 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         if (stream.isWriting) {
             // For initial setup to be synced.
             if (BubbleManager.startingBubbleInfo[0].isSet) {
-                for(int i = 0; i < 50; ++i) {
+                for(int i = 0; i < 46; ++i) {
                     stream.SendNext(BubbleManager.startingBubbleInfo[i].type);
                 }
             }
         } else {
             // For initial setup to be synced.
             if (!BubbleManager.startingBubbleInfo[0].isSet) {
-                for (int i = 0; i < 50; ++i) {
+                for (int i = 0; i < 46; ++i) {
                     BubbleManager.startingBubbleInfo[i].type = (HAMSTER_TYPES)stream.ReceiveNext();
                     BubbleManager.startingBubbleInfo[i].isSet = true;
                 }

@@ -136,7 +136,7 @@ public class PlayerController : Entity {
     public LevelManager LevelManager {
         get { return _levelManager; }
     }
-    SpriteRenderer _spriteRenderer;
+    protected SpriteRenderer _spriteRenderer;
     public SpriteRenderer SpriteRenderer {
         get { return _spriteRenderer; }
     }
@@ -166,8 +166,14 @@ public class PlayerController : Entity {
         _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         _animator = GetComponentInChildren<Animator>();
         _playerEffects = GetComponentInChildren<PlayerEffects>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
 
         inputState = new InputState();
+
+        swingObj = transform.Find("CatchBubble").gameObject;
+        swingObj.SetActive(false);
+
 
         _photonView = GetComponent<PhotonView>();
 
@@ -178,14 +184,9 @@ public class PlayerController : Entity {
     protected override void Start () {
 		base.Start ();
 
-        _gameManager = FindObjectOfType<GameManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
         _gameManager.gameOverEvent.AddListener(GameEnded);
 
         _spawnPos = transform.position;
-
-        swingObj = transform.Find("CatchBubble").gameObject;
-        swingObj.SetActive (false);
 
         _canShift = false;
 		_shiftCooldownTime = 12.0f;
@@ -498,18 +499,21 @@ public class PlayerController : Entity {
 	public void ChangeState(PLAYER_STATE state){
         //if (!_justChangedState) {
             //Debug.Log("Change state: " + state.ToString());
-            if (null != currentState) {
-                currentState.End();
-            }
-            currentState = GetPlayerState(state);
-            if (null != currentState) {
-                _animator.SetInteger("PlayerState", (int)CurState);
-                _animator.speed = 1;
-                currentState.Initialize(this);
-            }
-            _justChangedState = true;
-            _curState = currentState.getStateType();
+        if (null != currentState) {
+            currentState.End();
+        }
+        currentState = GetPlayerState(state);
+        if (null != currentState) {
+            _animator.SetInteger("PlayerState", (int)CurState);
+            _animator.speed = 1;
+            currentState.Initialize(this);
+        }
+        _justChangedState = true;
+        _curState = currentState.getStateType();
 
+        if(_photonView != null && _photonView.owner == PhotonNetwork.player) {
+            _photonView.RPC("ChangePlayerState", PhotonTargets.All, (int)_curState);
+        }
         //Debug.Log("State Changed to: " + currentState.getStateType().ToString());
         //}
     }

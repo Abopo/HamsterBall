@@ -296,6 +296,7 @@ public class CharacterSelector : MonoBehaviour {
         }
     }
 
+
     public void LockIn() {
         lockedIn = true;
         //curCharacterIcon.Lock();
@@ -322,6 +323,7 @@ public class CharacterSelector : MonoBehaviour {
         // Reset color to default
         charaColor = 1;
     }
+
     public void ShiftCSPlayer() {
         // If the selected color isn't taken
         if (!_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
@@ -336,6 +338,7 @@ public class CharacterSelector : MonoBehaviour {
             isReady = true;
         }
     }
+
     public void Unready() {
         isReady = false;
         takeInput = true;
@@ -391,10 +394,7 @@ public class CharacterSelector : MonoBehaviour {
             }
         } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
 
-        // Change portrait to correct character
-        charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
-        // Change animator to correct character
-        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        SetColor(charaColor);
 
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
@@ -415,10 +415,7 @@ public class CharacterSelector : MonoBehaviour {
             }
         } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
 
-        // Change portrait to correct character
-        charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
-        // Change animator to correct character
-        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        SetColor(charaColor);
 
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuHighlight);
     }
@@ -462,6 +459,10 @@ public class CharacterSelector : MonoBehaviour {
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         // Change animator to correct character
         charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+
+        // Keep csplayer data updated
+        charaWindow.PlayerController.CharaInfo.name = curCharacterIcon.charaName;
+        charaWindow.PlayerController.CharaInfo.color = charaColor;
 
         //_audioSource.Play();
     }

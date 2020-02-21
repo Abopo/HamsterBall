@@ -167,7 +167,7 @@ public class VillageManager : MonoBehaviour {
     }
 
     void ShopItems() {
-        TextAsset palettes = Resources.Load<TextAsset>("Text/Shop/CharacterPalettes");
+        TextAsset palettes = Resources.Load<TextAsset>("Text/Shop/ShopItemInitialData");
         string[] linesFromFile = palettes.text.Split("\n"[0]);
         int i = 0;
         foreach (string line in linesFromFile) {

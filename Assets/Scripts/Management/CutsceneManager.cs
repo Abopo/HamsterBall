@@ -36,6 +36,7 @@ public class CutsceneManager : MonoBehaviour {
     string _boardToLoad;
 
     CutsceneCharacter _curCharacter;
+    List<CutsceneCharacter> _speakingCharacters = new List<CutsceneCharacter>();
 
     bool _ready;
     bool _playedAudio;
@@ -89,12 +90,11 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void Start() {
-        if (fileToLoad != "") {
-            StartCutscene(fileToLoad);
-        } else {
-            //fileToLoad = "World1/1-1/ExampleCutscene";
-            //StartCutscene(fileToLoad);
+        if (fileToLoad == null || fileToLoad == "") {
+            fileToLoad = "World1/1-1/ExampleCutscene";
         }
+
+        StartCutscene(fileToLoad);
     }
 
     public void StartCutscene(string textPath) {
@@ -216,6 +216,8 @@ public class CutsceneManager : MonoBehaviour {
         rightChara1.SetIsSpeaking(false);
         rightChara2.SetIsSpeaking(false);
         rightChara3.SetIsSpeaking(false);
+
+        _speakingCharacters.Clear();
     }
 
     public void ReadEscapeCharacter() {
@@ -322,6 +324,7 @@ public class CutsceneManager : MonoBehaviour {
         // Read in the character's expression
         string expressionText = _linesFromFile[_fileIndex++];
         _curCharacter = character;
+        _speakingCharacters.Add(character);
 
         if (_readText == "Clear") {
             // Move off screen
@@ -361,6 +364,7 @@ public class CutsceneManager : MonoBehaviour {
                 _readText = _linesFromFile[_fileIndex];
                 if (_readText == "Walk") {
                     character.WalkIn();
+                    _fileIndex++; // Move index forward an extra step
                 } else {
                     // Slide in
                     character.SlideIn();
@@ -388,7 +392,11 @@ public class CutsceneManager : MonoBehaviour {
     void ReadDialogue() {
         _ready = false;
 
-        _curCharacter.SetIsSpeaking(true);
+        //_curCharacter.SetIsSpeaking(true);
+        // Set all loaded characters to speaking
+        foreach (CutsceneCharacter cc in _speakingCharacters) {
+            cc.SetIsSpeaking(true);
+        }
 
         // Read the dialogue
         _readText = _linesFromFile[_fileIndex++];
