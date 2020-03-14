@@ -114,6 +114,9 @@ public class CharacterSelector : MonoBehaviour {
         }
 
         charaWindow.Activate(false, playerNum);
+
+        // Skip a frame to avoid input overflow
+        frameskip = true;
     }
 
     // For AI
@@ -135,6 +138,9 @@ public class CharacterSelector : MonoBehaviour {
         }
 
         charaWindow.Activate(true, playerNum);
+
+        // Skip a frame to avoid input overflow
+        frameskip = true;
     }
 
     // For Networking
@@ -170,6 +176,9 @@ public class CharacterSelector : MonoBehaviour {
         isLocal = local;
 
         _charaSelect.numPlayers++;
+
+        // Skip a frame to avoid input overflow
+        frameskip = true;
 
         // If we are the local player
         if(local) {

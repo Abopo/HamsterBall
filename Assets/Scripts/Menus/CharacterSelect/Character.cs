@@ -9,7 +9,7 @@ public class CharaInfo {
     public int team;
 }
 
-public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, BAT, SNAIL, LACKEY, NUM_CHARACTERS };
+public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, BAT, SNAIL, LACKEY, LIZARD, NUM_CHARACTERS };
 public class Character : MonoBehaviour {
     public Team teamLeft;
     public Team teamRight;
@@ -304,6 +304,9 @@ public class Character : MonoBehaviour {
                 break;
             case CHARACTERS.SNAIL:
                 path += "Snail/Animation Objects/Snail" + _charaInfo.color;
+                break;
+            case CHARACTERS.LIZARD:
+                path += "Lizard/Animation Objects/Lizard1";
                 break;
             case CHARACTERS.LACKEY:
                 path += "Lackey/Animation Objects/Lackey" + _charaInfo.color;

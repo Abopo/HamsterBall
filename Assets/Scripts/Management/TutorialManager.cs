@@ -34,6 +34,11 @@ public class TutorialManager : MonoBehaviour {
             }
         }
 
+        // Lock player actions until unlocked
+        _playerController.LockState(PLAYER_STATE.CATCH);
+        _playerController.LockState(PLAYER_STATE.THROW);
+        _playerController.LockState(PLAYER_STATE.SHIFT);
+
         if (_aiController != null) {
             // Turn off ai for now
             _aiController.GetComponent<AIController>().enabled = false;
@@ -56,10 +61,12 @@ public class TutorialManager : MonoBehaviour {
             }
         }
 
-        if (_tutorialIndex == 2 && _playerController.heldBall != null) {
+        if(_tutorialIndex == 1 && _playerController.CurState == PLAYER_STATE.IDLE && _playerController.transform.position.y > -2.6f) {
+            _tutorialTime = 1f;
+        } else if (_tutorialIndex == 2 && _playerController.CurState == PLAYER_STATE.IDLE && _playerController.heldBall != null) {
             ShowNextTutorial();
         } else if (_tutorialIndex == 3 && _playerController.CurState == PLAYER_STATE.THROW) {
-            ShowNextTutorial();
+            _tutorialTime = 0.2f;
         } else if (_tutorialIndex == 4 && _playerController.CurState != PLAYER_STATE.THROW) {
             ShowNextTutorial();
         } else if (_tutorialIndex == 6 && _playerController.transform.position.x > 0 && _playerController.CurState != PLAYER_STATE.SHIFT) {
@@ -74,17 +81,21 @@ public class TutorialManager : MonoBehaviour {
             case 0:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MovementTutorial"));
                 _tutorialIndex++; // 1
-                _tutorialTime = 5f;
+                _tutorialTime = -1;
                 break;
             case 1:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/BubbleTutorial"));
                 _tutorialIndex++; // 2
                 _tutorialTime = -1;
+                // Unlock the catch state
+                _playerController.UnlockState(PLAYER_STATE.CATCH);
                 break;
             case 2:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/AimTutorial"));
                 _tutorialIndex++; // 3
                 _tutorialTime = -1;
+                // Unlock the throw state
+                _playerController.UnlockState(PLAYER_STATE.THROW);
                 break;
             case 3:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/ThrowTutorial"));
@@ -100,6 +111,8 @@ public class TutorialManager : MonoBehaviour {
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/DroppingSwappingTutorial"));
                 _tutorialIndex++; // 6
                 _tutorialTime = -1;
+                // Unlock the shift state
+                _playerController.UnlockState(PLAYER_STATE.SHIFT);
                 break;
             case 6:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/SwappedTutorial"));
