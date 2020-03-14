@@ -42,6 +42,8 @@ public class CutsceneManager : MonoBehaviour {
     bool _playedAudio;
     bool _isPlaying;
 
+    bool _unpause;
+
     GameManager _gameManager;
     Player _player;
 
@@ -91,10 +93,10 @@ public class CutsceneManager : MonoBehaviour {
 
     void Start() {
         if (fileToLoad == null || fileToLoad == "") {
-            fileToLoad = "World1/1-1/ExampleCutscene";
+            //fileToLoad = "World1/1-1/ExampleCutscene";
+        } else {
+            StartCutscene(fileToLoad);
         }
-
-        StartCutscene(fileToLoad);
     }
 
     public void StartCutscene(string textPath) {
@@ -124,6 +126,9 @@ public class CutsceneManager : MonoBehaviour {
         _ready = false;
         _isPlaying = true;
 
+        // Make sure text writer isn't paused
+        _textWriter.paused = false;
+
         // Start the cutscene
         ReadEscapeCharacter();
     }
@@ -145,11 +150,21 @@ public class CutsceneManager : MonoBehaviour {
         rightChara1.GoOffscreen();
         rightChara2.GoOffscreen();
 
-        _gameManager.Unpause();
+        // Turn off the skip cutscene window
+        skipCutsceneWindow.SetActive(false);
+
+        //_gameManager.Unpause();
+        _unpause = true;
     }
 
     // Update is called once per frame
     void Update() {
+        // This is to prevent input from overflowing during in-game cutscenes
+        if(!_isPlaying && _unpause) {
+            _gameManager.Unpause();
+            _unpause = false;
+        }
+
         // If a character is sliding, wait for them to finish
         if (leftChara1.IsMoving || leftChara2.IsMoving || rightChara1.IsMoving || rightChara2.IsMoving) {
             return;
@@ -173,7 +188,7 @@ public class CutsceneManager : MonoBehaviour {
             ReadEscapeCharacter();
         }
 
-        if(_player.GetButtonDown("Start")) {
+        if(_player.GetButtonDown("Start") && _isPlaying) {
             if(!skipCutsceneWindow.activeSelf) {
                 // Turn on the skip cutscene window
                 skipCutsceneWindow.SetActive(true);
@@ -427,9 +442,6 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     public void EndScene() {
-        // Unpause the game
-        _gameManager.Unpause();
-
         _ready = false;
         _isPlaying = false;
 

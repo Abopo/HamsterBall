@@ -11,9 +11,9 @@ public class CharacterSelectResources : MonoBehaviour {
 
     Sprite[] _charaSelectors;
 
-    List<CharaSelectInfo>[] _charaAnimators = new List<CharaSelectInfo>[6];
+    List<CharaSelectInfo>[] _charaAnimators = new List<CharaSelectInfo>[7];
 
-    List<Sprite>[] _charaPortraits = new List<Sprite>[6];
+    List<Sprite>[] _charaPortraits = new List<Sprite>[7];
 
     string[] _charaNames;
 
@@ -162,6 +162,17 @@ public class CharacterSelectResources : MonoBehaviour {
         lackey3.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey3") as RuntimeAnimatorController;
         lackey3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.LACKEY].Add(lackey3);
+
+        // Lizard
+        _charaAnimators[(int)CHARACTERS.LIZARD] = new List<CharaSelectInfo>();
+
+        CharaSelectInfo lizard = new CharaSelectInfo();
+        lizard.animator = Resources.Load("Art/Animations/Player/Lizard/Animation Objects/Lizard1") as RuntimeAnimatorController;
+        lizard.isTaken = false;
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
     }
 
     void LoadCharacterPortraits() {
@@ -213,10 +224,18 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[12]);
         _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[13]);
         _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[14]);
+
+        // Lizard
+        _charaPortraits[(int)CHARACTERS.LIZARD] = new List<Sprite>();
+        sprites = Resources.LoadAll<Sprite>("Art/Animations/Player/Lizard/lizard-walk-sprite-draft_784x784");
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[0]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[1]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[2]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[3]);
     }
 
     void LoadCharacterNames() {
-        _charaNames = new string[6];
+        _charaNames = new string[7];
 
         //Sprite[] names = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterNames");
         _charaNames[(int)CHARACTERS.BOY] = "KADEN";
@@ -225,6 +244,7 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaNames[(int)CHARACTERS.BAT] = "CARMELA";
         _charaNames[(int)CHARACTERS.SNAIL] = "DON";
         _charaNames[(int)CHARACTERS.LACKEY] = "CARL";
+        _charaNames[(int)CHARACTERS.LIZARD] = "JODI";
     }
 
     // Use this for initialization

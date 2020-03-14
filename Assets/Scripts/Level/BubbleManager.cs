@@ -1018,10 +1018,18 @@ public class BubbleManager : MonoBehaviour {
         if (_gameManager.isSinglePlayer) {
             switch (_gameManager.gameMode) {
                 case GAME_MODE.SP_POINTS:
-                    if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && IsBoardStable()) {
+                    // As soon as the player reaches the required score, the game ends
+                    if (_scoreManager.TotalScore >= _gameManager.goalCount) {
+                        EndGame(1);
+
+                        // TODO: Ranking is based on throw count
+
+                    // Otherwise, if the player is out of throws
+                    } else if (PlayerController.totalThrowCount >= _gameManager.conditionLimit && IsBoardStable()) {
                         // Make sure score manager is fully updated
                         _scoreManager.CombineScore();
-                        // Check if the player won the stage
+
+                        // Check one more time if the player won the stage
                         if (_scoreManager.TotalScore >= _gameManager.goalCount) {
                             EndGame(1);
                         } else {
@@ -1029,18 +1037,21 @@ public class BubbleManager : MonoBehaviour {
                         }
                         return;
                     }
+
                     break;
                 case GAME_MODE.SP_MATCH:
                     if (matchCount >= _gameManager.goalCount) {
                         EndGame(1);
                         return;
                     }
+
                     break;
                 case GAME_MODE.SP_CLEAR:
                     if (IsBoardClear()) {
                         EndGame(1);
                         return;
                     }
+
                     break;
             }
 

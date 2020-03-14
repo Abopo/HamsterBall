@@ -33,30 +33,37 @@ public class VillageManager : MonoBehaviour {
 
     void GetVillageIndex() {
         string storyProgress = PlayerPrefs.GetString("StoryProgress");
-        switch(storyProgress) {
-            case "1-1": // Start of the game
-                villageIndex = 0;
+        int chapter = int.Parse(storyProgress[0].ToString());
+        int stage = int.Parse(storyProgress[2].ToString());
+
+        switch (chapter) {
+            case 1:
+                if(stage == 1) { // Start of the game
+                    villageIndex = 0;
+                } else if(stage >= 2 && stage < 6) { // First stage finished
+                    villageIndex = 1;
+                } else if(stage >= 6) { // Rainbow hamster
+                    villageIndex = 2;
+                }
                 break;
-            case "1-2": // First stage finished
-                villageIndex = 1;
+            case 2:
+                if(stage < 7) { // Start of Mountain (forest finished)
+                    villageIndex = 3;
+                } else if(stage >= 7) { // Middle of mountain (fought goat)
+                    villageIndex = 4;
+                }
                 break;
-            case "1-3": // Rainbow hamster
-                villageIndex = 2;
+            case 3:
+                if (stage >= 3) { // Skull hamster
+                    villageIndex = 6;
+                } else if (stage >= 1) { // Mountain finished 
+                    villageIndex = 5;
+                }
                 break;
-            case "1-10": // End of Forest
-                villageIndex = 3;
-                break;
-            case "2-5": // Middle of Mountain
-                villageIndex = 4;
-                break;
-            case "2-10": // End of Mountain
-                villageIndex = 5;
-                break;
-            case "3-2": // Skull hamster
-                villageIndex = 6;
-                break;
-            case "3-10": // End of Beach
-                villageIndex = 7;
+            case 4:
+                if(stage >= 1) { // Beach finished
+                    villageIndex = 7;
+                }
                 break;
             // TODO: Finish this switch statement
         }

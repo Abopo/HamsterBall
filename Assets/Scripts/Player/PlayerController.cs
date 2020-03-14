@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using Rewired;
 using Photon;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent (typeof(EntityPhysics))]
 public class PlayerController : Entity {
@@ -94,6 +95,7 @@ public class PlayerController : Entity {
     }
 
     protected PlayerState[] _states = new PlayerState[10];
+    List<PLAYER_STATE> _lockedStates = new List<PLAYER_STATE>();
 
     // The grace period time after getting hit
     protected bool _isInvuln;
@@ -218,6 +220,8 @@ public class PlayerController : Entity {
         // (right now the rooster is the only character with a special script)
         if (_charaInfo.name == CHARACTERS.ROOSTER) {
             gameObject.AddComponent<Rooster>();
+        } else if(_charaInfo.name == CHARACTERS.LIZARD) {
+            gameObject.AddComponent<Lizard>();
         }
 
         //	start in idle
@@ -266,6 +270,9 @@ public class PlayerController : Entity {
                 break;
             case CHARACTERS.SNAIL:
                 path += "Snail/Animation Objects/Snail" + charaInfo.color;
+                break;
+            case CHARACTERS.LIZARD:
+                path += "Lizard/Animation Objects/Lizard1";
                 break;
             case CHARACTERS.LACKEY:
                 path += "Lackey/Animation Objects/Lackey" + _charaInfo.color;
@@ -497,6 +504,10 @@ public class PlayerController : Entity {
 
 	//	Call to switch from one state to another
 	public void ChangeState(PLAYER_STATE state){
+        if(_lockedStates.Contains(state)) {
+            return;
+        }
+
         //if (!_justChangedState) {
             //Debug.Log("Change state: " + state.ToString());
         if (null != currentState) {
@@ -516,6 +527,23 @@ public class PlayerController : Entity {
         }
         //Debug.Log("State Changed to: " + currentState.getStateType().ToString());
         //}
+    }
+
+    public void LockState(PLAYER_STATE state) {
+        if(!_lockedStates.Contains(state)) {
+            _lockedStates.Add(state);
+        }
+    }
+    public void UnlockState(PLAYER_STATE state) {
+        _lockedStates.Remove(state);
+    }
+
+    // Used in case there are multiple player animators that need to be synched
+    void SetAnimatorParameter(string parameter, int value) {
+        Animator[] animators = GetComponentsInChildren<Animator>();
+        foreach(Animator anim in animators) {
+            anim.SetInteger(parameter, value);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collider) {

@@ -30,7 +30,7 @@ public class LevelPickButton : MonoBehaviour {
         ceiling.enabled = false;
 
         // Delete and replace the old level
-        _boardEditor.ChangeLevel(newLevel, levelObject.name, levelName);
+        _boardEditor.ChangeLevel(newLevel, levelName);
 
         // Close the picker
         GetComponentInParent<LevelPicker>().Close();

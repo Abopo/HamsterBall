@@ -48,7 +48,7 @@ public class World : MonoBehaviour {
         }
 
         _storyButtons[level].isFirstSelection = true;
-        //_storyButtons[level].Highlight();
+        _storyButtons[level].Highlight();
     }
 
     public void Deactivate() {

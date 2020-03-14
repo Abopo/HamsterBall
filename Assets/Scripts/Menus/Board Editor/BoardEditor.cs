@@ -10,9 +10,17 @@ using UnityEditor;
 public class BoardEditor : MonoBehaviour {
     public InputField fileNameField;
     public InputField timeLimitField;
+    public Dropdown gameMode;
+    public InputField throwsField;
+
     public Text warningText;
     public GameObject hamsterSpriteObj;
     public GameObject levelObj;
+
+    public Toggle rainbowToggle;
+    public Toggle skullToggle;
+    public Toggle bombToggle;
+
 
     List<EditorNode> _nodes = new List<EditorNode>();
     Rect _boundingRect;
@@ -147,6 +155,9 @@ public class BoardEditor : MonoBehaviour {
 #else
         string fullFileName = Application.dataPath + "/Created Boards/" + _fileName + ".txt";
 #endif
+        // Delete old content of file
+        File.WriteAllText(fullFileName, "");
+        
         FileStream file = File.Open(fullFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
         StreamWriter streamWriter = new StreamWriter(file);
 
@@ -261,11 +272,11 @@ public class BoardEditor : MonoBehaviour {
         streamWriter.WriteLine(tempLine);
         tempLine = "Rainbow";
         streamWriter.WriteLine(tempLine);
-        tempLine = "N";
+        tempLine = rainbowToggle.isOn ? "Y" : "N";
         streamWriter.WriteLine(tempLine);
         tempLine = "Dead";
         streamWriter.WriteLine(tempLine);
-        tempLine = "N";
+        tempLine = skullToggle.isOn ? "Y" : "N";
         streamWriter.WriteLine(tempLine);
         tempLine = "Gravity";
         streamWriter.WriteLine(tempLine);
@@ -273,7 +284,7 @@ public class BoardEditor : MonoBehaviour {
         streamWriter.WriteLine(tempLine);
         tempLine = "Bomb";
         streamWriter.WriteLine(tempLine);
-        tempLine = "N";
+        tempLine = bombToggle.isOn ? "Y" : "N";
         streamWriter.WriteLine(tempLine);
         tempLine = "End";
         streamWriter.WriteLine(tempLine);
@@ -294,17 +305,26 @@ public class BoardEditor : MonoBehaviour {
         //120
         tempLine = "Mode";
         streamWriter.WriteLine(tempLine);
-        tempLine = "Clear";
+        // Game mode text
+        tempLine = gameMode.captionText.text;
         streamWriter.WriteLine(tempLine);
+        // Time Limit
         tempLine = _timeLimit.ToString();
         streamWriter.WriteLine(tempLine);
+        // Throws if we're in points mode
+        if(gameMode.captionText.text == "Points") {
+            tempLine = throwsField.text;
+            streamWriter.Write(tempLine);
+        }
+        // Space
         tempLine = "";
+        streamWriter.WriteLine(tempLine);
         streamWriter.WriteLine(tempLine);
 
         // Save the board
         tempLine = "Board";
         streamWriter.WriteLine(tempLine);
-        streamWriter.Write(_levelScene+"Board");
+        streamWriter.Write(_levelScene);
         tempLine = "\n";
         streamWriter.WriteLine(tempLine);
 
@@ -408,31 +428,65 @@ public class BoardEditor : MonoBehaviour {
             _readChar = _linesFromFile[fileIndex][stringIndex++];
         }
 
-        // Load the time limit
+        // Load special hamster spawns
         string _readLine = _linesFromFile[fileIndex];
-        while(_readLine != "Mode") {
+        while (_readLine != "Special Hamsters") {
             _readLine = _linesFromFile[fileIndex++];
         }
-        // Skip over an extra line
+        // Rainbow
         fileIndex++;
+        _readLine = _linesFromFile[fileIndex++];
+        if(_readLine == "Y") {
+            rainbowToggle.isOn = true;
+        }
+        // Skull
+        fileIndex++;
+        _readLine = _linesFromFile[fileIndex++];
+        if (_readLine == "Y") {
+            skullToggle.isOn = true;
+        }
+        // Gravity
+        fileIndex++;
+        _readLine = _linesFromFile[fileIndex++];
+        if (_readLine == "Y") {
+            //plasmaToggle.isOn = true;
+        }
+        // Bomb
+        fileIndex++;
+        _readLine = _linesFromFile[fileIndex++];
+        if (_readLine == "Y") {
+            bombToggle.isOn = true;
+        }
+
+        // Load the game data
+        while (_readLine != "Mode") {
+            _readLine = _linesFromFile[fileIndex++];
+        }
+        // Get the game mode
+        _readLine = _linesFromFile[fileIndex++];
+        if(_readLine == "Points") {
+            gameMode.value = 1;
+        }
+        // Get the time limit
         _readLine = _linesFromFile[fileIndex++];
         _timeLimit = int.Parse(_readLine);
         timeLimitField.text = _readLine;
+        // If it's points, get the throw limit
+        if(gameMode.value == 1) {
+            _readLine = _linesFromFile[fileIndex++];
+            throwsField.text = _readLine;
+        }
 
         // Load the board
-        _readLine = _linesFromFile[fileIndex];
+        _readLine = _linesFromFile[fileIndex++];
         while(_readLine != "Board") {
             _readLine = _linesFromFile[fileIndex++];
         }
-        _readLine = _linesFromFile[fileIndex];
+        _readLine = _linesFromFile[fileIndex++];
         GameObject newLevel = LoadLevel(_readLine);
 
-        // Get the scene name
-        _readLine = _linesFromFile[fileIndex++];
-        string newScene = _readLine;
-
         // Delete and replace the old level
-        ChangeLevel(newLevel, _readLine, newScene);
+        ChangeLevel(newLevel, _readLine);
     }
 
     GameObject LoadLevel(string boardString) {
@@ -482,7 +536,7 @@ public class BoardEditor : MonoBehaviour {
         _nodes[node].bubble = bSprite;
     }
 
-    public void ChangeLevel(GameObject newLevel, string levelPrefab, string levelScene) {
+    public void ChangeLevel(GameObject newLevel, string levelScene) {
         Destroy(levelObj);
         levelObj = newLevel;
         _levelScene = levelScene;
