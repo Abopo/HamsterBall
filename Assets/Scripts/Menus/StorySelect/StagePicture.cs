@@ -106,7 +106,7 @@ public class StagePicture : MonoBehaviour {
         }
 
         // Display a preview of the stage
-        _boardDisplay.LoadBoard(storyButton.fileToLoad);
+        //_boardDisplay.LoadBoard(storyButton.fileToLoad);
     }
 
     public void DeactivateSP() {

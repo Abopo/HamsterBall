@@ -17,10 +17,14 @@ public class ShopMenu : Menu {
 
     ShopItem _curItem;
 
+    ExitMenu _exitMenu;
+
     protected override void Awake() {
         base.Awake();
 
         _shopItemObj = Resources.Load("Prefabs/Menus/Shop/ShopItem");
+
+        _exitMenu = FindObjectOfType<ExitMenu>();
     }
 
     // Start is called before the first frame update
@@ -111,6 +115,10 @@ public class ShopMenu : Menu {
                     content.anchoredPosition = new Vector2(content.anchoredPosition.x, _scrollTo);
                 }
             }
+        }
+
+        if(InputState.GetButtonOnAnyControllerPressed("Cancel")) {
+            _exitMenu.Activate();
         }
     }
 

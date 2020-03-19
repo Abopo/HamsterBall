@@ -58,7 +58,7 @@ public class StorySelectMenu : MonoBehaviour {
         // Load how far the player has gotten
         string storyProgress = PlayerPrefs.GetString("StoryProgress");
         _furthestWorld = int.Parse(storyProgress[0].ToString());
-        _furthestLevel = int.Parse(storyProgress[2].ToString());
+        _furthestLevel = storyProgress.Length == 3 ? int.Parse(storyProgress[2].ToString()) : int.Parse(storyProgress[2].ToString() + storyProgress[3].ToString());
 
         // Unlock all the fully unlocked worlds
         for (int i = 1; i < _furthestWorld; ++i) {
@@ -70,7 +70,7 @@ public class StorySelectMenu : MonoBehaviour {
         // Load where the player last left off
         string storyPos = PlayerPrefs.GetString("StoryPos");
         int world = int.Parse(storyPos[0].ToString());
-        int level = int.Parse(storyPos[2].ToString());
+        int level = storyPos.Length == 3 ? int.Parse(storyPos[2].ToString()) : int.Parse(storyPos[2].ToString() + storyPos[3].ToString());
 
         // Move old world off screen
         worlds[0].transform.localPosition = new Vector3(0, -300, 0);

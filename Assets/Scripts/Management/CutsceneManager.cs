@@ -68,6 +68,8 @@ public class CutsceneManager : MonoBehaviour {
         _isPlaying = true;
 
         CharaSetup();
+
+        //Debug.Break();
     }
 
     void CharaSetup() {

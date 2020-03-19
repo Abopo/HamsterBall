@@ -143,7 +143,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
     }
 
     void SetSpawnMax() {
-        if (twoTubes) {
+        if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
+            maxReleasedHamsterCount = _gameManager.HamsterSpawnMax;
+            _hamsterLineMax = 1;
+        } else if (twoTubes) {
             maxReleasedHamsterCount = _gameManager.HamsterSpawnMax/2;
             _hamsterLineMax = 2;
         } else {
@@ -175,8 +178,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
                     SpawnHamster();
                 }
 
-                // Choose the next hamster type right now
-                _nextHamsterType = GetValidType();
+                if(_gameManager.gameMode != GAME_MODE.SP_CLEAR) {
+                    // Choose the next hamster type right now
+                    _nextHamsterType = GetValidType();
+                }
                 _spawnTimer = 0;
             }
         } else {

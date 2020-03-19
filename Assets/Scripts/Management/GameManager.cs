@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour {
 
     public Player playerInput;
 
+    public SuperTextMesh debugText;
+
     string _levelDoc; // document containing data for a single player level
     int _hamsterSpawnMax = 8;
 
@@ -189,6 +191,9 @@ public class GameManager : MonoBehaviour {
         if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.O)) {
             MainMenuButton();
         }
+
+        // Debugging
+        debugText.text = nextLevel;
     }
 
     // 0 = left team; 1 = right team
@@ -264,7 +269,7 @@ public class GameManager : MonoBehaviour {
 
     void UnlockNextLevel() {
         int worldInt = int.Parse(stage[0].ToString());
-        int levelInt = int.Parse(stage[2].ToString());
+        int levelInt = stage.Length == 3 ? int.Parse(stage[2].ToString()) : int.Parse(stage[2].ToString() + stage[3].ToString());
         string newStoryPos = "";
         if (levelInt == 10) {
             newStoryPos += (worldInt + 1).ToString();
@@ -279,12 +284,12 @@ public class GameManager : MonoBehaviour {
         // Load the furthest the player has gotten
         string storyProgress = PlayerPrefs.GetString("StoryProgress");
         int furthestWorld = int.Parse(storyProgress[0].ToString());
-        int furthestLevel = int.Parse(storyProgress[2].ToString());
+        int furthestLevel = storyProgress.Length == 3 ? int.Parse(storyProgress[2].ToString()) : int.Parse(storyProgress[2].ToString() + storyProgress[3].ToString());
         int newWorldInt = int.Parse(newStoryPos[0].ToString());
-        int newLevelInt = int.Parse(newStoryPos[2].ToString());
+        int newLevelInt = newStoryPos.Length == 3 ? int.Parse(newStoryPos[2].ToString()) : int.Parse(newStoryPos[2].ToString() + newStoryPos[3].ToString());
 
         // If the new position is further than the player has gotten so far
-        if((newLevelInt >= furthestLevel && newWorldInt >= furthestWorld) || (newWorldInt > furthestWorld)) {
+        if ((newLevelInt >= furthestLevel && newWorldInt >= furthestWorld) || (newWorldInt > furthestWorld)) {
             // Update the story progress
             PlayerPrefs.SetString("StoryProgress", newStoryPos);
         }
@@ -402,21 +407,6 @@ public class GameManager : MonoBehaviour {
         }
 
         return true;
-    }
-
-    public void LoadPuzzleChallenge() {
-        string nextLevel = "";
-        TextAsset[] levels = Resources.LoadAll<TextAsset>("Text/Puzzle Challenge/Forest");
-        int i = Random.Range(0, levels.Length);
-
-        // Get a puzzle that hasn't been played on yet
-        while(prevPuzzles.Contains(levels[i].name)) {
-            i = Random.Range(0, levels.Length);
-        }
-
-        nextLevel = levels[i].name;
-        prevPuzzles.Add(nextLevel);
-        GetComponent<BoardLoader>().ReadBoardSetup("Puzzle Challenge/Forest/" + nextLevel);
     }
 
     public void SetDemoMode(bool on) {

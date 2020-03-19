@@ -16,12 +16,10 @@ public class VillageCharacterSelect : CharacterSelectWindow {
 
         _childObject = transform.GetChild(0).gameObject;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (_isActive) {
-            CheckInput();
-        }
+
+    // Update is called once per frame
+    protected override void Update() {
+        base.Update();
     }
 
     public void Activate(PlayerController pCon) {
@@ -39,6 +37,9 @@ public class VillageCharacterSelect : CharacterSelectWindow {
 
         _childObject.SetActive(true);
         _isActive = true;
+
+        TakeFocus();
+
         // Turn off input for the player
         _gameManager.FullPause();
     }

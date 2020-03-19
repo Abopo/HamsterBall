@@ -14,6 +14,10 @@ public class ExitMenu : Menu {
         base.Start();
 
         _gameManager = FindObjectOfType<GameManager>();
+
+        if(gameObject.activeSelf) {
+            gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
