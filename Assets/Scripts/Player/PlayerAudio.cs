@@ -14,10 +14,13 @@ public class PlayerAudio : MonoBehaviour {
 	public FMOD.Studio.EventInstance ShiftMeterFilledEvent;
 	public FMOD.Studio.EventInstance PlayerLandEvent;
 
+    PlayerController _playerController;
 
     // Use this for initialization
     void Start () {
         _audioSource = GetComponent<AudioSource>();
+        _playerController = GetComponent<PlayerController>();
+
         LoadSFX ();
 		//PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
 		//PlayerLandEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerLand);
@@ -34,20 +37,24 @@ public class PlayerAudio : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-		PlayerJumpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-		ShiftEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-		PlayerLandEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
 	}
 
     public void PlayJumpClip() {
-		PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
+		PlayerJumpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+        PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
 		PlayerJumpEvent.start();
 		PlayerJumpEvent.release();
     }
 
+    public void PlayLandClip() {
+        PlayerLandEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+        PlayerLandEvent.setParameterValue("Surface", _playerController.platformIndex);
+        PlayerLandEvent.start();
+    }
 
     public void PlayShiftClip() {
-		ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
+		ShiftEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+        ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
 		ShiftEvent.start();
 		ShiftEvent.release();
     }

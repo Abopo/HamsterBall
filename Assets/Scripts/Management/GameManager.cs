@@ -213,6 +213,13 @@ public class GameManager : MonoBehaviour {
     }
 
     public void Unpause() {
+        // We do a coroutine here to stop input from overflowing when unpausing from menus
+        StartCoroutine("WaitToUnpause");
+    }
+
+    IEnumerator WaitToUnpause() {
+        yield return null;
+
         // Unpause the game
         Time.timeScale = 1;
 

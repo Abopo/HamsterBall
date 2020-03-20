@@ -18,6 +18,8 @@ public class CharacterSelectWindow : Menu {
     public CHARACTERCOLORS _alreadyChosen1 = CHARACTERCOLORS.BOY1;
     public CHARACTERCOLORS _alreadyChosen2 = CHARACTERCOLORS.NUM_COLORS;
 
+    protected bool _waitFrame;
+
     PlayerInfoBox _playerInfoBox;
     protected Player _controllingPlayer;
 
@@ -56,8 +58,10 @@ public class CharacterSelectWindow : Menu {
     protected override void Update() {
         base.Update();
 
-        if (_isActive) {
+        if (_isActive && !_waitFrame) {
             CheckInput();
+        } else if(_waitFrame) {
+            _waitFrame = false;
         }
     }
 
@@ -65,17 +69,17 @@ public class CharacterSelectWindow : Menu {
         if (_controllingPlayer.GetButtonDown("Up")) {
             // Figure out which character is highlighted
             if (IsBoyHighlighted()) {
-                ChangeBoy(1);
+                ChangeBoy(-1);
             } else {
-                ChangeGirl(1);
+                ChangeGirl(-1);
             }
         }
         if (_controllingPlayer.GetButtonDown("Down")) {
             // Figure out which character is highlighted
             if (IsBoyHighlighted()) {
-                ChangeBoy(-1);
+                ChangeBoy(1);
             } else {
-                ChangeGirl(-1);
+                ChangeGirl(1);
             }
         }
         if (_controllingPlayer.GetButtonDown("Cancel")) {
@@ -129,6 +133,9 @@ public class CharacterSelectWindow : Menu {
         _isActive = true;
         _storySelectMenu.DisableUI();
 
+        // Wait a frame to avoid input overflow
+        _waitFrame = true;
+
         TakeFocus();
     }
 
@@ -172,6 +179,7 @@ public class CharacterSelectWindow : Menu {
 
         gameObject.SetActive(false);
         _isActive = false;
+
 
         _storySelectMenu.EnableUI();
     }

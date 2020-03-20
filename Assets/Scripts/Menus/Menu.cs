@@ -90,7 +90,7 @@ public class Menu : MonoBehaviour {
         // Otherwise wait for OnEnable to trigger
     }
 
-    void LoseFocus() {
+    protected void LoseFocus() {
         hasFocus = false;
 
         if (_menuOptions != null) {

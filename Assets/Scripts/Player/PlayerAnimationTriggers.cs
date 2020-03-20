@@ -17,9 +17,6 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 	//public FMOD.Studio.EventInstance PlayerFootstepEvent
 	public FMOD.Studio.EventInstance SwingNetEvent;
 
-	public FMOD.Studio.EventInstance GrassFootstepEvent;
-	public FMOD.Studio.EventInstance WoodFootstepEvent;
-
 	public FMOD.Studio.ParameterInstance ParameterInstance;
 	public int test;
 
@@ -31,16 +28,10 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
 
         _playerEffects = transform.parent.GetComponentInChildren<PlayerEffects>();
-
-
-		
-		GrassFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.GrassPlayerFootstep);
-		WoodFootstepEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.WoodPlayerFootstep);
+               		
         //FMOD.Studio.EventInstance.getParameterValue("Surface", out _playerController.platformIndex, out test);
 
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(SwingNetEvent, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(GrassFootstepEvent, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(WoodFootstepEvent, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
     }
 
     public void OnEnable(){
@@ -51,9 +42,6 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		SwingNetEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
-		GrassFootstepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
-		WoodFootstepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
 	}
 
     public void ThrowBall() {
@@ -64,7 +52,10 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
     public void NetSwingOn() {
         _catchState.Activate();
-		SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
+
+        // Play swing sound
+        SwingNetEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
 		SwingNetEvent.start();
 		SwingNetEvent.release();
 		//netSwingEmitter.Play();

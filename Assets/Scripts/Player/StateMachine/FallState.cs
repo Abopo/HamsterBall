@@ -25,8 +25,7 @@ public class FallState : PlayerState {
 		if(playerController.Physics.IsTouchingFloor) {
             playerController.PlayerEffects.PlayLanding();
             playerController.ChangeState(PLAYER_STATE.IDLE);
-			playerController.GetComponent<PlayerAudio>().PlayerLandEvent.setParameterValue("Surface", playerController.platformIndex);
-			playerController.GetComponent<PlayerAudio>().PlayerLandEvent.start();
+            playerController.GetComponent<PlayerAudio>().PlayLandClip();
 		}
 	}
 
