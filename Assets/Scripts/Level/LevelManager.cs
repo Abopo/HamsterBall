@@ -304,8 +304,8 @@ public class LevelManager : MonoBehaviour {
     public void ActivateFinalResultsScreen(int result) {
         setOver = true;
 
-        // If we're in a single player stage
-        if (_gameManager.isSinglePlayer && spResultsScreen != null) {
+        // If we're in a single player or story stage
+        if ((_gameManager.isSinglePlayer || _gameManager.stage != "") && spResultsScreen != null) {
             // If the player lost
             if (result != -1) {
                 // Show a normal results screen

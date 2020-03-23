@@ -42,8 +42,6 @@ public class CutsceneManager : MonoBehaviour {
     bool _playedAudio;
     bool _isPlaying;
 
-    bool _unpause;
-
     GameManager _gameManager;
     Player _player;
 
@@ -68,6 +66,8 @@ public class CutsceneManager : MonoBehaviour {
         _isPlaying = true;
 
         CharaSetup();
+
+        //Debug.Break();
     }
 
     void CharaSetup() {
@@ -153,18 +153,11 @@ public class CutsceneManager : MonoBehaviour {
         // Turn off the skip cutscene window
         skipCutsceneWindow.SetActive(false);
 
-        //_gameManager.Unpause();
-        _unpause = true;
+        _gameManager.Unpause();
     }
 
     // Update is called once per frame
     void Update() {
-        // This is to prevent input from overflowing during in-game cutscenes
-        if(!_isPlaying && _unpause) {
-            _gameManager.Unpause();
-            _unpause = false;
-        }
-
         // If a character is sliding, wait for them to finish
         if (leftChara1.IsMoving || leftChara2.IsMoving || rightChara1.IsMoving || rightChara2.IsMoving) {
             return;

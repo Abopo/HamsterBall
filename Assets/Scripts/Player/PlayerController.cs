@@ -254,32 +254,40 @@ public class PlayerController : Entity {
     public void SetCharacterInfo(CharaInfo charaInfo) {
         _charaInfo = charaInfo;
 
-        string path = "Art/Animations/Player/";
+        string animatorPath = "Art/Animations/Player/";
+        string palettePath = "";
         switch (_charaInfo.name) {
             case CHARACTERS.BOY:
-                path += "Boy/Animation Objects/Boy" + _charaInfo.color;
+                animatorPath += "Boy/Animation Objects/Boy1";// + _charaInfo.color;
+                palettePath = "Materials/Character Palettes/Boy/Boy" + _charaInfo.color;
                 break;
             case CHARACTERS.GIRL:
-                path += "Girl/Animation Objects/Girl" + _charaInfo.color;
+                animatorPath += "Girl/Animation Objects/Girl" + _charaInfo.color;
                 break;
             case CHARACTERS.ROOSTER:
-                path += "Rooster/Animation Objects/Rooster" + _charaInfo.color;
+                animatorPath += "Rooster/Animation Objects/Rooster" + _charaInfo.color;
                 break;
             case CHARACTERS.BAT:
-                path += "Bat/Animation Objects/Bat" + _charaInfo.color;
+                animatorPath += "Bat/Animation Objects/Bat" + _charaInfo.color;
                 break;
             case CHARACTERS.SNAIL:
-                path += "Snail/Animation Objects/Snail" + charaInfo.color;
+                animatorPath += "Snail/Animation Objects/Snail" + charaInfo.color;
                 break;
             case CHARACTERS.LIZARD:
-                path += "Lizard/Animation Objects/Lizard1";
+                animatorPath += "Lizard/Animation Objects/Lizard1";
                 break;
             case CHARACTERS.LACKEY:
-                path += "Lackey/Animation Objects/Lackey" + _charaInfo.color;
+                animatorPath += "Lackey/Animation Objects/Lackey" + _charaInfo.color;
                 break;
         }
 
-        _animator.runtimeAnimatorController = Resources.Load(path) as RuntimeAnimatorController;
+        _animator.runtimeAnimatorController = Resources.Load(animatorPath) as RuntimeAnimatorController;
+
+        if(palettePath != "" && _charaInfo.color > 1) {
+            _spriteRenderer.material = Resources.Load(palettePath) as Material;
+        } else {
+            _spriteRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        }
     }
 
     // Update is called once per frame

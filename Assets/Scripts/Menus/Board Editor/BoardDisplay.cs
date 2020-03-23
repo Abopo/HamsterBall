@@ -38,10 +38,10 @@ public class BoardDisplay : MonoBehaviour {
 
         string[] _linesFromFile;
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         TextAsset textAsset = Resources.Load<TextAsset>("Text/" + path);
         _linesFromFile = textAsset.text.Split("\n"[0]);
-#else
+/*#else
         string allText = "";
         if (File.Exists(Application.dataPath + "/Created Boards/" + path + ".txt")) {
             Debug.Log("File exists!");
@@ -50,7 +50,7 @@ public class BoardDisplay : MonoBehaviour {
             Debug.Log("File does not exist!");
         }
         _linesFromFile = allText.Split("\n"[0]);
-#endif
+#endif*/
 
         int i = 0;
         foreach (string line in _linesFromFile) {

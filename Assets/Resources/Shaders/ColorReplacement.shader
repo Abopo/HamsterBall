@@ -17,21 +17,20 @@
 		_ColorReplacement3("Replacement Color 3", Color) = (0,0,1.0,1.0)
 		_Threshold3("Threshold", Range(0,1)) = 0.1
 		_OriginalColor4("Original Color 4", Color) = (1.0,1.0,0,1.0)
-		_ColorReplacement4("Replacement Color 4", Color) = (1.0,1.0,0,1.0) 
+		_ColorReplacement4("Replacement Color 4", Color) = (1.0,1.0,0,1.0)
 		_Threshold4("Threshold", Range(0,1)) = 0.1
 		_OriginalColor5("Original Color 5", Color) = (1.0,0,1.0,1.0)
-		_ColorReplacement5("Replacement Color 5", Color) = (1.0,0,1.0,1.0) 
+		_ColorReplacement5("Replacement Color 5", Color) = (1.0,0,1.0,1.0)
 		_Threshold5("Threshold", Range(0,1)) = 0.1
 		_OriginalColor6("Original Color 6", Color) = (0,1.0,1.0,1.0)
-		_ColorReplacement6("Replacement Color 6", Color) = (0,1.0,1.0,1.0) 
+		_ColorReplacement6("Replacement Color 6", Color) = (0,1.0,1.0,1.0)
 		_Threshold6("Threshold", Range(0,1)) = 0.1
 		_OriginalColor7("Original Color 7", Color) = (1.0,1.0,1.0,1.0)
-		_ColorReplacement7("Replacement Color 7", Color) = (1.0,1.0,1.0,1.0) 
+		_ColorReplacement7("Replacement Color 7", Color) = (1.0,1.0,1.0,1.0)
 		_Threshold7("Threshold", Range(0,1)) = 0.1
 		_OriginalColor8("Original Color 8", Color) = (1.0,1.0,1.0,1.0)
 		_ColorReplacement8("Replacement Color 8", Color) = (1.0,1.0,1.0,1.0)
 		_Threshold8("Threshold", Range(0,1)) = 0.1
-
 
 	}
 
@@ -40,6 +39,9 @@
 	Tags {"Queue" = "Transparent"} ZWrite Off  Blend SrcAlpha OneMinusSrcAlpha
 			LOD 100
 
+			// disable back culling
+			Cull Off
+
 			Pass
 			{
 				CGPROGRAM
@@ -47,6 +49,7 @@
 				#pragma fragment frag
 
 				#include "UnityCG.cginc"
+
 
 				uniform sampler2D _MainTex;
 				uniform float4 _MainTex_ST;

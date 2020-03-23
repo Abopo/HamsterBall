@@ -25,19 +25,7 @@ public class TutorialManager : MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
 
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject p in players) {
-            if(!p.GetComponent<PlayerController>().aiControlled) {
-                _playerController = p.GetComponent<PlayerController>();
-            } else {
-                _aiController = p.GetComponent<PlayerController>();
-            }
-        }
-
-        // Lock player actions until unlocked
-        _playerController.LockState(PLAYER_STATE.CATCH);
-        _playerController.LockState(PLAYER_STATE.THROW);
-        _playerController.LockState(PLAYER_STATE.SHIFT);
+        GetPlayer();
 
         if (_aiController != null) {
             // Turn off ai for now
@@ -46,9 +34,27 @@ public class TutorialManager : MonoBehaviour {
 
         _tutorialTime = 0.5f;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    void GetPlayer() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject p in players) {
+            if (!p.GetComponent<PlayerController>().aiControlled) {
+                _playerController = p.GetComponent<PlayerController>();
+            } else {
+                _aiController = p.GetComponent<PlayerController>();
+            }
+        }
+
+        if(_playerController != null) {
+            // Lock player actions until unlocked
+            _playerController.LockState(PLAYER_STATE.CATCH);
+            _playerController.LockState(PLAYER_STATE.THROW);
+            _playerController.LockState(PLAYER_STATE.SHIFT);
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
         if(_tutorialFinished) {
             return;
         }
@@ -59,6 +65,10 @@ public class TutorialManager : MonoBehaviour {
                 ShowNextTutorial();
                 _tutorialTimer = 0f;
             }
+        }
+
+        if(_playerController == null) {
+            GetPlayer();
         }
 
         if(_tutorialIndex == 1 && _playerController.CurState == PLAYER_STATE.IDLE && _playerController.transform.position.y > -2.6f) {
@@ -111,6 +121,8 @@ public class TutorialManager : MonoBehaviour {
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/DroppingSwappingTutorial"));
                 _tutorialIndex++; // 6
                 _tutorialTime = -1;
+                // Re-lock the catch state so player can't win the match
+                _playerController.LockState(PLAYER_STATE.CATCH);
                 // Unlock the shift state
                 _playerController.UnlockState(PLAYER_STATE.SHIFT);
                 break;
@@ -118,6 +130,8 @@ public class TutorialManager : MonoBehaviour {
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/SwappedTutorial"));
                 _tutorialIndex++; // 7
                 _tutorialTime = -1;
+                // Unlock the catch state i guess
+                _playerController.UnlockState(PLAYER_STATE.CATCH);
                 break;
             case 7:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/EndTutorial"));

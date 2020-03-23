@@ -237,17 +237,7 @@ public class GameSetupWindow : Menu {
     }
 
     public void LoadNextScene() {
-        if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
-            _gameManager.LoadPuzzleChallenge();
-            return;
-        }
-
-        //if (_gameManager.isOnline) {
-            //PhotonNetwork.LoadLevel("NetworkedMapSelect");
-        //    PhotonNetwork.LoadLevel("NetworkedMapSelectWheel");
-        //} else {
-            SceneManager.LoadScene("MapSelectWheel");
-        //}
+        SceneManager.LoadScene("MapSelectWheel");
     }
 
     // Sets the game up for demo mode and skips this menu

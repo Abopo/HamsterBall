@@ -39,7 +39,6 @@ public class MenuOption : MonoBehaviour {
         if (_parentMenu == null) {
             _parentMenu = transform.parent.GetComponent<Menu>();
         }
-
     }
 
     // Use this for initialization
@@ -96,10 +95,24 @@ public class MenuOption : MonoBehaviour {
         if (tempSelectable != null) {
             adjOptions[3] = tempSelectable.GetComponent<MenuOption>();
         }
+
+        StartCoroutine(DisableNavigation(0.25f));
     }
 
     public void SetPlayer(int playerID) {
         _player = ReInput.players.GetPlayer(playerID);
+    }
+
+    IEnumerator DisableNavigation(float waitTime) {
+        yield return new WaitForSeconds(waitTime);
+
+        Selectable _selectable = GetComponent<Selectable>();
+        if (_selectable != null) {
+            Navigation tempNav = _selectable.navigation;
+            tempNav.mode = Navigation.Mode.None;
+            _selectable.navigation = tempNav;
+        }
+    
     }
 
     // Update is called once per frame
@@ -108,7 +121,7 @@ public class MenuOption : MonoBehaviour {
             return;
         }
 
-        if(_parentMenu == null) {
+        if (_parentMenu == null) {
             CheckInput();
         }
     }

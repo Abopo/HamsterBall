@@ -85,7 +85,7 @@ public class CutsceneCharacter : MonoBehaviour {
     }
 
     public void EnterFinish() {
-        transform.position = new Vector2(screenPos, 0);
+        transform.position = new Vector2(screenPos, transform.position.y);
         _slidingIn = false;
         onScreen = true;
 

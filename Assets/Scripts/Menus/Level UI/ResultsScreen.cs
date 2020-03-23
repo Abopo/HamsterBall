@@ -168,13 +168,8 @@ public class ResultsScreen : MonoBehaviour {
 
         _gameManager.Unpause();
         if (_gameManager.nextLevel != "") {
-            if (_gameManager.nextLevel == "Puzzle Challenge") {
-                // Find a new puzzle and load it
-                _gameManager.LoadPuzzleChallenge();
-            } else {
-                // Load the next level
-                _levelManager.GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
-            }
+            // Load the next level
+            _levelManager.GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
         } else if (_gameManager.nextCutscene != "") {
             // If we are in a verus stage
             if (_gameManager.gameMode == GAME_MODE.MP_VERSUS) {

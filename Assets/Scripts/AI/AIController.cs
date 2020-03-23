@@ -275,7 +275,7 @@ public class AIController : MonoBehaviour {
 
         if (_mapScan.LeftDropDistance < _mapScan.RightDropDistance) {
             // If we are currently moving right, 
-            if(_input.right.isDown) {
+            if(_input.right.isDown || _playerController.FacingRight) {
                 // make sure we aren't right on top of the drop
                 if(_mapScan.LeftDropDistance > 1f) {
                     _input.left.isDown = true;
@@ -286,9 +286,9 @@ public class AIController : MonoBehaviour {
                 _input.left.isDown = true;
                 _input.right.isDown = false;
             }
-        } else {
+        } else if(_mapScan.RightDropDistance < _mapScan.LeftDropDistance) {
             // If we are currently moving Left, 
-            if (_input.left.isDown) {
+            if (_input.left.isDown || !_playerController.FacingRight) {
                 // make sure we aren't right on top of the drop
                 if (_mapScan.RightDropDistance > 1f) {
                     _input.left.isDown = false;
@@ -299,6 +299,10 @@ public class AIController : MonoBehaviour {
                 _input.left.isDown = false;
                 _input.right.isDown = true;
             }
+        } else {
+            // Keep going the same direction?
+            _input.left.isDown = !_playerController.FacingRight;
+            _input.right.isDown = _playerController.FacingRight;
         }
 
         // If we're are standing on a passthrough platform, just press down to fall through

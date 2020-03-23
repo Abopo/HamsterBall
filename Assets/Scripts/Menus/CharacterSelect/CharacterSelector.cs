@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
+[System.Serializable]
+public class CharaInfo {
+    public CHARACTERS name;
+    public int color = 1;
+    public int team;
+}
+
+public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, BAT, SNAIL, LACKEY, LIZARD, NUM_CHARACTERS };
+
 public class CharacterSelector : MonoBehaviour {
     public CharacterWindow charaWindow;
     public CharacterIcon curCharacterIcon;
