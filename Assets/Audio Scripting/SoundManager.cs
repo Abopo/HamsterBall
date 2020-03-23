@@ -17,7 +17,8 @@ public class SoundManager : MonoBehaviour {
 	public string HamsterConnectSameColor;
 	public string HamsterConnectRainbow;
 	public string HamsterConnectSkull;
-	public string HamsterFillBall;
+    public string HamsterConnectBomb;
+    public string HamsterFillBall;
 	public string HamsterCollectSuccessOneshot;
 	public string HamsterCollectRainbow;
 	public string HamsterCollectSkull;
@@ -37,6 +38,10 @@ public class SoundManager : MonoBehaviour {
 	public string CountDownGo;
 	public string PetrifyBubble;
 	public string ShiftMeterFilled;
+
+    public string CrowdLarge1;
+    public string CrowdMedium1;
+    public string CrowdSmall1;
 
 	//Match Combo
 	public string MatchCombo;
@@ -108,16 +113,16 @@ public class SoundManager : MonoBehaviour {
 
 
 	void Awake () {
-        if (mainAudio != null) {
+        /*if (mainAudio != null) {
             DestroyImmediate(this);
         } else {
             mainAudio = this;
             DontDestroyOnLoad(gameObject);
-        }
+        }*/
 
+        mainAudio = this;
 
-
-	}
+    }
 
 	//HAMSTER SQUEAK SOUNDS
 	//TO DECLARE PUBLICLY IN RESPECTIVE COLORED SCRIPTS

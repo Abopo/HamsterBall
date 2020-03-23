@@ -469,6 +469,7 @@ public class Bubble : MonoBehaviour {
         } else if (type == HAMSTER_TYPES.BOMB) {
             // Explode
             BombExplode();
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectBomb);
         } else {
             matches = new List<Bubble>();
             matches = CheckMatches(matches);
@@ -737,6 +738,20 @@ public class Bubble : MonoBehaviour {
         } else {
         	BallBreakEvent.setParameterValue("PoppedCount", 10);
         }
+
+        if (_popIndex > 7)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdLarge1);
+        }
+        else if (_popIndex <= 7 && _popIndex >= 4)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
+        }
+        else if (_popIndex < 4)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdSmall1);
+        }
+
         //Debug.Log("PopIndex " + _popIndex);
 		BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
         BallBreakEvent.start();

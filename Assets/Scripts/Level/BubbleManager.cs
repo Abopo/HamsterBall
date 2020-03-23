@@ -842,6 +842,7 @@ public class BubbleManager : MonoBehaviour {
         if (_checkNodesCanBeHit != null) {
             StopCoroutine(_checkNodesCanBeHit);
         }
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.NewLine);
         // Since bottomRowStart is calculated using topLineLength, we can't change topLingLength ahead of these next few operations
         // If we do then everything gets offset improperly

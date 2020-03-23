@@ -164,7 +164,8 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamComboClip;
             //_teamAudioSource.Play();
-			TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
+            TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
 			TeamComboEvent.start();
 			TeamComboEvent.release();
 
@@ -181,7 +182,8 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamDropClip;
             //_teamAudioSource.Play();
-			TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
+            TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
 			TeamComboEvent.start();
 			TeamComboEvent.release();
 
@@ -197,7 +199,8 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamComboClip;
             //_teamAudioSource.Play();
-			CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
+            CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
 			CounterMatchEvent.start();
 			CounterMatchEvent.release();
             _counterEffectTimer = 0.0f;
@@ -212,7 +215,8 @@ public class BubbleEffects : MonoBehaviour {
 
             _teamAudioSource.clip = _teamDropClip;
             //_teamAudioSource.Play();
-			CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
+            CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
 			CounterMatchEvent.start();
 			CounterMatchEvent.release();
             _counterEffectTimer = 0.0f;
@@ -255,7 +259,8 @@ public class BubbleEffects : MonoBehaviour {
             bank.transform.localScale = new Vector3(1, 1, 1);
         }
         Debug.Log("Bank Shot");
-		MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
+        MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
 		MatchComboEvent.start();
 		MatchComboEvent.release();
         //_bankEffectObj.GetComponent<AudioSource>().Play();

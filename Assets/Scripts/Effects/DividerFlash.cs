@@ -76,23 +76,21 @@ public class DividerFlash : MonoBehaviour {
                 _dangerFlash.enabled = true;
             }
         }
-
-		//SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 2f);
-		//SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 2f);
-		//SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 2f);
+        
+        //SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 2f);
     }
 
     public void StopFlashing() {
         isFlashing = false;
         _material.color = brown;
 
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdSmall1);
+
         if (_dangerFlash != null) {
             _dangerFlash.enabled = false;
         }
         Debug.Log("Stop Flash");
 
-		//SoundManager.mainAudio.BeachMusicEvent.setParameterValue("RowDanger", 1f);
-		//SoundManager.mainAudio.ForestMusicEvent.setParameterValue("RowDanger", 1f);
 		//SoundManager.mainAudio.MountainMusicEvent.setParameterValue("RowDanger", 1f);
     }
 }
