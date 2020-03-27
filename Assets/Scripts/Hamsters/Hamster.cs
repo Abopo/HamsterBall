@@ -138,9 +138,9 @@ public class Hamster : Entity {
     void PlasmaInitialize() {
         isPlasma = true;
         _animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/PlasmaHamster");
-        spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-        spiralEffectInstance.transform.parent = transform;
-        spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+        //spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
+        //spiralEffectInstance.transform.parent = transform;
+        //spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
         _moveSpeed = gravityMoveSpeed;
     }
 

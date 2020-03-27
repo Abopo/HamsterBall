@@ -147,7 +147,8 @@ public class GameSetupWindow : Menu {
         } else {
             aaText.text = "Off";
         }
-        _gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
+        //_gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
+        _gameManager.aimAssist = _aimAssist;
     }
 
     // Decrease the Hamster Spawn Rate

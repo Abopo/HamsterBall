@@ -136,7 +136,9 @@ public class PlayerSpawner : MonoBehaviour {
 
             if (!gameManager.isSinglePlayer) {
                 SetupSwitchMeter(newPlayer);
-                newPlayer.aimAssist = tempPlayerInfo.aimAssist;
+                // TODO: Have aim assist per-player?
+                //newPlayer.aimAssist = tempPlayerInfo.aimAssist;
+                newPlayer.aimAssist = gameManager.aimAssist;
             } else {
                 if (gameManager.aimAssistSetting == AIMASSIST.ALWAYS) {
                     newPlayer.aimAssist = true;
