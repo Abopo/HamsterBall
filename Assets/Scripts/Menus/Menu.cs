@@ -106,7 +106,9 @@ public class Menu : MonoBehaviour {
     public virtual void Activate() {
         TakeFocus();
 
-
+        if(_gameManager == null) {
+            _gameManager = FindObjectOfType<GameManager>();
+        }
         if (pauses && !_gameManager.isPaused) {
             _gameManager.FullPause();
         }

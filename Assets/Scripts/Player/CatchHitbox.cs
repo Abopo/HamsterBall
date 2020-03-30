@@ -104,12 +104,12 @@ public class CatchHitbox : MonoBehaviour {
 
             if (hamster.isPlasma) {
                 _playerController.heldBall.isGravity = true;
-                GameObject spiralEffect = hamster.spiralEffectInstance;
-                spiralEffect.transform.parent = _playerController.heldBall.transform;
-                spiralEffect.transform.position = new Vector3(_playerController.heldBall.transform.position.x,
-                                                              _playerController.heldBall.transform.position.y,
-                                                              _playerController.heldBall.transform.position.z + 3);
-                spiralEffect.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+                //GameObject spiralEffect = hamster.spiralEffectInstance;
+                //spiralEffect.transform.parent = _playerController.heldBall.transform;
+                //spiralEffect.transform.position = new Vector3(_playerController.heldBall.transform.position.x,
+                                                              //_playerController.heldBall.transform.position.y,
+                                                              //_playerController.heldBall.transform.position.z + 3);
+                //spiralEffect.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
             }
         }
 

@@ -229,6 +229,9 @@ public class HamsterSpawner : Photon.PunBehaviour {
         if (Input.GetKeyDown("9")) {
             _nextHamsterType = 10;
         }
+        if(Input.GetKeyDown("0")) {
+            _nextHamsterType = 50;
+        }
     }
 
     public void SpawnHamster() {

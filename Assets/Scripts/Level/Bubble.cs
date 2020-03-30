@@ -29,6 +29,8 @@ public class Bubble : MonoBehaviour {
 	public bool checkedForAnchor;
 	public bool foundAnchor = false;
 
+    bool _adjBubbleCheck;
+
     public int team; // -1 = no team, 0 = left team, 1 = right team
     public int dropPotential; // A count of how many bubbles will be dropped if this bubble is matched
 
@@ -143,11 +145,13 @@ public class Bubble : MonoBehaviour {
     public void SetGravity(bool gravity) {
         if (gravity && !isGravity) {
             isGravity = true;
-            GameObject spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-            spiralEffectInstance.transform.parent = transform;
-            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+            bubbleAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/Plasma_Bubble");
+            //GameObject spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
+            //spiralEffectInstance.transform.parent = transform;
+            //spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
         } else {
             isGravity = false;
+            bubbleAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Bubble");
         }
     }
 
@@ -207,6 +211,22 @@ public class Bubble : MonoBehaviour {
             checkedForMatches = false;
             checkedForAnchor = false;
             foundAnchor = false;
+
+            // Double check for adjBubbles, making sure it's never empty
+            // (except for gravity because it's possible for them to be floating separately)
+            if (!isGravity) {
+                _adjBubbleCheck = false;
+                foreach (Bubble b in adjBubbles) {
+                    if (b != null) {
+                        _adjBubbleCheck = true;
+                        break;
+                    }
+                }
+                // If we somehow don't have ANY adj bubbles
+                if (_adjBubbleCheck == false) {
+                    _homeBubbleManager.AssignAdjBubbles(this, node);
+                }
+            }
 
             // Sync drop potential between matched bubbles
             if (_boardChanged) {
@@ -1020,10 +1040,25 @@ public class Bubble : MonoBehaviour {
 
         yield return new WaitForSeconds(0.2f);
 
+        bool foundUnpetrifiedBubble = false;
         // Petrify all adjacent bubbles
         foreach(Bubble bub in adjBubbles) {
             if(bub != null && !bub._petrified) {
                 StartCoroutine(bub.Petrify());
+                foundUnpetrifiedBubble = true;
+            }
+        }
+
+        // If we didn't find any unpetrified bubbles
+        if (!foundUnpetrifiedBubble) {
+            // If this bubble is a ceiling bubble, make sure to check for other ceiling bubbles (and plasmas)
+            if (IsAnchorPoint()) {
+                // find all other anchor points and petrify them
+                foreach(Bubble bubble in _homeBubbleManager.Bubbles) {
+                    if(bubble != null && !bubble._petrified && bubble.IsAnchorPoint()) {
+                        StartCoroutine(bubble.Petrify());
+                    }
+                }
             }
         }
     }

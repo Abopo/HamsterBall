@@ -262,10 +262,12 @@ public class PlayerController : Entity {
                 palettePath = "Materials/Character Palettes/Boy/Boy" + _charaInfo.color;
                 break;
             case CHARACTERS.GIRL:
-                animatorPath += "Girl/Animation Objects/Girl" + _charaInfo.color;
+                animatorPath += "Girl/Animation Objects/Girl1";// + _charaInfo.color;
+                palettePath = "Materials/Character Palettes/Girl/Girl" + _charaInfo.color;
                 break;
             case CHARACTERS.ROOSTER:
-                animatorPath += "Rooster/Animation Objects/Rooster" + _charaInfo.color;
+                animatorPath += "Rooster/Animation Objects/Rooster1";// + _charaInfo.color;
+                palettePath = "Materials/Character Palettes/Rooster/Rooster" + _charaInfo.color;
                 break;
             case CHARACTERS.BAT:
                 animatorPath += "Bat/Animation Objects/Bat" + _charaInfo.color;

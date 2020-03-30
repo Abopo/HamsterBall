@@ -21,7 +21,7 @@ public class BubbleManager : MonoBehaviour {
     protected Transform _ceiling;
 
     // 10 rows
-    // alternating between 13 and 12 columns
+    // alternating between 12 and 11 columns
     // should specify top and bottom rows
     public List<Node> nodeList = new List<Node>();
     protected int _baseLineLength = 12; // The longest a line will be
@@ -39,7 +39,7 @@ public class BubbleManager : MonoBehaviour {
     protected float _nodeHeight = 0.73f; // The height of a single node (i.e. how far down lines move)
     protected int _bottomRowStart {
         get {
-            return nodeList.Count - (_baseLineLength * 2 - 1) + _topLineLength;
+            return nodeList.Count - _topLineLength;
         }
     }
 
@@ -844,22 +844,27 @@ public class BubbleManager : MonoBehaviour {
         }
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.NewLine);
-        // Since bottomRowStart is calculated using topLineLength, we can't change topLingLength ahead of these next few operations
+
+        // Since bottomRowStart is calculated using topLineLength, we can't change topLineLength ahead of these next few operations
         // If we do then everything gets offset improperly
 
         for (int i = 0; i < nodeList.Count; ++i) {
+            if(nodeList[i] == null) {
+                continue;
+            }
+
             // Delete bottom line
             if (i >= _bottomRowStart) {
                 Destroy(nodeList[i].gameObject);
             // Move nodes down
             } else {
                 nodeList[i].transform.Translate(new Vector3(0.0f, -_nodeHeight, 0.0f));
-                nodeList[i].number += _topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength;
+                nodeList[i].number += _topLineLength;
             }
         }
 
         // Remove the deleted nodes from the nodeList
-        nodeList.RemoveRange(_bottomRowStart, _topLineLength == _baseLineLength ? _baseLineLength - 1 : _baseLineLength);
+        nodeList.RemoveRange(_bottomRowStart, _topLineLength);
 
         // Swap top line length and set xOFfset for new nodes
         float xOffset;
@@ -886,6 +891,9 @@ public class BubbleManager : MonoBehaviour {
         // Move bubbles down one line
         Bubble[] tempBubbles = new Bubble[nodeList.Count];
         for (int i = 0; i < nodeList.Count; ++i) {
+            if (i >= _bubbles.Length) {
+                break;
+            }
             tempBubbles[i] = _bubbles[i];
         }
         _bubbles = new Bubble[nodeList.Count];
@@ -1082,7 +1090,7 @@ public class BubbleManager : MonoBehaviour {
     public bool CheckBottomLine() {
         bool bubbleOnBottomLine = false;
 
-        for (int i = _bottomRowStart; i < nodeList.Count; ++i) {
+        for (int i = _bottomRowStart; i < _bubbles.Length; ++i) {
             if (_bubbles[i] != null) {
                 bubbleOnBottomLine = true;
 

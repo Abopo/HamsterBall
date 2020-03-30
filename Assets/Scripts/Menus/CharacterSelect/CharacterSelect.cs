@@ -77,14 +77,6 @@ public class CharacterSelect : Menu {
     // Update is called once per frame
     protected override void Update () {
         if (hasFocus && _waitFrames > 5) {
-            if (!_gameManager.demoMode) {
-                if (InputState.GetButtonOnAnyControllerPressed("Pause")) {
-                    // Show menu asking if player really wants to go back
-                    pauseMenu.Activate();
-                    Deactivate();
-                    return;
-                }
-            }
             // If there's still space for a player (and we're not online)
             if (IsStillSpace() && (!PhotonNetwork.connectedAndReady || Input.GetKey(KeyCode.O))) {
                 // Look for player inputs
@@ -96,9 +88,17 @@ public class CharacterSelect : Menu {
             }
             // Look for input to start game
             if (InputState.GetButtonOnAnyControllerPressed("Start")) {
-                if (pressStartText.activeSelf == true) {
+                if (pressStartText.activeSelf) {
                     //LoadNextScene();
                     OpenSetupMenu();
+                }
+            }
+            if (!_gameManager.demoMode && !pressStartText.activeSelf) {
+                if (InputState.GetButtonOnAnyControllerPressed("Pause")) {
+                    // Show menu asking if player really wants to go back
+                    pauseMenu.Activate();
+                    Deactivate();
+                    return;
                 }
             }
 
