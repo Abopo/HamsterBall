@@ -469,7 +469,7 @@ public class Bubble : MonoBehaviour {
         } else if (type == HAMSTER_TYPES.BOMB) {
             // Explode
             BombExplode();
-            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectBomb);
+            
         } else {
             matches = new List<Bubble>();
             matches = CheckMatches(matches);
@@ -834,7 +834,7 @@ public class Bubble : MonoBehaviour {
     public void BombExplode() {
         // Add score for how many bubbles were blown up
         _homeBubbleManager.IncreaseScore(adjBubbles.Length * 120);
-
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterConnectBomb);
         // Get the iced data from the adjBubbles before exploding
         bool[] icedBubbles = new bool[6];
         for(int i = 0; i < 6; ++i) {

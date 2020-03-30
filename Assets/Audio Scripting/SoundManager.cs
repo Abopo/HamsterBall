@@ -150,6 +150,18 @@ public class SoundManager : MonoBehaviour {
 		FMODUnity.RuntimeManager.PlayOneShot("event:/SingleFootstepEvent");
 
 	}
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Hamster/SkullConnect");
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Hamster/SkullCollected");
+        }
+    }
 	//SoundManager.mainAudio.Footstep()
 	//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
 }
