@@ -17,7 +17,6 @@ public class Bubble : MonoBehaviour {
     public bool wasThrown;
 	public bool popped;
 	public bool isGravity;
-    public GameObject spiralEffectObj;
     public bool isIce;
     public SpriteRenderer iceSprite;
 
@@ -58,9 +57,12 @@ public class Bubble : MonoBehaviour {
         get { return _popping; }
     }
 
-	public FMOD.Studio.EventInstance BallBreakEvent;
+    PlasmaEffect _plasmaEffect;
+
+    public FMOD.Studio.EventInstance BallBreakEvent;
 
     protected bool _petrified; // Only used during game end sequence
+    public bool petrifying; // If this bubble is running the petrify coroutine
 
     BubbleManager _homeBubbleManager;
     GameManager _gameManager;
@@ -93,6 +95,7 @@ public class Bubble : MonoBehaviour {
 
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _plasmaEffect = GetComponentInChildren<PlasmaEffect>();
     }
     // Use this for initialization
     void Start () {
@@ -256,6 +259,12 @@ public class Bubble : MonoBehaviour {
 						foreach(Bubble b in bubbles) {
 							b.foundAnchor = true;
 						}
+
+                        // If the anchor bubble is a plasma
+                        if(adjBubbles[i].isGravity) {
+                            // Turn on the plasma effect
+                            _plasmaEffect.Activate();
+                        }
 					} else {
 						adjBubbles[i].CheckForAnchor(bubbles);
 					}
@@ -972,8 +981,8 @@ public class Bubble : MonoBehaviour {
     }
 
     public void CheckDropPotential() {
-        //yield return new WaitForSeconds(0.25f);
         dropPotential = 0;
+
         // Make sure matches at least contains self
         if (matches.Count == 0) {
             matches.Add(this);
@@ -1021,7 +1030,9 @@ public class Bubble : MonoBehaviour {
 
     // Petrification sequence happens when a player loses a round, bubbles are petrified starting from the bubble(s) that lost the round
     public IEnumerator Petrify() {
+        petrifying = true;
         _petrified = true;
+
         // Set the type to Gray
         bubbleAnimator.SetInteger("Type", 3);
 
@@ -1061,6 +1072,8 @@ public class Bubble : MonoBehaviour {
                 }
             }
         }
+
+        petrifying = false;
     }
 
     // Miscelleanous functions

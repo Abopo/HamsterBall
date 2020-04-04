@@ -5,6 +5,8 @@ using UnityEngine;
 public class ExitMenu : Menu {
     public MenuButton yesButton;
 
+    bool _active;
+
     protected override void Awake() {
         base.Awake();
     }
@@ -15,7 +17,7 @@ public class ExitMenu : Menu {
 
         _gameManager = FindObjectOfType<GameManager>();
 
-        if(gameObject.activeSelf) {
+        if(!_active && gameObject.activeSelf) {
             gameObject.SetActive(false);
         }
     }
@@ -33,6 +35,7 @@ public class ExitMenu : Menu {
         base.Activate();
 
         gameObject.SetActive(true);
+        _active = true;
 
         // Set YES button to selected
         yesButton.Highlight();
@@ -47,5 +50,6 @@ public class ExitMenu : Menu {
 
         // Close the menu
         gameObject.SetActive(false);
+        _active = false;
     }
 }

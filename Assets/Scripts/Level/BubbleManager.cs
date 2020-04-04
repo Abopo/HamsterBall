@@ -627,12 +627,18 @@ public class BubbleManager : MonoBehaviour {
         }
 
         if (_gameEndingSequence) {
-            // Wait until all the bubbles are petrified
+            // Wait until all the bubbles are petrified (or something weird happened and the sequence ended prematurely)
             foreach (Bubble bub in _bubbles) {
-                // If a bubble still isn't petrified
-                if (bub != null && !bub.Petrified) {
+                // If a bubble is still petrifying
+                if(bub != null && bub.petrifying) {
+                    // Keep going
                     return;
                 }
+
+                // If a bubble still isn't petrified
+                //if (bub != null && !bub.Petrified) {
+                 //   return;
+                //}
             }
 
             _gameEndingSequence = false;
@@ -1094,7 +1100,7 @@ public class BubbleManager : MonoBehaviour {
             if (_bubbles[i] != null) {
                 bubbleOnBottomLine = true;
 
-                // Game is over, begin petrification
+                // Game is over, begin petrification from bubble that hit bottom line
                 StartCoroutine(_bubbles[i].Petrify());
             }
         }
@@ -1110,6 +1116,11 @@ public class BubbleManager : MonoBehaviour {
         _scoreManager.CombineScore();
 
         _roundResult = result;
+
+        // Stop shaking if we are
+        if(_isShaking) {
+            StopShaking();
+        }
 
         if (_roundResult == 0 || _roundResult == 1) {
             wonGame = true;
@@ -1238,7 +1249,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void StartShaking() {
-        if (!_isShaking) {
+        if (!_isShaking && !_gameOver) {
             _isShaking = true;
             transform.Translate(-0.05f, 0f, 0f, Space.World);
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharaSelectInfo {
     public RuntimeAnimatorController animator;
+    public Material material;
     public bool isTaken;
 }
 
@@ -50,116 +51,145 @@ public class CharacterSelectResources : MonoBehaviour {
         // Boy
         _charaAnimators[(int)CHARACTERS.BOY] = new List<CharaSelectInfo>();
 
+        RuntimeAnimatorController boyAnimator = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
         CharaSelectInfo boy1 = new CharaSelectInfo();
-        boy1.animator = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
+        boy1.animator = boyAnimator;
+        boy1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         boy1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BOY].Add(boy1);
         CharaSelectInfo boy2 = new CharaSelectInfo();
-        boy2.animator = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy2") as RuntimeAnimatorController;
+        boy2.animator = boyAnimator;
+        boy2.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy2");
         boy2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BOY].Add(boy2);
         CharaSelectInfo boy3 = new CharaSelectInfo();
-        boy3.animator = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy3") as RuntimeAnimatorController;
+        boy3.animator = boyAnimator;
+        boy3.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy3");
         boy3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BOY].Add(boy3);
         CharaSelectInfo boy4 = new CharaSelectInfo();
-        boy4.animator = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy4") as RuntimeAnimatorController;
+        boy4.animator = boyAnimator;
+        boy4.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy4");
         boy4.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BOY].Add(boy4);
 
         // Girl
         _charaAnimators[(int)CHARACTERS.GIRL] = new List<CharaSelectInfo>();
 
+        RuntimeAnimatorController girlAnimator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
         CharaSelectInfo girl1 = new CharaSelectInfo();
-        girl1.animator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
+        girl1.animator = girlAnimator;
+        girl1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         girl1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.GIRL].Add(girl1);
         CharaSelectInfo girl2 = new CharaSelectInfo();
-        girl2.animator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl2") as RuntimeAnimatorController;
+        girl2.animator = girlAnimator;
+        girl2.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl2");
         girl2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.GIRL].Add(girl2);
         CharaSelectInfo girl3 = new CharaSelectInfo();
-        girl3.animator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl3") as RuntimeAnimatorController;
+        girl3.animator = girlAnimator;
+        girl3.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl3");
         girl3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.GIRL].Add(girl3);
         CharaSelectInfo girl4 = new CharaSelectInfo();
-        girl4.animator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl4") as RuntimeAnimatorController;
+        girl4.animator = girlAnimator;
+        girl4.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl4");
         girl4.isTaken = false;
         _charaAnimators[(int)CHARACTERS.GIRL].Add(girl4);
 
         // Rooster
         _charaAnimators[(int)CHARACTERS.ROOSTER] = new List<CharaSelectInfo>();
 
+        RuntimeAnimatorController roosterAnimator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
         CharaSelectInfo rooster1 = new CharaSelectInfo();
-        rooster1.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
+        rooster1.animator = roosterAnimator;
+        rooster1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         rooster1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.ROOSTER].Add(rooster1);
         CharaSelectInfo rooster2 = new CharaSelectInfo();
-        rooster2.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster2") as RuntimeAnimatorController;
+        rooster2.animator = roosterAnimator;
+        rooster2.material = Resources.Load<Material>("Materials/Character Palettes/Rooster/Rooster2");
         rooster2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.ROOSTER].Add(rooster2);
         CharaSelectInfo rooster3 = new CharaSelectInfo();
-        rooster3.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster3") as RuntimeAnimatorController;
+        rooster3.animator = roosterAnimator;
+        rooster3.material = Resources.Load<Material>("Materials/Character Palettes/Rooster/Rooster3");
         rooster3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.ROOSTER].Add(rooster3);
         CharaSelectInfo rooster4 = new CharaSelectInfo();
-        rooster4.animator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster4") as RuntimeAnimatorController;
+        rooster4.animator = roosterAnimator;
+        rooster4.material = Resources.Load<Material>("Materials/Character Palettes/Rooster/Rooster4");
         rooster4.isTaken = false;
         _charaAnimators[(int)CHARACTERS.ROOSTER].Add(rooster4);
 
         // Bat
         _charaAnimators[(int)CHARACTERS.BAT] = new List<CharaSelectInfo>();
 
+        RuntimeAnimatorController batAnimator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat1") as RuntimeAnimatorController;
         CharaSelectInfo bat1 = new CharaSelectInfo();
-        bat1.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat1") as RuntimeAnimatorController;
+        bat1.animator = batAnimator;
+        bat1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         bat1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat1);
         CharaSelectInfo bat2 = new CharaSelectInfo();
-        bat2.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat2") as RuntimeAnimatorController;
+        bat2.animator = batAnimator;
+        bat2.material = Resources.Load<Material>("Materials/Character Palettes/Bat/Bat2");
         bat2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat2);
         CharaSelectInfo bat3 = new CharaSelectInfo();
-        bat3.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat3") as RuntimeAnimatorController;
+        bat3.animator = batAnimator;
+        bat3.material = Resources.Load<Material>("Materials/Character Palettes/Bat/Bat3");
         bat3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat3);
         CharaSelectInfo bat4 = new CharaSelectInfo();
-        bat4.animator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat4") as RuntimeAnimatorController;
+        bat4.animator = batAnimator;
+        bat4.material = Resources.Load<Material>("Materials/Character Palettes/Bat/Bat4");
         bat4.isTaken = false;
         _charaAnimators[(int)CHARACTERS.BAT].Add(bat4);
 
         // Snail
         _charaAnimators[(int)CHARACTERS.SNAIL] = new List<CharaSelectInfo>();
 
+        RuntimeAnimatorController snailAnimator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
         CharaSelectInfo snail1 = new CharaSelectInfo();
-        snail1.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
+        snail1.animator = snailAnimator;
+        snail1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         snail1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.SNAIL].Add(snail1);
         CharaSelectInfo snail2 = new CharaSelectInfo();
-        snail2.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail2") as RuntimeAnimatorController;
+        snail2.animator = snailAnimator;
+        snail2.material = Resources.Load<Material>("Materials/Character Palettes/Snail/Snail2");
         snail2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.SNAIL].Add(snail2);
         CharaSelectInfo snail3 = new CharaSelectInfo();
-        snail3.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail3") as RuntimeAnimatorController;
+        snail3.animator = snailAnimator;
+        snail3.material = Resources.Load<Material>("Materials/Character Palettes/Snail/Snail3");
         snail3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.SNAIL].Add(snail3);
         CharaSelectInfo snail4 = new CharaSelectInfo();
-        snail4.animator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail4") as RuntimeAnimatorController;
+        snail4.animator = snailAnimator;
+        snail4.material = Resources.Load<Material>("Materials/Character Palettes/Snail/Snail4");
         snail4.isTaken = false;
         _charaAnimators[(int)CHARACTERS.SNAIL].Add(snail4);
 
         // Lackey
+        // Lackey is special and has more animator palettes than material palette swaps
         _charaAnimators[(int)CHARACTERS.LACKEY] = new List<CharaSelectInfo>();
 
         CharaSelectInfo lackey1 = new CharaSelectInfo();
         lackey1.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey1") as RuntimeAnimatorController;
+        lackey1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         lackey1.isTaken = false;
         _charaAnimators[(int)CHARACTERS.LACKEY].Add(lackey1);
         CharaSelectInfo lackey2 = new CharaSelectInfo();
         lackey2.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey2") as RuntimeAnimatorController;
+        lackey2.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         lackey2.isTaken = false;
         _charaAnimators[(int)CHARACTERS.LACKEY].Add(lackey2);
         CharaSelectInfo lackey3 = new CharaSelectInfo();
         lackey3.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey3") as RuntimeAnimatorController;
+        lackey3.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         lackey3.isTaken = false;
         _charaAnimators[(int)CHARACTERS.LACKEY].Add(lackey3);
 

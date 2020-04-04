@@ -100,7 +100,8 @@ public class Hamster : Entity {
         } else if(setType == (int)HAMSTER_TYPES.SKULL) {
             _moveSpeed = skullMoveSpeed;
         } else if(setType == (int)HAMSTER_TYPES.PLASMA) {
-            setType = SelectValidNormalType();
+            //setType = SelectValidNormalType();
+            setType = (int)HAMSTER_TYPES.RED;
             PlasmaInitialize();
         } else {
             _moveSpeed = 3;
