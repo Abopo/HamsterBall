@@ -196,13 +196,19 @@ public class CharacterSelectResources : MonoBehaviour {
         // Lizard
         _charaAnimators[(int)CHARACTERS.LIZARD] = new List<CharaSelectInfo>();
 
-        CharaSelectInfo lizard = new CharaSelectInfo();
-        lizard.animator = Resources.Load("Art/Animations/Player/Lizard/Animation Objects/Lizard1") as RuntimeAnimatorController;
-        lizard.isTaken = false;
-        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
-        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
-        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
-        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard);
+        CharaSelectInfo lizard1 = new CharaSelectInfo();
+        lizard1.animator = Resources.Load("Art/Animations/Player/Lizard/Animation Objects/Lizard1") as RuntimeAnimatorController;
+        lizard1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
+        lizard1.isTaken = false;
+        CharaSelectInfo lizard2 = new CharaSelectInfo();
+        lizard2.animator = Resources.Load("Art/Animations/Player/Lizard/Animation Objects/Lizard1") as RuntimeAnimatorController;
+        lizard2.material = Resources.Load<Material>("Materials/Character Palettes/Lizard/Lizard2");
+        lizard2.isTaken = false;
+
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard1);
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard2);
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard1);
+        _charaAnimators[(int)CHARACTERS.LIZARD].Add(lizard2);
     }
 
     void LoadCharacterPortraits() {
@@ -257,11 +263,11 @@ public class CharacterSelectResources : MonoBehaviour {
 
         // Lizard
         _charaPortraits[(int)CHARACTERS.LIZARD] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/Animations/Player/Lizard/lizard-walk-sprite-draft_784x784");
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[0]);
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[1]);
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[2]);
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[3]);
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-Master-File");
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[24]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[25]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[24]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[25]);
     }
 
     void LoadCharacterNames() {

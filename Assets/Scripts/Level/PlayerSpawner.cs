@@ -10,7 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
     int leftMeters = 0;
     int rightMeters = 0;
 
-    Sprite[,] playerIcons = new Sprite[6,4];
+    Sprite[,] playerIcons = new Sprite[7,4];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -55,16 +55,21 @@ public class PlayerSpawner : MonoBehaviour {
         icons[(int)CHARACTERS.BAT, 1] = sprites[9];
         icons[(int)CHARACTERS.BAT, 2] = sprites[10];
         icons[(int)CHARACTERS.BAT, 3] = sprites[11];
-        // Snail
-        icons[(int)CHARACTERS.SNAIL, 0] = sprites[20];
-        icons[(int)CHARACTERS.SNAIL, 1] = sprites[21];
-        icons[(int)CHARACTERS.SNAIL, 2] = sprites[22];
-        icons[(int)CHARACTERS.SNAIL, 3] = sprites[23];
         // Lackey
         icons[(int)CHARACTERS.LACKEY, 0] = sprites[16];
         icons[(int)CHARACTERS.LACKEY, 1] = sprites[17];
         icons[(int)CHARACTERS.LACKEY, 2] = sprites[18];
         icons[(int)CHARACTERS.LACKEY, 3] = sprites[19];
+        // Snail
+        icons[(int)CHARACTERS.SNAIL, 0] = sprites[20];
+        icons[(int)CHARACTERS.SNAIL, 1] = sprites[21];
+        icons[(int)CHARACTERS.SNAIL, 2] = sprites[22];
+        icons[(int)CHARACTERS.SNAIL, 3] = sprites[23];
+        // Lizard
+        icons[(int)CHARACTERS.LIZARD, 0] = sprites[24];
+        icons[(int)CHARACTERS.LIZARD, 1] = sprites[25];
+        icons[(int)CHARACTERS.LIZARD, 2] = sprites[24];
+        icons[(int)CHARACTERS.LIZARD, 3] = sprites[25];
     }
 
     void GetSpawnLocations() {

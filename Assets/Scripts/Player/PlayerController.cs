@@ -279,6 +279,7 @@ public class PlayerController : Entity {
                 break;
             case CHARACTERS.LIZARD:
                 animatorPath += "Lizard/Animation Objects/Lizard1";
+                palettePath = "Materials/Character Palettes/Lizard/Lizard" + _charaInfo.color;
                 break;
             case CHARACTERS.LACKEY:
                 animatorPath += "Lackey/Animation Objects/Lackey" + _charaInfo.color;

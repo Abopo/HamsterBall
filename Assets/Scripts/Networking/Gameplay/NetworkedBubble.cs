@@ -27,7 +27,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
 
         // if it's a gravity hamster
         if ((bool)photonView.instantiationData[2]) {
-            playerController.heldBall.isGravity = true;
+            playerController.heldBall.isPlasma = true;
             _spiralEffectObj = Resources.Load("Prefabs/Effects/SpiralEffect") as GameObject;
             GameObject spiralEffect = Instantiate(_spiralEffectObj, playerController.heldBall.transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
             spiralEffect.transform.parent = transform;

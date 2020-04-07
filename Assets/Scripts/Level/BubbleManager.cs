@@ -178,6 +178,7 @@ public class BubbleManager : MonoBehaviour {
             _justAddedBubble = true;
         }
 
+        CheckBubbleAnchors();
         boardChangedEvent.Invoke();
 
         // Get the next line of bubbles
@@ -366,7 +367,7 @@ public class BubbleManager : MonoBehaviour {
                     HAMSTER_TYPES type = startingBubbleInfo[i].type;
 
                     InitBubble(bubble, (int)type);
-                    bubble.SetGravity(startingBubbleInfo[i].isGravity);
+                    bubble.SetPlasma(startingBubbleInfo[i].isGravity);
                     bubble.SetIce(startingBubbleInfo[i].isIce);
                     bubble.node = i;
                     nodeList[i].bubble = bubble;
@@ -662,21 +663,8 @@ public class BubbleManager : MonoBehaviour {
         }
 
         if ((_justAddedBubble || _justRemovedBubble) && _boardIsStable) {
-            // Check for anchor points
-            List<Bubble> anchorBubbles = new List<Bubble>();
-            foreach (Bubble b in _bubbles) {
-                if (b != null) {
-                    b.checkedForAnchor = false;
-                    b.foundAnchor = false;
-                    b.checkedForMatches = false;
-                }
-            }
-            foreach (Bubble b in _bubbles) {
-                if (b != null) {
-                    anchorBubbles.Clear();
-                    b.CheckForAnchor(anchorBubbles);
-                }
-            }
+
+            CheckBubbleAnchors();
 
             boardChangedEvent.Invoke();
             _justAddedBubble = false;
@@ -708,6 +696,40 @@ public class BubbleManager : MonoBehaviour {
     private void LateUpdate() {
         if (!_gameOver && _boardIsStable && !_justAddedBubble && !_justRemovedBubble) {
             CheckWinConditions();
+        }
+    }
+
+    void CheckBubbleAnchors() {
+        // Check for anchor points
+        List<Bubble> anchorBubbles = new List<Bubble>();
+        foreach (Bubble b in _bubbles) {
+            if (b != null) {
+                b.checkedForAnchor = false;
+                b.foundAnchor = false;
+                b.checkedForMatches = false;
+            }
+        }
+
+        /*
+        foreach (Bubble b in _bubbles) {
+            if (b != null) {
+                anchorBubbles.Clear();
+                b.CheckForAnchor(anchorBubbles);
+            }
+        }
+        */
+
+        // Have the top line of bubbles set anchors
+        for (int i = 0; i < _topLineLength; ++i) {
+            if (_bubbles[i] != null) {
+                _bubbles[i].SetAnchors();
+            }
+        }
+        // Then have plasmas set anchors if there are any
+        foreach (Bubble b in _bubbles) {
+            if (b != null && b.isPlasma && !b.foundAnchor) {
+                b.PlasmaAnchor();
+            }
         }
     }
 

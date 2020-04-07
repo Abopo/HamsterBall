@@ -72,7 +72,7 @@ public class HitState : PlayerState {
         }
 
         // Set the correct type
-        if (playerController.heldBall.isGravity) {
+        if (playerController.heldBall.isPlasma) {
             hamster.SetType(HAMSTER_TYPES.PLASMA, playerController.heldBall.type);
         } else {
             hamster.SetType((int)playerController.heldBall.type);
@@ -102,7 +102,7 @@ public class HitState : PlayerState {
 
         // Set the correct type
         hamsterInfo[3] = playerController.heldBall.type;
-        if (playerController.heldBall.isGravity) {
+        if (playerController.heldBall.isPlasma) {
             hamsterInfo[4] = true; // isGravity
         } else {
             hamsterInfo[4] = false; // isGravity
