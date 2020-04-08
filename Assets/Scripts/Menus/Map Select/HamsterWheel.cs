@@ -228,7 +228,7 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void LoadSelectedMap() {
-        _gameManager.stage = "";
+        _gameManager.stage[0] = 0;
         string levelName = "";
         if (_gameManager.isOnline) {
             levelName = "NetworkedMultiplayer";

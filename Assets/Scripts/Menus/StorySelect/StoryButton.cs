@@ -10,7 +10,7 @@ public class StoryButton : MenuOption {
 
     public bool isLocked = true;
 
-    public string sceneNumber;
+    public int[] stageNumber = new int[2];
     public string locationName;
     public GAME_MODE gameType;
     public string winCondition;
@@ -61,10 +61,10 @@ public class StoryButton : MenuOption {
         //isReady = false;
 
         // Set the stage in the game manager
-        FindObjectOfType<GameManager>().stage = sceneNumber;
+        FindObjectOfType<GameManager>().stage = stageNumber;
 
         // Set the new story position to here
-        PlayerPrefs.SetString("StoryPos", sceneNumber);
+        ES3.Save<int[]>("StoryPos", stageNumber);
 
         // Load the players
         FindObjectOfType<StoryPlayerInfo>().LoadPlayers();

@@ -86,7 +86,7 @@ public class VillageCharacterSelect : CharacterSelectWindow {
         charaInfo.name = CHARACTERS.BOY;
         charaInfo.color = (int)_boyColor + 1;
         _playerController.SetCharacterInfo(charaInfo);
-        PlayerPrefs.SetInt("Player1Character", (int)_boyColor);
+        ES3.Save<int>("Player1Character", _boyColor);
 
         CHARACTERCOLORS tempColor = _boyColor;
         ChangeBoy(1);
@@ -99,7 +99,7 @@ public class VillageCharacterSelect : CharacterSelectWindow {
         charaInfo.name = CHARACTERS.GIRL;
         charaInfo.color = (int)_girlColor - 3;
         _playerController.SetCharacterInfo(charaInfo);
-        PlayerPrefs.SetInt("Player1Character", (int)_girlColor);
+        ES3.Save<int>("Player1Character", _girlColor);
 
         CHARACTERCOLORS tempColor = _girlColor;
         ChangeGirl(1);

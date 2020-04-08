@@ -789,8 +789,55 @@ public class BubbleManager : MonoBehaviour {
     }
 
     int FindClosestNode(Bubble bubble) {
-        // TODO: Maybe make this function just sort all nodes by distance and go down the list until a free one is found.
+        // This function sorts all nodes by distance and go down the list until a free one is found.
 
+        // need arrays of all the important values of the nodes
+        int[] nodeNumbers = new int[nodeList.Count];
+        Vector2[] nodePositions = new Vector2[nodeList.Count];
+
+        for(int i = 0; i < nodeList.Count; ++i) {
+            if (nodeList[i] != null) {
+                nodeNumbers[i] = nodeList[i].number;
+                nodePositions[i] = nodeList[i].nPosition;
+            }
+        }
+
+        // Insertion sort the temp list from closest to farthest
+        int j;
+        float tempDist;
+        int tempNumber;
+        Vector2 tempPos;
+        
+        for (int i = 1; i < nodeList.Count; i++) {
+            tempNumber = nodeNumbers[i];
+            tempPos = nodePositions[i];
+            tempDist = Vector2.Distance(nodePositions[i], bubble.transform.position);
+            j = i - 1;
+
+            /* Move elements of arr[0..i-1], that are  
+            greater than key, to one position ahead  
+            of their current position */
+            while (j >= 0 && Vector2.Distance(nodePositions[j], bubble.transform.position) > tempDist) {
+                nodeNumbers[j + 1] = nodeNumbers[j];
+                j = j - 1;
+            }
+
+            nodeNumbers[j + 1] = tempNumber;
+            nodePositions[j + 1] = tempPos;
+        }
+
+        // Run through nodes until an open one is found
+        for(int i = 0; i < nodeNumbers.Length; ++i) {
+            if(nodeList[nodeNumbers[i]].bubble == null) {
+                return nodeNumbers[i];
+            }
+        }
+
+        // If we get here there's a big problem
+        return -1;
+
+        /* old stuff
+        
         // find closest node
         int closestNode = -1;
         // Have the main node, and some backup nodes just in case the main node is taken.
@@ -799,6 +846,10 @@ public class BubbleManager : MonoBehaviour {
         float dist1 = 1000000, dist2 = 2000000, dist3 = 3000000;
         float tempDist = 0;
         for (int i = 0; i < nodeList.Count; ++i) {
+            if(nodeList[i] == null) {
+                continue;
+            }
+
             tempDist = Vector2.Distance(nodeList[i].nPosition, bubble.transform.position);
             if (tempDist < dist1) {
                 dist3 = dist2;
@@ -844,6 +895,8 @@ public class BubbleManager : MonoBehaviour {
         }
 
         return closestNode;
+
+        */
     }
 
     public void RemoveBubble(int node) {
@@ -1029,7 +1082,7 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Remove the deleted nodes from the nodeList
-        nodeList.RemoveRange(tempBottomRowStart, (_topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength));
+        nodeList.RemoveRange(tempBottomRowStart, _topLineLength);
 
         // Move the entire bubble manager down one line
         transform.Translate(0f, -0.67f, 0f, Space.World);

@@ -47,6 +47,6 @@ public class MasterVolumeSlider : MenuOption {
     public void UpdateVolumeValue() {
         AudioListener.volume = (_slider.value / 100);
         volumeText.text = _slider.value.ToString();
-        PlayerPrefs.SetFloat("MasterVolume", _slider.value);
+        ES3.Save<float>("MasterVolume", _slider.value);
     }
 }
