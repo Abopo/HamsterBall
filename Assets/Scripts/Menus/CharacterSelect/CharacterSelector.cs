@@ -323,6 +323,8 @@ public class CharacterSelector : MonoBehaviour {
         // If the base color is taken, change to the right
         if(_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
             ChangeColorRight();
+        } else {
+            SetColor(charaColor);
         }
 
         charaWindow.pullDownWindow.Show();
@@ -476,7 +478,9 @@ public class CharacterSelector : MonoBehaviour {
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         // Change animator to correct character
-        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        //charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        // Change material to correct color
+        charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].material;
 
         // Keep csplayer data updated
         charaWindow.PlayerController.CharaInfo.name = curCharacterIcon.charaName;

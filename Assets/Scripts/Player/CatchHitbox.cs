@@ -103,7 +103,7 @@ public class CatchHitbox : MonoBehaviour {
             _playerController.heldBall.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
             if (hamster.isPlasma) {
-                _playerController.heldBall.isGravity = true;
+                _playerController.heldBall.SetPlasma(true);
                 //GameObject spiralEffect = hamster.spiralEffectInstance;
                 //spiralEffect.transform.parent = _playerController.heldBall.transform;
                 //spiralEffect.transform.position = new Vector3(_playerController.heldBall.transform.position.x,

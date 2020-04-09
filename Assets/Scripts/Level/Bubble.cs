@@ -16,8 +16,7 @@ public class Bubble : MonoBehaviour {
 	public bool locked;
     public bool wasThrown;
 	public bool popped;
-	public bool isGravity;
-    public GameObject spiralEffectObj;
+	public bool isPlasma;
     public bool isIce;
     public SpriteRenderer iceSprite;
 
@@ -58,9 +57,12 @@ public class Bubble : MonoBehaviour {
         get { return _popping; }
     }
 
-	public FMOD.Studio.EventInstance BallBreakEvent;
+    public PlasmaEffect plasmaEffect;
+
+    public FMOD.Studio.EventInstance BallBreakEvent;
 
     protected bool _petrified; // Only used during game end sequence
+    public bool petrifying; // If this bubble is running the petrify coroutine
 
     BubbleManager _homeBubbleManager;
     GameManager _gameManager;
@@ -93,12 +95,15 @@ public class Bubble : MonoBehaviour {
 
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody2D>();
+        plasmaEffect = GetComponentInChildren<PlasmaEffect>();
     }
     // Use this for initialization
     void Start () {
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
 
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+        BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
     public void Initialize(HAMSTER_TYPES inType) {
@@ -116,7 +121,7 @@ public class Bubble : MonoBehaviour {
         // If the type says this should be a gravity
         if ((int)inType >= (int)HAMSTER_TYPES.PLASMA) {
             type = inType - (int)HAMSTER_TYPES.PLASMA;
-            SetGravity(true);
+            SetPlasma(true);
         } else {
 		    type = inType;
         }
@@ -133,7 +138,6 @@ public class Bubble : MonoBehaviour {
 
         SetType((int)type);
 
-		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
 	}
 
     public void SetType(int inType) {
@@ -142,15 +146,15 @@ public class Bubble : MonoBehaviour {
         hamsterAnimator.SetInteger("Type", inType);
     }
 
-    public void SetGravity(bool gravity) {
-        if (gravity && !isGravity) {
-            isGravity = true;
+    public void SetPlasma(bool plasma) {
+        if (plasma && !isPlasma) {
+            isPlasma = true;
             bubbleAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/Plasma_Bubble");
             //GameObject spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
             //spiralEffectInstance.transform.parent = transform;
             //spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
         } else {
-            isGravity = false;
+            isPlasma = false;
             bubbleAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Bubble");
         }
     }
@@ -162,8 +166,6 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
-        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
 
         if(_destroy && !_audioSource.isPlaying) {
             Destroy(gameObject);
@@ -190,11 +192,7 @@ public class Bubble : MonoBehaviour {
             BoardChanged();
         }
 
-        // TODO: This really doesn't need to be happening every frame
-        if(locked) {
-            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
-        }
-	}
+    }
 
     private void FixedUpdate() {
         if (!locked) {
@@ -207,14 +205,21 @@ public class Bubble : MonoBehaviour {
 
     private void LateUpdate() {
         if (locked) {
+            // TODO: This really doesn't need to be happening every frame
+            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+
+            if (!foundAnchor && _homeBubbleManager.BoardIsStable) {
+                Drop();
+            }
+
             //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             checkedForMatches = false;
             checkedForAnchor = false;
-            foundAnchor = false;
+            //foundAnchor = false;
 
             // Double check for adjBubbles, making sure it's never empty
             // (except for gravity because it's possible for them to be floating separately)
-            if (!isGravity) {
+            if (!isPlasma) {
                 _adjBubbleCheck = false;
                 foreach (Bubble b in adjBubbles) {
                     if (b != null) {
@@ -245,6 +250,35 @@ public class Bubble : MonoBehaviour {
         }
     }
 
+    // Started by anchor bubbles that tell all connected bubbles that they have an anchor
+    // Runs recursively through adjBubbles
+    public void SetAnchors() {
+        foundAnchor = true;
+
+        if(plasmaEffect.active) {
+            plasmaEffect.Deactivate();
+        }
+
+        foreach(Bubble bub in adjBubbles) {
+            if(bub != null && !bub.IsAnchorPoint() && !bub.foundAnchor) {
+                bub.SetAnchors();
+            }
+        }
+    }
+
+    // This does the same as above but also turns on the plasma effect
+    public void PlasmaAnchor() {
+        plasmaEffect.Activate();
+        foundAnchor = true;
+
+        foreach(Bubble bub in adjBubbles) {
+            if(bub != null && !bub.foundAnchor) {
+                bub.PlasmaAnchor();
+            }
+        }
+    }
+
+    /* Check for anchor old
     public void CheckForAnchor(List<Bubble> bubbles) {
 		for (int i = 0; i < 6; ++i) {
 			if(adjBubbles[i] != null && !adjBubbles[i].popped) {
@@ -252,6 +286,11 @@ public class Bubble : MonoBehaviour {
 					adjBubbles[i].checkedForAnchor = true;
 					bubbles.Add(adjBubbles[i]);
 					if(adjBubbles[i].IsAnchorPoint()) {
+                        // Plasmas should ignore other plasmas when searching for an anchor
+                        if(isPlasma && adjBubbles[i].isPlasma) {
+                            continue;
+                        }
+
 						foundAnchor = true;
 						foreach(Bubble b in bubbles) {
 							b.foundAnchor = true;
@@ -267,6 +306,12 @@ public class Bubble : MonoBehaviour {
 				}
 			}
 		}
+
+        // If we're a plasma and haven't found a ceiling anchor
+        if(isPlasma && !foundAnchor) {
+            // Then we are floating and should turn on the plasma effect for all bubbles connected to us
+            plasmaEffect.PlasmaEffectStart();
+        }
 
 		// way too many extra checks to super omega make sure we don't drop when we shouldn't
 		if (IsAnchorPoint ()) {
@@ -299,6 +344,7 @@ public class Bubble : MonoBehaviour {
 			Drop ();
 		}
 	}
+    */
 
     // This overload is used to check whether or not this bubble can be dropped by popping the excludeBubble
     public bool CheckForAnchor(List<Bubble> bubbles, List<Bubble> excludedBubbles) {
@@ -510,6 +556,10 @@ public class Bubble : MonoBehaviour {
                 Pop();
             }
         }
+
+        // Set 3d attributes for sound effects
+        BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
+        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
 
         _homeBubbleManager.LastBubbleAdded = this;
     }
@@ -773,13 +823,16 @@ public class Bubble : MonoBehaviour {
         }
 
         //Debug.Log("PopIndex " + _popIndex);
-		BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
         BallBreakEvent.start();
 		BallBreakEvent.release();
 
 		//Debug.Log("Pop");
         // Instaed of destroying, do a nice animation of the bubble opening.
         _popAnimation.Pop(false);
+
+        if(plasmaEffect.active) {
+            plasmaEffect.Deactivate();
+        }
 
         // Run through adjBubbles
         foreach(Bubble b in adjBubbles) {
@@ -823,6 +876,10 @@ public class Bubble : MonoBehaviour {
         _velocity = new Vector2 (0.0f, -10f);
 		gameObject.layer = 15; // GhostBubble
 
+        if (plasmaEffect.active) {
+            plasmaEffect.Deactivate();
+        }
+
         // If both bubbles player controllers exist
         if (_playerController != null && _homeBubbleManager.LastBubbleAdded.PlayerController != null) {
             // Check for drop combos
@@ -844,7 +901,7 @@ public class Bubble : MonoBehaviour {
 	}
 
 	public bool IsAnchorPoint() {
-		if (node < _homeBubbleManager.TopLineLength || isGravity) {
+		if (node < _homeBubbleManager.TopLineLength) {
 			return true;
 		}
 
@@ -972,8 +1029,8 @@ public class Bubble : MonoBehaviour {
     }
 
     public void CheckDropPotential() {
-        //yield return new WaitForSeconds(0.25f);
         dropPotential = 0;
+
         // Make sure matches at least contains self
         if (matches.Count == 0) {
             matches.Add(this);
@@ -1021,7 +1078,9 @@ public class Bubble : MonoBehaviour {
 
     // Petrification sequence happens when a player loses a round, bubbles are petrified starting from the bubble(s) that lost the round
     public IEnumerator Petrify() {
+        petrifying = true;
         _petrified = true;
+
         // Set the type to Gray
         bubbleAnimator.SetInteger("Type", 3);
 
@@ -1061,6 +1120,8 @@ public class Bubble : MonoBehaviour {
                 }
             }
         }
+
+        petrifying = false;
     }
 
     // Miscelleanous functions

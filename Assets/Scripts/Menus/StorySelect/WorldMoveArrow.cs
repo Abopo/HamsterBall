@@ -44,7 +44,7 @@ public class WorldMoveArrow : MenuOption {
     }
 
     void TryMoveRight() {
-        string storyProgress = PlayerPrefs.GetString("StoryProgress");
+        string storyProgress = ES3.Load<string>("StoryProgress");
 
         if (_storySelectMenu.CurWorld+1 < int.Parse(storyProgress[0].ToString())) {
             _storySelectMenu.StartMoveWorlds(dir);

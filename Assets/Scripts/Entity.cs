@@ -12,7 +12,6 @@ public class Entity : MonoBehaviour {
     protected bool grounded;
     protected bool facingRight = true;
     protected bool _springing;
-    protected bool _collidedY;
 
     protected EntityPhysics _physics;
 	public EntityPhysics Physics {
@@ -87,7 +86,6 @@ public class Entity : MonoBehaviour {
 	}
 
     private void LateUpdate() {
-        _collidedY = false;
     }
 
     public void ApplyGravity() {

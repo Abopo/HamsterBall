@@ -32,9 +32,9 @@ public class VillageManager : MonoBehaviour {
 	}
 
     void GetVillageIndex() {
-        string storyProgress = PlayerPrefs.GetString("StoryProgress");
-        int chapter = int.Parse(storyProgress[0].ToString());
-        int stage = int.Parse(storyProgress[2].ToString());
+        int[] storyProgress = ES3.Load<int[]>("StoryProgress");
+        int chapter = storyProgress[0];
+        int stage = storyProgress[1];
 
         switch (chapter) {
             case 1:
@@ -72,30 +72,32 @@ public class VillageManager : MonoBehaviour {
     void InitPlayerPrefs() {
         if (resetData) {
             // TODO: Remove for final build
-            PlayerPrefs.SetInt("FirstTimePlaying", 0);
+            ES3.Save<int>("FirstTimePlaying", 0);
 
             // Delete the save file
             ES3.DeleteFile();
         }
 
-        // These prefs reset on every game close/launch.
-        PlayerPrefs.SetInt("Player1Character", (int)CHARACTERCOLORS.BOY1);
-        PlayerPrefs.SetInt("Player2Character", (int)CHARACTERCOLORS.GIRL1);
-
         // These prefs are only reset on the first launch of the game.
-        if (PlayerPrefs.GetInt("FirstTimePlaying", 0) == 0) {
-            PlayerPrefs.SetString("StoryProgress", "3-10"); // How far into the story the player is (used to lock/unlock story levels and determine the village index)
-            PlayerPrefs.SetString("StoryPos", "1-1"); // Last place in the story the player was on (used to position the selector in the story select scene)
+        if (ES3.Load<int>("FirstTimePlaying", 0) == 0) {
+            int[] storyProgress = new int[2] { 3, 10 };
+            ES3.Save<int[]>("StoryProgress", storyProgress); // How far into the story the player is (used to lock/unlock story levels and determine the village index)
+            int[] storyPos = new int[2] { 1, 1 };
+            ES3.Save<int[]>("StoryPos", storyPos); // Last place in the story the player was on (used to position the selector in the story select scene)
 
             // Stages
-            PlayerPrefs.SetInt("Forest", 1);
-            PlayerPrefs.SetInt("Mountain", 1);
-            PlayerPrefs.SetInt("Beach", 1);
-            PlayerPrefs.SetInt("City", 1);
-            PlayerPrefs.SetInt("Sewers", 0);
-            PlayerPrefs.SetInt("Corporation", 1);
-            PlayerPrefs.SetInt("Laboratory", 1);
-            PlayerPrefs.SetInt("Airship", 1);
+            ES3.Save<int>("Forest", 1);
+            ES3.Save<int>("Mountain", 1);
+            ES3.Save<int>("Beach", 1);
+            ES3.Save<int>("City", 1);
+            ES3.Save<int>("Sewers", 1);
+            ES3.Save<int>("Corporation", 1);
+            ES3.Save<int>("Laboratory", 1);
+            ES3.Save<int>("Airship", 1);
+
+            // Chosen players
+            ES3.Save<int>("Player1Character", CHARACTERCOLORS.BOY1);
+            ES3.Save<int>("Player2Character", CHARACTERCOLORS.GIRL1);
 
             // Highscores
             HighscorePrefs();
@@ -103,74 +105,16 @@ public class VillageManager : MonoBehaviour {
             // Shop items
             ShopItems();
 
-            PlayerPrefs.SetInt("FirstTimePlaying", 1);
+            ES3.Save<int>("FirstTimePlaying", 1);
         }
     }
 
     void HighscorePrefs() {
-        // World 1
-        PlayerPrefs.SetInt("1-1HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-1HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-2HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-2HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-3HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-3HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-4HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-4HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-5HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-5HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-6HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-6HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-7HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-7HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-8HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-8HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-9HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-9HighscoreCoop", 0);
-        PlayerPrefs.SetInt("1-10HighscoreSolo", 0);
-        PlayerPrefs.SetInt("1-10HighscoreCoop", 0);
-        // World 2
-        PlayerPrefs.SetInt("2-1HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-1HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-2HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-2HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-3HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-3HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-4HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-4HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-5HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-5HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-6HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-6HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-7HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-7HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-8HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-8HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-9HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-9HighscoreCoop", 0);
-        PlayerPrefs.SetInt("2-10HighscoreSolo", 0);
-        PlayerPrefs.SetInt("2-10HighscoreCoop", 0);
-        // World 3
-        PlayerPrefs.SetInt("3-1HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-1HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-2HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-2HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-3HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-3HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-4HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-4HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-5HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-5HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-6HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-6HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-7HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-7HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-8HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-8HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-9HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-9HighscoreCoop", 0);
-        PlayerPrefs.SetInt("3-10HighscoreSolo", 0);
-        PlayerPrefs.SetInt("3-10HighscoreCoop", 0);
+        int[,] soloHighScores = new int[6, 10];
+        int[,] coopHighScores = new int[6, 10];
+
+        ES3.Save<int[,]>("SoloHighScores", soloHighScores);
+        ES3.Save<int[,]>("CoopHighScores", coopHighScores);
     }
 
     void ShopItems() {

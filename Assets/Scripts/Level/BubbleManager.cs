@@ -98,8 +98,12 @@ public class BubbleManager : MonoBehaviour {
         get { return _hamsterMeter; }
     }
 
+
     public UnityEvent boardChangedEvent;
     bool _boardIsStable = true;
+    public bool BoardIsStable {
+        get { return _boardIsStable; }
+    }
 
     int linesToAdd = 0;
 
@@ -178,6 +182,7 @@ public class BubbleManager : MonoBehaviour {
             _justAddedBubble = true;
         }
 
+        CheckBubbleAnchors();
         boardChangedEvent.Invoke();
 
         // Get the next line of bubbles
@@ -366,7 +371,7 @@ public class BubbleManager : MonoBehaviour {
                     HAMSTER_TYPES type = startingBubbleInfo[i].type;
 
                     InitBubble(bubble, (int)type);
-                    bubble.SetGravity(startingBubbleInfo[i].isGravity);
+                    bubble.SetPlasma(startingBubbleInfo[i].isGravity);
                     bubble.SetIce(startingBubbleInfo[i].isIce);
                     bubble.node = i;
                     nodeList[i].bubble = bubble;
@@ -627,12 +632,18 @@ public class BubbleManager : MonoBehaviour {
         }
 
         if (_gameEndingSequence) {
-            // Wait until all the bubbles are petrified
+            // Wait until all the bubbles are petrified (or something weird happened and the sequence ended prematurely)
             foreach (Bubble bub in _bubbles) {
-                // If a bubble still isn't petrified
-                if (bub != null && !bub.Petrified) {
+                // If a bubble is still petrifying
+                if(bub != null && bub.petrifying) {
+                    // Keep going
                     return;
                 }
+
+                // If a bubble still isn't petrified
+                //if (bub != null && !bub.Petrified) {
+                 //   return;
+                //}
             }
 
             _gameEndingSequence = false;
@@ -656,21 +667,8 @@ public class BubbleManager : MonoBehaviour {
         }
 
         if ((_justAddedBubble || _justRemovedBubble) && _boardIsStable) {
-            // Check for anchor points
-            List<Bubble> anchorBubbles = new List<Bubble>();
-            foreach (Bubble b in _bubbles) {
-                if (b != null) {
-                    b.checkedForAnchor = false;
-                    b.foundAnchor = false;
-                    b.checkedForMatches = false;
-                }
-            }
-            foreach (Bubble b in _bubbles) {
-                if (b != null) {
-                    anchorBubbles.Clear();
-                    b.CheckForAnchor(anchorBubbles);
-                }
-            }
+
+            CheckBubbleAnchors();
 
             boardChangedEvent.Invoke();
             _justAddedBubble = false;
@@ -702,6 +700,40 @@ public class BubbleManager : MonoBehaviour {
     private void LateUpdate() {
         if (!_gameOver && _boardIsStable && !_justAddedBubble && !_justRemovedBubble) {
             CheckWinConditions();
+        }
+    }
+
+    void CheckBubbleAnchors() {
+        // Check for anchor points
+        List<Bubble> anchorBubbles = new List<Bubble>();
+        foreach (Bubble b in _bubbles) {
+            if (b != null) {
+                b.checkedForAnchor = false;
+                b.foundAnchor = false;
+                b.checkedForMatches = false;
+            }
+        }
+
+        /*
+        foreach (Bubble b in _bubbles) {
+            if (b != null) {
+                anchorBubbles.Clear();
+                b.CheckForAnchor(anchorBubbles);
+            }
+        }
+        */
+
+        // Have the top line of bubbles set anchors
+        for (int i = 0; i < _topLineLength; ++i) {
+            if (_bubbles[i] != null) {
+                _bubbles[i].SetAnchors();
+            }
+        }
+        // Then have plasmas set anchors if there are any
+        foreach (Bubble b in _bubbles) {
+            if (b != null && b.isPlasma && !b.foundAnchor) {
+                b.PlasmaAnchor();
+            }
         }
     }
 
@@ -761,8 +793,55 @@ public class BubbleManager : MonoBehaviour {
     }
 
     int FindClosestNode(Bubble bubble) {
-        // TODO: Maybe make this function just sort all nodes by distance and go down the list until a free one is found.
+        // This function sorts all nodes by distance and go down the list until a free one is found.
 
+        // need arrays of all the important values of the nodes
+        int[] nodeNumbers = new int[nodeList.Count];
+        Vector2[] nodePositions = new Vector2[nodeList.Count];
+
+        for(int i = 0; i < nodeList.Count; ++i) {
+            if (nodeList[i] != null) {
+                nodeNumbers[i] = nodeList[i].number;
+                nodePositions[i] = nodeList[i].nPosition;
+            }
+        }
+
+        // Insertion sort the temp list from closest to farthest
+        int j;
+        float tempDist;
+        int tempNumber;
+        Vector2 tempPos;
+        
+        for (int i = 1; i < nodeList.Count; i++) {
+            tempNumber = nodeNumbers[i];
+            tempPos = nodePositions[i];
+            tempDist = Vector2.Distance(nodePositions[i], bubble.transform.position);
+            j = i - 1;
+
+            /* Move elements of arr[0..i-1], that are  
+            greater than key, to one position ahead  
+            of their current position */
+            while (j >= 0 && Vector2.Distance(nodePositions[j], bubble.transform.position) > tempDist) {
+                nodeNumbers[j + 1] = nodeNumbers[j];
+                j = j - 1;
+            }
+
+            nodeNumbers[j + 1] = tempNumber;
+            nodePositions[j + 1] = tempPos;
+        }
+
+        // Run through nodes until an open one is found
+        for(int i = 0; i < nodeNumbers.Length; ++i) {
+            if(nodeList[nodeNumbers[i]].bubble == null) {
+                return nodeNumbers[i];
+            }
+        }
+
+        // If we get here there's a big problem
+        return -1;
+
+        /* old stuff
+        
         // find closest node
         int closestNode = -1;
         // Have the main node, and some backup nodes just in case the main node is taken.
@@ -771,6 +850,10 @@ public class BubbleManager : MonoBehaviour {
         float dist1 = 1000000, dist2 = 2000000, dist3 = 3000000;
         float tempDist = 0;
         for (int i = 0; i < nodeList.Count; ++i) {
+            if(nodeList[i] == null) {
+                continue;
+            }
+
             tempDist = Vector2.Distance(nodeList[i].nPosition, bubble.transform.position);
             if (tempDist < dist1) {
                 dist3 = dist2;
@@ -816,6 +899,8 @@ public class BubbleManager : MonoBehaviour {
         }
 
         return closestNode;
+
+        */
     }
 
     public void RemoveBubble(int node) {
@@ -859,7 +944,7 @@ public class BubbleManager : MonoBehaviour {
             // Move nodes down
             } else {
                 nodeList[i].transform.Translate(new Vector3(0.0f, -_nodeHeight, 0.0f));
-                nodeList[i].number += _topLineLength;
+                nodeList[i].number += _topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength;
             }
         }
 
@@ -1001,7 +1086,7 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Remove the deleted nodes from the nodeList
-        nodeList.RemoveRange(tempBottomRowStart, (_topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength));
+        nodeList.RemoveRange(tempBottomRowStart, _topLineLength);
 
         // Move the entire bubble manager down one line
         transform.Translate(0f, -0.67f, 0f, Space.World);
@@ -1094,7 +1179,7 @@ public class BubbleManager : MonoBehaviour {
             if (_bubbles[i] != null) {
                 bubbleOnBottomLine = true;
 
-                // Game is over, begin petrification
+                // Game is over, begin petrification from bubble that hit bottom line
                 StartCoroutine(_bubbles[i].Petrify());
             }
         }
@@ -1110,6 +1195,11 @@ public class BubbleManager : MonoBehaviour {
         _scoreManager.CombineScore();
 
         _roundResult = result;
+
+        // Stop shaking if we are
+        if(_isShaking) {
+            StopShaking();
+        }
 
         if (_roundResult == 0 || _roundResult == 1) {
             wonGame = true;
@@ -1238,7 +1328,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void StartShaking() {
-        if (!_isShaking) {
+        if (!_isShaking && !_gameOver) {
             _isShaking = true;
             transform.Translate(-0.05f, 0f, 0f, Space.World);
         }

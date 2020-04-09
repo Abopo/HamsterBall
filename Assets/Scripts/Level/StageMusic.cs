@@ -107,4 +107,9 @@ public class StageMusic : MonoBehaviour {
         //_stageMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         Debug.Log("GAMEENDFUNCTION");
     }
+
+    private void OnDestroy() {
+        _stageAmbience.release();
+        _stageMusic.release();
+    }
 }

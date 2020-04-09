@@ -52,9 +52,9 @@ public class PlayerInfoBox : MonoBehaviour {
             // Set player to correct character
             int character = 0;
             if (playerID == 0) {
-                character = PlayerPrefs.GetInt("Player1Character");
+                character = ES3.Load<int>("Player1Character");
             } else if (playerID == 1) {
-                character = PlayerPrefs.GetInt("Player2Character");
+                character = ES3.Load<int>("Player2Character");
             }
 
             SetCharacter((CHARACTERCOLORS)character);
@@ -114,10 +114,10 @@ public class PlayerInfoBox : MonoBehaviour {
 
         if (playerID == 0) {
             playerText.text = "Player 1";
-            PlayerPrefs.SetInt("Player1Character", (int)charaColor);
+            ES3.Save<int>("Player1Character", charaColor);
         } else {
             playerText.text = "Player 2";
-            PlayerPrefs.SetInt("Player2Character", (int)charaColor);
+            ES3.Save<int>("Player2Character", charaColor);
         }
         foreach (GameObject gO in infoObjects) {
             gO.SetActive(true);

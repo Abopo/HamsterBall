@@ -25,7 +25,7 @@ public class StageIcon : MonoBehaviour {
         _lockSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
 		// See if this stage is unlocked or not
-        if(PlayerPrefs.GetInt(stageName) == 1) {
+        if(ES3.Load<int>(stageName) == 1) {
             isLocked = false;
             //_spriteRenderer.color = Color.white;
             _lockSprite.enabled = false;

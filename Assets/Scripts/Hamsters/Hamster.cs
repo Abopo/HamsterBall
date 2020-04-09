@@ -27,7 +27,7 @@ public class Hamster : Entity {
     public float moveSpeedModifier; // Is added to the move speed
     protected float _moveSpeed = 3;
 
-    protected int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
+    public int _curState = 0; // The state the hamster is in. 0 = idle, 1 = walk, 2 = fall
 
     HamsterSpawner _parentSpawner;
     List<int> _okTypes;
@@ -72,6 +72,7 @@ public class Hamster : Entity {
 
         _curState = 1;
         _animator.SetInteger("State", _curState);
+        _animator.SetInteger("Type", (int)type);
 
         moveSpeedModifier = 0;
 
@@ -100,7 +101,8 @@ public class Hamster : Entity {
         } else if(setType == (int)HAMSTER_TYPES.SKULL) {
             _moveSpeed = skullMoveSpeed;
         } else if(setType == (int)HAMSTER_TYPES.PLASMA) {
-            setType = SelectValidNormalType();
+            //setType = SelectValidNormalType();
+            setType = (int)HAMSTER_TYPES.RED;
             PlasmaInitialize();
         } else {
             _moveSpeed = 3;

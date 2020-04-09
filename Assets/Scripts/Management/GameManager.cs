@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
     public bool isSinglePlayer = false;
     public bool isCoop = false;
     public bool gameIsOver = false;
-    public string stage; // if level is "" it's a local multiplayer match, otherwise it's a story level
+    public int[] stage = new int[2]; // if level is "" it's a local multiplayer match, otherwise it's a story level
     public BOARDS selectedBoard;
     public string nextLevel; // level to load next
     public string nextCutscene; // cutscene to load next
@@ -96,19 +96,18 @@ public class GameManager : MonoBehaviour {
     }
 
     void PlayerPrefSetup() {
-        //PlayerPrefs.SetInt("Initialize", 0);
+        if (ES3.Load("Initialize", 0) == 0) {
+            ES3.Save<int>("Initialize", 1);
 
-        if (PlayerPrefs.GetInt("Initialize") == 0) {
-            PlayerPrefs.SetInt("Initialize", 1);
             // Player stuff
 
             // Options
-            PlayerPrefs.SetFloat("MasterVolume", 100);
-            PlayerPrefs.SetInt("AimAssist", 1);
+            ES3.Save<float>("MasterVolume", 100f);
+            ES3.Save<int>("AimAssist", 1);
         }
 
-        AudioListener.volume = (PlayerPrefs.GetFloat("MasterVolume") / 100);
-        aimAssistSetting = (AIMASSIST)PlayerPrefs.GetInt("AimAssist");
+        AudioListener.volume = (ES3.Load("MasterVolume", 100f) / 100);
+        aimAssistSetting = (AIMASSIST)ES3.Load("AimAssist", 1);
     }
 
     // Use this for initialization
@@ -193,7 +192,7 @@ public class GameManager : MonoBehaviour {
         }
 
         // Debugging
-        debugText.text = nextLevel;
+        //debugText.text = nextLevel;
     }
 
     // 0 = left team; 1 = right team
@@ -248,16 +247,20 @@ public class GameManager : MonoBehaviour {
             // The player's team won
             } else if(winningTeam == 0) {
                 // Save the highscore
-                string pref;
                 if(isCoop) {
-                    pref = stage.ToString() + "HighscoreCoop";
+                    int[,] coopHighscores = ES3.Load<int[,]>("CoopHighScores");
+                    if(winScore > coopHighscores[stage[0], stage[1]]) {
+                        coopHighscores[stage[0], stage[1]] = winScore;
+
+                        ES3.Save<int[,]>("CoopHighScores", coopHighscores);
+                    }
                 } else {
-                    pref = stage.ToString() + "HighscoreSolo";
-                }
-                // If their new score is better than the old one
-                if (winScore > PlayerPrefs.GetInt(pref)) {
-                    // Set their highscore
-                    PlayerPrefs.SetInt(pref, winScore);
+                    int[,] soloHighscores = ES3.Load<int[,]>("SoloHighScores");
+                    if (winScore > soloHighscores[stage[0], stage[1]]) {
+                        soloHighscores[stage[0], stage[1]] = winScore;
+
+                        ES3.Save<int[,]>("SoloHighScores", soloHighscores);
+                    }
                 }
 
                 // reset score overflow
@@ -275,33 +278,29 @@ public class GameManager : MonoBehaviour {
     }
 
     void UnlockNextLevel() {
-        int worldInt = int.Parse(stage[0].ToString());
-        int levelInt = stage.Length == 3 ? int.Parse(stage[2].ToString()) : int.Parse(stage[2].ToString() + stage[3].ToString());
-        string newStoryPos = "";
+        int worldInt = stage[0];
+        int levelInt = stage[1];
+        int[] newStoryPos = new int[2];
         if (levelInt == 10) {
-            newStoryPos += (worldInt + 1).ToString();
-            newStoryPos += "-";
-            newStoryPos += "1";
+            newStoryPos[0] += worldInt + 1;
+            newStoryPos[1] = 1;
         } else {
-            newStoryPos += worldInt.ToString();
-            newStoryPos += "-";
-            newStoryPos += (levelInt+1).ToString();
+            newStoryPos[0] = worldInt;
+            newStoryPos[1] = levelInt + 1;
         }
 
         // Load the furthest the player has gotten
-        string storyProgress = PlayerPrefs.GetString("StoryProgress");
-        int furthestWorld = int.Parse(storyProgress[0].ToString());
-        int furthestLevel = storyProgress.Length == 3 ? int.Parse(storyProgress[2].ToString()) : int.Parse(storyProgress[2].ToString() + storyProgress[3].ToString());
-        int newWorldInt = int.Parse(newStoryPos[0].ToString());
-        int newLevelInt = newStoryPos.Length == 3 ? int.Parse(newStoryPos[2].ToString()) : int.Parse(newStoryPos[2].ToString() + newStoryPos[3].ToString());
+        int[] storyProgress = ES3.Load<int[]>("StoryProgress");
+        int furthestWorld = storyProgress[0];
+        int furthestLevel = storyProgress[1];
+        int newWorldInt = newStoryPos[0];
+        int newLevelInt = newStoryPos[1];
 
         // If the new position is further than the player has gotten so far
         if ((newLevelInt >= furthestLevel && newWorldInt >= furthestWorld) || (newWorldInt > furthestWorld)) {
             // Update the story progress
-            PlayerPrefs.SetString("StoryProgress", newStoryPos);
+            ES3.Save<string>("StoryProgress", newStoryPos);
         }
-
-        PlayerPrefs.SetString("StoryPos", newStoryPos);
     }
 
     public void SetGameMode(GAME_MODE mode) {
@@ -409,7 +408,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool IsStoryLevel() {
-        if(stage == "") {
+        if(stage[0] == 0) {
             return false;
         }
 

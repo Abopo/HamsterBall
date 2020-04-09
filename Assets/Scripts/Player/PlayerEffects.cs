@@ -47,7 +47,11 @@ public class PlayerEffects : MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
 
         LoadEffects();
-	}
+
+        footstepEvent1.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        footstepEvent2.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+        footstepEvent3.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
+    }
 
     void LoadEffects() {
         GameObject tempPrefab;
@@ -188,7 +192,7 @@ public class PlayerEffects : MonoBehaviour {
             FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstepEvent2, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
 
 			footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
-		footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
+		    footstepEvent2 = FMODUnity.RuntimeManager.CreateInstance(footstepString2);
         }
     }
 
@@ -318,5 +322,11 @@ public class PlayerEffects : MonoBehaviour {
             theScale.x *= -1;
             transform.localScale = theScale;
         }
+    }
+
+    private void OnDestroy() {
+        footstepEvent1.release();
+        footstepEvent2.release();
+        footstepEvent3.release();
     }
 }

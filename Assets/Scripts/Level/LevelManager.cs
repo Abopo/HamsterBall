@@ -305,7 +305,7 @@ public class LevelManager : MonoBehaviour {
         setOver = true;
 
         // If we're in a single player or story stage
-        if ((_gameManager.isSinglePlayer || _gameManager.stage != "") && spResultsScreen != null) {
+        if ((_gameManager.isSinglePlayer || _gameManager.stage[0] != 0) && spResultsScreen != null) {
             // If the player lost
             if (result != -1) {
                 // Show a normal results screen

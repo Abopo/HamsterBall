@@ -37,7 +37,7 @@ public class AimAssistSetting : MenuOption {
             if(_gameManager.aimAssistSetting < AIMASSIST.ALWAYS) {
                 _gameManager.aimAssistSetting = AIMASSIST.NEVER;
             }
-            PlayerPrefs.SetInt("AimAssist", (int)_gameManager.aimAssistSetting);
+            ES3.Save<int>("AimAssist", (int)_gameManager.aimAssistSetting);
             SetText();
         } else if(_player.GetButtonDown("Right")) {
             // Adjust setting to the right
@@ -45,7 +45,7 @@ public class AimAssistSetting : MenuOption {
             if (_gameManager.aimAssistSetting > AIMASSIST.NEVER) {
                 _gameManager.aimAssistSetting = AIMASSIST.ALWAYS;
             }
-            PlayerPrefs.SetInt("AimAssist", (int)_gameManager.aimAssistSetting);
+            ES3.Save<int>("AimAssist", (int)_gameManager.aimAssistSetting);
             SetText();
         }
     }

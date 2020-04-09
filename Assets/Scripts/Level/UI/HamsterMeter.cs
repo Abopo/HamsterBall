@@ -64,6 +64,8 @@ public class HamsterMeter : MonoBehaviour {
             //Initialize with default values
             Initialize(13, _bubbleManager);
         }
+
+        HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterFillBall);
     }
 
     public void Initialize(int lineLength, BubbleManager bManager) {
@@ -150,10 +152,8 @@ public class HamsterMeter : MonoBehaviour {
         }
 		
 		Debug.Log(_curStock);
-		HamsterFillBallEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterFillBall);
 		HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
        	HamsterFillBallEvent.start();
-		HamsterFillBallEvent.release();
         _curStock += inc;
 		
         // If we've filled the entire meter
@@ -348,5 +348,9 @@ public class HamsterMeter : MonoBehaviour {
                 anim.SetInteger("Type", type);
             }
         }
+    }
+
+    private void OnDestroy() {
+		HamsterFillBallEvent.release();
     }
 }

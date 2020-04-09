@@ -56,9 +56,9 @@ public class StorySelectMenu : MonoBehaviour {
 
     void LoadSaveData() {
         // Load how far the player has gotten
-        string storyProgress = PlayerPrefs.GetString("StoryProgress");
-        _furthestWorld = int.Parse(storyProgress[0].ToString());
-        _furthestLevel = storyProgress.Length == 3 ? int.Parse(storyProgress[2].ToString()) : int.Parse(storyProgress[2].ToString() + storyProgress[3].ToString());
+        int[] storyProgress = ES3.Load<int[]>("StoryProgress");
+        _furthestWorld = storyProgress[0];
+        _furthestLevel = storyProgress[1];
 
         // Unlock all the fully unlocked worlds
         for (int i = 1; i < _furthestWorld; ++i) {
@@ -68,9 +68,9 @@ public class StorySelectMenu : MonoBehaviour {
         worlds[_furthestWorld-1].Unlock(_furthestLevel-1);
 
         // Load where the player last left off
-        string storyPos = PlayerPrefs.GetString("StoryPos");
-        int world = int.Parse(storyPos[0].ToString());
-        int level = storyPos.Length == 3 ? int.Parse(storyPos[2].ToString()) : int.Parse(storyPos[2].ToString() + storyPos[3].ToString());
+        int[] storyPos = ES3.Load<int[]>("StoryPos");
+        int world = storyPos[0];
+        int level = storyPos[1];
 
         // Move old world off screen
         worlds[0].transform.localPosition = new Vector3(0, -300, 0);
@@ -117,24 +117,24 @@ public class StorySelectMenu : MonoBehaviour {
         // Set the location name
         location.text = storyButton.locationName;
 
-        // Set game type text
-        switch(storyButton.gameType) {
+        // Set stage info text
+
+        switch (storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
                 gameType.text = "Versus Stage";
-                highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
-                highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
                 break;
             case GAME_MODE.SP_POINTS:
                 gameType.text = "Point Challenge";
-                highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
-                highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
                 break;
             case GAME_MODE.SP_CLEAR:
                 gameType.text = "Puzzle Stage";
-                highscoreSolo.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreSolo").ToString();
-                highscoreCoop.text = PlayerPrefs.GetInt(storyButton.sceneNumber.ToString() + "HighscoreCoop").ToString();
                 break;
         }
+        int[,] soloHighScores = ES3.Load<int[,]>("SoloHighScores");
+        int[,] coopHighScores = ES3.Load<int[,]>("CoopHighScores");
+        highscoreSolo.text = soloHighScores[storyButton.stageNumber[0], storyButton.stageNumber[1]].ToString();
+        highscoreCoop.text = coopHighScores[storyButton.stageNumber[0], storyButton.stageNumber[1]].ToString();
+
 
         // Update the stage picture
         _stagePicture.UpdateImages(storyButton);

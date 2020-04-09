@@ -28,9 +28,8 @@ public class PlayerAnimationTriggers : MonoBehaviour {
         _attackState = (AttackState)_playerController.GetPlayerState(PLAYER_STATE.ATTACK);
 
         _playerEffects = transform.parent.GetComponentInChildren<PlayerEffects>();
-               		
-        //FMOD.Studio.EventInstance.getParameterValue("Surface", out _playerController.platformIndex, out test);
 
+        SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(SwingNetEvent, _playerController.GetComponent<Transform>(), _playerController.GetComponent<Rigidbody>());
     }
 
@@ -55,10 +54,8 @@ public class PlayerAnimationTriggers : MonoBehaviour {
 
         // Play swing sound
         SwingNetEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(_playerController.gameObject, _playerController.GetComponent<Rigidbody>()));
-        SwingNetEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SwingNetOneshot);
 		SwingNetEvent.start();
 		SwingNetEvent.release();
-		//netSwingEmitter.Play();
     }
 
     public void NetSwingOff() {

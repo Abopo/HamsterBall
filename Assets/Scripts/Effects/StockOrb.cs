@@ -45,8 +45,8 @@ public class StockOrb : MonoBehaviour {
 
 
 		HamsterOrbCreateEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterOrbCreate);
-		HamsterOrbCreateEvent.start();
-		HamsterOrbCreateEvent.release();
+		HamsterOrbCreateEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+        HamsterOrbCreateEvent.start();
 		//HamsterTravelEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTravel);
     }
 
@@ -105,10 +105,6 @@ public class StockOrb : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
-		HamsterOrbCreateEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-		//HamsterTravelEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-
         // Don't update if the game is over
         if (_gameManager.gameIsOver) {
             return;
@@ -147,5 +143,9 @@ public class StockOrb : MonoBehaviour {
                 _destroy = true;
             }
         }
+    }
+
+    private void OnDestroy() {
+		HamsterOrbCreateEvent.release();
     }
 }
