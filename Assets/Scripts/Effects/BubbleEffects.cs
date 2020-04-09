@@ -44,12 +44,6 @@ public class BubbleEffects : MonoBehaviour {
 	public FMOD.Studio.EventInstance CounterMatchEvent;
 	public FMOD.Studio.EventInstance TeamComboEvent;
 
-
-    //SFX
-    AudioSource _teamAudioSource;
-    AudioClip _teamComboClip;
-    AudioClip _teamDropClip;
-
     // Use this for initialization
     void Start () {
         Sprite[] sprites = Resources.LoadAll<Sprite>("Art/Effects/Shots-GUI");
@@ -63,10 +57,7 @@ public class BubbleEffects : MonoBehaviour {
         _teamComboSprite = sprites[9];
         _teamDropSprite = sprites[10];
 
-        _teamAudioSource = _teamEffectObj.GetComponent<AudioSource>();
-        _teamAudioSource.volume = 0.5f;
-        _teamComboClip = Resources.Load<AudioClip>("Audio/SFX/TeamCombo");
-        _teamDropClip = Resources.Load<AudioClip>("Audio/SFX/TeamDrop");
+        TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
 
         // Counter effects
         _counterEffectObj = new GameObject();
@@ -76,6 +67,8 @@ public class BubbleEffects : MonoBehaviour {
         _counterEffectObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
         _counterDropSprite = sprites[2];
         _counterMatchSprite = sprites[3];
+
+        CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
 
         // Multi Match effects
         _multiMatchEffectObj = new GameObject();
@@ -94,6 +87,8 @@ public class BubbleEffects : MonoBehaviour {
         _comboEffectObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
         _comboEffectObj.AddComponent<AudioSource>();
         _matchComboSprites = Resources.LoadAll<Sprite>("Art/Effects/MatchCombo");
+
+        MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
 
         // Bank shot effect
         _bankEffectObj = new GameObject();
@@ -162,12 +157,8 @@ public class BubbleEffects : MonoBehaviour {
             _teamEffectObj.transform.position = new Vector3(position.x, position.y, -6);
             _teamEffectObj.SetActive(true);
 
-            _teamAudioSource.clip = _teamComboClip;
-            //_teamAudioSource.Play();
             FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
-            TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
 			TeamComboEvent.start();
-			TeamComboEvent.release();
 
             _teamEffectTimer = 0.0f;
         }
@@ -180,12 +171,8 @@ public class BubbleEffects : MonoBehaviour {
             _teamEffectObj.transform.position = new Vector3(position.x, position.y, -6);
             _teamEffectObj.SetActive(true);
 
-            _teamAudioSource.clip = _teamDropClip;
-            //_teamAudioSource.Play();
             FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
-            TeamComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.TeamCombo);
 			TeamComboEvent.start();
-			TeamComboEvent.release();
 
             _teamEffectTimer = 0.0f;
         }
@@ -197,12 +184,8 @@ public class BubbleEffects : MonoBehaviour {
             _counterEffectObj.transform.position = new Vector3(position.x, position.y, -6);
             _counterEffectObj.SetActive(true);
 
-            _teamAudioSource.clip = _teamComboClip;
-            //_teamAudioSource.Play();
             FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
-            CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
 			CounterMatchEvent.start();
-			CounterMatchEvent.release();
             _counterEffectTimer = 0.0f;
         }
     }
@@ -213,12 +196,8 @@ public class BubbleEffects : MonoBehaviour {
             _counterEffectObj.transform.position = new Vector3(pos.x, pos.y, -6);
             _counterEffectObj.SetActive(true);
 
-            _teamAudioSource.clip = _teamDropClip;
-            //_teamAudioSource.Play();
             FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
-            CounterMatchEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CounterMatch);
 			CounterMatchEvent.start();
-			CounterMatchEvent.release();
             _counterEffectTimer = 0.0f;
         }
     }
@@ -240,9 +219,6 @@ public class BubbleEffects : MonoBehaviour {
             _comboEffectObj.transform.position = new Vector3(pos.x, pos.y, -6);
             _comboEffectObj.SetActive(true);
 
-            _teamAudioSource.clip = _teamComboClip;
-            //_teamAudioSource.Play();
-
             _comboEffectTimer = 0.0f;
         }
     }
@@ -260,10 +236,7 @@ public class BubbleEffects : MonoBehaviour {
         }
         Debug.Log("Bank Shot");
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdMedium1);
-        MatchComboEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MatchCombo);
 		MatchComboEvent.start();
-		MatchComboEvent.release();
-        //_bankEffectObj.GetComponent<AudioSource>().Play();
     }
 
     public void StockOrbEffect(int spawnAmount, Vector3 pos) {
@@ -286,5 +259,11 @@ public class BubbleEffects : MonoBehaviour {
         GameObject explosion = GameObject.Instantiate(_bombExplosionObj, position, Quaternion.identity);
         explosion.SetActive(true);
         _bombExplosionObjects.Add(explosion);
+    }
+
+    private void OnDestroy() {
+		MatchComboEvent.release();
+		TeamComboEvent.release();
+		CounterMatchEvent.release();
     }
 }

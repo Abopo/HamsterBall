@@ -15,7 +15,6 @@ public class ThrowState : PlayerState {
     bool _hasThrown;
     public bool throwStateActive;
 
-
     AimingLine _aimingLine;
 
     public Vector2 AimDirection {

@@ -145,4 +145,8 @@ public class GameEndSequence : MonoBehaviour {
         leftText.gameObject.SetActive(true);
         rightText.gameObject.SetActive(true);
     }
+
+    private void OnDestroy() {
+        _matchEndMusic.release();
+    }
 }

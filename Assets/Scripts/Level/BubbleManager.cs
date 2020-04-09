@@ -98,8 +98,12 @@ public class BubbleManager : MonoBehaviour {
         get { return _hamsterMeter; }
     }
 
+
     public UnityEvent boardChangedEvent;
     bool _boardIsStable = true;
+    public bool BoardIsStable {
+        get { return _boardIsStable; }
+    }
 
     int linesToAdd = 0;
 
@@ -940,7 +944,7 @@ public class BubbleManager : MonoBehaviour {
             // Move nodes down
             } else {
                 nodeList[i].transform.Translate(new Vector3(0.0f, -_nodeHeight, 0.0f));
-                nodeList[i].number += _topLineLength;
+                nodeList[i].number += _topLineLength == _baseLineLength ? _baseLineLength-1 : _baseLineLength;
             }
         }
 

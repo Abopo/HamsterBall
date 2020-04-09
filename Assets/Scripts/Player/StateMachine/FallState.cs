@@ -19,17 +19,16 @@ public class FallState : PlayerState {
         // Fall
         playerController.ApplyGravity();
 
-		//playerController.Physics.CheckBelow ();
+    }
+    
+    public void Land() {
+        // check if the player has landed
+        playerController.PlayerEffects.PlayLanding();
+        playerController.ChangeState(PLAYER_STATE.IDLE);
+        playerController.GetComponent<PlayerAudio>().PlayLandClip();
+    }
 
-		// check if the player has landed
-		if(playerController.Physics.IsTouchingFloor) {
-            playerController.PlayerEffects.PlayLanding();
-            playerController.ChangeState(PLAYER_STATE.IDLE);
-            playerController.GetComponent<PlayerAudio>().PlayLandClip();
-		}
-	}
-
-	public override void CheckInput(InputState inputState) {
+    public override void CheckInput(InputState inputState) {
 		if(inputState.swing.isJustPressed && !playerController.IsInvuln) {
 			if(playerController.heldBall == null) {
                 if (playerController.CanBubble) {

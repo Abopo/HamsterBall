@@ -99,9 +99,11 @@ public class Bubble : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
 
-		FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+        BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
     public void Initialize(HAMSTER_TYPES inType) {
@@ -136,7 +138,6 @@ public class Bubble : MonoBehaviour {
 
         SetType((int)type);
 
-		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
 	}
 
     public void SetType(int inType) {
@@ -165,8 +166,6 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
-        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
 
         if(_destroy && !_audioSource.isPlaying) {
             Destroy(gameObject);
@@ -193,14 +192,6 @@ public class Bubble : MonoBehaviour {
             BoardChanged();
         }
 
-        if(locked) {
-            // TODO: This really doesn't need to be happening every frame
-            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
-
-            if (!foundAnchor) {
-                Drop();
-            }
-        }
     }
 
     private void FixedUpdate() {
@@ -214,6 +205,13 @@ public class Bubble : MonoBehaviour {
 
     private void LateUpdate() {
         if (locked) {
+            // TODO: This really doesn't need to be happening every frame
+            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+
+            if (!foundAnchor && _homeBubbleManager.BoardIsStable) {
+                Drop();
+            }
+
             //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             checkedForMatches = false;
             checkedForAnchor = false;
@@ -559,6 +557,10 @@ public class Bubble : MonoBehaviour {
             }
         }
 
+        // Set 3d attributes for sound effects
+        BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
+        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
+
         _homeBubbleManager.LastBubbleAdded = this;
     }
 
@@ -821,7 +823,6 @@ public class Bubble : MonoBehaviour {
         }
 
         //Debug.Log("PopIndex " + _popIndex);
-		BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
         BallBreakEvent.start();
 		BallBreakEvent.release();
 

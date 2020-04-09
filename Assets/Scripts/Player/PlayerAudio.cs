@@ -10,9 +10,10 @@ public class PlayerAudio : MonoBehaviour {
     AudioSource _audioSource;
 
 	public FMOD.Studio.EventInstance PlayerJumpEvent;
-	public FMOD.Studio.EventInstance ShiftEvent;
-	public FMOD.Studio.EventInstance ShiftMeterFilledEvent;
 	public FMOD.Studio.EventInstance PlayerLandEvent;
+    public FMOD.Studio.EventInstance ShiftEvent;
+	public FMOD.Studio.EventInstance ShiftMeterFilledEvent;
+    public FMOD.Studio.EventInstance DamageSoundEvent;
 
     PlayerController _playerController;
 
@@ -21,9 +22,21 @@ public class PlayerAudio : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         _playerController = GetComponent<PlayerController>();
 
-        LoadSFX ();
-		//PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
-		//PlayerLandEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerLand);
+        PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerJumpEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
+        ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(ShiftEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
+        PlayerLandEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerLand);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerLandEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
+        ShiftMeterFilledEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ShiftMeterFilled);
+
+        DamageSoundEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerAttackConnect);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(DamageSoundEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
+        LoadSFX();
     }
 
     void LoadSFX() {
@@ -31,19 +44,14 @@ public class PlayerAudio : MonoBehaviour {
     }
 
     void OnEnable(){
-		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerJumpEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(ShiftEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-		//FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerLandEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
     // Update is called once per frame
     void Update () {
 	}
 
     public void PlayJumpClip() {
-		PlayerJumpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-        PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
-		PlayerJumpEvent.start();
-		PlayerJumpEvent.release();
+        PlayerJumpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+        PlayerJumpEvent.start();
     }
 
     public void PlayLandClip() {
@@ -54,19 +62,23 @@ public class PlayerAudio : MonoBehaviour {
 
     public void PlayShiftClip() {
 		ShiftEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
-        ShiftEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Shift);
 		ShiftEvent.start();
-		ShiftEvent.release();
     }
 
     public void PlayShiftReadyClip() {
-		ShiftMeterFilledEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ShiftMeterFilled);
 		ShiftMeterFilledEvent.start();
-		ShiftMeterFilledEvent.release();
     }
 
     public void PlayHitClip() {
-        _audioSource.clip = _hitClip;
-        _audioSource.Play();
+        DamageSoundEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+        DamageSoundEvent.start();
+    }
+
+    private void OnDestroy() {
+        PlayerJumpEvent.release();
+        PlayerLandEvent.release();
+        ShiftEvent.release();
+        ShiftMeterFilledEvent.release();
+        DamageSoundEvent.release();
     }
 }

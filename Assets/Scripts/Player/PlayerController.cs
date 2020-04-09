@@ -395,7 +395,7 @@ public class PlayerController : Entity {
         }
 
     }
-
+    
     protected virtual void CheckInput() {
         if (!aiControlled) {
             //inputState = InputState.GetInput(inputState);
@@ -612,9 +612,13 @@ public class PlayerController : Entity {
 		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/ || 
             collider.gameObject.layer == 13/*Grate*/ || collider.gameObject.layer == 23/*Stair Step*/) {
 			velocity.y = 0.0f;
-            _collidedY = true;
 
-            PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
+            // Only change the platform type if we landed on the floor
+            if (CurState == PLAYER_STATE.FALL && GetComponent<EntityPhysics>().IsTouchingFloor) {
+                PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
+                // We should be in fall state sooo
+                ((FallState)currentState).Land();
+            }
         }
 
         if (collider.name == "Ice Platform") {
@@ -629,7 +633,7 @@ public class PlayerController : Entity {
             platformIndex = plat.platformIndex;
         }
     }
-
+    
     public override void Spring(float springForce) {
         base.Spring(springForce);
 

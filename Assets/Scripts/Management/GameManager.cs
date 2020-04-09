@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour {
         }
 
         // Debugging
-        debugText.text = nextLevel;
+        //debugText.text = nextLevel;
     }
 
     // 0 = left team; 1 = right team
