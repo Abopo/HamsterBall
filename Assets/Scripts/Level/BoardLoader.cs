@@ -97,9 +97,6 @@ public class BoardLoader : MonoBehaviour {
             case "Bubble Layout":
                 ReadBubbleInfo();
                 break;
-            case "Handicaps":
-                ReadHandicaps();
-                break;
             case "HSM":
                 ReadHamsterSpawnMax();
                 break;
@@ -178,19 +175,10 @@ public class BoardLoader : MonoBehaviour {
         BubbleManager.startingBubbleInfo = bubbles;
     }
 
-    void ReadHandicaps() {
-        //_readText = _reader.ReadLine();
-        _readText = _linesFromFile[_fileIndex++];
-        _gameManager.SetTeamHandicap(0, int.Parse(_readText));
-        //_readText = _reader.ReadLine();
-        _readText = _linesFromFile[_fileIndex++];
-        _gameManager.SetTeamHandicap(1, int.Parse(_readText));
-    }
-
     void ReadHamsterSpawnMax() {
         //_readText = _reader.ReadLine();
         _readText = _linesFromFile[_fileIndex++];
-        _gameManager.HamsterSpawnMax = int.Parse(_readText);
+        _gameManager.gameSettings.HamsterSpawnMax = int.Parse(_readText);
     }
 
     void ReadSpecialHamsters() {
@@ -205,30 +193,30 @@ public class BoardLoader : MonoBehaviour {
             switch(_readText) {
                 case "Rainbow":
                     if(hamString == "Y") {
-                        HamsterSpawner.canBeRainbow = true;
+                        _gameManager.gameSettings.specialHamstersSingleplayer[0] = true;
                     } else {
-                        HamsterSpawner.canBeRainbow = false;
+                        _gameManager.gameSettings.specialHamstersSingleplayer[0] = false;
                     }
                     break;
                 case "Dead":
                     if (hamString == "Y") {
-                        HamsterSpawner.canBeDead = true;
+                        _gameManager.gameSettings.specialHamstersSingleplayer[1] = true;
                     } else {
-                        HamsterSpawner.canBeDead = false;
-                    }
-                    break;
-                case "Gravity":
-                    if (hamString == "Y") {
-                        HamsterSpawner.canBeGravity = true;
-                    } else {
-                        HamsterSpawner.canBeGravity = false;
+                        _gameManager.gameSettings.specialHamstersSingleplayer[1] = false;
                     }
                     break;
                 case "Bomb":
                     if (hamString == "Y") {
-                        HamsterSpawner.canBeBomb = true;
+                        _gameManager.gameSettings.specialHamstersSingleplayer[2] = true;
                     } else {
-                        HamsterSpawner.canBeBomb = false;
+                        _gameManager.gameSettings.specialHamstersSingleplayer[2] = false;
+                    }
+                    break;
+                case "Gravity":
+                    if (hamString == "Y") {
+                        _gameManager.gameSettings.specialHamstersSingleplayer[3] = true;
+                    } else {
+                        _gameManager.gameSettings.specialHamstersSingleplayer[3] = false;
                     }
                     break;
             }

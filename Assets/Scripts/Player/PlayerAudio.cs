@@ -5,10 +5,6 @@ public class PlayerAudio : MonoBehaviour {
 	public static PlayerAudio playerAudioScript;
 
     // Sound effects
-    AudioClip _hitClip;
-
-    AudioSource _audioSource;
-
 	public FMOD.Studio.EventInstance PlayerJumpEvent;
 	public FMOD.Studio.EventInstance PlayerLandEvent;
     public FMOD.Studio.EventInstance ShiftEvent;
@@ -19,7 +15,6 @@ public class PlayerAudio : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _audioSource = GetComponent<AudioSource>();
         _playerController = GetComponent<PlayerController>();
 
         PlayerJumpEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerJump);
@@ -35,16 +30,8 @@ public class PlayerAudio : MonoBehaviour {
 
         DamageSoundEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerAttackConnect);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(DamageSoundEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-
-        LoadSFX();
     }
 
-    void LoadSFX() {
-        _hitClip = Resources.Load<AudioClip>("Audio/SFX/Hit_Hurt");
-    }
-
-    void OnEnable(){
-    }
     // Update is called once per frame
     void Update () {
 	}

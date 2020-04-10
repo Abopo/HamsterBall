@@ -323,7 +323,7 @@ public class BubbleManager : MonoBehaviour {
                 }
 
                 // If we can spawn special balls and we are within the first line
-                if (_gameManager.SpecialBallsOn && i <= _baseLineLength && !specialSpawned) {
+                if (_gameManager.gameSettings.SpecialBallsOn && i <= _baseLineLength && !specialSpawned) {
                     // There's a chance to spawn a special bubble
                     int rand = Random.Range(0, 20);
                     if (rand == 0) {
@@ -1046,7 +1046,7 @@ public class BubbleManager : MonoBehaviour {
 
         for (int i = 0; i < lineLength; ++i) {
             // If we've added enough lines since the last special ball
-            if (_gameManager.SpecialBallsOn && _linesSinceSpecial >= 3) {
+            if (_gameManager.gameSettings.SpecialBallsOn && _linesSinceSpecial >= 3) {
                 // Theres a chance to spawn another one
                 if (_specialSeed.Next(0, 30 - 2 * _linesSinceSpecial) == 0) {
                     special = true;

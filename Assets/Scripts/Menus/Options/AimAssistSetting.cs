@@ -10,13 +10,13 @@ public class AimAssistSetting : MenuOption {
 
     public Text text;
 
-    GameManager _gameManager;
+    GameSettings _gameSettings;
 
     // Use this for initialization
     protected override void Start() {
         base.Start();
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameSettings = FindObjectOfType<GameManager>().gameSettings;
 
         SetText();
     }
@@ -33,25 +33,25 @@ public class AimAssistSetting : MenuOption {
     new void CheckInput() {
         if(_player.GetButtonDown("Left")) {
             // Adjust setting to the left
-            _gameManager.aimAssistSetting -= 1;
-            if(_gameManager.aimAssistSetting < AIMASSIST.ALWAYS) {
-                _gameManager.aimAssistSetting = AIMASSIST.NEVER;
+            _gameSettings.aimAssistSetting -= 1;
+            if(_gameSettings.aimAssistSetting < AIMASSIST.ALWAYS) {
+                _gameSettings.aimAssistSetting = AIMASSIST.NEVER;
             }
-            ES3.Save<int>("AimAssist", (int)_gameManager.aimAssistSetting);
+            ES3.Save<int>("AimAssist", (int)_gameSettings.aimAssistSetting);
             SetText();
         } else if(_player.GetButtonDown("Right")) {
             // Adjust setting to the right
-            _gameManager.aimAssistSetting += 1;
-            if (_gameManager.aimAssistSetting > AIMASSIST.NEVER) {
-                _gameManager.aimAssistSetting = AIMASSIST.ALWAYS;
+            _gameSettings.aimAssistSetting += 1;
+            if (_gameSettings.aimAssistSetting > AIMASSIST.NEVER) {
+                _gameSettings.aimAssistSetting = AIMASSIST.ALWAYS;
             }
-            ES3.Save<int>("AimAssist", (int)_gameManager.aimAssistSetting);
+            ES3.Save<int>("AimAssist", (int)_gameSettings.aimAssistSetting);
             SetText();
         }
     }
 
     void SetText() {
-        switch(_gameManager.aimAssistSetting) {
+        switch(_gameSettings.aimAssistSetting) {
             case AIMASSIST.ALWAYS:
                 text.text = "Always";
                 break;

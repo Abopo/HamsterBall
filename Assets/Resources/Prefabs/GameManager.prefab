@@ -1047,6 +1047,7 @@ GameObject:
   - component: {fileID: 4000012172689578}
   - component: {fileID: 114000013504453022}
   - component: {fileID: 114000012613286784}
+  - component: {fileID: 2396146216085496607}
   - component: {fileID: 114781561933867578}
   - component: {fileID: 114842818884490774}
   m_Layer: 0
@@ -1105,11 +1106,7 @@ MonoBehaviour:
   maxPlayers: 4
   leftTeamGames: 0
   rightTeamGames: 0
-  leftTeamHandicap: 0
-  rightTeamHandicap: 0
-  aimAssist: 0
-  aimAssistSetting: 1
-  specialSpawnMethod: 0
+  gameSettings: {fileID: 0}
   isPaused: 0
   demoMode: 0
   prevPuzzles: []
@@ -1132,6 +1129,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f692e51cb72e01d45aedc70c97e00518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2396146216085496607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013868301990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a638eb34f7cd3aa40b4234ca03f42d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  specialHamstersMultiplayer: 00000000
+  aimAssistMultiplayer: 0
+  specialSpawnMethod: 0
+  hamsterSpawnMaxMultiplayer: 8
+  specialHamstersSingleplayer: 00000000
+  aimAssistSingleplayer: 0
+  aimAssistSetting: 1
+  hamsterSpawnMaxSingleplayer: 8
 --- !u!114 &114781561933867578
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -69,33 +69,30 @@ public class GameSetupWindow : Menu {
     public void OptionsSetup() {
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
-        _gameManager.leftTeamHandicap = 10;
-        _gameManager.rightTeamHandicap = 10;
-
         _aimAssist = false;
         aaText.text = "Off";
 
-        hsmText.text = _gameManager.HamsterSpawnMax.ToString();
+        hsmText.text = _gameManager.gameSettings.HamsterSpawnMax.ToString();
 
-        if (HamsterSpawner.canBeRainbow) {
+        if (_gameManager.gameSettings.specialHamstersMultiplayer[0]) {
             rainbowText.text = "On";
         } else {
             rainbowText.text = "Off";
         }
-        if (HamsterSpawner.canBeDead) {
+        if (_gameManager.gameSettings.specialHamstersMultiplayer[1]) {
             deadText.text = "On";
         } else {
             deadText.text = "Off";
         }
-        if (HamsterSpawner.canBeGravity) {
-            gravityText.text = "On";
-        } else {
-            gravityText.text = "Off";
-        }
-        if (HamsterSpawner.canBeBomb) {
+        if (_gameManager.gameSettings.specialHamstersMultiplayer[2]) {
             bombText.text = "On";
         } else {
             bombText.text = "Off";
+        }
+        if (_gameManager.gameSettings.specialHamstersMultiplayer[3]) {
+            gravityText.text = "On";
+        } else {
+            gravityText.text = "Off";
         }
     }
 
@@ -148,25 +145,25 @@ public class GameSetupWindow : Menu {
             aaText.text = "Off";
         }
         //_gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
-        _gameManager.aimAssist = _aimAssist;
+        _gameManager.gameSettings.aimAssistMultiplayer = _aimAssist;
     }
 
     // Decrease the Hamster Spawn Rate
     public void DecreaseHSR() {
-        _gameManager.HamsterSpawnMax -= 2;
-        hsmText.text = _gameManager.HamsterSpawnMax.ToString();
+        _gameManager.gameSettings.HamsterSpawnMax -= 2;
+        hsmText.text = _gameManager.gameSettings.HamsterSpawnMax.ToString();
     }
 
     // Increase the Hamster Spawn Rate
     public void IncreaseHSR() {
-        _gameManager.HamsterSpawnMax += 2;
-        hsmText.text = _gameManager.HamsterSpawnMax.ToString();
+        _gameManager.gameSettings.HamsterSpawnMax += 2;
+        hsmText.text = _gameManager.gameSettings.HamsterSpawnMax.ToString();
     }
 
     // Turns On/Off Rainbow hamsters
     public void RainbowHamsterButton() {
-        HamsterSpawner.canBeRainbow = !HamsterSpawner.canBeRainbow;
-        if(HamsterSpawner.canBeRainbow) {
+        _gameManager.gameSettings.specialHamstersMultiplayer[0] = !_gameManager.gameSettings.specialHamstersMultiplayer[0];
+        if(_gameManager.gameSettings.specialHamstersMultiplayer[0]) {
             rainbowText.text = "On";
         } else {
             rainbowText.text = "Off";
@@ -174,29 +171,29 @@ public class GameSetupWindow : Menu {
     }
     // Turns On/Off Dead hamsters
     public void DeadHamsterButton() {
-        HamsterSpawner.canBeDead = !HamsterSpawner.canBeDead;
-        if (HamsterSpawner.canBeDead) {
+        _gameManager.gameSettings.specialHamstersMultiplayer[1] = !_gameManager.gameSettings.specialHamstersMultiplayer[1];
+        if (_gameManager.gameSettings.specialHamstersMultiplayer[1]) {
             deadText.text = "On";
         } else {
             deadText.text = "Off";
         }
     }
-    // Turns On/Off Gravity hamsters
-    public void GravityHamsterButton() {
-        HamsterSpawner.canBeGravity = !HamsterSpawner.canBeGravity;
-        if (HamsterSpawner.canBeGravity) {
-            gravityText.text = "On";
-        } else {
-            gravityText.text = "Off";
-        }
-    }
     // Turns On/Off Bomb hamsters
     public void BombHamsterButton() {
-        HamsterSpawner.canBeBomb = !HamsterSpawner.canBeBomb;
-        if (HamsterSpawner.canBeBomb) {
+        _gameManager.gameSettings.specialHamstersMultiplayer[2] = !_gameManager.gameSettings.specialHamstersMultiplayer[2];
+        if (_gameManager.gameSettings.specialHamstersMultiplayer[2]) {
             bombText.text = "On";
         } else {
             bombText.text = "Off";
+        }
+    }
+    // Turns On/Off Gravity hamsters
+    public void GravityHamsterButton() {
+        _gameManager.gameSettings.specialHamstersMultiplayer[3] = !_gameManager.gameSettings.specialHamstersMultiplayer[3];
+        if (_gameManager.gameSettings.specialHamstersMultiplayer[3]) {
+            gravityText.text = "On";
+        } else {
+            gravityText.text = "Off";
         }
     }
 
@@ -234,7 +231,7 @@ public class GameSetupWindow : Menu {
                 break;
         }
 
-        _gameManager.specialSpawnMethod = _specialSpawnMethod;
+        _gameManager.gameSettings.specialSpawnMethod = _specialSpawnMethod;
     }
 
     public void LoadNextScene() {
@@ -246,11 +243,11 @@ public class GameSetupWindow : Menu {
         _gameManager = FindObjectOfType<GameManager>();
 
         _gameManager.GetComponent<PlayerManager>().SetAimAssist(false);
-        _gameManager.HamsterSpawnMax = 8;
-        HamsterSpawner.canBeRainbow = true;
-        HamsterSpawner.canBeDead = true;
-        HamsterSpawner.canBeBomb = false;
-        HamsterSpawner.canBeGravity = false;
+        _gameManager.gameSettings.HamsterSpawnMax = 8;
+        _gameManager.gameSettings.specialHamstersMultiplayer[0] = true;
+        _gameManager.gameSettings.specialHamstersMultiplayer[1] = true;
+        _gameManager.gameSettings.specialHamstersMultiplayer[2] = false;
+        _gameManager.gameSettings.specialHamstersMultiplayer[3] = false;
 
         SceneManager.LoadScene("MapSelectWheel");
     }

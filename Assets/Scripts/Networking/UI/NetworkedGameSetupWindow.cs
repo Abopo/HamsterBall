@@ -5,10 +5,10 @@ using Photon;
 
 [RequireComponent(typeof(PhotonView))]
 public class NetworkedGameSetupWindow : Photon.MonoBehaviour {
-    GameManager _gameManager;
+    GameSettings _gameSettings;
 
     private void Awake() {
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _gameSettings = FindObjectOfType<GameManager>().gameSettings;
     }
 
     // Use this for initialization
@@ -17,14 +17,12 @@ public class NetworkedGameSetupWindow : Photon.MonoBehaviour {
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if(stream.isWriting) {
-            int hSpawnMax = _gameManager.HamsterSpawnMax;
-            bool raindbow = HamsterSpawner.canBeRainbow;
-            bool dead = HamsterSpawner.canBeDead;
-            bool gravity = HamsterSpawner.canBeGravity;
-            bool bomb = HamsterSpawner.canBeBomb;
+            int hSpawnMax = _gameSettings.HamsterSpawnMax;
+            bool raindbow = _gameSettings.specialHamstersMultiplayer[0];
+            bool dead = _gameSettings.specialHamstersMultiplayer[1];
+            bool bomb = _gameSettings.specialHamstersMultiplayer[2];
+            bool gravity = _gameSettings.specialHamstersMultiplayer[3];
 
-            stream.Serialize(ref _gameManager.leftTeamHandicap);
-            stream.Serialize(ref _gameManager.rightTeamHandicap);
             stream.Serialize(ref hSpawnMax);
             stream.Serialize(ref raindbow);
             stream.Serialize(ref dead);
@@ -47,13 +45,11 @@ public class NetworkedGameSetupWindow : Photon.MonoBehaviour {
             stream.Serialize(ref gravity);
             stream.Serialize(ref bomb);
 
-            _gameManager.SetTeamHandicap(0, lHandi);
-            _gameManager.SetTeamHandicap(1, rHandi);
-            _gameManager.HamsterSpawnMax = hSpawnMax;
-            HamsterSpawner.canBeRainbow = rainbow;
-            HamsterSpawner.canBeDead = dead;
-            HamsterSpawner.canBeGravity = gravity;
-            HamsterSpawner.canBeBomb = bomb;
+            _gameSettings.HamsterSpawnMax = hSpawnMax;
+            _gameSettings.specialHamstersMultiplayer[0] = rainbow;
+            _gameSettings.specialHamstersMultiplayer[1] = dead;
+            _gameSettings.specialHamstersMultiplayer[2] = bomb;
+            _gameSettings.specialHamstersMultiplayer[3] = gravity;
         }
     }
 

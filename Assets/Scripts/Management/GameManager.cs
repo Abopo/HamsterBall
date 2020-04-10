@@ -33,17 +33,7 @@ public class GameManager : MonoBehaviour {
     public int leftTeamGames = 0;
     public int rightTeamGames = 0;
 
-    public int leftTeamHandicap = 9;
-    public int rightTeamHandicap = 9;
-    public bool aimAssist;
-    public AIMASSIST aimAssistSetting = AIMASSIST.AFTERLOSS;
-    public SPECIALSPAWNMETHOD specialSpawnMethod = SPECIALSPAWNMETHOD.BOTH;
-    public bool SpecialBallsOn {
-        get { return (specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.BALLS) && HamsterSpawner.AnySpecials; }
-    }
-    public bool SpecialPipeOn {
-        get { return specialSpawnMethod == SPECIALSPAWNMETHOD.BOTH || specialSpawnMethod == SPECIALSPAWNMETHOD.PIPE; }
-    }
+    public GameSettings gameSettings;
 
     public bool isPaused;
 
@@ -56,20 +46,6 @@ public class GameManager : MonoBehaviour {
     public SuperTextMesh debugText;
 
     string _levelDoc; // document containing data for a single player level
-    int _hamsterSpawnMax = 8;
-
-    public int HamsterSpawnMax {
-        get { return _hamsterSpawnMax; }
-
-        set {
-            _hamsterSpawnMax = value;
-            if(_hamsterSpawnMax < 4) {
-                _hamsterSpawnMax = 4;
-            } else if(_hamsterSpawnMax > 12) {
-                _hamsterSpawnMax = 12;
-            }
-        }
-    }
 
     public string LevelDoc {
         get { return _levelDoc; }
@@ -87,15 +63,16 @@ public class GameManager : MonoBehaviour {
 
         if (_alive) {
             playerManager = GetComponent<PlayerManager>();
+            gameSettings = GetComponent<GameSettings>();
 
-            PlayerPrefSetup();
+            LoadGameData();
 
             //QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 200;
         }
     }
 
-    void PlayerPrefSetup() {
+    void LoadGameData() {
         if (ES3.Load("Initialize", 0) == 0) {
             ES3.Save<int>("Initialize", 1);
 
@@ -107,7 +84,7 @@ public class GameManager : MonoBehaviour {
         }
 
         AudioListener.volume = (ES3.Load("MasterVolume", 100f) / 100);
-        aimAssistSetting = (AIMASSIST)ES3.Load("AimAssist", 1);
+        gameSettings.aimAssistSetting = (AIMASSIST)ES3.Load("AimAssist", 1);
     }
 
     // Use this for initialization
@@ -158,12 +135,8 @@ public class GameManager : MonoBehaviour {
     }
 
     void ResetValues() {
-        leftTeamHandicap = 9;
-        rightTeamHandicap = 9;
+        gameSettings.DefaultSettings();
 
-        aimAssist = false;
-
-        _hamsterSpawnMax = 8;
     }
 
     void SceneLoad(Scene scene, LoadSceneMode mode) {
@@ -193,15 +166,6 @@ public class GameManager : MonoBehaviour {
 
         // Debugging
         //debugText.text = nextLevel;
-    }
-
-    // 0 = left team; 1 = right team
-    public void SetTeamHandicap(int team, int handicap) {
-        if(team == 0) {
-            leftTeamHandicap = handicap;
-        } else if(team == 1) {
-            rightTeamHandicap = handicap;
-        }
     }
 
     public void FullPause() {
@@ -269,10 +233,10 @@ public class GameManager : MonoBehaviour {
                 // Unlock the next level
                 UnlockNextLevel();
 
-                aimAssist = false;
-            } else if (aimAssistSetting == AIMASSIST.AFTERLOSS) {
+                gameSettings.aimAssistSingleplayer = false;
+            } else if (gameSettings.aimAssistSetting == AIMASSIST.AFTERLOSS) {
                 // If the player lost, turn on aimAssist
-                aimAssist = true;
+                gameSettings.aimAssistSingleplayer = true;
             }
         }
     }

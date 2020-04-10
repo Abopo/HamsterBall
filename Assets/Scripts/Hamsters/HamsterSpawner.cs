@@ -26,12 +26,12 @@ public class HamsterSpawner : Photon.PunBehaviour {
     int _hamsterLineMax;
     HamsterDoor[] _hamsterDoors; // Anything that moves/activates when a hamster leaves the spawn line
 
-    public static bool canBeRainbow = true;
-    public static bool canBeDead = true;
-    public static bool canBeGravity = false;
-    public static bool canBeBomb = false;
-    public static bool AnySpecials {
-        get { return canBeRainbow || canBeDead || canBeBomb || canBeGravity; }
+    bool canBeRainbow = true;
+    bool canBeSkull = true;
+    bool canBeBomb = false;
+    bool canBePlasma = false;
+    public bool AnySpecials {
+        get { return canBeRainbow || canBeSkull || canBeBomb || canBePlasma; }
     }
     List<int> specialTypes = new List<int>();
 
@@ -58,12 +58,16 @@ public class HamsterSpawner : Photon.PunBehaviour {
         get { return _hamsterLine; }
     }
 
+    private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
+    }
+
     // Use this for initialization
     void Start() {
         // Set the spawn timer to wait for the countdown
         _spawnTimer = 0;
-        _gameManager = FindObjectOfType<GameManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
+
 
         if (_gameManager.gameMode == GAME_MODE.SP_POINTS) {
             // Score attack stages have set spawn sequences
@@ -86,6 +90,19 @@ public class HamsterSpawner : Photon.PunBehaviour {
         if (_gameManager.gameMode == GAME_MODE.MP_PARTY) {
             // Add the power up spawner
             _powerUpSpawner = gameObject.AddComponent<PowerUpSpawner>();
+        }
+
+        // Get special settings depending on what mode we're in
+        if (_gameManager.IsStoryLevel()) {
+            canBeRainbow = _gameManager.gameSettings.specialHamstersSingleplayer[0];
+            canBeSkull = _gameManager.gameSettings.specialHamstersSingleplayer[1];
+            canBeBomb = _gameManager.gameSettings.specialHamstersSingleplayer[2];
+            canBePlasma = _gameManager.gameSettings.specialHamstersSingleplayer[3];
+        } else {
+            canBeRainbow = _gameManager.gameSettings.specialHamstersMultiplayer[0];
+            canBeSkull = _gameManager.gameSettings.specialHamstersMultiplayer[1];
+            canBeBomb = _gameManager.gameSettings.specialHamstersMultiplayer[2];
+            canBePlasma = _gameManager.gameSettings.specialHamstersMultiplayer[3];
         }
 
         Transform spawnPoint = transform.GetChild(0);
@@ -121,19 +138,19 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     void SetupSpecialTypes() {
         // If we can't spawn specials via the pipe
-        if (!_gameManager.SpecialPipeOn) {
+        if (!_gameManager.gameSettings.SpecialPipeOn) {
             // Bail
             return;
         }
 
-        if (canBeDead) {
+        if (canBeSkull) {
             specialTypes.Add((int)HAMSTER_TYPES.SKULL);
         }
         if (canBeRainbow) {
             specialTypes.Add((int)HAMSTER_TYPES.RAINBOW);
             specialTypes.Add((int)HAMSTER_TYPES.RAINBOW); // Adding a second time increases the chance of this type to be chosen
         }
-        if (canBeGravity) {
+        if (canBePlasma) {
             specialTypes.Add(0);
         }
         if (canBeBomb) {
@@ -144,13 +161,18 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     void SetSpawnMax() {
         if(_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
-            maxReleasedHamsterCount = _gameManager.HamsterSpawnMax;
+            if (twoTubes) {
+                maxReleasedHamsterCount = _gameManager.gameSettings.HamsterSpawnMax / 2;
+            } else {
+                maxReleasedHamsterCount = _gameManager.gameSettings.HamsterSpawnMax;
+            }
+
             _hamsterLineMax = 1;
         } else if (twoTubes) {
-            maxReleasedHamsterCount = _gameManager.HamsterSpawnMax/2;
+            maxReleasedHamsterCount = _gameManager.gameSettings.HamsterSpawnMax/2;
             _hamsterLineMax = 2;
         } else {
-            maxReleasedHamsterCount = _gameManager.HamsterSpawnMax;
+            maxReleasedHamsterCount = _gameManager.gameSettings.HamsterSpawnMax;
             _hamsterLineMax = 3;
         }
     }

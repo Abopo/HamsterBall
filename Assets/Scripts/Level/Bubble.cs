@@ -204,7 +204,7 @@ public class Bubble : MonoBehaviour {
     }
 
     private void LateUpdate() {
-        if (locked) {
+        if (locked && !(_popping || popped)) {
             // TODO: This really doesn't need to be happening every frame
             _rigidbody.bodyType = RigidbodyType2D.Kinematic;
 

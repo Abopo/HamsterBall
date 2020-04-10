@@ -5,13 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class ContinueButton : MonoBehaviour {
 
-    GameManager _gameManager;
-    LevelManager _levelManager;
+    //GameManager _gameManager;
+    //LevelManager _levelManager;
 
 	// Use this for initialization
 	void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
+        //_gameManager = FindObjectOfType<GameManager>();
+        //_levelManager = FindObjectOfType<LevelManager>();
 	}
 	
 	// Update is called once per frame

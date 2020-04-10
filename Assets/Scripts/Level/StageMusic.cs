@@ -7,6 +7,8 @@ public class StageMusic : MonoBehaviour {
     FMOD.Studio.EventInstance _stageMusic;
     FMOD.Studio.EventInstance _stageAmbience;
 
+    bool _lateStart = true;
+
     DividerFlash[] _dividers;
     bool _dangerTime;
 
@@ -28,13 +30,14 @@ public class StageMusic : MonoBehaviour {
     }
 
     void SetStageMusic() {
+        // Stop menu music
+        SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
         switch (_gameManager.selectedBoard) {
             case BOARDS.FOREST:
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
-                // Stop menu music
-                SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 _stageMusic.start();
                 _stageAmbience.start();
 
@@ -43,8 +46,6 @@ public class StageMusic : MonoBehaviour {
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MountainMusic);
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.SnowAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
-                // Stop menu music
-                SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 _stageMusic.start();
                 _stageAmbience.start();
 
@@ -53,8 +54,6 @@ public class StageMusic : MonoBehaviour {
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachMusic);
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
                 _stageMusic.setParameterValue("RowDanger", 1f);
-                // Stop menu music
-                SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 _stageMusic.start();
                 _stageAmbience.start();
 
@@ -68,10 +67,16 @@ public class StageMusic : MonoBehaviour {
             case BOARDS.AIRSHIP:
                 break;
         }
+
     }
 
     // Update is called once per frame
     void Update() {
+        if(_lateStart) {
+            SetStageMusic();
+            _lateStart = false;                
+        }
+
         // If we're not in danger time
         if(!_dangerTime) {
             // Check to see if we need to enter danger time

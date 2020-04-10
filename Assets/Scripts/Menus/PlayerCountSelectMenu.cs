@@ -37,22 +37,22 @@ public class PlayerCountSelectMenu : MonoBehaviour {
         _minPlayers = minPlayers;
         _aiAllowed = aiAllowed;
 
-        if (!aiAllowed) {
+        if (!_aiAllowed) {
             // TODO: Adjust for number of connected controllers?
-            for (int i = 0; i < minPlayers - 1; ++i) {
+            for (int i = 0; i < _minPlayers - 1; ++i) {
                 playerButtons[i].Disable();
             }
         }
 
         // Highlight the first available button
-        playerButtons[minPlayers - 1].isFirstSelection = true;
-        playerButtons[minPlayers - 1].Highlight();
-        for(int i = minPlayers-1; i < maxPlayers; ++i) {
+        playerButtons[_minPlayers - 1].isFirstSelection = true;
+        playerButtons[_minPlayers - 1].Highlight();
+        for(int i = _minPlayers - 1; i < _maxPlayers; ++i) {
             playerButtons[i].Enable();
         }
 
         // Deactivate buttons beyond max players
-        for(int i = maxPlayers; i < 4; ++i) {
+        for(int i = _maxPlayers; i < 4; ++i) {
             playerButtons[i].Disable();
         }
     }

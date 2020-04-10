@@ -44,9 +44,9 @@ public class WorldMoveArrow : MenuOption {
     }
 
     void TryMoveRight() {
-        string storyProgress = ES3.Load<string>("StoryProgress");
+        int[] storyProgress = ES3.Load<int[]>("StoryProgress");
 
-        if (_storySelectMenu.CurWorld+1 < int.Parse(storyProgress[0].ToString())) {
+        if (_storySelectMenu.CurWorld+1 < storyProgress[0]) {
             _storySelectMenu.StartMoveWorlds(dir);
             DeHighlightOtherOptions();
         }

@@ -132,8 +132,8 @@ public class StorySelectMenu : MonoBehaviour {
         }
         int[,] soloHighScores = ES3.Load<int[,]>("SoloHighScores");
         int[,] coopHighScores = ES3.Load<int[,]>("CoopHighScores");
-        highscoreSolo.text = soloHighScores[storyButton.stageNumber[0], storyButton.stageNumber[1]].ToString();
-        highscoreCoop.text = coopHighScores[storyButton.stageNumber[0], storyButton.stageNumber[1]].ToString();
+        highscoreSolo.text = soloHighScores[storyButton.stageNumber[0]-1, storyButton.stageNumber[1]-1].ToString();
+        highscoreCoop.text = coopHighScores[storyButton.stageNumber[0]-1, storyButton.stageNumber[1]-1].ToString();
 
 
         // Update the stage picture
