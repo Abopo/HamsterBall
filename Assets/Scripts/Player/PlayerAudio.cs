@@ -10,6 +10,10 @@ public class PlayerAudio : MonoBehaviour {
     public FMOD.Studio.EventInstance ShiftEvent;
 	public FMOD.Studio.EventInstance ShiftMeterFilledEvent;
     public FMOD.Studio.EventInstance DamageSoundEvent;
+    public FMOD.Studio.EventInstance ThrowAngleLoopEvent;
+
+
+    FMOD.Studio.PLAYBACK_STATE playbackState;
 
     PlayerController _playerController;
 
@@ -30,6 +34,9 @@ public class PlayerAudio : MonoBehaviour {
 
         DamageSoundEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PlayerAttackConnect);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(DamageSoundEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
+        ThrowAngleLoopEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ThrowAngleLoop);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(ThrowAngleLoopEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
     // Update is called once per frame
@@ -61,11 +68,28 @@ public class PlayerAudio : MonoBehaviour {
         DamageSoundEvent.start();
     }
 
+    public void PlayThrowAngleClip(float angle) {
+        ThrowAngleLoopEvent.getPlaybackState(out playbackState);
+        if (playbackState != FMOD.Studio.PLAYBACK_STATE.PLAYING) {
+            ThrowAngleLoopEvent.start();
+        }
+
+        ThrowAngleLoopEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, GetComponent<Rigidbody>()));
+        ThrowAngleLoopEvent.setParameterValue("LaunchAngle", angle);
+    }
+    public void StopThrowAngleClip() {
+        ThrowAngleLoopEvent.getPlaybackState(out playbackState);
+        if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING) {
+            ThrowAngleLoopEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+    }
+
     private void OnDestroy() {
         PlayerJumpEvent.release();
         PlayerLandEvent.release();
         ShiftEvent.release();
         ShiftMeterFilledEvent.release();
         DamageSoundEvent.release();
+        ThrowAngleLoopEvent.release();
     }
 }

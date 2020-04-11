@@ -24,14 +24,9 @@ public class AimingLine : MonoBehaviour {
 
 
     //[FMODUnity.EventRef]
-	//public string ThrowAngleLoop;
-	//public FMOD.Studio.EventInstance ThrowAngleLoopEvent;
 
     // Use this for initialization
     void Start () {
-
-		//ThrowAngleLoopEvent = FMODUnity.RuntimeManager.CreateInstance(ThrowAngleLoop);
-		//Debug.Log("Instance Created");
 	}
 
 	public void OnEnable(){
@@ -50,15 +45,11 @@ public class AimingLine : MonoBehaviour {
             _generateTimer += Time.deltaTime;
             if (_generateTimer >= _generateTime) {
                 GenerateAimDot();
-				//ThrowAngleLoopEvent.start();
-				//Debug.Log("Generated Dot");
                 _generateTimer = 0f;
             }
 
             UpdateAimDots();
         }
-		//ThrowAngleLoopEvent.setParameterValue("LaunchAngle", Mathf.Abs(transform.rotation.z));
-
     }
 
     void Raycasts() {

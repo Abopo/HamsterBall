@@ -46,8 +46,6 @@ public class ThrowState : PlayerState {
 
         // For now this is only for the AI
         playerController.significantEvent.Invoke();
-
-		//SoundManager.mainAudio.ThrowAngleEvent.start();
     }
 
     // Update is called once per frame
@@ -109,21 +107,30 @@ public class ThrowState : PlayerState {
 
         if (inputState.left.isDown) {
             aimingArrow.Rotate(Vector3.forward, rotateSpeed * Time.deltaTime/* * _direction*/);
+            LimitArrowRotation();
+
+            PlayAimChangeSound();
+
             if (_aimingLine != null) {
                 _aimingLine.Stop();
             }
         } else if (inputState.right.isDown) {
             aimingArrow.Rotate(Vector3.forward, -rotateSpeed * Time.deltaTime/* * _direction*/);
+            LimitArrowRotation();
+
+            PlayAimChangeSound();
+
             if (_aimingLine != null) {
                 _aimingLine.Stop();
             }
-        } else if (playerController.aimAssist) {
-            if (_aimingLine != null) {
+        } else {
+            if (playerController.aimAssist && _aimingLine != null) {
                 _aimingLine.Begin();
             }
+
+            playerController.PlayerAudio.StopThrowAngleClip();
         }
 
-        LimitArrowRotation();
 
         if (inputState.swing.isJustPressed && throwTimer >= throwTime) {
             // Networking
@@ -163,6 +170,12 @@ public class ThrowState : PlayerState {
         }
     }
 
+    void PlayAimChangeSound() {
+        float angleValue = aimingArrow.localEulerAngles.z - 45; // 0-90
+        angleValue = Mathf.Lerp(0.4f, 0.9f, angleValue / 90);
+        playerController.PlayerAudio.PlayThrowAngleClip(angleValue);
+    }
+
     public void StartThrow() {
         // Tell the animator we don't have a bubble anymore
         playerController.Animator.SetBool("HoldingBall", false);
@@ -176,10 +189,6 @@ public class ThrowState : PlayerState {
             return;
         }
 
-        if (playerController.shifted) {
-            // If you are on the opponent side, make the bubble work on their board.
-            //playerController.heldBubble.SwitchTeams();
-        }
         Vector2 dir = aimingArrow.GetChild(0).position - aimingArrow.position;
         dir.Normalize();
 
@@ -195,8 +204,6 @@ public class ThrowState : PlayerState {
         } else {
             playerController.HomeBubbleManager.IncreaseScore(20);
         }
-
-        //playerController.PlayerAudio.PlayThrowClip();
 
         if (_aimingLine != null) {
             _aimingLine.Stop();

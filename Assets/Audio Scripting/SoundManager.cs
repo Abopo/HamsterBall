@@ -58,7 +58,7 @@ public class SoundManager : MonoBehaviour {
 	public string PlayerFootstep;
 	public string SwingNetOneshot;
 	public string ThrowStartOneshot;
-	//public string ThrowAngleLoop;
+	public string ThrowAngleLoop;
 	public string ThrowEndOneShot;
 	public string PlayerAttack;
 	public string PlayerAttackConnect;
@@ -106,10 +106,6 @@ public class SoundManager : MonoBehaviour {
 	public FMOD.Studio.EventInstance MatchEndMusicEvent;
 	public string MenuGeneral;
 	public FMOD.Studio.EventInstance MenuGeneralEvent;
-	//public FMOD.Studio.EventInstance ThrowAngleEvent;
-	//public FMOD.Studio.EventInstance HamsterFillBallEvent;
-	//Generic Player Sounds EventInstance
-
 
 
 	void Awake () {
