@@ -59,10 +59,28 @@ public class StageMusic : MonoBehaviour {
 
                 break;
             case BOARDS.CITY:
+                _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CityMusic);
+                _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+                _stageMusic.setParameterValue("RowDanger", 1f);
+                _stageMusic.start();
+                _stageAmbience.start();
+
                 break;
             case BOARDS.CORPORATION:
+                _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CorpMusic);
+                //_stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+                _stageMusic.setParameterValue("RowDanger", 1f);
+                _stageMusic.start();
+                _stageAmbience.start();
+
                 break;
             case BOARDS.LABORATORY:
+                _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.LabMusic);
+                //_stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+                _stageMusic.setParameterValue("RowDanger", 1f);
+                _stageMusic.start();
+                _stageAmbience.start();
+
                 break;
             case BOARDS.AIRSHIP:
                 break;

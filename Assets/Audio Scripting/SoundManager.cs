@@ -102,7 +102,13 @@ public class SoundManager : MonoBehaviour {
 	public FMOD.Studio.EventInstance BeachMusicEvent;
 	public string MountainMusic;
 	public FMOD.Studio.EventInstance MountainMusicEvent;
-	public string MatchEndMusic;
+    public string CityMusic;
+    public FMOD.Studio.EventInstance CityMusicEvent;
+    public string CorpMusic;
+    public FMOD.Studio.EventInstance CorpMusicEvent;
+    public string LabMusic;
+    public FMOD.Studio.EventInstance LabMusicEvent;
+    public string MatchEndMusic;
 	public FMOD.Studio.EventInstance MatchEndMusicEvent;
 	public string MenuGeneral;
 	public FMOD.Studio.EventInstance MenuGeneralEvent;
