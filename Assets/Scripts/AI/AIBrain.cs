@@ -54,6 +54,8 @@ public class AIBrain : MonoBehaviour {
         _playerController = GetComponent<PlayerController>();
         _playerController.aiControlled = true;
 
+        _playerController.significantEvent.AddListener(MakeDecision);
+
         _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         _boardScan = GetComponent<AIBoardScan>();
 
@@ -265,21 +267,23 @@ public class AIBrain : MonoBehaviour {
                         _actions.Add(newAction);
                     }
                 }
-                // if we are able to shift or already shifted, also look at the opponents hamsters
-            } else if (_playerController.CanShift || _playerController.shifted) {
+            // if we are able to shift or already shifted, also look at the opponents hamsters
+            } /*else if (_playerController.CanShift || _playerController.shifted) {
                 foreach (Bubble b in n.AdjBubbles) {
-                    // Other side's hamsters
-                    foreach (Hamster h in _theirHamsters) {
-                        if ((b != null && b.type == h.type) || h.type == HAMSTER_TYPES.RAINBOW || h.type == HAMSTER_TYPES.SKULL) {
-                            AIAction newAction = new AIAction(_playerController, h, b, n, _playerController.shifted ? false : true);
-                            _actions.Add(newAction);
+                    if (b != null) {
+                        // Other side's hamsters
+                        foreach (Hamster h in _theirHamsters) {
+                            if (b.type == h.type || h.type == HAMSTER_TYPES.RAINBOW) {
+                                AIAction newAction = new AIAction(_playerController, h, b, n, _playerController.shifted ? false : true);
+                                _actions.Add(newAction);
+                            }
                         }
                     }
                 }
-            }
+            }*/
         }
         if (_playerController.CanShift || _playerController.shifted) {
-            // These are actions that involving throwing hamster at the opponents board.
+            // These are actions that involving throwing hamsters at the opponents board.
             int r = 0;
             bool requiresShift = false;
             foreach (Node n in _boardScan.OpponentNodes) {
@@ -287,6 +291,21 @@ public class AIBrain : MonoBehaviour {
                     if (ob == null) {
                         continue;
                     }
+                    // Look at hamsters on opponents side
+                    foreach(Hamster ham in _playerController.team == 0 ? _hamsterScan.AllRightHamsters : _hamsterScan.AllLeftHamsters) {
+                        if(ham != null) {
+                            // Figure out if this action will require a shift
+                            if (!_playerController.shifted) {
+                                requiresShift = true;
+                            } else if (_playerController.shifted && _hamsterScan.AvailableHamsters[r].team == 0) {
+                                requiresShift = false;
+                            }
+
+                            AIAction newAction = new AIAction(_playerController, ham, ob, n, requiresShift);
+                            _actions.Add(newAction);
+                        }
+                    }
+                    /*
                     r = Random.Range(0, _hamsterScan.AvailableHamsters.Count - 1);
                     if (_hamsterScan.AvailableHamsters.Count > 0 && _hamsterScan.AvailableHamsters[r] != null) {
                         // Figure out if this action will require a shift
@@ -299,6 +318,7 @@ public class AIBrain : MonoBehaviour {
                         AIAction newAction = new AIAction(_playerController, _hamsterScan.AvailableHamsters[r], ob, n, requiresShift);
                         _actions.Add(newAction);
                     }
+                    */
                 }
             }
         }

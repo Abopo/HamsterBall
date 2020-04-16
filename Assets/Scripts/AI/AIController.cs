@@ -218,8 +218,6 @@ public class AIController : MonoBehaviour {
                 if (_curAction.hamsterWant != null && _playerController.heldBall == null && _playerController.CurState != PLAYER_STATE.CATCH) {
                     // The hamster(or opponent) is right here! Catch it!
                     _input.swing.isJustPressed = true;
-                    // Make a new decision based on what hamster we caught
-                    _aiBrain.MakeDecision();
                 // If we are chasing an opponent
                 } else if (_curAction.opponent != null) {
                     // If the opponent is above us
@@ -244,7 +242,9 @@ public class AIController : MonoBehaviour {
                     // Make new decision
                     _aiBrain.MakeDecision();
                 }
-            } else if (_curAction.horWant == -1) {
+            }
+
+            if (_curAction.horWant == -1) {
                 _input.left.isDown = true;
                 _input.right.isDown = false;
             } else if (_curAction.horWant == 1) {
@@ -275,7 +275,7 @@ public class AIController : MonoBehaviour {
 
         if (_mapScan.LeftDropDistance < _mapScan.RightDropDistance) {
             // If we are currently moving right, 
-            if(_input.right.isDown || _playerController.FacingRight) {
+            if(_input.right.isDown || _playerController.velocity.x > 0) {
                 // make sure we aren't right on top of the drop
                 if(_mapScan.LeftDropDistance > 1f) {
                     _input.left.isDown = true;
@@ -288,7 +288,7 @@ public class AIController : MonoBehaviour {
             }
         } else if(_mapScan.RightDropDistance < _mapScan.LeftDropDistance) {
             // If we are currently moving Left, 
-            if (_input.left.isDown || !_playerController.FacingRight) {
+            if (_input.left.isDown || _playerController.velocity.x < 0) {
                 // make sure we aren't right on top of the drop
                 if (_mapScan.RightDropDistance > 1f) {
                     _input.left.isDown = false;

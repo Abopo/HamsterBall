@@ -79,10 +79,10 @@ public class AIAction {
 
             // if the bubble is on the opponents board
             if (bubbleWant != null && bubbleWant.team != _playerController.team) {
-                weight += 30 / distanceX;
+                weight += 75 / distanceX;
                 weight += OpponentBoardChecks(hamsterWant.type);
             } else {
-                weight += 5 / distanceX;
+                weight += 10 / distanceX;
                 weight += MyBoardChecks(hamsterWant.type);
             }
         // if we already have a hamster
@@ -112,7 +112,7 @@ public class AIAction {
             addWeight += bubbleWant.numMatches > 3 ? 30 : 0;
 
             // If bubbleWant was thrown by our teammate and can match/combo
-            if(bubbleWant.numMatches > 1 && bubbleWant.canCombo && bubbleWant.PlayerController != _playerController) {
+            if(bubbleWant.numMatches > 1 && bubbleWant.canCombo && bubbleWant.PlayerController != null && bubbleWant.PlayerController != _playerController) {
                 // Go for a team combo!
                 addWeight += 50;
             }
@@ -257,7 +257,16 @@ public class AIAction {
             }
         // If it requires a shift and we haven't shifted
         } else if(!_playerController.shifted) {
-            addWeight += _playerController.CanShift ? 25 : -100;
+            if(_playerController.CanShift) {
+                // Shifting is strong so we want to do it, but it shouldn't always be priotized
+                // over managing our own board. So give the weight a random element to make swapping
+                // more unpredictable
+                // TODO: maybe make it a worse idea if our board is getting low (i.e. prioritize survival)
+                addWeight += Random.Range(25, 50);
+            } else {
+                // If we can't shift don't even think about it!
+                addWeight = -100;
+            }
         }
 
         // If the bubble is on the bottom most lines 

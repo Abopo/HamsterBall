@@ -1237,6 +1237,7 @@ public class BubbleManager : MonoBehaviour {
         //Debug.Log("Board has changed");
 
         // If we have AI
+        // TODO: maybe only do this if THIS side's players are ai
         if (_gameManager.playerManager.AreAI) {
             // Update important bubble information
             if (_checkbubbleDropPotentials != null) {

@@ -44,7 +44,7 @@ public class Node : MonoBehaviour {
             Vector3 end = new Vector3(transform.position.x,
                                         transform.position.y - 0.1f,
                                         transform.position.z);
-            Debug.DrawLine(transform.position, end, Color.green);
+            //Debug.DrawLine(transform.position, end, Color.green);
 
             //CanBeHit();
         }
@@ -117,7 +117,7 @@ public class Node : MonoBehaviour {
                 if (hit) {
                     if (hit.transform.tag == "Platform") {
                         hitCount++;
-                        Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
+                        //Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
                     }
                 }
                 //Debug.DrawRay(origin, rayDir * hit.distance, Color.red);

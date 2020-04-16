@@ -471,7 +471,7 @@ public class Bubble : MonoBehaviour {
         gameObject.layer = LayerMask.NameToLayer("SolidBubble");
         locked = true;
 
-        Debug.Log("connect with board");
+        //Debug.Log("connect with board");
 
         // Make super sure the bubble is visible
         DisplaySprites();
@@ -963,8 +963,6 @@ public class Bubble : MonoBehaviour {
 
         UpdateRigidbodyStatus();
 
-
-
         _boardChanged = true;
     }
 
@@ -1003,7 +1001,7 @@ public class Bubble : MonoBehaviour {
                 hit = Physics2D.Raycast(origin, rayDir, 10f, checkMask);
                 if (hit && hit.transform.tag == "Platform") {
                     hitCount++;
-                    Debug.DrawRay(origin, rayDir * hit.distance);
+                    //Debug.DrawRay(origin, rayDir * hit.distance);
                 }
             }
 
@@ -1036,6 +1034,15 @@ public class Bubble : MonoBehaviour {
             matches.Add(this);
         }
 
+        // save the anchor data
+        bool[] anchorData = new bool[_homeBubbleManager.Bubbles.Length];
+        for(int i = 0; i < _homeBubbleManager.Bubbles.Length; ++i) {
+            if(_homeBubbleManager.Bubbles[i] != null) {
+                anchorData[i] = _homeBubbleManager.Bubbles[i].foundAnchor;
+            }
+        }
+
+        // go through each adjBubble, checking to see if this bubble would drop without it
         List<Bubble> bubbles = new List<Bubble>();
         foreach (Bubble b in adjBubbles) {
             // Reset variables for next bubble
@@ -1056,6 +1063,13 @@ public class Bubble : MonoBehaviour {
                     // Then add weight based on how many bubbles would be dropped
                     dropPotential = DropCount(b, matches);
                 }
+            }
+        }
+
+        // return bubbles to original anchor data
+        for(int i = 0; i < _homeBubbleManager.Bubbles.Length; ++i) {
+            if(_homeBubbleManager.Bubbles[i] != null) {
+                _homeBubbleManager.Bubbles[i].foundAnchor = anchorData[i];
             }
         }
     }
