@@ -60,7 +60,7 @@ public class MenuOption : MonoBehaviour {
             }
         } else {
             isHighlighted = false;
-            _justHighlighted = false;
+           _justHighlighted = false;
         }
 
         _allOtherOptions = FindObjectsOfType<MenuOption>();

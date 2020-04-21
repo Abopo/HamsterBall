@@ -7,7 +7,7 @@ public class MenuAudio : MonoBehaviour {
     bool firstPass = true;
     int sceneIndex = 0;
 
-    static bool alreadyPlaying = false;
+    static int musicPlaying = -1;
 
     void Awake() {
         SceneManager.sceneLoaded += PlayMusic;
@@ -17,12 +17,8 @@ public class MenuAudio : MonoBehaviour {
     void Start () {
         LoadBGM();
 
-        if (sceneIndex < 15) {
+        if (sceneIndex < 2) {
 			SoundManager.mainAudio.HappyDaysMusicEvent.start();
-			SoundManager.mainAudio.MenuGeneralEvent.start();
-            SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(false);
-			SoundManager.mainAudio.MenuGeneralEvent.setPaused(true);
-            alreadyPlaying = true;
         }
     }
 
@@ -34,8 +30,16 @@ public class MenuAudio : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	
-	}
+	    if(Input.GetKeyDown(KeyCode.M)) {
+            Debug.Log("Force stop music");
+            SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+            SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+    }
+
+    // For some reason this code is extremely inconsistent. Some scenes will stop and play music properly,
+    // while others will not stop music, not play music, or some combination of both.
+    // I tried my best to force the proper functionality
 
     void PlayMusic(Scene scene, LoadSceneMode mode) {
         if(firstPass) {
@@ -43,20 +47,41 @@ public class MenuAudio : MonoBehaviour {
             firstPass = false;
         } else {
             sceneIndex = scene.buildIndex;
-            if (sceneIndex < 15 && !alreadyPlaying) {
+            if(sceneIndex == 1 && musicPlaying != 0) {
+                // For some reason this is the only way to stop the menu music from playing
+                SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+                SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+                // This did not work
+                //SoundManager.mainAudio.MenuGeneralEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+                // For some reason we have to create a new instance every time here
+                SoundManager.mainAudio.HappyDaysMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HappyDaysMusic);
+                SoundManager.mainAudio.HappyDaysMusicEvent.start();
+
+                musicPlaying = 0;
+            } else if (sceneIndex < 15 && musicPlaying != 1) {
                 // We're in a menu so play menu music
                 Debug.Log("Play Menu Music");
-                SoundManager.mainAudio.HappyDaysMusicEvent.start();
-				SoundManager.mainAudio.MenuGeneralEvent.start();
-                SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(true);
-				SoundManager.mainAudio.MenuGeneralEvent.setPaused(false);
-				
-                alreadyPlaying = true;
+
+                // For some reason this is the only way to stop the menu music from playing
+                SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+                SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+                //SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+                // For some reason we have to create a new instance every time here
+		        SoundManager.mainAudio.MenuGeneralEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MenuGeneral);
+                SoundManager.mainAudio.MenuGeneralEvent.start();
+
+                musicPlaying = 1;
             } else if (sceneIndex > 12) {
                 // We're in a level so play level music
                 Debug.Log("Stop menu music");
+                SoundManager.mainAudio.MenuGeneralEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                alreadyPlaying = false;
+
+                musicPlaying = -1;
             }
         }
     }

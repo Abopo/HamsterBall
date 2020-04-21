@@ -477,10 +477,15 @@ public class CharacterSelector : MonoBehaviour {
 
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
-        // Change animator to correct character
-        //charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
-        // Change material to correct color
-        charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].material;
+
+        // Lackey is special
+        if (curCharacterIcon.charaName == CHARACTERS.LACKEY) {
+            // Change animator to correct character
+            charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+        } else {
+            // Change material to correct color
+            charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].material;
+        }
 
         // Keep csplayer data updated
         charaWindow.PlayerController.CharaInfo.name = curCharacterIcon.charaName;

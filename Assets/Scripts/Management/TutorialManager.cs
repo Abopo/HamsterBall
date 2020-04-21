@@ -77,7 +77,7 @@ public class TutorialManager : MonoBehaviour {
             ShowNextTutorial();
         } else if (_tutorialIndex == 3 && _playerController.CurState == PLAYER_STATE.THROW) {
             _tutorialTime = 0.2f;
-        } else if (_tutorialIndex == 4 && _playerController.CurState != PLAYER_STATE.THROW) {
+        } else if (_tutorialIndex == 4 && _playerController.CurState != PLAYER_STATE.THROW && _playerController.heldBall == null) {
             ShowNextTutorial();
         } else if (_tutorialIndex == 6 && _playerController.transform.position.x > 0 && _playerController.CurState != PLAYER_STATE.SHIFT) {
             ShowNextTutorial();

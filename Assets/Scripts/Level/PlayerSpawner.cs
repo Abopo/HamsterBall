@@ -10,7 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
     int leftMeters = 0;
     int rightMeters = 0;
 
-    Sprite[,] playerIcons = new Sprite[7,4];
+    Sprite[,] playerIcons = new Sprite[(int)CHARACTERS.NUM_CHARACTERS, 4];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;

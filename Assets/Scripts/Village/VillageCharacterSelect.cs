@@ -26,9 +26,6 @@ public class VillageCharacterSelect : CharacterSelectWindow {
         _playerController = pCon;
         _controllingPlayer = ReInput.players.GetPlayer(pCon.inputState.playerID);
 
-        // Don't block the character that this player has chosen
-        AllowChosenCharacter(pCon.CharaInfo);
-
         // Use that players inputs to control the menu options
         SetMenuOptionInputs(pCon.inputState.playerID);
 
@@ -47,35 +44,13 @@ public class VillageCharacterSelect : CharacterSelectWindow {
         _gameManager.FullPause();
     }
 
-    // Makes sure that the character already chosen by the player will be displayed
-    // (so they can rechoose the same character if desired)
-    protected void AllowChosenCharacter(CharaInfo charaInfo) {
-        // Convert CharaInfo to CHARACTERCOLORS
-        int charaColor = 0;
-        if(charaInfo.name == CHARACTERS.BOY) {
-            charaColor = charaInfo.color - 1;
-        } else if(charaInfo.name == CHARACTERS.GIRL) {
-            charaColor = 3 + charaInfo.color;
-        }
-
-        AllowChosenCharacter((CHARACTERCOLORS)charaColor);
-    }
-
-    protected void SetSelectionToCharacter(CharaInfo charaInfo) {
-        // Convert CharaInfo to CHARACTERCOLORS
-        int charaColor = 0;
-        if (charaInfo.name == CHARACTERS.BOY) {
-            charaColor = charaInfo.color - 1;
-        } else if (charaInfo.name == CHARACTERS.GIRL) {
-            charaColor = 3 + charaInfo.color;
-        }
-
-        SetSelectionToCharacter((CHARACTERCOLORS)charaColor);
-    }
-
     public override void Deactivate() {
         _childObject.SetActive(false);
         _isActive = false;
+
+        _chosenBoyColor = -1;
+        _chosenGirlColor = -1;
+
         LoseFocus();
 
         _gameManager.Unpause();
@@ -84,26 +59,20 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     public override void ChooseBoy() {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.BOY;
-        charaInfo.color = (int)_boyColor + 1;
+        charaInfo.color = _boyColor+1;
         _playerController.SetCharacterInfo(charaInfo);
-        ES3.Save<int>("Player1Character", _boyColor);
-
-        CHARACTERCOLORS tempColor = _boyColor;
-        ChangeBoy(1);
-        SaveChosen(tempColor);
+        ES3.Save<int>("Player1Character", charaInfo.name);
+        ES3.Save<int>("Player1Color", charaInfo.color);
 
         Deactivate();
     }
     public override void ChooseGirl() {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.GIRL;
-        charaInfo.color = (int)_girlColor - 3;
+        charaInfo.color = _girlColor+1;
         _playerController.SetCharacterInfo(charaInfo);
-        ES3.Save<int>("Player1Character", _girlColor);
-
-        CHARACTERCOLORS tempColor = _girlColor;
-        ChangeGirl(1);
-        SaveChosen(tempColor);
+        ES3.Save<int>("Player1Character", charaInfo.name);
+        ES3.Save<int>("Player1Color", charaInfo.color);
 
         Deactivate();
     }

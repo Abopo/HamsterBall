@@ -28,8 +28,15 @@ public class VillageHamster : MonoBehaviour {
             gameObject.SetActive(false);
         } else {
             hamsterDialogue = GetComponentInChildren<HamsterDialogue>();
-            if (hamsterDialogue != null && _villageIndex < dialogueDictionary.Count) {
-                hamsterDialogue.dialogue = dialogueDictionary[_villageIndex];
+
+            // Search backwards for the closest dialogue to the current index
+            int tempIndex = _villageIndex;
+            if(hamsterDialogue != null) {
+                while(!dialogueDictionary.ContainsKey(tempIndex)) {
+                    tempIndex--;
+                }
+
+                hamsterDialogue.dialogue = dialogueDictionary[tempIndex];
             }
         }
 	}

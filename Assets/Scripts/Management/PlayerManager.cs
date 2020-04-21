@@ -98,32 +98,6 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    /*
-    public void AddPlayer() {
-        PlayerInfo newPlayer = new PlayerInfo();
-        newPlayer.playerNum = _players.Count+1;
-        newPlayer.isAI = false;
-        newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BOY1);
-        newPlayer.team = -1;
-        newPlayer.difficulty = 0;
-        _players.Add(newPlayer);
-        _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
-    }
-
-    public void AddPlayer(int playerNum, bool isAI) {
-        if (playerNum != -1) {
-            PlayerInfo newPlayer = new PlayerInfo();
-            newPlayer.playerNum = playerNum;
-            newPlayer.isAI = isAI;
-            newPlayer.characterName = GetNextAvailableCharacterUp(CHARACTERNAMES.BOY1);
-            newPlayer.team = -1;
-            newPlayer.difficulty = 0;
-            _players.Add(newPlayer);
-            _players.Sort((x, y) => x.playerNum.CompareTo(y.playerNum));
-        }
-    }
-    */
-
     public void AddPlayer(int playerNum, bool isAI, CharaInfo charaInfo) {
         if (playerNum != -1) {
             PlayerInfo newPlayer = new PlayerInfo();

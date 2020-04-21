@@ -20,6 +20,8 @@ public class CharacterSelect : Menu {
         get { return numPlayers + numAI; }
     }
 
+    public bool noControl; // mainly used for networking
+
     CharacterSelector[] _charaSelectors = new CharacterSelector[4];
     CSPlayerController[] _players;
 
@@ -89,12 +91,11 @@ public class CharacterSelect : Menu {
             // Look for input to start game
             if (InputState.GetButtonOnAnyControllerPressed("Start")) {
                 if (pressStartText.activeSelf) {
-                    //LoadNextScene();
                     OpenSetupMenu();
                 }
             }
             if (!_gameManager.demoMode && !pressStartText.activeSelf) {
-                if (InputState.GetButtonOnAnyControllerPressed("Pause")) {
+                if (InputState.GetButtonOnAnyControllerPressed("Pause") && pauseMenu != null) {
                     // Show menu asking if player really wants to go back
                     pauseMenu.Activate();
                     Deactivate();
@@ -162,17 +163,20 @@ public class CharacterSelect : Menu {
 
         _waitFrames = 0;
 
-        foreach (CharacterSelector charaSelector in _charaSelectors) {
-            charaSelector.takeInput = true;
-        }
-        foreach (CSPlayerController player in _players) {
-            if (player.inPlayArea) {
-                player.underControl = true;
+        if (!noControl) {
+            foreach (CharacterSelector charaSelector in _charaSelectors) {
+                charaSelector.takeInput = true;
             }
-        }
+            foreach (CSPlayerController player in _players) {
+                if (player.inPlayArea) {
+                    player.underControl = true;
+                }
+            }
 
-        // Clear players from player manager
-        _gameManager.playerManager.ClearAllPlayers();
+
+            // Clear players from player manager
+            _gameManager.playerManager.ClearAllPlayers();
+        }
     }
 
     public override void Activate() {

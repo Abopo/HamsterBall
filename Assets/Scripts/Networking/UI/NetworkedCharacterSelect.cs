@@ -8,6 +8,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     public Animator[] charaAnimators;
     public GameObject[] readySprites;
 
+    public SuperTextMesh gameSetupText;
+
     CharacterSelect _characterSelect;
 
     private void Awake() {
@@ -123,8 +125,9 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
             cspc.underControl = false;
         }
 
-        _characterSelect.pressStartText.GetComponent<SuperTextMesh>().text = "Game is being set up...";
-        _characterSelect.pressStartText.SetActive(true);
+        _characterSelect.noControl = true;
+
+        gameSetupText.gameObject.SetActive(true);
     }
 
     [PunRPC]
@@ -135,7 +138,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
             cspc.underControl = true;
         }
 
-        //_characterSelect.pressStartText.GetComponent<SuperTextMesh>().text = "Game is being set up...";
-        _characterSelect.pressStartText.SetActive(false);
+        _characterSelect.noControl = false;
+
+        gameSetupText.gameObject.SetActive(false);
     }
 }

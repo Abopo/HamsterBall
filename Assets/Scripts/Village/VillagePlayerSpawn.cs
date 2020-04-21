@@ -29,8 +29,8 @@ public class VillagePlayerSpawn : MonoBehaviour {
         newPlayer.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
 
         CharaInfo charaInfo = new CharaInfo();
-        charaInfo.name = CHARACTERS.BOY;
-        charaInfo.color = 1;
+        charaInfo.name = (CHARACTERS)ES3.Load<int>("Player1Character", 0);
+        charaInfo.color = ES3.Load<int>("Player1Color", 0);
         newPlayer.SetCharacterInfo(charaInfo);
         
         newPlayer.aimAssist = false;

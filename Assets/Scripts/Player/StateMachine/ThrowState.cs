@@ -180,6 +180,9 @@ public class ThrowState : PlayerState {
         // Tell the animator we don't have a bubble anymore
         playerController.Animator.SetBool("HoldingBall", false);
 
+        // Stop the angle sound
+        playerController.PlayerAudio.StopThrowAngleClip();
+
         _hasThrown = true;
     }
 

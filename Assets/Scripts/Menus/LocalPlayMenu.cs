@@ -24,7 +24,7 @@ public class LocalPlayMenu : MonoBehaviour {
 	void Update () {
         if (_isActive) {
             if (ReInput.players.GetPlayer(0).GetButtonDown("Cancel")) {
-                FindObjectOfType<GameManager>().MainMenuButton();
+                FindObjectOfType<GameManager>().VillageButton();
             }
         }
     }

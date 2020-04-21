@@ -8,7 +8,7 @@ using Rewired;
 public class PlayerInfoBox : MonoBehaviour {
 
     //public CHARACTERNAMES characterName;
-    public CHARACTERCOLORS charaColor;
+    public CharaInfo characterInfo;
     public bool playerAssigned;
     public int playerID;
     public Text playerText;
@@ -25,15 +25,6 @@ public class PlayerInfoBox : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        SceneManager.sceneLoaded += OnLevelLoaded;
-    }
-
-    // Use this for initialization
-    void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
-
-        _player = ReInput.players.GetPlayer(playerID);
-
         _sprite = GetComponentInChildren<SpriteRenderer>(true);
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
@@ -46,31 +37,54 @@ public class PlayerInfoBox : MonoBehaviour {
         characterSprites[6] = girlSprites[2];
         characterSprites[7] = girlSprites[3];
 
+        SceneManager.sceneLoaded += OnLevelLoaded;
+    }
+
+    // Use this for initialization
+    void Start () {
+        _gameManager = FindObjectOfType<GameManager>();
+
+        _player = ReInput.players.GetPlayer(playerID);
+
         if (playerAssigned) {
             _player.controllers.GetController(ControllerType.Joystick, 0);
-
-            // Set player to correct character
-            int character = 0;
-            if (playerID == 0) {
-                character = ES3.Load<int>("Player1Character");
-            } else if (playerID == 1) {
-                character = ES3.Load<int>("Player2Character");
-            }
-
-            SetCharacter((CHARACTERCOLORS)character);
         }
+
+        UpdateCharacterInfo();
 
         // Get the first player
         _player1 = ReInput.players.GetPlayer(0);
 
-        _characterSelectWindow = FindObjectOfType<StorySelectMenu>().characterSelectWindow;
+        _characterSelectWindow = FindObjectOfType<CharacterSelectWindow>();
+    }
+
+    void UpdateCharacterInfo() {
+        if (playerAssigned) {
+            // Set player to correct character
+            CharaInfo tempInfo = new CharaInfo();
+            if (playerID == 0) {
+                tempInfo.name = (CHARACTERS)ES3.Load<int>("Player1Character", 0);
+                tempInfo.color = ES3.Load<int>("Player1Color", 0);
+            } else if (playerID == 1) {
+                tempInfo.name = (CHARACTERS)ES3.Load<int>("Player2Character", 0);
+                tempInfo.color = ES3.Load<int>("Player2Color", 0);
+            }
+
+            SetCharacter(tempInfo);
+        }
     }
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode) {
-        // If we've loaded in story select
-        if (scene.buildIndex == 2) {
-            _characterSelectWindow = FindObjectOfType<StorySelectMenu>().characterSelectWindow;
+        // Why the fuck can we get here if the object is null
+        if (this == null) {
+            return;
         }
+        // If we've loaded in story select
+        if (scene.buildIndex == 3) {
+            _characterSelectWindow = FindObjectOfType<CharacterSelectWindow>();
+        }
+
+        UpdateCharacterInfo();
     }
 
     // Update is called once per frame
@@ -107,24 +121,28 @@ public class PlayerInfoBox : MonoBehaviour {
         }
 	}
 
-    public void SetCharacter(CHARACTERCOLORS character) {
+    public void SetCharacter(CharaInfo charaInfo) {
         playerAssigned = true;
 
-        charaColor = character;
+        characterInfo = charaInfo;
 
         if (playerID == 0) {
             playerText.text = "Player 1";
-            ES3.Save<int>("Player1Character", charaColor);
+            ES3.Save<int>("Player1Character", charaInfo.name);
+            ES3.Save<int>("Player1Color", charaInfo.color);
         } else {
             playerText.text = "Player 2";
-            ES3.Save<int>("Player2Character", charaColor);
+            ES3.Save<int>("Player2Character", charaInfo.name);
+            ES3.Save<int>("Player2Color", charaInfo.color);
         }
         foreach (GameObject gO in infoObjects) {
-            gO.SetActive(true);
+            if (gO != null) {
+                gO.SetActive(true);
+            }
         }
 
         // Set sprite to correct character
-        _sprite.sprite = characterSprites[(int)charaColor];
+        _sprite.sprite = characterSprites[charaInfo.name == CHARACTERS.BOY ? charaInfo.color - 1 : charaInfo.color + 3];
     }
 
     public void LoadCharacter() {
@@ -133,7 +151,10 @@ public class PlayerInfoBox : MonoBehaviour {
 
             PlayerInfo player = new PlayerInfo();
             player.playerNum = playerID;
+            player.charaInfo = characterInfo;
+            player.team = 0;
 
+            /*
             if (charaColor < CHARACTERCOLORS.GIRL1) {
                 player.charaInfo.name = CHARACTERS.BOY;
                 player.charaInfo.color = (int)charaColor + 1;
@@ -141,7 +162,8 @@ public class PlayerInfoBox : MonoBehaviour {
                 player.charaInfo.name = CHARACTERS.GIRL;
                 player.charaInfo.color = (int)charaColor - 3;
             }
-            player.team = 0;
+            */
+
             playerManager.AddPlayer(player);
         }
     }

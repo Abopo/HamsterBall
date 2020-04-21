@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour {
             CharacterSelectButton();
         }
         if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.O)) {
-            MainMenuButton();
+            VillageButton();
         }
 
         // Debugging
@@ -313,7 +313,7 @@ public class GameManager : MonoBehaviour {
     public void LocalPlayButton() {
         SceneManager.LoadScene("LocalPlay");
     }
-    public void MainMenuButton() {
+    public void VillageButton() {
         CleanUp(true);
 
         prevBoard = "";
@@ -372,7 +372,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool IsStoryLevel() {
-        if(stage[0] == 0) {
+        if(stage == null || stage.Length < 2 || stage[0] == 0) {
             return false;
         }
 

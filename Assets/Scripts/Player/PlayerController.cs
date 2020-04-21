@@ -283,6 +283,8 @@ public class PlayerController : Entity {
                 break;
             case CHARACTERS.LACKEY:
                 animatorPath += "Lackey/Animation Objects/Lackey" + _charaInfo.color;
+                // Make sure line sprite is turned off
+                GetComponentInChildren<LinesSprite>().turnOff = true;
                 break;
         }
 

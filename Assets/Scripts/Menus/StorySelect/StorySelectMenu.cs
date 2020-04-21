@@ -104,7 +104,7 @@ public class StorySelectMenu : MonoBehaviour {
             if (characterSelectWindow.gameObject.activeSelf) {
                 characterSelectWindow.Deactivate();
             } else {
-                FindObjectOfType<GameManager>().MainMenuButton();
+                FindObjectOfType<GameManager>().VillageButton();
             }
         }
     }

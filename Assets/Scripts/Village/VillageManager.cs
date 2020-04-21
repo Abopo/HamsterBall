@@ -96,8 +96,10 @@ public class VillageManager : MonoBehaviour {
             ES3.Save<int>("Airship", 1);
 
             // Chosen players
-            ES3.Save<int>("Player1Character", CHARACTERCOLORS.BOY1);
-            ES3.Save<int>("Player2Character", CHARACTERCOLORS.GIRL1);
+            ES3.Save<int>("Player1Character", CHARACTERS.BOY);
+            ES3.Save<int>("Player1Color", 1);
+            ES3.Save<int>("Player2Character", CHARACTERS.GIRL);
+            ES3.Save<int>("Player2Color", 1);
 
             // Highscores
             HighscorePrefs();

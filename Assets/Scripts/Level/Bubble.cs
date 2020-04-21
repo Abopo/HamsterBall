@@ -208,9 +208,9 @@ public class Bubble : MonoBehaviour {
             // TODO: This really doesn't need to be happening every frame
             _rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
-            if (!foundAnchor && _homeBubbleManager.BoardIsStable) {
-                Drop();
-            }
+            //if (!foundAnchor && _homeBubbleManager.BoardIsStable) {
+            //    Drop();
+            //}
 
             //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             checkedForMatches = false;
@@ -267,14 +267,20 @@ public class Bubble : MonoBehaviour {
     }
 
     // This does the same as above but also turns on the plasma effect
-    public void PlasmaAnchor() {
-        plasmaEffect.Activate();
+    public void PlasmaAnchor(int type) {
+        plasmaEffect.Activate(type);
         foundAnchor = true;
 
         foreach(Bubble bub in adjBubbles) {
             if(bub != null && !bub.foundAnchor) {
-                bub.PlasmaAnchor();
+                bub.PlasmaAnchor(type);
             }
+        }
+    }
+
+    public void DropCheck() {
+        if(!foundAnchor) {
+            Drop();
         }
     }
 
@@ -872,6 +878,11 @@ public class Bubble : MonoBehaviour {
     }
 
     public void Drop() {
+        if(IsAnchorPoint()) {
+            Debug.LogError("Tried to drop anchor bubble, bail");
+            return;
+        }
+
 		locked = false;
         _velocity = new Vector2 (0.0f, -10f);
 		gameObject.layer = 15; // GhostBubble

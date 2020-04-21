@@ -5,6 +5,8 @@ using UnityEngine;
 public class ExitMenu : Menu {
     public MenuButton yesButton;
 
+    public string returnMenu;
+
     bool _active;
 
     protected override void Awake() {
@@ -42,8 +44,15 @@ public class ExitMenu : Menu {
     }
 
     public void Exit() {
-        // Go back to local play menu
-        _gameManager.LocalPlayButton();
+        if (returnMenu == "Village") {
+            _gameManager.VillageButton();
+        } else if (returnMenu == "LocalPlay") {
+            // Go back to local play menu
+            _gameManager.LocalPlayButton();
+        } else {
+            // default to village i guess
+            _gameManager.VillageButton();
+        }
     }
     public void Cancel() {
         base.Deactivate();

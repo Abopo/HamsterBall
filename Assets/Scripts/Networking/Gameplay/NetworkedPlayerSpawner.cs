@@ -8,7 +8,7 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     public ShiftMeter[] shiftMeters = new ShiftMeter[4];
     int leftMeters = 0;
     int rightMeters = 0;
-    Sprite[,] playerIcons = new Sprite[6, 4];
+    Sprite[,] playerIcons = new Sprite[(int)CHARACTERS.NUM_CHARACTERS, 4];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;

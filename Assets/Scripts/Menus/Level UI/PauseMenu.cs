@@ -145,6 +145,6 @@ public class PauseMenu : Menu {
     }
 
     public void ReturnToMainMenu() {
-        _gameManager.MainMenuButton();
+        _gameManager.VillageButton();
     }
 }

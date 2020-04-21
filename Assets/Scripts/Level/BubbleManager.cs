@@ -25,6 +25,7 @@ public class BubbleManager : MonoBehaviour {
     // should specify top and bottom rows
     public List<Node> nodeList = new List<Node>();
     protected int _baseLineLength = 12; // The longest a line will be
+    protected int _bottomLineLength = 12;
     protected int _topLineLength = 12;
     public int TopLineLength {
         get { return _topLineLength; }
@@ -39,7 +40,7 @@ public class BubbleManager : MonoBehaviour {
     protected float _nodeHeight = 0.73f; // The height of a single node (i.e. how far down lines move)
     protected int _bottomRowStart {
         get {
-            return nodeList.Count - _topLineLength;
+            return nodeList.Count - _bottomLineLength;
         }
     }
 
@@ -161,6 +162,7 @@ public class BubbleManager : MonoBehaviour {
         _nodesParent = transform.GetChild(1);
 
         _topLineLength = _baseLineLength;
+        _bottomLineLength = _baseLineLength;
         BuildStartingNodes();
 
 
@@ -714,15 +716,6 @@ public class BubbleManager : MonoBehaviour {
             }
         }
 
-        /*
-        foreach (Bubble b in _bubbles) {
-            if (b != null) {
-                anchorBubbles.Clear();
-                b.CheckForAnchor(anchorBubbles);
-            }
-        }
-        */
-
         // Have the top line of bubbles set anchors
         for (int i = 0; i < _topLineLength; ++i) {
             if (_bubbles[i] != null) {
@@ -732,7 +725,14 @@ public class BubbleManager : MonoBehaviour {
         // Then have plasmas set anchors if there are any
         foreach (Bubble b in _bubbles) {
             if (b != null && b.isPlasma && !b.foundAnchor) {
-                b.PlasmaAnchor();
+                b.PlasmaAnchor((int)b.type);
+            }
+        }
+
+        // Then check bubbles for drops
+        foreach(Bubble b in _bubbles) {
+            if(b != null) {
+                b.DropCheck();
             }
         }
     }
@@ -839,68 +839,6 @@ public class BubbleManager : MonoBehaviour {
 
         // If we get here there's a big problem
         return -1;
-
-        /* old stuff
-        
-        // find closest node
-        int closestNode = -1;
-        // Have the main node, and some backup nodes just in case the main node is taken.
-        // Keep nodes in order from closest found to 3rd closest found.
-        int node1 = -1, node2 = -1, node3 = -1;
-        float dist1 = 1000000, dist2 = 2000000, dist3 = 3000000;
-        float tempDist = 0;
-        for (int i = 0; i < nodeList.Count; ++i) {
-            if(nodeList[i] == null) {
-                continue;
-            }
-
-            tempDist = Vector2.Distance(nodeList[i].nPosition, bubble.transform.position);
-            if (tempDist < dist1) {
-                dist3 = dist2;
-                dist2 = dist1;
-                dist1 = tempDist;
-                node3 = node2;
-                node2 = node1;
-                node1 = i;
-            } else if (tempDist < dist2) {
-                dist3 = dist2;
-                dist2 = tempDist;
-                node3 = node2;
-                node2 = i;
-            } else if (tempDist < dist3) {
-                dist3 = tempDist;
-                node3 = i;
-            }
-        }
-
-        // Check if node1 is taken
-        for (int i = 0; i < _bubbles.Length - 1; ++i) {
-            if (_bubbles[i] == null) {
-                continue;
-            }
-            if (_bubbles[i].node == node1) {
-                // Already a bubble in that node, eliminate it
-                node1 = -1;
-            } else if (_bubbles[i].node == node2) {
-                // Already a bubble in that node, eliminate it
-                node2 = -1;
-            } else if (_bubbles[i].node == node3) {
-                // Already a bubble in that node, eliminate it
-                node3 = -1;
-            }
-        }
-
-        if (node1 != -1) {
-            closestNode = node1;
-        } else if (node2 != -1) {
-            closestNode = node2;
-        } else if (node3 != -1) {
-            closestNode = node3;
-        }
-
-        return closestNode;
-
-        */
     }
 
     public void RemoveBubble(int node) {
@@ -960,6 +898,10 @@ public class BubbleManager : MonoBehaviour {
             _topLineLength = _baseLineLength;
             xOffset = (_baseLineLength / 2) * -0.77f;
         }
+
+        // Update bottom line length as well
+        // when a line is added this way, the bottom line will equal the top
+        _bottomLineLength = _topLineLength;
 
         // Create a new node line and put on the top of the nodelist
         Vector3 nodeSpawnPos;
@@ -1086,7 +1028,7 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Remove the deleted nodes from the nodeList
-        nodeList.RemoveRange(tempBottomRowStart, _topLineLength);
+        nodeList.RemoveRange(tempBottomRowStart, _bottomLineLength);
 
         // Move the entire bubble manager down one line
         transform.Translate(0f, -0.67f, 0f, Space.World);
@@ -1096,6 +1038,10 @@ public class BubbleManager : MonoBehaviour {
             _ceiling = GameObject.FindGameObjectWithTag("Ceiling").transform;
         }
         _ceiling.Translate(0f, -0.67f, 0f, Space.World);
+
+        // Update bottom line length as well
+        // when the board is pushed down, the bottom line swaps length
+        _bottomLineLength = _bottomLineLength == _baseLineLength ? _bottomLineLength = _baseLineLength-1 : _bottomLineLength = _baseLineLength;
 
         UpdateAllAdjBubbles();
 

@@ -9,9 +9,11 @@ public class PlasmaEffect : MonoBehaviour {
     public bool active;
 
     Bubble _bubble;
+    Animator[] _animators;
 
     private void Awake() {
         _bubble = transform.parent.GetComponent<Bubble>();
+        _animators = GetComponentsInChildren<Animator>();
     }
     // Start is called before the first frame update
     void Start() {
@@ -23,34 +25,20 @@ public class PlasmaEffect : MonoBehaviour {
         
     }
 
-    // This is initially called by the plasma bubbles itself to Activate the effect 
-    // on all it's supported bubbles recursively
-    public void PlasmaEffectStart() {
-        // Activate ourself
-        Activate();
-
-        // Activate all adjacent bubbles
-        foreach(Bubble bub in _bubble.adjBubbles) {
-            if(bub != null) {
-                if (!bub.plasmaEffect.active) {
-                    bub.plasmaEffect.PlasmaEffectStart();
-                } else {
-                    // Update in case adjBubbles has changed
-                    Activate();
-                }
-            }
-        }
-    }
-    
-    public void Activate() {
+    public void Activate(int type) {
         // Turn on all the plasma in open adj spots
-        for(int i = 0; i < 6; ++i) {
+        for (int i = 0; i < 6; ++i) {
             if(_bubble.adjBubbles[i] == null) {
                 plasma[i].SetActive(true);
                 plasma[i].GetComponent<SpriteRenderer>().enabled = true;
             } else {
                 plasma[i].SetActive(false);
             }
+        }
+
+        // Set animator type
+        foreach (Animator anim in _animators) {
+            anim.SetInteger("Type", type);
         }
 
         active = true;

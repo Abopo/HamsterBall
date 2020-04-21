@@ -32,10 +32,10 @@ public class BackButton : MenuButton {
     public void PlayBackSound() {
         switch (menuType) {
             case MENUTYPE.MAIN:
-                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuBack);
+                //FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuBack);
                 break;
             case MENUTYPE.SUB:
-                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuBack);
+                //FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuBack);
                 break;
         }
     }
@@ -43,7 +43,7 @@ public class BackButton : MenuButton {
     public void BackToMainMenu() {
         // Don't go back while in demo mode
         //if (!_gameManager.demoMode) {
-            _gameManager.MainMenuButton();
+            _gameManager.VillageButton();
         //}
     }
 
