@@ -5,6 +5,7 @@ using Rewired;
 
 public class TutorialManager : MonoBehaviour {
     public CutsceneManager cutsceneManager;
+    public SuperTextMesh tutorialInfoText;
 
     int _tutorialIndex = 0; // keeps track of what tutorial should be shown next.
     float _tutorialTime;
@@ -27,10 +28,14 @@ public class TutorialManager : MonoBehaviour {
 
         GetPlayer();
 
+        cutsceneManager.cutsceneEnd.AddListener(CutsceneEnded);
+
         if (_aiController != null) {
             // Turn off ai for now
             _aiController.GetComponent<AIController>().enabled = false;
         }
+
+        tutorialInfoText.gameObject.SetActive(false);
 
         _tutorialTime = 0.5f;
 	}
@@ -90,11 +95,13 @@ public class TutorialManager : MonoBehaviour {
         switch(_tutorialIndex) {
             case 0:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MovementTutorial"));
+                tutorialInfoText.text = "Move with <c=green>A/D<c=black>, Jump with <c=green>W<c=black>. Get up high!";
                 _tutorialIndex++; // 1
                 _tutorialTime = -1;
                 break;
             case 1:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/BubbleTutorial"));
+                tutorialInfoText.text = "Catch a hamster with <c=green>V<c=black>!";
                 _tutorialIndex++; // 2
                 _tutorialTime = -1;
                 // Unlock the catch state
@@ -102,6 +109,7 @@ public class TutorialManager : MonoBehaviour {
                 break;
             case 2:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/AimTutorial"));
+                tutorialInfoText.text = "Pick a good spot and start aiming with <c=green>V<c=black>!";
                 _tutorialIndex++; // 3
                 _tutorialTime = -1;
                 // Unlock the throw state
@@ -109,16 +117,19 @@ public class TutorialManager : MonoBehaviour {
                 break;
             case 3:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/ThrowTutorial"));
+                tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=green>V<c=black>!";
                 _tutorialIndex++; // 4
                 _tutorialTime = -1;
                 break;
             case 4:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MatchingTutorial"));
+                tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=green>V<c=black>!";
                 _tutorialIndex++; // 5
                 _tutorialTime = 15f;
                 break;
             case 5:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/DroppingSwappingTutorial"));
+                tutorialInfoText.text = "Press the <c=green>N<c=black> key to do...something?";
                 _tutorialIndex++; // 6
                 _tutorialTime = -1;
                 // Re-lock the catch state so player can't win the match
@@ -144,6 +155,9 @@ public class TutorialManager : MonoBehaviour {
                 break;
         }
 
+        // Hide the info text during cutscenes
+        tutorialInfoText.gameObject.SetActive(false);
+
         _gameManager.FullPause();
     }
 
@@ -153,6 +167,10 @@ public class TutorialManager : MonoBehaviour {
         }
 
         return baseTutorial;
+    }
+
+    void CutsceneEnded() {
+        tutorialInfoText.gameObject.SetActive(true);
     }
 
     // We kind of have to fake a game end scenario

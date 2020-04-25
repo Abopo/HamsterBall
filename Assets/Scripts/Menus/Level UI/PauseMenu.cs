@@ -115,17 +115,29 @@ public class PauseMenu : Menu {
     }
 
     public void AimAssistButton() {
-        _gameManager.gameSettings.aimAssistMultiplayer = !_gameManager.gameSettings.aimAssistMultiplayer;
-        PlayerController[] players = FindObjectsOfType<PlayerController>();
-        foreach(PlayerController pC in players) {
-            pC.aimAssist = _gameManager.gameSettings.aimAssistMultiplayer;
+        if (_gameManager.isSinglePlayer) {
+            _gameManager.gameSettings.aimAssistSingleplayer = !_gameManager.gameSettings.aimAssistSingleplayer;
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+            foreach (PlayerController pC in players) {
+                pC.aimAssist = _gameManager.gameSettings.aimAssistSingleplayer;
+            }
+        } else {
+            _gameManager.gameSettings.aimAssistMultiplayer = !_gameManager.gameSettings.aimAssistMultiplayer;
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+            foreach (PlayerController pC in players) {
+                pC.aimAssist = _gameManager.gameSettings.aimAssistMultiplayer;
+            }
         }
         SetAimAssistText();
     }
 
     void SetAimAssistText() {
         if (aimAssist != null) {
-            aimAssist.text = "Aim Assist: " + (_gameManager.gameSettings.aimAssistMultiplayer ? "ON" : "OFF");
+            if (_gameManager.isSinglePlayer) {
+                aimAssist.text = "Aim Assist: " + (_gameManager.gameSettings.aimAssistSingleplayer ? "ON" : "OFF");
+            } else {
+                aimAssist.text = "Aim Assist: " + (_gameManager.gameSettings.aimAssistMultiplayer ? "ON" : "OFF");
+            }
         }
     }
 

@@ -198,6 +198,9 @@ public class ResultsScreen : MonoBehaviour {
         if (_gameManager.LevelDoc != null) {
             _gameManager.CleanUp(false);
 
+            // Remove the ai players cuz they will be reloaded via BoardLoader
+            _gameManager.playerManager.ClearAIPlayers();
+
             BoardLoader boardLoader = FindObjectOfType<BoardLoader>();
             boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
         } else {

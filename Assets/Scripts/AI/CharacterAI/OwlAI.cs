@@ -28,28 +28,35 @@ public class OwlAI : CharacterAI {
         return true;
     }
 
-    // Slime's special move turns some of the player's hamsters into dead hamsters
+    // Owl's special move turns some of her hamsters into rainbow hamsters
     public override void SpecialMove() {
+        Debug.Log("Owl special move");
+
         // Get valid indexes of the player's hamsters
         List<int> validIndexes = new List<int>();
+        bool anyRainbows = false;
         for (int i = 0; i < _hamsterScan.AllRightHamsters.Count; ++i) {
-            // Don't choose already dead hamsters
+            // Don't choose already rainbow hamsters
             if (_hamsterScan.AllRightHamsters[i].type != HAMSTER_TYPES.RAINBOW) {
                 validIndexes.Add(i);
+            } else {
+                anyRainbows = true;
             }
         }
 
-        // Set 3 of the player's hamsters to dead randomly
-        int tempIndex = 0;
-        for (int i = 0; i < 3; ++i) {
-            // Get a random valid index
-            tempIndex = validIndexes[Random.Range(0, validIndexes.Count)];
+        if (!anyRainbows) {
+            // Set 3 of the hamsters to rainbow randomly
+            int tempIndex = 0;
+            for (int i = 0; i < 3; ++i) {
+                // Get a random valid index
+                tempIndex = validIndexes[Random.Range(0, validIndexes.Count)];
 
-            // Ice the chosen bubble
-            _hamsterScan.AllRightHamsters[tempIndex].SetType((int)HAMSTER_TYPES.RAINBOW);
+                // Ice the chosen bubble
+                _hamsterScan.AllRightHamsters[tempIndex].SetType((int)HAMSTER_TYPES.RAINBOW);
 
-            // Remove chosen index from valid indexes
-            validIndexes.Remove(tempIndex);
+                // Remove chosen index from valid indexes
+                validIndexes.Remove(tempIndex);
+            }
         }
     }
 }

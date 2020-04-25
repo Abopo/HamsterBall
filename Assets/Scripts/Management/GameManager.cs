@@ -213,15 +213,15 @@ public class GameManager : MonoBehaviour {
                 // Save the highscore
                 if(isCoop) {
                     int[,] coopHighscores = ES3.Load<int[,]>("CoopHighScores");
-                    if(winScore > coopHighscores[stage[0], stage[1]]) {
-                        coopHighscores[stage[0], stage[1]] = winScore;
+                    if(winScore > coopHighscores[stage[0]-1, stage[1]-1]) {
+                        coopHighscores[stage[0]-1, stage[1]-1] = winScore;
 
                         ES3.Save<int[,]>("CoopHighScores", coopHighscores);
                     }
                 } else {
                     int[,] soloHighscores = ES3.Load<int[,]>("SoloHighScores");
-                    if (winScore > soloHighscores[stage[0], stage[1]]) {
-                        soloHighscores[stage[0], stage[1]] = winScore;
+                    if (winScore > soloHighscores[stage[0]-1, stage[1]-1]) {
+                        soloHighscores[stage[0]-1, stage[1]-1] = winScore;
 
                         ES3.Save<int[,]>("SoloHighScores", soloHighscores);
                     }
@@ -234,7 +234,9 @@ public class GameManager : MonoBehaviour {
                 UnlockNextLevel();
 
                 gameSettings.aimAssistSingleplayer = false;
-            } else if (gameSettings.aimAssistSetting == AIMASSIST.AFTERLOSS) {
+            }
+
+            if (winningTeam != 0 && gameSettings.aimAssistSetting == AIMASSIST.AFTERLOSS) {
                 // If the player lost, turn on aimAssist
                 gameSettings.aimAssistSingleplayer = true;
             }
@@ -358,6 +360,8 @@ public class GameManager : MonoBehaviour {
                 playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
             }
             playerManager.ClearAllPlayers();
+
+            gameSettings.aimAssistSingleplayer = false;
 
             ResetGames();
             prevPuzzles.Clear();

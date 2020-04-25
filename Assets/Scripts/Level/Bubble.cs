@@ -450,7 +450,7 @@ public class Bubble : MonoBehaviour {
             }
 
             // Remove self from bubble manager
-            _homeBubbleManager.RemoveBubble(node);
+            //_homeBubbleManager.RemoveBubble(node);
 
             _destroy = true;
 		}
@@ -909,9 +909,12 @@ public class Bubble : MonoBehaviour {
                 }
             }
         }
-	}
 
-	public bool IsAnchorPoint() {
+        // Remove self from bubble manager
+        _homeBubbleManager.RemoveBubble(node);
+    }
+
+    public bool IsAnchorPoint() {
 		if (node < _homeBubbleManager.TopLineLength) {
 			return true;
 		}

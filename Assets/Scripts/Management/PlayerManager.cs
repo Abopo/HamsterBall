@@ -167,6 +167,11 @@ public class PlayerManager : MonoBehaviour {
         _players.Clear();
     }
 
+    // Used in story mode to replay a stage
+    public void ClearAIPlayers() {
+        _players.RemoveAll(PlayerInfo => PlayerInfo.isAI == true);
+    }
+
     public void SceneChanged(Scene scene, LoadSceneMode mode) {
         // If we've gone back to the main menu or reloaded the character select screen
         if (scene.name == "MainMenu" || scene.name == "CharacterSelect" || scene.name == "DemoCharacterSelect" || scene.name == "NetworkedCharacterSelect") {

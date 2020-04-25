@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using System.IO;
 using Rewired;
 
@@ -42,9 +43,12 @@ public class CutsceneManager : MonoBehaviour {
     bool _playedAudio;
     bool _isPlaying;
 
+    public UnityEvent cutsceneEnd;
+
     GameManager _gameManager;
     Player _player;
 
+    
     // Use this for initialization
     private void Awake() {
         _textWriter = GetComponent<TextWriter>();
@@ -153,6 +157,8 @@ public class CutsceneManager : MonoBehaviour {
         // Turn off the skip cutscene window
         skipCutsceneWindow.SetActive(false);
 
+        cutsceneEnd.Invoke();
+
         _gameManager.Unpause();
     }
 
@@ -181,7 +187,7 @@ public class CutsceneManager : MonoBehaviour {
             ReadEscapeCharacter();
         }
 
-        if(_player.GetButtonDown("Start") && _isPlaying) {
+        if(_player.GetButtonDown("Pause") && _isPlaying) {
             if(!skipCutsceneWindow.activeSelf) {
                 // Turn on the skip cutscene window
                 skipCutsceneWindow.SetActive(true);
