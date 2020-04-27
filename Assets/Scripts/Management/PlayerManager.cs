@@ -182,10 +182,10 @@ public class PlayerManager : MonoBehaviour {
 		if (scene.name == "LocalPlay")
 		{
 			SoundManager.mainAudio.MenuGeneralEvent.setPaused(false);
-			SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(true);
+			SoundManager.mainAudio.VillageMusicEvent.setPaused(true);
 		} else if (scene.name == "VillageScene")
 		{
-			SoundManager.mainAudio.HappyDaysMusicEvent.setPaused(false);
+			SoundManager.mainAudio.VillageMusicEvent.setPaused(false);
 			SoundManager.mainAudio.MenuGeneralEvent.setPaused(true);
 		}
 

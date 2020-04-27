@@ -18,13 +18,13 @@ public class MenuAudio : MonoBehaviour {
         LoadBGM();
 
         if (sceneIndex < 2) {
-			SoundManager.mainAudio.HappyDaysMusicEvent.start();
+			SoundManager.mainAudio.VillageMusicEvent.start();
         }
     }
 
     void LoadBGM() {
         Debug.Log("Load Menu Music");
-		SoundManager.mainAudio.HappyDaysMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HappyDaysMusic);
+		SoundManager.mainAudio.VillageMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.VillageMusic);
 		SoundManager.mainAudio.MenuGeneralEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MenuGeneral);
     }
 
@@ -56,8 +56,8 @@ public class MenuAudio : MonoBehaviour {
                 //SoundManager.mainAudio.MenuGeneralEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
                 // For some reason we have to create a new instance every time here
-                SoundManager.mainAudio.HappyDaysMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HappyDaysMusic);
-                SoundManager.mainAudio.HappyDaysMusicEvent.start();
+                SoundManager.mainAudio.VillageMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.VillageMusic);
+                SoundManager.mainAudio.VillageMusicEvent.start();
 
                 musicPlaying = 0;
             } else if (sceneIndex < 15 && musicPlaying != 1) {
@@ -79,7 +79,7 @@ public class MenuAudio : MonoBehaviour {
                 // We're in a level so play level music
                 Debug.Log("Stop menu music");
                 SoundManager.mainAudio.MenuGeneralEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
                 musicPlaying = -1;
             }
