@@ -8,6 +8,7 @@ public class ShopItem : MenuButton, IScrollHandler {
 
     public Sprite itemSprite;
     public string itemName;
+    public int itemCost;
     public string itemDescription;
     public bool purchased;
 
@@ -40,22 +41,26 @@ public class ShopItem : MenuButton, IScrollHandler {
         // Tell shop menu that we are selected
         _shopMenu.SetCurItem(this);
 
-        // Display item image
-
-        // Change item description
-        _shopMenu.itemDescription.text = itemDescription;
+        SetItemData();
     }
 
     public void MouseHighlight() {
         base.Highlight();
 
-        // Display item image
-
-        // Change item description
-        _shopMenu.itemDescription.text = itemDescription;
+        SetItemData();
 
         // Do a little shake?
 
+    }
+
+    void SetItemData() {
+        // Display item image
+
+        // Change item cost
+        _shopMenu.itemCost.text = itemCost.ToString();
+
+        // Change item description
+        _shopMenu.itemDescription.text = itemDescription;
     }
 
     protected override void Select() {

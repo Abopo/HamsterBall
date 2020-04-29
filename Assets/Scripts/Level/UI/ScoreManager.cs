@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour {
     public int team = 0;
 
-    public Text _totalScoreText;
-    public Text _scorePoolText;
+    public SuperTextMesh _totalScoreText;
+    public SuperTextMesh _scorePoolText;
 
     int _totalScore; // the current total score
     int _scorePool; // a pool of score to add after a second

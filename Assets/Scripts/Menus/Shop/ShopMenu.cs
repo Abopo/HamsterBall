@@ -7,7 +7,10 @@ public class ShopMenu : Menu {
 
     public RectTransform content;
     public Image itemImage;
+    public SuperTextMesh itemCost;
     public SuperTextMesh itemDescription;
+
+    public SuperTextMesh playerCurrency;
 
     float _scrollTo;
     float _scrollSpeed = 1000f;
@@ -32,6 +35,28 @@ public class ShopMenu : Menu {
         base.Start();
 
         // Figure out what's available in the shop
+        LoadShopData();
+
+        // Run back through the items to properly set their adjacent options
+        for (int i = 0; i < _items.Count; ++i) {
+            _items[i].FindAdjOptions();
+        }
+        // For some reason the bottom items adj options aren't accurate
+        _items[_items.Count-1].adjOptions[1] = null;
+
+        // Highlight the first item
+        _items[0].isFirstSelection = true;
+        itemDescription.text = _items[0].itemDescription;
+
+        // Properly size the content
+        if (_items.Count > 5) {
+            content.sizeDelta = new Vector2(content.sizeDelta.x, 305 + (_items.Count - 5) * 45);
+        }
+
+        playerCurrency.text = ES3.Load<int>("Currency").ToString();
+    }
+
+    void LoadShopData() {
         TextAsset palettes = Resources.Load<TextAsset>("Text/Shop/CharacterPalettes");
         string[] linesFromFile = palettes.text.Split("\n"[0]);
         int i = 0;
@@ -46,14 +71,14 @@ public class ShopMenu : Menu {
         GameObject tempItem;
 
         while (readLine != "End") {
-            if(readLine == "") {
+            if (readLine == "") {
                 readLine = linesFromFile[index++];
                 continue;
             }
 
             // Check if the item is available for purchase
             itemData = ES3.Load<bool[]>(readLine);
-            if(itemData[0]) {
+            if (itemData[0]) {
                 // Create the item object
                 tempItem = Instantiate(_shopItemObj, content) as GameObject;
                 ((RectTransform)tempItem.transform).anchoredPosition = new Vector3(0, -30 - (50 * _items.Count));
@@ -61,6 +86,10 @@ public class ShopMenu : Menu {
                 // If the item has already been purchased
                 tempItem.GetComponent<ShopItem>().purchased = itemData[1];
                 _items.Add(tempItem.GetComponent<ShopItem>());
+
+                // Get the item cost
+                readLine = linesFromFile[index++];
+                tempItem.GetComponent<ShopItem>().itemCost = int.Parse(readLine);
 
                 // Get the item description
                 readLine = linesFromFile[index++];
@@ -72,22 +101,6 @@ public class ShopMenu : Menu {
                 readLine = linesFromFile[index++];
             }
             readLine = linesFromFile[index++];
-        }
-
-        // Run back through the items to properly set their adjacent options
-        for (i = 0; i < _items.Count; ++i) {
-            _items[i].FindAdjOptions();
-        }
-        // For some reason the bottom items adj options aren't accurate
-        _items[_items.Count-1].adjOptions[1] = null;
-
-        // Highlight the first item
-        _items[0].isFirstSelection = true;
-        itemDescription.text = _items[0].itemDescription;
-
-        // Properly size the content
-        if (_items.Count > 5) {
-            content.sizeDelta = new Vector2(content.sizeDelta.x, 305 + (_items.Count - 5) * 45);
         }
     }
 

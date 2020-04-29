@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GoalMenu : MonoBehaviour {
-    public Text goalText;
-    public Text goalRequirement;
-    public Text conditionText;
-    public Text conditionLeftText;
+    public SuperTextMesh goalText;
+    public SuperTextMesh goalRequirement;
+    public SuperTextMesh conditionText;
+    public SuperTextMesh conditionLeftText;
 
-    public Text timeText;
+    public SuperTextMesh timeText;
     int seconds;
     int minutes;
 
@@ -32,10 +32,10 @@ public class GoalMenu : MonoBehaviour {
                 break;
             case GAME_MODE.SP_CLEAR:
                 // No goal or condition text for this mode
-                goalText.enabled = false;
-                goalRequirement.enabled = false;
-                conditionText.enabled = false;
-                conditionLeftText.enabled = false;
+                goalText.gameObject.SetActive(false);
+                goalRequirement.gameObject.SetActive(false);
+                conditionText.gameObject.SetActive(false);
+                conditionLeftText.gameObject.SetActive(false);
                 break;
             case GAME_MODE.SP_POINTS:
                 goalText.text = "Score\n       Needed";

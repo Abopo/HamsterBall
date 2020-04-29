@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ExitMenu : Menu {
+    public GameObject menuObject;
     public MenuButton yesButton;
 
     public string returnMenu;
@@ -19,8 +20,8 @@ public class ExitMenu : Menu {
 
         _gameManager = FindObjectOfType<GameManager>();
 
-        if(!_active && gameObject.activeSelf) {
-            gameObject.SetActive(false);
+        if(!_active && menuObject.activeSelf) {
+            menuObject.SetActive(false);
         }
     }
 
@@ -36,7 +37,7 @@ public class ExitMenu : Menu {
     public override void Activate() {
         base.Activate();
 
-        gameObject.SetActive(true);
+        menuObject.SetActive(true);
         _active = true;
 
         // Set YES button to selected
@@ -58,7 +59,7 @@ public class ExitMenu : Menu {
         base.Deactivate();
 
         // Close the menu
-        gameObject.SetActive(false);
+        menuObject.SetActive(false);
         _active = false;
     }
 }

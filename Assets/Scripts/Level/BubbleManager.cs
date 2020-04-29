@@ -707,7 +707,6 @@ public class BubbleManager : MonoBehaviour {
 
     void CheckBubbleAnchors() {
         // Check for anchor points
-        List<Bubble> anchorBubbles = new List<Bubble>();
         foreach (Bubble b in _bubbles) {
             if (b != null) {
                 b.checkedForAnchor = false;

@@ -101,6 +101,9 @@ public class VillageManager : MonoBehaviour {
             ES3.Save<int>("Player2Character", CHARACTERS.GIRL);
             ES3.Save<int>("Player2Color", 1);
 
+            // Currency
+            ES3.Save<int>("Currency", 100);
+
             // Highscores
             HighscorePrefs();
 

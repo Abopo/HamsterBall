@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ResultsScreen : MonoBehaviour {
+    public NumberTick currencyText;
     public SuperTextMesh winningTeamText;
     public Image winningTeamSprite;
     public MenuButton mainMenuButton;
@@ -68,19 +69,19 @@ public class ResultsScreen : MonoBehaviour {
     public void SetWinningTeamText(int winTeam) {
         if(winTeam == -1) {
             if (winningTeamText != null) {
-                winningTeamText.text = "Left Team Wins";
+                winningTeamText.text = "Left Team Wins!";
             }
             winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[5];
         } else if(winTeam == 1) {
             if (winningTeamText != null) {
-                winningTeamText.text = "Right Team Wins";
+                winningTeamText.text = "Right Team Wins!";
             }
             winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[9];
         } else {
             if (winningTeamText != null) {
                 winningTeamText.text = "Draw";
             }
-            //winningTeamText.gameObject.SetActive(true);
+            winningTeamText.gameObject.SetActive(true);
             winningTeamSprite.enabled = false;
         }
     }
@@ -117,6 +118,10 @@ public class ResultsScreen : MonoBehaviour {
             SetWinningTeamText(result);
         }
 
+        if (currencyText != null) {
+            SetCurrency();
+        }
+
         _menuOptions = transform.GetComponentsInChildren<MenuOption>();
         foreach (MenuOption mo in _menuOptions) {
             mo.isReady = false;
@@ -132,6 +137,46 @@ public class ResultsScreen : MonoBehaviour {
 
         _winTimer = 0f;
         _canInteract = false;
+    }
+
+    void SetCurrency() {
+        int combinedScore = 0, gainedCurrency = 0;
+
+        // Find the score managers and add their scores together
+        ScoreManager[] _scoreManagers = FindObjectsOfType<ScoreManager>();
+        foreach(ScoreManager sm in _scoreManagers) {
+            combinedScore += sm.TotalScore;
+        }
+
+        // The currency gained is 10% of the combined scores
+        gainedCurrency = combinedScore / 10;
+
+        // TODO: The above DEFINITELY makes certain game modes more lucrative than others
+        // Trying to find a way to earn around the same amount of currency for each mode
+        // It may still vary wildly depending on what happens/what the stages are
+        switch (_gameManager.gameMode) {
+            case GAME_MODE.MP_VERSUS:
+            case GAME_MODE.MP_PARTY:
+            case GAME_MODE.SP_CLEAR:
+                gainedCurrency /= 3;
+                break;
+            case GAME_MODE.SP_POINTS:
+                gainedCurrency *= 2;
+                break;
+            case GAME_MODE.SURVIVAL:
+                gainedCurrency /= 2;
+                break;
+            case GAME_MODE.TEAMSURVIVAL:
+                gainedCurrency /= 4;
+                break;
+        }
+
+        currencyText.StartTick(0, gainedCurrency);
+
+        // Add and save currency based on score
+        int totalCurrency = ES3.Load<int>("Currency", 0);
+        totalCurrency += gainedCurrency;
+        ES3.Save<int>("Currency", totalCurrency);
     }
 
     public void PlayAgain() {
@@ -206,5 +251,9 @@ public class ResultsScreen : MonoBehaviour {
         } else {
             _gameManager.PlayAgainButton();
         }
+    }
+
+    public void ReturnToVillage() {
+        _gameManager.VillageButton();
     }
 }
