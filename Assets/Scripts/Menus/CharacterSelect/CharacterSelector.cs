@@ -321,7 +321,7 @@ public class CharacterSelector : MonoBehaviour {
         charaWindow.colorArrows.SetActive(true);
 
         // If the base color is taken, change to the right
-        if(_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
+        if(_resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
             ChangeColorRight();
         } else {
             SetColor(charaColor);
@@ -346,9 +346,9 @@ public class CharacterSelector : MonoBehaviour {
 
     public void ShiftCSPlayer() {
         // If the selected color isn't taken
-        if (!_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
+        if (!_resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].isTaken) {
             // Take it
-            _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = true;
+            _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = true;
 
             // Make sure player has correct controller
             charaWindow.PlayerController.SetInputPlayer(_player.id);
@@ -366,7 +366,7 @@ public class CharacterSelector : MonoBehaviour {
         charaWindow.colorArrows.SetActive(true);
 
         // Free up that color
-        _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = false;
+        _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].isTaken = false;
     }
 
     void HighlightIcon(CharacterIcon charaIcon) {
@@ -382,7 +382,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)charaIcon.charaName][0];
         // Change animator to correct character
-        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)charaIcon.charaName][0].animator;
+        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaInfo[(int)charaIcon.charaName][0].animator;
         // Change name to correct character
         charaWindow.charaName.text = _resources.CharaNames[(int)charaIcon.charaName];
 
@@ -403,7 +403,7 @@ public class CharacterSelector : MonoBehaviour {
         // Iterate throught the colors until there is one that isn't already taken
         do {
             charaColor += 1;
-            if (charaColor > _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count) {
+            if (charaColor > _resources.CharaInfo[(int)curCharacterIcon.charaName].Count) {
                 charaColor = 1;
             }
 
@@ -412,7 +412,7 @@ public class CharacterSelector : MonoBehaviour {
                 // Break out of the loop
                 break;
             }
-        } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
+        } while (_resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
 
         SetColor(charaColor);
 
@@ -425,7 +425,7 @@ public class CharacterSelector : MonoBehaviour {
         do {
             charaColor -= 1;
             if (charaColor < 1) {
-                charaColor = _resources.CharaAnimators[(int)curCharacterIcon.charaName].Count;
+                charaColor = _resources.CharaInfo[(int)curCharacterIcon.charaName].Count;
             }
 
             // If we've looped back to the same color
@@ -433,7 +433,7 @@ public class CharacterSelector : MonoBehaviour {
                 // Break out of the loop
                 break;
             }
-        } while (_resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
+        } while (_resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].isTaken);
 
         SetColor(charaColor);
 
@@ -475,21 +475,23 @@ public class CharacterSelector : MonoBehaviour {
         // Set to the new color
         charaColor = color;
 
-        // Change portrait to correct character
-        charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
-
         // Lackey is special
         if (curCharacterIcon.charaName == CHARACTERS.LACKEY) {
             // Change animator to correct character
-            charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+            charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].animator;
         } else {
             // Change material to correct color
-            charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaAnimators[(int)curCharacterIcon.charaName][charaColor - 1].material;
+            charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].material;
         }
 
         // Keep csplayer data updated
         charaWindow.PlayerController.CharaInfo.name = curCharacterIcon.charaName;
         charaWindow.PlayerController.CharaInfo.color = charaColor;
+
+        // Change portrait to correct character
+        if (charaColor - 1 < _resources.CharaPortraits[(int)curCharacterIcon.charaName].Count) {
+            charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
+        }
 
         //_audioSource.Play();
     }

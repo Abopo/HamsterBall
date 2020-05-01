@@ -24,13 +24,17 @@ public class Menu : MonoBehaviour {
     protected GameManager _gameManager;
 
     protected virtual void Awake() {
-        _menuOptions = transform.GetComponentsInChildren<MenuOption>(true);
-        foreach(MenuOption mO in _menuOptions) {
-            mO.SetParentMenu(this);
-        }
+        GetChildOptions();
 
         _eventSystem = EventSystem.current.GetComponent<EventSystem>();
         _gameManager = FindObjectOfType<GameManager>();
+    }
+
+    protected void GetChildOptions() {
+        _menuOptions = transform.GetComponentsInChildren<MenuOption>(true);
+        foreach (MenuOption mO in _menuOptions) {
+            mO.SetParentMenu(this);
+        }
     }
 
     // Start is called before the first frame update

@@ -5,21 +5,40 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class ShopItem : MenuButton, IScrollHandler {
-
-    public Sprite itemSprite;
     public string itemName;
     public int itemCost;
     public string itemDescription;
-    public bool purchased;
+    public Sprite itemSprite;
+    public GameObject outImage;
+
 
     ShopMenu _shopMenu;
     ScrollRect _mainScroll;
+    ItemSprite _itemSprite;
+    ConfirmPurchaseMenu _confirmMenu;
+
+    bool _purchased;
+    public bool Purchased {
+        get { return _purchased; }
+
+        set {
+            _purchased = value;
+
+            if (_purchased) {
+                outImage.SetActive(true);
+            } else {
+                outImage.SetActive(false);
+            }
+        }
+    }
 
     protected override void Awake() {
         base.Awake();
 
         _shopMenu = FindObjectOfType<ShopMenu>();
         _mainScroll = FindObjectOfType<ScrollRect>();
+        _itemSprite = FindObjectOfType<ItemSprite>();
+        _confirmMenu = FindObjectOfType<ConfirmPurchaseMenu>();
     }
 
     // Start is called before the first frame update
@@ -47,14 +66,17 @@ public class ShopItem : MenuButton, IScrollHandler {
     public void MouseHighlight() {
         base.Highlight();
 
-        SetItemData();
+        if (IsReady) {
+            SetItemData();
 
-        // Do a little shake?
+            // Do a little shake?
 
+        }
     }
 
     void SetItemData() {
         // Display item image
+        _itemSprite.SetItem(this);
 
         // Change item cost
         _shopMenu.itemCost.text = itemCost.ToString();
@@ -63,11 +85,16 @@ public class ShopItem : MenuButton, IScrollHandler {
         _shopMenu.itemDescription.text = itemDescription;
     }
 
-    protected override void Select() {
-        base.Select();
+    public void TryPurchase() {
+        if (!_purchased && _shopMenu.playerCurrency >= itemCost) {
+            // Open up purchase confirmation window
+            _confirmMenu.Activate();
 
-        // Open up purchase confirmation window
+            PlaySelectSound();
+        } else {
+            // Play error sound?
 
+        }
     }
 
     // Force scroll even when pointer is over buttons

@@ -69,7 +69,7 @@ public class NetworkedCSPlayer : MonoBehaviour {
         _csPlayer.ShiftIntoPlayArea();
 
         // Make sure our color is taken
-        _resources.CharaAnimators[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = true;
+        _resources.CharaInfo[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = true;
     }
 
     [PunRPC]
@@ -81,6 +81,6 @@ public class NetworkedCSPlayer : MonoBehaviour {
         _csPlayer.PullDownWindow();
 
         // Make sure our color is available
-        _resources.CharaAnimators[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = false;
+        _resources.CharaInfo[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = false;
     }
 }

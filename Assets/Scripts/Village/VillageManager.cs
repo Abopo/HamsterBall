@@ -102,13 +102,16 @@ public class VillageManager : MonoBehaviour {
             ES3.Save<int>("Player2Color", 1);
 
             // Currency
-            ES3.Save<int>("Currency", 100);
+            ES3.Save<int>("Currency", 200);
 
             // Highscores
             HighscorePrefs();
 
             // Shop items
             ShopItems();
+
+            // Character palettes
+            CharacterPalettes();
 
             ES3.Save<int>("FirstTimePlaying", 1);
         }
@@ -155,6 +158,22 @@ public class VillageManager : MonoBehaviour {
 
             ES3.Save<bool[]>(tempString, values);
         }
+    }
+
+    void CharacterPalettes() {
+        // First four palettes for all characters are unlocked by default
+        bool[] initialPaletteData = new bool[5] { true, true, true, false, false};
+
+        ES3.Save<bool[]>("BoyPalettes", initialPaletteData);
+        ES3.Save<bool[]>("GirlPalettes", initialPaletteData);
+        ES3.Save<bool[]>("OwlPalettes", initialPaletteData);
+        ES3.Save<bool[]>("GoatPalettes", initialPaletteData);
+        ES3.Save<bool[]>("SnailPalettes", initialPaletteData);
+        ES3.Save<bool[]>("LizardPalettes", initialPaletteData);
+        ES3.Save<bool[]>("RoosterPalettes", initialPaletteData);
+        ES3.Save<bool[]>("BatPalettes", initialPaletteData);
+        ES3.Save<bool[]>("LackeyPalettes", initialPaletteData);
+        ES3.Save<bool[]>("CrocPalettes", initialPaletteData);
     }
 
     void GameStatPrefs() {

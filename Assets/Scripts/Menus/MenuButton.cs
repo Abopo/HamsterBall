@@ -42,7 +42,7 @@ public class MenuButton : MenuOption {
 
         // Make sure it's properly highlighted
         if (isFirstSelection) {
-            ButtonHighlight();
+            Highlight();
         }
     }
 
