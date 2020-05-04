@@ -16,6 +16,7 @@ public class HamsterSprite : MonoBehaviour {
     void Start () {
         _rigidbody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 	
 	// Update is called once per frame
@@ -53,6 +54,7 @@ public class HamsterSprite : MonoBehaviour {
         GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
 
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 5f);
+
         _rigidbody.GetComponent<Animator>().SetInteger("State", 1);
 
         _rigidbody.isKinematic = false;
@@ -61,10 +63,34 @@ public class HamsterSprite : MonoBehaviour {
         float rX = Random.Range(1f, 2f);
         float rY = Random.Range(-0.5f, 2f);
 
-        // TODO: set direction based on which side of the match the bubble/sprite is on
+        PopForce(rX, rY);
+    }
+
+    public void PlasmaPop() {
+        // We need to swap the animator
+        Bubble parentBubble = transform.parent.GetComponent<Bubble>();
+        Animator animator = GetComponent<Animator>();
+        animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/Plasma_HamsterSprite");
+        animator.SetInteger("Type", (int)parentBubble.type);
+
+        // Make sure sprite is solid
+        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 5f);
+
+        _rigidbody.isKinematic = false;
+        _rigidbody.gravityScale = 1;
+
+        float rX = Random.Range(1f, 2f);
+        float rY = Random.Range(0f, 2f);
+
+        PopForce(rX, rY);
+    }
+
+    void PopForce(float xForce, float yForce) {
         Bubble bubble = transform.parent.GetComponent<Bubble>();
         float averageX = 0f;
-        foreach(Bubble b in bubble.matches) {
+        foreach (Bubble b in bubble.matches) {
             if (b != null) {
                 averageX += b.transform.position.x;
             }
@@ -77,7 +103,7 @@ public class HamsterSprite : MonoBehaviour {
             GetComponent<SpriteRenderer>().flipX = true;
         }
 
-        _rigidbody.velocity = new Vector2(rX * dir, 6f + rY);
+        _rigidbody.velocity = new Vector2(xForce * dir, 6f + yForce);
     }
 
     // when a special ball is popped
@@ -102,4 +128,5 @@ public class HamsterSprite : MonoBehaviour {
 
         _specialMove = true;
     }
+
 }

@@ -142,17 +142,26 @@ public class BubblePopAnimation : MonoBehaviour {
         _bubblePieces[3].GetComponent<Rigidbody2D>().velocity = new Vector2(2f + rX, 2f + rY);
         _bubblePieces[3].GetComponent<Rigidbody2D>().rotation = Random.Range(-20f, 20f);
 
+
+        Bubble bub = GetComponent<Bubble>();
+
         if (special) {
             _hamsterSprite.SpecialPop();
         } else {
             // Launch off hamster sprite
-            _hamsterSprite.Pop();
+            if (bub.isPlasma) {
+                _hamsterSprite.PlasmaPop();
+                _destroyTime = 5.0f;
+            } else {
+                _hamsterSprite.Pop();
+            }
+
             // Start destroy timer
             _popped = true;
         }
 
         // Turn off normal bubble sprite and collision
-        GetComponent<Bubble>().bubbleAnimator.GetComponent<SpriteRenderer>().enabled = false;
+        bub.bubbleAnimator.GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<CircleCollider2D>().enabled = false;
     }
 
