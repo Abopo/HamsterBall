@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public class ShopMenu : Menu {
 
     public int playerCurrency;
     public SuperTextMesh currencyText;
+
+    ShopData _shopData;
 
     float _scrollTo;
     float _scrollSpeed = 1000f;
@@ -37,8 +40,12 @@ public class ShopMenu : Menu {
     protected override void Start() {
         base.Start();
 
+        // Testing out xml loading stuff
+        LoadXMLShopData();
+        CreateShopItems();
+
         // Figure out what's available in the shop
-        LoadShopData();
+        //LoadShopData();
 
         // Do this now that the item objects are actually made
         GetChildOptions();
@@ -52,7 +59,7 @@ public class ShopMenu : Menu {
 
         // Highlight the first item
         _items[0].isFirstSelection = true;
-        itemDescription.text = _items[0].itemDescription;
+        itemDescription.text = _items[0].ItemInfo.description;
 
         // Properly size the content
         if (_items.Count > 5) {
@@ -61,8 +68,33 @@ public class ShopMenu : Menu {
 
         playerCurrency = ES3.Load<int>("Currency", 100);
         currencyText.text = playerCurrency.ToString();
+
     }
 
+    void LoadXMLShopData() {
+        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
+    }
+
+    void CreateShopItems() {
+        GameObject tempItem;
+        bool[] itemData;
+
+        // Palettes
+        foreach(ItemInfo iInfo in _shopData.paletteData) {
+            itemData = ES3.Load<bool[]>(iInfo.itemName);
+
+            // if this item is unlocked
+            if (itemData[0]) {
+                tempItem = Instantiate(_shopItemObj, content) as GameObject;
+                ((RectTransform)tempItem.transform).anchoredPosition = new Vector3(0, -30 - (50 * _items.Count));
+                tempItem.GetComponent<ShopItem>().ItemInfo = iInfo;
+                tempItem.GetComponent<ShopItem>().SetPurchased(itemData[1]);
+                _items.Add(tempItem.GetComponent<ShopItem>());
+            }
+        }
+    }
+
+    /*
     void LoadShopData() {
         TextAsset palettes = Resources.Load<TextAsset>("Text/Shop/CharacterPalettes");
         string[] linesFromFile = palettes.text.Split("\n"[0]);
@@ -110,6 +142,7 @@ public class ShopMenu : Menu {
             readLine = linesFromFile[index++];
         }
     }
+    */
 
     // Update is called once per frame
     protected override void Update() {
@@ -161,48 +194,49 @@ public class ShopMenu : Menu {
 
     public void PurchaseCurItem() {
         // Unlock whatever the item is?
-        if(_curItem.itemName.Contains("Palette")) {
+        if(_curItem.ItemInfo.itemName.Contains("Palette")) {
             UnlockPalette();
         }
 
         // Reduce player currency by the cost
-        playerCurrency -= _curItem.itemCost;
+        playerCurrency -= _curItem.ItemInfo.price;
         currencyText.text = playerCurrency.ToString();
         ES3.Save<int>("Currency", playerCurrency);
 
         // Change item to purchased
-        _curItem.Purchased = true;
+        _curItem.SetPurchased(true);
 
         // Save that this item has been purchased
-        bool[] itemData = ES3.Load<bool[]>(_curItem.itemName);
+        //_shopData.Save(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
+        bool[] itemData = ES3.Load<bool[]>(_curItem.ItemInfo.itemName);
         itemData[1] = true;
-        ES3.Save<bool[]>(_curItem.itemName, itemData);
+        ES3.Save<bool[]>(_curItem.ItemInfo.itemName, itemData);
     }
 
     void UnlockPalette() {
-        string paletteString = new String(_curItem.itemName.Where(Char.IsDigit).ToArray());
+        string paletteString = new String(_curItem.ItemInfo.itemName.Where(Char.IsDigit).ToArray());
         int paletteNum = int.Parse(paletteString);
 
         bool[] characterPaletteData;
 
         // Save palette based on the character
-        if (_curItem.itemName.Contains("Kaden")) {
+        if (_curItem.ItemInfo.itemName.Contains("Kaden")) {
             paletteString = "BoyPalettes";
-        } else if (_curItem.itemName.Contains("Quinn")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Quinn")) {
             paletteString = "GirlPalettes";
-        } else if (_curItem.itemName.Contains("Gail")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Gail")) {
             paletteString = "OwlPalettes";
-        } else if (_curItem.itemName.Contains("Bexal")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Bexal")) {
             paletteString = "GoatPalettes";
-        } else if (_curItem.itemName.Contains("Don")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Don")) {
             paletteString = "SnailPalettes";
-        } else if (_curItem.itemName.Contains("Jodi")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Jodi")) {
             paletteString = "LizardPalettes";
-        } else if (_curItem.itemName.Contains("Rooben")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Rooben")) {
             paletteString = "RoosterPalettes";
-        } else if (_curItem.itemName.Contains("Carmela")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Carmela")) {
             paletteString = "BatPalettes";
-        } else if (_curItem.itemName.Contains("Lackey")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Lackey")) {
             paletteString = "LackeyPalettes";
         } else {
             Debug.LogError("Character palette data not found");

@@ -1,30 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class ShopItem : MenuButton, IScrollHandler {
-    public string itemName;
-    public int itemCost;
-    public string itemDescription;
-    public Sprite itemSprite;
-    public GameObject outImage;
 
+    public GameObject outImage;
 
     ShopMenu _shopMenu;
     ScrollRect _mainScroll;
     ItemSprite _itemSprite;
     ConfirmPurchaseMenu _confirmMenu;
 
-    bool _purchased;
-    public bool Purchased {
-        get { return _purchased; }
+    ItemInfo _itemInfo;
+    public ItemInfo ItemInfo {
+        get { return _itemInfo; }
 
         set {
-            _purchased = value;
+            _itemInfo = value;
 
-            if (_purchased) {
+            if (ItemInfo.purchased) {
                 outImage.SetActive(true);
             } else {
                 outImage.SetActive(false);
@@ -45,7 +43,7 @@ public class ShopItem : MenuButton, IScrollHandler {
     protected override void Start() {
         base.Start();
 
-        GetComponentInChildren<SuperTextMesh>().text = itemName;
+        GetComponentInChildren<SuperTextMesh>().text = _itemInfo.itemName;
     }
 
     // Update is called once per frame
@@ -79,14 +77,14 @@ public class ShopItem : MenuButton, IScrollHandler {
         _itemSprite.SetItem(this);
 
         // Change item cost
-        _shopMenu.itemCost.text = itemCost.ToString();
+        _shopMenu.itemCost.text = _itemInfo.price.ToString();
 
         // Change item description
-        _shopMenu.itemDescription.text = itemDescription;
+        _shopMenu.itemDescription.text = _itemInfo.description;
     }
 
     public void TryPurchase() {
-        if (!_purchased && _shopMenu.playerCurrency >= itemCost) {
+        if (!_itemInfo.purchased && _shopMenu.playerCurrency >= _itemInfo.price) {
             // Open up purchase confirmation window
             _confirmMenu.Activate();
 
@@ -100,5 +98,15 @@ public class ShopItem : MenuButton, IScrollHandler {
     // Force scroll even when pointer is over buttons
     public void OnScroll(PointerEventData data) {
         _mainScroll.OnScroll(data);
+    }
+
+    public void SetPurchased(bool purchased) {
+        _itemInfo.purchased = purchased;
+
+        if (_itemInfo.purchased) {
+            outImage.SetActive(true);
+        } else {
+            outImage.SetActive(false);
+        }
     }
 }

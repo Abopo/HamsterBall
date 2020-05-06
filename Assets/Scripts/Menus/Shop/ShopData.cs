@@ -1,18 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using System.IO;
 using UnityEngine;
 
 [System.Serializable]
 public struct ItemInfo {
     public string itemName;
-    public int itemCost;
-    public string itemDescription;
-    public Sprite itemSprite;
+    public int price;
+    public string description;
+    public bool unlocked;
     public bool purchased;
+
+    public Sprite itemSprite;
 }
 
-public class ShopData : MonoBehaviour {
-    public ItemInfo[] paletteData;
+[XmlRoot("ShopData")]
+public class ShopData {
+
+    [XmlArray("Palettes")]
+    [XmlArrayItem("Palette")]
+    public List<ItemInfo> paletteData = new List<ItemInfo>();
+
     public ItemInfo[] stageData;
     public ItemInfo[] onlineData;
 
@@ -24,5 +33,19 @@ public class ShopData : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         
+    }
+
+    public void Save(string path) {
+        XmlSerializer serializer = new XmlSerializer(typeof(ShopData));
+        using (FileStream stream = new FileStream(path, FileMode.Open)) {
+            serializer.Serialize(stream, this);
+        }
+    }
+
+    public static ShopData Load(string path) {
+        XmlSerializer serializer = new XmlSerializer(typeof(ShopData));
+        using (FileStream stream = new FileStream(path, FileMode.Open)) {
+            return serializer.Deserialize(stream) as ShopData;
+        }
     }
 }

@@ -14,6 +14,7 @@ public class OptionsMenu : Menu {
 	}
 
     public void DeleteSaveData() {
+        // Delete the main es3 file
         ES3.DeleteFile();
     }
 }

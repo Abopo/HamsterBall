@@ -32,9 +32,9 @@ public class ItemSprite : MonoBehaviour {
     public void SetItem(ShopItem item) {
         _curItem = item;
 
-        if(_curItem.itemName.Contains("Palette")) {
+        if(_curItem.ItemInfo.itemName.Contains("Palette")) {
             PaletteSetup();
-        } else if(_curItem.itemName.Contains("Stage")) {
+        } else if(_curItem.ItemInfo.itemName.Contains("Stage")) {
             StageSetup();
         } else {
             BasicSetup();
@@ -46,34 +46,34 @@ public class ItemSprite : MonoBehaviour {
         string animatorPath = "Art/Animations/Player/";
         string palettePath = "";
 
-        string paletteNum = new String(_curItem.itemName.Where(Char.IsDigit).ToArray());
+        string paletteNum = new String(_curItem.ItemInfo.itemName.Where(Char.IsDigit).ToArray());
 
         // Load animators based on the character
-        if (_curItem.itemName.Contains("Kaden")) {
+        if (_curItem.ItemInfo.itemName.Contains("Kaden")) {
             animatorPath += "Boy/Animation Objects/Boy1";
             palettePath = "Materials/Character Palettes/Boy/Boy" + paletteNum;
-        } else if(_curItem.itemName.Contains("Quinn")) {
+        } else if(_curItem.ItemInfo.itemName.Contains("Quinn")) {
             animatorPath += "Girl/Animation Objects/Girl1";
             palettePath = "Materials/Character Palettes/Girl/Girl" + paletteNum;
-        } else if(_curItem.itemName.Contains("Gail")) {
+        } else if(_curItem.ItemInfo.itemName.Contains("Gail")) {
             animatorPath += "Owl/Animation Objects/Owl1";
             palettePath = "Materials/Character Palettes/Owl/Owl" + paletteNum;
-        } else if (_curItem.itemName.Contains("Bexal")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Bexal")) {
             animatorPath += "Bexal/Animation Objects/Goat1";
             palettePath = "Materials/Character Palettes/Goat/Goat" + paletteNum;
-        } else if (_curItem.itemName.Contains("Don")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Don")) {
             animatorPath += "Snail/Animation Objects/Snail1";
             palettePath = "Materials/Character Palettes/Snail/Snail" + paletteNum;
-        } else if (_curItem.itemName.Contains("Jodi")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Jodi")) {
             animatorPath += "Lizard/Animation Objects/Lizard1";
             palettePath = "Materials/Character Palettes/Lizard/Lizard" + paletteNum;
-        } else if (_curItem.itemName.Contains("Rooben")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Rooben")) {
             animatorPath += "Rooster/Animation Objects/Rooster1";
             palettePath = "Materials/Character Palettes/Rooster/Rooster" + paletteNum;
-        } else if (_curItem.itemName.Contains("Carmela")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Carmela")) {
             animatorPath += "Bat/Animation Objects/Bat1";
             palettePath = "Materials/Character Palettes/Bat/Bat" + paletteNum;
-        } else if (_curItem.itemName.Contains("Lackey")) {
+        } else if (_curItem.ItemInfo.itemName.Contains("Lackey")) {
             animatorPath += "Lackey/Animation Objects/Lackey" + paletteNum;
             // Make sure line sprite is turned off
             GetComponentInChildren<LinesSprite>().turnOff = true;
@@ -94,6 +94,6 @@ public class ItemSprite : MonoBehaviour {
     }
 
     void BasicSetup() {
-        _spriteRenderer.sprite = _curItem.itemSprite;
+        _spriteRenderer.sprite = _curItem.ItemInfo.itemSprite;
     }
 }

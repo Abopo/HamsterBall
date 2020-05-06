@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Rewired;
 
@@ -108,7 +109,8 @@ public class VillageManager : MonoBehaviour {
             HighscorePrefs();
 
             // Shop items
-            ShopItems();
+            //ShopItems();
+            LoadInitialShopData();
 
             // Character palettes
             CharacterPalettes();
@@ -129,6 +131,18 @@ public class VillageManager : MonoBehaviour {
         ES3.Save<int[,]>("CoopFlowers", coopFlowers);
     }
 
+    void LoadInitialShopData() {
+        ShopData _shopData = ShopData.Load(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
+        bool[] values = new bool[2]; // 0 - unlocked, 1 - purchased
+
+        // Palettes
+        foreach (ItemInfo iInfo in _shopData.paletteData) {
+            values[0] = iInfo.unlocked;
+            ES3.Save<bool[]>(iInfo.itemName, values);
+        }
+    }
+
+    /*
     void ShopItems() {
         TextAsset palettes = Resources.Load<TextAsset>("Text/Shop/ShopItemInitialData");
         string[] linesFromFile = palettes.text.Split("\n"[0]);
@@ -163,6 +177,7 @@ public class VillageManager : MonoBehaviour {
             ES3.Save<bool[]>(tempString, values);
         }
     }
+    */
 
     void CharacterPalettes() {
         // First four palettes for all characters are unlocked by default
