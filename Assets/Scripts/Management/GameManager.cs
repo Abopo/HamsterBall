@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
     public bool isCoop = false;
     public bool gameIsOver = false;
     public int[] stage = new int[2]; // if level is "" it's a local multiplayer match, otherwise it's a story level
+    public int flowerRequirement1;
+    public int flowerRequirement2;
     public BOARDS selectedBoard;
     public string nextLevel; // level to load next
     public string nextCutscene; // cutscene to load next
@@ -26,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public int goalCount; // the number of points or matches to win the level
     public int conditionLimit; // the condition limit to achieve the goal i.e. time limit, throw limit, etc.
     public int scoreOverflow = 0; // this variable holds onto the player's score between stages with multiple boards
+    public float timeOverflow = 0; // same as above but for time
 
     public int maxPlayers = 4;
 
@@ -203,32 +206,29 @@ public class GameManager : MonoBehaviour {
 
         // If we are playing a story level 
         if (IsStoryLevel()) {
-            // If there's still levels to play
-            if (nextLevel != "") {
-                // Carry over the highscore
-                scoreOverflow = winScore;
+            // Carry over the highscore
+            scoreOverflow = winScore;
+
+            // also the time
+            LevelManager lM = FindObjectOfType<LevelManager>();
+            timeOverflow += lM.LevelTimer;
 
             // The player's team won
-            } else if(winningTeam == 0) {
+            if (winningTeam == 0 && nextLevel == "") {
                 // Save the highscore
                 if(isCoop) {
                     int[,] coopHighscores = ES3.Load<int[,]>("CoopHighScores");
-                    if(winScore > coopHighscores[stage[0]-1, stage[1]-1]) {
-                        coopHighscores[stage[0]-1, stage[1]-1] = winScore;
-
-                        ES3.Save<int[,]>("CoopHighScores", coopHighscores);
-                    }
+                    SetHighscores(coopHighscores);
+                    ES3.Save<int[,]>("CoopHighScores", coopHighscores);
                 } else {
                     int[,] soloHighscores = ES3.Load<int[,]>("SoloHighScores");
-                    if (winScore > soloHighscores[stage[0]-1, stage[1]-1]) {
-                        soloHighscores[stage[0]-1, stage[1]-1] = winScore;
-
-                        ES3.Save<int[,]>("SoloHighScores", soloHighscores);
-                    }
+                    SetHighscores(soloHighscores);
+                    ES3.Save<int[,]>("SoloHighScores", soloHighscores);
                 }
 
-                // reset score overflow
+                // reset overflows
                 scoreOverflow = 0;
+                timeOverflow = 0;
 
                 // Unlock the next level
                 UnlockNextLevel();
@@ -239,6 +239,26 @@ public class GameManager : MonoBehaviour {
             if (winningTeam != 0 && gameSettings.aimAssistSetting == AIMASSIST.AFTERLOSS) {
                 // If the player lost, turn on aimAssist
                 gameSettings.aimAssistSingleplayer = true;
+            }
+        }
+    }
+
+    void SetHighscores(int[,] highscoresArray) {
+        // Highscore depends on the game mode
+        if (gameMode == GAME_MODE.MP_VERSUS) {
+            // Higher score is better
+            if (scoreOverflow > highscoresArray[stage[0] - 1, stage[1] - 1]) {
+                highscoresArray[stage[0] - 1, stage[1] - 1] = scoreOverflow;
+            }
+        } else if (gameMode == GAME_MODE.SP_CLEAR) {
+            // Lower time is better
+            if ((int)timeOverflow < highscoresArray[stage[0] - 1, stage[1] - 1] || highscoresArray[stage[0] - 1, stage[1] - 1] == 0) {
+                highscoresArray[stage[0] - 1, stage[1] - 1] = (int)timeOverflow;
+            }
+        } else if (gameMode == GAME_MODE.SP_POINTS) {
+            // Fewer throws is better
+            if (PlayerController.totalThrowCount < highscoresArray[stage[0] - 1, stage[1] - 1] || highscoresArray[stage[0] - 1, stage[1] - 1] == 0) {
+                highscoresArray[stage[0] - 1, stage[1] - 1] = PlayerController.totalThrowCount;
             }
         }
     }

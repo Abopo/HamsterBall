@@ -8,8 +8,9 @@ public class GoalMenu : MonoBehaviour {
     public SuperTextMesh goalRequirement;
     public SuperTextMesh conditionText;
     public SuperTextMesh conditionLeftText;
-
+    public SuperTextMesh timeHeader;
     public SuperTextMesh timeText;
+
     int seconds;
     int minutes;
 
@@ -31,6 +32,9 @@ public class GoalMenu : MonoBehaviour {
                 gameObject.SetActive(false);
                 break;
             case GAME_MODE.SP_CLEAR:
+                // Display total time
+                timeHeader.gameObject.SetActive(true);
+                timeText.gameObject.SetActive(true);
                 // No goal or condition text for this mode
                 goalText.gameObject.SetActive(false);
                 goalRequirement.gameObject.SetActive(false);
@@ -38,15 +42,30 @@ public class GoalMenu : MonoBehaviour {
                 conditionLeftText.gameObject.SetActive(false);
                 break;
             case GAME_MODE.SP_POINTS:
-                goalText.text = "Score\n       Needed";
-                conditionText.text = "Throws";
+                //goalText.text = "Score\n       Needed";
+                //conditionText.text = "Throws";
+                // Don't display total time
+                timeHeader.gameObject.SetActive(false);
+                timeText.gameObject.SetActive(false);
+                // Display goal stuff
+                goalText.gameObject.SetActive(true);
+                goalRequirement.gameObject.SetActive(true);
+                conditionText.gameObject.SetActive(true);
+                conditionLeftText.gameObject.SetActive(true);
+
                 break;
             case GAME_MODE.SP_MATCH:
                 goalText.text = "Matches\n       Needed";
                 break;
             case GAME_MODE.SURVIVAL:
-                goalText.text = "";
-                conditionText.text = "Time";
+                // Display total time I guess?
+                timeHeader.gameObject.SetActive(true);
+                timeText.gameObject.SetActive(true);
+                // No goal or condition text for this mode
+                goalText.gameObject.SetActive(false);
+                goalRequirement.gameObject.SetActive(false);
+                conditionText.gameObject.SetActive(false);
+                conditionLeftText.gameObject.SetActive(false);
                 break;
         }
 
@@ -59,8 +78,9 @@ public class GoalMenu : MonoBehaviour {
             return;
         }
 
-        seconds = Mathf.FloorToInt(_levelManager.LevelTimer % 60);
-        minutes = Mathf.FloorToInt(_levelManager.LevelTimer / 60);
+        // This is the TOTAL TIME so we need to add the timeOverflow
+        seconds = Mathf.FloorToInt((_gameManager.timeOverflow + _levelManager.LevelTimer) % 60);
+        minutes = Mathf.FloorToInt((_gameManager.timeOverflow + _levelManager.LevelTimer) / 60);
         timeText.text = string.Format("{0}:{1:00}", minutes, seconds);
 
         switch (_gameManager.gameMode) {

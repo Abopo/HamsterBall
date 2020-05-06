@@ -15,14 +15,20 @@ public class StoryButton : MenuOption {
     public GAME_MODE gameType;
     public string winCondition;
 
+    // These are the required time/throws/score the player has to reach in order to earn flowers for the stage
+    public int flower2Requirement;
+    public int flower3Requirement;
+
     StorySelectMenu _storySelectMenu;
     BoardLoader _boardLoader;
+    GameManager _gameManager;
 
     protected override void Awake() {
         base.Awake();
 
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
         _boardLoader = FindObjectOfType<BoardLoader>();
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Use this for initialization
@@ -68,6 +74,11 @@ public class StoryButton : MenuOption {
 
         // Load the players
         FindObjectOfType<StoryPlayerInfo>().LoadPlayers();
+
+        // TODO: Add separate coop requirements
+        // Hold onto the flower requirements
+        _gameManager.flowerRequirement1 = flower2Requirement;
+        _gameManager.flowerRequirement2 = flower3Requirement;
 
         if (hasCutscene) {
             // Load a cutscene

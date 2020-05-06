@@ -119,10 +119,14 @@ public class VillageManager : MonoBehaviour {
 
     void HighscorePrefs() {
         int[,] soloHighScores = new int[6, 10];
+        int[,] soloFlowers = new int[6, 10];
         int[,] coopHighScores = new int[6, 10];
+        int[,] coopFlowers = new int[6, 10];
 
         ES3.Save<int[,]>("SoloHighScores", soloHighScores);
+        ES3.Save<int[,]>("SoloFlowers", soloFlowers);
         ES3.Save<int[,]>("CoopHighScores", coopHighScores);
+        ES3.Save<int[,]>("CoopFlowers", coopFlowers);
     }
 
     void ShopItems() {

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class StorySelectMenu : MonoBehaviour {
@@ -9,6 +7,10 @@ public class StorySelectMenu : MonoBehaviour {
     public Text gameType;
     public Text highscoreSolo;
     public Text highscoreCoop;
+    public Image soloFlower;
+    public Image coopFlower;
+    public Text flowerRequirement1;
+    public Text flowerRequirement2;
     public Text winCondition;
     public CharacterSelectWindow characterSelectWindow;
 
@@ -26,6 +28,9 @@ public class StorySelectMenu : MonoBehaviour {
 
     float _worldYPos = 0f;
 
+    Sprite[] _flowerSprites = new Sprite[3];
+    Color[] _flowerColors = new Color[3];
+
     public int CurWorld {
         get { return _curWorld; }
     }
@@ -41,12 +46,14 @@ public class StorySelectMenu : MonoBehaviour {
 
     GameManager _gameManager;
 
+    private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+        _stagePicture = FindObjectOfType<StagePicture>();
+        LoadFlowerSprites();
+    }
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
         _gameManager.prevMenu = MENU.STORY;
-
-        _stagePicture = FindObjectOfType<StagePicture>();
 
         _worldYPos = worlds[0].transform.localPosition.y;
 
@@ -84,6 +91,17 @@ public class StorySelectMenu : MonoBehaviour {
         _curWorld = world-1;
     }
 
+    void LoadFlowerSprites() {
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/Effects/PointShapes");
+        _flowerSprites[0] = sprites[23];
+        _flowerSprites[1] = sprites[24];
+        _flowerSprites[2] = sprites[25];
+
+        _flowerColors[0] = new Color(0.79f, 0.42f, 0.04f);
+        _flowerColors[1] = new Color(0.79f, 0.79f, 0.79f);
+        _flowerColors[2] = new Color(1f, 0.73f, 0.25f);
+    }
+
     // Update is called once per frame
     void Update () {
         CheckInput();
@@ -117,30 +135,88 @@ public class StorySelectMenu : MonoBehaviour {
         // Set the location name
         location.text = storyButton.locationName;
 
-        // Set stage info text
+        // Set stage info and highscore text
+        int[,] soloHighScores = ES3.Load<int[,]>("SoloHighScores");
+        int[,] coopHighScores = ES3.Load<int[,]>("CoopHighScores");
 
         switch (storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
                 gameType.text = "Versus Stage";
+
+                highscoreSolo.text = soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
+                highscoreCoop.text = coopHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
+
                 break;
             case GAME_MODE.SP_POINTS:
                 gameType.text = "Point Challenge";
+
+                highscoreSolo.text = soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
+                highscoreCoop.text = coopHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
+
                 break;
             case GAME_MODE.SP_CLEAR:
                 gameType.text = "Puzzle Stage";
+
+                int seconds = Mathf.FloorToInt(soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1] % 60);
+                int minutes = Mathf.FloorToInt(soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1] / 60);
+                highscoreSolo.text = string.Format("{0}:{1:00}", minutes, seconds);
+                seconds = Mathf.FloorToInt(coopHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1] % 60);
+                minutes = Mathf.FloorToInt(coopHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1] / 60);
+                highscoreCoop.text = string.Format("{0}:{1:00}", minutes, seconds);
+
                 break;
         }
-        int[,] soloHighScores = ES3.Load<int[,]>("SoloHighScores");
-        int[,] coopHighScores = ES3.Load<int[,]>("CoopHighScores");
-        highscoreSolo.text = soloHighScores[storyButton.stageNumber[0]-1, storyButton.stageNumber[1]-1].ToString();
-        highscoreCoop.text = coopHighScores[storyButton.stageNumber[0]-1, storyButton.stageNumber[1]-1].ToString();
 
+        // Set flower stuff
+        SetFlowerData(storyButton);
+        SetFlowerRequirementTexts(storyButton);
 
         // Update the stage picture
         _stagePicture.UpdateImages(storyButton);
 
         // Set win condition text
         winCondition.text = storyButton.winCondition;
+    }
+
+    void SetFlowerData(StoryButton storyButton) {
+        int[,] soloFlowerData = ES3.Load<int[,]>("SoloFlowers");
+        int soloFlowerCount = soloFlowerData[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1];
+        if (soloFlowerCount > 0) {
+            soloFlower.gameObject.SetActive(true);
+            soloFlower.sprite = _flowerSprites[soloFlowerCount - 1];
+            soloFlower.color = _flowerColors[soloFlowerCount - 1];
+        } else {
+            soloFlower.gameObject.SetActive(false);
+        }
+
+        int[,] coopFlowerData = ES3.Load<int[,]>("CoopFlowers");
+        int coopFlowerCount = coopFlowerData[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1];
+        if (coopFlowerCount > 0) {
+            coopFlower.gameObject.SetActive(true);
+            coopFlower.sprite = _flowerSprites[coopFlowerCount - 1];
+            coopFlower.color = _flowerColors[coopFlowerCount - 1];
+        } else {
+            coopFlower.gameObject.SetActive(false);
+        }
+    }
+
+    void SetFlowerRequirementTexts(StoryButton storyButton) {
+        switch(storyButton.gameType) {
+            case GAME_MODE.MP_VERSUS:
+            case GAME_MODE.SP_POINTS:
+                flowerRequirement1.text = ": " + storyButton.flower2Requirement.ToString();
+                flowerRequirement2.text = ": " + storyButton.flower3Requirement.ToString();
+                break;
+            case GAME_MODE.SP_CLEAR:
+                int seconds = storyButton.flower2Requirement % 60;
+                int minutes = storyButton.flower2Requirement / 60;
+                flowerRequirement1.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
+                seconds = storyButton.flower3Requirement % 60;
+                minutes = storyButton.flower3Requirement / 60;
+                flowerRequirement2.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
+
+                break;
+        }
     }
 
     // Change the UI to a different world

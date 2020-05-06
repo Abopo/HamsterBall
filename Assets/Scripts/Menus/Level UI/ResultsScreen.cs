@@ -8,6 +8,7 @@ public class ResultsScreen : MonoBehaviour {
     public SuperTextMesh winningTeamText;
     public Image winningTeamSprite;
     public MenuButton mainMenuButton;
+    public Image[] flowers; // These are the "stars" players earn depending on how good they did
     public bool isContinue;
 
     MenuOption[] _menuOptions;
@@ -112,8 +113,11 @@ public class ResultsScreen : MonoBehaviour {
             _gameManager = FindObjectOfType<GameManager>();
         }
 
-        if (_gameManager.isSinglePlayer) {
+        if (_gameManager.IsStoryLevel()) {
             SetSinglePlayerResultsText(result);
+            if (result == -1) {
+                EarnFlowers();
+            }
         } else {
             SetWinningTeamText(result);
         }
@@ -137,6 +141,59 @@ public class ResultsScreen : MonoBehaviour {
 
         _winTimer = 0f;
         _canInteract = false;
+    }
+
+    // If the results of this seem off, make sure gameManager variables are being updated BEFORE this function
+    void EarnFlowers() {
+        int flowerCount = 1;
+
+        // First flower is earned just by beating the stage
+        flowers[0].gameObject.SetActive(true);
+
+        // TODO: also adjust if playing solo or coop
+        // Next two are earned depending on the game mode
+        switch(_gameManager.gameMode) {
+            case GAME_MODE.SP_CLEAR:
+                // Compare time
+                flowerCount += SetFlowers((int)_gameManager.timeOverflow);
+                break;
+            case GAME_MODE.SP_POINTS:
+                // Throws used
+                flowerCount += SetFlowers(_gameManager.scoreOverflow);
+                break;
+            case GAME_MODE.MP_VERSUS:
+                // Points?
+                flowerCount += SetFlowers(PlayerController.totalThrowCount);
+                break;
+        }
+
+        // Save the flower count
+        if (_gameManager.isCoop) {
+            int[,] coopFlowers = ES3.Load<int[,]>("CoopFlowers");
+            coopFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1] = flowerCount;
+            ES3.Save<int[,]>("CoopFlowers", coopFlowers);
+        } else {
+            int[,] soloFlowers = ES3.Load<int[,]>("SoloFlowers");
+            soloFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1] = flowerCount;
+            ES3.Save<int[,]>("SoloFlowers", soloFlowers);
+        }
+
+    }
+
+    // Returns how many flowers were set
+    int SetFlowers(int goal) {
+        int flowerCount = 0;
+
+        if (goal < _gameManager.flowerRequirement1) {
+            flowers[1].gameObject.SetActive(true);
+            flowerCount++;
+        }
+        if (goal < _gameManager.flowerRequirement2) {
+            flowers[2].gameObject.SetActive(true);
+            flowerCount++;
+        }
+
+        return flowerCount;
     }
 
     void SetCurrency() {
