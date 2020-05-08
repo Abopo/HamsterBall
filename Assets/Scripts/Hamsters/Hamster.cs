@@ -144,6 +144,7 @@ public class Hamster : Entity {
         //spiralEffectInstance.transform.parent = transform;
         //spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
         _moveSpeed = gravityMoveSpeed;
+        gravity = 10;
     }
 
     void SetOutlineColor() {
