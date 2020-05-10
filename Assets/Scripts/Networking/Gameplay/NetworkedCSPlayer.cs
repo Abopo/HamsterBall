@@ -82,5 +82,7 @@ public class NetworkedCSPlayer : MonoBehaviour {
 
         // Make sure our color is available
         _resources.CharaInfo[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = false;
+
+        Debug.Log("RPC EnterPullDownWindow Received");
     }
 }

@@ -37,6 +37,7 @@ Transform:
   - {fileID: 7918866114684407298}
   - {fileID: 2619089280121998932}
   - {fileID: 356399698858020307}
+  - {fileID: 2405130065687347393}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -77,8 +78,7 @@ MonoBehaviour:
   locked: 0
   wasThrown: 0
   popped: 0
-  isGravity: 0
-  spiralEffectObj: {fileID: 100000, guid: 33d1ccd514a8e49438dc0dbe60745c10, type: 3}
+  isPlasma: 0
   isIce: 0
   iceSprite: {fileID: 381263653297270888}
   checkMask:
@@ -94,6 +94,8 @@ MonoBehaviour:
   is13Edge: 0
   bubbleAnimator: {fileID: 963178266353736135}
   hamsterAnimator: {fileID: 2814858637608128412}
+  plasmaEffect: {fileID: 0}
+  petrifying: 0
 --- !u!114 &114000010644982822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,7 +333,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 17
+  m_SortingOrder: 18
   m_Sprite: {fileID: 21300000, guid: 85ab2a9ecd6abfd47bcee92b59a8ac71, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -545,7 +547,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 15
   m_Sprite: {fileID: 21300000, guid: 2650532b47a85c34093d1f424476093d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -576,3 +578,78 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1001 &2405130065687347691
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 400002}
+    m_Modifications:
+    - target: {fileID: 3059149172728225443, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_Name
+      value: Plasma Effect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0014373389
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0010837208
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.49946
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e96e64cfea28574e8ae1ae2b0a845b0, type: 3}
+--- !u!4 &2405130065687347393 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3059149172728225444, guid: 6e96e64cfea28574e8ae1ae2b0a845b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2405130065687347691}
+  m_PrefabAsset: {fileID: 0}

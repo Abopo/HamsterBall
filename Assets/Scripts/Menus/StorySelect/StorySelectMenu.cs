@@ -119,7 +119,7 @@ public class StorySelectMenu : MonoBehaviour {
 
     void CheckInput() {
         if(_gameManager.playerInput.GetButtonDown("Cancel")) {
-            if (characterSelectWindow.gameObject.activeSelf) {
+            if (characterSelectWindow.hasFocus) {
                 characterSelectWindow.Deactivate();
             } else {
                 FindObjectOfType<GameManager>().VillageButton();

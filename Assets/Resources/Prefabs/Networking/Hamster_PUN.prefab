@@ -61,7 +61,7 @@ MonoBehaviour:
   special: 0
   spiralEffectObj: {fileID: 100000, guid: 33d1ccd514a8e49438dc0dbe60745c10, type: 3}
   spiralEffectInstance: {fileID: 0}
-  isGravity: 0
+  isPlasma: 0
   testMode: 0
   exitedPipe: 0
   inRightPipe: 0
@@ -69,6 +69,7 @@ MonoBehaviour:
   exitedLine: 0
   curMoveSpeed: 0
   moveSpeedModifier: 0
+  _curState: 0
 --- !u!114 &114971838403754598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,10 +126,10 @@ MonoBehaviour:
   m_PositionModel:
     SynchronizeEnabled: 1
     TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 1
+    TeleportIfDistanceGreaterThan: 2
     InterpolateOption: 4
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 3
+    InterpolateMoveTowardsSpeed: 3
+    InterpolateLerpSpeed: 1
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:
@@ -360,7 +361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4102304000483368978
 Transform:
   m_ObjectHideFlags: 0

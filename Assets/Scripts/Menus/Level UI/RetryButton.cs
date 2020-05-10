@@ -31,7 +31,7 @@ public class RetryButton : MenuButton {
 
     public void Retry() {
         if (_gameManager.LevelDoc != null) {
-            _gameManager.CleanUp(false);
+            _gameManager.RetryCleanUp();
             _boardLoader.ReadBoardSetup(_gameManager.LevelDoc);
         } else {
             _gameManager.PlayAgainButton();

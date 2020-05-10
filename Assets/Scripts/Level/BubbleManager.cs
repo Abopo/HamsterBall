@@ -1165,6 +1165,7 @@ public class BubbleManager : MonoBehaviour {
         ClearAllData();
 
         // Send the winning team and score to the game manager
+        _scoreManager.CombineScore();
         if (_roundResult == 1) {
             _gameManager.EndGame(team, _scoreManager.TotalScore);
         } else if (_roundResult == -1) {

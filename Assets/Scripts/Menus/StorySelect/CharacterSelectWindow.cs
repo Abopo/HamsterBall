@@ -1,25 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
 
-// This enum is only used for selecting between the Boy and Girl in story mode
-//public enum CHARACTERCOLORS { BOY1 = 0, BOY2, BOY3, BOY4, GIRL1, GIRL2, GIRL3, GIRL4, NUM_COLORS }
-
 public class CharacterSelectWindow : Menu {
-    protected int _boyColor = 0;
-    protected int _girlColor = 0;
+    protected int _boyPaletteIndex = 0;
+    protected int _girlPaletteIndex = 0;
 
     public Image boySprite;
     public Image girlSprite;
-    protected Sprite[] _characterSprites = new Sprite[8];
+    //protected Sprite[] _characterSprites = new Sprite[8];
+
+    protected List<Material> _boyPalettes = new List<Material>();
+    protected List<Material> _girlPalettes = new List<Material>();
 
     public GameObject menuObject;
 
     // The selected color of the other player
-    protected int _chosenBoyColor = -1;
-    protected int _chosenGirlColor = -1;
+    protected Material _chosenBoyPalette;
+    protected Material _chosenGirlPalette;
+    //protected int _chosenBoyColor = -1;
+    //protected int _chosenGirlColor = -1;
 
     protected bool _waitFrame;
 
@@ -44,11 +48,37 @@ public class CharacterSelectWindow : Menu {
     protected override void Start () {
         base.Start();
 
-        boySprite.sprite = _characterSprites[_boyColor];
-        girlSprite.sprite = _characterSprites[_girlColor+4];
+        //boySprite.sprite = _characterSprites[_boyColor];
+        //girlSprite.sprite = _characterSprites[_girlColor+4];
     }
 
     void LoadSprites() {
+        Material tempMaterial;
+        bool[] paletteData;
+
+        // Base palette doesn't need material
+        tempMaterial = new Material(Shader.Find("Sprites/Default"));
+        _boyPalettes.Add(tempMaterial);
+        _girlPalettes.Add(tempMaterial);
+
+        paletteData = ES3.Load<bool[]>("BoyPalettes", new bool[0]);
+        for (int i = 0; i < paletteData.Length; ++i) {
+            // If this palette is unlocked
+            if (paletteData[i] == true) {
+                tempMaterial = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + (i + 2));
+                _boyPalettes.Add(tempMaterial);
+            }
+        }
+        paletteData = ES3.Load<bool[]>("GirlPalettes", new bool[0]);
+        for (int i = 0; i < paletteData.Length; ++i) {
+            // If this palette is unlocked
+            if (paletteData[i] == true) {
+                tempMaterial = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + (i + 2));
+                _girlPalettes.Add(tempMaterial);
+            }
+        }
+
+        /*
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
         _characterSprites[0] = boySprites[0];
@@ -59,6 +89,7 @@ public class CharacterSelectWindow : Menu {
         _characterSprites[5] = girlSprites[1];
         _characterSprites[6] = girlSprites[2];
         _characterSprites[7] = girlSprites[3];
+        */
     }
 
     // Update is called once per frame
@@ -97,30 +128,32 @@ public class CharacterSelectWindow : Menu {
     protected void ChangeBoy(int dir) {
         do {
             // Move down the list one
-            _boyColor += dir;
-            if (_boyColor < 0) {
-                _boyColor = 3;
-            } else if (_boyColor > 3) {
-                _boyColor = 0;
+            _boyPaletteIndex += dir;
+            if (_boyPaletteIndex < 0) {
+                _boyPaletteIndex = _boyPalettes.Count-1;
+            } else if (_boyPaletteIndex >= _boyPalettes.Count) {
+                _boyPaletteIndex = 0;
             }
-        } while (_boyColor == _chosenBoyColor);
+        } while (_boyPalettes[_boyPaletteIndex] == _chosenBoyPalette);
 
+        boySprite.material = _boyPalettes[_boyPaletteIndex];
         // Change the icon to the correct image
-        boySprite.sprite = _characterSprites[_boyColor];
+        //boySprite.sprite = _characterSprites[_boyColor];
     }
     protected void ChangeGirl(int dir) {
         do {
             // Move down the list one
-            _girlColor += dir;
-            if (_girlColor < 0) {
-                _girlColor = 3;
-            } else if (_girlColor > 3) {
-                _girlColor = 0;
+            _girlPaletteIndex += dir;
+            if (_girlPaletteIndex < 0) {
+                _girlPaletteIndex = _girlPalettes.Count-1;
+            } else if (_girlPaletteIndex >= _girlPalettes.Count) {
+                _girlPaletteIndex = 0;
             }
-        } while (_girlColor == _chosenGirlColor);
+        } while (_girlPalettes[_girlPaletteIndex] == _chosenGirlPalette);
 
+        girlSprite.material = _girlPalettes[_girlPaletteIndex];
         // Change the icon to the correct image
-        girlSprite.sprite = _characterSprites[_girlColor+4];
+        //girlSprite.sprite = _characterSprites[_girlColor+4];
     }
 
     public void Activate(PlayerInfoBox pib) {
@@ -136,15 +169,19 @@ public class CharacterSelectWindow : Menu {
         // Block already selected characters
         if(pib.playerID == 0) {
             if(ES3.Load<int>("Player2Character", 0) == (int)CHARACTERS.BOY) {
-                _chosenBoyColor = ES3.Load<int>("Player2Color", 1)-1;
+                //_chosenBoyColor = ES3.Load<int>("Player2Color", 1)-1;
+                _chosenBoyPalette = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + ES3.Load<int>("Player2Color"));
             } else {
-                _chosenGirlColor = ES3.Load<int>("Player2Color", 1)-1;
+                //_chosenGirlColor = ES3.Load<int>("Player2Color", 1)-1;
+                _chosenGirlPalette = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + ES3.Load<int>("Player2Color"));
             }
         } else {
             if (ES3.Load<int>("Player1Character", 0) == (int)CHARACTERS.BOY) {
-                _chosenBoyColor = ES3.Load<int>("Player1Color", 1)-1;
+                //_chosenBoyColor = ES3.Load<int>("Player1Color", 1)-1;
+                _chosenBoyPalette = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + ES3.Load<int>("Player1Color"));
             } else {
-                _chosenGirlColor = ES3.Load<int>("Player1Color", 1)-1;
+                //_chosenGirlColor = ES3.Load<int>("Player1Color", 1)-1;
+                _chosenGirlPalette = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + ES3.Load<int>("Player1Color"));
             }
         }
 
@@ -172,27 +209,41 @@ public class CharacterSelectWindow : Menu {
             _options[1].isFirstSelection = false;
 
             // Set the boy to the correct name and sprite
-            _boyColor = charaInfo.color-1;
-            boySprite.sprite = _characterSprites[_boyColor];
+            //_boyPaletteIndex = charaInfo.color-1;
+            boySprite.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + charaInfo.color);
+            for(int i = 0; i < _boyPalettes.Count; ++i) {
+                if(_boyPalettes[i] == boySprite.material) {
+                    _boyPaletteIndex = i;
+                    break;
+                }
+            }
+            //boySprite.sprite = _characterSprites[_boyColor];
         } else if (charaInfo.name == CHARACTERS.GIRL) {
             // Highlight the girl
             _options[1].isFirstSelection = true;
             _options[0].isFirstSelection = false;
 
             // Set the girl to the correct name and sprite
-            _girlColor = charaInfo.color-1;
-            girlSprite.sprite = _characterSprites[_girlColor+4];
+            //_girlPaletteIndex = charaInfo.color-1;
+            girlSprite.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + charaInfo.color);
+            for (int i = 0; i < _girlPalettes.Count; ++i) {
+                if (_girlPalettes[i] == girlSprite.material) {
+                    _girlPaletteIndex = i;
+                    break;
+                }
+            }
+            //girlSprite.sprite = _characterSprites[_girlColor+4];
         }
     }
 
     public override void Deactivate() {
         base.Deactivate();
 
-        gameObject.SetActive(false);
+        menuObject.SetActive(false);
         _isActive = false;
 
-        _chosenBoyColor = -1;
-        _chosenGirlColor = -1;
+        _chosenBoyPalette = null;
+        _chosenGirlPalette = null;
 
         _options = null;
 
@@ -210,10 +261,15 @@ public class CharacterSelectWindow : Menu {
     public virtual void ChooseBoy() {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.BOY;
-        charaInfo.color = _boyColor+1;
+
+        // Get the color out of the material name
+        string paletteString = new String(_boyPalettes[_boyPaletteIndex].name.Where(Char.IsDigit).ToArray());
+        charaInfo.color = int.Parse(paletteString);
+        //charaInfo.color = _boyPaletteIndex+1;
+
         _playerInfoBox.SetCharacter(charaInfo);
 
-        int tempColor = _boyColor;
+        int tempColor = _boyPaletteIndex;
         ChangeBoy(1);
 
         Deactivate();
@@ -222,10 +278,14 @@ public class CharacterSelectWindow : Menu {
     public virtual void ChooseGirl() {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.GIRL;
-        charaInfo.color = _girlColor+1;
+        // Get the color out of the material name
+        string paletteString = new String(_girlPalettes[_girlPaletteIndex].name.Where(Char.IsDigit).ToArray());
+        charaInfo.color = int.Parse(paletteString);
+        //charaInfo.color = _girlPaletteIndex+1;
+
         _playerInfoBox.SetCharacter(charaInfo);
 
-        int tempColor = _girlColor;
+        int tempColor = _girlPaletteIndex;
         ChangeGirl(1);
 
         Deactivate();

@@ -53,7 +53,7 @@ public class CharacterSelectResources : MonoBehaviour {
         // Boy
         _charaInfo[(int)CHARACTERS.BOY] = new List<CharaSelectInfo>();
         RuntimeAnimatorController boyAnimator = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
-        paletteData = ES3.Load<bool[]>("BoyPalettes");
+        paletteData = ES3.Load<bool[]>("BoyPalettes", new bool[0]);
 
         // First info is default
         tempInfo = new CharaSelectInfo();
@@ -76,7 +76,7 @@ public class CharacterSelectResources : MonoBehaviour {
         // Girl
         _charaInfo[(int)CHARACTERS.GIRL] = new List<CharaSelectInfo>();
         RuntimeAnimatorController girlAnimator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
-        paletteData = ES3.Load<bool[]>("GirlPalettes");
+        paletteData = ES3.Load<bool[]>("GirlPalettes", new bool[0]);
 
         // First info is default
         tempInfo = new CharaSelectInfo();
@@ -99,7 +99,7 @@ public class CharacterSelectResources : MonoBehaviour {
         // Rooster
         _charaInfo[(int)CHARACTERS.ROOSTER] = new List<CharaSelectInfo>();
         RuntimeAnimatorController roosterAnimator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
-        paletteData = ES3.Load<bool[]>("RoosterPalettes");
+        paletteData = ES3.Load<bool[]>("RoosterPalettes", new bool[0]);
 
         // First info is default
         tempInfo = new CharaSelectInfo();
@@ -122,7 +122,7 @@ public class CharacterSelectResources : MonoBehaviour {
         // Bat
         _charaInfo[(int)CHARACTERS.BAT] = new List<CharaSelectInfo>();
         RuntimeAnimatorController batAnimator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat1") as RuntimeAnimatorController;
-        paletteData = ES3.Load<bool[]>("BatPalettes");
+        paletteData = ES3.Load<bool[]>("BatPalettes", new bool[0]);
 
         // First info is default
         tempInfo = new CharaSelectInfo();
@@ -145,7 +145,7 @@ public class CharacterSelectResources : MonoBehaviour {
         // Snail
         _charaInfo[(int)CHARACTERS.SNAIL] = new List<CharaSelectInfo>();
         RuntimeAnimatorController snailAnimator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
-        paletteData = ES3.Load<bool[]>("SnailPalettes");
+        paletteData = ES3.Load<bool[]>("SnailPalettes", new bool[0]);
 
         // First info is default
         tempInfo = new CharaSelectInfo();
@@ -188,7 +188,7 @@ public class CharacterSelectResources : MonoBehaviour {
         // Lizard
         _charaInfo[(int)CHARACTERS.LIZARD] = new List<CharaSelectInfo>();
         RuntimeAnimatorController lizardAnimator = Resources.Load("Art/Animations/Player/Lizard/Animation Objects/Lizard1") as RuntimeAnimatorController;
-        paletteData = ES3.Load<bool[]>("LizardPalettes");
+        paletteData = ES3.Load<bool[]>("LizardPalettes", new bool[0]);
 
         // First info is default
         tempInfo = new CharaSelectInfo();

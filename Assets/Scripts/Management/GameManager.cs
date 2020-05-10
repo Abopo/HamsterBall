@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour {
     // How many games each team has won
     public int leftTeamGames = 0;
     public int rightTeamGames = 0;
+    public bool VersusModeFinish {
+        get {
+            return (leftTeamGames >= 2 || rightTeamGames >= 2);
+        }
+    }
 
     public GameSettings gameSettings;
 
@@ -48,8 +53,7 @@ public class GameManager : MonoBehaviour {
 
     public SuperTextMesh debugText;
 
-    string _levelDoc; // document containing data for a single player level
-
+    string _levelDoc; // document containing data for the first(or only) level in a story stage
     public string LevelDoc {
         get { return _levelDoc; }
         set { _levelDoc = value; }
@@ -204,7 +208,7 @@ public class GameManager : MonoBehaviour {
 
         gameIsOver = true;
 
-        // If we are playing a story level 
+        // If we are playing a story level (and if it's a versus stage it's all done)
         if (IsStoryLevel()) {
             // Carry over the highscore
             scoreOverflow = winScore;
@@ -213,8 +217,9 @@ public class GameManager : MonoBehaviour {
             LevelManager lM = FindObjectOfType<LevelManager>();
             timeOverflow += lM.LevelTimer;
 
-            // The player's team won
-            if (winningTeam == 0 && nextLevel == "") {
+            // The player's team won (and there are no further levels left)
+            if (winningTeam == 0 && (nextLevel == "" || ((gameMode == GAME_MODE.MP_VERSUS && VersusModeFinish) ||
+                                                          gameMode != GAME_MODE.MP_VERSUS))) {
                 // Save the highscore
                 if(isCoop) {
                     int[,] coopHighscores = ES3.Load<int[,]>("CoopHighScores");
@@ -383,10 +388,20 @@ public class GameManager : MonoBehaviour {
 
             gameSettings.aimAssistSingleplayer = false;
 
+            _levelDoc = "";
             ResetGames();
             prevPuzzles.Clear();
             scoreOverflow = 0;
         }
+    }
+
+    // Used specifically when retrying a story stage
+    public void RetryCleanUp() {
+        Unpause();
+        gameIsOver = false;
+        BubbleManager.ClearAllData();
+        ResetGames();
+        scoreOverflow = 0;
     }
 
     private void ResetGames() {

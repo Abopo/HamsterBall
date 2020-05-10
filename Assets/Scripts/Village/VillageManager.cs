@@ -117,6 +117,20 @@ public class VillageManager : MonoBehaviour {
 
             ES3.Save<int>("FirstTimePlaying", 1);
         }
+
+        if(!ES3.KeyExists("Currency")) {
+            ES3.Save<int>("Currency", 200);
+        }
+        if (!ES3.KeyExists("SoloFlowers")) {
+            HighscorePrefs();
+        }
+        if(!ES3.KeyExists("Kaden Palette 5")) {
+            LoadInitialShopData();
+        }
+        if(!ES3.KeyExists("BoyPalettes")) {
+            // Palettes aren't made yet so make em
+            CharacterPalettes();
+        }
     }
 
     void HighscorePrefs() {
@@ -132,7 +146,12 @@ public class VillageManager : MonoBehaviour {
     }
 
     void LoadInitialShopData() {
-        ShopData _shopData = ShopData.Load(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
+        ShopData _shopData;
+#if UNITY_EDITOR
+        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
+#else
+        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "ShopPaletteData.xml"));
+#endif
         bool[] values = new bool[2]; // 0 - unlocked, 1 - purchased
 
         // Palettes
@@ -181,7 +200,7 @@ public class VillageManager : MonoBehaviour {
 
     void CharacterPalettes() {
         // First four palettes for all characters are unlocked by default
-        bool[] initialPaletteData = new bool[5] { true, true, true, false, false};
+        bool[] initialPaletteData = new bool[5] { true, true, true, false, false };
 
         ES3.Save<bool[]>("BoyPalettes", initialPaletteData);
         ES3.Save<bool[]>("GirlPalettes", initialPaletteData);

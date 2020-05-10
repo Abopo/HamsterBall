@@ -17,7 +17,9 @@ public class PlayerInfoBox : MonoBehaviour {
     Player _player;
 
     SpriteRenderer _sprite;
-    Sprite[] characterSprites = new Sprite[8];
+    Sprite _boySprite;
+    Sprite _girlSprite;
+    //Sprite[] characterSprites = new Sprite[8];
 
     Player _player1; // The first player's player object
 
@@ -26,6 +28,12 @@ public class PlayerInfoBox : MonoBehaviour {
 
     private void Awake() {
         _sprite = GetComponentInChildren<SpriteRenderer>(true);
+
+        Sprite[] icons = Resources.LoadAll<Sprite>("Art/UI/Character Select/Characer_Icons_Sharpened");
+        _boySprite = icons[1];
+        _girlSprite = icons[2];
+
+        /*
         Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
         Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
         characterSprites[0] = boySprites[0];
@@ -36,6 +44,7 @@ public class PlayerInfoBox : MonoBehaviour {
         characterSprites[5] = girlSprites[1];
         characterSprites[6] = girlSprites[2];
         characterSprites[7] = girlSprites[3];
+        */
 
         SceneManager.sceneLoaded += OnLevelLoaded;
     }
@@ -142,7 +151,22 @@ public class PlayerInfoBox : MonoBehaviour {
         }
 
         // Set sprite to correct character
-        _sprite.sprite = characterSprites[charaInfo.name == CHARACTERS.BOY ? charaInfo.color - 1 : charaInfo.color + 3];
+        if(charaInfo.name == CHARACTERS.BOY) {
+            _sprite.sprite = _boySprite;
+            if (charaInfo.color > 1) {
+                _sprite.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + charaInfo.color);
+            } else {
+                _sprite.material = new Material(Shader.Find("Sprites/Default"));
+            }
+        } else {
+            _sprite.sprite = _girlSprite;
+            if (charaInfo.color > 1) {
+                _sprite.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + charaInfo.color);
+            } else {
+                _sprite.material = new Material(Shader.Find("Sprites/Default"));
+            }
+        }
+        //_sprite.sprite = characterSprites[charaInfo.name == CHARACTERS.BOY ? charaInfo.color - 1 : charaInfo.color + 3];
     }
 
     public void LoadCharacter() {

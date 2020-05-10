@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 using UnityEngine;
 using Rewired;
 
@@ -48,8 +50,8 @@ public class VillageCharacterSelect : CharacterSelectWindow {
         _childObject.SetActive(false);
         _isActive = false;
 
-        _chosenBoyColor = -1;
-        _chosenGirlColor = -1;
+        _chosenBoyPalette = null;
+        _chosenGirlPalette = null;
 
         LoseFocus();
 
@@ -59,7 +61,11 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     public override void ChooseBoy() {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.BOY;
-        charaInfo.color = _boyColor+1;
+
+        // Get the color out of the material name
+        string paletteString = new String(_boyPalettes[_boyPaletteIndex].name.Where(Char.IsDigit).ToArray());
+        charaInfo.color = int.Parse(paletteString);
+
         _playerController.SetCharacterInfo(charaInfo);
         ES3.Save<int>("Player1Character", charaInfo.name);
         ES3.Save<int>("Player1Color", charaInfo.color);
@@ -69,7 +75,11 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     public override void ChooseGirl() {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.GIRL;
-        charaInfo.color = _girlColor+1;
+
+        // Get the color out of the material name
+        string paletteString = new String(_girlPalettes[_girlPaletteIndex].name.Where(Char.IsDigit).ToArray());
+        charaInfo.color = int.Parse(paletteString);
+
         _playerController.SetCharacterInfo(charaInfo);
         ES3.Save<int>("Player1Character", charaInfo.name);
         ES3.Save<int>("Player1Color", charaInfo.color);

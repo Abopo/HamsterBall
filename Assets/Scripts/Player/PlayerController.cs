@@ -604,7 +604,7 @@ public class PlayerController : Entity {
     public override void CollisionResponseX(Collider2D collider) {
         base.CollisionResponseX(collider);
 
-        if (collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
+        if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 9 || collider.gameObject.layer == 13) {
 			velocity.x = 0.0f;
 		}
 	}

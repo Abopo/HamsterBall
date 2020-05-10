@@ -20,9 +20,12 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     bool swingPressed = false;
     bool attackPressed = false;
 
+    PhotonTransformView _photonTransformView;
+
     private void Awake() {
         _playerController = GetComponent<PlayerController>();
         _serializedInput = new InputState();
+        _photonTransformView = GetComponent<PhotonTransformView>();
     }
 
     public void Start() {
@@ -171,8 +174,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             if (_playerController.inputState != null) {
                 GetOwnerInput();
             }
-        }
 
+            if (photonView.isMine) {
+                _photonTransformView.SetSynchronizedValues(_playerController.velocity, 0f);
+            }
+        }
     }
 
     void GetOwnerInput() {

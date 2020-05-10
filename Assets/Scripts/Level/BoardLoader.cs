@@ -112,6 +112,9 @@ public class BoardLoader : MonoBehaviour {
             case "Seed":
                 LoadHamsterSeed();
                 break;
+            case "Spawn Pattern":
+                ReadSpawnPattern();
+                break;
             case "Next":
                 ReadNextLevel();
                 break;
@@ -275,6 +278,11 @@ public class BoardLoader : MonoBehaviour {
     void LoadHamsterSeed() {
         _readText = _linesFromFile[_fileIndex++];
         HamsterSpawner.spawnSeed = int.Parse(_readText);
+    }
+
+    void ReadSpawnPattern() {
+        _readText = _linesFromFile[_fileIndex++];
+        HamsterSpawner.spawnPattern = _readText;
     }
 
     void ReadNextLevel() {

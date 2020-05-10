@@ -173,9 +173,11 @@ public class CharacterSelect : Menu {
                 }
             }
 
-
             // Clear players from player manager
             _gameManager.playerManager.ClearAllPlayers();
+
+        } else if(_gameManager.isOnline) {
+            GetComponent<PhotonView>().RPC("GameSetupCancel", PhotonTargets.AllBuffered);
         }
     }
 

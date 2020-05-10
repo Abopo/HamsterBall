@@ -72,7 +72,11 @@ public class ShopMenu : Menu {
     }
 
     void LoadXMLShopData() {
+#if UNITY_EDITOR
         _shopData = ShopData.Load(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
+#else
+        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "ShopPaletteData.xml"));
+#endif
     }
 
     void CreateShopItems() {
@@ -81,7 +85,7 @@ public class ShopMenu : Menu {
 
         // Palettes
         foreach(ItemInfo iInfo in _shopData.paletteData) {
-            itemData = ES3.Load<bool[]>(iInfo.itemName);
+            itemData = ES3.Load<bool[]>(iInfo.itemName, new bool[0]);
 
             // if this item is unlocked
             if (itemData[0]) {
@@ -208,7 +212,7 @@ public class ShopMenu : Menu {
 
         // Save that this item has been purchased
         //_shopData.Save(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
-        bool[] itemData = ES3.Load<bool[]>(_curItem.ItemInfo.itemName);
+        bool[] itemData = ES3.Load<bool[]>(_curItem.ItemInfo.itemName, new bool[0]);
         itemData[1] = true;
         ES3.Save<bool[]>(_curItem.ItemInfo.itemName, itemData);
     }
@@ -243,7 +247,7 @@ public class ShopMenu : Menu {
             return;
         }
 
-        characterPaletteData = ES3.Load<bool[]>(paletteString);
+        characterPaletteData = ES3.Load<bool[]>(paletteString, new bool[0]);
         characterPaletteData[paletteNum-2] = true;
         ES3.Save<bool[]>(paletteString, characterPaletteData);
     }

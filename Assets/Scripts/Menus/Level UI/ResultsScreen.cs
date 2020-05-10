@@ -41,9 +41,13 @@ public class ResultsScreen : MonoBehaviour {
         if(_winTimer > _winTime) {
             _canInteract = true;
 
-            foreach (MenuOption mo in _menuOptions) {
-                if (mo != null) {
-                    mo.isReady = true;
+            if (_menuOptions == null || _menuOptions.Length == 0) {
+                _menuOptions = transform.GetComponentsInChildren<MenuOption>();
+            } else {
+                foreach (MenuOption mo in _menuOptions) {
+                    if (mo != null) {
+                        mo.isReady = true;
+                    }
                 }
             }
         }
@@ -114,9 +118,13 @@ public class ResultsScreen : MonoBehaviour {
         }
 
         if (_gameManager.IsStoryLevel()) {
-            SetSinglePlayerResultsText(result);
-            if (result == -1) {
-                EarnFlowers();
+            if ((_gameManager.gameMode == GAME_MODE.MP_VERSUS && _gameManager.VersusModeFinish) ||
+                _gameManager.gameMode != GAME_MODE.MP_VERSUS) {
+                SetSinglePlayerResultsText(result);
+                // If this is the last level and the player won
+                if (_gameManager.nextLevel == "" && result == -1) {
+                    EarnFlowers();
+                }
             }
         } else {
             SetWinningTeamText(result);
@@ -145,10 +153,14 @@ public class ResultsScreen : MonoBehaviour {
 
     // If the results of this seem off, make sure gameManager variables are being updated BEFORE this function
     void EarnFlowers() {
+        if(flowers == null) {
+            Debug.LogError("Null flowers");
+            return;
+        }
         int flowerCount = 1;
 
         // First flower is earned just by beating the stage
-        flowers[0].gameObject.SetActive(true);
+         flowers[0].gameObject.SetActive(true);
 
         // TODO: also adjust if playing solo or coop
         // Next two are earned depending on the game mode
@@ -202,6 +214,7 @@ public class ResultsScreen : MonoBehaviour {
         // Find the score managers and add their scores together
         ScoreManager[] _scoreManagers = FindObjectsOfType<ScoreManager>();
         foreach(ScoreManager sm in _scoreManagers) {
+            sm.CombineScore();
             combinedScore += sm.TotalScore;
         }
 
@@ -298,7 +311,7 @@ public class ResultsScreen : MonoBehaviour {
 
     public void Retry() {
         if (_gameManager.LevelDoc != null) {
-            _gameManager.CleanUp(false);
+            _gameManager.RetryCleanUp();
 
             // Remove the ai players cuz they will be reloaded via BoardLoader
             _gameManager.playerManager.ClearAIPlayers();

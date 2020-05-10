@@ -37,6 +37,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     System.Random _random;
     public static int spawnSeed;
+    public static string spawnPattern = "";
     public static int nextHamsterNum;
 
     GameManager _gameManager;
@@ -67,7 +68,6 @@ public class HamsterSpawner : Photon.PunBehaviour {
     void Start() {
         // Set the spawn timer to wait for the countdown
         _spawnTimer = 0;
-
 
         if (_gameManager.gameMode == GAME_MODE.SP_POINTS) {
             // Score attack stages have set spawn sequences
@@ -298,7 +298,9 @@ public class HamsterSpawner : Photon.PunBehaviour {
                 hamster.special = true;
 
                 _nextHamsterType = -1;
-            } else if(_nextHamsterType != -1) {
+            } else if (spawnPattern != "") {
+                hamster.SetType(ReadHamsterPattern());
+            } else if (_nextHamsterType != -1) {
                 hamster.SetType(_nextHamsterType);
                 _nextHamsterType = -1;
             } else {
@@ -400,6 +402,29 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
 
         return validType;
+    }
+
+    int ReadHamsterPattern() {
+        int nextHamster = 0;
+
+        string readIn = spawnPattern[0].ToString();
+        spawnPattern = spawnPattern.Remove(0, 1);
+        // Check for special types
+        if (readIn == "R") {
+            nextHamster = (int)HAMSTER_TYPES.RAINBOW;
+        } else if(readIn == "S") {
+            nextHamster = (int)HAMSTER_TYPES.SKULL;
+        } else if(readIn == "B") {
+            nextHamster = (int)HAMSTER_TYPES.BOMB;
+        } else if(readIn == "P") {
+            nextHamster = (int)HAMSTER_TYPES.PLASMA;
+            // TODO: Plasma hamster needs a type as well
+            // Really unsure how I can do this
+        } else {
+            nextHamster = int.Parse(readIn);
+        }
+
+        return nextHamster;
     }
 
     public void HamsterLineStop() {
@@ -513,5 +538,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
     private void OnDestroy() {
         // Reset spawn seed to true random
         //spawnSeed = (int)Time.realtimeSinceStartup;
+
+        // Clear the spawn pattern
+        spawnPattern = "";
     }
 }

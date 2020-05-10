@@ -88,21 +88,21 @@ public class CSPlayerController : PlayerController {
             _canShift = true; // Make sure we can shift at any time
 
             _justChangedState = false;
-        } else {
+        } else if(!inPlayArea) {
             // Make absolute fucking 100% sure we are in the goddamn idle state when we are in the pull down window jesus fucking christ
-            if(CurState != PLAYER_STATE.IDLE) {
+            if (CurState != PLAYER_STATE.IDLE) {
                 ChangeState(PLAYER_STATE.IDLE);
             }
 
             // Also make sure we are the correct scale
-            if(transform.lossyScale != _baseScale) {
+            if (transform.lossyScale != _baseScale) {
                 transform.SetParent(null);
                 transform.localScale = _baseScale;
                 transform.SetParent(pullDownWindow.transform);
             }
         }
 
-        if(inPlayArea) {
+        if (inPlayArea) {
             // Make sure sprite is on correct layer
             if (_spriteRenderer.sortingOrder != 0) {
                 _spriteRenderer.sortingOrder = 0;
@@ -182,6 +182,7 @@ public class CSPlayerController : PlayerController {
 
         if (_networkedCSPlayer != null && _networkedCSPlayer.photonView.isMine) {
             _networkedCSPlayer.photonView.RPC("EnterPullDownWindow", PhotonTargets.Others);
+            Debug.Log("RPC EnterPullDownWindow Sent");
         }
     }
     public void PullDownWindow() {
