@@ -310,6 +310,11 @@ public class Hamster : Entity {
                 // Reduce speed to make space
                 curMoveSpeed = 2.5f;
                 UpdateVelocity();
+            // If we are right on top of the other hamster
+            } else if(toHamster.magnitude <= 0.1) {
+                // Move position a bit so the above works
+                transform.position = new Vector3(transform.position.x - 0.1f,
+                                                 transform.position.y, transform.position.z);
             }
         }
     }

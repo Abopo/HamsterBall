@@ -147,13 +147,7 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Get the right score manager
-        ScoreManager[] scoreMans = FindObjectsOfType<ScoreManager>();
-        foreach (ScoreManager sM in scoreMans) {
-            if (sM.team == team) {
-                _scoreManager = sM;
-                break;
-            }
-        }
+        FindScoreManager();
 
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
@@ -204,6 +198,16 @@ public class BubbleManager : MonoBehaviour {
         _addLineClip = Resources.Load<AudioClip>("Audio/SFX/Add_Line");
 
         _initialPos = transform.position;
+    }
+
+    void FindScoreManager() {
+        ScoreManager[] scoreMans = FindObjectsOfType<ScoreManager>();
+        foreach (ScoreManager sM in scoreMans) {
+            if (sM.team == team) {
+                _scoreManager = sM;
+                break;
+            }
+        }
     }
 
     // Use this for initialization
@@ -1271,6 +1275,10 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void IncreaseScore(int incScore) {
+        if(_scoreManager == null) {
+            FindScoreManager();
+        }
+
         _scoreManager.IncreaseScore(incScore);
     }
 

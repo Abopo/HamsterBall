@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public bool isCoop = false;
     public bool gameIsOver = false;
     public int[] stage = new int[2]; // if level is "" it's a local multiplayer match, otherwise it's a story level
+    public string stageName; // generally only used for puzzle stages
     public int flowerRequirement1;
     public int flowerRequirement2;
     public BOARDS selectedBoard;
@@ -35,11 +36,6 @@ public class GameManager : MonoBehaviour {
     // How many games each team has won
     public int leftTeamGames = 0;
     public int rightTeamGames = 0;
-    public bool VersusModeFinish {
-        get {
-            return (leftTeamGames >= 2 || rightTeamGames >= 2);
-        }
-    }
 
     public GameSettings gameSettings;
 
@@ -218,8 +214,7 @@ public class GameManager : MonoBehaviour {
             timeOverflow += lM.LevelTimer;
 
             // The player's team won (and there are no further levels left)
-            if (winningTeam == 0 && (nextLevel == "" || ((gameMode == GAME_MODE.MP_VERSUS && VersusModeFinish) ||
-                                                          gameMode != GAME_MODE.MP_VERSUS))) {
+            if (winningTeam == 0 && IsLastLevel()) {
                 // Save the highscore
                 if(isCoop) {
                     int[,] coopHighscores = ES3.Load<int[,]>("CoopHighScores");
@@ -232,8 +227,6 @@ public class GameManager : MonoBehaviour {
                 }
 
                 // reset overflows
-                scoreOverflow = 0;
-                timeOverflow = 0;
 
                 // Unlock the next level
                 UnlockNextLevel();
@@ -391,7 +384,10 @@ public class GameManager : MonoBehaviour {
             _levelDoc = "";
             ResetGames();
             prevPuzzles.Clear();
+
+            // Reset overflows
             scoreOverflow = 0;
+            timeOverflow = 0;
         }
     }
 
@@ -401,6 +397,8 @@ public class GameManager : MonoBehaviour {
         gameIsOver = false;
         BubbleManager.ClearAllData();
         ResetGames();
+
+        // Only reset the score, time carries over
         scoreOverflow = 0;
     }
 
@@ -416,6 +414,10 @@ public class GameManager : MonoBehaviour {
         }
 
         return true;
+    }
+
+    public bool IsLastLevel() {
+        return (leftTeamGames >= 2 || rightTeamGames >= 2) && nextLevel == "";
     }
 
     public void SetDemoMode(bool on) {

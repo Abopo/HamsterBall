@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GoalMenu : MonoBehaviour {
+    public SuperTextMesh stageName;
+    public GameObject scoreStuff;
     public SuperTextMesh goalText;
     public SuperTextMesh goalRequirement;
     public SuperTextMesh conditionText;
@@ -13,6 +15,8 @@ public class GoalMenu : MonoBehaviour {
 
     int seconds;
     int minutes;
+
+    bool _gameOver = false;
 
     GameManager _gameManager;
     LevelManager _levelManager;
@@ -27,27 +31,42 @@ public class GoalMenu : MonoBehaviour {
         _conditionLeft = _gameManager.conditionLimit;
         conditionLeftText.text = _gameManager.conditionLimit.ToString();
 
+        SetupMenuDisplay();
+
+        // Find and set the stage name
+        stageName.text = _gameManager.stageName;
+
+        goalRequirement.text = _gameManager.goalCount.ToString();
+
+        _gameManager.gameOverEvent.AddListener(GameOver);
+	}
+
+    void SetupMenuDisplay() {
         switch (_gameManager.gameMode) {
             case GAME_MODE.MP_VERSUS:
                 gameObject.SetActive(false);
                 break;
             case GAME_MODE.SP_CLEAR:
+                // Display stage name
+                stageName.gameObject.SetActive(true);
                 // Display total time
                 timeHeader.gameObject.SetActive(true);
                 timeText.gameObject.SetActive(true);
                 // No goal or condition text for this mode
+                scoreStuff.SetActive(false);
                 goalText.gameObject.SetActive(false);
                 goalRequirement.gameObject.SetActive(false);
                 conditionText.gameObject.SetActive(false);
                 conditionLeftText.gameObject.SetActive(false);
                 break;
             case GAME_MODE.SP_POINTS:
-                //goalText.text = "Score\n       Needed";
-                //conditionText.text = "Throws";
+                // Hide stage name
+                stageName.gameObject.SetActive(false);
                 // Don't display total time
                 timeHeader.gameObject.SetActive(false);
                 timeText.gameObject.SetActive(false);
                 // Display goal stuff
+                scoreStuff.SetActive(true);
                 goalText.gameObject.SetActive(true);
                 goalRequirement.gameObject.SetActive(true);
                 conditionText.gameObject.SetActive(true);
@@ -58,9 +77,12 @@ public class GoalMenu : MonoBehaviour {
                 goalText.text = "Matches\n       Needed";
                 break;
             case GAME_MODE.SURVIVAL:
-                // Display total time I guess?
+                // Hide stage name
+                stageName.gameObject.SetActive(false);
+                // Display total time and score I guess?
                 timeHeader.gameObject.SetActive(true);
                 timeText.gameObject.SetActive(true);
+                scoreStuff.SetActive(true);
                 // No goal or condition text for this mode
                 goalText.gameObject.SetActive(false);
                 goalRequirement.gameObject.SetActive(false);
@@ -68,13 +90,11 @@ public class GoalMenu : MonoBehaviour {
                 conditionLeftText.gameObject.SetActive(false);
                 break;
         }
+    }
 
-        goalRequirement.text = _gameManager.goalCount.ToString();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if(_gameManager.gameIsOver) {
+    // Update is called once per frame
+    void Update () {
+        if(_gameOver) {
             return;
         }
 
@@ -96,8 +116,8 @@ public class GoalMenu : MonoBehaviour {
                 conditionLeftText.text = string.Format("{0}:{1:00}", (int)_conditionLeft / 60, (int)_conditionLeft % 60);
                 break;
             case GAME_MODE.SP_POINTS:
-                _conditionLeft = _gameManager.conditionLimit - PlayerController.totalThrowCount;
-                conditionLeftText.text = _conditionLeft.ToString();
+                //_conditionLeft = _gameManager.conditionLimit - PlayerController.totalThrowCount;
+                conditionLeftText.text = PlayerController.totalThrowCount.ToString() + " / " + _gameManager.conditionLimit.ToString();
                 break;
             case GAME_MODE.SP_MATCH:
                 goalRequirement.text = (_gameManager.goalCount - _bubbleManager.matchCount).ToString();
@@ -105,4 +125,7 @@ public class GoalMenu : MonoBehaviour {
         }
     }
 
+    void GameOver() {
+        _gameOver = true;
+    }
 }

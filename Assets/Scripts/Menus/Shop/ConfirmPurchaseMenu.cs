@@ -30,6 +30,10 @@ public class ConfirmPurchaseMenu : Menu {
     // Update is called once per frame
     protected override void Update() {
         base.Update();
+    }
+
+    protected override void CheckInput() {
+        base.CheckInput();
 
         if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             Cancel();

@@ -502,8 +502,7 @@ public class PlayerController : Entity {
         _invulnTimer += Time.deltaTime;
         if (_invulnTimer >= _invulnTime) {
             // Stop invuln time
-            _isInvuln = false;
-            _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            StopInvuln();
         }
     }
 
@@ -609,18 +608,21 @@ public class PlayerController : Entity {
 		}
 	}
 	public override void CollisionResponseY(Collider2D collider) {
-        base.CollisionResponseY(collider);
+        //base.CollisionResponseY(collider);
 
 		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/ || 
             collider.gameObject.layer == 13/*Grate*/ || collider.gameObject.layer == 23/*Stair Step*/) {
-			velocity.y = 0.0f;
 
-            // Only change the platform type if we landed on the floor
-            if (CurState == PLAYER_STATE.FALL && GetComponent<EntityPhysics>().IsTouchingFloor) {
+            // Only change the platform type if we're landing on the floor
+            if (velocity.y < 0f && GetComponent<EntityPhysics>().IsTouchingFloor) {
                 PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
-                // We should be in fall state sooo
-                ((FallState)currentState).Land();
+                if (CurState == PLAYER_STATE.FALL) {
+                    // We should be in fall state sooo
+                    ((FallState)currentState).Land();
+                }
             }
+
+            velocity.y = 0.0f;
         }
 
         if (collider.name == "Ice Platform") {
@@ -651,6 +653,10 @@ public class PlayerController : Entity {
     public void StartInvulnTime() {
         _isInvuln = true;
         _invulnTimer = 0f;
+    }
+    public void StopInvuln() {
+        _isInvuln = false;
+        _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
     }
 
     // Increase the shift cooldown based on how big of a match just happened

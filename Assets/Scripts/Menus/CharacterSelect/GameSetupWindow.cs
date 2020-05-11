@@ -7,11 +7,8 @@ public enum SPECIALSPAWNMETHOD { BOTH = 0, BALLS, PIPE, NONE, NUM_METHODS };
 
 public class GameSetupWindow : Menu {
 
-    //public Team teamLeft;
-    //public Team teamRight;
+    public GameObject menuObj;
 
-    public Text lthNumberText;
-    public Text rthNumberText;
     public Text aaText;
     public Text hsmText;
     public Text rainbowText;
@@ -57,8 +54,8 @@ public class GameSetupWindow : Menu {
     void GetOptions() {
         GameSetupOption tempOption;
         int counter = 0;
-        for(int i = 0; i < transform.childCount; ++i) {
-            tempOption = transform.GetChild(i).GetComponent<GameSetupOption>();
+        for(int i = 0; i < menuObj.transform.childCount; ++i) {
+            tempOption = menuObj.transform.GetChild(i).GetComponent<GameSetupOption>();
             if (tempOption != null) {
                 _options[counter] = tempOption;
                 counter++;
@@ -99,6 +96,10 @@ public class GameSetupWindow : Menu {
     // Update is called once per frame
     protected override void Update () {
         base.Update();
+    }
+
+    protected override void CheckInput() {
+        base.CheckInput();
 
         if (InputState.GetButtonOnAnyControllerPressed("Cancel") && !IsAnyOptionSelected()) {
             // If there's AI's
@@ -109,7 +110,7 @@ public class GameSetupWindow : Menu {
             } else {
                 // Go back to char select
                 Deactivate();
-                _characterSelect.Activate();
+                //_characterSelect.Activate();
             }
 
             // Make sure the button press doesn't overflow into the next menu.
@@ -119,12 +120,14 @@ public class GameSetupWindow : Menu {
 
     public override void Activate() {
         base.Activate();
+
+        menuObj.SetActive(true);
     }
 
     public override void Deactivate() {
         base.Deactivate();
 
-        gameObject.SetActive(false);
+        menuObj.SetActive(false);
     }
 
     bool IsAnyOptionSelected() {

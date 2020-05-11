@@ -45,7 +45,9 @@ public class Menu : MonoBehaviour {
     // Update is called once per frame
     protected virtual void Update() {
         if (hasFocus) {
-            if(pauses && !_gameManager.isPaused) {
+            CheckInput();
+
+            if (pauses && !_gameManager.isPaused) {
                 _gameManager.FullPause();
             }
 
@@ -75,6 +77,10 @@ public class Menu : MonoBehaviour {
         }
     }
 
+    protected virtual void CheckInput() {
+
+    }
+
     protected virtual void TakeFocus() {
         Menu[] allMenus = FindObjectsOfType<Menu>();
         foreach(Menu menu in allMenus) {
@@ -84,7 +90,7 @@ public class Menu : MonoBehaviour {
             }
         }
 
-        hasFocus = true;
+        StartCoroutine(GetFocusLater());
 
         // If we're already active
         if (gameObject.activeSelf) {
@@ -128,7 +134,7 @@ public class Menu : MonoBehaviour {
 
             // If there was a menu below, give it focus
             if (_prevMenu != null) {
-                _prevMenu.TakeFocus();
+                StartCoroutine(EnablePrevMenuLater());
             }
         }
     }
@@ -138,6 +144,17 @@ public class Menu : MonoBehaviour {
         if (hasFocus) {
             StartCoroutine(EnableButtonsLater());
         }
+    }
+
+    IEnumerator GetFocusLater() {
+        yield return null;
+
+        hasFocus = true;
+    }
+    IEnumerator EnablePrevMenuLater() {
+        yield return null;
+
+        _prevMenu.TakeFocus();
     }
 
     IEnumerator EnableButtonsLater() {

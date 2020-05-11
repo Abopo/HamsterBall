@@ -80,15 +80,22 @@ public class CSPlayerController : PlayerController {
                 ChangeState(PLAYER_STATE.IDLE);
             }
 
-            if (underControl) {
-                _physics.MoveX(velocity.x * Time.deltaTime);
-                _physics.MoveY(velocity.y * Time.deltaTime);
-            }
+            _physics.MoveX(velocity.x * Time.deltaTime);
+            _physics.MoveY(velocity.y * Time.deltaTime);
 
             _canShift = true; // Make sure we can shift at any time
 
             _justChangedState = false;
-        } else if(!inPlayArea) {
+        } else if (inPlayArea) {
+            if (currentState != null) {
+                currentState.Update();
+            } else {
+                ChangeState(PLAYER_STATE.IDLE);
+            }
+
+            _physics.MoveX(velocity.x * Time.deltaTime);
+            _physics.MoveY(velocity.y * Time.deltaTime);
+        } else if (!inPlayArea) {
             // Make absolute fucking 100% sure we are in the goddamn idle state when we are in the pull down window jesus fucking christ
             if (CurState != PLAYER_STATE.IDLE) {
                 ChangeState(PLAYER_STATE.IDLE);

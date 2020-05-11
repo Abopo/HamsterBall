@@ -94,6 +94,9 @@ public class BoardLoader : MonoBehaviour {
         } while (_readText == "");
 
         switch(_readText) {
+            case "Stage Name":
+                ReadStageName();
+                break;
             case "Bubble Layout":
                 ReadBubbleInfo();
                 break;
@@ -122,6 +125,11 @@ public class BoardLoader : MonoBehaviour {
                 LoadBoard();
                 break;
         }
+    }
+
+    void ReadStageName() {
+        _readText = _linesFromFile[_fileIndex++];
+        _gameManager.stageName = _readText;
     }
 
     void ReadBubbleInfo() {

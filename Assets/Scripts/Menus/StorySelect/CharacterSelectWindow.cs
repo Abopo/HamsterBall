@@ -96,15 +96,17 @@ public class CharacterSelectWindow : Menu {
     protected override void Update() {
         base.Update();
 
+        /*
         if (_isActive && !_waitFrame) {
             CheckInput();
         } else if(_waitFrame) {
             _waitFrame = false;
         }
+        */
     }
 
-    protected void CheckInput() {
-        if (_controllingPlayer.GetButtonDown("Up")) {
+    protected override void CheckInput() {
+        if (_controllingPlayer.GetButtonDown("MoveUp")) {
             // Figure out which character is highlighted
             if (IsBoyHighlighted()) {
                 ChangeBoy(-1);
@@ -112,7 +114,7 @@ public class CharacterSelectWindow : Menu {
                 ChangeGirl(-1);
             }
         }
-        if (_controllingPlayer.GetButtonDown("Down")) {
+        if (_controllingPlayer.GetButtonDown("MoveDown")) {
             // Figure out which character is highlighted
             if (IsBoyHighlighted()) {
                 ChangeBoy(1);

@@ -213,6 +213,9 @@ public class CharacterSelector : MonoBehaviour {
             _charaSelect.numAI--;
             // Give parent player input back
             parentSelector.charaWindow.PlayerController.underControl = true;
+            // turn off their invuln
+            parentSelector.charaWindow.PlayerController.StopInvuln();
+            isAI = false;
         } else {
             _charaSelect.numPlayers--;
             // Make this player available to be used again
@@ -253,39 +256,39 @@ public class CharacterSelector : MonoBehaviour {
 
         if (!lockedIn) {
             // Right
-            if (_player.GetButtonDown("Right")) {
+            if (_player.GetButtonDown("MoveRight")) {
                 if (curCharacterIcon.adjOptions[0] != null && curCharacterIcon.adjOptions[0].IsReady) {
                     // move selector to adjOptions[0]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[0]);
                 }
             }
             // Left
-            if (_player.GetButtonDown("Left")) {
+            if (_player.GetButtonDown("MoveLeft")) {
                 if (curCharacterIcon.adjOptions[2] != null && curCharacterIcon.adjOptions[2].IsReady) {
                     // move selector to adjOptions[2]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[2]);
                 }
             }
             // Up
-            if (_player.GetButtonDown("Up")) {
+            if (_player.GetButtonDown("MoveUp")) {
                 if (curCharacterIcon.adjOptions[3] != null && curCharacterIcon.adjOptions[3].IsReady) {
                     // move selector to adjOptions[3]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[3]);
                 }
             }
             // Down
-            if (_player.GetButtonDown("Down")) {
+            if (_player.GetButtonDown("MoveDown")) {
                 if (curCharacterIcon.adjOptions[1] != null && curCharacterIcon.adjOptions[1].IsReady) {
                     // move selector to adjOptions[1]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[1]);
                 }
             }
         } else if(lockedIn && !isReady) {
-            if(_player.GetButtonDown("Right")) {
+            if(_player.GetButtonDown("MoveRight")) {
                 // Change Color to the right
                 ChangeColorRight();
             }
-            if (_player.GetButtonDown("Left")) {
+            if (_player.GetButtonDown("MoveLeft")) {
                 // Change color to the left
                 ChangeColorLeft();
             }

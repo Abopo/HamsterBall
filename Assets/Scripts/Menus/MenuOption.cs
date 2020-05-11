@@ -128,26 +128,26 @@ public class MenuOption : MonoBehaviour {
 
     public void CheckInput() {
         if (isHighlighted && !_justHighlighted) {
-            if (InputState.GetButtonOnAnyControllerPressed("Submit")) {
+            if (_player.GetButtonDown("Submit")) {
                 Select();
             }
         }
 
         if (!_moved && isHighlighted && !_justHighlighted) {
             // Right
-            if (InputState.GetButtonOnAnyControllerPressed("MoveRight")) {
+            if (_player.GetButtonDown("MoveRight")) {
                 TryHighlight(0);
             }
             // Down
-            if (InputState.GetButtonOnAnyControllerPressed("MoveDown")) {
+            if (_player.GetButtonDown("MoveDown")) {
                 TryHighlight(1);
             }
             // Left
-            if (InputState.GetButtonOnAnyControllerPressed("MoveLeft")) {
+            if (_player.GetButtonDown("MoveLeft")) {
                 TryHighlight(2);
             }
             // Up
-            if (InputState.GetButtonOnAnyControllerPressed("MoveUp")) {
+            if (_player.GetButtonDown("MoveUp")) {
                 TryHighlight(3);
             }
         } else {

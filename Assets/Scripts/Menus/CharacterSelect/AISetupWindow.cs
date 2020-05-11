@@ -4,6 +4,8 @@ using Rewired;
 using System.Collections;
 
 public class AISetupWindow : Menu {
+    public GameObject menuObj;
+
     public AISetupOption ai1Setup;
     public AISetupOption ai2Setup;
     public AISetupOption ai3Setup;
@@ -108,8 +110,12 @@ public class AISetupWindow : Menu {
 	// Update is called once per frame
 	protected override void Update () {
         base.Update();
+    }
 
-        if(InputState.GetButtonOnAnyControllerPressed("Cancel")) {
+    protected override void CheckInput() {
+        base.CheckInput();
+
+        if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             // Turn off menu and turn back on team select stuff
             Deactivate();
         }
@@ -117,6 +123,8 @@ public class AISetupWindow : Menu {
 
     public override void Activate() {
         base.Activate();
+
+        menuObj.SetActive(true);
     }
     public override void Deactivate() {
         base.Deactivate();
@@ -124,9 +132,7 @@ public class AISetupWindow : Menu {
         ai1Setup.gameObject.SetActive(false);
         ai2Setup.gameObject.SetActive(false);
         ai3Setup.gameObject.SetActive(false);
-        gameObject.SetActive(false);
-
-        //_characterSelect.Activate();
+        menuObj.SetActive(false);
     }
 
     public void OpenGameSetup() {

@@ -5,18 +5,31 @@ using UnityEngine;
 // This script does anything to the player that is unique to the Lizard
 public class Lizard : MonoBehaviour {
 
-    Animator _linesAnimator;
+    PlayerController _playerController;
+    BoxCollider2D _boxCollider;
 
-    // Start is called before the first frame update
+    Vector2 _baseSize;
+
+    Vector2 _ballSize = new Vector2(2.16f, 1.6f);
+
+    // Use this for initialization
     void Start() {
-        // Create a secondary sprite object for the outlines
-        Object spritePrefab = Resources.Load("Prefabs/Entities/SecondarySprite");
-        GameObject sprite = Instantiate(spritePrefab, transform) as GameObject;
-        _linesAnimator = sprite.GetComponent<Animator>();
+        _playerController = GetComponent<PlayerController>();
+        _boxCollider = GetComponent<BoxCollider2D>();
+
+        _baseSize = _boxCollider.size;
     }
 
     // Update is called once per frame
     void Update() {
-        // Somehow keep the lines animator in sync with the main animator
+        if (_playerController.heldBall != null) {
+            // Expand the player's collision to keep the held ball in bounds
+            //_boxCollider.offset = _ballOffset;
+            _boxCollider.size = _ballSize;
+        } else {
+            // Return the collision to normal size
+            //_boxCollider.offset = _baseOffset;
+            _boxCollider.size = _baseSize;
+        }
     }
 }

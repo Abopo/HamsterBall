@@ -23,7 +23,9 @@ public class CharacterSelect : Menu {
     public bool noControl; // mainly used for networking
 
     CharacterSelector[] _charaSelectors = new CharacterSelector[4];
+    List<CharacterSelector> _controlledSelectors = new List<CharacterSelector>(); // keeps track of which selectors were under control
     CSPlayerController[] _players;
+    List<CSPlayerController> _controlledPlayers = new List<CSPlayerController>(); // keeps track of which players were under control
 
     Player _tempPlayer;
     List<Player> _assignedPlayers = new List<Player>();
@@ -110,21 +112,22 @@ public class CharacterSelect : Menu {
     }
 
     public void OpenSetupMenu() {
+        PreDeactivate();
+
         // If there are AI players, open the AI Setup Window
         if (numAI > 0) {
-            Deactivate();
             aiSetupWindow.Initialize();
-        }
+    
         // Otherwise, activate the Game Setup Windows
-        else {
+        } else {
             if (_gameManager.demoMode) {
-                Deactivate();
                 gameSetupWindow.DemoSetup();
             } else {
-                Deactivate();
                 gameSetupWindow.Initialize();
             }
         }
+
+        Deactivate();
 
         if (_gameManager.isOnline) {
             GetComponent<PhotonView>().RPC("GameSetupStart", PhotonTargets.AllBuffered);
@@ -164,14 +167,16 @@ public class CharacterSelect : Menu {
         _waitFrames = 0;
 
         if (!noControl) {
-            foreach (CharacterSelector charaSelector in _charaSelectors) {
+            foreach (CharacterSelector charaSelector in _controlledSelectors) {
                 charaSelector.takeInput = true;
             }
-            foreach (CSPlayerController player in _players) {
+            foreach (CSPlayerController player in _controlledPlayers) {
                 if (player.inPlayArea) {
                     player.underControl = true;
                 }
             }
+
+            _controlledPlayers.Clear();
 
             // Clear players from player manager
             _gameManager.playerManager.ClearAllPlayers();
@@ -184,21 +189,27 @@ public class CharacterSelect : Menu {
     public override void Activate() {
         base.Activate();
     }
-    public override void Deactivate() {
-        //base.Deactivate(); 
-        //_isActive = false;
-
-        foreach (CharacterSelector charaSelector in _charaSelectors) {
-            charaSelector.takeInput = false;
-        }
-        //foreach (CSPlayerController player in _players) {
-        //    player.underControl = false;
-        //}
-
+    void PreDeactivate() {
         // Load the chosen characters to the player manager
         foreach (CharacterSelector charaSelector in _charaSelectors) {
             if (charaSelector.isActive) {
                 charaSelector.LoadCharacter();
+            }
+        }
+    }
+    public override void Deactivate() {
+        base.Deactivate();
+
+        foreach (CharacterSelector charaSelector in _charaSelectors) {
+            if (charaSelector.takeInput) {
+                _controlledSelectors.Add(charaSelector);
+                charaSelector.takeInput = false;
+            }
+        }
+        foreach (CSPlayerController player in _players) {
+            if (player.inPlayArea && player.underControl) {
+                _controlledPlayers.Add(player);
+                player.underControl = false;
             }
         }
     }

@@ -21,11 +21,13 @@ public class WaterBubbleGenerator : MonoBehaviour {
     Vector3 _spawnPos;
 
     LevelManager _levelManager;
+    GameManager _gameManager;
 
 	// Use this for initialization
 	void Start () {
         _levelManager = FindObjectOfType<LevelManager>();
-        FindObjectOfType<GameManager>().gameOverEvent.AddListener(ClearAllBubbles);
+        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager.gameOverEvent.AddListener(ClearAllBubbles);
 
         _spawnPos = new Vector3(transform.position.x,
                                 transform.position.y + 0.3f,
@@ -34,7 +36,7 @@ public class WaterBubbleGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(_levelManager == null || _levelManager.GameOver) {
+        if(_levelManager == null || _levelManager.GameOver || _gameManager.gameMode == GAME_MODE.SP_POINTS) {
             return;
         }
 

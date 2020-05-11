@@ -118,13 +118,11 @@ public class ResultsScreen : MonoBehaviour {
         }
 
         if (_gameManager.IsStoryLevel()) {
-            if ((_gameManager.gameMode == GAME_MODE.MP_VERSUS && _gameManager.VersusModeFinish) ||
-                _gameManager.gameMode != GAME_MODE.MP_VERSUS) {
-                SetSinglePlayerResultsText(result);
-                // If this is the last level and the player won
-                if (_gameManager.nextLevel == "" && result == -1) {
-                    EarnFlowers();
-                }
+            SetSinglePlayerResultsText(result);
+
+            // If this is the last level and the player won
+            if (_gameManager.IsLastLevel() && result == -1) {
+                EarnFlowers();
             }
         } else {
             SetWinningTeamText(result);
@@ -160,7 +158,7 @@ public class ResultsScreen : MonoBehaviour {
         int flowerCount = 1;
 
         // First flower is earned just by beating the stage
-         flowers[0].gameObject.SetActive(true);
+        flowers[0].gameObject.SetActive(true);
 
         // TODO: also adjust if playing solo or coop
         // Next two are earned depending on the game mode
@@ -171,23 +169,27 @@ public class ResultsScreen : MonoBehaviour {
                 break;
             case GAME_MODE.SP_POINTS:
                 // Throws used
-                flowerCount += SetFlowers(_gameManager.scoreOverflow);
+                flowerCount += SetFlowers(PlayerController.totalThrowCount);
                 break;
             case GAME_MODE.MP_VERSUS:
                 // Points?
-                flowerCount += SetFlowers(PlayerController.totalThrowCount);
+                flowerCount += SetFlowers(_gameManager.scoreOverflow);
                 break;
         }
 
-        // Save the flower count
+        // Save the flower count (if it's better!)
         if (_gameManager.isCoop) {
             int[,] coopFlowers = ES3.Load<int[,]>("CoopFlowers");
-            coopFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1] = flowerCount;
-            ES3.Save<int[,]>("CoopFlowers", coopFlowers);
+            if (flowerCount > coopFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1]) {
+                coopFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1] = flowerCount;
+                ES3.Save<int[,]>("CoopFlowers", coopFlowers);
+            }
         } else {
             int[,] soloFlowers = ES3.Load<int[,]>("SoloFlowers");
-            soloFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1] = flowerCount;
-            ES3.Save<int[,]>("SoloFlowers", soloFlowers);
+            if (flowerCount > soloFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1]) {
+                soloFlowers[_gameManager.stage[0] - 1, _gameManager.stage[1] - 1] = flowerCount;
+                ES3.Save<int[,]>("SoloFlowers", soloFlowers);
+            }
         }
 
     }
@@ -196,13 +198,28 @@ public class ResultsScreen : MonoBehaviour {
     int SetFlowers(int goal) {
         int flowerCount = 0;
 
-        if (goal < _gameManager.flowerRequirement1) {
-            flowers[1].gameObject.SetActive(true);
-            flowerCount++;
-        }
-        if (goal < _gameManager.flowerRequirement2) {
-            flowers[2].gameObject.SetActive(true);
-            flowerCount++;
+        switch (_gameManager.gameMode) {
+            case GAME_MODE.SP_CLEAR:
+            case GAME_MODE.SP_POINTS:
+                if (goal < _gameManager.flowerRequirement1) {
+                    flowers[1].gameObject.SetActive(true);
+                    flowerCount++;
+                }
+                if (goal < _gameManager.flowerRequirement2) {
+                    flowers[2].gameObject.SetActive(true);
+                    flowerCount++;
+                }
+                break;
+            case GAME_MODE.MP_VERSUS:
+                if (goal > _gameManager.flowerRequirement1) {
+                    flowers[1].gameObject.SetActive(true);
+                    flowerCount++;
+                }
+                if (goal > _gameManager.flowerRequirement2) {
+                    flowers[2].gameObject.SetActive(true);
+                    flowerCount++;
+                }
+                break;
         }
 
         return flowerCount;

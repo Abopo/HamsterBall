@@ -18,7 +18,6 @@ public class FallState : PlayerState {
 
         // Fall
         playerController.ApplyGravity();
-
     }
     
     public void Land() {

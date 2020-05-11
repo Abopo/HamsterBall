@@ -173,8 +173,12 @@ public class ShopMenu : Menu {
                 }
             }
         }
+    }
 
-        if(InputState.GetButtonOnAnyControllerPressed("Cancel")) {
+    protected override void CheckInput() {
+        base.CheckInput();
+
+        if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             _exitMenu.Activate();
         }
     }
