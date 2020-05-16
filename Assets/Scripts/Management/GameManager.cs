@@ -417,7 +417,11 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool IsLastLevel() {
-        return (leftTeamGames >= 2 || rightTeamGames >= 2) && nextLevel == "";
+        if(gameMode == GAME_MODE.MP_VERSUS) {
+            return (leftTeamGames >= 2 || rightTeamGames >= 2);
+        } else {
+            return nextLevel == "";
+        }
     }
 
     public void SetDemoMode(bool on) {
