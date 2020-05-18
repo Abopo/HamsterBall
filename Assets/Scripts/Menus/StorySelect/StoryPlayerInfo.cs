@@ -7,6 +7,10 @@ public class StoryPlayerInfo : MonoBehaviour {
 
     PlayerInfoBox[] _playerInfoBoxes;
 
+    public bool IsCoop {
+        get { return _playerInfoBoxes[0].playerAssigned && _playerInfoBoxes[1].playerAssigned; }
+    }
+
     public static StoryPlayerInfo instance;
 
     private void Awake() {

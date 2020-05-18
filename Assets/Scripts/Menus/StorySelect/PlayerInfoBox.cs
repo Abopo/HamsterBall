@@ -14,7 +14,10 @@ public class PlayerInfoBox : MonoBehaviour {
     public Text playerText;
     public GameObject[] infoObjects;
 
-    Player _player;
+    Player _myPlayer;
+    public Player MyPlayer {
+        get { return _myPlayer; }
+    }
 
     SpriteRenderer _sprite;
     Sprite _boySprite;
@@ -25,6 +28,7 @@ public class PlayerInfoBox : MonoBehaviour {
 
     CharacterSelectWindow _characterSelectWindow;
     GameManager _gameManager;
+
 
     private void Awake() {
         _sprite = GetComponentInChildren<SpriteRenderer>(true);
@@ -53,10 +57,10 @@ public class PlayerInfoBox : MonoBehaviour {
     void Start () {
         _gameManager = FindObjectOfType<GameManager>();
 
-        _player = ReInput.players.GetPlayer(playerID);
+        _myPlayer = ReInput.players.GetPlayer(playerID);
 
         if (playerAssigned) {
-            _player.controllers.GetController(ControllerType.Joystick, 0);
+            _myPlayer.controllers.GetController(ControllerType.Joystick, 0);
         }
 
         UpdateCharacterInfo();
@@ -100,6 +104,18 @@ public class PlayerInfoBox : MonoBehaviour {
     void Update () {
 		if(!playerAssigned) {
             // Wait for some kind of input
+            foreach(Player p in ReInput.players.AllPlayers) {
+                if(_player1 != p) {
+                    if(p.GetAnyButtonDown()) {
+                        _myPlayer = p;
+                        // Open the character select window so the player can choose a character
+                        _characterSelectWindow.Activate(this);
+                        _gameManager.isCoop = true;
+                    }
+                }
+            }
+            
+            /*
             foreach (Joystick jStick in ReInput.controllers.Joysticks) {
                 // Don't check the controller already assigned to player1
                 if (_player1.controllers.ContainsController(jStick)) {
@@ -107,23 +123,26 @@ public class PlayerInfoBox : MonoBehaviour {
                 }
 
                 if(jStick.GetAnyButtonDown()) {
-                    _player.controllers.AddController(jStick, false);
+                    _myPlayer.controllers.AddController(jStick, false);
                     // Open the character select window so the player can choose a character
                     _characterSelectWindow.Activate(this);
                     _gameManager.isCoop = true;
                 }
             }
+            */
         } else {
             // if the player wants to change characters
-            if(_player.GetButtonDown("Shift")) {
+            if(_myPlayer.GetButtonDown("Shift")) {
                 // Open the character select window
                 _characterSelectWindow.Activate(this);
             }
             // If the second player wants to quit out
-            if(playerID != 0 && _player.GetButtonDown("Cancel")) {
+            if(playerID != 0 && _myPlayer.GetButtonDown("Cancel")) {
                 // Reset this info box
+                TurnOff();
+
                 playerAssigned = false;
-                _player.controllers.ClearAllControllers();
+                _myPlayer = null;
 
                 _gameManager.isCoop = false;
             }
@@ -144,6 +163,8 @@ public class PlayerInfoBox : MonoBehaviour {
             ES3.Save<int>("Player2Character", charaInfo.name);
             ES3.Save<int>("Player2Color", charaInfo.color);
         }
+
+        // Turn on the correct UI
         foreach (GameObject gO in infoObjects) {
             if (gO != null) {
                 gO.SetActive(true);
@@ -167,6 +188,17 @@ public class PlayerInfoBox : MonoBehaviour {
             }
         }
         //_sprite.sprite = characterSprites[charaInfo.name == CHARACTERS.BOY ? charaInfo.color - 1 : charaInfo.color + 3];
+    }
+
+    void TurnOff() {
+        playerText.text = "Press any button to join!";
+
+        // Turn off the correct UI
+        foreach (GameObject gO in infoObjects) {
+            if (gO != null) {
+                gO.SetActive(false);
+            }
+        }
     }
 
     public void LoadCharacter() {

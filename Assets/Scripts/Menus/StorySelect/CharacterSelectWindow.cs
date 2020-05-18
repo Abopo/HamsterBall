@@ -160,10 +160,10 @@ public class CharacterSelectWindow : Menu {
 
     public void Activate(PlayerInfoBox pib) {
         _playerInfoBox = pib;
-        _controllingPlayer = ReInput.players.GetPlayer(pib.playerID);
+        _controllingPlayer = pib.MyPlayer;
 
         // Use that players inputs to control the menu options
-        SetMenuOptionInputs(pib.playerID);
+        SetMenuOptionInputs(pib.MyPlayer.id);
 
         // Set the selection to the players character
         SetSelectionToCharacter(pib.characterInfo);
@@ -264,10 +264,14 @@ public class CharacterSelectWindow : Menu {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.BOY;
 
-        // Get the color out of the material name
-        string paletteString = new String(_boyPalettes[_boyPaletteIndex].name.Where(Char.IsDigit).ToArray());
-        charaInfo.color = int.Parse(paletteString);
-        //charaInfo.color = _boyPaletteIndex+1;
+        if (_boyPaletteIndex == 0) {
+            charaInfo.color = 0;
+        } else {
+            // Get the color out of the material name
+            string paletteString = new String(_boyPalettes[_boyPaletteIndex].name.Where(Char.IsDigit).ToArray());
+            charaInfo.color = int.Parse(paletteString);
+            //charaInfo.color = _boyPaletteIndex+1;
+        }
 
         _playerInfoBox.SetCharacter(charaInfo);
 
@@ -280,10 +284,14 @@ public class CharacterSelectWindow : Menu {
     public virtual void ChooseGirl() {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.GIRL;
-        // Get the color out of the material name
-        string paletteString = new String(_girlPalettes[_girlPaletteIndex].name.Where(Char.IsDigit).ToArray());
-        charaInfo.color = int.Parse(paletteString);
-        //charaInfo.color = _girlPaletteIndex+1;
+
+        if (_girlPaletteIndex == 0) {
+            charaInfo.color = 0;
+        } else {
+            // Get the color out of the material name
+            string paletteString = new String(_girlPalettes[_girlPaletteIndex].name.Where(Char.IsDigit).ToArray());
+            charaInfo.color = int.Parse(paletteString);
+        }
 
         _playerInfoBox.SetCharacter(charaInfo);
 

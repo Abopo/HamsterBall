@@ -45,9 +45,11 @@ public class StorySelectMenu : MonoBehaviour {
     }
 
     GameManager _gameManager;
+    StoryPlayerInfo _storyPlayerInfo;
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
+        _storyPlayerInfo = FindObjectOfType<StoryPlayerInfo>();
         _stagePicture = FindObjectOfType<StagePicture>();
         LoadFlowerSprites();
     }
@@ -169,7 +171,12 @@ public class StorySelectMenu : MonoBehaviour {
 
         // Set flower stuff
         SetFlowerData(storyButton);
-        SetFlowerRequirementTexts(storyButton);
+        if (_storyPlayerInfo.IsCoop) {
+            SetFlowerRequirementTexts(storyButton, storyButton.cpFlower2Requirement, storyButton.cpFlower3Requirement);
+        } else {
+            SetFlowerRequirementTexts(storyButton, storyButton.spFlower2Requirement, storyButton.spFlower3Requirement);
+        }
+
 
         // Update the stage picture
         _stagePicture.UpdateImages(storyButton);
@@ -200,21 +207,20 @@ public class StorySelectMenu : MonoBehaviour {
         }
     }
 
-    void SetFlowerRequirementTexts(StoryButton storyButton) {
+    void SetFlowerRequirementTexts(StoryButton storyButton, int fr1, int fr2) {
         switch(storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
             case GAME_MODE.SP_POINTS:
-                flowerRequirement1.text = ": " + storyButton.flower2Requirement.ToString();
-                flowerRequirement2.text = ": " + storyButton.flower3Requirement.ToString();
+                    flowerRequirement1.text = ": " + fr1.ToString();
+                    flowerRequirement2.text = ": " + fr2.ToString();
                 break;
             case GAME_MODE.SP_CLEAR:
-                int seconds = storyButton.flower2Requirement % 60;
-                int minutes = storyButton.flower2Requirement / 60;
-                flowerRequirement1.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
-                seconds = storyButton.flower3Requirement % 60;
-                minutes = storyButton.flower3Requirement / 60;
-                flowerRequirement2.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
-
+                    int seconds = fr1 % 60;
+                    int minutes = fr1 / 60;
+                    flowerRequirement1.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
+                    seconds = fr2 % 60;
+                    minutes = fr2 / 60;
+                    flowerRequirement2.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
                 break;
         }
     }

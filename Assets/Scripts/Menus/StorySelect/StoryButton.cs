@@ -16,8 +16,10 @@ public class StoryButton : MenuOption {
     public string winCondition;
 
     // These are the required time/throws/score the player has to reach in order to earn flowers for the stage
-    public int flower2Requirement;
-    public int flower3Requirement;
+    public int spFlower2Requirement;
+    public int spFlower3Requirement;
+    public int cpFlower2Requirement;
+    public int cpFlower3Requirement;
 
     StorySelectMenu _storySelectMenu;
     BoardLoader _boardLoader;
@@ -77,8 +79,8 @@ public class StoryButton : MenuOption {
 
         // TODO: Add separate coop requirements
         // Hold onto the flower requirements
-        _gameManager.flowerRequirement1 = flower2Requirement;
-        _gameManager.flowerRequirement2 = flower3Requirement;
+        _gameManager.flowerRequirement1 = spFlower2Requirement;
+        _gameManager.flowerRequirement2 = spFlower3Requirement;
 
         if (hasCutscene) {
             // Load a cutscene
