@@ -50,19 +50,17 @@ public class Entity : MonoBehaviour {
     protected GameManager _gameManager;
    
     protected virtual void Awake() {
-
-    }
-
-    // Use this for initialization
-    protected virtual void Start () {
         if (_animator == null) {
             _animator = GetComponentInChildren<Animator>();
         }
 
         _gameManager = FindObjectOfType<GameManager>();
-
-		velocity = Vector2.zero;
 		_physics = GetComponent<EntityPhysics>();
+    }
+
+    // Use this for initialization
+    protected virtual void Start () {
+		velocity = Vector2.zero;
 
         _waterMultiplier = 1f;
         _waterGravMultiplier = 1f;

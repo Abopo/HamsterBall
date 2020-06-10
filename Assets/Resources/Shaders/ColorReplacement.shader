@@ -37,6 +37,9 @@
 		_OriginalColor10("Original Color 10", Color) = (1.0,1.0,1.0,1.0)
 		_ColorReplacement10("Replacement Color 10", Color) = (1.0,1.0,1.0,1.0)
 		_Threshold10("Threshold", Range(0,1)) = 0.1
+		_OriginalColor11("Original Color 11", Color) = (1.0,1.0,1.0,1.0)
+		_ColorReplacement11("Replacement Color 11", Color) = (1.0,1.0,1.0,1.0)
+		_Threshold11("Threshold", Range(0,1)) = 0.1
 
 	}
 
@@ -72,6 +75,7 @@
 				uniform float4 _OriginalColor8;
 				uniform float4 _OriginalColor9;
 				uniform float4 _OriginalColor10;
+				uniform float4 _OriginalColor11;
 
 				//Colors Replacement
 				uniform float4 _ColorReplacement1;
@@ -84,6 +88,7 @@
 				uniform float4 _ColorReplacement8;
 				uniform float4 _ColorReplacement9;
 				uniform float4 _ColorReplacement10;
+				uniform float4 _ColorReplacement11;
 
 				uniform float _Threshold1;
 				uniform float _Threshold2;
@@ -95,6 +100,7 @@
 				uniform float _Threshold8;
 				uniform float _Threshold9;
 				uniform float _Threshold10;
+				uniform float _Threshold11;
 
 				struct appdata {
 					float4 vertex : POSITION;
@@ -149,7 +155,8 @@
 					 _color = (distance(_color.rgb, _OriginalColor9.rgb) < _Threshold9) ? _ColorReplacement9 : _color;
 					 //
 					 _color = (distance(_color.rgb, _OriginalColor10.rgb) < _Threshold10) ? _ColorReplacement10 : _color;
-
+					 //
+					 _color = (distance(_color.rgb, _OriginalColor11.rgb) < _Threshold11) ? _ColorReplacement11 : _color;
 
 					 return _color;
 				}

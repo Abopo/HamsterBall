@@ -10,7 +10,7 @@ public class RunningHamster : VillageHamster {
 
     public Transform[] boundries = new Transform[2];
 
-    float moveSpeed = 3;
+    float moveSpeed = 2.5f;
 
     // Use this for initialization
     protected override void Start() {

@@ -57,15 +57,17 @@ public class CharacterSelectWindow : Menu {
         bool[] paletteData;
 
         // Base palette doesn't need material
+        /*
         tempMaterial = new Material(Shader.Find("Sprites/Default"));
         _boyPalettes.Add(tempMaterial);
         _girlPalettes.Add(tempMaterial);
+        */
 
         paletteData = ES3.Load<bool[]>("BoyPalettes", new bool[0]);
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
-                tempMaterial = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + (i + 2));
+                tempMaterial = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + (i + 1));
                 _boyPalettes.Add(tempMaterial);
             }
         }
@@ -73,7 +75,7 @@ public class CharacterSelectWindow : Menu {
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
-                tempMaterial = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + (i + 2));
+                tempMaterial = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + (i + 1));
                 _girlPalettes.Add(tempMaterial);
             }
         }
@@ -264,14 +266,10 @@ public class CharacterSelectWindow : Menu {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.BOY;
 
-        if (_boyPaletteIndex == 0) {
-            charaInfo.color = 0;
-        } else {
-            // Get the color out of the material name
-            string paletteString = new String(_boyPalettes[_boyPaletteIndex].name.Where(Char.IsDigit).ToArray());
-            charaInfo.color = int.Parse(paletteString);
-            //charaInfo.color = _boyPaletteIndex+1;
-        }
+        // Get the color out of the material name
+        string paletteString = new String(_boyPalettes[_boyPaletteIndex].name.Where(Char.IsDigit).ToArray());
+        charaInfo.color = int.Parse(paletteString);
+        //charaInfo.color = _boyPaletteIndex+1;
 
         _playerInfoBox.SetCharacter(charaInfo);
 

@@ -56,18 +56,20 @@ public class CharacterSelectResources : MonoBehaviour {
         paletteData = ES3.Load<bool[]>("BoyPalettes", new bool[0]);
 
         // First info is default
+        /*
         tempInfo = new CharaSelectInfo();
         tempInfo.animator = boyAnimator;
         tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         tempInfo.isTaken = false;
         _charaInfo[(int)CHARACTERS.BOY].Add(tempInfo);
+        */
 
         for(int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
                 tempInfo = new CharaSelectInfo();
                 tempInfo.animator = boyAnimator;
-                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + (i+2));
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + (i+1));
                 tempInfo.isTaken = false;
                 _charaInfo[(int)CHARACTERS.BOY].Add(tempInfo);
             }
@@ -79,18 +81,20 @@ public class CharacterSelectResources : MonoBehaviour {
         paletteData = ES3.Load<bool[]>("GirlPalettes", new bool[0]);
 
         // First info is default
+        /*
         tempInfo = new CharaSelectInfo();
         tempInfo.animator = girlAnimator;
         tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         tempInfo.isTaken = false;
         _charaInfo[(int)CHARACTERS.GIRL].Add(tempInfo);
+        */
 
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
                 tempInfo = new CharaSelectInfo();
                 tempInfo.animator = girlAnimator;
-                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + (i + 2));
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + (i + 1));
                 tempInfo.isTaken = false;
                 _charaInfo[(int)CHARACTERS.GIRL].Add(tempInfo);
             }
@@ -102,18 +106,20 @@ public class CharacterSelectResources : MonoBehaviour {
         paletteData = ES3.Load<bool[]>("RoosterPalettes", new bool[0]);
 
         // First info is default
+        /*
         tempInfo = new CharaSelectInfo();
         tempInfo.animator = roosterAnimator;
         tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         tempInfo.isTaken = false;
         _charaInfo[(int)CHARACTERS.ROOSTER].Add(tempInfo);
+        */
 
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
                 tempInfo = new CharaSelectInfo();
                 tempInfo.animator = roosterAnimator;
-                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Rooster/Rooster" + (i + 2));
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Rooster/Rooster" + (i + 1));
                 tempInfo.isTaken = false;
                 _charaInfo[(int)CHARACTERS.ROOSTER].Add(tempInfo);
             }
@@ -125,18 +131,20 @@ public class CharacterSelectResources : MonoBehaviour {
         paletteData = ES3.Load<bool[]>("BatPalettes", new bool[0]);
 
         // First info is default
+        /*
         tempInfo = new CharaSelectInfo();
         tempInfo.animator = batAnimator;
         tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         tempInfo.isTaken = false;
         _charaInfo[(int)CHARACTERS.BAT].Add(tempInfo);
+        */
 
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
                 tempInfo = new CharaSelectInfo();
                 tempInfo.animator = batAnimator;
-                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Bat/Bat" + (i + 2));
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Bat/Bat" + (i + 1));
                 tempInfo.isTaken = false;
                 _charaInfo[(int)CHARACTERS.BAT].Add(tempInfo);
             }
@@ -148,18 +156,20 @@ public class CharacterSelectResources : MonoBehaviour {
         paletteData = ES3.Load<bool[]>("SnailPalettes", new bool[0]);
 
         // First info is default
+        /*
         tempInfo = new CharaSelectInfo();
         tempInfo.animator = snailAnimator;
         tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         tempInfo.isTaken = false;
         _charaInfo[(int)CHARACTERS.SNAIL].Add(tempInfo);
+        */
 
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
                 tempInfo = new CharaSelectInfo();
                 tempInfo.animator = snailAnimator;
-                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Snail/Snail" + (i + 2));
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Snail/Snail" + (i + 1));
                 tempInfo.isTaken = false;
                 _charaInfo[(int)CHARACTERS.SNAIL].Add(tempInfo);
             }
@@ -171,17 +181,17 @@ public class CharacterSelectResources : MonoBehaviour {
 
         CharaSelectInfo lackey1 = new CharaSelectInfo();
         lackey1.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey1") as RuntimeAnimatorController;
-        lackey1.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
+        lackey1.material = new Material(Shader.Find("Sprites/Default")); // Lackey doesn't need material
         lackey1.isTaken = false;
         _charaInfo[(int)CHARACTERS.LACKEY].Add(lackey1);
         CharaSelectInfo lackey2 = new CharaSelectInfo();
         lackey2.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey2") as RuntimeAnimatorController;
-        lackey2.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
+        lackey2.material = new Material(Shader.Find("Sprites/Default")); // Lackey doesn't need material
         lackey2.isTaken = false;
         _charaInfo[(int)CHARACTERS.LACKEY].Add(lackey2);
         CharaSelectInfo lackey3 = new CharaSelectInfo();
         lackey3.animator = Resources.Load("Art/Animations/Player/Lackey/Animation Objects/Lackey3") as RuntimeAnimatorController;
-        lackey3.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
+        lackey3.material = new Material(Shader.Find("Sprites/Default")); // Lackey doesn't need material
         lackey3.isTaken = false;
         _charaInfo[(int)CHARACTERS.LACKEY].Add(lackey3);
 
@@ -191,18 +201,20 @@ public class CharacterSelectResources : MonoBehaviour {
         paletteData = ES3.Load<bool[]>("LizardPalettes", new bool[0]);
 
         // First info is default
+        /*
         tempInfo = new CharaSelectInfo();
         tempInfo.animator = lizardAnimator;
         tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
         tempInfo.isTaken = false;
         _charaInfo[(int)CHARACTERS.LIZARD].Add(tempInfo);
+        */
 
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
                 tempInfo = new CharaSelectInfo();
                 tempInfo.animator = lizardAnimator;
-                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Lizard/Lizard" + (i + 2));
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Lizard/Lizard" + (i + 1));
                 tempInfo.isTaken = false;
                 _charaInfo[(int)CHARACTERS.LIZARD].Add(tempInfo);
             }

@@ -162,6 +162,8 @@ public class PlayerController : Entity {
     public static int totalThrowCount;
 
     protected override void Awake() {
+        base.Awake();
+
         canBeHit = true;
 
         _playerAudio = GetComponent<PlayerAudio>();
@@ -290,7 +292,7 @@ public class PlayerController : Entity {
 
         _animator.runtimeAnimatorController = Resources.Load(animatorPath) as RuntimeAnimatorController;
 
-        if(palettePath != "" && _charaInfo.color > 1) {
+        if(palettePath != "" && _charaInfo.color > 0) {
             _spriteRenderer.material = Resources.Load(palettePath) as Material;
         } else {
             _spriteRenderer.material = new Material(Shader.Find("Sprites/Default"));

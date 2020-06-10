@@ -200,7 +200,7 @@ public class VillageManager : MonoBehaviour {
 
     void CharacterPalettes() {
         // First four palettes for all characters are unlocked by default
-        bool[] initialPaletteData = new bool[5] { true, true, true, false, false };
+        bool[] initialPaletteData = new bool[6] { true, true, true, true, false, false };
 
         ES3.Save<bool[]>("BoyPalettes", initialPaletteData);
         ES3.Save<bool[]>("GirlPalettes", initialPaletteData);
