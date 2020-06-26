@@ -46,13 +46,14 @@ public class EntityPhysics : MonoBehaviour {
     }
 
     private void Awake() {
+        entity = GetComponent<Entity>();
+
         _myCollider = GetComponent<CircleCollider2D>();
         if (_myCollider == null) {
             _myCollider = GetComponent<BoxCollider2D>();
         }
     }
     void Start() {
-        entity = GetComponent<Entity>();
 
         wallCheckDist = 0.1f;
     }

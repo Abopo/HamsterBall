@@ -7,6 +7,8 @@ public class StopGoButton : MonoBehaviour {
     public Stoplight leftStoplight;
     public Stoplight rightStoplight;
 
+    public StopGoLever lever;
+
     // Maybe the buttons could be on some kind of timer in addition to hitting them?
 
     // Start is called before the first frame update
@@ -47,13 +49,18 @@ public class StopGoButton : MonoBehaviour {
         leftStoplight.Go();
         rightStoplight.Go();
 
+        // Move the lever
+        lever.ChangePosition(this);
 
-        // Push opposite button outwards
-        xDelta = 0.3f * Mathf.Sign(otherButton.transform.position.x);
-        otherButton.transform.Translate(xDelta, 0f, 0f);
-        otherButton.pressed = false;
         // Turn off other stoplights
         otherButton.leftStoplight.Stop();
         otherButton.rightStoplight.Stop();
+    }
+
+    public void FinishPress() {
+        // Push opposite button outwards
+        float xDelta = 0.3f * Mathf.Sign(otherButton.transform.position.x);
+        otherButton.transform.Translate(xDelta, 0f, 0f);
+        otherButton.pressed = false;
     }
 }

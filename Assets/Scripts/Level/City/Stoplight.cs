@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Stoplight : MonoBehaviour {
-    SpriteRenderer _spriteRenderer;
+    public Transform gateArm;
+    public SpriteRenderer icon;
+    public Sprite goIcon;
+    public Sprite stopIcon;
+    public bool isLeft;
+
     BoxCollider2D _collider;
 
     private void Awake() {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
     }
     // Start is called before the first frame update
@@ -21,12 +25,14 @@ public class Stoplight : MonoBehaviour {
     }
 
     public void Go() {
-        _spriteRenderer.color = Color.green;
+        gateArm.rotation = Quaternion.Euler(0f, 0f, 60f * (isLeft ? -1 : 1));
+        icon.sprite = goIcon;
         _collider.enabled = false;
     }
 
     public void Stop() {
-        _spriteRenderer.color = Color.red;
+        gateArm.rotation = Quaternion.identity;
+        icon.sprite = stopIcon;
         _collider.enabled = true;
     }
 }
