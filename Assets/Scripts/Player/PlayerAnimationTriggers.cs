@@ -67,7 +67,9 @@ public class PlayerAnimationTriggers : MonoBehaviour {
     }
 
     public void ShowBubble() {
-        _playerController.heldBall.DisplaySprites();
+        if (_playerController.heldBall != null) {
+            _playerController.heldBall.DisplaySprites();
+        }
     }
 
     public void AttackOn() {

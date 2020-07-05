@@ -10,7 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
     int leftMeters = 0;
     int rightMeters = 0;
 
-    Sprite[,] playerIcons = new Sprite[(int)CHARACTERS.NUM_CHARACTERS, 4];
+    Sprite[] playerIcons = new Sprite[(int)CHARACTERS.NUM_CHARACTERS];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -31,45 +31,18 @@ public class PlayerSpawner : MonoBehaviour {
         SpawnPlayers();
     }
 
-    static public void LoadPlayerIcons(Sprite[,] icons) {
+    static public void LoadPlayerIcons(Sprite[] icons) {
         // Get sprites
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-Master-File");
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-False-Colors-Master-File");
 
-        // Boy
-        icons[(int)CHARACTERS.BOY, 0] = sprites[0];
-        icons[(int)CHARACTERS.BOY, 1] = sprites[1];
-        icons[(int)CHARACTERS.BOY, 2] = sprites[2];
-        icons[(int)CHARACTERS.BOY, 3] = sprites[3];
-        // Girl
-        icons[(int)CHARACTERS.GIRL, 0] = sprites[4];
-        icons[(int)CHARACTERS.GIRL, 1] = sprites[5];
-        icons[(int)CHARACTERS.GIRL, 2] = sprites[6];
-        icons[(int)CHARACTERS.GIRL, 3] = sprites[7];
-        // Rooster
-        icons[(int)CHARACTERS.ROOSTER, 0] = sprites[12];
-        icons[(int)CHARACTERS.ROOSTER, 1] = sprites[13];
-        icons[(int)CHARACTERS.ROOSTER, 2] = sprites[14];
-        icons[(int)CHARACTERS.ROOSTER, 3] = sprites[15];
-        // Bat
-        icons[(int)CHARACTERS.BAT, 0] = sprites[8];
-        icons[(int)CHARACTERS.BAT, 1] = sprites[9];
-        icons[(int)CHARACTERS.BAT, 2] = sprites[10];
-        icons[(int)CHARACTERS.BAT, 3] = sprites[11];
-        // Lackey
-        icons[(int)CHARACTERS.LACKEY, 0] = sprites[16];
-        icons[(int)CHARACTERS.LACKEY, 1] = sprites[17];
-        icons[(int)CHARACTERS.LACKEY, 2] = sprites[18];
-        icons[(int)CHARACTERS.LACKEY, 3] = sprites[19];
-        // Snail
-        icons[(int)CHARACTERS.SNAIL, 0] = sprites[20];
-        icons[(int)CHARACTERS.SNAIL, 1] = sprites[21];
-        icons[(int)CHARACTERS.SNAIL, 2] = sprites[22];
-        icons[(int)CHARACTERS.SNAIL, 3] = sprites[23];
-        // Lizard
-        icons[(int)CHARACTERS.LIZARD, 0] = sprites[24];
-        icons[(int)CHARACTERS.LIZARD, 1] = sprites[25];
-        icons[(int)CHARACTERS.LIZARD, 2] = sprites[24];
-        icons[(int)CHARACTERS.LIZARD, 3] = sprites[25];
+        icons[(int)CHARACTERS.BOY] = sprites[1];
+        icons[(int)CHARACTERS.GIRL] = sprites[4];
+        icons[(int)CHARACTERS.ROOSTER] = sprites[9];
+        icons[(int)CHARACTERS.BAT] = sprites[0];
+        icons[(int)CHARACTERS.OWL] = sprites[8];
+        icons[(int)CHARACTERS.SNAIL] = sprites[10];
+        icons[(int)CHARACTERS.LIZARD] = sprites[7];
+        icons[(int)CHARACTERS.LACKEY] = sprites[6];
     }
 
     void GetSpawnLocations() {
@@ -203,15 +176,18 @@ public class PlayerSpawner : MonoBehaviour {
         if(player.team == 0) {
             shiftMeters[leftMeters].gameObject.SetActive(true);
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
-            shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color-1];
+            shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
+            shiftMeters[leftMeters].GetIcon().material = player.SpriteRenderer.material;
             shiftMeters[leftMeters++].GetIcon().enabled = true;
         } else if(player.team == 1) {
             shiftMeters[2 + rightMeters].gameObject.SetActive(true);
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2+rightMeters]);
-            shiftMeters[2+rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color-1];
+            shiftMeters[2+rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
+            shiftMeters[2+rightMeters].GetIcon().material = player.SpriteRenderer.material;
             shiftMeters[2+rightMeters++].GetIcon().enabled = true;
         }
     }
+
 
     // Update is called once per frame
     void Update () {

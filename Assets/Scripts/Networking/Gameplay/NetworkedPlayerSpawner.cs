@@ -8,7 +8,7 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     public ShiftMeter[] shiftMeters = new ShiftMeter[4];
     int leftMeters = 0;
     int rightMeters = 0;
-    Sprite[,] playerIcons = new Sprite[(int)CHARACTERS.NUM_CHARACTERS, 4];
+    Sprite[] playerIcons = new Sprite[(int)CHARACTERS.NUM_CHARACTERS];
 
     List<PlayerController> _players = new List<PlayerController>();
     PlayerManager _playerManager;
@@ -82,12 +82,14 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
         if (player.team == 0) {
             shiftMeters[leftMeters].gameObject.SetActive(true);
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
-            shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color - 1];
+            shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
+            shiftMeters[leftMeters].GetIcon().material = player.SpriteRenderer.material;
             shiftMeters[leftMeters++].GetIcon().enabled = true;
         } else if (player.team == 1) {
             shiftMeters[2 + rightMeters].gameObject.SetActive(true);
             player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2 + rightMeters]);
-            shiftMeters[2 + rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name, player.CharaInfo.color - 1];
+            shiftMeters[2 + rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
+            shiftMeters[2 + rightMeters].GetIcon().material = player.SpriteRenderer.material;
             shiftMeters[2 + rightMeters++].GetIcon().enabled = true;
         }
     }

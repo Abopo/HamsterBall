@@ -12,8 +12,8 @@ public class CharacterSelectResources : MonoBehaviour {
 
     Sprite[] _charaSelectors;
 
-    List<CharaSelectInfo>[] _charaInfo = new List<CharaSelectInfo>[7];
-    List<Sprite>[] _charaPortraits = new List<Sprite>[7];
+    List<CharaSelectInfo>[] _charaInfo = new List<CharaSelectInfo>[8];
+    List<Sprite>[] _charaPortraits = new List<Sprite>[8];
 
     string[] _charaNames;
 
@@ -55,15 +55,6 @@ public class CharacterSelectResources : MonoBehaviour {
         RuntimeAnimatorController boyAnimator = Resources.Load("Art/Animations/Player/Boy/Animation Objects/Boy1") as RuntimeAnimatorController;
         paletteData = ES3.Load<bool[]>("BoyPalettes", new bool[0]);
 
-        // First info is default
-        /*
-        tempInfo = new CharaSelectInfo();
-        tempInfo.animator = boyAnimator;
-        tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
-        tempInfo.isTaken = false;
-        _charaInfo[(int)CHARACTERS.BOY].Add(tempInfo);
-        */
-
         for(int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
@@ -79,15 +70,6 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaInfo[(int)CHARACTERS.GIRL] = new List<CharaSelectInfo>();
         RuntimeAnimatorController girlAnimator = Resources.Load("Art/Animations/Player/Girl/Animation Objects/Girl1") as RuntimeAnimatorController;
         paletteData = ES3.Load<bool[]>("GirlPalettes", new bool[0]);
-
-        // First info is default
-        /*
-        tempInfo = new CharaSelectInfo();
-        tempInfo.animator = girlAnimator;
-        tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
-        tempInfo.isTaken = false;
-        _charaInfo[(int)CHARACTERS.GIRL].Add(tempInfo);
-        */
 
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
@@ -105,15 +87,6 @@ public class CharacterSelectResources : MonoBehaviour {
         RuntimeAnimatorController roosterAnimator = Resources.Load("Art/Animations/Player/Rooster/Animation Objects/Rooster1") as RuntimeAnimatorController;
         paletteData = ES3.Load<bool[]>("RoosterPalettes", new bool[0]);
 
-        // First info is default
-        /*
-        tempInfo = new CharaSelectInfo();
-        tempInfo.animator = roosterAnimator;
-        tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
-        tempInfo.isTaken = false;
-        _charaInfo[(int)CHARACTERS.ROOSTER].Add(tempInfo);
-        */
-
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
@@ -130,15 +103,6 @@ public class CharacterSelectResources : MonoBehaviour {
         RuntimeAnimatorController batAnimator = Resources.Load("Art/Animations/Player/Bat/Animation Objects/Bat1") as RuntimeAnimatorController;
         paletteData = ES3.Load<bool[]>("BatPalettes", new bool[0]);
 
-        // First info is default
-        /*
-        tempInfo = new CharaSelectInfo();
-        tempInfo.animator = batAnimator;
-        tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
-        tempInfo.isTaken = false;
-        _charaInfo[(int)CHARACTERS.BAT].Add(tempInfo);
-        */
-
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
             if (paletteData[i] == true) {
@@ -150,19 +114,26 @@ public class CharacterSelectResources : MonoBehaviour {
             }
         }
 
+        // Owl
+        _charaInfo[(int)CHARACTERS.OWL] = new List<CharaSelectInfo>();
+        RuntimeAnimatorController owlAnimator = Resources.Load("Art/Animations/Player/Owl/Animation Objects/Owl") as RuntimeAnimatorController;
+        paletteData = ES3.Load<bool[]>("OwlPalettes", new bool[0]);
+
+        for (int i = 0; i < paletteData.Length; ++i) {
+            // If this palette is unlocked
+            if (paletteData[i] == true) {
+                tempInfo = new CharaSelectInfo();
+                tempInfo.animator = owlAnimator;
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Owl/Owl" + (i + 1));
+                tempInfo.isTaken = false;
+                _charaInfo[(int)CHARACTERS.OWL].Add(tempInfo);
+            }
+        }
+
         // Snail
         _charaInfo[(int)CHARACTERS.SNAIL] = new List<CharaSelectInfo>();
         RuntimeAnimatorController snailAnimator = Resources.Load("Art/Animations/Player/Snail/Animation Objects/Snail1") as RuntimeAnimatorController;
         paletteData = ES3.Load<bool[]>("SnailPalettes", new bool[0]);
-
-        // First info is default
-        /*
-        tempInfo = new CharaSelectInfo();
-        tempInfo.animator = snailAnimator;
-        tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
-        tempInfo.isTaken = false;
-        _charaInfo[(int)CHARACTERS.SNAIL].Add(tempInfo);
-        */
 
         for (int i = 0; i < paletteData.Length; ++i) {
             // If this palette is unlocked
@@ -172,6 +143,22 @@ public class CharacterSelectResources : MonoBehaviour {
                 tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Snail/Snail" + (i + 1));
                 tempInfo.isTaken = false;
                 _charaInfo[(int)CHARACTERS.SNAIL].Add(tempInfo);
+            }
+        }
+
+        // Lizard
+        _charaInfo[(int)CHARACTERS.LIZARD] = new List<CharaSelectInfo>();
+        RuntimeAnimatorController lizardAnimator = Resources.Load("Art/Animations/Player/Lizard/Animation Objects/Lizard1") as RuntimeAnimatorController;
+        paletteData = ES3.Load<bool[]>("LizardPalettes", new bool[0]);
+
+        for (int i = 0; i < paletteData.Length; ++i) {
+            // If this palette is unlocked
+            if (paletteData[i] == true) {
+                tempInfo = new CharaSelectInfo();
+                tempInfo.animator = lizardAnimator;
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Lizard/Lizard" + (i + 1));
+                tempInfo.isTaken = false;
+                _charaInfo[(int)CHARACTERS.LIZARD].Add(tempInfo);
             }
         }
 
@@ -195,30 +182,6 @@ public class CharacterSelectResources : MonoBehaviour {
         lackey3.isTaken = false;
         _charaInfo[(int)CHARACTERS.LACKEY].Add(lackey3);
 
-        // Lizard
-        _charaInfo[(int)CHARACTERS.LIZARD] = new List<CharaSelectInfo>();
-        RuntimeAnimatorController lizardAnimator = Resources.Load("Art/Animations/Player/Lizard/Animation Objects/Lizard1") as RuntimeAnimatorController;
-        paletteData = ES3.Load<bool[]>("LizardPalettes", new bool[0]);
-
-        // First info is default
-        /*
-        tempInfo = new CharaSelectInfo();
-        tempInfo.animator = lizardAnimator;
-        tempInfo.material = new Material(Shader.Find("Sprites/Default")); // Default color doesn't need material
-        tempInfo.isTaken = false;
-        _charaInfo[(int)CHARACTERS.LIZARD].Add(tempInfo);
-        */
-
-        for (int i = 0; i < paletteData.Length; ++i) {
-            // If this palette is unlocked
-            if (paletteData[i] == true) {
-                tempInfo = new CharaSelectInfo();
-                tempInfo.animator = lizardAnimator;
-                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Lizard/Lizard" + (i + 1));
-                tempInfo.isTaken = false;
-                _charaInfo[(int)CHARACTERS.LIZARD].Add(tempInfo);
-            }
-        }
     }
 
     void LoadCharacterPortraits() {
@@ -272,18 +235,28 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[25]);
         _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[24]);
         _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[25]);
+
+        // Owl
+        _charaPortraits[(int)CHARACTERS.OWL] = new List<Sprite>();
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-False-Colors-Master-File");
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
+
     }
 
     void LoadCharacterNames() {
-        _charaNames = new string[7];
+        _charaNames = new string[8];
 
         _charaNames[(int)CHARACTERS.BOY] = "KADEN";
         _charaNames[(int)CHARACTERS.GIRL] = "QUINN";
         _charaNames[(int)CHARACTERS.ROOSTER] = "ROOBEN";
         _charaNames[(int)CHARACTERS.BAT] = "CARMELA";
+        _charaNames[(int)CHARACTERS.OWL] = "GAIL";
         _charaNames[(int)CHARACTERS.SNAIL] = "DON";
-        _charaNames[(int)CHARACTERS.LACKEY] = "CARL";
         _charaNames[(int)CHARACTERS.LIZARD] = "JODI";
+        _charaNames[(int)CHARACTERS.LACKEY] = "CARL";
     }
 
     // Use this for initialization
