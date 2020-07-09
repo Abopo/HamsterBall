@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour {
             LoadGameData();
 
             //QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = 200;
+            //Application.targetFrameRate = 200;
         }
     }
 

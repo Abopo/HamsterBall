@@ -105,11 +105,13 @@
 				struct appdata {
 					float4 vertex : POSITION;
 					float2 uv : TEXCOORD0;
+					fixed4 color : COLOR;
 				};
 
 				struct v2f {
 					float2 uv : TEXCOORD0;
 					float4 vertex : SV_POSITION;
+					fixed4 color : COLOR;
 				};
 
 
@@ -118,6 +120,8 @@
 					v2f o;
 					o.vertex = UnityObjectToClipPos(v.vertex);
 					o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+					o.color = v.color;
+
 					return o;
 				}
 
@@ -132,8 +136,8 @@
 
 					 if (_color.a <= 0.15) {
 						return half4(0,0,0,0);
-					}
-
+					 }
+					 
 					 float4 transparent = float4(0,0,0,0);
 					 //_color = all(_color == _OriginalColor1) ? _ColorReplacement1 : _color;
 					 _color = (distance(_color.rgb, _OriginalColor1.rgb) < _Threshold1) ? _ColorReplacement1 : _color;
@@ -158,6 +162,7 @@
 					 //
 					 _color = (distance(_color.rgb, _OriginalColor11.rgb) < _Threshold11) ? _ColorReplacement11 : _color;
 
+					 _color.a = i.color.a;
 					 return _color;
 				}
 				ENDCG
