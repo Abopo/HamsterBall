@@ -64,6 +64,12 @@ public class ShopMenu : MonoBehaviour {
             // move page right
             MovePageRight();
         }
+
+        // Dev cheat
+        if (Input.GetKey(KeyCode.Z) && Input.GetKeyDown(KeyCode.M)) {
+            playerCurrency = 5000;
+            currencyText.text = playerCurrency.ToString();
+        }
     }
 
     void MovePageLeft() {
