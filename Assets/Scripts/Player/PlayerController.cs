@@ -294,9 +294,15 @@ public class PlayerController : Entity {
                 break;
         }
 
+        if (_animator == null) {
+            _animator = GetComponentInChildren<Animator>();
+        }
         _animator.runtimeAnimatorController = Resources.Load(animatorPath) as RuntimeAnimatorController;
 
-        if(palettePath != "" && _charaInfo.color > 0) {
+        if(_spriteRenderer == null) {
+            _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        }
+        if (palettePath != "" && _charaInfo.color > 0) {
             _spriteRenderer.material = Resources.Load(palettePath) as Material;
         } else {
             _spriteRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -326,8 +332,8 @@ public class PlayerController : Entity {
             currentState.Update();
 
             // Allow player to slow movement/fall to ground
-            _physics.MoveX(velocity.x * Time.deltaTime);
-            _physics.MoveY(velocity.y * Time.deltaTime);
+            //_physics.MoveX(velocity.x * Time.deltaTime);
+            //_physics.MoveY(velocity.y * Time.deltaTime);
 
             _justChangedState = false;
 
@@ -379,7 +385,7 @@ public class PlayerController : Entity {
         }
 
         // Failsafe checks
-        if(heldBall != null && heldBall.locked) {
+        if (heldBall != null && heldBall.locked) {
             heldBall = null;
         }
         if(CurState != PLAYER_STATE.ATTACK && attackObj.gameObject.activeSelf) {
@@ -397,11 +403,11 @@ public class PlayerController : Entity {
 
     private void FixedUpdate() {
         // Don't do any of this stuff if the game is paused
-        if (!_gameManager.isPaused && !_freeze) {
+        if ((!_gameManager.isPaused && !_freeze) ||
+            _gameManager.gameIsOver || (_levelManager != null && !_levelManager.gameStarted)) {
             _physics.MoveX(velocity.x * Time.deltaTime);
             _physics.MoveY(velocity.y * Time.deltaTime);
         }
-
     }
     
     protected virtual void CheckInput() {

@@ -37,18 +37,12 @@ public class AIAction {
 	public void Update () {
         // On some boards hamsters can walk between sides, so keep track of requiresShift
         if (hamsterWant != null) {
-            if (hamsterWant.transform.position.x > 0) {
-                if (_playerController.team == 0) {
-                    requiresShift = true;
-                } else {
-                    requiresShift = false;
-                }
-            } else if (hamsterWant.transform.position.x < 0) {
-                if (_playerController.team == 0) {
-                    requiresShift = false;
-                } else {
-                    requiresShift = true;
-                }
+            // As long as the player and the hamster we want are on the same side of the stage, it doesn't require a shift
+            if ((hamsterWant.transform.position.x > 0 && _playerController.transform.position.x > 0) ||
+                (hamsterWant.transform.position.x < 0 && _playerController.transform.position.x < 0)) {
+                requiresShift = false;
+            } else {
+                requiresShift = true;
             }
         // also keep track of if an action requires a shift
         } else if(nodeWant != null) {
@@ -121,8 +115,15 @@ public class AIAction {
             if (requiresShift) {
                 // if we have already shifted
                 if (_playerController.shifted) {
-                    // attempt to only do shifted actions.
-                    addWeight -= 100;
+                    // If we picked up a rainbow
+                    if (_playerController.heldBall != null && _playerController.heldBall.type == HAMSTER_TYPES.RAINBOW) {
+                        // Then we should definitely shift back
+                        addWeight += 100;
+                    // Otherwise
+                    } else {
+                        // attempt to only do shifted actions.
+                        addWeight -= 100;
+                    }
                 } else {
                     // and we have the ability to shift
                     // obviously if we can't switch, don't do this action
@@ -152,7 +153,7 @@ public class AIAction {
             }
 
             // If the bubble is on the bottom most lines 
-            if (bubbleWant.node > 100) {
+            if (bubbleWant.node >= 92) {
                 // and has matches
                 // if it doesn't have matches, don't throw at it!
                 addWeight += bubbleWant.numMatches >= 2 ? 50 : -80;
@@ -174,6 +175,8 @@ public class AIAction {
             }
         // if we want a bubble on our board that doesn't match the hamster we want/have.
         } else if (bubbleWant != null && bubbleWant.team == _playerController.team) {
+            // TODO: Throwing a bubble to a spot 1 space away from a matching color is also smart so somehow think about that
+
             // if the bubble isn't near the bottom
             if (bubbleWant.node < 100) {
                 // increase weight based on how many matches the bubble currently has
@@ -194,6 +197,8 @@ public class AIAction {
         if (type == HAMSTER_TYPES.BOMB) {
             // Increase weight by how many bubbles we can blow up
             addWeight += 20 * nodeWant.AdjBubbles.Length;
+            // Increase weight further by how many matches the bubble has
+            addWeight += 10 * bubbleWant.numMatches;
         } else {
             int matchCount = 0;
             foreach (Bubble b in nodeWant.AdjBubbles) {
@@ -261,18 +266,20 @@ public class AIAction {
                 // Shifting is strong so we want to do it, but it shouldn't always be priotized
                 // over managing our own board. So give the weight a random element to make swapping
                 // more unpredictable
-                // TODO: maybe make it a worse idea if our board is getting low (i.e. prioritize survival)
                 addWeight += Random.Range(25, 50);
+
+                // The lower our board, the worse an idea shifting is
+                addWeight -= _playerController.HomeBubbleManager.LowestLine * 3;
             } else {
                 // If we can't shift don't even think about it!
-                addWeight = -100;
+                addWeight = -1000;
             }
         }
 
         // If the bubble is on the bottom most lines 
-        addWeight += nodeWant.number >= 100 ? 30 : 0;
+        addWeight += nodeWant.number >= 92 ? 30 : 0;
         // Add even more if the node is in the kill line
-        addWeight += nodeWant.number >= 138 ? 100 : 0;
+        addWeight += nodeWant.number >= 114 ? 100 : 0;
 
         return addWeight;
     }

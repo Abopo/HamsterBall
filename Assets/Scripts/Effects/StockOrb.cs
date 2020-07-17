@@ -112,22 +112,29 @@ public class StockOrb : MonoBehaviour {
 
         _delayTimer += Time.deltaTime;
 		if(_delayTimer >= _delayTime) {
-            // Head towards target
-            Vector2 dir = targetTransform.position - transform.position;
-            dir.Normalize();
-            _rigidbody.velocity = new Vector2(moveSpeed * dir.x, moveSpeed * dir.y);
+            if (targetTransform != null) {
+                // Head towards target
+                Vector2 dir = targetTransform.position - transform.position;
+                dir.Normalize();
+                _rigidbody.velocity = new Vector2(moveSpeed * dir.x, moveSpeed * dir.y);
 
-            //if(HamsterTravelStart == false) {
-            	//HamsterTravelEvent.start();
-				//HamsterTravelEvent.release();
+                //if(HamsterTravelStart == false) {
+                //HamsterTravelEvent.start();
+                //HamsterTravelEvent.release();
 
-				//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterTravel);
+                //FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.HamsterTravel);
 
-            	//HamsterTravelStart = true;
-			//}
+                //HamsterTravelStart = true;
+                //}
 
-            // Rotate sprite
-            _spriteRenderer.transform.Rotate(0f, 0f, 500f * Time.deltaTime);
+                // Rotate sprite
+                _spriteRenderer.transform.Rotate(0f, 0f, 500f * Time.deltaTime);
+            } else {
+                // Something went wrong, just die
+                Destroy(gameObject);
+
+                _destroy = true;
+            }
         }
 	}
 

@@ -11,20 +11,20 @@ public class ShopRoom : HamsterRoom {
     protected override void DirectHamster() {
         base.DirectHamster();
 
-        switch (_containedHamsters[0].targetRoom.room) {
-            case HAMSTERROOMS.CHARACTER:
-            case HAMSTERROOMS.MIDDLE:
-            case HAMSTERROOMS.SHOP:
-            case HAMSTERROOMS.MUSHROOM:
-            case HAMSTERROOMS.LEFT:
-            case HAMSTERROOMS.NETWORK:
-            case HAMSTERROOMS.VERSUS:
-            case HAMSTERROOMS.STORY:
-                FaceHamsterLeft();
-                break;
-            case HAMSTERROOMS.OPTIONS:
-                FaceHamsterRight();
-                break;
-        }
+        FaceHamsterDown();
+    }
+
+    void FaceHamsterDown() {
+        // Hamster is heading left
+        // So set the hamster to our y position
+        _containedHamsters[0].transform.position = new Vector3(transform.position.x,
+                                                                transform.position.y,
+                                                                _containedHamsters[0].transform.position.z);
+
+        // Then face the hamster left
+        _containedHamsters[0].FaceLeft();
+
+        // Going down steps to door
+        _containedHamsters[0].transform.Rotate(0f, 0f, 45f, Space.Self);
     }
 }

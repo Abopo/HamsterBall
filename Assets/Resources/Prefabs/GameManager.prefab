@@ -1069,7 +1069,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4662082025123312}
-  - {fileID: 3372431610806213092}
+  - {fileID: 3376670233864699384}
   - {fileID: 4413026569308456}
   - {fileID: 4448745413554971020}
   - {fileID: 6395612965543337687}
@@ -1539,7 +1539,7 @@ MonoBehaviour:
       _descriptiveName: Jump
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
-      _behaviorId: 0
+      _behaviorId: 1
       _userAssignable: 1
       _categoryId: 2
     - _id: 3
@@ -1620,7 +1620,7 @@ MonoBehaviour:
       _descriptiveName: Move right
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
-      _behaviorId: 0
+      _behaviorId: 2
       _userAssignable: 1
       _categoryId: 2
     - _id: 12
@@ -1629,7 +1629,7 @@ MonoBehaviour:
       _descriptiveName: Move left
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
-      _behaviorId: 0
+      _behaviorId: 2
       _userAssignable: 1
       _categoryId: 2
     - _id: 13
@@ -1638,7 +1638,7 @@ MonoBehaviour:
       _descriptiveName: Move up
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
-      _behaviorId: 0
+      _behaviorId: 2
       _userAssignable: 1
       _categoryId: 2
     - _id: 14
@@ -1647,7 +1647,7 @@ MonoBehaviour:
       _descriptiveName: Move down
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
-      _behaviorId: 0
+      _behaviorId: 2
       _userAssignable: 1
       _categoryId: 2
     - _id: 15
@@ -1752,6 +1752,52 @@ MonoBehaviour:
       _buttonDownBuffer: 0
       _buttonRepeatRate: 30
       _buttonRepeatDelay: 0
+    - _id: 1
+      _name: Buffered
+      _joystickAxisSensitivity: 1
+      _digitalAxisSimulation: 1
+      _digitalAxisSnap: 1
+      _digitalAxisInstantReverse: 0
+      _digitalAxisGravity: 3
+      _digitalAxisSensitivity: 3
+      _mouseXYAxisMode: 0
+      _mouseOtherAxisMode: 0
+      _mouseXYAxisSensitivity: 1
+      _mouseXYAxisDeltaCalc: 0
+      _mouseOtherAxisSensitivity: 1
+      _customControllerAxisSensitivity: 1
+      _buttonDoublePressSpeed: 0.3
+      _buttonShortPressTime: 0.25
+      _buttonShortPressExpiresIn: 0
+      _buttonLongPressTime: 1
+      _buttonLongPressExpiresIn: 0
+      _buttonDeadZone: 0.5
+      _buttonDownBuffer: 0.08
+      _buttonRepeatRate: 30
+      _buttonRepeatDelay: 0
+    - _id: 2
+      _name: Repeating
+      _joystickAxisSensitivity: 1
+      _digitalAxisSimulation: 1
+      _digitalAxisSnap: 1
+      _digitalAxisInstantReverse: 0
+      _digitalAxisGravity: 3
+      _digitalAxisSensitivity: 3
+      _mouseXYAxisMode: 0
+      _mouseOtherAxisMode: 0
+      _mouseXYAxisSensitivity: 1
+      _mouseXYAxisDeltaCalc: 0
+      _mouseOtherAxisSensitivity: 1
+      _customControllerAxisSensitivity: 1
+      _buttonDoublePressSpeed: 0.3
+      _buttonShortPressTime: 0.25
+      _buttonShortPressExpiresIn: 0
+      _buttonLongPressTime: 1
+      _buttonLongPressExpiresIn: 0
+      _buttonDeadZone: 0.5
+      _buttonDownBuffer: 0
+      _buttonRepeatRate: 10
+      _buttonRepeatDelay: 0.5
     mapCategories:
     - _name: Default
       _descriptiveName: Default
@@ -2304,7 +2350,7 @@ MonoBehaviour:
     playerIdCounter: 6
     actionIdCounter: 21
     actionCategoryIdCounter: 4
-    inputBehaviorIdCounter: 1
+    inputBehaviorIdCounter: 3
     mapCategoryIdCounter: 3
     joystickLayoutIdCounter: 1
     keyboardLayoutIdCounter: 3
@@ -2936,7 +2982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6395612965543337687
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3074,7 +3120,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7220a6f343e2da46b918333d8cf14c0, type: 3}
---- !u!4 &3372431610806213092 stripped
+--- !u!4 &3376670233864699384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4819165542409534, guid: d7220a6f343e2da46b918333d8cf14c0,
     type: 3}

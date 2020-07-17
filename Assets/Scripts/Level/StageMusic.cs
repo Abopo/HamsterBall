@@ -33,6 +33,8 @@ public class StageMusic : MonoBehaviour {
         // Stop menu music
         SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
+        return; 
+
         switch (_gameManager.selectedBoard) {
             case BOARDS.FOREST:
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);

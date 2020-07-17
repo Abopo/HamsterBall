@@ -112,7 +112,6 @@ public class MenuOption : MonoBehaviour {
             tempNav.mode = Navigation.Mode.None;
             _selectable.navigation = tempNav;
         }
-    
     }
 
     // Update is called once per frame
@@ -135,19 +134,19 @@ public class MenuOption : MonoBehaviour {
 
         if (!_moved && isHighlighted && !_justHighlighted) {
             // Right
-            if (_player.GetButtonDown("MoveRight")) {
+            if (_player.GetButtonRepeating("MoveRight")) {
                 TryHighlight(0);
             }
             // Down
-            if (_player.GetButtonDown("MoveDown")) {
+            if (_player.GetButtonRepeating("MoveDown")) {
                 TryHighlight(1);
             }
             // Left
-            if (_player.GetButtonDown("MoveLeft")) {
+            if (_player.GetButtonRepeating("MoveLeft")) {
                 TryHighlight(2);
             }
             // Up
-            if (_player.GetButtonDown("MoveUp")) {
+            if (_player.GetButtonRepeating("MoveUp")) {
                 TryHighlight(3);
             }
         } else {
@@ -261,10 +260,6 @@ public class MenuOption : MonoBehaviour {
     }
 
     public void PlayHighlightSound() {
-        //if (_audioSource != null) {
-        //_audioSource.clip = _highlightClip;
-        //_audioSource.Play();
-        //}
         switch (menuType) {
             case MENUTYPE.MAIN:
                 FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuHighlight);

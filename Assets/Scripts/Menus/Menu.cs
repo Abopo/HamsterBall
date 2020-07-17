@@ -39,7 +39,7 @@ public class Menu : MonoBehaviour {
 
     // Start is called before the first frame update
     protected virtual void Start() {
-        
+
     }
 
     // Update is called once per frame
@@ -81,7 +81,7 @@ public class Menu : MonoBehaviour {
 
     }
 
-    protected virtual void TakeFocus() {
+    public virtual void TakeFocus() {
         Menu[] allMenus = FindObjectsOfType<Menu>();
         foreach(Menu menu in allMenus) {
             if (menu.hasFocus && menu != this) {
@@ -100,7 +100,7 @@ public class Menu : MonoBehaviour {
         // Otherwise wait for OnEnable to trigger
     }
 
-    protected void LoseFocus() {
+    protected virtual void LoseFocus() {
         hasFocus = false;
 
         if (_menuOptions != null) {
@@ -151,6 +151,7 @@ public class Menu : MonoBehaviour {
 
         hasFocus = true;
     }
+
     IEnumerator EnablePrevMenuLater() {
         yield return null;
 

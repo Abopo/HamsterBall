@@ -8,6 +8,8 @@ public class HamsterMeter : MonoBehaviour {
     public GameObject hamsterTallyObj;
     public int team;
 
+    bool _initialized;
+
     int _curStock;
     int _baseMeterSize;
     int _meterSize;
@@ -39,9 +41,8 @@ public class HamsterMeter : MonoBehaviour {
 
     private void Awake() {
         _audioSource = GetComponent<AudioSource>();
-
-		
     }
+
     // Use this for initialization
     void Start() {
         _curStock = 0;
@@ -69,6 +70,10 @@ public class HamsterMeter : MonoBehaviour {
     }
 
     public void Initialize(int lineLength, BubbleManager bManager) {
+        if(_initialized) {
+            return;
+        }
+
         _bubbleManager = bManager;
 
         int tallies = transform.childCount;
@@ -243,11 +248,15 @@ public class HamsterMeter : MonoBehaviour {
 
     // These change the meter to either be 12 bubbles long or 13 bubbles long
     void BecomeShort() {
+        if(_meterSize == _baseMeterSize-1) {
+            // already short
+            return;
+        }
         // Turn off furthest tally
         _stockTallies[_baseMeterSize-1].GetComponent<SpriteRenderer>().enabled = false;
 
         // Move meter right one tally
-        transform.Translate(0.38f, 0f, 0f);
+        transform.Translate(0.42f, 0f, 0f);
 
         // Update meter size
         _meterSize -= 1;
@@ -255,11 +264,16 @@ public class HamsterMeter : MonoBehaviour {
         CreateNewStockSprites();
     }
     void BecomeLong() {
+        if (_meterSize == _baseMeterSize) {
+            // already long
+            return;
+        }
+
         // Turn on furthest tally
         _stockTallies[_baseMeterSize-1].GetComponent<SpriteRenderer>().enabled = true;
 
         // Move meter left one tally
-        transform.Translate(-0.38f, 0f, 0f);
+        transform.Translate(-0.42f, 0f, 0f);
 
         // Update meter size
         _meterSize += 1;

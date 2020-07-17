@@ -84,11 +84,14 @@ public class Hamster : Entity {
 
         _gameManager = FindObjectOfType<GameManager>();
 
-        HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
-        if (team == 0) {
-            _okTypes = hamsterScan.OkTypesLeft;
-        } else if (team == 1) {
-            _okTypes = hamsterScan.OkTypesRight;
+        GameObject lm = GameObject.FindGameObjectWithTag("LevelManager");
+        if (lm != null) {
+            HamsterScan hamsterScan = lm.GetComponent<HamsterScan>();
+            if (team == 0) {
+                _okTypes = hamsterScan.OkTypesLeft;
+            } else if (team == 1) {
+                _okTypes = hamsterScan.OkTypesRight;
+            }
         }
 
         exitedPipe = false;
@@ -279,8 +282,10 @@ public class Hamster : Entity {
 
     public void Caught() {
         if (!wasCaught) {
-            // Reduce hamster spawner's hamsterCount
-            _parentSpawner.ReduceHamsterCount();
+            if (_parentSpawner != null) {
+                // Reduce hamster spawner's hamsterCount
+                _parentSpawner.ReduceHamsterCount();
+            }
 
             wasCaught = true;
 

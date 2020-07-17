@@ -115,9 +115,13 @@ public class VillageManager : MonoBehaviour {
             // Character palettes
             CharacterPalettes();
 
+            // Music Tracks
+            MusicTracks();
+
             ES3.Save<int>("FirstTimePlaying", 1);
         }
 
+        // Make sure keys exist (from updates)
         if(!ES3.KeyExists("Currency")) {
             ES3.Save<int>("Currency", 200);
         }
@@ -130,6 +134,10 @@ public class VillageManager : MonoBehaviour {
         if(!ES3.KeyExists("BoyPalettes")) {
             // Palettes aren't made yet so make em
             CharacterPalettes();
+        }
+        if(!ES3.KeyExists("Seren Woods 1")) {
+            // No music track data so make em
+            MusicTracks();
         }
     }
 
@@ -145,12 +153,13 @@ public class VillageManager : MonoBehaviour {
         ES3.Save<int[,]>("CoopFlowers", coopFlowers);
     }
 
+    // This data is for whether or not shop items are visible in the shop or not
     void LoadInitialShopData() {
         ShopData _shopData;
 #if UNITY_EDITOR
-        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopPaletteData.xml"));
+        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "Resources/Text/Shop/ShopItemData.xml"));
 #else
-        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "ShopPaletteData.xml"));
+        _shopData = ShopData.Load(Path.Combine(Application.dataPath, "ShopItemData.xml"));
 #endif
         bool[] values = new bool[2]; // 0 - unlocked, 1 - purchased
 
@@ -159,44 +168,15 @@ public class VillageManager : MonoBehaviour {
             values[0] = iInfo.unlocked;
             ES3.Save<bool[]>(iInfo.itemName, values);
         }
-    }
 
-    /*
-    void ShopItems() {
-        TextAsset palettes = Resources.Load<TextAsset>("Text/Shop/ShopItemInitialData");
-        string[] linesFromFile = palettes.text.Split("\n"[0]);
-        int i = 0;
-        foreach (string line in linesFromFile) {
-            linesFromFile[i] = line.Replace("\r", "");
-            i++;
-        }
-
-        int index = 0;
-        string readLine = linesFromFile[index++];
-        string tempString;
-        bool[] values = new bool[2];
-
-        while (readLine != "End") {
-            if (readLine == "") {
-                readLine = linesFromFile[index++];
-                continue;
-            }
-
-            // Create data for the items
-            tempString = readLine;
-            readLine = linesFromFile[index++];
-            if(readLine == "0") {
-                // This item becomes available in the shop later
-                values[0] = false;
-            } else if(readLine == "1") {
-                // This item starts available in the shop
-                values[0] = true;
-            }
-
-            ES3.Save<bool[]>(tempString, values);
+        // Music
+        foreach (ItemInfo iInfo in _shopData.musicData) {
+            values[0] = iInfo.unlocked;
+            ES3.Save<bool[]>(iInfo.itemName, values);
         }
     }
-    */
+
+    // v These functions are for if the item has been purchased/unlocked v
 
     void CharacterPalettes() {
         // First four palettes for all characters are unlocked by default
@@ -213,6 +193,23 @@ public class VillageManager : MonoBehaviour {
         ES3.Save<bool[]>("LackeyPalettes", initialPaletteData);
         ES3.Save<bool[]>("CrocPalettes", initialPaletteData);
     }
+    void MusicTracks() {
+        ES3.Save<bool>("Seren Woods 1 Track", false);
+        ES3.Save<bool>("Seren Woods 2 Track", false);
+        ES3.Save<bool>("Mount Bolor 1 Track", false);
+        ES3.Save<bool>("Mount Bolor 2 Track", false);
+        ES3.Save<bool>("Conch Cove 1 Track", false);
+        ES3.Save<bool>("Conch Cove 2 Track", false);
+        ES3.Save<bool>("Big City 1 Track", false);
+        ES3.Save<bool>("Big City 2 Track", false);
+        ES3.Save<bool>("Corporation 1 Track", false);
+        ES3.Save<bool>("Corporation 2 Track", false);
+        ES3.Save<bool>("Laboratoy 1 Track", false);
+        ES3.Save<bool>("Laboratoy 2 Track", false);
+        ES3.Save<bool>("Airship 1 Track", false);
+        ES3.Save<bool>("Airship 2 Track", false);
+    }
+
 
     void GameStatPrefs() {
 
