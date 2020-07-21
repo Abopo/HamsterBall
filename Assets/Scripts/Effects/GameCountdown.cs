@@ -23,7 +23,7 @@ public class GameCountdown : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
+        //FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownThree);
         _displayText = transform.GetChild(0).GetComponent<SuperTextMesh>();
         _displayText.enabled = true;
         _displayText.text = "3";
@@ -42,7 +42,7 @@ public class GameCountdown : MonoBehaviour {
 
     public void StartCountdown() {
         _displayText.gameObject.SetActive(true);
-
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownThree);
         started = true;
     }
 
@@ -70,15 +70,15 @@ public class GameCountdown : MonoBehaviour {
             _stage++;
             switch(_stage) {
                 case 1:
-					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
+					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownTwo);
                     _displayText.text = "2";
                     break;
                 case 2:
                     _displayText.text = "1";
-					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDown321);
+					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownOne);
                     break;
                 case 3:
-					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountDownGo);
+					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownScramble);
                     _displayText.text = "<c=rainbow><j=once>Scramble!";
                     _minScale = 3f;
                     GameStart();

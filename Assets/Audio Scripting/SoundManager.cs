@@ -34,8 +34,15 @@ public class SoundManager : MonoBehaviour {
 
 	//Game Sounds
 	public string BubbleDrop;
-	public string CountDown321;
-	public string CountDownGo;
+
+	public string CountdownThree;
+    public string CountdownTwo;
+    public string CountdownOne;
+    public string CountdownScramble;
+
+    public string CountDown321;
+
+    public string CountDownGo;
 	public string PetrifyBubble;
 	public string ShiftMeterFilled;
 

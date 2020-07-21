@@ -58,6 +58,8 @@ public class MenuAudio : MonoBehaviour {
                 // For some reason we have to create a new instance every time here
                 SoundManager.mainAudio.VillageMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.VillageMusic);
                 SoundManager.mainAudio.VillageMusicEvent.start();
+                SoundManager.mainAudio.ForestAmbienceEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
+                SoundManager.mainAudio.ForestAmbienceEvent.start();
 
                 musicPlaying = 0;
             } else if (sceneIndex < 15 && musicPlaying != 1) {
