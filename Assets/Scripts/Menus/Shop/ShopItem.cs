@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -10,12 +8,19 @@ public class ShopItem : MenuButton, IScrollHandler {
 
     public GameObject outImage;
 
+    public SuperTextMesh itemNameText;
+    public SuperTextMesh itemCostText;
+    public Image icon;
+
+    public float worldY;
+
     ShopMenu _shopMenu;
+    ShopPage _parentPage;
     ScrollRect _mainScroll;
     ItemSprite _itemSprite;
     ConfirmPurchaseMenu _confirmMenu;
 
-    ItemInfo _itemInfo;
+    protected ItemInfo _itemInfo;
     public ItemInfo ItemInfo {
         get { return _itemInfo; }
 
@@ -34,6 +39,7 @@ public class ShopItem : MenuButton, IScrollHandler {
         base.Awake();
 
         _shopMenu = FindObjectOfType<ShopMenu>();
+        _parentPage = GetComponentInParent<ShopPage>();
         _mainScroll = FindObjectOfType<ScrollRect>();
         _itemSprite = FindObjectOfType<ItemSprite>();
         _confirmMenu = FindObjectOfType<ConfirmPurchaseMenu>();
@@ -43,20 +49,29 @@ public class ShopItem : MenuButton, IScrollHandler {
     protected override void Start() {
         base.Start();
 
-        GetComponentInChildren<SuperTextMesh>().text = _itemInfo.itemName;
+        itemNameText.text = _itemInfo.itemName;
+        itemCostText.text = _itemInfo.price.ToString();
+
+        // Load in item icon
+        LoadIcon();
+    }
+
+    protected virtual void LoadIcon() {
+
     }
 
     // Update is called once per frame
     protected override void Update() {
         base.Update();
 
+        worldY = transform.position.y;
     }
 
     public override void Highlight() {
         base.Highlight();
 
         // Tell shop menu that we are selected
-        _shopMenu.SetCurItem(this);
+        _parentPage.SetCurItem(this);
 
         SetItemData();
     }
@@ -73,7 +88,7 @@ public class ShopItem : MenuButton, IScrollHandler {
     }
 
     void SetItemData() {
-        // Display item image
+        // Display the large item image
         _itemSprite.SetItem(this);
 
         // Change item cost

@@ -229,7 +229,9 @@ public class ThrowState : PlayerState {
         aimingArrow.gameObject.SetActive (false);
 
 		throwStateActive = false;
-        //SoundManager.mainAudio.ThrowAngleEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+        // Stop the angle sound again just in case
+        playerController.PlayerAudio.StopThrowAngleClip();
 
         if (_aimingLine != null) {
             _aimingLine.Stop();

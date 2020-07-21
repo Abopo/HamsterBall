@@ -12,12 +12,14 @@ public class ItemSprite : MonoBehaviour {
     Animator _subAnimator;
 
     SpriteRenderer _spriteRenderer;
+    SpriteRenderer _secondarySprite;
 
     private void Awake() {
         _mainAnimator = GetComponent<Animator>();
         _subAnimator = GetComponentInChildren<Animator>();
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _secondarySprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
     // Start is called before the first frame update
     void Start() {
@@ -56,10 +58,10 @@ public class ItemSprite : MonoBehaviour {
             animatorPath += "Girl/Animation Objects/Girl1";
             palettePath = "Materials/Character Palettes/Girl/Girl" + paletteNum;
         } else if(_curItem.ItemInfo.itemName.Contains("Gail")) {
-            animatorPath += "Owl/Animation Objects/Owl1";
+            animatorPath += "Owl/Animation Objects/Owl";
             palettePath = "Materials/Character Palettes/Owl/Owl" + paletteNum;
         } else if (_curItem.ItemInfo.itemName.Contains("Bexal")) {
-            animatorPath += "Bexal/Animation Objects/Goat1";
+            animatorPath += "Bexal/Animation Objects/Goat";
             palettePath = "Materials/Character Palettes/Goat/Goat" + paletteNum;
         } else if (_curItem.ItemInfo.itemName.Contains("Don")) {
             animatorPath += "Snail/Animation Objects/Snail1";
@@ -87,6 +89,8 @@ public class ItemSprite : MonoBehaviour {
         } else {
             _spriteRenderer.material = new Material(Shader.Find("Sprites/Default"));
         }
+
+        _secondarySprite.enabled = true;
     }
 
     void StageSetup() {
@@ -94,6 +98,12 @@ public class ItemSprite : MonoBehaviour {
     }
 
     void BasicSetup() {
-        _spriteRenderer.sprite = _curItem.ItemInfo.itemSprite;
+        _spriteRenderer.sprite = _curItem.icon.sprite;
+        _spriteRenderer.color = _curItem.icon.color;
+        _spriteRenderer.material = _curItem.icon.material;
+
+        _secondarySprite.enabled = false;
+
+        _mainAnimator.runtimeAnimatorController = null;
     }
 }

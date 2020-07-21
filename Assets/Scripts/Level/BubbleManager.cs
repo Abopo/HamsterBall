@@ -63,6 +63,7 @@ public class BubbleManager : MonoBehaviour {
     int _roundResult;
     protected bool _gameEndingSequence = false;
 
+
     GameObject _bubbleObj;
     GameObject _nodeObj;
 
@@ -106,6 +107,11 @@ public class BubbleManager : MonoBehaviour {
         get { return _boardIsStable; }
     }
 
+    private int lowestLine; // the lowest line on the board with a bubble in it
+    public int LowestLine {
+        get { return lowestLine; }
+    }
+
     int linesToAdd = 0;
 
     Vector3 _initialPos;
@@ -130,6 +136,9 @@ public class BubbleManager : MonoBehaviour {
     AudioClip _addLineClip;
 
     protected virtual void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
+
         _setupDone = false;
 
         Time.timeScale = 1;
@@ -149,8 +158,15 @@ public class BubbleManager : MonoBehaviour {
         // Get the right score manager
         FindScoreManager();
 
-        _gameManager = FindObjectOfType<GameManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
+        // Get enemy bubble manager
+        BubbleManager[] bManagers = FindObjectsOfType<BubbleManager>();
+        foreach (BubbleManager bM in bManagers) {
+            if (bM != this) {
+                _enemyBubbleManager = bM;
+                break;
+            }
+        }
+
 
         _bubblesParent = transform.GetChild(0);
         _nodesParent = transform.GetChild(1);
@@ -162,6 +178,30 @@ public class BubbleManager : MonoBehaviour {
 
         int totalBubbleCount = (_baseLineLength * 6) + ((_baseLineLength - 1) * 6);
         _bubbles = new Bubble[totalBubbleCount];
+
+        testMode = _gameManager.testMode;
+
+        _audioSource = GetComponent<AudioSource>();
+        _addLineClip = Resources.Load<AudioClip>("Audio/SFX/Add_Line");
+
+        _initialPos = transform.position;
+    }
+
+    void FindScoreManager() {
+        ScoreManager[] scoreMans = FindObjectsOfType<ScoreManager>();
+        foreach (ScoreManager sM in scoreMans) {
+            if (sM.team == team) {
+                _scoreManager = sM;
+                break;
+            }
+        }
+    }
+
+    // Use this for initialization
+    protected virtual void Start() {
+        _bubbleEffects = GetComponentInChildren<BubbleEffects>();
+
+        _gameOver = false;
 
         int startingBubbleCount = (_baseLineLength * 2) + ((_baseLineLength - 1) * 2);
 
@@ -189,41 +229,7 @@ public class BubbleManager : MonoBehaviour {
             SeedNextLineBubbles();
         }
 
-        //ReadyHamsterMeter();
         _hamsterMeter.Initialize(_baseLineLength, this);
-
-        testMode = _gameManager.testMode;
-
-        _audioSource = GetComponent<AudioSource>();
-        _addLineClip = Resources.Load<AudioClip>("Audio/SFX/Add_Line");
-
-        _initialPos = transform.position;
-    }
-
-    void FindScoreManager() {
-        ScoreManager[] scoreMans = FindObjectsOfType<ScoreManager>();
-        foreach (ScoreManager sM in scoreMans) {
-            if (sM.team == team) {
-                _scoreManager = sM;
-                break;
-            }
-        }
-    }
-
-    // Use this for initialization
-    protected virtual void Start() {
-        _bubbleEffects = GetComponentInChildren<BubbleEffects>();
-
-        _gameOver = false;
-
-        // Get enemy bubble manager
-        BubbleManager[] bManagers = FindObjectsOfType<BubbleManager>();
-        foreach (BubbleManager bM in bManagers) {
-            if (bM != this) {
-                _enemyBubbleManager = bM;
-                break;
-            }
-        }
 
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
@@ -1199,6 +1205,8 @@ public class BubbleManager : MonoBehaviour {
                 StopCoroutine(_checkNodesCanBeHit);
             }
             _checkNodesCanBeHit = StartCoroutine(CheckNodesCanBeHit());
+
+            GetLowestLine();
         }
 
         CheckSecondToLastRow();
@@ -1300,9 +1308,6 @@ public class BubbleManager : MonoBehaviour {
         }
     }
 
-    private void OnDestroy() {
-    }
-
     public static void ClearAllData() {
         // Clear out starting bubbles to prepare for next round
         for (int i = 0; i < startingBubbleInfo.Length; ++i) {
@@ -1353,5 +1358,28 @@ public class BubbleManager : MonoBehaviour {
     protected void PlayAddLineClip() {
         _audioSource.clip = _addLineClip;
         _audioSource.Play();
+    }
+
+    // Returns the lowest line (out of 11) that has a bubble in it
+    // Used to determine how close to death a board is
+    void GetLowestLine() {
+        // Go from bottom up cuz it's faster
+        int line = 11;
+
+        for(int i = nodeList.Count-1; i >= 0; --i) {
+            // Update the line every 12th bubble
+            if(i%12 == 0) {
+                line--;
+            }
+
+            if(nodeList[i].bubble != null) {
+                break;
+            }
+        }
+
+        lowestLine = line;
+    }
+
+    private void OnDestroy() {
     }
 }

@@ -67,7 +67,7 @@ public class LevelManager : MonoBehaviour {
         // Failsafe for a missing countdown
         GameCountdown gc = FindObjectOfType<GameCountdown>();
         if (gc == null) {
-            gameStarted = true;
+            //gameStarted = true;
         }
     }
 

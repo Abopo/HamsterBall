@@ -7,6 +7,7 @@ using UnityEngine.Events;
 // Script in charge of displaying the countdown before the game starts
 public class GameCountdown : MonoBehaviour {
     public bool started;
+    public bool autoStart;
 
     SuperTextMesh _displayText;
 
@@ -26,19 +27,22 @@ public class GameCountdown : MonoBehaviour {
         _displayText = transform.GetChild(0).GetComponent<SuperTextMesh>();
         _displayText.enabled = true;
         _displayText.text = "3";
+        _displayText.gameObject.SetActive(false);
 
         _minScale = 4f;
         _maxScale = _displayText.transform.localScale.x;
 
         _stage = 0;
 
-        if (!PhotonNetwork.connectedAndReady) {
+        if (!PhotonNetwork.connectedAndReady && autoStart) {
             StartCountdown();
         }
         _done = false;
 	}
 
     public void StartCountdown() {
+        _displayText.gameObject.SetActive(true);
+
         started = true;
     }
 

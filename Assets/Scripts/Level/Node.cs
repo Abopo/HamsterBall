@@ -117,10 +117,11 @@ public class Node : MonoBehaviour {
                 if (hit) {
                     if (hit.transform.tag == "Platform") {
                         hitCount++;
-                        //Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
+                        Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
                     }
+                } else {
+                    Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
                 }
-                //Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
             }
 
             if (hitCount > 2) {

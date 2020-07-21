@@ -161,7 +161,7 @@ public class CharacterSelect : Menu {
         numAI++;
     }
 
-    protected override void TakeFocus() {
+    public override void TakeFocus() {
         base.TakeFocus();
 
         _waitFrames = 0;

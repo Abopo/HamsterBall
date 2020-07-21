@@ -163,4 +163,31 @@ public class InputState {
 
         return false;
     }
+
+    public void ResetAllInput() {
+        up.isDown = false;
+        up.isJustPressed = false;
+        up.isJustReleased = false;
+        down.isDown = false;
+        down.isJustPressed = false;
+        down.isJustReleased = false;
+        left.isDown = false;
+        left.isJustPressed = false;
+        left.isJustReleased = false;
+        right.isDown = false;
+        right.isJustPressed = false;
+        right.isJustReleased = false;
+        jump.isDown = false;
+        jump.isJustPressed = false;
+        jump.isJustReleased = false;
+        swing.isDown = false;
+        swing.isJustPressed = false;
+        swing.isJustReleased = false;
+        attack.isDown = false;
+        attack.isJustPressed = false;
+        attack.isJustReleased = false;
+        shift.isDown = false;
+        shift.isJustPressed = false;
+        shift.isJustReleased = false;
+    }
 }

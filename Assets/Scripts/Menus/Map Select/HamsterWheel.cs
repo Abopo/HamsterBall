@@ -28,7 +28,6 @@ public class HamsterWheel : MonoBehaviour {
     float _longIdleTime = 5f;
 
     GameManager _gameManager;
-    AudioSource _audioSource;
 
     PhotonView _photonView;
 
@@ -42,10 +41,9 @@ public class HamsterWheel : MonoBehaviour {
         hamster.SetInteger("Type", type);
         hamster.SetInteger("State", 1);
 
-        _audioSource = GetComponent<AudioSource>();
-
         _photonView = GetComponent<PhotonView>();
     }
+
     // Use this for initialization
     void Start() {
         _gameManager = FindObjectOfType<GameManager>();
@@ -129,19 +127,16 @@ public class HamsterWheel : MonoBehaviour {
             }
         }
         if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
-            _audioSource.Play();
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubMenuSelect);
             LoadCharacterSelect();
         }
     }
 
     public void RotateRight() {
-        if (_rotatingRight /*|| _stageIcons[NextIndex()].isLocked*/) {
+        if (_rotatingRight) {
             return;
         }
-        _audioSource.Play();
-
-        // Reduce size of current stage icon
-        //_stageIcons[_index].ScaleDown();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuHighlight);
 
         _index++;
         if (_index > 7) {
@@ -150,10 +145,6 @@ public class HamsterWheel : MonoBehaviour {
 
         _curRotSpeed = -baseRotSpeed;
         _desiredRotation = _possibleRotations[_index];
-        //_desiredRotation = transform.eulerAngles.z - 45f;
-        //if (_desiredRotation < -1) {
-        //   _desiredRotation = 315f;
-        //}
 
         hamster.SetInteger("State", 1);
         FlipHamster(true);
@@ -169,13 +160,10 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     public void RotateLeft() {
-        if (_rotatingLeft /*|| _stageIcons[PrevIndex()].isLocked*/) {
+        if (_rotatingLeft) {
             return;
         }
-        _audioSource.Play();
-
-        // Reduce size of current stage icon
-        //_stageIcons[_index].ScaleDown();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuHighlight);
 
         _index--;
         if (_index < 0) {
@@ -184,10 +172,6 @@ public class HamsterWheel : MonoBehaviour {
 
         _curRotSpeed = baseRotSpeed;
         _desiredRotation = _possibleRotations[_index];
-        //_desiredRotation = transform.eulerAngles.z + 45f;
-        //if (_desiredRotation > 361) {
-        //    _desiredRotation = 45f;
-        //}
 
         hamster.SetInteger("State", 1);
         FlipHamster(false);

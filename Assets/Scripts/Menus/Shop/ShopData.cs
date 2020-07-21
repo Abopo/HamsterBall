@@ -22,6 +22,10 @@ public class ShopData {
     [XmlArrayItem("Palette")]
     public List<ItemInfo> paletteData = new List<ItemInfo>();
 
+    [XmlArray("Music")]
+    [XmlArrayItem("Track")]
+    public List<ItemInfo> musicData = new List<ItemInfo>();
+
     public ItemInfo[] stageData;
     public ItemInfo[] onlineData;
 
@@ -33,6 +37,10 @@ public class ShopData {
     // Update is called once per frame
     void Update() {
         
+    }
+
+    public void LoadShopData() {
+
     }
 
     public void Save(string path) {

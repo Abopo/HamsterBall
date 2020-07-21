@@ -35,6 +35,10 @@ public class AIController : MonoBehaviour {
     int dumbFrameCount = 0;
     bool _isAimed = false;
 
+    // Small buffere for turning around sound the ai doesn't spasm
+    float _turnTime = 0.1f;
+    float _turnTimer = 0f;
+
     private void Awake() {
         _input = new InputState();
         _prevInput = new InputState();
@@ -64,7 +68,9 @@ public class AIController : MonoBehaviour {
             return;
         }
 
+        // Update timers
         _actionTimer += Time.deltaTime;
+        _turnTimer += Time.deltaTime;
 
         ShiftIfNeeded();
 
@@ -245,11 +251,13 @@ public class AIController : MonoBehaviour {
             }
 
             if (_curAction.horWant == -1) {
-                _input.left.isDown = true;
-                _input.right.isDown = false;
+                TryTurnLeft();
+                //_input.left.isDown = true;
+                //_input.right.isDown = false;
             } else if (_curAction.horWant == 1) {
-                _input.left.isDown = false;
-                _input.right.isDown = true;
+                TryTurnRight();
+                //_input.left.isDown = false;
+                //_input.right.isDown = true;
             }
         // If we want to go down, find closest drop and move towards it.
         } else if (_curAction.vertWant == -1) {
@@ -278,26 +286,30 @@ public class AIController : MonoBehaviour {
             if(_input.right.isDown || _playerController.velocity.x > 0) {
                 // make sure we aren't right on top of the drop
                 if(_mapScan.LeftDropDistance > 1f) {
-                    _input.left.isDown = true;
-                    _input.right.isDown = false;
+                    TryTurnLeft();
+                    //_input.left.isDown = true;
+                    //_input.right.isDown = false;
                 }
             // Otherwise just head left
             } else {
-                _input.left.isDown = true;
-                _input.right.isDown = false;
+                TryTurnLeft();
+                //_input.left.isDown = true;
+                //_input.right.isDown = false;
             }
         } else if(_mapScan.RightDropDistance < _mapScan.LeftDropDistance) {
             // If we are currently moving Left, 
             if (_input.left.isDown || _playerController.velocity.x < 0) {
                 // make sure we aren't right on top of the drop
                 if (_mapScan.RightDropDistance > 1f) {
-                    _input.left.isDown = false;
-                    _input.right.isDown = true;
+                    TryTurnRight();
+                    //_input.left.isDown = false;
+                    //_input.right.isDown = true;
                 }
             // Otherwise just head right
             } else {
-                _input.left.isDown = false;
-                _input.right.isDown = true;
+                TryTurnRight();
+                //_input.left.isDown = false;
+                //_input.right.isDown = true;
             }
         } else {
             // Keep going the same direction?
@@ -375,7 +387,7 @@ public class AIController : MonoBehaviour {
                 // We should try to move to where the platform is
                 if (_targetPlatform.GetComponent<PlatformEndCap>().platformSide == SIDE.LEFT) {
                     _input.left.isDown = true;
-                    _input.right.isDown = false;
+                   _input.right.isDown = false;
                     _moveDir = -1;
                 } else {
                     _input.left.isDown = false;
@@ -435,11 +447,13 @@ public class AIController : MonoBehaviour {
                 AimThrow();
             }
         } else if (_curAction.horWant == -1) {
-            _input.left.isDown = true;
-            _input.right.isDown = false;
+            TryTurnLeft();
+            //_input.left.isDown = true;
+            //_input.right.isDown = false;
         } else if (_curAction.horWant == 1) {
-            _input.left.isDown = false;
-            _input.right.isDown = true;
+            TryTurnRight();
+            //_input.left.isDown = false;
+            //_input.right.isDown = true;
         }
 
         // Jump up if passing by a step since being higher is generally better
@@ -485,6 +499,11 @@ public class AIController : MonoBehaviour {
             // If we are aiming at the node
         } else if(_actionTimer > _actionTime || _isAimed) {
             // Throw
+
+            // Don't input anything once we're on target
+            _input.right.isDown = false;
+            _input.left.isDown = false;
+
             dumbFrameCount++; // Waits for 20 frames to make sure aim is on point
             if (dumbFrameCount > 20) {
                 _isAimed = true;
@@ -510,6 +529,31 @@ public class AIController : MonoBehaviour {
             } else {
                 _input.left.isDown = true;
             }
+        }
+    }
+
+    void TryTurnLeft() {
+        if(_turnTimer >= _turnTime) {
+            _input.left.isDown = true;
+            _input.right.isDown = false;
+
+            _turnTimer = 0f;
+        } else {
+            // Keep going the same direction?
+            _input.left.isDown = !_playerController.FacingRight;
+            _input.right.isDown = _playerController.FacingRight;
+        }
+    }
+    void TryTurnRight() {
+        if (_turnTimer >= _turnTime) {
+            _input.left.isDown = false;
+            _input.right.isDown = true;
+
+            _turnTimer = 0f;
+        } else {
+            // Keep going the same direction?
+            _input.left.isDown = !_playerController.FacingRight;
+            _input.right.isDown = _playerController.FacingRight;
         }
     }
 
