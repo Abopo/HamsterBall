@@ -32,6 +32,9 @@ public class TestPlayTrack : MonoBehaviour {
     }
 
     public void PlayTrack() {
+        // Pause the menu music
+        SoundManager.mainAudio.MenuGeneralEvent.setPaused(true);
+
         _curItem = _musicPage.CurItem;
 
         if (_curItem.ItemInfo.itemName.Contains("Seren")) {
@@ -65,5 +68,8 @@ public class TestPlayTrack : MonoBehaviour {
         _musicTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
         _isPlaying = false;
+
+        // Resume the menu music
+        SoundManager.mainAudio.MenuGeneralEvent.setPaused(false);
     }
 }

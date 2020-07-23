@@ -13,6 +13,12 @@ public class ShakeableTransform : MonoBehaviour {
     float _shakeTimer = 0f;
     bool _shaking;
 
+    float _fadeTime = 0.01f;
+    float _fadeTimer = 0f;
+    float _fadeRateX;
+    float _fadeRateY;
+    bool _fading;
+
     Vector3 _basePos;
 
     float _seed;
@@ -24,7 +30,6 @@ public class ShakeableTransform : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start() {
-        //StartShake(5f);
     }
 
     // Update is called once per frame
@@ -36,8 +41,19 @@ public class ShakeableTransform : MonoBehaviour {
                 _basePos.z);
 
             _shakeTimer += Time.deltaTime;
-            if(_shakeTimer >= _shakeTime) {
-                StopShaking();
+            if(_shakeTimer >= _shakeTime && !_fading) {
+                StartFadeOut();
+            }
+        }
+
+        if (_fading) {
+            _fadeTimer += Time.deltaTime;
+
+            // Fade out
+            if(_fadeTimer >= _fadeTime) {
+                FadeOut();
+
+                _fadeTimer = 0f;
             }
         }
     }
@@ -65,7 +81,35 @@ public class ShakeableTransform : MonoBehaviour {
 
     public void StopShaking() {
         _shaking = false;
-
+        _fading = false;
         transform.position = _basePos;
+    }
+
+    public void StartFadeOut() {
+        _fading = true;
+        _fadeTimer = 0f;
+
+        _fadeRateX = _maxShake.x / 100;
+        _fadeRateY = _maxShake.y / 100;
+    }
+    
+    void FadeOut() {
+        // Reduce by fadeRates
+        _maxShake.x = _maxShake.x - _fadeRateX;
+        _maxShake.y = _maxShake.y - _fadeRateY;
+
+
+        // Make sure we don't go past 0
+        if (_maxShake.x < 0) {
+            _maxShake.x = 0;
+        }
+        if (_maxShake.y < 0) {
+            _maxShake.y = 0;
+        }
+
+        // Once all shaking has been reduced to 0
+        if (_maxShake.x <= 0 && _maxShake.y <= 0) {
+            StopShaking();
+        }
     }
 }

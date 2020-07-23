@@ -91,6 +91,10 @@ public class ShopMenu : MonoBehaviour {
     }
 
     void UpdatePage() {
+        // Hide the curpage
+        _curPage.HideContent();
+
+        // Change to new page
         _curPage = _allPages[_curPageIndex];
         _curPage.TakeFocus();
     }
@@ -98,9 +102,10 @@ public class ShopMenu : MonoBehaviour {
     public void PurchaseCurItem() {
         _curPage.PurchaseCurItem();
 
+        currencyText.GetComponent<NumberTick>().StartTick(playerCurrency, playerCurrency - _curPage.CurItem.ItemInfo.price);
+
         // Reduce player currency by the cost
         playerCurrency -= _curPage.CurItem.ItemInfo.price;
-        currencyText.text = playerCurrency.ToString();
         ES3.Save<int>("Currency", playerCurrency);
     }
 

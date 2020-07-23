@@ -48,7 +48,6 @@ public class Node : MonoBehaviour {
 
             //CanBeHit();
         }
-
     }
 
     public bool CheckRelevancy() {
@@ -107,6 +106,8 @@ public class Node : MonoBehaviour {
 
         int hitCount = 0;
         Vector2 origin;
+
+        // Horizontal checks
         for (int i = 0; i < 4; ++i) {
             hitCount = 0;
 
@@ -117,10 +118,40 @@ public class Node : MonoBehaviour {
                 if (hit) {
                     if (hit.transform.tag == "Platform") {
                         hitCount++;
-                        Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
+                        //Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
                     }
+                    //Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
                 } else {
-                    Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
+                    //Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
+                }
+            }
+
+            if (hitCount > 2) {
+                canBeHit = true;
+                break;
+            }
+        }
+
+        // Vertical Checks
+        for (int i = -2; i < 2; ++i) {
+            hitCount = 0;
+            // skip over 0
+            if(i == 0) {
+                continue;
+            }
+
+            for (float j = -0.3f; j < 0.6f; j += 0.3f) {
+                rayDir = new Vector2(Mathf.Sign(i), -1 + (i * 0.45f) + j / 2);
+                origin = new Vector2(transform.position.x, transform.position.y + j);
+                hit = Physics2D.Raycast(origin, rayDir, 50f, checkMask);
+                if (hit) {
+                    if (hit.transform.tag == "Platform") {
+                        hitCount++;
+                        //Debug.DrawRay(origin, rayDir * hit.distance, Color.green);
+                    }
+                    //Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
+                } else {
+                    //Debug.DrawRay(origin, rayDir * hit.distance, Color.red);
                 }
             }
 

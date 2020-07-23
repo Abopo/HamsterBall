@@ -165,6 +165,10 @@ public class LevelManager : MonoBehaviour {
     }
 
     void IncreaseMarginMultiplier() {
+        if(marginMultiplierText == null) {
+            return;
+        }
+
         marginMultiplier += 0.5f;
         if (marginMultiplier > 5) {
             marginMultiplier = 5;

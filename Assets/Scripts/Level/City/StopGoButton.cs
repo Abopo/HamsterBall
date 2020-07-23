@@ -14,13 +14,13 @@ public class StopGoButton : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         if(pressed) {
-            // Turn on stoplights
-            leftStoplight.Go();
-            rightStoplight.Go();
-        } else {
             // Turn off stoplights
             leftStoplight.Stop();
             rightStoplight.Stop();
+        } else {
+            // Turn on stoplights
+            leftStoplight.Go();
+            rightStoplight.Go();
         }
     }
 
@@ -42,24 +42,24 @@ public class StopGoButton : MonoBehaviour {
 
     public void Press() {
         // Move button inwards
-        float xDelta = 0.3f * -Mathf.Sign(transform.position.x);
+        float xDelta = 0.5f * -Mathf.Sign(transform.position.x);
         transform.Translate(xDelta, 0f, 0f);
         pressed = true;
-        // Turn on stoplights
-        leftStoplight.Go();
-        rightStoplight.Go();
+        // Turn off our stoplights
+        leftStoplight.Stop();
+        rightStoplight.Stop();
 
         // Move the lever
         lever.ChangePosition(this);
 
-        // Turn off other stoplights
-        otherButton.leftStoplight.Stop();
-        otherButton.rightStoplight.Stop();
+        // Turn on other stoplights
+        otherButton.leftStoplight.Go();
+        otherButton.rightStoplight.Go();
     }
 
     public void FinishPress() {
         // Push opposite button outwards
-        float xDelta = 0.3f * Mathf.Sign(otherButton.transform.position.x);
+        float xDelta = 0.5f * Mathf.Sign(otherButton.transform.position.x);
         otherButton.transform.Translate(xDelta, 0f, 0f);
         otherButton.pressed = false;
     }

@@ -39,6 +39,10 @@ public class AIBrain : MonoBehaviour {
 
     List<PlayerController> _opponents = new List<PlayerController>(); // List of opponents in the game.
 
+    StopGoButton[] _buttons; // array of stopgo buttons (for city stage)
+
+    GameManager _gameManager;
+
     public int Difficulty {
         get { return _difficulty; }
         set {
@@ -49,18 +53,24 @@ public class AIBrain : MonoBehaviour {
         }
     }
 
+    private void Awake() {
+        _playerController = GetComponent<PlayerController>();
+        _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
+        _boardScan = GetComponent<AIBoardScan>();
+
+
+        _buttons = FindObjectsOfType<StopGoButton>();
+
+        _gameManager = FindObjectOfType<GameManager>();
+    }
     // Use this for initialization
     void Start () {
-        _playerController = GetComponent<PlayerController>();
         _playerController.aiControlled = true;
 
         _playerController.significantEvent.AddListener(MakeDecision);
 
-        _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
-        _boardScan = GetComponent<AIBoardScan>();
-
-        SetupDifficultySettings();
         GetOpponents();
+        SetupDifficultySettings();
     }
 
     void SetupDifficultySettings() {
@@ -128,10 +138,10 @@ public class AIBrain : MonoBehaviour {
         CreateHamsterAndNodeActions();
 
         // If we're in the beach level
-        if(SceneManager.GetActiveScene().name.Contains("Beach")) {
+        if(_gameManager.selectedBoard == BOARDS.BEACH) {
             // Make some actions regarding water bubbles
             MakeWaterBubbleActions();
-        }
+        } 
 
         // Clear out bad actions
         _actions.RemoveAll(action => !ActionIsRelevant(action));
@@ -158,6 +168,12 @@ public class AIBrain : MonoBehaviour {
         // If we've shifted, don't look for new actions unless it's necessary, since shift time is very short.
         if (_actions.Count > 0 /*&& !(_playerController.shifted && curAction != null && ActionIsRelevant(curAction))*/) {
             ChooseAction();
+        }
+
+        // If we're in the city
+        if(curAction != null && _gameManager.selectedBoard == BOARDS.CITY) {
+            // We might need to hit the lever to get our hamster
+            CheckCityLeverNeed();
         }
     }
 
@@ -367,6 +383,38 @@ public class AIBrain : MonoBehaviour {
         }
     }
 
+    void CheckCityLeverNeed() {
+        // Start by resetting the otherWant
+        curAction.otherWant = null;
+
+        // if we don't want a hamster this is pointless
+        if(curAction.hamsterWant == null) {
+            return;
+        }
+
+        StopGoLever lever = FindObjectOfType<StopGoLever>();
+
+        // If the hamster we want is stuck behind the stop gate
+        if(curAction.hamsterWant.transform.position.y > -0.65f) {
+            if(curAction.hamsterWant.transform.position.x < (6.4 * (_playerController.team == 0 ? -1 : 1)) && !lever.IsLeft) {
+                // The hamster is stuck on the left side and we should hit the lever (which is on the right)
+                // So we should want the right button
+                curAction.otherWant = _buttons[0].transform;
+            } else if(curAction.hamsterWant.transform.position.x > (6.4 * (_playerController.team == 0 ? -1 : 1)) && lever.IsLeft) {
+                // The hamster is stuck on the right side and we should hit the lever
+                // So we should want the left button
+                curAction.otherWant = _buttons[1].transform;
+            }
+
+            if (curAction.otherWant != null) {
+                // Whether or not this requires a shift depends on our position relative to the button
+                if (Mathf.Sign(transform.position.x) != Mathf.Sign(curAction.otherWant.transform.position.x)) {
+                    curAction.requiresShift = true;
+                }
+            }
+        }
+    }
+
     bool ActionAlreadyMade(AIAction action) {
         foreach(AIAction a in _actions) {
             if(a.bubbleWant != null && action.bubbleWant != null && a.bubbleWant == action.bubbleWant) {
@@ -382,11 +430,15 @@ public class AIBrain : MonoBehaviour {
         _actions.Sort((x, y) => y.weight.CompareTo(x.weight));
 
         // Remove best actions if difficulty is too low
-        for (int i = _difficulty; i < 3; ++i) {
-            if (_actions.Count > 8) {
-                _actions.RemoveAt(0);
-                _actions.RemoveAt(0);
-                _actions.RemoveAt(0);
+        int removeWeight = 0;
+        for (int i = _difficulty; i <= 3; ++i) {
+            // Take the weigth of the smartest action
+            removeWeight = _actions[0].weight;
+
+            // Don't need to remove zero's (if we do we might end up with an empty list)
+            if (removeWeight > 0) {
+                // Remove all actions matching the weight
+                _actions.RemoveAll(action => action.weight == removeWeight);
             }
         }
 
@@ -435,25 +487,38 @@ public class AIBrain : MonoBehaviour {
         // Clear out bad actions just in case
         _actions.RemoveAll(action => !ActionIsRelevant(action));
 
-        ChooseAction();
+        if (_actions.Count > 0) {
+            ChooseAction();
+        }
     }
 
     void DecideVertWant() {
         if (_playerController.heldBall == null) {
             if (curAction.hamsterWant != null) {
-                VerticalChase(curAction.hamsterWant);
+                if (curAction.otherWant != null) {
+                    VerticalChase(curAction.otherWant.gameObject);
+                } else {
+                    VerticalChase(curAction.hamsterWant);
+                }
             } else if (curAction.opponent != null) {
                 VerticalChase(curAction.opponent.gameObject);
             } else if(curAction.waterBubble != null) {
                 VerticalChase(curAction.waterBubble.gameObject);
             }
-        } else if(_playerController.heldBall != null && _playerController.shifted) {
-            if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
-                curAction.vertWant = -1;
-            } else if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
-                curAction.vertWant = 1;
+        } else if(_playerController.heldBall != null) {
+            // If we're shifted
+            if (_playerController.shifted) {
+                // Try to keep away from the opponent
+                if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
+                    curAction.vertWant = -1;
+                } else if (Mathf.Abs(_opponents[0].transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
+                    curAction.vertWant = 1;
+                } else {
+                    curAction.vertWant = 0;
+                }
             } else {
-                curAction.vertWant = 0;
+                // If we've got a ball, generally going up is better
+                curAction.vertWant = 1;
             }
         }
     }
@@ -463,7 +528,11 @@ public class AIBrain : MonoBehaviour {
         // If we don't have a bubble yet, and want a hamster
         if (_playerController.heldBall == null) {
             if (curAction.hamsterWant != null) {
-                HorizontalChase(curAction.hamsterWant.gameObject);
+                if (curAction.otherWant != null) {
+                    HorizontalChase(curAction.otherWant.gameObject);
+                } else {
+                    HorizontalChase(curAction.hamsterWant.gameObject);
+                }
             } else if(curAction.opponent != null) {
                 HorizontalChase(curAction.opponent.gameObject);
             } else if(curAction.waterBubble != null) {
@@ -511,9 +580,9 @@ public class AIBrain : MonoBehaviour {
     }
 
     void VerticalChase(GameObject chaseObj) {
-        if (Mathf.Abs(chaseObj.transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
+        if (Mathf.Abs(chaseObj.transform.position.y) - Mathf.Abs(transform.position.y) < -0.5f) {
             curAction.vertWant = 1;
-        } else if (Mathf.Abs(chaseObj.transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
+        } else if (Mathf.Abs(chaseObj.transform.position.y) - Mathf.Abs(transform.position.y) > 0.5f) {
             curAction.vertWant = -1;
         } else {
             curAction.vertWant = 0;
@@ -522,9 +591,9 @@ public class AIBrain : MonoBehaviour {
     void VerticalChase(Hamster hamster) {
         // If the hamster is out of the pipe and running in the stage
         if (hamster.exitedPipe) {
-            if (Mathf.Abs(hamster.transform.position.y) - Mathf.Abs(transform.position.y) < -1) {
+            if (Mathf.Abs(hamster.transform.position.y) - Mathf.Abs(transform.position.y) < -0.5f) {
                 curAction.vertWant = 1;
-            } else if (Mathf.Abs(hamster.transform.position.y) - Mathf.Abs(transform.position.y) > 1) {
+            } else if (Mathf.Abs(hamster.transform.position.y) - Mathf.Abs(transform.position.y) > 0.5f) {
                 curAction.vertWant = -1;
             } else {
                 curAction.vertWant = 0;

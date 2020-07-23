@@ -156,9 +156,8 @@ public class ShopPage : Menu {
         // Turn on content
         content.gameObject.SetActive(true);
     }
-    protected override void LoseFocus() {
-        base.LoseFocus();
 
+    public void HideContent() {
         // Turn off content
         content.gameObject.SetActive(false);
     }

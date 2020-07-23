@@ -35,10 +35,18 @@ public class GameCountdown : MonoBehaviour {
         _stage = 0;
 
         if (!PhotonNetwork.connectedAndReady && autoStart) {
-            StartCountdown();
+            StartCoroutine("StartCountdownLater");
         }
         _done = false;
 	}
+
+    IEnumerator StartCountdownLater() {
+        yield return new WaitForFixedUpdate();
+
+        yield return new WaitForSeconds(1.0f);
+
+        StartCountdown();
+    }
 
     public void StartCountdown() {
         _displayText.gameObject.SetActive(true);

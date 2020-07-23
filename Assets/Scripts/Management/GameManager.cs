@@ -425,12 +425,15 @@ public class GameManager : MonoBehaviour {
     }
 
     public void SetDemoMode(bool on) {
-        if(on) {
-            GetComponentInChildren<DemoManager>().enabled = true;
-            demoMode = true;
-        } else {
-            GetComponentInChildren<DemoManager>().enabled = false;
-            demoMode = false;
+        DemoManager dM = GetComponentInChildren<DemoManager>();
+        if (dM != null) {
+            if (on) {
+                GetComponentInChildren<DemoManager>().enabled = true;
+                demoMode = true;
+            } else {
+                GetComponentInChildren<DemoManager>().enabled = false;
+                demoMode = false;
+            }
         }
     }
 }

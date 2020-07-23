@@ -8,9 +8,14 @@ public class StopGoLever : MonoBehaviour {
     public float rotSpeed;
 
     bool _isLeft;
+    public bool IsLeft {
+        get { return _isLeft; }
+    }
+
     bool _isRotating;
 
     StopGoButton _button;
+
 
     // Start is called before the first frame update
     void Start() {

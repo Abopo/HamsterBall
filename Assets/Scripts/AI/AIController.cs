@@ -36,7 +36,7 @@ public class AIController : MonoBehaviour {
     bool _isAimed = false;
 
     // Small buffere for turning around sound the ai doesn't spasm
-    float _turnTime = 0.1f;
+    float _turnTime = 0.25f;
     float _turnTimer = 0f;
 
     private void Awake() {
@@ -222,28 +222,27 @@ public class AIController : MonoBehaviour {
             if (Mathf.Abs(chaseObj.transform.position.x - transform.position.x) < 0.65f) { 
                 // If we are chasing a hamster and don't already have one
                 if (_curAction.hamsterWant != null && _playerController.heldBall == null && _playerController.CurState != PLAYER_STATE.CATCH) {
-                    // The hamster(or opponent) is right here! Catch it!
-                    _input.swing.isJustPressed = true;
+                    // If we have an other action to do first
+                    if (_curAction.otherWant != null) {
+                        // Punch 'em!
+                        AttackObject(_curAction.otherWant.gameObject);
+
+                        // Make new decision
+                        _aiBrain.MakeDecision();
+                    } else {
+                        // The hamster(or opponent) is right here! Catch it!
+                        _input.swing.isJustPressed = true;
+                    }
                 // If we are chasing an opponent
                 } else if (_curAction.opponent != null) {
-                    // If the opponent is above us
-                    if(_curAction.opponent.transform.position.y > transform.position.y) {
-                        // Jump to hit them
-                        _input.jump.isJustPressed = true;
-                    }
                     // Punch 'em!
-                    _input.attack.isJustPressed = true;
-
+                    AttackObject(_curAction.opponent.gameObject);
+                    
                     // Make new decision
                     _aiBrain.MakeDecision();
                 } else if(_curAction.waterBubble != null) {
-                    // If the bubble is above us
-                    if (_curAction.waterBubble.transform.position.y > transform.position.y) {
-                        // Jump to hit it
-                        _input.jump.isJustPressed = true;
-                    }
                     // Punch 'em!
-                    _input.attack.isJustPressed = true;
+                    AttackObject(_curAction.waterBubble.gameObject);
 
                     // Make new decision
                     _aiBrain.MakeDecision();
@@ -276,6 +275,16 @@ public class AIController : MonoBehaviour {
                 ContinueMovingUp();
             }
         }
+    }
+
+    void AttackObject(GameObject obj) {
+        // If the opponent is above us
+        if (obj.transform.position.y > transform.position.y) {
+            // Jump to hit them
+            _input.jump.isJustPressed = true;
+        }
+        // Punch 'em!
+        _input.attack.isJustPressed = true;
     }
 
     void MovingDown() {
@@ -357,7 +366,7 @@ public class AIController : MonoBehaviour {
 
                 // Only change direction if we are not under a ceiling or jumping (or if we are touching a wall)
                 // If the target is to our left
-                if (_moveDir == 1 && _targetPlatform.transform.position.x < transform.position.x - 1f /*&&
+                if (_moveDir == 1 && _targetPlatform.transform.position.x < transform.position.x - 0.75f /*&&
                     (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)*/) {
                     // Change direction to the left
                     _input.left.isDown = true;
@@ -365,7 +374,7 @@ public class AIController : MonoBehaviour {
                     _moveDir = -1;
 
                 // If the target is to our right
-                } else if (_moveDir == -1 && _targetPlatform.transform.position.x > transform.position.x + 1f /*&&
+                } else if (_moveDir == -1 && _targetPlatform.transform.position.x > transform.position.x + 0.75f /*&&
                            (!_mapScan.IsUnderCeiling || _playerController.CurState == PLAYER_STATE.JUMP)*/) {
                     // Change direction to the right
                     _input.left.isDown = false;
@@ -387,7 +396,7 @@ public class AIController : MonoBehaviour {
                 // We should try to move to where the platform is
                 if (_targetPlatform.GetComponent<PlatformEndCap>().platformSide == SIDE.LEFT) {
                     _input.left.isDown = true;
-                   _input.right.isDown = false;
+                    _input.right.isDown = false;
                     _moveDir = -1;
                 } else {
                     _input.left.isDown = false;
@@ -395,8 +404,20 @@ public class AIController : MonoBehaviour {
                     _moveDir = 1;
                 }
             } else {
-                // Just move towards the platform? (as it's probably a fallthrough)
-
+                // Just move towards the center of the platform? (as it's probably a fallthrough)
+                if(_targetPlatform.transform.position.x - transform.position.x > 0.1f) {
+                    // Move right
+                    _input.left.isDown = false;
+                    _input.right.isDown = true;
+                } else if(_targetPlatform.transform.position.x - transform.position.x < -0.1f) {
+                    // Move right
+                    _input.left.isDown = true;
+                    _input.right.isDown = false;
+                } else {
+                    // We're close to the middle so don't move
+                    _input.left.isDown = false;
+                    _input.right.isDown = false;
+                }
             }
         } else {
             Debug.Log("Missing Endcap!");
@@ -404,8 +425,14 @@ public class AIController : MonoBehaviour {
     }
 
     void Jumping() {
+        // If you don't want to go up, don't jump
+        if (_curAction.vertWant == -1) {
+            _input.jump.isDown = false;
+            return;
+        }
+
         // If we want to move horizontally but there is a step in the way.
-        if(_curAction.horWant == 1 && _mapScan.RightStepDistance > 0 && _mapScan.RightStepDistance < 0.5f) {
+        if (_curAction.horWant == 1 && _mapScan.RightStepDistance > 0 && _mapScan.RightStepDistance < 0.5f) {
             if(_playerController.CurState != PLAYER_STATE.JUMP) {
                 _input.jump.isDown = true;
             }
@@ -420,10 +447,6 @@ public class AIController : MonoBehaviour {
         if(_playerController.CurState == PLAYER_STATE.JUMP) {
             _input.jump.isDown = true;
         }
-        // If you don't want to go up, don't jump
-        if (_curAction.vertWant != 1) {
-            return;
-        }        
         if (_mapScan.LeftJumpDistance < 1.75f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
             _input.jump.isDown = true;
         } else if(_mapScan.RightJumpDistance < 1.75f && _input.right.isDown && !_mapScan.IsUnderCeiling) {
