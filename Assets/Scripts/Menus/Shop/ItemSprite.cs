@@ -34,9 +34,9 @@ public class ItemSprite : MonoBehaviour {
     public void SetItem(ShopItem item) {
         _curItem = item;
 
-        if(_curItem.ItemInfo.itemName.Contains("Palette")) {
+        if(_curItem.ItemInfo.itemType == "Palette") {
             PaletteSetup();
-        } else if(_curItem.ItemInfo.itemName.Contains("Stage")) {
+        } else if(_curItem.ItemInfo.itemType == "Stage") {
             StageSetup();
         } else {
             BasicSetup();

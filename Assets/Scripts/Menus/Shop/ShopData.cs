@@ -6,6 +6,7 @@ using UnityEngine;
 
 [System.Serializable]
 public struct ItemInfo {
+    public string itemType;
     public string itemName;
     public int price;
     public string description;
