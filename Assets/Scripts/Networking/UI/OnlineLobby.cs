@@ -18,6 +18,7 @@ public class OnlineLobby : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         PhotonNetwork.ConnectUsingSettings("0.1");
+        PhotonNetwork.networkingPeer.DisconnectTimeout = 90000000;
 
         roomName = "myRoom";
 

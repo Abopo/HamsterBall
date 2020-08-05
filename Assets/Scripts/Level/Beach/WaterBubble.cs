@@ -22,7 +22,8 @@ public class WaterBubble : MonoBehaviour {
     Animator _animator;
 
     public Bubble CaughtBubble {
-        get  {return _caughtBubble; }
+        get  { return _caughtBubble; }
+        set  { _caughtBubble = value; }
     }
 
     public bool IsSpawning {
@@ -76,8 +77,12 @@ public class WaterBubble : MonoBehaviour {
             BoardCollide(other.GetComponent<Ceiling>().bubbleManager);
         } else if (other.tag == "Attack") {
             if (_caughtBubble != null) {
-                // Drop the caught bubble
-                DropHamster();
+                if (PhotonNetwork.connectedAndReady) {
+                    PhotonNetwork.RPC(GetComponent<PhotonView>(), "DropNetworkHamster", PhotonTargets.MasterClient, false);
+                } else {
+                    // Drop the caught bubble
+                    DropHamster();
+                }
             }
 
             Pop();
@@ -85,8 +90,8 @@ public class WaterBubble : MonoBehaviour {
     }
 
     public void CatchHamster(Hamster hamster) {
-        if (PhotonNetwork.connectedAndReady) {
-            //InstantiateNetworkBubble(hamster);
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            GetComponent<NetworkedWaterBubble>().InstantiateNetworkBubble(hamster);
         } else {
             GameObject bubble = Instantiate(bubbleObj) as GameObject;
             bubble.transform.parent = this.transform;
@@ -99,12 +104,6 @@ public class WaterBubble : MonoBehaviour {
 
             if (hamster.isPlasma) {
                 _caughtBubble.isPlasma = true;
-                GameObject spiralEffect = hamster.spiralEffectInstance;
-                spiralEffect.transform.parent = _caughtBubble.transform;
-                spiralEffect.transform.position = new Vector3(_caughtBubble.transform.position.x,
-                                                              _caughtBubble.transform.position.y,
-                                                              _caughtBubble.transform.position.z + 3);
-                spiralEffect.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
             }
         }
 
@@ -159,13 +158,27 @@ public class WaterBubble : MonoBehaviour {
         _popped = true;
 
         if(_caughtBubble != null && !_caughtBubble.locked) {
-            // destroy the caught bubble during the pop animation
-            Destroy(_caughtBubble.gameObject);
+            if (PhotonNetwork.connectedAndReady) {
+                if (PhotonNetwork.isMasterClient) {
+                    // Make sure we destroy the caught bubble on the network
+                    PhotonNetwork.Destroy(_caughtBubble.gameObject);
+                }
+            } else {
+                // destroy the caught bubble during the pop animation
+                Destroy(_caughtBubble.gameObject);
+            }
         }
     }
 
     public void DestroySelf() {
-        // Destroy self
-        Destroy(gameObject);
+        if (PhotonNetwork.connectedAndReady) {
+            if (PhotonNetwork.isMasterClient) {
+                // Make sure we destroy ourselves on the network
+                PhotonNetwork.Destroy(this.gameObject);
+            }
+        } else {
+            // Destroy self
+            Destroy(gameObject);
+        }
     }
 }

@@ -41,7 +41,6 @@ public class ShopData {
     }
 
     public void LoadShopData() {
-
     }
 
     public void Save(string path) {

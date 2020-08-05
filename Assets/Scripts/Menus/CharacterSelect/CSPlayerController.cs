@@ -159,7 +159,7 @@ public class CSPlayerController : PlayerController {
         //transform.SetParent(null);
         pullDownWindow.PlayerLeft();
 
-        Shift();
+        StartShift();
 
         if (_photonView != null && _photonView.isMine) {
             _photonView.RPC("CSShift", PhotonTargets.Others);

@@ -22,7 +22,9 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
         InitializeSelector(PhotonNetwork.player.ID);
         //InitializeSelectors();
         //StartCoroutine(TryInitializeSelectors());
-	}
+
+        gameSetupText.gameObject.SetActive(false);
+    }
 
     IEnumerator TryInitializeSelectors() {
         // Find all the selectors

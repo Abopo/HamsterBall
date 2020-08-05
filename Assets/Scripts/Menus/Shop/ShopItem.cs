@@ -11,8 +11,13 @@ public class ShopItem : MenuButton, IScrollHandler {
     public SuperTextMesh itemNameText;
     public SuperTextMesh itemCostText;
     public Image icon;
+    public RuntimeAnimatorController animator;
 
     public float worldY;
+
+    Image _backerImg;
+    public Sprite backerBase;
+    public Sprite backerHighlight;
 
     ShopMenu _shopMenu;
     ShopPage _parentPage;
@@ -37,6 +42,8 @@ public class ShopItem : MenuButton, IScrollHandler {
 
     protected override void Awake() {
         base.Awake();
+
+        _backerImg = transform.Find("Backer").GetComponent<Image>();
 
         _shopMenu = FindObjectOfType<ShopMenu>();
         _parentPage = GetComponentInParent<ShopPage>();
@@ -74,6 +81,9 @@ public class ShopItem : MenuButton, IScrollHandler {
         _parentPage.SetCurItem(this);
 
         SetItemData();
+
+        // Update the backer sprite
+        _backerImg.sprite = backerHighlight;
     }
 
     public void MouseHighlight() {
@@ -85,6 +95,13 @@ public class ShopItem : MenuButton, IScrollHandler {
             // Do a little shake?
 
         }
+    }
+
+    public override void Unhighlight() {
+        base.Unhighlight();
+
+        // Update the backer sprite
+        _backerImg.sprite = backerBase;
     }
 
     void SetItemData() {

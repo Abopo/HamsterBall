@@ -7,7 +7,10 @@ public class IdleState : PlayerState {
     float _longIdleTime = 5.0f;
     float _longIdleTimer = 0f;
 
+    bool _inIdle = false;
+
     void Start() {
+        _inIdle = false;
 	}
 
 	// Use this for initialization
@@ -31,10 +34,15 @@ public class IdleState : PlayerState {
 
     // Update is called once per frame
     public override void Update(){
-		//Just Idling man, don't do shit
-		
-		// Just kidding, slow the player to a stop
-		if (Mathf.Abs (playerController.velocity.x) > 0.5f) {
+        //Just Idling man, don't do shit
+        if (playerController.Animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Idle") ||
+            playerController.Animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Idle_Ball")) {
+
+            _inIdle = true;
+        }
+
+        // Just kidding, slow the player to a stop
+        if (Mathf.Abs (playerController.velocity.x) > 0.5f) {
             sign = Mathf.Sign(playerController.velocity.x);
             playerController.velocity.x -= sign * (playerController.walkForce/1.5f) * playerController.Traction * Time.deltaTime;
             if(sign > 0 && playerController.velocity.x < 0 ||
@@ -63,6 +71,11 @@ public class IdleState : PlayerState {
 	}
 
 	public override void CheckInput(InputState inputState) {
+        // There's some issues with changing states too fast, so make sure we are fully idle before changing to a new state
+        if (!_inIdle) {
+            return;
+        }
+
 		if (inputState.jump.isJustPressed) {
 			playerController.ChangeState (PLAYER_STATE.JUMP);
 			return;
@@ -83,12 +96,13 @@ public class IdleState : PlayerState {
 	}
 
 	// returns the PLAYER_STATE that represents this state
-	public override PLAYER_STATE getStateType(){
+	public override PLAYER_STATE GetStateType(){
 		return PLAYER_STATE.IDLE;
 	}
 
 	//	use this for destruction
 	public override void End(){
         playerController.Animator.SetBool("LongIdle", false);
+        _inIdle = false;
     }
 }

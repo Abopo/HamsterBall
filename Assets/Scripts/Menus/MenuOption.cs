@@ -134,19 +134,19 @@ public class MenuOption : MonoBehaviour {
 
         if (!_moved && isHighlighted && !_justHighlighted) {
             // Right
-            if (_player.GetButtonRepeating("MoveRight")) {
+            if (_player.GetButtonRepeating("Right")) {
                 TryHighlight(0);
             }
             // Down
-            if (_player.GetButtonRepeating("MoveDown")) {
+            if (_player.GetButtonRepeating("Down")) {
                 TryHighlight(1);
             }
             // Left
-            if (_player.GetButtonRepeating("MoveLeft")) {
+            if (_player.GetButtonRepeating("Left")) {
                 TryHighlight(2);
             }
             // Up
-            if (_player.GetButtonRepeating("MoveUp")) {
+            if (_player.GetButtonRepeating("Up")) {
                 TryHighlight(3);
             }
         } else {

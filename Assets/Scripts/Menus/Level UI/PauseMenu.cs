@@ -16,6 +16,10 @@ public class PauseMenu : Menu {
 
     MenuButton[] _buttons;
 
+    public bool IsActive {
+        get { return _isActive; }
+    }
+
     protected override void Awake() {
         base.Awake();
         _buttons = GetComponentsInChildren<MenuButton>();
@@ -33,8 +37,12 @@ public class PauseMenu : Menu {
     }
 
     private void LateUpdate() {
-        if (_isActive && (_player != null && _player.GetButtonDown("Pause")) && !_justActivated) {
-            ResumeButton();
+        if (_isActive && !_justActivated) {
+            if ((_player != null && _player.GetButtonDown("Pause")) ||
+               InputState.GetButtonOnAnyControllerPressed("Pause")) {
+                // Close the menu
+                ResumeButton();
+            }
         }
 
         _justActivated = false;

@@ -58,7 +58,7 @@ public class GameOverState : PlayerState {
     }
 
     // returns the PLAYER_STATE that represents this state
-    public override PLAYER_STATE getStateType() {
+    public override PLAYER_STATE GetStateType() {
         return PLAYER_STATE.GAMEOVER;
     }
 

@@ -195,6 +195,24 @@ public class ShopPage : Menu {
             // scroll down one row
             _scrollTo += 90;
         }
+
+        // If the item is in the top row
+        if(_items.IndexOf(item) < 3) {
+            // Turn off the up arrow
+
+        } else {
+            // Turn on the up arrow
+
+        }
+        // If the item is in the bottom row
+        // TODO: this is actually a bit more complicated than just the last indexes
+        if(_items.IndexOf(item) > _items.Count-4) {
+            // Turn off the down arrow
+
+        } else {
+            // Turn on the down arrow
+
+        }
     }
 
     public virtual void PurchaseCurItem() {

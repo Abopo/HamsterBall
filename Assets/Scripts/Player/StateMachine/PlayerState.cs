@@ -22,7 +22,7 @@ public class PlayerState {
 	// GetInput is used for all Input handling
 	public virtual void CheckInput(InputState inputState){}
 	// returns the PLAYER_STATE that represents this state
-	public virtual PLAYER_STATE getStateType(){
+	public virtual PLAYER_STATE GetStateType(){
 		return PLAYER_STATE.NUM_STATES;
 	}
 	//	use this for destruction

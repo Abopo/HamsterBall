@@ -23,10 +23,16 @@ public class WaterBubbleGenerator : MonoBehaviour {
     LevelManager _levelManager;
     GameManager _gameManager;
 
-	// Use this for initialization
-	void Start () {
+    PhotonView _photonView;
+
+    private void Awake() {
         _levelManager = FindObjectOfType<LevelManager>();
         _gameManager = FindObjectOfType<GameManager>();
+
+        _photonView = GetComponent<PhotonView>();
+    }
+    // Use this for initialization
+    void Start () {
         _gameManager.gameOverEvent.AddListener(ClearAllBubbles);
 
         _spawnPos = new Vector3(transform.position.x,
@@ -94,7 +100,18 @@ public class WaterBubbleGenerator : MonoBehaviour {
     public void SpawnBubbleFish() {
         float x = Random.Range(-spawnDist, spawnDist);
         Vector3 newSpawnPos = new Vector3(_spawnPos.x + x, -7.65f, _spawnPos.z);
-        GameObject bubbleFish = Instantiate(bubbleFishObj, newSpawnPos, Quaternion.identity);
-        bubbleFish.GetComponent<BubbleFish>().team = team;
+
+        if (PhotonNetwork.connectedAndReady) {
+            // Only the master client should spawn things
+            if (PhotonNetwork.isMasterClient) {
+                object[] data = new object[1];
+                data[0] = team;
+                GameObject bubbleFish = PhotonNetwork.Instantiate("Prefabs/Networking/BubbleFish_PUN", newSpawnPos, Quaternion.identity, 0, data);
+                bubbleFish.GetComponent<BubbleFish>().team = team;
+            }
+        } else {
+            GameObject bubbleFish = Instantiate(bubbleFishObj, newSpawnPos, Quaternion.identity);
+            bubbleFish.GetComponent<BubbleFish>().team = team;
+        }
     }
 }

@@ -52,17 +52,19 @@ public class ShopMenu : MonoBehaviour {
     }
     // Update is called once per frame
     protected void Update() {
-        if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
-            _exitMenu.Activate();
-        }
+        if (!_exitMenu.menuObject.activeSelf) {
+            if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
+                _exitMenu.Activate();
+            }
 
-        if(Input.GetKeyDown(KeyCode.Q)) {
-            // Move page left
-            MovePageLeft();
-        }
-        if(Input.GetKeyDown(KeyCode.E)) {
-            // move page right
-            MovePageRight();
+            if (Input.GetKeyDown(KeyCode.Q)) {
+                // Move page left
+                MovePageLeft();
+            }
+            if (Input.GetKeyDown(KeyCode.E)) {
+                // move page right
+                MovePageRight();
+            }
         }
 
         // Dev cheat

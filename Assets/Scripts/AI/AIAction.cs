@@ -102,9 +102,11 @@ public class AIAction {
     int MyBoardChecks(HAMSTER_TYPES type) {
         int addWeight = 0;
 
-        // closer is slighty better, so slightly adjust weight based on distance from self
-        int distanceX = Mathf.CeilToInt(Mathf.Abs(bubbleWant.transform.position.x - _playerController.transform.position.x));
-        addWeight += 10 / distanceX;
+        if (bubbleWant != null) {
+            // closer is slighty better, so slightly adjust weight based on distance from self
+            int distanceX = Mathf.CeilToInt(Mathf.Abs(bubbleWant.transform.position.x - _playerController.transform.position.x));
+            addWeight += 10 / distanceX;
+        }
 
         // if we want a bubble on our board that matches the hamster we want/have.
         if (bubbleWant != null && bubbleWant.team == _playerController.team && (type == bubbleWant.type || type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.SKULL)) {

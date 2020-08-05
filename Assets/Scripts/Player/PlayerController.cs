@@ -34,8 +34,8 @@ public class PlayerController : Entity {
     public PLAYER_STATE CurState {
         get {
             if(currentState != null) {
-                _curState = currentState.getStateType();
-                return currentState.getStateType();
+                _curState = currentState.GetStateType();
+                return currentState.GetStateType();
             } else {
                 return PLAYER_STATE.IDLE;
             }
@@ -148,7 +148,7 @@ public class PlayerController : Entity {
         get { return _playerEffects; }
     }
 
-    protected bool _justChangedState; // Can only change state once per frame
+    public bool _justChangedState; // Can only change state once per frame
 
     // Networking
     protected PhotonView _photonView;
@@ -546,7 +546,7 @@ public class PlayerController : Entity {
             currentState.Initialize(this);
         }
         _justChangedState = true;
-        _curState = currentState.getStateType();
+        _curState = currentState.GetStateType();
 
         if(_photonView != null && _photonView.owner == PhotonNetwork.player) {
             _photonView.RPC("ChangePlayerState", PhotonTargets.All, (int)_curState);

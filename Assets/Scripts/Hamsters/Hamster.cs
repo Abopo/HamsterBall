@@ -93,8 +93,6 @@ public class Hamster : Entity {
                 _okTypes = hamsterScan.OkTypesRight;
             }
         }
-
-        exitedPipe = false;
     }
 
     // If setType is -1, will randomly generate a type.
@@ -290,7 +288,7 @@ public class Hamster : Entity {
             wasCaught = true;
 
             // Destroy self
-            Destroy(gameObject);
+            DestroySelf();
         }
     }
 
@@ -432,6 +430,9 @@ public class Hamster : Entity {
 
     public void SetState(int state) {
         _curState = state;
+        if(_animator == null) {
+            _animator = GetComponentInChildren<Animator>();
+        }
         _animator.SetInteger("State", _curState);
 
         switch(_curState) {
@@ -464,5 +465,17 @@ public class Hamster : Entity {
             FaceLeft();
         }
         exitedPipe = true;
+    }
+
+    public void DestroySelf() {
+        if (PhotonNetwork.connectedAndReady) {
+            if (PhotonNetwork.isMasterClient) {
+                // Make sure we destroy ourselves on the network
+                PhotonNetwork.Destroy(this.gameObject);
+            }
+        } else {
+            // Destroy self
+            Destroy(gameObject);
+        }
     }
 }
