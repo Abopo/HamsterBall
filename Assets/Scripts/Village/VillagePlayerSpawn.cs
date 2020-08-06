@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VillagePlayerSpawn : MonoBehaviour {
     public GameObject playerObj;
@@ -15,13 +16,18 @@ public class VillagePlayerSpawn : MonoBehaviour {
 
         transform.position = _spawnPosition;
 
-        SpawnPlayer();
+        FindObjectOfType<VillageManager>().villageStart.AddListener(OnVillageStart);
+        //SpawnPlayer();
 	}
+
+    void OnVillageStart() {
+        SpawnPlayer();
+    }
 
     void SpawnPlayer() {
         PlayerController newPlayer;
 
-        newPlayer = Instantiate(playerObj).GetComponentInChildren<PlayerController>();
+        newPlayer = Instantiate(playerObj, transform).GetComponentInChildren<PlayerController>();
         newPlayer.SetPlayerNum(0);
         newPlayer.SetInputID(0);
         newPlayer.team = 0;

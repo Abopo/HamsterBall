@@ -8,7 +8,7 @@ using Rewired;
 public class LoadingScreen : MonoBehaviour {
     public static string sceneToLoad;
 
-    public Text loadingText;
+    public SuperTextMesh loadingText;
 
     bool _started;
 
@@ -25,13 +25,15 @@ public class LoadingScreen : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if(_sceneLoaded) {
-            if (_player.GetButtonDown("Submit")) {
+            if (InputState.AnyButtonOnAnyControllerPressed() != null) {
                 Debug.Log("Submit load");
 
                 // Start the game countdown
-                FindObjectOfType<GameCountdown>().started = true;
+                //FindObjectOfType<GameCountdown>().started = true;
 
                 // Destroy the loading screen
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
+                SceneManager.UnloadSceneAsync("LoadingScreen");
                 Destroy(gameObject);
             }
         }
@@ -53,6 +55,6 @@ public class LoadingScreen : MonoBehaviour {
         }
 
         _sceneLoaded = true;
-        loadingText.text = "Press A";
+        loadingText.text = "Press any button";
     }
 }

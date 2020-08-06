@@ -36,7 +36,8 @@ public class TitleScreen : MonoBehaviour {
                 SceneManager.LoadScene("PlayableCharacterSelect");
             } else {
                 // Load village
-                SceneManager.LoadScene("VillageScene");
+                LoadingScreen.sceneToLoad = "VillageScene";
+                SceneManager.LoadScene("LoadingScreen");
             }
         }
 	}

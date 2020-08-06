@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using Rewired;
 
 public class VillageManager : MonoBehaviour {
@@ -14,6 +16,9 @@ public class VillageManager : MonoBehaviour {
 
     public int villageIndex; // This represents the status of the village as the player progresses through the story.
                              // Currently there are 13 stages of village.
+
+    bool _started;
+    public UnityEvent villageStart;
 
     private void Awake() {
         _pauseMenu = FindObjectOfType<PauseMenu>();
@@ -30,6 +35,8 @@ public class VillageManager : MonoBehaviour {
         _gameManager.isOnline = false;
 
         _player = ReInput.players.GetPlayer(0);
+
+        SceneManager.activeSceneChanged += OnSceneChanged;
 	}
 
     void GetVillageIndex() {
@@ -220,5 +227,29 @@ public class VillageManager : MonoBehaviour {
 		if(_player.GetButtonDown("Pause")) {
             _pauseMenu.Activate(0);
         }
+        
+        // If the village scene is active
+        if(!_started && SceneManager.GetActiveScene().name == "VillageScene") {
+            _started = true;
+            villageStart.Invoke();
+        }
 	}
+
+    void OnSceneChanged(Scene oldScene, Scene newScene) {
+        //// If we load into a gameplay scene
+        //if (newScene.buildIndex >= 15) {
+        if (oldScene.name == "VillageScene") {
+            // Unload the village
+            SceneManager.UnloadSceneAsync("VillageScene");
+        }
+        // If we load into the village
+        //} else if (newScene.name == "VillageScene") {
+            // Make sure the village is active
+        //    gameObject.SetActive(true);
+        // If we load into any other scene
+        //} else {
+            // Just deactivate the village for quick access later
+        //    gameObject.SetActive(false);
+        //}
+    }
 }
