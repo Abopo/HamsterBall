@@ -61,8 +61,9 @@ public class SoundManager : MonoBehaviour {
 	public string IcePlayerFootstep;
 	public string SnowPlayerFootstep;
 	public string UmbrellaPlayerFootstep;
+    public string ConcreteFootstep;
 
-	public string PlayerFootstep;
+    public string PlayerFootstep;
 	public string SwingNetOneshot;
 	public string ThrowStartOneshot;
 	public string ThrowAngleLoop;
