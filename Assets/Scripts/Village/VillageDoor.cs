@@ -12,17 +12,23 @@ public class VillageDoor : MonoBehaviour {
     Player _playerInput;
     protected PlayerController _playerController;
 
+    GameObject _interactIcon;
+
     VillagePlayerSpawn _villagePlayerSpawn;
     GameManager _gameManager;
 
-	// Use this for initialization
-	protected virtual void Start () {
-        _isPlayerHere = false;
-
+    private void Awake() {
         _playerInput = ReInput.players.GetPlayer(0);
+
+        _interactIcon = transform.Find("Interact Icon").gameObject;
 
         _villagePlayerSpawn = FindObjectOfType<VillagePlayerSpawn>();
         _gameManager = FindObjectOfType<GameManager>();
+    }
+    // Use this for initialization
+    protected virtual void Start () {
+        _isPlayerHere = false;
+
 	}
 	
 	// Update is called once per frame
@@ -40,7 +46,8 @@ public class VillageDoor : MonoBehaviour {
         }
 
         // Load the proper scene
-        SceneManager.LoadScene(_sceneToLoad);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.LoadScene(_sceneToLoad, LoadSceneMode.Additive);
 
         // Set the player's respawn point to this door
         _villagePlayerSpawn.SetSpawnPosition(transform.position);
@@ -50,6 +57,7 @@ public class VillageDoor : MonoBehaviour {
         if(collision.gameObject.tag == "Player") {
             _isPlayerHere = true;
             _playerController = collision.GetComponent<PlayerController>();
+            _interactIcon.SetActive(true);
         }
     }
 
@@ -57,6 +65,14 @@ public class VillageDoor : MonoBehaviour {
         if (collision.gameObject.tag == "Player") {
             _isPlayerHere = false;
             _playerController = null;
+            _interactIcon.SetActive(false);
+        }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (mode == LoadSceneMode.Additive) {
+            // Set the new scene to active
+            SceneManager.SetActiveScene(scene);
         }
     }
 }

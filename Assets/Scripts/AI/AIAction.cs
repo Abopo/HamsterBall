@@ -14,6 +14,7 @@ public class AIAction {
     public bool requiresShift = false;
     public PlayerController opponent;
     public WaterBubble waterBubble;
+    public Transform otherWant;
 
     PlayerController _playerController;
 
@@ -92,10 +93,20 @@ public class AIAction {
         } else if(waterBubble != null) {
             weight += WaterBubbleChecks();
         }
+
+        if (otherWant != null) {
+            weight += OtherWantChecks();
+        }
     }
 
     int MyBoardChecks(HAMSTER_TYPES type) {
         int addWeight = 0;
+
+        if (bubbleWant != null) {
+            // closer is slighty better, so slightly adjust weight based on distance from self
+            int distanceX = Mathf.CeilToInt(Mathf.Abs(bubbleWant.transform.position.x - _playerController.transform.position.x));
+            addWeight += 10 / distanceX;
+        }
 
         // if we want a bubble on our board that matches the hamster we want/have.
         if (bubbleWant != null && bubbleWant.team == _playerController.team && (type == bubbleWant.type || type == HAMSTER_TYPES.RAINBOW || type == HAMSTER_TYPES.SKULL)) {
@@ -122,7 +133,7 @@ public class AIAction {
                     // Otherwise
                     } else {
                         // attempt to only do shifted actions.
-                        addWeight -= 100;
+                        addWeight -= 10;
                     }
                 } else {
                     // and we have the ability to shift
@@ -155,8 +166,7 @@ public class AIAction {
             // If the bubble is on the bottom most lines 
             if (bubbleWant.node >= 92) {
                 // and has matches
-                // if it doesn't have matches, don't throw at it!
-                addWeight += bubbleWant.numMatches >= 2 ? 50 : -80;
+                addWeight += 25 * bubbleWant.numMatches;
             }
 
             // Add weight based on potential drops of the bubbleWant
@@ -184,7 +194,7 @@ public class AIAction {
                 addWeight += 2 * bubbleWant.numMatches;
                 addWeight += bubbleWant.numMatches > 5 ? 5 : 0;
             } else {
-                addWeight += -80;
+                addWeight -= 80;
             }
         }
 
@@ -269,7 +279,7 @@ public class AIAction {
                 addWeight += Random.Range(25, 50);
 
                 // The lower our board, the worse an idea shifting is
-                addWeight -= _playerController.HomeBubbleManager.LowestLine * 3;
+                addWeight -= _playerController.HomeBubbleManager.LowestLine * 4;
             } else {
                 // If we can't shift don't even think about it!
                 addWeight = -1000;
@@ -279,7 +289,7 @@ public class AIAction {
         // If the bubble is on the bottom most lines 
         addWeight += nodeWant.number >= 92 ? 30 : 0;
         // Add even more if the node is in the kill line
-        addWeight += nodeWant.number >= 114 ? 100 : 0;
+        addWeight += nodeWant.number >= 114 ? 50 : 0;
 
         return addWeight;
     }
@@ -328,6 +338,18 @@ public class AIAction {
             if (waterBubble.CaughtBubble != null) {
                 addWeight += 100;
             }
+        }
+
+        return addWeight;
+    }
+
+    int OtherWantChecks() {
+        int addWeight = 0;
+
+        // If this is a stopgo button
+        if(otherWant.GetComponent<StopGoButton>() != null) {
+            // It's pretty important, so up the weight by a good bit
+            addWeight += 50;
         }
 
         return addWeight;

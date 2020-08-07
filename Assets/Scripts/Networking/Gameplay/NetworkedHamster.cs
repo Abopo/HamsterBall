@@ -11,6 +11,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
     int _nextHamsterType = -1;
     Quaternion _correctRot;
     int _hamsterType;
+    int _hamsterState;
 
     public int corFacing;
 
@@ -24,33 +25,45 @@ public class NetworkedHamster : Photon.MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        Initialize();
     }
 
-    void Initialize() {
-        // Figure out proper facing
+    void OnPhotonInstantiate(PhotonMessageInfo info) {
+        // Initialize hamster with team info
+        _hamster.Initialize((int)_photonView.instantiationData[2]);
+
+        // Set the hamsters type
+        _nextHamsterType = (int)_photonView.instantiationData[3];
+        if (_nextHamsterType != -1) {
+            // If this hamster should be gravity
+            if ((bool)_photonView.instantiationData[4]) {
+                _hamster.SetType(HAMSTER_TYPES.PLASMA, (HAMSTER_TYPES)_nextHamsterType);
+            } else {
+                _hamster.SetType(_nextHamsterType);
+            }
+        }
+
+        _hamster.hamsterNum = HamsterSpawner.nextHamsterNum++;
+
+        // If it spawned from a pipe
         if (!(bool)_photonView.instantiationData[0]) { // if has not exited pipe
             HamsterSpawner hSpawner = FindObjectOfType<HamsterSpawner>();
             // TODO: for some reason the hamsters in the right pipe are walking backwards
             if ((bool)_photonView.instantiationData[1]) { // right side pipe
                 _hamster.Flip();
                 _hamster.inRightPipe = true;
-                if(hSpawner.twoTubes) {
+                if (hSpawner.twoTubes) {
                     _hamster.FaceRight();
                 } else {
                     _hamster.FaceLeft();
                 }
             } else {
                 _hamster.inRightPipe = false;
-                if(hSpawner.twoTubes) {
+                if (hSpawner.twoTubes) {
                     _hamster.FaceLeft();
                 } else {
                     _hamster.FaceRight();
                 }
             }
-
-            // Initialize hamster with team info
-            _hamster.Initialize((int)_photonView.instantiationData[2]);
 
             // Set a parent spawner based on pipe info
             GameObject[] spawners = GameObject.FindGameObjectsWithTag("Hamster Spawner");
@@ -62,17 +75,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                     hS.HamsterLine.Add(_hamster);
                 }
             }
-
-            // Set the hamsters type
-            _nextHamsterType = (int)_photonView.instantiationData[3];
-            if (_nextHamsterType != -1) {
-                // If this hamster should be gravity
-                if ((bool)_photonView.instantiationData[4]) {
-                    _hamster.SetType(HAMSTER_TYPES.PLASMA, (HAMSTER_TYPES)_nextHamsterType);
-                } else {
-                    _hamster.SetType(_nextHamsterType);
-                }
-            }
+        // If it was dropped by player or something
         } else {
             _hamster.exitedPipe = true;
 
@@ -83,18 +86,18 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                 hS = s.GetComponent<HamsterSpawner>();
                 if (hS.team == _hamster.team) {
                     _hamster.ParentSpawner = hS;
-                    hS.HamsterLine.Add(_hamster);
+                    //hS.HamsterLine.Add(_hamster);
                 }
             }
         }
 
-        _hamster.hamsterNum = HamsterSpawner.nextHamsterNum++;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
             stream.SendNext(_hamster.type);
             stream.SendNext(_hamster.curFacing);
+            stream.SendNext(_hamster.CurState);
             //stream.SendNext(_hamster.exitedPipe);
         } else {
             _hamsterType = (int)stream.ReceiveNext();
@@ -107,6 +110,12 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             }
 
             corFacing = (int)stream.ReceiveNext();
+
+            // synch the state
+            _hamsterState = (int)stream.ReceiveNext();
+            if(_hamsterState != _hamster.CurState) {
+                _hamster.SetState(_hamsterState);
+            }
         }
     }
 

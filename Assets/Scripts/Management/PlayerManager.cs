@@ -179,6 +179,7 @@ public class PlayerManager : MonoBehaviour {
             ClearAllPlayers();
         }
 
+        /* Not sure why music was being changed in the player manager
 		if (scene.name == "LocalPlay")
 		{
 			SoundManager.mainAudio.MenuGeneralEvent.setPaused(false);
@@ -188,6 +189,7 @@ public class PlayerManager : MonoBehaviour {
 			SoundManager.mainAudio.VillageMusicEvent.setPaused(false);
 			SoundManager.mainAudio.MenuGeneralEvent.setPaused(true);
 		}
+        */
 
         // Debugging
         if(scene.name == "NetworkedMapSelectWheel") {

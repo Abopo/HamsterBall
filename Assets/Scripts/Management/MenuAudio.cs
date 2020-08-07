@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Collections;
 
 public class MenuAudio : MonoBehaviour {
 
@@ -10,7 +11,7 @@ public class MenuAudio : MonoBehaviour {
     static int musicPlaying = -1;
 
     void Awake() {
-        SceneManager.sceneLoaded += PlayMusic;
+        SceneManager.activeSceneChanged += OnSceneLoaded;
     }
 
     // Use this for initialization
@@ -37,23 +38,27 @@ public class MenuAudio : MonoBehaviour {
         }
     }
 
-    // For some reason this code is extremely inconsistent. Some scenes will stop and play music properly,
-    // while others will not stop music, not play music, or some combination of both.
-    // I tried my best to force the proper functionality
+    void OnSceneLoaded(Scene currentScene, Scene newScene) {
+        sceneIndex = newScene.buildIndex;
 
-    void PlayMusic(Scene scene, LoadSceneMode mode) {
-        if(firstPass) {
-            sceneIndex = scene.buildIndex;
-            firstPass = false;
-        } else {
-            sceneIndex = scene.buildIndex;
-            if(sceneIndex == 1 && musicPlaying != 0) {
+        StartCoroutine(PlayMusicLater());
+    }
+
+    IEnumerator PlayMusicLater() {
+        yield return null;
+
+        PlayMusic();
+    }
+
+    void PlayMusic() {
+        //if(firstPass) {
+        //    sceneIndex = scene.buildIndex;
+        //    firstPass = false;
+        //} else {
+            if(sceneIndex == 1) {
                 // For some reason this is the only way to stop the menu music from playing
                 SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
                 SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
-
-                // This did not work
-                //SoundManager.mainAudio.MenuGeneralEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
                 // For some reason we have to create a new instance every time here
                 SoundManager.mainAudio.VillageMusicEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.VillageMusic);
@@ -70,8 +75,6 @@ public class MenuAudio : MonoBehaviour {
                 SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
                 SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
-                //SoundManager.mainAudio.HappyDaysMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-
                 // For some reason we have to create a new instance every time here
 		        SoundManager.mainAudio.MenuGeneralEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MenuGeneral);
                 SoundManager.mainAudio.MenuGeneralEvent.start();
@@ -85,10 +88,10 @@ public class MenuAudio : MonoBehaviour {
 
                 musicPlaying = -1;
             }
-        }
+        //}
     }
 
     private void OnDestroy() {
-        SceneManager.sceneLoaded -= PlayMusic;
+        SceneManager.activeSceneChanged -= OnSceneLoaded;
     }
 }

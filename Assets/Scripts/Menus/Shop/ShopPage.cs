@@ -12,6 +12,8 @@ public class ShopPage : Menu {
     public float _scrollTo;
     float _scrollSpeed = 1000f;
 
+    float _itemYSpacing = 100f;
+
     protected GameObject _shopItemObj;
     protected List<ShopItem> _items = new List<ShopItem>();
 
@@ -19,6 +21,8 @@ public class ShopPage : Menu {
     public ShopItem CurItem {
         get { return _curItem; }
     }
+
+    protected Tab _tab;
 
     protected ShopMenu _shopMenu;
 
@@ -28,6 +32,8 @@ public class ShopPage : Menu {
         if (_shopItemObj == null) {
             _shopItemObj = Resources.Load("Prefabs/Menus/Shop/ShopItem") as GameObject;
         }
+
+        _tab = GetComponentInChildren<Tab>();
 
         _shopMenu = FindObjectOfType<ShopMenu>();
     }
@@ -45,17 +51,18 @@ public class ShopPage : Menu {
 
         // Highlight the first item
         _items[0].isFirstSelection = true;
-        //itemDescription.text = _items[0].ItemInfo.description;
 
         // Properly size the content
         if (_items.Count > 9) {
-            content.sizeDelta = new Vector2(content.sizeDelta.x, 305 + (_items.Count - 9) * 90);
+            content.sizeDelta = new Vector2(content.sizeDelta.x, 305 + (_items.Count - 9) * _itemYSpacing);
         }
 
         // If we don't have focus don't show our content
         if(!hasFocus) {
-            // Turn off content
-            content.gameObject.SetActive(false);
+            HideContent();
+        } else {
+            // Make sure we can see our content
+            ShowContent();
         }
     }
 
@@ -96,7 +103,7 @@ public class ShopPage : Menu {
         int yOffset = 0;
 
         foreach (ShopItem item in _items) {
-            ((RectTransform)item.transform).anchoredPosition = new Vector3(xStart + xSpacing * xOffset, -10 - (90 * yOffset));
+            ((RectTransform)item.transform).anchoredPosition = new Vector3(xStart + xSpacing * xOffset, -10 - (_itemYSpacing * yOffset));
 
             xOffset++;
             if (xOffset > colCount) {
@@ -113,7 +120,7 @@ public class ShopPage : Menu {
         int yOffset = 0;
 
         foreach (ShopItem item in _items) {
-            ((RectTransform)item.transform).anchoredPosition = new Vector3(xSpacing * xOffset, -10 - (90 * yOffset));
+            ((RectTransform)item.transform).anchoredPosition = new Vector3(xSpacing * xOffset, -10 - (_itemYSpacing * yOffset));
 
             xOffset++;
             if (xOffset > colHalf) {
@@ -153,14 +160,21 @@ public class ShopPage : Menu {
     public override void TakeFocus() {
         base.TakeFocus();
 
+        ShowContent();
+    }
+
+    void ShowContent() {
         // Turn on content
         content.gameObject.SetActive(true);
-    }
-    protected override void LoseFocus() {
-        base.LoseFocus();
 
+        _tab.Select();
+    }
+
+    public void HideContent() {
         // Turn off content
         content.gameObject.SetActive(false);
+
+        _tab.Deselect();
     }
 
     public void SetCurItem(ShopItem item) {
@@ -180,6 +194,24 @@ public class ShopPage : Menu {
         if (item.worldY < -6) {
             // scroll down one row
             _scrollTo += 90;
+        }
+
+        // If the item is in the top row
+        if(_items.IndexOf(item) < 3) {
+            // Turn off the up arrow
+
+        } else {
+            // Turn on the up arrow
+
+        }
+        // If the item is in the bottom row
+        // TODO: this is actually a bit more complicated than just the last indexes
+        if(_items.IndexOf(item) > _items.Count-4) {
+            // Turn off the down arrow
+
+        } else {
+            // Turn on the down arrow
+
         }
     }
 

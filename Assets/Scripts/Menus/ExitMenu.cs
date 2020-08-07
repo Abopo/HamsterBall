@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ExitMenu : Menu {
     public GameObject menuObject;
@@ -54,6 +55,8 @@ public class ExitMenu : Menu {
         } else if (returnMenu == "LocalPlay") {
             // Go back to local play menu
             _gameManager.LocalPlayButton();
+        } else if(returnMenu == "OnlineLobby") {
+            SceneManager.LoadScene("OnlineLobby");
         } else {
             // default to village i guess
             _gameManager.VillageButton();
@@ -61,6 +64,13 @@ public class ExitMenu : Menu {
     }
     public void Cancel() {
         base.Deactivate();
+
+        StartCoroutine("DeactivateLater");
+    }
+
+    // Attempting to avoid input overflow
+    IEnumerator DeactivateLater() {
+        yield return null;
 
         // Close the menu
         menuObject.SetActive(false);

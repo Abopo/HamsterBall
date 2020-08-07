@@ -94,11 +94,7 @@ public class HitState : PlayerState {
 
         // Set the correct type
         hamsterInfo[3] = playerController.heldBall.type;
-        if (playerController.heldBall.isPlasma) {
-            hamsterInfo[4] = true; // isGravity
-        } else {
-            hamsterInfo[4] = false; // isGravity
-        }
+        hamsterInfo[4] = playerController.heldBall.isPlasma;
 
         // Use the network instantiate method
         PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", playerController.heldBall.transform.position, Quaternion.identity, 0, hamsterInfo);
@@ -117,7 +113,7 @@ public class HitState : PlayerState {
 			playerController.ChangeState(PLAYER_STATE.IDLE);
 		}
 
-        // If the player is holding a hamster, drop it
+        // If the player is somehow still holding a hamster, drop it
         if (playerController.heldBall != null && !playerController.heldBall.wasThrown) {
             if (PhotonNetwork.connectedAndReady) {
                 if (PhotonNetwork.isMasterClient) {
@@ -139,7 +135,7 @@ public class HitState : PlayerState {
 	}
 
 	// returns the PLAYER_STATE that represents this state
-	public override PLAYER_STATE getStateType(){
+	public override PLAYER_STATE GetStateType(){
 		return PLAYER_STATE.HIT;
 	}
 

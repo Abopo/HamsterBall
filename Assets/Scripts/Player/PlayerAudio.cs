@@ -71,7 +71,7 @@ public class PlayerAudio : MonoBehaviour {
     public void PlayThrowAngleClip(float angle) {
         ThrowAngleLoopEvent.getPlaybackState(out playbackState);
         if (playbackState != FMOD.Studio.PLAYBACK_STATE.PLAYING) {
-            Debug.Log("Start throw clip");
+            //Debug.Log("Start throw clip");
             ThrowAngleLoopEvent.start();
         }
 
@@ -81,7 +81,7 @@ public class PlayerAudio : MonoBehaviour {
     public void StopThrowAngleClip() {
         ThrowAngleLoopEvent.getPlaybackState(out playbackState);
         if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING) {
-            Debug.Log("Stop throw clip");
+            //Debug.Log("Stop throw clip");
             ThrowAngleLoopEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
     }

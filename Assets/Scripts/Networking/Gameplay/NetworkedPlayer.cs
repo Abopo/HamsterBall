@@ -112,12 +112,14 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             // Double check for "pressed" and "released" inputs
             ParseInput();
 
+            /*
             if (_serializedInput.jump.isJustPressed) {
                 Debug.Log("Jump button pressed");
             }
             if (_serializedInput.jump.isDown) {
                 Debug.Log("Jump button down");
             }
+            */
 
             // Take all the input built up between updates
             _playerController.TakeInput(_serializedInput);

@@ -17,13 +17,18 @@ public class BubbleFish : MonoBehaviour {
 
     Animator _animator;
 
-	// Use this for initialization
-	void Start () {
+    PhotonView _photonView;
+
+    private void Awake() {
         _animator = GetComponentInChildren<Animator>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+    // Use this for initialization
+    void Start () {
+        _photonView = transform.parent.GetComponent<PhotonView>();
+    }
+
+    // Update is called once per frame
+    void Update () {
 		if(!_blewBubble) {
             // Move up to the blow position
             transform.parent.Translate(0f, _swimSpeed * Time.deltaTime, 0f);
@@ -39,7 +44,7 @@ public class BubbleFish : MonoBehaviour {
 
                 // If we are sufficiently offscreen, destroy self
                 if (transform.parent.position.y < -8f) {
-                    Destroy(gameObject);
+                    Destroy(transform.parent.gameObject);
                 }
             }
         }
@@ -47,8 +52,19 @@ public class BubbleFish : MonoBehaviour {
 
     void BlowBubble() {
         Vector3 newSpawnPos = new Vector3(transform.parent.position.x, transform.parent.position.y+0.3f, transform.parent.position.z);
-        GameObject waterBubble = Instantiate(waterBubbleObj, newSpawnPos, Quaternion.identity);
-        waterBubble.GetComponent<WaterBubble>().team = team;
+
+        if (PhotonNetwork.connectedAndReady) {
+            // Only the master client should spawn things
+            if (PhotonNetwork.isMasterClient) {
+                object[] data = new object[1];
+                data[0] = team;
+                GameObject waterBubble = PhotonNetwork.Instantiate("Prefabs/Networking/WaterBubble_PUN", newSpawnPos, Quaternion.identity, 0, data);
+                waterBubble.GetComponent<WaterBubble>().team = team;
+            }
+        } else {
+            GameObject waterBubble = Instantiate(waterBubbleObj, newSpawnPos, Quaternion.identity);
+            waterBubble.GetComponent<WaterBubble>().team = team;
+        }
 
         _blewBubble = true;
         _animator.SetBool("BlewBubble", true);

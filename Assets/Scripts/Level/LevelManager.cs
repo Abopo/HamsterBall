@@ -103,8 +103,12 @@ public class LevelManager : MonoBehaviour {
                 break;
         }
 
-        Object stageObj = Resources.Load(prefabPath);
-        Instantiate(stageObj);
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            PhotonNetwork.Instantiate(prefabPath, Vector3.zero, Quaternion.identity, 0);
+        } else {
+            Object stageObj = Resources.Load(prefabPath);
+            Instantiate(stageObj);
+        }
     }
 
     public void GameStart() {
@@ -165,6 +169,10 @@ public class LevelManager : MonoBehaviour {
     }
 
     void IncreaseMarginMultiplier() {
+        if(marginMultiplierText == null) {
+            return;
+        }
+
         marginMultiplier += 0.5f;
         if (marginMultiplier > 5) {
             marginMultiplier = 5;

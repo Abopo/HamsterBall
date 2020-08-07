@@ -6,6 +6,7 @@ using UnityEngine;
 
 [System.Serializable]
 public struct ItemInfo {
+    public string itemType;
     public string itemName;
     public int price;
     public string description;
@@ -40,7 +41,6 @@ public class ShopData {
     }
 
     public void LoadShopData() {
-
     }
 
     public void Save(string path) {

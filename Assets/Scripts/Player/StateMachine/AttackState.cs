@@ -45,10 +45,6 @@ public class AttackState : PlayerState {
 
     // Update is called once per frame
     public override void Update() {
-        //if (!playerController.attackObj.IsAttacking) {
-        //    playerController.ChangeState(PLAYER_STATE.IDLE);
-        //}
-
         if (_isAttacking) {
             _attackTimer += Time.deltaTime;
             if (_attackTimer >= _attackTime) {
@@ -96,7 +92,7 @@ public class AttackState : PlayerState {
     }
 
     // returns the PLAYER_STATE that represents this state
-    public override PLAYER_STATE getStateType() {
+    public override PLAYER_STATE GetStateType() {
         return PLAYER_STATE.ATTACK;
     }
 

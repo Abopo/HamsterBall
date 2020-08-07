@@ -5,8 +5,13 @@ using System.Collections;
 public class Spring : MonoBehaviour {
     public float springPower = 10;
 
-	// Use this for initialization
-	void Start () {
+    Animator _animator;
+
+    private void Awake() {
+        _animator = GetComponentInChildren<Animator>();
+    }
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
@@ -25,6 +30,7 @@ public class Spring : MonoBehaviour {
             obj.Spring(springPower);
 
             // Play spring animation
+            _animator.Play("Spring");
 
             // Play bounce sound
         }

@@ -45,6 +45,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
     HamsterScan _hamsterScan;
     PowerUpSpawner _powerUpSpawner;
 
+    NetworkedHamsterSpawner _networked;
+
     public int NextHamsterType {
         get { return _nextHamsterType; }
 
@@ -62,6 +64,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
+
+        if (PhotonNetwork.connectedAndReady) {
+            _networked = GetComponent<NetworkedHamsterSpawner>();
+        }
     }
 
     // Use this for initialization
@@ -213,7 +219,16 @@ public class HamsterSpawner : Photon.PunBehaviour {
         if (_releaseTimer >= _spawnTime) {
             // If we can release a hamster and have one to release
             if (releasedHamsterCount < maxReleasedHamsterCount && _hamsterLine.Count > 0 && _hamsterLine[0].inLine == true) {
-                ReleaseNextHamster();
+                // If we are online and connected
+                if (_networked != null) {
+                    // And we are the master client
+                    if (PhotonNetwork.isMasterClient) {
+                        // Release a hamster via the network
+                        _networked.ReleaseHamster();
+                    }
+                } else {
+                    ReleaseNextHamster();
+                }
                 _releaseTimer = 0;
             }
         }
@@ -433,14 +448,14 @@ public class HamsterSpawner : Photon.PunBehaviour {
             _releaseTimer = 0f;
         } else {
             foreach (Hamster ham in _hamsterLine) {
-                if (ham.inLine) {
+                if (ham != null && ham.inLine) {
                     ham.SetState(0);
                 }
             }
         }
     }
 
-    void ReleaseNextHamster() {
+    public void ReleaseNextHamster() {
         if (_hamsterLine.Count > 0) {
             // Set hamster to run up
             _hamsterLine[0].SetState(1);

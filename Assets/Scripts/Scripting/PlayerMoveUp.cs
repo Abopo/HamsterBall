@@ -60,7 +60,7 @@ public class PlayerMoveUp : ScriptingController {
     void MoveRight() {
         ResetInput();
         _playerInput.right.isDown = true;
-        nextTime = 0.25f;
+        nextTime = 0.2f;
         nextAction = StartJump2;
     }
 
@@ -79,7 +79,7 @@ public class PlayerMoveUp : ScriptingController {
 
     void Wait2() {
         ResetInput();
-        nextTime = 1.5f;
+        nextTime = 1.75f;
         nextAction = CatchHamster;
     }
 
@@ -120,7 +120,7 @@ public class PlayerMoveUp : ScriptingController {
 
     void MoveLeft2() {
         _playerInput.left.isDown = true;
-        nextTime = 0.1f;
+        nextTime = 0.08f;
         nextAction = StartJump3;
     }
 
@@ -139,7 +139,7 @@ public class PlayerMoveUp : ScriptingController {
 
     void Wait5() {
         ResetInput();
-        nextTime = 0.6f;
+        nextTime = 0.65f;
         nextAction = CatchHamster2;
     }
 
@@ -151,13 +151,13 @@ public class PlayerMoveUp : ScriptingController {
 
     void Wait6() {
         ResetInput();
-        nextTime = 1f;
+        nextTime = 1.5f;
         nextAction = FaceRight;
     }
 
     void FaceRight() {
         _playerInput.right.isDown = true;
-        nextTime = 0.15f;
+        nextTime = 0.1f;
         nextAction = StartAim2;
     }
 

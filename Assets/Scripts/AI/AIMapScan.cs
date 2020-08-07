@@ -97,7 +97,7 @@ public class AIMapScan : MonoBehaviour {
         _pos = transform.position;
         // Wall distances
         CheckWallDistances();
-        if (_playerController.CurState != PLAYER_STATE.JUMP && _playerController.CurState != PLAYER_STATE.FALL) {
+        if (_playerController.CurState != PLAYER_STATE.JUMP/* && _playerController.CurState != PLAYER_STATE.FALL*/) {
             CheckJumpDistancesNew();
         }
         CheckDropDistances();
@@ -146,15 +146,15 @@ public class AIMapScan : MonoBehaviour {
         _leftJumpDistance = 100f;
 
         // Check if there's a ceiling above
-        rayOffsetX = 0.5f;
+        rayOffsetX = 0.05f;
         _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
         _jumpCheckHit = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1f, collisionMask);
-        rayOffsetX = -0.5f;
+        rayOffsetX = -0.1f;
         _jumpCheckRay = new Ray2D(new Vector2(_pos.x + rayOffsetX, _pos.y), Vector2.up);
         _jumpCheckHit2 = Physics2D.Raycast(_jumpCheckRay.origin, _jumpCheckRay.direction, 1f, collisionMask);
         // If there is a ceiling above
-        if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough") ||
-            _jumpCheckHit2 && _jumpCheckHit2.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough")) {
+        if (_jumpCheckHit && _jumpCheckHit.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough") /*||
+            _jumpCheckHit2 && _jumpCheckHit2.transform.gameObject.layer != LayerMask.NameToLayer("Passthrough")*/) {
             _isUnderCeiling = true;
         } else {
             _isUnderCeiling = false;

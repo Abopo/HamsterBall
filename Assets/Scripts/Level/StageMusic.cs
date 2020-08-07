@@ -33,7 +33,7 @@ public class StageMusic : MonoBehaviour {
         // Stop menu music
         SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
-        return; 
+        //return; 
 
         switch (_gameManager.selectedBoard) {
             case BOARDS.FOREST:

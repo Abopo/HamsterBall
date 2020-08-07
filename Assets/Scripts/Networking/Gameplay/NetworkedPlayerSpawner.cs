@@ -33,9 +33,40 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
     }
 
     void GetSpawnLocations() {
-        SpawnPoint[] spawnPoints = GetComponentsInChildren<SpawnPoint>();
-        for (int i = 0; i < spawnPoints.Length; ++i) {
-            spawns[i] = spawnPoints[i].transform;
+        SpawnPoint[] spawnPoints = FindObjectsOfType<SpawnPoint>();
+
+        // Get the spawn points in the correct order
+        int team = 0, order = 0, i = 0, j = 0, loopCount = 0;
+        while (j < 4 && loopCount < 24) {
+            if (spawnPoints[i].team == team && spawnPoints[i].order == order) {
+                spawns[j] = spawnPoints[i].transform;
+                ++j;
+
+                if (order == 1) {
+                    order = 0;
+                    team++;
+                } else {
+                    order++;
+                }
+            }
+
+            ++i;
+            if (i >= spawnPoints.Length) {
+                i = 0;
+            }
+
+            loopCount++;
+        }
+
+        // If we looped too many times
+        if (loopCount == 24) {
+            // Something was initialized wrong
+            Debug.Log("Spawn points not initialized properly, assigning randomly");
+
+            // Just assign best we can
+            for (i = 0; i < 4; ++i) {
+                spawns[i] = spawnPoints[i].transform;
+            }
         }
     }
 

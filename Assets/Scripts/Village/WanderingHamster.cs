@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // These hamsters wander around the village
-public class WanderingHamster : Entity {
+public class WanderingHamster : MonoBehaviour {
     public HamsterRoom targetRoom; // the room this hamster is trying to get to
 
     float _moveSpeed = 2.5f;
     bool _inRoom;
     int _type;
 
+    Animator _animator;
+
     HamsterRoom[] _allRooms;
 
-    protected override void Awake() {
-        base.Awake();
-
+    void Awake() {
+        _animator = GetComponentInChildren<Animator>();
         _allRooms = FindObjectsOfType<HamsterRoom>();
     }
     // Start is called before the first frame update
-    protected override void Start() {
-		base.Start ();
+    void Start() {
 
         _inRoom = false;
 
@@ -49,8 +49,7 @@ public class WanderingHamster : Entity {
     }
 
     // Update is called once per frame
-    protected override void Update() {
-		base.Update ();
+    void Update() {
 
         if (!_inRoom) {
             // Run forward
@@ -93,5 +92,32 @@ public class WanderingHamster : Entity {
 
         // Set the type again cuz it gets reset somehow?
         _animator.SetInteger("Type", _type);
+    }
+
+    // Directional Functions
+    public void FaceUp() {
+        transform.eulerAngles = new Vector3(0f, 0f, Mathf.Sign(transform.localScale.x) * 90f);
+    }
+    public void FaceDown() {
+        transform.eulerAngles = new Vector3(0f, 0f, Mathf.Sign(transform.localScale.x) * -90f);
+    }
+    public void FaceLeft() {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        if (transform.localScale.x > 0) {
+            Flip();
+        }
+    }
+    public void FaceRight() {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        if (transform.localScale.x < 0) {
+            Flip();
+        }
+    }
+
+    public void Flip() {
+        // Multiply the player's x local scale by -1.
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 }

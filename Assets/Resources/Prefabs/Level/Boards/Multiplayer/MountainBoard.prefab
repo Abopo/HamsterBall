@@ -79,6 +79,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000012005552576}
   - component: {fileID: 7254097021757208259}
+  - component: {fileID: 7189022732916537312}
   m_Layer: 0
   m_Name: MountainBoard
   m_TagString: Untagged
@@ -130,6 +131,33 @@ MonoBehaviour:
   leftDivider: {fileID: 1620266201979774}
   rightDivider: {fileID: 1000012256015538}
   bigDivider: {fileID: 2897397392336710283}
+--- !u!114 &7189022732916537312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011942182574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1000012019944598
 GameObject:
   m_ObjectHideFlags: 0
@@ -6365,31 +6393,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPoints
       objectReference: {fileID: 0}
-    - target: {fileID: 1614800210996486841, guid: f20dbfac237f8f9408a89bae5a9bf273,
-        type: 3}
-      propertyPath: order
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1614622187689460883, guid: f20dbfac237f8f9408a89bae5a9bf273,
-        type: 3}
-      propertyPath: order
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1614622187689460883, guid: f20dbfac237f8f9408a89bae5a9bf273,
-        type: 3}
-      propertyPath: team
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613841549852559429, guid: f20dbfac237f8f9408a89bae5a9bf273,
-        type: 3}
-      propertyPath: team
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613841549852559429, guid: f20dbfac237f8f9408a89bae5a9bf273,
-        type: 3}
-      propertyPath: order
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1729168156603473029, guid: f20dbfac237f8f9408a89bae5a9bf273,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6444,6 +6447,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613841549852559429, guid: f20dbfac237f8f9408a89bae5a9bf273,
+        type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613841549852559429, guid: f20dbfac237f8f9408a89bae5a9bf273,
+        type: 3}
+      propertyPath: order
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614622187689460883, guid: f20dbfac237f8f9408a89bae5a9bf273,
+        type: 3}
+      propertyPath: order
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614622187689460883, guid: f20dbfac237f8f9408a89bae5a9bf273,
+        type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614800210996486841, guid: f20dbfac237f8f9408a89bae5a9bf273,
+        type: 3}
+      propertyPath: order
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f20dbfac237f8f9408a89bae5a9bf273, type: 3}
