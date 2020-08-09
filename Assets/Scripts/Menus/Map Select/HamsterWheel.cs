@@ -29,7 +29,9 @@ public class HamsterWheel : MonoBehaviour {
 
     GameManager _gameManager;
 
+    // Networking
     PhotonView _photonView;
+    NetworkedMapSelect _netMapSelect;
 
     public int Index {
         get { return _index; }
@@ -42,6 +44,7 @@ public class HamsterWheel : MonoBehaviour {
         hamster.SetInteger("State", 1);
 
         _photonView = GetComponent<PhotonView>();
+        _netMapSelect = GetComponent<NetworkedMapSelect>();
     }
 
     // Use this for initialization
@@ -63,7 +66,6 @@ public class HamsterWheel : MonoBehaviour {
         _possibleRotations[6] = 90;
         _possibleRotations[7] = 45;
 
-
         _stages[0] = BOARDS.FOREST;
         _stages[1] = BOARDS.MOUNTAIN;
         _stages[2] = BOARDS.BEACH;
@@ -80,7 +82,9 @@ public class HamsterWheel : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        CheckInput();
+        if(!_gameManager.isOnline || (_netMapSelect != null && _netMapSelect.allPlayersLoaded)) {
+            CheckInput();
+        }
 
         if (Rotating) {
             transform.Rotate(0f, 0f, _curRotSpeed * Time.deltaTime);

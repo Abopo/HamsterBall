@@ -228,7 +228,7 @@ public class Bubble : MonoBehaviour {
                     }
                 }
                 // If we somehow don't have ANY adj bubbles
-                if (_adjBubbleCheck == false) {
+                if (_adjBubbleCheck == false && _homeBubbleManager != null) {
                     _homeBubbleManager.AssignAdjBubbles(this, node);
                 }
             }

@@ -20,6 +20,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     bool swingPressed = false;
     bool attackPressed = false;
 
+    Vector3 _arrowAngle;
+
     PhotonTransformView _photonTransformView;
 
     private void Awake() {
@@ -59,8 +61,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
-            Vector3 pos = transform.localPosition;
-            Quaternion rot = transform.localRotation;
+            //Vector3 pos = transform.localPosition;
+            //Quaternion rot = transform.localRotation;
             int state = (int)_playerController.CurState;
 
             //stream.Serialize(ref pos);
@@ -86,6 +88,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             //stream.Serialize(ref _serializedInput.attack.isJustReleased);
 
             ResetInput();
+
+            if(_playerController.CurState == PLAYER_STATE.THROW) {
+                _arrowAngle = ((ThrowState)_playerController.currentState).aimingArrow.localEulerAngles;
+                stream.Serialize(ref _arrowAngle);
+            }
         } else {
             // Receive latest state information
 
@@ -112,19 +119,14 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             // Double check for "pressed" and "released" inputs
             ParseInput();
 
-            /*
-            if (_serializedInput.jump.isJustPressed) {
-                Debug.Log("Jump button pressed");
-            }
-            if (_serializedInput.jump.isDown) {
-                Debug.Log("Jump button down");
-            }
-            */
-
             // Take all the input built up between updates
             _playerController.TakeInput(_serializedInput);
 
             ResetInput();
+
+            if (_playerController.CurState == PLAYER_STATE.THROW) {
+                stream.Serialize(ref _arrowAngle);
+            }
         }
     }
 
@@ -179,6 +181,12 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
             if (photonView.isMine) {
                 _photonTransformView.SetSynchronizedValues(_playerController.velocity, 0f);
+            }
+
+            // If we are aiming
+            if(!photonView.isMine && _playerController.CurState == PLAYER_STATE.THROW) {
+                // Update the arrow to be in the right direction
+                ((ThrowState)_playerController.currentState).aimingArrow.localEulerAngles = _arrowAngle;
             }
         }
     }

@@ -9,7 +9,7 @@ public class HamsterDialogue : MonoBehaviour {
 
     bool _isPlayerHere;
 
-    GameObject _dialogueBox;
+    GameObject _dialogueCanvas;
     TextWriter _textWriter;
 
     GameObject _interactIcon;
@@ -18,7 +18,7 @@ public class HamsterDialogue : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _dialogueBox = transform.GetChild(0).gameObject;
+        _dialogueCanvas = transform.GetChild(0).gameObject;
         _textWriter = GetComponent<TextWriter>();
 
         _interactIcon = transform.Find("Interact Icon").gameObject;
@@ -38,7 +38,7 @@ public class HamsterDialogue : MonoBehaviour {
     void Update () {
         if (_isPlayerHere && !_gameManager.isPaused) {
             if (_playerInput.GetButtonDown("MoveUp")) {
-                if(!_dialogueBox.activeSelf) {
+                if(!_dialogueCanvas.activeSelf) {
                     DisplayDialogue();
                 } else {
                     HideDialogue();
@@ -49,14 +49,14 @@ public class HamsterDialogue : MonoBehaviour {
 
     void DisplayDialogue() {
         if (dialogue != "") {
-            _dialogueBox.SetActive(true);
+            _dialogueCanvas.SetActive(true);
             _textWriter.StartWriting(dialogue);
             _interactIcon.SetActive(false);
         }
     }
 
     void HideDialogue() {
-        _dialogueBox.SetActive(false);
+        _dialogueCanvas.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

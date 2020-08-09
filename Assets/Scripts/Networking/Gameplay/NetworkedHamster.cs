@@ -111,11 +111,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
 
             corFacing = (int)stream.ReceiveNext();
 
-            // synch the state
             _hamsterState = (int)stream.ReceiveNext();
-            if(_hamsterState != _hamster.CurState) {
-                _hamster.SetState(_hamsterState);
-            }
         }
     }
 
@@ -142,6 +138,11 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             timer += Time.deltaTime;
             if (timer >= time) {
                 CorrectFacing(corFacing);
+
+                // synch the state
+                if (_hamsterState != _hamster.CurState) {
+                    _hamster.SetState(_hamsterState);
+                }
             }
         } else {
             timer = 0f;

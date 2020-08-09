@@ -245,6 +245,10 @@ public class BubbleManager : MonoBehaviour {
 
         players = FindObjectsOfType<PlayerController>();
 
+        GetDivider();
+    }
+
+    void GetDivider() {
         // Get divider
         DividerFlash[] dividers = FindObjectsOfType<DividerFlash>();
         foreach (DividerFlash df in dividers) {
@@ -969,9 +973,6 @@ public class BubbleManager : MonoBehaviour {
         UpdateAllAdjBubbles();
 
         _justAddedBubble = true;
-
-        // Play sound
-        PlayAddLineClip();
     }
 
     protected void SeedNextLineBubbles() {
@@ -1036,6 +1037,8 @@ public class BubbleManager : MonoBehaviour {
             }
         }
 
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.NewLine);
+
         // Remove the deleted nodes from the nodeList
         nodeList.RemoveRange(tempBottomRowStart, _bottomLineLength);
 
@@ -1056,9 +1059,6 @@ public class BubbleManager : MonoBehaviour {
 
         // TODO: this might be unnecessary
         boardChangedEvent.Invoke();
-
-        // Play sound
-        PlayAddLineClip();
     }
 
     // TODO: move this to the level manager?
@@ -1237,6 +1237,13 @@ public class BubbleManager : MonoBehaviour {
     }
 
     void CheckSecondToLastRow() {
+        // Make sure we've found the divider
+        if (_divider == null) {
+            Debug.Log("Divider was null, finding...");
+            GetDivider();
+            return;
+        }
+
         int firstNode = nodeList.Count - (_baseLineLength * 3 - 2) + _baseLineLength - 1;
         foreach (Bubble b in _bubbles) {
             if (b != null && b.node >= firstNode) {
@@ -1353,11 +1360,6 @@ public class BubbleManager : MonoBehaviour {
         }
 
         return false;
-    }
-
-    protected void PlayAddLineClip() {
-        _audioSource.clip = _addLineClip;
-        _audioSource.Play();
     }
 
     // Returns the lowest line (out of 11) that has a bubble in it

@@ -116,7 +116,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
         _nextHamsterType = -1;
         SetupSpecialTypes();
-        _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
+        _hamsterScan = _levelManager.GetComponent<HamsterScan>();
         if (team == 0) {
             _hamsterInfo = _hamsterScan.leftHamsterInfo;
         } else if (team == 1) {
@@ -457,6 +457,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     public void ReleaseNextHamster() {
         if (_hamsterLine.Count > 0) {
+            Debug.Log("Release hamster: " + _hamsterLine[0].type.ToString());
+
             // Set hamster to run up
             _hamsterLine[0].SetState(1);
             _hamsterLine[0].FaceUp();

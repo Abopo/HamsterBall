@@ -190,14 +190,5 @@ public class PlayerManager : MonoBehaviour {
 			SoundManager.mainAudio.MenuGeneralEvent.setPaused(true);
 		}
         */
-
-        // Debugging
-        if(scene.name == "NetworkedMapSelectWheel") {
-            Debug.Log("Current Players:");
-
-            for (int i = 0; i < NumPlayers; ++i) {
-                Debug.Log("Player " + _players[i].playerNum + " on Team " + _players[i].team);
-            }
-        }
     }
 }

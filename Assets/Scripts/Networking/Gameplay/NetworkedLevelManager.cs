@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using Photon;
 
 public class NetworkedLevelManager : Photon.MonoBehaviour {
@@ -13,11 +14,15 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
 
     PlayerManager _playerManager;
     GameCountdown _gameCountdown;
+    LevelManager _levelManager;
+    NetworkedPlayerSpawner _netPlayerSpawner;
 
     private void Awake() {
         _photonView = GetComponent<PhotonView>();
-        _playerManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerManager>();
+        _playerManager = FindObjectOfType<GameManager>().GetComponent<PlayerManager>();
         _gameCountdown = FindObjectOfType<GameCountdown>();
+        _levelManager = GetComponent<LevelManager>();
+        _netPlayerSpawner = GetComponent<NetworkedPlayerSpawner>();
     }
     // Use this for initialization
     void Start() {
@@ -43,8 +48,8 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
         // Wait until all players have loaded into the scene
         if (!_gameStarted && PhotonNetwork.isMasterClient) {
             if(_playersReady >= _playerManager.NumPlayers) {
-                PhotonNetwork.RPC(_photonView, "StartGameCountdown", PhotonTargets.All, false);
                 _gameStarted = true;
+                InitializeGame();
             }
         }
     }
@@ -63,12 +68,18 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
         }
     }
 
+    void InitializeGame() {
+        _levelManager.LoadStagePrefab();
+        _netPlayerSpawner.SpawnNetworkPlayers();
+        PhotonNetwork.RPC(_photonView, "StartGameCountdown", PhotonTargets.AllViaServer, false);
+    }
+
     // Should only be used by master client
     [PunRPC]
     void PlayerReady() {
         _playersReady++;
     }
-
+    
     // Should only be used by master client
     [PunRPC]
     void StartGameCountdown() {

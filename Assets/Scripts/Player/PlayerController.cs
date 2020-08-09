@@ -549,7 +549,7 @@ public class PlayerController : Entity {
         _curState = currentState.GetStateType();
 
         if(_photonView != null && _photonView.owner == PhotonNetwork.player) {
-            _photonView.RPC("ChangePlayerState", PhotonTargets.All, (int)_curState);
+            _photonView.RPC("ChangePlayerState", PhotonTargets.Others, (int)_curState);
         }
         //Debug.Log("State Changed to: " + currentState.getStateType().ToString());
         //}

@@ -24,12 +24,17 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
         // Get sprites
         PlayerSpawner.LoadPlayerIcons(playerIcons);
 
-        GetSpawnLocations();
+        //GetSpawnLocations();
 
         // Only spawn characters on the master client
-        if (PhotonNetwork.isMasterClient) {
-            SpawnPlayers();
-        }
+        //if (PhotonNetwork.isMasterClient) {
+            //SpawnPlayers();
+        //}
+    }
+
+    public void SpawnNetworkPlayers() {
+        GetSpawnLocations();
+        SpawnPlayers();
     }
 
     void GetSpawnLocations() {
@@ -70,7 +75,7 @@ public class NetworkedPlayerSpawner : Photon.MonoBehaviour {
         }
     }
 
-    void SpawnPlayers() {
+    public void SpawnPlayers() {
         PlayerInfo tempPlayerInfo;
 
         for (int i = 0; i < _playerManager.NumPlayers; ++i) {

@@ -46,7 +46,11 @@ public class LevelManager : MonoBehaviour {
         pauseMenu = FindObjectOfType<PauseMenu>();
         _gameManager = FindObjectOfType<GameManager>();
         board = _gameManager.selectedBoard;
-        LoadStagePrefab();
+
+        // If we're not online
+        if (!PhotonNetwork.connectedAndReady) {
+            LoadStagePrefab();
+        }
 
         SceneManager.sceneUnloaded += OnSceneExit;
     }
@@ -71,7 +75,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    void LoadStagePrefab() {
+    public void LoadStagePrefab() {
         string prefabPath = "Prefabs/Level/Boards/Multiplayer/";
 
 		Debug.Log("Stop all events on Scene Switch");
@@ -103,9 +107,13 @@ public class LevelManager : MonoBehaviour {
                 break;
         }
 
-        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
-            PhotonNetwork.Instantiate(prefabPath, Vector3.zero, Quaternion.identity, 0);
+        if (PhotonNetwork.connectedAndReady) {
+            if (PhotonNetwork.isMasterClient) {
+                Debug.Log("Photon instantiate level");
+                PhotonNetwork.Instantiate(prefabPath, Vector3.zero, Quaternion.identity, 0);
+            }
         } else {
+            Debug.Log("Instantiate level");
             Object stageObj = Resources.Load(prefabPath);
             Instantiate(stageObj);
         }
@@ -153,7 +161,7 @@ public class LevelManager : MonoBehaviour {
         }
 
         // Testing stuff
-        if(Input.GetKeyDown(KeyCode.M)) {
+        if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.M)) {
             bool paused;
             SoundManager.mainAudio.MusicMainEvent.getPaused(out paused);
             if (paused) {
@@ -162,7 +170,7 @@ public class LevelManager : MonoBehaviour {
                 SoundManager.mainAudio.MusicMainEvent.setPaused(true);
             }
         }
-        if(Input.GetKeyDown(KeyCode.K)) {
+        if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.K)) {
             GameEnd();
             ActivateResultsScreen(0, 1);
         }
