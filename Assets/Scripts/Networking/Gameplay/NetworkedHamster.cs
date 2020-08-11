@@ -8,15 +8,17 @@ public class NetworkedHamster : Photon.MonoBehaviour {
     Hamster _hamster;
     PhotonView _photonView;
 
+    Vector3 _hamsterPos;
     int _nextHamsterType = -1;
     Quaternion _correctRot;
     int _hamsterType;
     int _hamsterState;
+    bool _hamsterInLine;
 
     public int corFacing;
 
     float timer;
-    float time = 0.2f;
+    float time = 1f;
 
     private void Awake() {
         _hamster = GetComponent<Hamster>();
@@ -95,11 +97,14 @@ public class NetworkedHamster : Photon.MonoBehaviour {
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
+            stream.SendNext(_hamster.transform.position);
             stream.SendNext(_hamster.type);
             stream.SendNext(_hamster.curFacing);
             stream.SendNext(_hamster.CurState);
             //stream.SendNext(_hamster.exitedPipe);
         } else {
+            _hamsterPos = (Vector3)stream.ReceiveNext();
+
             _hamsterType = (int)stream.ReceiveNext();
             if(_hamsterType != (int)_hamster.type) {
                 if(_hamster.isPlasma) {
@@ -134,13 +139,25 @@ public class NetworkedHamster : Photon.MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (_hamster.curFacing != corFacing && !PhotonNetwork.isMasterClient) {
+        if (!_hamster.inLine && !PhotonNetwork.isMasterClient) {
             timer += Time.deltaTime;
             if (timer >= time) {
-                CorrectFacing(corFacing);
+                // If we are too far away from our master hamster
+                if(Vector2.Distance(_hamsterPos, _hamster.transform.position) > 1) {
+                    // Teleport to the position
+                    // or maybe lerp there?
+                    Debug.Log("Hamster too far, teleporting.");
+                    _hamster.transform.position = _hamsterPos;
+                }
+
+                if (_hamster.curFacing != corFacing) {
+                    //Debug.Log("Correcting hamster facing from " + _hamster.curFacing + " to " + corFacing + ".");
+                    CorrectFacing(corFacing);
+                }
 
                 // synch the state
                 if (_hamsterState != _hamster.CurState) {
+                    //Debug.Log("Correcting hamster state from " + _hamster.CurState + " to " + _hamsterState + ".");
                     _hamster.SetState(_hamsterState);
                 }
             }

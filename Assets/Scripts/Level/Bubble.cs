@@ -137,7 +137,6 @@ public class Bubble : MonoBehaviour {
         _bankedPos = Vector3.zero;
 
         SetType((int)type);
-
 	}
 
     public void SetType(int inType) {
@@ -166,9 +165,8 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
-        if(_destroy && !_audioSource.isPlaying) {
-            Destroy(gameObject);
+        if(_destroy) {
+            DestroySelf();
         }
 
         if(_popping) {
@@ -351,33 +349,6 @@ public class Bubble : MonoBehaviour {
 		}
 	}
     */
-
-    // This overload is used to check whether or not this bubble can be dropped by popping the excludeBubble
-    public bool CheckForAnchor(List<Bubble> bubbles, List<Bubble> excludedBubbles) {
-        for (int i = 0; i < 6; ++i) {
-            if (adjBubbles[i] != null && !adjBubbles[i].popped && !excludedBubbles.Contains(adjBubbles[i])) {
-                if (!adjBubbles[i].checkedForAnchor && !adjBubbles[i].foundAnchor) {
-                    adjBubbles[i].checkedForAnchor = true;
-                    bubbles.Add(adjBubbles[i]);
-                    if (adjBubbles[i].IsAnchorPoint()) {
-                        foundAnchor = true;
-                        foreach (Bubble b in bubbles) {
-                            b.foundAnchor = true;
-                        }
-                    } else {
-                        adjBubbles[i].CheckForAnchor(bubbles, excludedBubbles);
-                    }
-                } else if (adjBubbles[i].foundAnchor) {
-                    foundAnchor = true;
-                    foreach (Bubble b in bubbles) {
-                        b.foundAnchor = true;
-                    }
-                }
-            }
-        }
-
-        return foundAnchor;
-    }
 
     public void ClearAdjBubbles() {
 		for(int i = 0; i < 6; ++i) {
@@ -1104,6 +1075,33 @@ public class Bubble : MonoBehaviour {
         return dropCount;
     }
 
+    // This overload is used to check whether or not this bubble can be dropped by popping the excludeBubble
+    public bool CheckForAnchor(List<Bubble> bubbles, List<Bubble> excludedBubbles) {
+        for (int i = 0; i < 6; ++i) {
+            if (adjBubbles[i] != null && !adjBubbles[i].popped && !excludedBubbles.Contains(adjBubbles[i])) {
+                if (!adjBubbles[i].checkedForAnchor && !adjBubbles[i].foundAnchor) {
+                    adjBubbles[i].checkedForAnchor = true;
+                    bubbles.Add(adjBubbles[i]);
+                    if (adjBubbles[i].IsAnchorPoint()) {
+                        foundAnchor = true;
+                        foreach (Bubble b in bubbles) {
+                            b.foundAnchor = true;
+                        }
+                    } else {
+                        adjBubbles[i].CheckForAnchor(bubbles, excludedBubbles);
+                    }
+                } else if (adjBubbles[i].foundAnchor) {
+                    foundAnchor = true;
+                    foreach (Bubble b in bubbles) {
+                        b.foundAnchor = true;
+                    }
+                }
+            }
+        }
+
+        return foundAnchor;
+    }
+
     // Petrification sequence happens when a player loses a round, bubbles are petrified starting from the bubble(s) that lost the round
     public IEnumerator Petrify() {
         petrifying = true;
@@ -1192,5 +1190,15 @@ public class Bubble : MonoBehaviour {
 
     public void AddForce(Vector2 force) {
         _velocity += force;
+    }
+
+    void DestroySelf() {
+        if(PhotonNetwork.connectedAndReady) {
+            if (PhotonNetwork.isMasterClient) {
+                PhotonNetwork.Destroy(gameObject);
+            }
+        } else {
+            Destroy(gameObject);
+        }
     }
 }

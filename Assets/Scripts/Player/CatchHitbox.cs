@@ -53,6 +53,7 @@ public class CatchHitbox : MonoBehaviour {
                 if (_playerController.PhotonView.owner == PhotonNetwork.player && _playerController.GetComponent<NetworkedPlayer>().tryingToCatchHamster == null) {
                     // Catch the hamster
                     CatchHamster(_closestHamster);
+
                     if (PhotonNetwork.isMasterClient) {
                         // Tell other clients that a hamster was caught
                         _playerController.PhotonView.RPC("HamsterCaught", PhotonTargets.Others, _closestHamster.hamsterNum);
@@ -113,16 +114,10 @@ public class CatchHitbox : MonoBehaviour {
             }
         }
 
-        // If we are networked, send RPC
-        //if(PhotonNetwork.connectedAndReady && _playerController.GetComponent<PhotonView>().owner == PhotonNetwork.player) {
-        //    _playerController.GetComponent<PhotonView>().RPC("CatchHamster", PhotonTargets.Others, hamster.hamsterNum);
-        //}
-
         // The hamster was caught.
         hamster.Caught();
 
         _playerController.aimCooldownTimer = 0.0f;
-
 
         // Tell animator we've got a bubble
         _playerController.Animator.SetBool("HoldingBall", true);

@@ -31,4 +31,15 @@ public class HamsterLineStop : MonoBehaviour {
             _hamsterSpawner.HamsterLineStop();
         }
     }
+
+    private void OnTriggerStay2D(Collider2D collision) {
+        if(collision.tag == "Hamster") {
+            Hamster ham = collision.GetComponent<Hamster>();
+            // If for some reason we have a hamster in line that's touching but not in idle
+            if (ham.CurState != 0 && ham.inLine) {
+                // Stop the line
+                _hamsterSpawner.HamsterLineStop();
+            }
+        }
+    }
 }

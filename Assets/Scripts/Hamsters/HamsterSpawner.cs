@@ -213,22 +213,22 @@ public class HamsterSpawner : Photon.PunBehaviour {
                 _spawnTimer = 0;
             }
         } else {
-            UpdateHamstersInLine();
+            //UpdateHamstersInLine();
         }
         _releaseTimer += Time.deltaTime;
         if (_releaseTimer >= _spawnTime) {
             // If we can release a hamster and have one to release
             if (releasedHamsterCount < maxReleasedHamsterCount && _hamsterLine.Count > 0 && _hamsterLine[0].inLine == true) {
                 // If we are online and connected
-                if (_networked != null) {
+                //if (_networked != null) {
                     // And we are the master client
-                    if (PhotonNetwork.isMasterClient) {
+                //    if (PhotonNetwork.isMasterClient) {
                         // Release a hamster via the network
-                        _networked.ReleaseHamster();
-                    }
-                } else {
+                //        _networked.ReleaseHamster();
+                //    }
+                //} else {
                     ReleaseNextHamster();
-                }
+                //}
                 _releaseTimer = 0;
             }
         }
@@ -453,11 +453,24 @@ public class HamsterSpawner : Photon.PunBehaviour {
                 }
             }
         }
+
+        UpdateHamstersInLine();
     }
 
     public void ReleaseNextHamster() {
         if (_hamsterLine.Count > 0) {
-            Debug.Log("Release hamster: " + _hamsterLine[0].type.ToString());
+            //Debug.Log("Release hamster: " + _hamsterLine[0].type.ToString());
+
+            // Make sure the first hamster is valid
+            if (_hamsterLine[0] == null) {
+                // Remove the released hamster from the list
+                _hamsterLine.RemoveAt(0);
+
+                // try again
+                ReleaseNextHamster();
+
+                return;
+            }
 
             // Set hamster to run up
             _hamsterLine[0].SetState(1);
@@ -524,7 +537,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
     }
 
-    void UpdateHamstersInLine() {
+    public void UpdateHamstersInLine() {
         if (twoTubes) {
             for (int i = 1; i < _hamsterLine.Count; ++i) {
                 if (_hamsterLine[i].inLine) {

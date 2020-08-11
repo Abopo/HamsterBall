@@ -24,7 +24,10 @@ public class BubbleManager : MonoBehaviour {
     // alternating between 12 and 11 columns
     // should specify top and bottom rows
     public List<Node> nodeList = new List<Node>();
+
     protected int _baseLineLength = 12; // The longest a line will be
+    public int BaseLineLength { get => _baseLineLength; }
+
     protected int _bottomLineLength = 12;
     protected int _topLineLength = 12;
     public int TopLineLength {
@@ -35,7 +38,10 @@ public class BubbleManager : MonoBehaviour {
 
     protected bool _justAddedBubble = false;
     protected bool _justRemovedBubble = false;
+
     protected Transform _bubblesParent;
+    public Transform BubblesParent { get => _bubblesParent; }
+
     protected Transform _nodesParent;
     protected float _nodeHeight = 0.73f; // The height of a single node (i.e. how far down lines move)
     protected int _bottomRowStart {
@@ -47,22 +53,26 @@ public class BubbleManager : MonoBehaviour {
     public static BubbleInfo[] startingBubbleInfo = new BubbleInfo[125];
 
     protected static List<int> _nextLineBubbles = new List<int>();
-    protected int _nextLineIndex = 0; // counts up as new lines are added
+    public List<int> NextLineBubbles { get => _nextLineBubbles; }
+    public int nextLineIndex = 0; // counts up as new lines are added
+
     protected bool _setupDone;
 
     protected System.Random _random;
     protected System.Random _bubbleSeed;
     protected System.Random _specialSeed;
-    int _linesSinceSpecial = 3; // How many lines have been added since the last special spawn
+    public int linesSinceSpecial = 3; // How many lines have been added since the last special spawn
 
     protected int _comboCount = -1;
     //int _scoreTotal = 0;
     public int matchCount = 0;
     public bool wonGame;
     protected bool _gameOver = false;
+    public bool GameOver { get => _gameOver; }
+
     int _roundResult;
     protected bool _gameEndingSequence = false;
-
+    public bool GameEndingSequence { get => _gameEndingSequence; }
 
     GameObject _bubbleObj;
     GameObject _nodeObj;
@@ -81,10 +91,6 @@ public class BubbleManager : MonoBehaviour {
     protected BubbleEffects _bubbleEffects;
     public BubbleEffects BubbleEffects {
         get { return _bubbleEffects; }
-    }
-
-    public int NextLineIndex {
-        get { return _nextLineIndex; }
     }
 
     public int ComboCount {
@@ -112,6 +118,7 @@ public class BubbleManager : MonoBehaviour {
         get { return lowestLine; }
     }
 
+
     int linesToAdd = 0;
 
     Vector3 _initialPos;
@@ -135,9 +142,12 @@ public class BubbleManager : MonoBehaviour {
     AudioSource _audioSource;
     AudioClip _addLineClip;
 
+    NetworkedBubbleManager _netBubMan;
+
     protected virtual void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
+        _netBubMan = GetComponent<NetworkedBubbleManager>();
 
         _setupDone = false;
 
@@ -209,11 +219,16 @@ public class BubbleManager : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady) {
             // If we are the master client
             if (PhotonNetwork.isMasterClient) {
+                Debug.Log("Spawning starting network bubbles");
+                _netBubMan.SpawnStartingNetworkBubbles(startingBubbleCount);
                 // Go ahead and make the starting bubbles
-                SpawnStartingBubblesInfo(startingBubbleCount);
+                //SpawnStartingBubblesInfo(startingBubbleCount);
                 _justAddedBubble = true;
             }
+
+            _setupDone = true;
         } else {
+            Debug.Log("Spawning starting bubbles");
             SpawnStartingBubblesInfo(startingBubbleCount);
             _justAddedBubble = true;
         }
@@ -345,7 +360,7 @@ public class BubbleManager : MonoBehaviour {
                     if (rand == 0) {
                         startingBubbleInfo[i].type = HAMSTER_TYPES.SPECIAL;
                         specialSpawned = true;
-                        _linesSinceSpecial = 0;
+                        linesSinceSpecial = 0;
                         // Actually initialize the bubble with the correct type
                         InitBubble(bubble, (int)HAMSTER_TYPES.SPECIAL);
                     } else {
@@ -417,8 +432,7 @@ public class BubbleManager : MonoBehaviour {
         _setupDone = true;
     }
 
-    void InitBubble(Bubble bubble, int Type) {
-        //bubble.leftTeam = leftTeam;
+    public void InitBubble(Bubble bubble, int Type) {
         bubble.team = team;
         bubble.HomeBubbleManager = this;
         bubble.Initialize((HAMSTER_TYPES)Type);
@@ -655,11 +669,6 @@ public class BubbleManager : MonoBehaviour {
                     // Keep going
                     return;
                 }
-
-                // If a bubble still isn't petrified
-                //if (bub != null && !bub.Petrified) {
-                 //   return;
-                //}
             }
 
             _gameEndingSequence = false;
@@ -667,7 +676,7 @@ public class BubbleManager : MonoBehaviour {
             _levelManager.ActivateResultsScreen(team, _roundResult);
         }
 
-        if (Input.GetKeyDown(KeyCode.L)) {
+        if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.L)) {
             TryAddLine();
         }
         if(Input.GetKeyDown(KeyCode.P)) {
@@ -948,20 +957,19 @@ public class BubbleManager : MonoBehaviour {
         }
 
         // Spawn bubbles on top line
-        for (int i = 0; i < _topLineLength; ++i, ++_nextLineIndex) {
-            GameObject bub = Instantiate(_bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
-            Bubble bubble = bub.GetComponent<Bubble>();
-            bubble.transform.parent = _bubblesParent;
+        if(!PhotonNetwork.connectedAndReady) {
+            SpawnNewLineBubbles();
+        } else if(PhotonNetwork.connectedAndReady) {
+            _netBubMan.isBusy = true;
+            _netBubMan.LineAdded();
 
-            // Init bubble using the types that were decided ahead of time
-            InitBubble(bubble, _nextLineBubbles[_nextLineIndex]);
-            bubble.node = i;
-            nodeList[i].bubble = bubble;
-            _bubbles[i] = bubble;
+            //if (PhotonNetwork.isMasterClient) {
+            //    _netBubMan.StartNewLineProcess();
+            //} 
         }
 
         // If we're near the end of the generated line bubbles
-        if (_nextLineIndex >= _nextLineBubbles.Count - _baseLineLength * 2 && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
+        if (nextLineIndex >= _nextLineBubbles.Count - _baseLineLength * 2 && (!PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient))) {
             // Generate some more!
             SeedNextLineBubbles();
             // Send RPC if we are networked
@@ -975,6 +983,17 @@ public class BubbleManager : MonoBehaviour {
         _justAddedBubble = true;
     }
 
+    void SpawnNewLineBubbles() {
+        for (int i = 0; i < _topLineLength; ++i, ++nextLineIndex) {
+            GameObject bub = Instantiate(_bubbleObj, nodeList[i].nPosition, Quaternion.identity) as GameObject;
+            Bubble bubble = bub.GetComponent<Bubble>();
+
+            // Init bubble using the types that were decided ahead of time
+            InitBubble(bubble, _nextLineBubbles[nextLineIndex]);
+            AddBubble(bubble);
+        }
+    }
+
     protected void SeedNextLineBubbles() {
         int[] lineBubbles;
         int lineLength = _topLineLength == _baseLineLength ? _baseLineLength - 1 : _baseLineLength;
@@ -986,7 +1005,7 @@ public class BubbleManager : MonoBehaviour {
             // swap to next line length
             lineLength = lineLength == _baseLineLength ? _baseLineLength - 1 : _baseLineLength;
 
-            _linesSinceSpecial++;
+            linesSinceSpecial++;
         }
     }
 
@@ -998,11 +1017,11 @@ public class BubbleManager : MonoBehaviour {
 
         for (int i = 0; i < lineLength; ++i) {
             // If we've added enough lines since the last special ball
-            if (_gameManager.gameSettings.SpecialBallsOn && _linesSinceSpecial >= 3) {
+            if (_gameManager.gameSettings.SpecialBallsOn && linesSinceSpecial >= 3) {
                 // Theres a chance to spawn another one
-                if (_specialSeed.Next(0, 30 - 2 * _linesSinceSpecial) == 0) {
+                if (_specialSeed.Next(0, 30 - 2 * linesSinceSpecial) == 0) {
                     special = true;
-                    _linesSinceSpecial = 0;
+                    linesSinceSpecial = 0;
                 }
             }
 
@@ -1325,7 +1344,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     bool IsBoardStable() {
-        if (AreThereBubblesMidAir() || AreThereBusyBubbles()) {
+        if (AreThereBubblesMidAir() || AreThereBusyBubbles() || NetworkBusy()) {
             return false;
         }
 
@@ -1360,6 +1379,14 @@ public class BubbleManager : MonoBehaviour {
         }
 
         return false;
+    }
+
+    bool NetworkBusy() {
+        if(!PhotonNetwork.connectedAndReady) {
+            return false;
+        } else {
+            return _netBubMan.isBusy;
+        }
     }
 
     // Returns the lowest line (out of 11) that has a bubble in it

@@ -314,6 +314,11 @@ public class LevelManager : MonoBehaviour {
                 ActivateFinalResultsScreen(finalResult);
             }
         }
+
+        // If we're online
+        if(_gameManager.isOnline) {
+            GetComponent<NetworkedLevelManager>().SendResultsCheck(team, result);
+        }
     }
 
     // result: -1 = left team wins, 0 = draw, 1 = right team wins

@@ -57,7 +57,6 @@ public class GameEndSequence : MonoBehaviour {
 
         GetPlayers();
 
-
         // Set the banner sprites and text
         switch(winningTeam) {
             case 0: // Draw

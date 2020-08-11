@@ -91,4 +91,18 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
     void ReloadCurrentLevel() {
         PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().name);
     }
+
+    public void SendResultsCheck(int team, int result) {
+        photonView.RPC("ResultsCheck", PhotonTargets.Others, team, result);
+    }
+
+    [PunRPC]
+    void ResultsCheck(int team, int result) {
+        // If we haven't shown our results yet
+        if (!_levelManager.GameOver) {
+            Debug.LogError("Results should be showing but aren't. Showing...");
+            // Do it
+            _levelManager.ActivateResultsScreen(team, result);
+        }
+    }
 }

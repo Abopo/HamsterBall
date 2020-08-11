@@ -21,10 +21,15 @@ public class ShopMenu : MonoBehaviour {
     int _curPageIndex;
 
     ExitMenu _exitMenu;
+    ConfirmPurchaseMenu _confirmMenu;
 
     ShopData _shopData;
     public ShopData ShopData {
         get { return _shopData; }
+    }
+
+    bool IsActive {
+        get { return !_exitMenu.menuObject.activeSelf && !_confirmMenu.menuObject.activeSelf; }
     }
 
     protected void Awake() {
@@ -34,6 +39,7 @@ public class ShopMenu : MonoBehaviour {
         _curPageIndex = 0;
 
         _exitMenu = FindObjectOfType<ExitMenu>();
+        _confirmMenu = FindObjectOfType<ConfirmPurchaseMenu>();
 
         // Load the shop data
 #if UNITY_EDITOR
@@ -52,25 +58,25 @@ public class ShopMenu : MonoBehaviour {
     }
     // Update is called once per frame
     protected void Update() {
-        if (!_exitMenu.menuObject.activeSelf) {
+        if (IsActive) {
             if (InputState.GetButtonOnAnyControllerPressed("Cancel")) {
                 _exitMenu.Activate();
             }
 
-            if (Input.GetKeyDown(KeyCode.Q)) {
+            if (InputState.GetButtonOnAnyControllerPressed("PageLeft")) {
                 // Move page left
                 MovePageLeft();
             }
-            if (Input.GetKeyDown(KeyCode.E)) {
+            if (InputState.GetButtonOnAnyControllerPressed("PageRight")) {
                 // move page right
                 MovePageRight();
             }
-        }
 
-        // Dev cheat
-        if (Input.GetKey(KeyCode.Z) && Input.GetKeyDown(KeyCode.M)) {
-            playerCurrency = 5000;
-            currencyText.text = playerCurrency.ToString();
+            // Dev cheat
+            if (Input.GetKey(KeyCode.Z) && Input.GetKeyDown(KeyCode.M)) {
+                playerCurrency = 5000;
+                currencyText.text = playerCurrency.ToString();
+            }
         }
     }
 

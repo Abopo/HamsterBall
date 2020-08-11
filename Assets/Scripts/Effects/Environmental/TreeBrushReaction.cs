@@ -30,7 +30,7 @@ public class TreeBrushReaction : MonoBehaviour {
 	}
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        Debug.Log("Tree Collision");
+        //Debug.Log("Tree Collision");
 
         if(collision.tag == "Player" && !_reacting) {
             React();
@@ -38,7 +38,7 @@ public class TreeBrushReaction : MonoBehaviour {
     }
 
     void React() {
-        Debug.Log("Reaction");
+        //Debug.Log("Reaction");
 
         _reacting = true;
         _reactTimer = 0f;

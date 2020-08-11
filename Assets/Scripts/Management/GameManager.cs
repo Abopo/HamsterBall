@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Rewired;
 
 public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, MP_PARTY, SURVIVAL, TEAMSURVIVAL, NUM_MODES }
-public enum MENU { STORY = 0, VERSUS, EDITOR };
+public enum MENU { STORY = 0, VERSUS, EDITOR, ONLINE };
 
 public class GameManager : MonoBehaviour {
     public bool testMode;

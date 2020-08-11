@@ -128,21 +128,23 @@ public class CSPlayerController : PlayerController {
             StartShift();
         }
 
-        // If we're first player or an ai and press select while in a team box
-        if (inputState.select.isJustPressed && team != -1) {
-            // Create AI Player
-            _charaSelect.ActivateAI(characterSelector);
+        // No ai online
+        if (!PhotonNetwork.connectedAndReady) {
+            // If we're first player or an ai and press select while in a team box
+            if (inputState.select.isJustPressed && team != -1) {
+                // Create AI Player
+                _charaSelect.ActivateAI(characterSelector);
 
-            // Control AI player
-            //characterSelector.ControlNextAI();
-            underControl = false;
+                // Control AI player
+                //characterSelector.ControlNextAI();
+                underControl = false;
 
-            // Set to invulnerable so they can't be messed with
-            _isInvuln = true;
+                // Set to invulnerable so they can't be messed with
+                _isInvuln = true;
 
-            ChangeState(PLAYER_STATE.IDLE);
+                ChangeState(PLAYER_STATE.IDLE);
+            }
         }
-
         /* CSPlayer should never be on a fall through anyway
         if (_physics.IsTouchingFloor && _onFallThrough && inputState.down.isJustPressed) {
             // Move player slightly downward to pass through certain platforms

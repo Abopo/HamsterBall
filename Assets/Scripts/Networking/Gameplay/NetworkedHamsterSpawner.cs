@@ -25,7 +25,7 @@ public class NetworkedHamsterSpawner : Photon.MonoBehaviour {
     }
 
     public void ReleaseHamster() {
-        _photonView.RPC("ReleaseNetworkHamster", PhotonTargets.All);
+        _photonView.RPC("ReleaseNetworkHamster", PhotonTargets.AllViaServer);
     }
 
     [PunRPC]

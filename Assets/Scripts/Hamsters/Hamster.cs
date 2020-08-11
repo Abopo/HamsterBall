@@ -237,7 +237,7 @@ public class Hamster : Entity {
             // Update long idle timer
             _longIdleTimer += Time.deltaTime;
             if(_longIdleTimer >= _longIdleTime) {
-                _animator.SetBool("LongIdle", true);
+                //_animator.SetBool("LongIdle", true);
                 _longIdleTimer = -3f - Random.Range(2f, 7f);
             }
         } else {
@@ -354,11 +354,13 @@ public class Hamster : Entity {
             FaceRight();
             if (other.name == "PipeExit") {
                 exitedPipe = true;
+                inLine = false;
             }
         } else if (other.tag == "PipeCornerRight") {
             FaceLeft();
             if (other.name == "PipeExit") {
                 exitedPipe = true;
+                inLine = false;
             }
         } else if (other.tag == "Pipe Turn 1") {
             // Turn into connecting pipe
@@ -394,17 +396,11 @@ public class Hamster : Entity {
 
     protected void LineCollisions(Collider2D other) {
         // If we run into another hamster in line, stop moving
-        if (other.tag == "Hamster" && !exitedLine) {
+        if ((other.tag == "Hamster" || other.tag == "PowerUp") && !exitedLine) {
             if (other.GetComponent<Hamster>().CurState == 0) {
                 inLine = true;
                 SetState(0);
-            }
-        }
-        // Or if we run into a power up
-        if (other.tag == "PowerUp" && !exitedLine) {
-            if (other.GetComponent<PowerUp>().CurState == 0) {
-                inLine = true;
-                SetState(0);
+                _parentSpawner.UpdateHamstersInLine();
             }
         }
     }
@@ -430,7 +426,9 @@ public class Hamster : Entity {
 
     public void SetState(int state) {
         _curState = state;
-        if(_animator == null) {
+
+        // Get some kind of null reference here, not sure how
+        if(_animator == null && gameObject != null) {
             _animator = GetComponentInChildren<Animator>();
         }
         _animator.SetInteger("State", _curState);

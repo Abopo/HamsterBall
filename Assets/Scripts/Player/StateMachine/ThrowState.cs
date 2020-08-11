@@ -135,17 +135,7 @@ public class ThrowState : PlayerState {
         if (inputState.swing.isJustPressed && throwTimer >= throwTime) {
             // Networking
             if (PhotonNetwork.connectedAndReady) {
-                if(playerController.PhotonView.owner == PhotonNetwork.player) {
-                    // If we are the master client
-                    if (PhotonNetwork.isMasterClient) {
-                        // Just go ahead and throw
-                        playerController.PhotonView.RPC("ThrowBubble", PhotonTargets.Others, aimingArrow.localRotation);
-                        StartThrow();
-                    } else {
-                        // Check with the master client to see if we are ok to throw
-                        playerController.PhotonView.RPC("TryThrowBubble", PhotonTargets.MasterClient, aimingArrow.localRotation);
-                    }
-                }
+                NetworkThrow();
             } else {
                 StartThrow();
             }
@@ -235,6 +225,30 @@ public class ThrowState : PlayerState {
 
         if (_aimingLine != null) {
             _aimingLine.Stop();
+        }
+    }
+
+
+    // Networking ----------------------------------------------------------------
+
+    void NetworkThrow() {
+        if (playerController.PhotonView.owner == PhotonNetwork.player) {
+            // If we are the master client
+            if (PhotonNetwork.isMasterClient) {
+                // Just go ahead and throw
+                playerController.PhotonView.RPC("ThrowBubble", PhotonTargets.Others, aimingArrow.localRotation);
+
+                StartThrow();
+            } else {
+                // Check with the master client to double check if we are ok to throw
+                playerController.PhotonView.RPC("TryThrowBubble", PhotonTargets.MasterClient, aimingArrow.localRotation);
+
+                // Hold onto the thrown bubble just in case
+                playerController.GetComponent<NetworkedPlayer>().thrownBubble = playerController.heldBall;
+
+                // Start the throw anyway for now
+                StartThrow();
+            }
         }
     }
 }

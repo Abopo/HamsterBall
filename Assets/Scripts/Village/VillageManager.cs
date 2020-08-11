@@ -224,9 +224,9 @@ public class VillageManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		if(_player.GetButtonDown("Pause")) {
-            _pauseMenu.Activate(0);
-        }
+		//if(_player.GetButtonDown("Pause")) {
+        //    _pauseMenu.Activate(0);
+        //}
         
         // If the village scene is active
         if(!_started && SceneManager.GetActiveScene().name == "VillageScene") {

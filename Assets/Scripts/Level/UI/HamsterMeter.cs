@@ -180,8 +180,14 @@ public class HamsterMeter : MonoBehaviour {
                 }
 
                 // Add line to bubble manager
-                if (_bubbleManager != null /*&& !PhotonNetwork.connectedAndReady || (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient)*/) {
-                    _bubbleManager.TryAddLine();
+                if (_bubbleManager != null) {
+                    if (PhotonNetwork.connectedAndReady) {
+                        if (PhotonNetwork.isMasterClient) {
+                            _bubbleManager.GetComponent<NetworkedBubbleManager>().StartNewLineProcess();
+                        }
+                    } else {
+                        _bubbleManager.TryAddLine();
+                    }
                 }
 
                 // Add new stock sprites if we need to

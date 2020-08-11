@@ -6,6 +6,7 @@ using Photon;
 [RequireComponent(typeof(PhotonView))]
 public class NetworkedPlayer : Photon.MonoBehaviour {
     public Hamster tryingToCatchHamster;
+    public Bubble thrownBubble;
 
     PlayerController _playerController;
     InputState _serializedInput;
@@ -89,7 +90,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
             ResetInput();
 
-            if(_playerController.CurState == PLAYER_STATE.THROW) {
+            if (_playerController.CurState == PLAYER_STATE.THROW) {
                 _arrowAngle = ((ThrowState)_playerController.currentState).aimingArrow.localEulerAngles;
                 stream.Serialize(ref _arrowAngle);
             }
@@ -132,21 +133,21 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     void ParseInput() {
         // Jump seems to be working great
-        if(_serializedInput.jump.isDown) {
-            if(!jumpPressed) {
+        if (_serializedInput.jump.isDown) {
+            if (!jumpPressed) {
                 _serializedInput.jump.isJustPressed = true;
                 jumpPressed = true;
             }
         } else {
-            if(jumpPressed) {
+            if (jumpPressed) {
                 _serializedInput.jump.isJustReleased = true;
                 jumpPressed = false;
             }
         }
 
         // But swing and attack are still not consistent
-        if(_serializedInput.swing.isDown) {
-            if(!swingPressed) {
+        if (_serializedInput.swing.isDown) {
+            if (!swingPressed) {
                 _serializedInput.swing.isJustPressed = true;
                 swingPressed = true;
             }
@@ -154,8 +155,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             swingPressed = false;
         }
 
-        if(_serializedInput.attack.isDown) {
-            if(!attackPressed) {
+        if (_serializedInput.attack.isDown) {
+            if (!attackPressed) {
                 _serializedInput.attack.isJustPressed = true;
                 attackPressed = true;
             }
@@ -184,7 +185,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             }
 
             // If we are aiming
-            if(!photonView.isMine && _playerController.CurState == PLAYER_STATE.THROW) {
+            if (!photonView.isMine && _playerController.CurState == PLAYER_STATE.THROW) {
                 // Update the arrow to be in the right direction
                 ((ThrowState)_playerController.currentState).aimingArrow.localEulerAngles = _arrowAngle;
             }
@@ -258,7 +259,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             if (hamster != null && !hamster.wasCaught) {
                 // Tell rest of players that a hamster was caught
                 photonView.RPC("HamsterCaught", PhotonTargets.Others, hamster.hamsterNum);
-                OtherCatchHamster(hamster.hamsterNum); 
+                OtherCatchHamster(hamster.hamsterNum);
             } else {
                 // Tell original player that they can't catch that hamster
                 photonView.RPC("HamsterMissed", PhotonTargets.Others);
@@ -268,7 +269,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
     [PunRPC]
     void HamsterCaught(int hamsterNum) {
-        if(tryingToCatchHamster != null && tryingToCatchHamster.hamsterNum == hamsterNum) {
+        if (tryingToCatchHamster != null && tryingToCatchHamster.hamsterNum == hamsterNum) {
             MeCatchHamster();
         } else {
             OtherCatchHamster(hamsterNum);
@@ -310,7 +311,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     [PunRPC]
     void HamsterMissed() {
         // If we were the player to try and catch this bubble
-        if (_playerController.heldBall.GetComponent<PhotonView>().owner == PhotonNetwork.player) { 
+        if (_playerController.heldBall.GetComponent<PhotonView>().owner == PhotonNetwork.player) {
             // Destroy the held bubble
             PhotonNetwork.Destroy(_playerController.heldBall.gameObject);
         }
@@ -330,16 +331,27 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             // Check if the player has been punched or not
             // If we're still in the throw state we're good
             if (_playerController.CurState == PLAYER_STATE.THROW) {
-                // Throw the bubble!
-                ThrowBubble(arrowRot);
-
                 // Send back the confirmation
-                GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.Others, arrowRot);
+                GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.All, arrowRot);
 
-            // If we've been knocked out of the throw state
+                // If we've been knocked out of the throw state
             } else {
                 // TODO: send a response?
+                photonView.RPC("ThrowFailed", PhotonTargets.Others);
             }
+        }
+    }
+
+    [PunRPC]
+    void ThrowFailed() {
+        // Ok so we tried throwing, but on the master client we had been hit
+
+        // So destroy our thrown bubble
+        if (thrownBubble != null) {
+            PhotonNetwork.Destroy(thrownBubble.GetComponent<PhotonView>());
+        } else {
+            // If we got here abut don't have a thrown bubble, something's big time wrong
+            Debug.LogError("Failed throw, but found no thrown bubble. Uh ohs...");
         }
     }
 
