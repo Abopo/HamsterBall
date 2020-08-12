@@ -244,6 +244,11 @@ public class BubbleManager : MonoBehaviour {
             SeedNextLineBubbles();
         }
 
+        // When networked, we spawn the next line of bubbles ahead of time
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            _netBubMan.SpawnNextLineBubbles();
+        }
+
         _hamsterMeter.Initialize(_baseLineLength, this);
 
         // Send RPC if we are networked
@@ -911,7 +916,7 @@ public class BubbleManager : MonoBehaviour {
         // Remove the deleted nodes from the nodeList
         nodeList.RemoveRange(_bottomRowStart, _topLineLength);
 
-        // Swap top line length and set xOFfset for new nodes
+        // Swap top line length and set xOffset for new nodes
         float xOffset;
         if (_topLineLength == _baseLineLength) {
             _topLineLength = _baseLineLength - 1;
@@ -961,7 +966,7 @@ public class BubbleManager : MonoBehaviour {
             SpawnNewLineBubbles();
         } else if(PhotonNetwork.connectedAndReady) {
             _netBubMan.isBusy = true;
-            _netBubMan.LineAdded();
+            _netBubMan.AddLineBubbles();
 
             //if (PhotonNetwork.isMasterClient) {
             //    _netBubMan.StartNewLineProcess();
