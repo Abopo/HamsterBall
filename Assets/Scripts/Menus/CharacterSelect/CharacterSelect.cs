@@ -93,7 +93,11 @@ public class CharacterSelect : Menu {
             // Look for input to start game
             if (InputState.GetButtonOnAnyControllerPressed("Start")) {
                 if (pressStartText.activeSelf) {
-                    OpenSetupMenu();
+                    if (_gameManager.isOnline) {
+                        GetComponent<NetworkedCharacterSelect>().StartTryGameSetup();
+                    } else {
+                        OpenSetupMenu();
+                    }
                 }
             }
             if (!_gameManager.demoMode && !pressStartText.activeSelf) {
@@ -128,10 +132,6 @@ public class CharacterSelect : Menu {
         }
 
         Deactivate();
-
-        if (_gameManager.isOnline) {
-            GetComponent<PhotonView>().RPC("GameSetupStart", PhotonTargets.AllBuffered);
-        }
     }
 
     public void ActivateCharacter() {
@@ -236,7 +236,7 @@ public class CharacterSelect : Menu {
         }
     }
 
-    bool AllPlayersOnBothTeams() {
+    public bool AllPlayersOnBothTeams() {
         // If any team doesn't have a player
         if (leftTeam.numPlayers == 0 || rightTeam.numPlayers == 0) {
             return false;
