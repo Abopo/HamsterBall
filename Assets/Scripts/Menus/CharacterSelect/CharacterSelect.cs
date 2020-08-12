@@ -181,8 +181,6 @@ public class CharacterSelect : Menu {
             // Clear players from player manager
             _gameManager.playerManager.ClearAllPlayers();
 
-        } else if(_gameManager.isOnline) {
-            GetComponent<PhotonView>().RPC("GameSetupCancel", PhotonTargets.AllBuffered);
         }
     }
 
@@ -209,7 +207,8 @@ public class CharacterSelect : Menu {
         foreach (CSPlayerController player in _players) {
             if (player.inPlayArea && player.underControl) {
                 _controlledPlayers.Add(player);
-                player.underControl = false;
+                player.LoseControl();
+                //player.underControl = false;
             }
         }
     }

@@ -160,11 +160,15 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
                 _characterSelect.OpenSetupMenu();
 
                 // Tell everyone else we're setting up
-                photonView.RPC("GameSetupState", PhotonTargets.Others);
+                photonView.RPC("GameSetupStart", PhotonTargets.Others);
+
+                _tryingGameSetup = false;
             }
         } else {
             // Somebody failed to ready, cancel
             photonView.RPC("GameSetupCancel", PhotonTargets.Others);
+
+            _tryingGameSetup = false;
         }
     }
 
@@ -182,14 +186,13 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
         ResumePlayerMovement();
 
         gameSetupText.gameObject.SetActive(false);
-
-        _tryingGameSetup = false;
     }
 
     void StopPlayerMovement() {
         CSPlayerController[] allPlayers = FindObjectsOfType<CSPlayerController>();
         foreach (CSPlayerController cspc in allPlayers) {
-            cspc.underControl = false;
+            cspc.LoseControl();
+            //cspc.underControl = false;
         }
 
         _characterSelect.noControl = true;
