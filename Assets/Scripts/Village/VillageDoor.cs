@@ -12,7 +12,7 @@ public class VillageDoor : MonoBehaviour {
     Player _playerInput;
     protected PlayerController _playerController;
 
-    GameObject _interactIcon;
+    InteractIcon _interactIcon;
 
     VillagePlayerSpawn _villagePlayerSpawn;
     GameManager _gameManager;
@@ -20,7 +20,7 @@ public class VillageDoor : MonoBehaviour {
     private void Awake() {
         _playerInput = ReInput.players.GetPlayer(0);
 
-        _interactIcon = transform.Find("Interact Icon").gameObject;
+        _interactIcon = GetComponentInChildren<InteractIcon>();
 
         _villagePlayerSpawn = FindObjectOfType<VillagePlayerSpawn>();
         _gameManager = FindObjectOfType<GameManager>();
@@ -57,7 +57,7 @@ public class VillageDoor : MonoBehaviour {
         if(collision.gameObject.tag == "Player") {
             _isPlayerHere = true;
             _playerController = collision.GetComponent<PlayerController>();
-            _interactIcon.SetActive(true);
+            _interactIcon.Activate();
         }
     }
 
@@ -65,7 +65,7 @@ public class VillageDoor : MonoBehaviour {
         if (collision.gameObject.tag == "Player") {
             _isPlayerHere = false;
             _playerController = null;
-            _interactIcon.SetActive(false);
+            _interactIcon.Deactivate();
         }
     }
 

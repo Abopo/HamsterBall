@@ -11,7 +11,7 @@ public class NetworkedCSPlayer : MonoBehaviour {
 
     // Give the client side some time to catch up
     float _bufferTime = 3f;
-    float _bufferTimer;
+    float _bufferTimer = 3f;
 
     CharacterSelectResources _resources;
 
@@ -43,22 +43,26 @@ public class NetworkedCSPlayer : MonoBehaviour {
                 if (_inPlayArea != _csPlayer.inPlayArea || _underControl != _csPlayer.underControl) {
                     _bufferTimer += Time.deltaTime;
                     if(_bufferTimer >= _bufferTime) {
-                        Debug.Log("Syncing shift state");
-                        // We need to sync up
-                        if (_inPlayArea) {
-                            // Go into the play area
-                            _csPlayer.EnterPlayArea();
-                        } else {
-                            // Leave the play area
-                            _csPlayer.EnterPullDownWindow();
-                        }
-
+                        SyncShiftState();
                         _bufferTimer = 0f;
                     }
                 } else {
                     _bufferTimer = 0f;
                 }
             }
+        }
+    }
+
+    void SyncShiftState() {
+        Debug.Log("Syncing shift state");
+
+        // We need to sync up
+        if (_inPlayArea) {
+            // Go into the play area
+            _csPlayer.EnterPlayArea();
+        } else {
+            // Leave the play area
+            _csPlayer.EnterPullDownWindow();
         }
     }
 
@@ -84,5 +88,9 @@ public class NetworkedCSPlayer : MonoBehaviour {
         _resources.CharaInfo[(int)_csPlayer.CharaInfo.name][_csPlayer.CharaInfo.color - 1].isTaken = false;
 
         Debug.Log("RPC EnterPullDownWindow Received");
+    }
+
+    void OnDisconnect() {
+
     }
 }

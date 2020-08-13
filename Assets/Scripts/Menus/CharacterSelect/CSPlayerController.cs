@@ -185,7 +185,9 @@ public class CSPlayerController : PlayerController {
         shifted = true;
 
         transform.SetParent(null);
-        transform.localScale = _baseScale;
+
+        // Make sure we return to the base scale but don't change facing
+        transform.localScale = new Vector3(_baseScale.x * Mathf.Sign(transform.localScale.x), _baseScale.y);
     }
 
     public void EnterPullDownWindow() {

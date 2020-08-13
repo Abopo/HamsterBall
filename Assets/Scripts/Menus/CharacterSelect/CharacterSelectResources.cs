@@ -9,17 +9,12 @@ public class CharaSelectInfo {
 }
 
 public class CharacterSelectResources : MonoBehaviour {
-
-    Sprite[] _charaSelectors;
+    public CharacterSelector[] charaSelectors;
 
     List<CharaSelectInfo>[] _charaInfo = new List<CharaSelectInfo>[8];
     List<Sprite>[] _charaPortraits = new List<Sprite>[8];
 
     string[] _charaNames;
-
-    public Sprite[] CharaSelectors {
-        get { return _charaSelectors; }
-    }
 
     public List<CharaSelectInfo>[] CharaInfo {
         get { return _charaInfo; }
@@ -35,15 +30,10 @@ public class CharacterSelectResources : MonoBehaviour {
 
 
     private void Awake() {
-        LoadCharacterSelectors();
         LoadCharacterAnimators();
         
         LoadCharacterPortraits();
         LoadCharacterNames();
-    }
-
-    void LoadCharacterSelectors() {
-        _charaSelectors = Resources.LoadAll<Sprite>("Art/UI/Character Select/CharacterSelectors");
     }
 
     void LoadCharacterAnimators() {

@@ -68,7 +68,7 @@ public class PalettesPage : ShopPage {
         }
 
         characterPaletteData = ES3.Load<bool[]>(paletteString, new bool[0]);
-        characterPaletteData[paletteNum - 2] = true;
+        characterPaletteData[paletteNum - 1] = true;
         ES3.Save<bool[]>(paletteString, characterPaletteData);
     }
 }

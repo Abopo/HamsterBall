@@ -48,20 +48,13 @@ public class CharacterSelectWindow : Menu {
     protected override void Start () {
         base.Start();
 
-        //boySprite.sprite = _characterSprites[_boyColor];
-        //girlSprite.sprite = _characterSprites[_girlColor+4];
+        boySprite.material = _boyPalettes[_boyPaletteIndex];
+        girlSprite.material = _girlPalettes[_girlPaletteIndex];
     }
 
     void LoadSprites() {
         Material tempMaterial;
         bool[] paletteData;
-
-        // Base palette doesn't need material
-        /*
-        tempMaterial = new Material(Shader.Find("Sprites/Default"));
-        _boyPalettes.Add(tempMaterial);
-        _girlPalettes.Add(tempMaterial);
-        */
 
         paletteData = ES3.Load<bool[]>("BoyPalettes", new bool[0]);
         for (int i = 0; i < paletteData.Length; ++i) {
@@ -79,19 +72,6 @@ public class CharacterSelectWindow : Menu {
                 _girlPalettes.Add(tempMaterial);
             }
         }
-
-        /*
-        Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
-        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
-        _characterSprites[0] = boySprites[0];
-        _characterSprites[1] = boySprites[1];
-        _characterSprites[2] = boySprites[2];
-        _characterSprites[3] = boySprites[3];
-        _characterSprites[4] = girlSprites[0];
-        _characterSprites[5] = girlSprites[1];
-        _characterSprites[6] = girlSprites[2];
-        _characterSprites[7] = girlSprites[3];
-        */
     }
 
     // Update is called once per frame

@@ -39,11 +39,7 @@ public class MenuOption : MonoBehaviour {
         if (_parentMenu == null) {
             _parentMenu = transform.parent.GetComponent<Menu>();
         }
-    }
 
-    // Use this for initialization
-    protected virtual void Start () {
-        //_selectedPos = transform.position;
         _moved = true;
 
         if (_player == null) {
@@ -60,10 +56,15 @@ public class MenuOption : MonoBehaviour {
             }
         } else {
             isHighlighted = false;
-           _justHighlighted = false;
+            _justHighlighted = false;
         }
 
         _allOtherOptions = FindObjectsOfType<MenuOption>();
+    }
+
+    // Use this for initialization
+    protected virtual void Start () {
+        //_selectedPos = transform.position;
     }
 
     public void SetParentMenu(Menu parentMenu) {
@@ -227,7 +228,7 @@ public class MenuOption : MonoBehaviour {
     protected void DeHighlightOtherOptions() {
         if (_allOtherOptions != null) {
             foreach (MenuOption mO in _allOtherOptions) {
-                if (mO != this && mO.IsReady) {
+                if (mO != null && mO != this && mO.IsReady) {
                     mO.Unhighlight();
                 }
             }

@@ -156,20 +156,6 @@ public class CharacterSelector : MonoBehaviour {
     public void Activate(bool ai, bool local) {
         isActive = true;
 
-        /*
-        if (ai) {
-            isAI = true;
-            takeInput = false;
-
-            _player = ReInput.players.GetPlayer(0);
-            charaWindow.playerController.SetInputPlayer(0);
-
-            _charaSelect.numAI++;
-        } else {
-            _player = ReInput.players.GetPlayer(playerNum);
-        }
-        */
-
         // Controller should always be 0 since we're online
         _player = ReInput.players.GetPlayer(0);
         charaWindow.PlayerController.SetInputPlayer(_player);
@@ -482,10 +468,10 @@ public class CharacterSelector : MonoBehaviour {
         if (curCharacterIcon.charaName == CHARACTERS.LACKEY) {
             // Change animator to correct character
             charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].animator;
-        } else {
-            // Change material to correct color
-            charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].material;
         }
+    
+        // Change material to correct color
+        charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].material;
 
         // Keep csplayer data updated
         charaWindow.PlayerController.CharaInfo.name = curCharacterIcon.charaName;

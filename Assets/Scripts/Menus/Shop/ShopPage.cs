@@ -81,7 +81,6 @@ public class ShopPage : Menu {
                 tempItem.GetComponent<ShopItem>().SetPurchased(itemData[1]);
                 tempItem.GetComponent<ShopItem>().SetParentMenu(this);
                 _items.Add(tempItem.GetComponent<ShopItem>());
-
             }
         }
 
@@ -218,6 +217,9 @@ public class ShopPage : Menu {
     public virtual void PurchaseCurItem() {
         // Change item to purchased
         _curItem.SetPurchased(true);
+
+        // Unlock the item in the game data
+        UnlockItem();
 
         // Save that this item has been purchased
         bool[] itemData = ES3.Load(_curItem.ItemInfo.itemName, new bool[0]);

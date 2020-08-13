@@ -169,4 +169,15 @@ public class Node : MonoBehaviour {
             adjBubbles[i] = null;
         }
     }
+
+    // Whether or not this node has any adjBubbles at all
+    public bool Floating() {
+        foreach(Bubble bub in adjBubbles) {
+            if(bub != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

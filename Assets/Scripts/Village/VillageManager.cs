@@ -135,7 +135,7 @@ public class VillageManager : MonoBehaviour {
         if (!ES3.KeyExists("SoloFlowers")) {
             HighscorePrefs();
         }
-        if(!ES3.KeyExists("Kaden Palette 5")) {
+        if(!ES3.KeyExists("Kaden 5")) {
             LoadInitialShopData();
         }
         if(!ES3.KeyExists("BoyPalettes")) {

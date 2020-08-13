@@ -12,7 +12,7 @@ public class HamsterDialogue : MonoBehaviour {
     GameObject _dialogueCanvas;
     TextWriter _textWriter;
 
-    GameObject _interactIcon;
+    InteractIcon _interactIcon;
 
     Player _playerInput;
     GameManager _gameManager;
@@ -21,7 +21,7 @@ public class HamsterDialogue : MonoBehaviour {
         _dialogueCanvas = transform.GetChild(0).gameObject;
         _textWriter = GetComponent<TextWriter>();
 
-        _interactIcon = transform.Find("Interact Icon").gameObject;
+        _interactIcon = GetComponentInChildren<InteractIcon>();
 
         _playerInput = ReInput.players.GetPlayer(0);
         _gameManager = FindObjectOfType<GameManager>();
@@ -37,7 +37,7 @@ public class HamsterDialogue : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (_isPlayerHere && !_gameManager.isPaused) {
-            if (_playerInput.GetButtonDown("MoveUp")) {
+            if (_playerInput.GetButtonDown("Interact")) {
                 if(!_dialogueCanvas.activeSelf) {
                     DisplayDialogue();
                 } else {
@@ -51,7 +51,7 @@ public class HamsterDialogue : MonoBehaviour {
         if (dialogue != "") {
             _dialogueCanvas.SetActive(true);
             _textWriter.StartWriting(dialogue);
-            _interactIcon.SetActive(false);
+            _interactIcon.Deactivate();
         }
     }
 
@@ -62,14 +62,14 @@ public class HamsterDialogue : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Player") {
             _isPlayerHere = true;
-            _interactIcon.SetActive(true);
+            _interactIcon.Activate();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.tag == "Player") {
             _isPlayerHere = false;
-            _interactIcon.SetActive(false);
+            _interactIcon.Deactivate();
             HideDialogue();
         }
     }

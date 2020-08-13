@@ -27,6 +27,11 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
         //StartCoroutine(TryInitializeSelectors());
 
         gameSetupText.gameObject.SetActive(false);
+
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager.isPaused) {
+            gameManager.Unpause();
+        }
     }
 
     IEnumerator TryInitializeSelectors() {
@@ -94,18 +99,20 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     void InitializeSelector(int playerID) {
         Debug.Log("Initialize player " + playerID);
 
-        // Find all the selectors
-        CharacterSelector[] charaSelectors = FindObjectsOfType<CharacterSelector>();
-    
-        foreach(CharacterSelector cs in charaSelectors) {
-            if(cs.playerNum == playerID-1) {
-                // Take ownership of the selector and the associated player
-                cs.GetComponent<PhotonView>().TransferOwnership(playerID);
-                cs.charaWindow.PlayerController.PhotonView.TransferOwnership(playerID);
+        // Find the next selector
+        CharacterSelectResources charaResources = FindObjectOfType<CharacterSelectResources>();
+        CharacterSelector cs = charaResources.charaSelectors[PhotonNetwork.room.PlayerCount-1];
 
-                // Activate it
-                cs.Activate(false, true);
-            }
+        if (!cs.isActive) {
+            // Take ownership of the selector and the associated player
+            cs.GetComponent<PhotonView>().TransferOwnership(playerID);
+            cs.charaWindow.PlayerController.PhotonView.TransferOwnership(playerID);
+
+            // Send out owner change to other players
+            cs.GetComponent<NetworkedCharacterSelector>().photonView.RPC("OwnerChanged", PhotonTargets.Others, playerID);
+
+            // Activate it
+            cs.Activate(false, true);
         }
     }
 
@@ -124,9 +131,9 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 
     public void StartTryGameSetup() {
         if (!_tryingGameSetup) {
-            _playersReady = 1;
+            _playersReady = 0;
 
-            photonView.RPC("TryGameSetup", PhotonTargets.Others);
+            photonView.RPC("TryGameSetup", PhotonTargets.All);
 
             _tryingGameSetup = true;
         }
