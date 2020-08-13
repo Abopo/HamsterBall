@@ -82,9 +82,9 @@ public class CharacterSelect : Menu {
     protected override void Update () {
         if (hasFocus && _waitFrames > 5) {
             // If there's still space for a player (and we're not online)
-            if (IsStillSpace() && (!PhotonNetwork.connectedAndReady || Input.GetKey(KeyCode.O))) {
+            if (IsStillSpace() && (!PhotonNetwork.connectedAndReady)) {
                 // Look for player inputs
-                _tempPlayer = InputState.AnyButtonOnAnyControllerPressed();
+                _tempPlayer = InputState.AnyMenuButtonOnAnyControllerPressed();
                 if (_tempPlayer != null && !_assignedPlayers.Contains(_tempPlayer)) {
                     // Somehow make sure a player is only assigned once?
                     ActivateCharacter();

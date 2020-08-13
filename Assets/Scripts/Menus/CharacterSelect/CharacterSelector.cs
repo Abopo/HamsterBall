@@ -212,6 +212,7 @@ public class CharacterSelector : MonoBehaviour {
 
         _player = null;
         charaWindow.Deactivate();
+
     }
     
     // Update is called once per frame
@@ -235,6 +236,8 @@ public class CharacterSelector : MonoBehaviour {
     }
 
     public void CheckInput() {
+        Debug.Log("Check Input");
+
         // Don't take any input if the player is being controlled
         if(charaWindow.PlayerController.underControl) {
             return;
@@ -280,12 +283,14 @@ public class CharacterSelector : MonoBehaviour {
             }
         }
 
-        if ((_player.GetButtonDown("Submit") || _player.GetButtonDown("Shift")) && (!lockedIn || !isReady)) {
+        if ((_player.GetButtonDown("Submit") || _player.GetButtonDown("Extra")) && (!lockedIn || !isReady) && !charaWindow.pullDownWindow.IsHiding) {
             if (!lockedIn) {
                 // Lock in
                 LockIn();
+                Debug.Log("Lock In");
             } else {
                 ShiftCSPlayer();
+                Debug.Log("Shift");
             }
         }
         if (_player.GetButtonDown("Cancel")) {
@@ -302,7 +307,6 @@ public class CharacterSelector : MonoBehaviour {
             }
         }
     }
-
 
     public void LockIn() {
         lockedIn = true;

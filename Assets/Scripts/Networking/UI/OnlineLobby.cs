@@ -10,6 +10,9 @@ public class OnlineLobby : MonoBehaviour {
     public Transform scrollViewContent;
     public GameObject roomInfoObj;
     public GameObject nameWarningObj;
+    public SuperTextMesh roomWarningObj;
+
+    public InputField playerNameInput;
 
     List<GameObject> rooms = new List<GameObject>();
 
@@ -32,14 +35,17 @@ public class OnlineLobby : MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
         _gameManager.isOnline = true;
         _gameManager.isSinglePlayer = false;
+
+        // Start the player out on the name input field
+        playerNameInput.Select();
 	}
 
     void ShowRooms() {
         int i = 0;
         foreach(RoomInfo roomInfo in PhotonNetwork.GetRoomList()) {
             GameObject roomInfoUI = GameObject.Instantiate(roomInfoObj, scrollViewContent);
-            roomInfoUI.transform.localPosition = new Vector3(197.3f, -21f - (36.7f * i));
-            Text[] roomText = roomInfoUI.GetComponentsInChildren<Text>();
+            roomInfoUI.transform.localPosition = new Vector3(193.6f, -21f - (40f * i));
+            SuperTextMesh[] roomText = roomInfoUI.GetComponentsInChildren<SuperTextMesh>();
             roomText[0].text = roomInfo.Name;
             roomText[1].text = roomInfo.PlayerCount.ToString() + "/4";
             roomInfoUI.GetComponentInChildren<JoinRoomButton>().onlineLobby = this;
@@ -60,12 +66,17 @@ public class OnlineLobby : MonoBehaviour {
 
     public void SetRoomName(string name) {
         roomName = name;
+        ToggleRoomWarning(false);
     }
 
     public void CreateRoom() {
         if (PhotonNetwork.connectedAndReady) {
             if (PhotonNetwork.playerName != "") {
-                PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+                if (roomName != "" && IsRoomAvailable()) {
+                    PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+                } else {
+                    ToggleRoomWarning(true);
+                }
             } else {
                 ToggleNameWarning(true);
             }
@@ -93,7 +104,19 @@ public class OnlineLobby : MonoBehaviour {
     public void Quit() {
         PhotonNetwork.Disconnect();
         FindObjectOfType<GameManager>().VillageButton();
-        //SceneManager.LoadScene("MainMenu");
+    }
+
+    bool IsRoomAvailable() {
+        bool roomAvailable = true;
+
+        RoomInfo[] rooms = PhotonNetwork.GetRoomList();
+        foreach(RoomInfo r in rooms) {
+            if(r.Name == roomName) {
+                roomAvailable = false;
+            }
+        }
+
+        return roomAvailable;
     }
 
     public void OnCreatedRoom() {
@@ -111,6 +134,18 @@ public class OnlineLobby : MonoBehaviour {
 
     public void ToggleNameWarning(bool on) {
         nameWarningObj.SetActive(on);
+    }
+
+    public void ToggleRoomWarning(bool on) {
+        if (on) {
+            if (roomName == "") {
+                roomWarningObj.text = "Please enter a room name";
+            } else {
+                roomWarningObj.text = "Room name already taken";
+            }
+        }
+
+        roomWarningObj.gameObject.SetActive(on);
     }
 
     private void OnGUI() {

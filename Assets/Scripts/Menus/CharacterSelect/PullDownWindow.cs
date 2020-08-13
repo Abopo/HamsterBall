@@ -10,8 +10,10 @@ public class PullDownWindow : MonoBehaviour {
         get { return _playerController; }
     }
 
+
     bool _isShowing = false;
     bool _isHiding = false;
+    public bool IsHiding { get => _isHiding; }
 
     float _moveSpeed = 10f;
     float _upYPos = 5.8f;

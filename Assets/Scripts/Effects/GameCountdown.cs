@@ -56,7 +56,11 @@ public class GameCountdown : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if(_done || !started) {
+        if (Input.GetKeyDown(KeyCode.C)) {
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownThree);
+        }
+
+        if (_done || !started) {
             return;
         }
 

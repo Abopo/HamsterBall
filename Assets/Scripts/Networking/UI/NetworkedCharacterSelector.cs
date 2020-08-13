@@ -87,7 +87,7 @@ public class NetworkedCharacterSelector : Photon.MonoBehaviour {
                 _selector.Unlock();
             }
 
-            if(_selector.isReady) {
+            if(_selector.isActive) {
                 if(_selector.curCharacterIcon.charaName != charaInfo.name) {
                     _selector.SetIcon(charaInfo);
                     _synched = true;

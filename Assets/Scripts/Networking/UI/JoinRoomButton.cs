@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class JoinRoomButton : MenuButton {
-    public Text roomName;
+    public SuperTextMesh roomName;
     public OnlineLobby onlineLobby;
 
     // Use this for initialization

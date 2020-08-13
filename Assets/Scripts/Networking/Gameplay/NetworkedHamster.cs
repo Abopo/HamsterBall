@@ -13,6 +13,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
     Quaternion _correctRot;
     int _hamsterType;
     int _hamsterState;
+    bool _exitedPipe;
     bool _hamsterInLine;
 
     public int corFacing;
@@ -101,7 +102,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             stream.SendNext(_hamster.type);
             stream.SendNext(_hamster.curFacing);
             stream.SendNext(_hamster.CurState);
-            //stream.SendNext(_hamster.exitedPipe);
+            stream.SendNext(_hamster.exitedPipe);
         } else {
             _hamsterPos = (Vector3)stream.ReceiveNext();
 
@@ -115,8 +116,8 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             }
 
             corFacing = (int)stream.ReceiveNext();
-
             _hamsterState = (int)stream.ReceiveNext();
+            _exitedPipe = (bool)stream.ReceiveNext();
         }
     }
 
@@ -148,6 +149,11 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                     // or maybe lerp there?
                     Debug.Log("Hamster too far, teleporting.");
                     _hamster.transform.position = _hamsterPos;
+
+                    // If we teleport, we might miss pip stuff, so sync that too
+                    if(_hamster.exitedPipe != _exitedPipe) {
+                        _hamster.exitedPipe = _exitedPipe;
+                    }
                 }
 
                 if (_hamster.curFacing != corFacing) {
