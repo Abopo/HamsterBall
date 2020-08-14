@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class OnlineLobby : MonoBehaviour {
 
     public string roomName;
-    public Transform scrollViewContent;
+    public RectTransform scrollViewContent;
     public GameObject roomInfoObj;
     public GameObject nameWarningObj;
     public SuperTextMesh roomWarningObj;
@@ -60,12 +60,18 @@ public class OnlineLobby : MonoBehaviour {
             rooms.Add(roomInfoUI);
             ++i;
         }
+
+        if (rooms.Count > 10) {
+            // Adjust content size to fit rooms
+            scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, 408 + 40 * (rooms.Count - 10));
+        } else {
+            scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, 408);
+        }
     }
 
     // Update is called once per frame
     void Update () {
-		
-	}
+    }
 
     public void SetPlayerName(string name) {
         PhotonNetwork.playerName = name;
