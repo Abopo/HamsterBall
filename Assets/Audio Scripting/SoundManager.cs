@@ -96,6 +96,7 @@ public class SoundManager : MonoBehaviour {
 	//Other Sounds
 	public string Shift;
 	public string Petrify;
+    public string VillageSpring;
 
 	//Music
 	public string MusicMain;

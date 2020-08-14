@@ -31,6 +31,7 @@ public class Spring : MonoBehaviour {
 
             // Play spring animation
             _animator.Play("Spring");
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.VillageSpring);
 
             // Play bounce sound
         }
