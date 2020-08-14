@@ -60,8 +60,8 @@ public class BoardEditor : MonoBehaviour {
 
         _gameManager = FindObjectOfType<GameManager>();
         _gameManager.prevMenu = MENU.EDITOR;
-        if (_gameManager.prevBoard != "") {
-            LoadBoard(_gameManager.prevBoard);
+        if (_gameManager.prevLevel != "") {
+            LoadBoard(_gameManager.prevLevel);
         }
     }
 
@@ -569,7 +569,7 @@ public class BoardEditor : MonoBehaviour {
 
     public void TestLevel() {
         if (_fileName != "") {
-            _gameManager.prevBoard = _fileName;
+            _gameManager.prevLevel = _fileName;
             _gameManager.isSinglePlayer = true;
             SaveBoard();
             GetComponent<BoardLoader>().ReadCreatedBoard(_fileName);

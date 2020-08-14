@@ -81,6 +81,15 @@ public class CharacterSelect : Menu {
     // Update is called once per frame
     protected override void Update () {
         if (hasFocus && _waitFrames > 5) {
+            if (!pressStartText.activeSelf) {
+                if (InputState.GetButtonOnAnyControllerPressed("Pause") && pauseMenu != null) {
+                    // Show menu asking if player really wants to go back
+                    pauseMenu.Activate();
+                    Deactivate();
+                    return;
+                }
+            }
+
             // If there's still space for a player (and we're not online)
             if (IsStillSpace() && (!PhotonNetwork.connectedAndReady)) {
                 // Look for player inputs
@@ -98,14 +107,6 @@ public class CharacterSelect : Menu {
                     } else {
                         OpenSetupMenu();
                     }
-                }
-            }
-            if (!_gameManager.demoMode && !pressStartText.activeSelf) {
-                if (InputState.GetButtonOnAnyControllerPressed("Pause") && pauseMenu != null) {
-                    // Show menu asking if player really wants to go back
-                    pauseMenu.Activate();
-                    Deactivate();
-                    return;
                 }
             }
 
@@ -236,14 +237,12 @@ public class CharacterSelect : Menu {
     }
 
     public bool AllPlayersOnBothTeams() {
-#if UnityEditor
         // Just debugging
         if (PhotonNetwork.connectedAndReady) {
             if(leftTeam.numPlayers > 0 || rightTeam.numPlayers > 0) {
                 return true;
             }
         }
-#endif
 
         // If any team doesn't have a player
         if (leftTeam.numPlayers == 0 || rightTeam.numPlayers == 0) {

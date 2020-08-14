@@ -34,6 +34,7 @@ public class StageMusic : MonoBehaviour {
         SoundManager.mainAudio.VillageMusicEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
         //return; 
+        Debug.Log("Playing stage music");
 
         switch (_gameManager.selectedBoard) {
             case BOARDS.FOREST:

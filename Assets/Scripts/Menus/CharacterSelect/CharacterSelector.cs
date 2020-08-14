@@ -236,8 +236,6 @@ public class CharacterSelector : MonoBehaviour {
     }
 
     public void CheckInput() {
-        Debug.Log("Check Input");
-
         // Don't take any input if the player is being controlled
         if(charaWindow.PlayerController.underControl) {
             return;
@@ -485,7 +483,5 @@ public class CharacterSelector : MonoBehaviour {
         if (charaColor - 1 < _resources.CharaPortraits[(int)curCharacterIcon.charaName].Count) {
             charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)curCharacterIcon.charaName][charaColor - 1];
         }
-
-        //_audioSource.Play();
     }
 }

@@ -18,8 +18,9 @@ public class NetworkedMapSelect : MonoBehaviour {
     void Start() {
         allPlayersLoaded = false;
 
-
-        PhotonNetwork.RPC(_photonView, "MapSelectReady", PhotonTargets.MasterClient, false);
+        if (PhotonNetwork.connectedAndReady) {
+            PhotonNetwork.RPC(_photonView, "MapSelectReady", PhotonTargets.MasterClient, false);
+        }
     }
 
     // Networking

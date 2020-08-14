@@ -53,8 +53,13 @@ public class ExitMenu : Menu {
         if (returnMenu == "Village") {
             _gameManager.VillageButton();
         } else if (returnMenu == "LocalPlay") {
-            // Go back to local play menu
-            _gameManager.LocalPlayButton();
+            // For the demo just skip over the local play scene
+            if (_gameManager.demoMode) {
+                _gameManager.VillageButton();
+            } else {
+                // Go back to local play menu
+                _gameManager.LocalPlayButton();
+            }
         } else if(returnMenu == "OnlineLobby") {
             SceneManager.LoadScene("OnlineLobby");
         } else {

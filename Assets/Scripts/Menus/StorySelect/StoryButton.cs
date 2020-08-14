@@ -42,6 +42,7 @@ public class StoryButton : MenuOption {
             isReady = false;
         } else {
             isReady = true;
+            Unlock();
         }
     }
 
@@ -63,10 +64,6 @@ public class StoryButton : MenuOption {
             // TODO: Play some sound to indicate the stage is locked
             return;
         }
-        // Open the character select window
-        //_storySelectMenu.characterSelectWindow.Activate(this);
-
-        //isReady = false;
 
         // Set the stage in the game manager
         FindObjectOfType<GameManager>().stage = stageNumber;

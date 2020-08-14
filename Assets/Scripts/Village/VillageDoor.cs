@@ -34,7 +34,7 @@ public class VillageDoor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (_isPlayerHere && !_gameManager.isPaused) {
-            if (_playerInput.GetButtonDown("Interact")) {
+            if (_playerController.CanJump && _playerInput.GetButtonDown("Interact")) {
                 EnterDoor();
             }
         }

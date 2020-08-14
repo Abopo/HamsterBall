@@ -14,6 +14,8 @@ public class OnlineLobby : MonoBehaviour {
 
     public InputField playerNameInput;
 
+    public Toggle twoPlayerToggle;
+
     List<GameObject> rooms = new List<GameObject>();
 
     GameManager _gameManager;
@@ -47,8 +49,14 @@ public class OnlineLobby : MonoBehaviour {
             roomInfoUI.transform.localPosition = new Vector3(193.6f, -21f - (40f * i));
             SuperTextMesh[] roomText = roomInfoUI.GetComponentsInChildren<SuperTextMesh>();
             roomText[0].text = roomInfo.Name;
-            roomText[1].text = roomInfo.PlayerCount.ToString() + "/4";
-            roomInfoUI.GetComponentInChildren<JoinRoomButton>().onlineLobby = this;
+            roomText[1].text = roomInfo.PlayerCount.ToString() + "/" + roomInfo.MaxPlayers;
+
+            // Set up the join room button
+            JoinRoomButton roomButton = roomInfoUI.GetComponentInChildren<JoinRoomButton>();
+            roomButton.onlineLobby = this;
+            roomButton.numPlayers = roomInfo.PlayerCount;
+            roomButton.maxPlayers = roomInfo.MaxPlayers;
+
             rooms.Add(roomInfoUI);
             ++i;
         }
@@ -73,7 +81,8 @@ public class OnlineLobby : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady) {
             if (PhotonNetwork.playerName != "") {
                 if (roomName != "" && IsRoomAvailable()) {
-                    PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+                    int numPlayers = twoPlayerToggle.isOn ? 2 : 4;
+                    PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = (byte)numPlayers }, null);
                 } else {
                     ToggleRoomWarning(true);
                 }
@@ -93,7 +102,7 @@ public class OnlineLobby : MonoBehaviour {
         }
     }
 
-    public void JoinRoom(string rName) {
+    public void TryJoinRoom(string rName) {
         if (PhotonNetwork.playerName != "") {
             PhotonNetwork.JoinRoom(rName);
         } else {
@@ -103,7 +112,6 @@ public class OnlineLobby : MonoBehaviour {
 
     public void Quit() {
         PhotonNetwork.Disconnect();
-        FindObjectOfType<GameManager>().VillageButton();
     }
 
     bool IsRoomAvailable() {
@@ -150,5 +158,9 @@ public class OnlineLobby : MonoBehaviour {
 
     private void OnGUI() {
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+    }
+
+    public void OnDisconnectedFromPhoton() {
+        FindObjectOfType<GameManager>().VillageButton();
     }
 }

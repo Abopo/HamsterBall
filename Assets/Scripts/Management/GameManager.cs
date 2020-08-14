@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
     public string nextCutscene; // cutscene to load next
 
     public MENU prevMenu; // Keeps track of the last menu we were in so we can return after a level is finished
-    public string prevBoard; // Holds onto the previous board if there was one
+    public string prevLevel; // Holds onto the previous board if there was one
 
     public GAME_MODE gameMode;
     public int goalCount; // the number of points or matches to win the level
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour {
         playerInput = ReInput.players.GetPlayer(0);
 
         selectedBoard = BOARDS.NUM_STAGES;
-        prevBoard = "";
+        prevLevel = "";
 
         SetDemoMode(demoMode);
 
@@ -335,11 +335,7 @@ public class GameManager : MonoBehaviour {
     public void VillageButton() {
         CleanUp(true);
 
-        prevBoard = "";
-
-        if(isOnline) {
-            PhotonNetwork.LeaveRoom();
-        }
+        prevLevel = "";
 
         SceneManager.LoadScene("VillageScene");
     }
