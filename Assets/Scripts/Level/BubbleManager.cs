@@ -244,6 +244,11 @@ public class BubbleManager : MonoBehaviour {
             SeedNextLineBubbles();
         }
 
+        // When networked, we spawn the next line of bubbles ahead of time
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            _netBubMan.SpawnNextLineBubbles();
+        }
+
         _hamsterMeter.Initialize(_baseLineLength, this);
 
         // Send RPC if we are networked
@@ -761,7 +766,7 @@ public class BubbleManager : MonoBehaviour {
 
     public void AddBubble(Bubble newBubble) {
         int closestNode;
-        closestNode = FindClosestNode(newBubble);
+        closestNode = FindClosestNode2(newBubble);
 
         if (closestNode == -1) {
             // something really wrong happened
@@ -770,6 +775,9 @@ public class BubbleManager : MonoBehaviour {
             Destroy(newBubble.gameObject);
             return;
         }
+
+        Debug.Log("Adding bubble from position " + newBubble.transform.position.ToString() + " to node#" + closestNode + ". " +
+                    "Distance: " + Vector2.Distance(nodeList[closestNode].nPosition, newBubble.transform.position));
 
         newBubble.node = closestNode;
         newBubble.transform.position = nodeList[closestNode].nPosition;
@@ -814,53 +822,24 @@ public class BubbleManager : MonoBehaviour {
         _justAddedBubble = true;
     }
 
-    int FindClosestNode(Bubble bubble) {
-        // This function sorts all nodes by distance and go down the list until a free one is found.
+    int FindClosestNode2(Bubble bubble) {
+        int closestNode = -1;
+        float tempDist = 0;
+        float nodeDist = 10000;
 
-        // need arrays of all the important values of the nodes
-        int[] nodeNumbers = new int[nodeList.Count];
-        Vector2[] nodePositions = new Vector2[nodeList.Count];
-
-        for(int i = 0; i < nodeList.Count; ++i) {
-            if (nodeList[i] != null) {
-                nodeNumbers[i] = nodeList[i].number;
-                nodePositions[i] = nodeList[i].nPosition;
+        foreach(Node n in nodeList) {
+            // If the node is relevant to us
+            if(n.bubble == null && !n.Floating()) {
+                // Check it's distance
+                tempDist = Vector2.Distance(n.nPosition, bubble.transform.position);
+                if (tempDist < nodeDist) {
+                    closestNode = n.number;
+                    nodeDist = tempDist;
+                }
             }
         }
 
-        // Insertion sort the temp list from closest to farthest
-        int j;
-        float tempDist;
-        int tempNumber;
-        Vector2 tempPos;
-        
-        for (int i = 1; i < nodeList.Count; i++) {
-            tempNumber = nodeNumbers[i];
-            tempPos = nodePositions[i];
-            tempDist = Vector2.Distance(nodePositions[i], bubble.transform.position);
-            j = i - 1;
-
-            /* Move elements of arr[0..i-1], that are  
-            greater than key, to one position ahead  
-            of their current position */
-            while (j >= 0 && Vector2.Distance(nodePositions[j], bubble.transform.position) > tempDist) {
-                nodeNumbers[j + 1] = nodeNumbers[j];
-                j = j - 1;
-            }
-
-            nodeNumbers[j + 1] = tempNumber;
-            nodePositions[j + 1] = tempPos;
-        }
-
-        // Run through nodes until an open one is found
-        for(int i = 0; i < nodeNumbers.Length; ++i) {
-            if(nodeList[nodeNumbers[i]].bubble == null) {
-                return nodeNumbers[i];
-            }
-        }
-
-        // If we get here there's a big problem
-        return -1;
+        return closestNode;
     }
 
     public void RemoveBubble(int node) {
@@ -911,7 +890,7 @@ public class BubbleManager : MonoBehaviour {
         // Remove the deleted nodes from the nodeList
         nodeList.RemoveRange(_bottomRowStart, _topLineLength);
 
-        // Swap top line length and set xOFfset for new nodes
+        // Swap top line length and set xOffset for new nodes
         float xOffset;
         if (_topLineLength == _baseLineLength) {
             _topLineLength = _baseLineLength - 1;
@@ -961,7 +940,7 @@ public class BubbleManager : MonoBehaviour {
             SpawnNewLineBubbles();
         } else if(PhotonNetwork.connectedAndReady) {
             _netBubMan.isBusy = true;
-            _netBubMan.LineAdded();
+            _netBubMan.AddLineBubbles();
 
             //if (PhotonNetwork.isMasterClient) {
             //    _netBubMan.StartNewLineProcess();

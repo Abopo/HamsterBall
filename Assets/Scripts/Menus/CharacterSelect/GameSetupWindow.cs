@@ -128,6 +128,10 @@ public class GameSetupWindow : Menu {
         base.Deactivate();
 
         menuObj.SetActive(false);
+
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            _characterSelect.GetComponent<PhotonView>().RPC("GameSetupCancel", PhotonTargets.AllBuffered);
+        }
     }
 
     bool IsAnyOptionSelected() {

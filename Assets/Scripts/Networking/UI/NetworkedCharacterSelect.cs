@@ -10,6 +10,9 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 
     public SuperTextMesh gameSetupText;
 
+    int _playersReady = 0;
+    bool _tryingGameSetup;
+
     CharacterSelect _characterSelect;
 
     private void Awake() {
@@ -24,6 +27,11 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
         //StartCoroutine(TryInitializeSelectors());
 
         gameSetupText.gameObject.SetActive(false);
+
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager.isPaused) {
+            gameManager.Unpause();
+        }
     }
 
     IEnumerator TryInitializeSelectors() {
@@ -91,18 +99,20 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     void InitializeSelector(int playerID) {
         Debug.Log("Initialize player " + playerID);
 
-        // Find all the selectors
-        CharacterSelector[] charaSelectors = FindObjectsOfType<CharacterSelector>();
-    
-        foreach(CharacterSelector cs in charaSelectors) {
-            if(cs.playerNum == playerID-1) {
-                // Take ownership of the selector and the associated player
-                cs.GetComponent<PhotonView>().TransferOwnership(playerID);
-                cs.charaWindow.PlayerController.PhotonView.TransferOwnership(playerID);
+        // Find the next selector
+        CharacterSelectResources charaResources = FindObjectOfType<CharacterSelectResources>();
+        CharacterSelector cs = charaResources.charaSelectors[PhotonNetwork.room.PlayerCount-1];
 
-                // Activate it
-                cs.Activate(false, true);
-            }
+        if (!cs.isActive) {
+            // Take ownership of the selector and the associated player
+            cs.GetComponent<PhotonView>().TransferOwnership(playerID);
+            cs.charaWindow.PlayerController.PhotonView.TransferOwnership(playerID);
+
+            // Send out owner change to other players
+            cs.GetComponent<NetworkedCharacterSelector>().photonView.RPC("OwnerChanged", PhotonTargets.Others, playerID);
+
+            // Activate it
+            cs.Activate(false, true);
         }
     }
 
@@ -119,15 +129,60 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 
     }
 
+    public void StartTryGameSetup() {
+        if (!_tryingGameSetup) {
+            _playersReady = 0;
+
+            photonView.RPC("TryGameSetup", PhotonTargets.All);
+
+            _tryingGameSetup = true;
+        }
+    }
+
+    [PunRPC]
+    void TryGameSetup() {
+        // Master client wants to start setting up the game
+
+        // Make sure everyone is on a team
+        if(_characterSelect.AllPlayersOnBothTeams()) {
+            // If we're all good, stop player movement
+            StopPlayerMovement();
+
+            // Send response that alls good
+            photonView.RPC("SetupOK", PhotonTargets.MasterClient, true);
+        } else {
+            // Someone moved off the platform, so we are not ok to set up
+            photonView.RPC("SetupOK", PhotonTargets.MasterClient, false);
+        }
+    }
+
+    [PunRPC]
+    void SetupOK(bool ok) {
+        if (ok) {
+            _playersReady++;
+
+            // If everyone responded that they're ready
+            if(_playersReady >= PhotonNetwork.playerList.Length) {
+                // Start game setup
+                _characterSelect.OpenSetupMenu();
+
+                // Tell everyone else we're setting up
+                photonView.RPC("GameSetupStart", PhotonTargets.Others);
+
+                _tryingGameSetup = false;
+            }
+        } else {
+            // Somebody failed to ready, cancel
+            photonView.RPC("GameSetupCancel", PhotonTargets.Others);
+
+            _tryingGameSetup = false;
+        }
+    }
+
     [PunRPC]
     public void GameSetupStart() {
         // Master client has started setting up the game, so freeze player and show some text
-        CSPlayerController[] allPlayers = FindObjectsOfType<CSPlayerController>();
-        foreach(CSPlayerController cspc in allPlayers) {
-            cspc.underControl = false;
-        }
-
-        _characterSelect.noControl = true;
+        StopPlayerMovement();
 
         gameSetupText.gameObject.SetActive(true);
     }
@@ -135,13 +190,29 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     [PunRPC]
     public void GameSetupCancel() {
         // Master client backed out of game setup
+        ResumePlayerMovement();
+
+        gameSetupText.gameObject.SetActive(false);
+    }
+
+    void StopPlayerMovement() {
         CSPlayerController[] allPlayers = FindObjectsOfType<CSPlayerController>();
         foreach (CSPlayerController cspc in allPlayers) {
-            cspc.underControl = true;
+            cspc.LoseControl();
+            //cspc.underControl = false;
+        }
+
+        _characterSelect.noControl = true;
+    }
+
+    void ResumePlayerMovement() {
+        CSPlayerController[] allPlayers = FindObjectsOfType<CSPlayerController>();
+        foreach (CSPlayerController cspc in allPlayers) {
+            if (cspc.inPlayArea) {
+                cspc.underControl = true;
+            }
         }
 
         _characterSelect.noControl = false;
-
-        gameSetupText.gameObject.SetActive(false);
     }
 }

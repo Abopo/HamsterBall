@@ -7,13 +7,18 @@
 [LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Priority: 2, Stack Size: 65536, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Priority: 3, Stack Size: 49152, Semaphore: No, Sleep Time: 0, Looping: Yes.
+<<<<<<< HEAD
 [LOG] AsyncManager::init                       : manager 0000000236BB9BE8 isAsync 0 updatePeriod 0.02
+=======
+[LOG] AsyncManager::init                       : manager 000000001D608068 isAsync 0 updatePeriod 0.02
+>>>>>>> 8541e1ee68ecb2c429c59b566742f969ebbf4757
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Priority: 0, Stack Size: 65536, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] PlaybackSystem::init                     : done
 [LOG] Thread::initThread                       : Init FMOD Studio bank load thread. Priority: 0, Stack Size: 65536, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] Manager::init                            : done.
+<<<<<<< HEAD
 [LOG] SoundI::release                          : Village_fullv2 (00000002145E1258)
 [LOG] SoundI::release                          :     Village_fullv2 (000000023678E178)
 [LOG] SoundI::release                          :     Village_fullv2 (00000002145DF5A8)
@@ -929,6 +934,25 @@
 [LOG] SoundI::release                          :  (0000000057D09428)
 [LOG] SoundI::release                          :     HS_Attack_Punch-004 (000000022E8E4188)
 [LOG] Thread::callback                         : FMOD Studio update thread finished.
+=======
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
+[ERR] OutputWASAPI::getDriverInfo              : IMMDevice::Activate returned 0x88890004.  Device was unplugged!
+[LOG] Thread::callback                         : FMOD mixer thread finished.
+[LOG] SystemI::setOutputInternal               : Setting output to 'FMOD NoSound Output'
+[LOG] OutputNoSound::init                      : Initializing.
+[LOG] OutputNoSound::init                      : Done.
+[LOG] Thread::initThread                       : Init FMOD mixer thread. Priority: 3, Stack Size: 49152, Semaphore: No, Sleep Time: 7, Looping: Yes.
+>>>>>>> 8541e1ee68ecb2c429c59b566742f969ebbf4757
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
 [LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
 [LOG] Thread::callback                         : FMOD Studio sample load thread finished.

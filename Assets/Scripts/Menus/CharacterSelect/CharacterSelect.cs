@@ -81,10 +81,19 @@ public class CharacterSelect : Menu {
     // Update is called once per frame
     protected override void Update () {
         if (hasFocus && _waitFrames > 5) {
+            if (!pressStartText.activeSelf) {
+                if (InputState.GetButtonOnAnyControllerPressed("Pause") && pauseMenu != null) {
+                    // Show menu asking if player really wants to go back
+                    pauseMenu.Activate();
+                    Deactivate();
+                    return;
+                }
+            }
+
             // If there's still space for a player (and we're not online)
-            if (IsStillSpace() && (!PhotonNetwork.connectedAndReady || Input.GetKey(KeyCode.O))) {
+            if (IsStillSpace() && (!PhotonNetwork.connectedAndReady)) {
                 // Look for player inputs
-                _tempPlayer = InputState.AnyButtonOnAnyControllerPressed();
+                _tempPlayer = InputState.AnyMenuButtonOnAnyControllerPressed();
                 if (_tempPlayer != null && !_assignedPlayers.Contains(_tempPlayer)) {
                     // Somehow make sure a player is only assigned once?
                     ActivateCharacter();
@@ -93,15 +102,11 @@ public class CharacterSelect : Menu {
             // Look for input to start game
             if (InputState.GetButtonOnAnyControllerPressed("Start")) {
                 if (pressStartText.activeSelf) {
-                    OpenSetupMenu();
-                }
-            }
-            if (!_gameManager.demoMode && !pressStartText.activeSelf) {
-                if (InputState.GetButtonOnAnyControllerPressed("Pause") && pauseMenu != null) {
-                    // Show menu asking if player really wants to go back
-                    pauseMenu.Activate();
-                    Deactivate();
-                    return;
+                    if (_gameManager.isOnline) {
+                        GetComponent<NetworkedCharacterSelect>().StartTryGameSetup();
+                    } else {
+                        OpenSetupMenu();
+                    }
                 }
             }
 
@@ -128,10 +133,6 @@ public class CharacterSelect : Menu {
         }
 
         Deactivate();
-
-        if (_gameManager.isOnline) {
-            GetComponent<PhotonView>().RPC("GameSetupStart", PhotonTargets.AllBuffered);
-        }
     }
 
     public void ActivateCharacter() {
@@ -181,8 +182,6 @@ public class CharacterSelect : Menu {
             // Clear players from player manager
             _gameManager.playerManager.ClearAllPlayers();
 
-        } else if(_gameManager.isOnline) {
-            GetComponent<PhotonView>().RPC("GameSetupCancel", PhotonTargets.AllBuffered);
         }
     }
 
@@ -209,7 +208,8 @@ public class CharacterSelect : Menu {
         foreach (CSPlayerController player in _players) {
             if (player.inPlayArea && player.underControl) {
                 _controlledPlayers.Add(player);
-                player.underControl = false;
+                player.LoseControl();
+                //player.underControl = false;
             }
         }
     }
@@ -236,7 +236,14 @@ public class CharacterSelect : Menu {
         }
     }
 
-    bool AllPlayersOnBothTeams() {
+    public bool AllPlayersOnBothTeams() {
+        // Just debugging
+        if (PhotonNetwork.connectedAndReady) {
+            if(leftTeam.numPlayers > 0 || rightTeam.numPlayers > 0) {
+                return true;
+            }
+        }
+
         // If any team doesn't have a player
         if (leftTeam.numPlayers == 0 || rightTeam.numPlayers == 0) {
             return false;

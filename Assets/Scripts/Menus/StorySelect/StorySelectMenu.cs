@@ -59,8 +59,10 @@ public class StorySelectMenu : MonoBehaviour {
 
         _worldYPos = worlds[0].transform.localPosition.y;
 
-        // Load saved world
-        LoadSaveData();
+        if (!_gameManager.demoMode) {
+            // Load saved world
+            LoadSaveData();
+        }
     }
 
     void LoadSaveData() {

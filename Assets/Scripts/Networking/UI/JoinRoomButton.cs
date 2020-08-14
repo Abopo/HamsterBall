@@ -4,8 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class JoinRoomButton : MenuButton {
-    public Text roomName;
+    public SuperTextMesh roomName;
     public OnlineLobby onlineLobby;
+
+    public int numPlayers;
+    public int maxPlayers;
 
     // Use this for initialization
     protected override void Start() {
@@ -23,13 +26,15 @@ public class JoinRoomButton : MenuButton {
         GetComponent<Button>().onClick.Invoke();
 
         if (onlineLobby != null) {
-            onlineLobby.JoinRoom(roomName.text);
+            onlineLobby.TryJoinRoom(roomName.text);
         }
     }
 
     public void Click() {
-        if (onlineLobby != null) {
-            onlineLobby.JoinRoom(roomName.text);
+        if (onlineLobby != null && numPlayers < maxPlayers) {
+            onlineLobby.TryJoinRoom(roomName.text);
+        } else {
+
         }
     }
 }

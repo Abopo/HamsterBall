@@ -31,9 +31,9 @@ public class StagePicture : MonoBehaviour {
         locationImagesMP["Airship"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Space");
 
         // Single player images
-        locationImagesSP["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/ForestBoard");
+        locationImagesSP["Forest"] = Resources.Load<Sprite>("Art/UI/Map Select/ForestImage");
         locationImagesSP["Mountain"] = Resources.Load<Sprite>("Art/UI/Map Select/MountainBoard");
-        locationImagesSP["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Beach");
+        locationImagesSP["Beach"] = Resources.Load<Sprite>("Art/UI/Map Select/Beach-Picture");
         locationImagesSP["City"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - City");
         locationImagesSP["Sewers"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Sewers");
         locationImagesSP["Laboratory"] = Resources.Load<Sprite>("Art/UI/Map Select/TwoTubes - Laboratory");

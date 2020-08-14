@@ -429,7 +429,7 @@ public class PlayerController : Entity {
             }
         }
 
-        if(_physics.IsTouchingFloor && _physics.IsOnPassthrough && inputState.down.isJustPressed) {
+        if(_physics.IsTouchingFloor && _physics.IsOnPassthrough && inputState.down.isJustPressed && CurState != PLAYER_STATE.THROW) {
             // Move player slightly downward to pass through certain platforms
             transform.Translate(0f, -0.05f, 0f);
         }

@@ -14,6 +14,8 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
     int _playerLinesReady = 0;
 
+    public List<Bubble> _nextLineBubbles = new List<Bubble>();
+
     private void Awake() {
         _bubbleManager = GetComponent<BubbleManager>();
         _gameManager = FindObjectOfType<GameManager>();
@@ -153,22 +155,22 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
                 Destroy(bub);
 
                 // Finally actually instantiate the networked bubble
-                InstantiateNetworkBubble(_bubbleManager.nodeList[i].nPosition, finalType, _bubbleManager.team, i);
+                InstantiateNetworkBubble(-1, _bubbleManager.nodeList[i].nPosition, finalType, _bubbleManager.team, i);
             }
         } else { // If this rounds starting bubbles have already been decided
             for (int i = 0; i < BubbleManager.startingBubbleInfo.Length; ++i) {
                 // If this node is not supposed to be empty
                 if (BubbleManager.startingBubbleInfo[i].isSet && BubbleManager.startingBubbleInfo[i].type >= 0) {
                     // We've already got all the info so just spawn the damn thing
-                    InstantiateNetworkBubble(_bubbleManager.nodeList[i].nPosition, (int)BubbleManager.startingBubbleInfo[i].type, _bubbleManager.team, i);
+                    InstantiateNetworkBubble(-1, _bubbleManager.nodeList[i].nPosition, (int)BubbleManager.startingBubbleInfo[i].type, _bubbleManager.team, i);
                 }
             }
         }
     }
 
-    public void InstantiateNetworkBubble(Vector3 nodePos, int type, int team, int node) {
+    public void InstantiateNetworkBubble(int id, Vector3 nodePos, int type, int team, int node) {
         object[] data = new object[5];
-        data[0] = -1; // no  player num
+        data[0] = id; // determines how it spawned
         data[1] = type;
         data[2] = false; // will never be plasma at start
         data[3] = team;
@@ -215,8 +217,23 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         _bubbleManager.TryAddLine();
     }
 
-    public void LineAdded() {
+    public void AddLineBubbles() {
         Debug.Log("Line has been added");
+
+        // Add in our line bubbles
+        foreach(Bubble bub in _nextLineBubbles) {
+            // Reactivate the bubble so it is visible
+            bub.gameObject.SetActive(true);
+
+            // Make sure it's the right type
+            bub.SetType((int)bub.type);
+
+            // Add it to our bubble manager
+            bub.HomeBubbleManager.AddBubble(bub, bub.node);
+        }
+
+        // Clear the line bubble list
+        _nextLineBubbles.Clear();
 
         // Tell the master client we've added our line
         photonView.RPC("PlayerLineAdded", PhotonTargets.MasterClient);
@@ -228,22 +245,29 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
         // Once all players are ready
         if(_playerLinesReady >= PhotonNetwork.playerList.Length) {
-            Debug.Log("All player line added, spawn bubbles");
+            Debug.Log("All player line added, spawn next line bubbles");
 
-            SpawnNewLineBubbles();
+            SpawnNextLineBubbles();
         }
     }
 
-    public void SpawnNewLineBubbles() {
+    public void SpawnNextLineBubbles() {
+        // Figure out how long the line should be
+        int lineLength = _bubbleManager.TopLineLength == _bubbleManager.BaseLineLength ? _bubbleManager.BaseLineLength - 1 : _bubbleManager.BaseLineLength;
+
         // Create the network bubbles
-        for (int i = 0; i < _bubbleManager.TopLineLength; ++i, ++_bubbleManager.nextLineIndex) {
-            InstantiateNetworkBubble(_bubbleManager.nodeList[i].nPosition, _bubbleManager.NextLineBubbles[_bubbleManager.nextLineIndex], _bubbleManager.team, i);
+        for (int i = 0; i < lineLength; ++i, ++_bubbleManager.nextLineIndex) {
+            InstantiateNetworkBubble(-2, _bubbleManager.nodeList[i].nPosition, _bubbleManager.NextLineBubbles[_bubbleManager.nextLineIndex], _bubbleManager.team, i);
         }
 
         isBusy = false;
 
         // Send rpc that we've added the bubbles
         photonView.RPC("NewLineProcessFinished", PhotonTargets.Others);
+    }
+
+    public void HoldLineBubble(Bubble lineBubble) {
+        _nextLineBubbles.Add(lineBubble);
     }
 
     [PunRPC]

@@ -47,6 +47,7 @@ public class CSPlayerController : PlayerController {
 
     // Update is called once per frame
     protected override void Update() {
+        // TODO: why do this every frame?
         if (inputState != null) {
             playerInputID = inputState.playerID;
         } else {
@@ -88,6 +89,7 @@ public class CSPlayerController : PlayerController {
             _justChangedState = false;
         } else if (inPlayArea) {
             if (currentState != null) {
+                currentState.CheckInput(inputState);
                 currentState.Update();
             } else {
                 ChangeState(PLAYER_STATE.IDLE);
@@ -183,7 +185,9 @@ public class CSPlayerController : PlayerController {
         shifted = true;
 
         transform.SetParent(null);
-        transform.localScale = _baseScale;
+
+        // Make sure we return to the base scale but don't change facing
+        transform.localScale = new Vector3(_baseScale.x * Mathf.Sign(transform.localScale.x), _baseScale.y);
     }
 
     public void EnterPullDownWindow() {
@@ -229,6 +233,16 @@ public class CSPlayerController : PlayerController {
         inputState.SetPlayer(player);
     }
 
+    public void LoseControl() {
+        // Turn off our ability to get input
+        underControl = false;
+
+        // Reset input state so inputs don't overflow
+        inputState.ResetAllInput();
+
+        // Halt any x velocity
+        velocity.x = 0;
+    }
     public void RegainControl() {
         underControl = true;
         _isInvuln = false;

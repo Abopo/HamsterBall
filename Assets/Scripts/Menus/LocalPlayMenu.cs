@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Rewired;
 
 public class LocalPlayMenu : MonoBehaviour {
@@ -13,9 +14,17 @@ public class LocalPlayMenu : MonoBehaviour {
 
     GameManager _gameManager;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
+
+        // If this is the demo
+        if (_gameManager.demoMode) {
+            // Skip straight to character select
+            SceneManager.LoadScene("PlayableCharacterSelect");
+        }
+    }
+    // Use this for initialization
+    void Start () {
 
         _isActive = true;
 	}

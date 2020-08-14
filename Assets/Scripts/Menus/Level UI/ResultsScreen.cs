@@ -14,7 +14,7 @@ public class ResultsScreen : MonoBehaviour {
     MenuOption[] _menuOptions;
 
     float _winTime = 1f;
-    float _winTimer = 0.0f;
+    float _winTimer = 0.8f;
     bool _canInteract = false;
 
     float _demoWaitTime = 5f;
@@ -99,13 +99,13 @@ public class ResultsScreen : MonoBehaviour {
             winningTeamText.gameObject.SetActive(true);
             if(isContinue) {
                 winningTeamText.text = "Board Clear!";
-                winningTeamText.textMaterial = Resources.Load<Material>("DefaultSTMMaterials/OutlineGreen");
+                winningTeamText.textMaterial = Resources.Load<Material>("Materials/Text/OutlineGreen");
             } else if (result == -1) {
                 winningTeamText.text = "<w=simple>Stage Cleared";
-                winningTeamText.textMaterial = Resources.Load<Material>("DefaultSTMMaterials/OutlineGreen");
+                winningTeamText.textMaterial = Resources.Load<Material>("Materials/Text/OutlineGreen");
             } else {
                 winningTeamText.text = "Stage failed...";
-                winningTeamText.textMaterial = Resources.Load<Material>("DefaultSTMMaterials/OutlineRed");
+                winningTeamText.textMaterial = Resources.Load<Material>("Materials/Text/OutlineRed");
             }
         }
     }
@@ -145,7 +145,7 @@ public class ResultsScreen : MonoBehaviour {
             }
         }
 
-        _winTimer = 0f;
+        _winTimer = 0.8f;
         _canInteract = false;
     }
 
@@ -300,6 +300,9 @@ public class ResultsScreen : MonoBehaviour {
 
         _gameManager.Unpause();
         if (_gameManager.nextLevel != "") {
+            // Hold onto the current level?
+            _gameManager.prevLevel = _gameManager.stageName;
+
             // Load the next level
             _levelManager.GetComponent<BoardLoader>().ReadBoardSetup(_gameManager.nextLevel);
         } else if (_gameManager.nextCutscene != "") {

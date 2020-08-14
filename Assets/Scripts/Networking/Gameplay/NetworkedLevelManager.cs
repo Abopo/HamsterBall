@@ -6,29 +6,34 @@ using UnityEngine.Events;
 using Photon;
 
 public class NetworkedLevelManager : Photon.MonoBehaviour {
+    public GameObject disconnectMessage;
+
     int _masterClientID;
     int _playersReady;
     bool _gameStarted;
 
-    PhotonView _photonView;
+    bool _disconnected;
+    float _disconnectTime = 3f;
+    float _disconnectTimer = 0f;
 
     PlayerManager _playerManager;
     GameCountdown _gameCountdown;
     LevelManager _levelManager;
     NetworkedPlayerSpawner _netPlayerSpawner;
+    GameManager _gameManager;
 
     private void Awake() {
-        _photonView = GetComponent<PhotonView>();
         _playerManager = FindObjectOfType<GameManager>().GetComponent<PlayerManager>();
         _gameCountdown = FindObjectOfType<GameCountdown>();
         _levelManager = GetComponent<LevelManager>();
         _netPlayerSpawner = GetComponent<NetworkedPlayerSpawner>();
+        _gameManager = FindObjectOfType<GameManager>();
     }
     // Use this for initialization
     void Start() {
         FindMasterClient();
 
-        PhotonNetwork.RPC(_photonView, "PlayerReady", PhotonTargets.MasterClient, false);
+        PhotonNetwork.RPC(photonView, "PlayerReady", PhotonTargets.MasterClient, false);
     }
 
     void FindMasterClient() {
@@ -52,26 +57,40 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
                 InitializeGame();
             }
         }
+
+        if(_disconnected && PhotonNetwork.isMasterClient) {
+            _disconnectTimer += Time.unscaledDeltaTime;
+            if(_disconnectTimer >= _disconnectTime) {
+                // Exit out to the character select
+                _gameManager.CharacterSelectButton();
+            }
+        }
     }
 
     // TODO: put this function in a place that makes more sense
     public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer) {
         Debug.Log("Player disconnected, ID: " + otherPlayer.ID);
 
+        _disconnected = true;
+        disconnectMessage.SetActive(true);
+
+        // Pause the game
+        _gameManager.FullPause();
+
         // If the disconnected player was the master client
         if (otherPlayer.ID == _masterClientID) {
-            // TODO: throw up a message saying the host disconnected
-
-            // Leave the room
-            PhotonNetwork.LeaveRoom();
-            SceneManager.LoadScene("OnlineLobby");
+            // Throw up a message saying the host disconnected
+            disconnectMessage.GetComponentInChildren<SuperTextMesh>().text = "Host has disconnected, ending match...";
+        } else {
+            // Throw up a message saying the player disconnected
+            disconnectMessage.GetComponentInChildren<SuperTextMesh>().text = otherPlayer.NickName + " has disconnected, ending match...";
         }
     }
 
     void InitializeGame() {
         _levelManager.LoadStagePrefab();
         _netPlayerSpawner.SpawnNetworkPlayers();
-        PhotonNetwork.RPC(_photonView, "StartGameCountdown", PhotonTargets.AllViaServer, false);
+        PhotonNetwork.RPC(photonView, "StartGameCountdown", PhotonTargets.AllViaServer, false);
     }
 
     // Should only be used by master client

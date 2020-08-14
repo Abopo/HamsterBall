@@ -10,13 +10,15 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     PlayerController _playerController;
     GameObject _childObject;
 
-	// Use this for initialization
-	protected override void Start () {
-        base.Start();
+    protected override void Awake() {
+        base.Awake();
 
         _playerController = FindObjectOfType<PlayerController>();
-
         _childObject = transform.GetChild(0).gameObject;
+    }
+    // Use this for initialization
+    protected override void Start () {
+        base.Start();
 	}
 
     // Update is called once per frame

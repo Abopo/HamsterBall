@@ -34,10 +34,15 @@ public class GameCountdown : MonoBehaviour {
 
         _stage = 0;
 
-        if (!PhotonNetwork.connectedAndReady && autoStart) {
+        _done = false;
+
+        // If this is a continued level
+        if (FindObjectOfType<GameManager>().prevLevel != "") {
+            // Skip the countdown and just start
+            GameStart();
+        } else if (!PhotonNetwork.connectedAndReady && autoStart) {
             StartCoroutine("StartCountdownLater");
         }
-        _done = false;
 	}
 
     IEnumerator StartCountdownLater() {
@@ -56,7 +61,14 @@ public class GameCountdown : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if(_done || !started) {
+        if (Input.GetKeyDown(KeyCode.C)) {
+            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownThree);
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownTwo);
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownOne);
+			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownScramble);
+        }
+
+        if (_done || !started) {
             return;
         }
 

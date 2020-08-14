@@ -38,8 +38,6 @@ public class CharacterIcon : MenuOption {
 
     // Update is called once per frame
     protected override void Update() {
-
-
         if (backer != null) {
             if (!isHighlighted && backer.sprite == _backerHighlighted) {
                 backer.sprite = _backerBase;
