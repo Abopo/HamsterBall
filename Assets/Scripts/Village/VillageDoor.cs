@@ -35,6 +35,7 @@ public class VillageDoor : MonoBehaviour {
 	void Update () {
         if (_isPlayerHere && !_gameManager.isPaused) {
             if (_playerInput.GetButtonDown("Interact")) {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Other Sounds/Door Enter");
                 EnterDoor();
             }
         }
