@@ -53,6 +53,7 @@ public class ResultsScreen : MonoBehaviour {
         }
 
         // Don't allow players to return to the main menu in demo mode
+        /*
         if (mainMenuButton != null && _gameManager.demoMode) {
             mainMenuButton.isReady = false;
             mainMenuButton.gameObject.SetActive(false);
@@ -69,6 +70,7 @@ public class ResultsScreen : MonoBehaviour {
                 _levelManager.NextGame();
             }
         }
+        */
     }
 
     public void SetWinningTeamText(int winTeam) {

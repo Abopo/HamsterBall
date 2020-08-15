@@ -16,6 +16,12 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
     public List<Bubble> _nextLineBubbles = new List<Bubble>();
 
+    int[] _bubbleSyncData;
+    float _syncTime = 3f;
+    float _syncTimer = 0f;
+
+    bool _needToSync = false;
+
     private void Awake() {
         _bubbleManager = GetComponent<BubbleManager>();
         _gameManager = FindObjectOfType<GameManager>();
@@ -26,6 +32,9 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     // Use this for initialization
     void Start () {
         //_gameManager.gameOverEvent.AddListener(SendGameOverCheck);
+        if (PhotonNetwork.isMasterClient) {
+            _bubbleManager.boardChangedEvent.AddListener(SendBoardLayoutCheck);
+        }
 	}
 	
 	// Update is called once per frame
@@ -36,9 +45,48 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
                     // Game is fully over so make sure other players are also ending
                     SendGameOverCheck();
                 }
+            } else {
+                _syncTimer += Time.deltaTime;
+                if(_syncTimer >= _syncTime) {
+                    SendBoardLayoutCheck();
+                    _syncTimer = 0f;
+                }
             }
         }
-	}
+
+        if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.F)) {
+            // Drop some bubbles to test synching
+            int count = 0;
+            for(int i = _bubbleManager.Bubbles.Length-1; i > 0; --i) {
+                if(_bubbleManager.Bubbles[i] != null) {
+                    _bubbleManager.Bubbles[i].Drop();
+                    count++;
+                    if(count >= 3) {
+                        break;
+                    }
+                }
+            }
+        }
+        if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.G)) {
+            // Drop some bubbles to test synching
+            int count = 0;
+            for (int i = _bubbleManager.Bubbles.Length-1; i > 0; --i) {
+                if (_bubbleManager.Bubbles[i] != null) {
+                    _bubbleManager.Bubbles[i].Pop();
+                    count++;
+                    if (count > 3) {
+                        break;
+                    }
+                }
+            }
+        } else {
+            // If we need to sync, wait until the board is stable
+            if(_needToSync && _bubbleManager.BoardIsStable) {
+                SyncViaServerData();
+                _needToSync = false;
+            }
+        }
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
@@ -184,7 +232,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         int i = 0;
         foreach (Node n in _bubbleManager.nodeList) {
             if (n.bubble != null) {
-                bubblesPerNode[i] = (int)n.bubble.type;
+                bubblesPerNode[i] = (int)n.number;
             } else {
                 bubblesPerNode[i] = -1;
             }
@@ -281,25 +329,54 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     // Checks to make sure that the board matches the master client's board.
     [PunRPC]
     void BoardLayoutCheck(int[] boardBubbles) {
+        _bubbleSyncData = boardBubbles;
+        _needToSync = true;
+    }
+
+    void SyncViaServerData() {
         int i = 0;
         foreach (Node n in _bubbleManager.nodeList) {
             // If there shouldn't be a bubble where there currently is one
-            if(boardBubbles[i] == -1 && n.bubble != null) {
+            if (_bubbleSyncData[i] == -1 && n.bubble != null) {
+                Debug.LogError("Bubble exists that shouldn't, popping...");
+
                 // Destroy that bubble
                 n.bubble.Pop();
             }
+
             // If there should be a bubble here but we don't have one
-            if (boardBubbles[i] != -1 && n.bubble == null) {
-                // Make a new bubble
-                GameObject bub = Instantiate(_bubbleObj, n.nPosition, Quaternion.identity) as GameObject;
-                Bubble bubble = bub.GetComponent<Bubble>();
-                _bubbleManager.AddBubble(bubble, n.number);
+            if (_bubbleSyncData[i] != -1 && n.bubble == null) {
+                Debug.LogError("Bubble missing, finding...");
+
+                // Find the bubble, and move it back to position
+                Bubble[] allBubbles = Resources.FindObjectsOfTypeAll(typeof(Bubble)) as Bubble[];
+                foreach (Bubble bub in allBubbles) {
+                    // If we find a matching bubble
+                    if (bub.node == _bubbleSyncData[i] && bub.team == _bubbleManager.team) {
+                        // we need to move this bubble back to it's position and make sure it's set up
+                        bub.gameObject.SetActive(true);
+                        bub.SetType((int)bub.type);
+                        bub.toDestroy = false;
+                        bub.popped = false;
+
+                        bub.GetComponent<BubblePopAnimation>().Cancel();
+
+                        _bubbleManager.AddBubble(bub, bub.node);
+                    }
+                }
+
+                //GameObject bub = Instantiate(_bubbleObj, n.nPosition, Quaternion.identity) as GameObject;
+                //Bubble bubble = bub.GetComponent<Bubble>();
+                //_bubbleManager.AddBubble(bubble, n.number);
             }
+            /*
             // if the bubble here isn't the right type
             if (boardBubbles[i] != (int)n.bubble.type) {
                 // Switch to the correct type
+                Debug.LogError("Bubble type wrong, fixing...");
                 n.bubble.SetType(boardBubbles[i]);
             }
+            */
 
             ++i;
         }

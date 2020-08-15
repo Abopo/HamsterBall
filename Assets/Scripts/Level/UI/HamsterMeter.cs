@@ -204,6 +204,11 @@ public class HamsterMeter : MonoBehaviour {
         }
 
         UpdateStockSprites();
+
+        // Networking
+        if(PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            GetComponent<NetworkedHamsterMeter>().NeedSync();
+        }
     }
 
     void CreateNewStockSprites() {
@@ -367,6 +372,13 @@ public class HamsterMeter : MonoBehaviour {
             foreach (Animator anim in animators) {
                 anim.SetInteger("Type", type);
             }
+        }
+    }
+
+    public void DecreaseStock(int inc) {
+        for(int i = 0; i < inc; ++i) {
+            _stockSprites[_curStock - 1].GetComponent<HamsterStockSprite>().Transparent();
+            _curStock--;
         }
     }
 

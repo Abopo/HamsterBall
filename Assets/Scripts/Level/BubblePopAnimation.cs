@@ -27,7 +27,10 @@ public class BubblePopAnimation : MonoBehaviour {
         if(_popped) {
             _destroyTimer += Time.deltaTime;
             if(_destroyTimer >= _destroyTime) {
-                Destroy(gameObject);
+                GetComponent<Bubble>().DestroySelf();
+                _destroyTimer = 0f;
+                _popped = false;
+                //Destroy(gameObject);
             }
         }
     }
@@ -165,4 +168,22 @@ public class BubblePopAnimation : MonoBehaviour {
         GetComponent<CircleCollider2D>().enabled = false;
     }
 
+
+    // Generally only used to fix networking mistakes
+    public void Cancel() {
+        _popped = false;
+
+        Bubble bub = GetComponent<Bubble>();
+
+        // Turn on normal bubble sprite and collision
+        bub.bubbleAnimator.GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<CircleCollider2D>().enabled = true;
+
+        _hamsterSprite.ResetSprite();
+
+        // Destroy bubble pieces
+        foreach(GameObject gO in _bubblePieces) {
+            Destroy(gO);
+        }
+    }
 }

@@ -807,6 +807,7 @@ public class BubbleManager : MonoBehaviour {
 
         newBubble.node = node;
         newBubble.transform.position = nodeList[node].nPosition;
+        newBubble.locked = true;
 
         // assign adj bubbles
         AssignAdjBubbles(newBubble, node);

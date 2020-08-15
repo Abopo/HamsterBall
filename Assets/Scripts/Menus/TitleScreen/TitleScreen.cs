@@ -22,6 +22,7 @@ public class TitleScreen : MonoBehaviour {
     void Update () {
         _input.GetInput();
         if(_input.AnyButtonPressed()) {
+            /*
             if (_gameManager.demoMode) {
                 // Since it's demo mode make sure the correct stages are unlocked
                 ES3.Save<int>("Forest", 1);
@@ -39,6 +40,10 @@ public class TitleScreen : MonoBehaviour {
                 LoadingScreen.sceneToLoad = "VillageScene";
                 SceneManager.LoadScene("LoadingScreen");
             }
+            */
+            // Load village
+            LoadingScreen.sceneToLoad = "VillageScene";
+            SceneManager.LoadScene("LoadingScreen");
         }
-	}
+    }
 }

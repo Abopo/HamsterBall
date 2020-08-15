@@ -24,13 +24,26 @@ public class NetworkedWaterBubble : MonoBehaviour {
 
     public void InstantiateNetworkBubble(Hamster hamster) {
         object[] data = new object[5];
-        data[0] = null;
+        data[0] = -50;
         data[1] = hamster.type;
         data[2] = hamster.isPlasma;
         data[3] = _waterBubble.team;
         data[4] = GetComponent<PhotonView>().viewID;
         GameObject newBubble = PhotonNetwork.Instantiate("Prefabs/Networking/Bubble_PUN", transform.position, Quaternion.identity, 0, data);
         _waterBubble.CaughtBubble = newBubble.GetComponent<Bubble>();
+    }
+
+    [PunRPC]
+    void CatchHamster(int hamsterNum) {
+        // find the hamster with the same number
+        HamsterScan hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
+        Hamster hamster = hamsterScan.GetHamster(hamsterNum);
+
+        if (hamster != null && !hamster.wasCaught) {
+            // The hamster was caught.
+            hamster.Caught();
+        }
+
     }
 
     [PunRPC]

@@ -171,4 +171,18 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             timer = 0f;
         }
     }
+
+    /*
+    private void OnDestroy() {
+        if (PhotonNetwork.connectedAndReady) {
+            // Only the owner should try and destroy the bubble
+            if (PhotonNetwork.player == photonView.owner) {
+                PhotonNetwork.Destroy(gameObject);
+            } else if (PhotonNetwork.isMasterClient) {
+                photonView.TransferOwnership(PhotonNetwork.masterClient);
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
+    }
+    */
 }

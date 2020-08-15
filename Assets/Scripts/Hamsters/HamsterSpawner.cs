@@ -459,8 +459,6 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     public void ReleaseNextHamster() {
         if (_hamsterLine.Count > 0) {
-            //Debug.Log("Release hamster: " + _hamsterLine[0].type.ToString());
-
             // Make sure the first hamster is valid
             if (_hamsterLine[0] == null) {
                 // Remove the released hamster from the list

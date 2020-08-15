@@ -10,7 +10,6 @@ public class NetworkedBubble : Photon.MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
 	}
 
     void OnPhotonInstantiate(PhotonMessageInfo info) {
@@ -77,7 +76,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
             playerController.heldBall.isPlasma = (bool)photonView.instantiationData[2];
 
         // Otherwise it's parent should be a water bubble
-        } else {
+        } else if (spawnType == -50) {
             // Find the parent water bubble
             PhotonView parentBubble = PhotonView.Find((int)photonView.instantiationData[4]);
             parentBubble.GetComponent<WaterBubble>().CaughtBubble = _bubble;
@@ -148,4 +147,26 @@ public class NetworkedBubble : Photon.MonoBehaviour {
             _bubble.transform.position = _bubble.HomeBubbleManager.nodeList[node].nPosition;
         }
     }
+
+    [PunRPC]
+    void NetworkDrop(int inc) {
+        _bubble.GenerateDropJunk(inc);
+    }
+
+    /*
+    private void OnDestroy() {
+        if (PhotonNetwork.connectedAndReady) {
+            // Only the owner should try and destroy the bubble
+            PhotonView photonView = GetComponent<PhotonView>();
+            if (photonView != null) {
+                if (PhotonNetwork.player == GetComponent<PhotonView>().owner) {
+                    PhotonNetwork.Destroy(gameObject);
+                } else if (PhotonNetwork.isMasterClient) {
+                    GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.masterClient);
+                    PhotonNetwork.Destroy(gameObject);
+                }
+            }
+        }
+    }
+    */
 }

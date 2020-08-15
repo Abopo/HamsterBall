@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour {
         selectedBoard = BOARDS.NUM_STAGES;
         prevLevel = "";
 
-        SetDemoMode(demoMode);
+        //SetDemoMode(demoMode);
 
         isPaused = false;
     }
@@ -324,7 +324,11 @@ public class GameManager : MonoBehaviour {
     }
     public void StoryButton() {
         CleanUp(true);
-        SceneManager.LoadScene("StorySelect");
+        if (demoMode) {
+            SceneManager.LoadScene("StoryMode-Demo");
+        } else {
+            SceneManager.LoadScene("StorySelect");
+        }
     }
     public void MapSelectButton() {
         SceneManager.LoadScene("MapSelectWheel");
@@ -374,6 +378,8 @@ public class GameManager : MonoBehaviour {
             playerManager.ClearAllPlayers();
 
             gameSettings.aimAssistSingleplayer = false;
+
+            selectedBoard = BOARDS.NUM_STAGES;
 
             _levelDoc = "";
             ResetGames();

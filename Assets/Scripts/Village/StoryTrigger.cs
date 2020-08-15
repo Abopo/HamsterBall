@@ -22,14 +22,10 @@ public class StoryTrigger : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Player") {
-            if (_gameManager.demoMode) {
-                SceneManager.LoadScene("StoryMode-Demo");
-            } else {
-                SceneManager.LoadScene("StorySelect");
-            }
-
             // Set the player's respawn point to this door
             _villagePlayerSpawn.SetSpawnPosition(transform.position);
+
+            _gameManager.StoryButton();
         }
     }
 }

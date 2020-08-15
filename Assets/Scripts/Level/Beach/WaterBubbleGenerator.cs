@@ -42,7 +42,8 @@ public class WaterBubbleGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(_levelManager == null || _levelManager.GameOver || _gameManager.gameMode == GAME_MODE.SP_POINTS) {
+        if(_levelManager == null || _levelManager.GameOver || _gameManager.gameMode == GAME_MODE.SP_POINTS || 
+            (_gameManager.gameMode == GAME_MODE.SP_CLEAR && team == 1)) {
             return;
         }
 

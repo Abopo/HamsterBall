@@ -237,12 +237,14 @@ public class CharacterSelect : Menu {
     }
 
     public bool AllPlayersOnBothTeams() {
+#if UNITY_EDITOR
         // Just debugging
         if (PhotonNetwork.connectedAndReady) {
             if(leftTeam.numPlayers > 0 || rightTeam.numPlayers > 0) {
                 return true;
             }
         }
+#endif
 
         // If any team doesn't have a player
         if (leftTeam.numPlayers == 0 || rightTeam.numPlayers == 0) {
