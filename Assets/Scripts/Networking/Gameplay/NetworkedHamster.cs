@@ -45,6 +45,12 @@ public class NetworkedHamster : Photon.MonoBehaviour {
             }
         }
 
+        // If this hamster was spawned from a special ball
+        if((bool)_photonView.instantiationData[5]) {
+            // Mark it as "special"
+            _hamster.special = true;
+        }
+
         _hamster.hamsterNum = HamsterSpawner.nextHamsterNum++;
 
         // If it spawned from a pipe
@@ -121,23 +127,6 @@ public class NetworkedHamster : Photon.MonoBehaviour {
         }
     }
 
-    void CorrectFacing(int facing) {
-        switch(facing) {
-            case 0: // Right
-                _hamster.FaceRight();
-                break;
-            case 1: // Down
-                _hamster.FaceDown();
-                break;
-            case 2: // Left
-                _hamster.FaceLeft();
-                break;
-            case 3: // Up
-                _hamster.FaceUp();
-                break;
-        }
-    }
-
     // Update is called once per frame
     void Update() {
         if (!_hamster.inLine && !PhotonNetwork.isMasterClient) {
@@ -154,17 +143,17 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                     if(_hamster.exitedPipe != _exitedPipe) {
                         _hamster.exitedPipe = _exitedPipe;
                     }
-                }
 
-                if (_hamster.curFacing != corFacing) {
-                    //Debug.Log("Correcting hamster facing from " + _hamster.curFacing + " to " + corFacing + ".");
-                    CorrectFacing(corFacing);
-                }
+                    if (_hamster.curFacing != corFacing) {
+                        //Debug.Log("Correcting hamster facing from " + _hamster.curFacing + " to " + corFacing + ".");
+                        CorrectFacing(corFacing);
+                    }
 
-                // synch the state
-                if (_hamsterState != _hamster.CurState) {
-                    //Debug.Log("Correcting hamster state from " + _hamster.CurState + " to " + _hamsterState + ".");
-                    _hamster.SetState(_hamsterState);
+                    // synch the state
+                    if (_hamsterState != _hamster.CurState) {
+                        //Debug.Log("Correcting hamster state from " + _hamster.CurState + " to " + _hamsterState + ".");
+                        _hamster.SetState(_hamsterState);
+                    }
                 }
             }
         } else {
@@ -172,17 +161,34 @@ public class NetworkedHamster : Photon.MonoBehaviour {
         }
     }
 
-    /*
+    void CorrectFacing(int facing) {
+        switch (facing) {
+            case 0: // Right
+                _hamster.FaceRight();
+                break;
+            case 1: // Down
+                _hamster.FaceDown();
+                break;
+            case 2: // Left
+                _hamster.FaceLeft();
+                break;
+            case 3: // Up
+                _hamster.FaceUp();
+                break;
+        }
+    }
+
     private void OnDestroy() {
         if (PhotonNetwork.connectedAndReady) {
-            // Only the owner should try and destroy the bubble
-            if (PhotonNetwork.player == photonView.owner) {
-                PhotonNetwork.Destroy(gameObject);
-            } else if (PhotonNetwork.isMasterClient) {
-                photonView.TransferOwnership(PhotonNetwork.masterClient);
+            Debug.Log("Network destroy hamster");
+
+            // Only the master client should try and destroy things
+             if (PhotonNetwork.isMasterClient) {
+                if (PhotonNetwork.player != photonView.owner) {
+                    photonView.TransferOwnership(PhotonNetwork.masterClient);
+                }
                 PhotonNetwork.Destroy(gameObject);
             }
         }
     }
-    */
 }

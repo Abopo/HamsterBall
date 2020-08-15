@@ -470,6 +470,9 @@ namespace Photon
     /// </summary>
     public class MonoBehaviour : UnityEngine.MonoBehaviour
     {
+        /// Used to determine if this object has already been network destroyed
+        public bool wasDestroyed = false;
+
         /// <summary>Cache field for the PhotonView on this GameObject.</summary>
         private PhotonView pvCache = null;
 

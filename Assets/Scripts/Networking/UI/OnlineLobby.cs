@@ -138,6 +138,8 @@ public class OnlineLobby : MonoBehaviour {
     }
 
     public void OnReceivedRoomListUpdate() {
+        Debug.Log("Room list update");
+
         foreach(GameObject gO in rooms) {
             Destroy(gO);
         }

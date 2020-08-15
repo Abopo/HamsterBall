@@ -180,7 +180,7 @@ public class WaterBubble : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady) {
             if (PhotonNetwork.isMasterClient) {
                 // Make sure we destroy ourselves on the network
-                PhotonNetwork.Destroy(this.gameObject);
+                PhotonNetwork.Destroy(gameObject);
             }
         } else {
             // Destroy self

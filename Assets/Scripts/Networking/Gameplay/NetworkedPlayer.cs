@@ -360,7 +360,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         _playerController.StartShift();
     }
 
-    /*
     private void OnDestroy() {
         if (PhotonNetwork.connectedAndReady) {
             // TODO: this is the quick fix for now, maybe update to be better
@@ -368,17 +367,13 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
                 return;
             }
 
-            // Only the owner should try and destroy the bubble
-            PhotonView photonView = GetComponent<PhotonView>();
-            if (photonView != null) {
-                if (PhotonNetwork.player == GetComponent<PhotonView>().owner) {
-                    PhotonNetwork.Destroy(gameObject);
-                } else if (PhotonNetwork.isMasterClient) {
-                    GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.masterClient);
-                    PhotonNetwork.Destroy(gameObject);
+            // Only the master client should try and destroy things
+            if (PhotonNetwork.isMasterClient) {
+                if (PhotonNetwork.player != photonView.owner) {
+                    photonView.TransferOwnership(PhotonNetwork.masterClient);
                 }
+                PhotonNetwork.Destroy(gameObject);
             }
         }
     }
-    */
 }

@@ -50,7 +50,7 @@ public class NetworkedWaterBubble : MonoBehaviour {
     public void DropNetworkHamster() {
         if (_waterBubble.CaughtBubble != null) {
             // Set up instantiation data
-            object[] hamsterInfo = new object[5];
+            object[] hamsterInfo = new object[6];
             hamsterInfo[0] = true; // has exited pipe
             hamsterInfo[1] = false; // inRightPipe (doesn't matter here)
             hamsterInfo[2] = _waterBubble.team; // the team
@@ -58,6 +58,7 @@ public class NetworkedWaterBubble : MonoBehaviour {
             // Set the correct type
             hamsterInfo[3] = _waterBubble.CaughtBubble.type;
             hamsterInfo[4] = _waterBubble.CaughtBubble.isPlasma;
+            hamsterInfo[5] = false;
 
             // Use the network instantiate method
             PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", _waterBubble.CaughtBubble.transform.position, Quaternion.identity, 0, hamsterInfo);

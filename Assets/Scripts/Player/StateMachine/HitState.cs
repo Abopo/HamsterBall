@@ -81,7 +81,7 @@ public class HitState : PlayerState {
 
     void DropNetworkHamster() {
         // Set up instantiation data
-        object[] hamsterInfo = new object[5];
+        object[] hamsterInfo = new object[6];
         hamsterInfo[0] = true; // has exited pipe
         hamsterInfo[1] = false; // inRightPipe (doesn't matter here)
         
@@ -95,6 +95,7 @@ public class HitState : PlayerState {
         // Set the correct type
         hamsterInfo[3] = playerController.heldBall.type;
         hamsterInfo[4] = playerController.heldBall.isPlasma;
+        hamsterInfo[5] = false;
 
         // Use the network instantiate method
         PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", playerController.heldBall.transform.position, Quaternion.identity, 0, hamsterInfo);

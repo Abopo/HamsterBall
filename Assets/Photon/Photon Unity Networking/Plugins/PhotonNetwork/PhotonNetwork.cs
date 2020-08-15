@@ -2744,7 +2744,12 @@ public static class PhotonNetwork
     /// <returns>Nothing. Check error debug log for any issues.</returns>
     public static void Destroy(GameObject targetGo)
     {
-        networkingPeer.RemoveInstantiatedGO(targetGo, !inRoom);
+        Photon.MonoBehaviour obj = targetGo.GetComponent<Photon.MonoBehaviour>();
+
+        if (obj != null && !obj.wasDestroyed) {
+            networkingPeer.RemoveInstantiatedGO(targetGo, !inRoom);
+            obj.wasDestroyed = true;
+        }
     }
 
     /// <summary>

@@ -146,17 +146,18 @@ public class InputState {
         return null;
     }
     public static Player AnyMenuButtonOnAnyControllerPressed() {
+        Player inputPlayer = null;
         foreach (Player player in ReInput.players.Players) {
             player.controllers.maps.SetMapsEnabled(false, "Default");
 
-            if (player.GetAnyButtonDown()) {
-                return player;
+            if (player.GetAnyButtonDown() && inputPlayer == null) {
+                inputPlayer = player;
             }
 
-            player.controllers.maps.SetAllMapsEnabled(true);
+            player.controllers.maps.SetMapsEnabled(true, "Default");
         }
 
-        return null;
+        return inputPlayer;
     }
     public static bool GetButtonOnAnyControllerPressed(string button) {
         foreach(Player player in ReInput.players.AllPlayers) {
