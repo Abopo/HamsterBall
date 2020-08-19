@@ -383,13 +383,13 @@ public class Bubble : MonoBehaviour {
         }
 		if (other.gameObject.tag == "Bubble") {
 			if(!locked && other.transform.GetComponent<Bubble>().locked) {
-                if (!PhotonNetwork.connectedAndReady || (GetComponent<PhotonView>().owner == PhotonNetwork.player)) {
+                //if (!PhotonNetwork.connectedAndReady || PhotonNetwork.isMasterClient) {
                     CollisionWithBoard(other.transform.GetComponent<Bubble>()._homeBubbleManager);
-                } else {
+                //} else {
                     // Stop moving and sit in place.
-                    _velocity = Vector2.zero;
-                    locked = true;
-                }
+                //    _velocity = Vector2.zero;
+                //    locked = true;
+                //}
             }
 		}
         if(other.gameObject.tag == "Ceiling" && !locked) {
@@ -422,7 +422,7 @@ public class Bubble : MonoBehaviour {
             }
         } else {
             if(PhotonNetwork.isMasterClient) {
-                GetComponent<PhotonView>().RPC("NetworkDrop", PhotonTargets.Others, inc);
+                GetComponent<PhotonView>().RPC("NetworkDrop", PhotonTargets.All, inc);
             }
         }
     }
@@ -464,15 +464,15 @@ public class Bubble : MonoBehaviour {
 
         _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
 
-        if (!PhotonNetwork.connectedAndReady) {
-            _homeBubbleManager.AddBubble(this);
-        } else if (GetComponent<PhotonView>().owner == PhotonNetwork.player) { // if we own this bubble
-            _homeBubbleManager.AddBubble(this);
-            GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, team, node);
+        _homeBubbleManager.AddBubble(this);
+
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             // Make sure the owner is the master client
             GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.masterClient);
+            _homeBubbleManager.boardChangedEvent.AddListener(GetComponent<NetworkedBubble>().SendSynchCheck);
+            //GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, team, node);
         }
-        
+
         // Loop through adjbubbles to see if we connected with a matching color
         bool sameType = false;
         foreach (Bubble bub in adjBubbles) {
@@ -888,6 +888,9 @@ public class Bubble : MonoBehaviour {
     }
 
     public bool IsAnchorPoint() {
+        if(_homeBubbleManager == null) {
+            _homeBubbleManager = FindHomeBubbleManager();
+        }
 		if (node < _homeBubbleManager.TopLineLength) {
 			return true;
 		}
@@ -1192,6 +1195,20 @@ public class Bubble : MonoBehaviour {
 
     public void AddForce(Vector2 force) {
         _velocity += force;
+    }
+
+    BubbleManager FindHomeBubbleManager() {
+        BubbleManager homeBubMan = null;
+
+        BubbleManager[] bubManagers = FindObjectsOfType<BubbleManager>();
+        foreach (BubbleManager bMan in bubManagers) {
+            if (bMan.team == team) {
+                homeBubMan = bMan;
+                break;
+            }
+        }
+
+        return homeBubMan;
     }
 
     public void DestroySelf() {

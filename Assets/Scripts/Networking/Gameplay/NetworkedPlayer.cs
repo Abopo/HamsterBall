@@ -318,21 +318,25 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     [PunRPC]
-    void ThrowBubble(Quaternion arrowRot) {
+    void ThrowBubble(Vector3 playerPos, Quaternion arrowRot) {
+        // We need to make sure the player is in exactly the right position when they throw
+        _playerController.transform.position = playerPos;
+
+        // Then throw the bubble
         ThrowState throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
         throwState.aimingArrow.localRotation = arrowRot;
         throwState.StartThrow();
     }
 
     [PunRPC]
-    void TryThrowBubble(Quaternion arrowRot) {
+    void TryThrowBubble(Vector3 playerPos, Quaternion arrowRot) {
         // Only the master client can check
         if (PhotonNetwork.isMasterClient) {
             // Check if the player has been punched or not
             // If we're still in the throw state we're good
             if (_playerController.CurState == PLAYER_STATE.THROW) {
                 // Send back the confirmation
-                GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.All, arrowRot);
+                GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.All, playerPos, arrowRot);
 
                 // If we've been knocked out of the throw state
             } else {

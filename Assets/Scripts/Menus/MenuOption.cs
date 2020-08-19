@@ -46,7 +46,7 @@ public class MenuOption : MonoBehaviour {
             _player = ReInput.players.GetPlayer(0);
         }
 
-        FindAdjOptions();
+        //FindAdjOptions();
 
         if (isFirstSelection) {
             isHighlighted = true;
@@ -58,13 +58,13 @@ public class MenuOption : MonoBehaviour {
             isHighlighted = false;
             _justHighlighted = false;
         }
-
-        _allOtherOptions = FindObjectsOfType<MenuOption>();
     }
 
     // Use this for initialization
     protected virtual void Start () {
         //_selectedPos = transform.position;
+
+        _allOtherOptions = FindObjectsOfType<MenuOption>();
     }
 
     public void SetParentMenu(Menu parentMenu) {
@@ -72,6 +72,11 @@ public class MenuOption : MonoBehaviour {
     }
 
     public void FindAdjOptions() {
+        // if we're finding new options make sure our option list is empty
+        for(int i = 0; i < 4; ++i) {
+            adjOptions[0] = null;
+        }
+
         // automatically fill in adj options via selectable component
         Selectable _selectable = GetComponent<Selectable>();
         if(_selectable == null) {
@@ -214,12 +219,14 @@ public class MenuOption : MonoBehaviour {
     MenuOption FindValidOption(int index) {
         MenuOption validOption = adjOptions[index];
 
-        while(validOption != null) {
+        int breakCount = 0;
+        while(validOption != null && breakCount < 10) {
             if(validOption.IsReady) {
                 break;
             }
 
             validOption = validOption.adjOptions[index];
+            breakCount++;
         }
 
         return validOption;

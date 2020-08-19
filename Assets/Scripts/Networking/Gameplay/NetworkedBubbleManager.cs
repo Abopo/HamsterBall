@@ -17,7 +17,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     public List<Bubble> _nextLineBubbles = new List<Bubble>();
 
     int[] _bubbleSyncData;
-    float _syncTime = 3f;
+    float _syncTime = 1.5f;
     float _syncTimer = 0f;
 
     bool _needToSync = false;
@@ -45,12 +45,14 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
                     // Game is fully over so make sure other players are also ending
                     SendGameOverCheck();
                 }
-            } else {
+            } else if(_bubbleManager.BoardIsStable) {
                 _syncTimer += Time.deltaTime;
                 if(_syncTimer >= _syncTime) {
                     SendBoardLayoutCheck();
                     _syncTimer = 0f;
                 }
+            } else {
+                _syncTimer = 0f;
             }
         }
 
@@ -285,6 +287,9 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
         // Tell the master client we've added our line
         photonView.RPC("PlayerLineAdded", PhotonTargets.MasterClient);
+
+        // We've finished adding the line, so it should be safe to set the board to stable
+        isBusy = false;
     }
 
     [PunRPC]
@@ -329,19 +334,41 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     // Checks to make sure that the board matches the master client's board.
     [PunRPC]
     void BoardLayoutCheck(int[] boardBubbles) {
-        _bubbleSyncData = boardBubbles;
-        _needToSync = true;
+        if(_bubbleManager.BoardIsStable && _bubbleManager.linesToAdd == 0 && !isBusy) {
+            _bubbleSyncData = boardBubbles;
+            SyncViaServerData();
+        } else {
+            Debug.Log("Board busy scync canceled.");
+        }
+        //_bubbleSyncData = boardBubbles;
+        //_needToSync = true;
     }
 
     void SyncViaServerData() {
+        Debug.Log("Syncing bubble manager");
+
         int i = 0;
         foreach (Node n in _bubbleManager.nodeList) {
             // If there shouldn't be a bubble where there currently is one
             if (_bubbleSyncData[i] == -1 && n.bubble != null) {
-                Debug.LogError("Bubble exists that shouldn't, popping...");
+                Debug.LogError("Bubble exists at node #" + n.number + " that shouldn't, fixing...");
 
-                // Destroy that bubble
-                n.bubble.Pop();
+                // If the bubble this node thinks it has, is actually at a different node
+                foreach(Bubble bub in _bubbleManager.Bubbles) {
+                    if(bub != null && bub == n.bubble) {
+                        if(bub.node != n.number) {
+                            // just remove it from this node
+                            n.bubble = null;
+
+                            Debug.Log("Removed bubble from node #" + n.number);
+                        }
+                    }
+                }
+
+                // This is maybe too dangerous, maybe instead just move them or hide them
+                // hide that bubble
+                //n.bubble.gameObject.SetActive(false);
+                //n.bubble.Pop();
             }
 
             // If there should be a bubble here but we don't have one
@@ -364,6 +391,9 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
                         _bubbleManager.AddBubble(bub, bub.node);
                     }
                 }
+
+                // Make sure to check for anchors after moving the bubbles
+                _bubbleManager.boardChangedEvent.Invoke();
 
                 //GameObject bub = Instantiate(_bubbleObj, n.nPosition, Quaternion.identity) as GameObject;
                 //Bubble bubble = bub.GetComponent<Bubble>();

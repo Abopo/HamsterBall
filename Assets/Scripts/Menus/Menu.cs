@@ -39,7 +39,9 @@ public class Menu : MonoBehaviour {
 
     // Start is called before the first frame update
     protected virtual void Start() {
-
+        if(_menuOptions.Length == 0) {
+            GetChildOptions();
+        }
     }
 
     // Update is called once per frame
@@ -160,6 +162,10 @@ public class Menu : MonoBehaviour {
 
     IEnumerator EnableButtonsLater() {
         yield return null;
+
+        if(_menuOptions != null && _menuOptions.Length == 0) {
+            GetChildOptions();
+        }
 
         if (_menuOptions != null) {
             foreach (MenuOption mO in _menuOptions) {

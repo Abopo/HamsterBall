@@ -43,9 +43,10 @@ public class ShopPage : Menu {
         base.Start();
 
         // Run back through the items to properly set their adjacent options
-        for (int i = 0; i < _items.Count; ++i) {
-            _items[i].FindAdjOptions();
-        }
+        //for (int i = 0; i < _items.Count; ++i) {
+        //    _items[i].FindAdjOptions();
+        //}
+
         // For some reason the bottom items adj options aren't accurate
         _items[_items.Count - 1].adjOptions[1] = null;
 
@@ -58,12 +59,12 @@ public class ShopPage : Menu {
         }
 
         // If we don't have focus don't show our content
-        if(!hasFocus) {
-            HideContent();
-        } else {
+        //if(!hasFocus) {
+        //    HideContent();
+        //} else {
             // Make sure we can see our content
-            ShowContent();
-        }
+        //    ShowContent();
+        //}
     }
 
     protected void CreateShopItems(List<ItemInfo> shopData) {
@@ -129,6 +130,12 @@ public class ShopPage : Menu {
         }
     }
 
+    public void InitializeOptions() {
+        foreach(MenuOption mO in _items) {
+            mO.FindAdjOptions();
+        }
+    }
+
     // Update is called once per frame
     protected override void Update() {
         base.Update();
@@ -162,7 +169,7 @@ public class ShopPage : Menu {
         ShowContent();
     }
 
-    void ShowContent() {
+    public void ShowContent() {
         // Turn on content
         content.gameObject.SetActive(true);
 

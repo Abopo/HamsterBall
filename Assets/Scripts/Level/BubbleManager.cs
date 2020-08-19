@@ -119,7 +119,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
 
-    int linesToAdd = 0;
+    public int linesToAdd = 0;
 
     Vector3 _initialPos;
     bool _isShaking;
@@ -697,9 +697,6 @@ public class BubbleManager : MonoBehaviour {
         }
 
         if ((_justAddedBubble || _justRemovedBubble) && _boardIsStable) {
-
-            CheckBubbleAnchors();
-
             boardChangedEvent.Invoke();
             _justAddedBubble = false;
             _justRemovedBubble = false;
@@ -1191,6 +1188,10 @@ public class BubbleManager : MonoBehaviour {
     void OnBoardChanged() {
         //Debug.Log("Board has changed");
 
+        CheckBubbleAnchors();
+
+        CheckSecondToLastRow();
+
         // If we have AI
         // TODO: maybe only do this if THIS side's players are ai
         if (_gameManager.playerManager.AreAI) {
@@ -1207,8 +1208,6 @@ public class BubbleManager : MonoBehaviour {
 
             GetLowestLine();
         }
-
-        CheckSecondToLastRow();
     }
 
     // Drop potentials are used by the AI to determine how many bubbles will drop if a particular bubble is popped.

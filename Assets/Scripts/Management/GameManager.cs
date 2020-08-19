@@ -313,6 +313,7 @@ public class GameManager : MonoBehaviour {
 
     public void CharacterSelectButton() {
         CleanUp(true);
+        isSinglePlayer = false;
 
         if (PhotonNetwork.connectedAndReady) {
             isOnline = true;
