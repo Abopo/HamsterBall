@@ -78,18 +78,24 @@ public class ResultsScreen : MonoBehaviour {
             if (winningTeamText != null) {
                 winningTeamText.text = "Left Team Wins!";
             }
-            winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[5];
+            if (winningTeamSprite != null) {
+                winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[5];
+            }
         } else if(winTeam == 1) {
             if (winningTeamText != null) {
                 winningTeamText.text = "Right Team Wins!";
             }
-            winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[9];
+            if (winningTeamSprite != null) {
+                winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[9];
+            }
         } else {
             if (winningTeamText != null) {
                 winningTeamText.text = "Draw";
             }
-            winningTeamText.gameObject.SetActive(true);
-            winningTeamSprite.enabled = false;
+            if (winningTeamSprite != null) {
+                winningTeamText.gameObject.SetActive(true);
+                winningTeamSprite.enabled = false;
+            }
         }
     }
 

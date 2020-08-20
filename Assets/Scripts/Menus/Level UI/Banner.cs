@@ -6,7 +6,6 @@ public class Banner : MonoBehaviour {
 
     public int team;
     public SpriteRenderer banner;
-    public SpriteRenderer end;
 
     bool _moving;
     float _moveSpd = -10f;
@@ -20,14 +19,14 @@ public class Banner : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start() {
-        _bannerSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Victory-Lose-Test-Banners");
+        _bannerSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Victory-Lose-Banners");
     }
 
     // Update is called once per frame
     void Update() {
         if(_moving) {
             transform.Translate(0f, _moveSpd * Time.deltaTime, 0f);
-            if (transform.position.y < 0) {
+            if (transform.localPosition.y < 3.75f) {
                 EndFall();
             } else if (transform.position.y < 6) {
                 _gameEndSequence.ShiftSecondPlayers();
@@ -41,19 +40,15 @@ public class Banner : MonoBehaviour {
         // Left Team
         if (team == 0) {
             if (won) {
-                banner.sprite = _bannerSprites[6];
-                end.sprite = _bannerSprites[7];
+                banner.sprite = _bannerSprites[3];
             } else {
-                banner.sprite = _bannerSprites[4];
-                end.sprite = _bannerSprites[5];
+                banner.sprite = _bannerSprites[2];
             }
         } else if(team == 1) {
             if (won) {
-                banner.sprite = _bannerSprites[2];
-                end.sprite = _bannerSprites[3];
+                banner.sprite = _bannerSprites[1];
             } else {
                 banner.sprite = _bannerSprites[0];
-                end.sprite = _bannerSprites[1];
             }
         }
     }
@@ -64,7 +59,7 @@ public class Banner : MonoBehaviour {
 
     void EndFall() {
         _moving = false;
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        transform.position = new Vector3(transform.position.x, 3.75f, transform.position.z);
 
         _gameEndSequence.FinishSequence();
     }

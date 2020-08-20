@@ -137,9 +137,9 @@ public class CSPlayerController : PlayerController {
                 // Create AI Player
                 _charaSelect.ActivateAI(characterSelector);
 
-                // Control AI player
-                //characterSelector.ControlNextAI();
+                // Disable controls
                 underControl = false;
+                inputState.ResetAllInput();
 
                 // Set to invulnerable so they can't be messed with
                 _isInvuln = true;

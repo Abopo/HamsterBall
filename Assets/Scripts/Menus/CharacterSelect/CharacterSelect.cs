@@ -93,7 +93,7 @@ public class CharacterSelect : Menu {
             // If there's still space for a player (and we're not online)
             if (IsStillSpace() && (!PhotonNetwork.connectedAndReady)) {
                 // Look for player inputs
-                _tempPlayer = InputState.AnyMenuButtonOnAnyControllerPressed();
+                _tempPlayer = InputState.PlayerActivateInput();
                 if (_tempPlayer != null && !_assignedPlayers.Contains(_tempPlayer)) {
                     // Somehow make sure a player is only assigned once?
                     ActivateCharacter();
@@ -282,7 +282,7 @@ public class CharacterSelect : Menu {
 
     public void RemovePlayer(Player player) {
         _assignedPlayers.Remove(player);
-        _waitFrames = 0;
+        _waitFrames = -5;
     }
 
     public bool IsStillSpace() {
