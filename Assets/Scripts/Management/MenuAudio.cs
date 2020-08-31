@@ -31,11 +31,13 @@ public class MenuAudio : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	    if(Input.GetKeyDown(KeyCode.M)) {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.M)) {
             Debug.Log("Force stop music");
             SoundManager.mainAudio.MasterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
             SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
+#endif
     }
 
     void OnSceneLoaded(Scene currentScene, Scene newScene) {

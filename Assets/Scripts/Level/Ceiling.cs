@@ -5,9 +5,10 @@ using UnityEngine;
 public class Ceiling : MonoBehaviour {
     public int team;
     public BubbleManager bubbleManager;
+    public bool bigCeiling;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         GameObject tempBubbleObj = null;
 		if(team == 0) {
             tempBubbleObj = GameObject.FindGameObjectWithTag("BubbleManager1");
@@ -17,6 +18,11 @@ public class Ceiling : MonoBehaviour {
 
         if(tempBubbleObj != null) {
             bubbleManager = tempBubbleObj.GetComponent<BubbleManager>();
+            bubbleManager.ceiling = transform;
+        }
+
+        if(bigCeiling && !FindObjectOfType<GameManager>().isSinglePlayer) {
+            gameObject.SetActive(false);
         }
     }
 	

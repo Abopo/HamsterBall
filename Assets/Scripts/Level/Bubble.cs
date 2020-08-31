@@ -187,9 +187,12 @@ public class Bubble : MonoBehaviour {
             }
         }
 
+#if UNITY_EDITOR
         if(Input.GetKeyDown(KeyCode.U)) {
             BoardChanged();
         }
+#endif
+
     }
 
     private void FixedUpdate() {
@@ -1217,7 +1220,7 @@ public class Bubble : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady) {
             // Only the owner should try and destroy the bubble
             if (PhotonNetwork.player == GetComponent<NetworkedBubble>().photonView.owner) {
-                Debug.Log("Network destroy bubble 1");
+                //Debug.Log("Network destroy bubble 1");
                 PhotonNetwork.Destroy(gameObject);
             } else {
                 // if we're not the owner, don't destroy it, but just deactivate it

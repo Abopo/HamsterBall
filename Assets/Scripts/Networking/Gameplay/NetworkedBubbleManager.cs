@@ -34,8 +34,15 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         //_gameManager.gameOverEvent.AddListener(SendGameOverCheck);
         if (PhotonNetwork.isMasterClient) {
             _bubbleManager.boardChangedEvent.AddListener(SendBoardLayoutCheck);
+
+            // Spawn a few lines worth of bubbles
+            SpawnNextLineBubbles();
+            SpawnNextLineBubbles();
+            SpawnNextLineBubbles();
+            SpawnNextLineBubbles();
+            SpawnNextLineBubbles();
         }
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -56,14 +63,15 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
             }
         }
 
-        if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.F)) {
+#if UNITY_EDITOR
+        if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.F)) {
             // Drop some bubbles to test synching
             int count = 0;
             for(int i = _bubbleManager.Bubbles.Length-1; i > 0; --i) {
                 if(_bubbleManager.Bubbles[i] != null) {
                     _bubbleManager.Bubbles[i].Drop();
                     count++;
-                    if(count >= 3) {
+                    if(count >= 10) {
                         break;
                     }
                 }
@@ -81,13 +89,9 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
                     }
                 }
             }
-        } else {
-            // If we need to sync, wait until the board is stable
-            if(_needToSync && _bubbleManager.BoardIsStable) {
-                SyncViaServerData();
-                _needToSync = false;
-            }
         }
+#endif
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
@@ -271,25 +275,48 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         Debug.Log("Line has been added");
 
         // Add in our line bubbles
-        foreach(Bubble bub in _nextLineBubbles) {
+        if(_nextLineBubbles.Count <= 0) {
+            Debug.LogError("Uhoh no line bubbles ready");
+            if(PhotonNetwork.isMasterClient) {
+                SpawnNextLineBubbles();
+            }
+        }
+
+        int count = 0;
+        for(int i = 0; i < _bubbleManager.TopLineLength; ++i) {
             // Reactivate the bubble so it is visible
-            bub.gameObject.SetActive(true);
+            _nextLineBubbles[i].gameObject.SetActive(true);
 
             // Make sure it's the right type
-            bub.SetType((int)bub.type);
+            _nextLineBubbles[i].SetType((int)_nextLineBubbles[i].type);
 
             // Add it to our bubble manager
-            bub.HomeBubbleManager.AddBubble(bub, bub.node);
+            _nextLineBubbles[i].HomeBubbleManager.AddBubble(_nextLineBubbles[i], i);
+
+            count++;
         }
 
         // Clear the line bubble list
-        _nextLineBubbles.Clear();
+        _nextLineBubbles.RemoveRange(0, count);
 
         // Tell the master client we've added our line
         photonView.RPC("PlayerLineAdded", PhotonTargets.MasterClient);
 
+        if(PhotonNetwork.isMasterClient) {
+            // Delay the bubble updates so line adding is smoother
+            DelayBubbleUpdates();
+        }
+
         // We've finished adding the line, so it should be safe to set the board to stable
         isBusy = false;
+    }
+
+    void DelayBubbleUpdates() {
+        foreach(Bubble bub in _bubbleManager.Bubbles) {
+            if (bub != null) {
+                bub.GetComponent<NetworkedBubble>().DelaySyncCheck(3);
+            }
+        }
     }
 
     [PunRPC]
@@ -310,6 +337,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
         // Create the network bubbles
         for (int i = 0; i < lineLength; ++i, ++_bubbleManager.nextLineIndex) {
+            // TODO: Got a an index out of range here
             InstantiateNetworkBubble(-2, _bubbleManager.nodeList[i].nPosition, _bubbleManager.NextLineBubbles[_bubbleManager.nextLineIndex], _bubbleManager.team, i);
         }
 
@@ -416,6 +444,35 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         // TODO: this won't handle draws
         int result = _bubbleManager.wonGame ? 1 : -1;
         photonView.RPC("GameOverCheck", PhotonTargets.Others, result);
+    }
+
+    public void SendLostMessage() {
+        // Try and make sure the board is synched
+        SendBoardLayoutCheck();
+
+        photonView.RPC("WeDied", PhotonTargets.Others);
+    }
+
+    [PunRPC]
+    void WeDied() {
+        // We have lost the game, petrify the bubbles
+        bool bottomLine = _bubbleManager.CheckBottomLine();
+        // if for some reason we still don't have a bubble on the bottom line
+        if(!bottomLine) {
+            // just petrify something
+            for(int i = _bubbleManager.Bubbles.Length-1; i > 0; --i) {
+                if(_bubbleManager.Bubbles[i] != null) {
+                    StartCoroutine(_bubbleManager.Bubbles[i].Petrify());
+                    break;
+                }
+            }
+        }
+
+        _bubbleManager.GameEndingSequence = true;
+
+        // TODO: handle ties
+        // End the game
+        _bubbleManager.EndGame(-1);
     }
 
     [PunRPC]

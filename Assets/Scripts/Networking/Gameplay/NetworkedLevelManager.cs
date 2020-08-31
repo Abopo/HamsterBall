@@ -16,6 +16,9 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
     float _disconnectTime = 3f;
     float _disconnectTimer = 0f;
 
+    float _gameCountdownStartTime = 3f;
+    float _gameCountdownStartTimer = 0f;
+
     PlayerManager _playerManager;
     GameCountdown _gameCountdown;
     LevelManager _levelManager;
@@ -71,6 +74,16 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
     public void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer) {
         Debug.Log("Player disconnected, ID: " + otherPlayer.ID);
 
+        // If the player was not a spectator
+        foreach(NetworkedPlayer nPlayer in FindObjectsOfType<NetworkedPlayer>()) {
+            if(nPlayer.photonID == otherPlayer.ID) {
+                HandlePlayerDisconnect(otherPlayer);
+                break;
+            }
+        }
+    }
+
+    void HandlePlayerDisconnect(PhotonPlayer otherPlayer) {
         _disconnected = true;
         disconnectMessage.SetActive(true);
 
@@ -90,7 +103,9 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
     void InitializeGame() {
         _levelManager.LoadStagePrefab();
         _netPlayerSpawner.SpawnNetworkPlayers();
-        PhotonNetwork.RPC(photonView, "StartGameCountdown", PhotonTargets.AllViaServer, false);
+        photonView.RPC("StartGameCountdown", PhotonTargets.AllViaServer);
+
+        photonView.RPC("SyncGameCounts", PhotonTargets.Others, _gameManager.leftTeamGames, _gameManager.rightTeamGames);
     }
 
     // Should only be used by master client
@@ -103,6 +118,14 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
     [PunRPC]
     void StartGameCountdown() {
         _gameCountdown.StartCountdown();
+    }
+
+    [PunRPC]
+    void SyncGameCounts(int leftGames, int rightGames) {
+        _gameManager.leftTeamGames = leftGames;
+        _gameManager.rightTeamGames = rightGames;
+
+        _levelManager.LevelUI.SetupGameMarkers();
     }
 
     // RPC to reload the current level

@@ -60,11 +60,11 @@ public class StagePicture : MonoBehaviour {
 	}
 
     public void UpdateImages(StoryButton storyButton) {
-        if(storyButton.gameType == GAME_MODE.MP_VERSUS) {
+        //if(storyButton.gameType == GAME_MODE.MP_VERSUS) {
             SetupMultiplayer(storyButton);
-        } else {
-            SetupSinglePlayer(storyButton);
-        }
+        //} else {
+        //    SetupSinglePlayer(storyButton);
+        //}
 
         SetBorder(storyButton);
     }

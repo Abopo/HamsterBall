@@ -149,7 +149,8 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if(Input.GetKeyDown(KeyCode.U)) {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.U)) {
             Debug.Break();
         }
         
@@ -166,6 +167,7 @@ public class GameManager : MonoBehaviour {
         if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.O)) {
             VillageButton();
         }
+#endif
 
         // Debugging
         //debugText.text = nextLevel;

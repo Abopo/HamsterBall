@@ -18,10 +18,13 @@ public class WanderingHamsterSpawner : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start() {
-        SpawnHamsters();
+        StartCoroutine("SpawnHamsters");
+        //SpawnHamsters();
     }
 
-    void SpawnHamsters() {
+    IEnumerator SpawnHamsters() {
+        yield return null;
+
         // Spawn x hamsters depending on village index
         int toSpawn = 10;
         int rand = 0;
@@ -57,8 +60,6 @@ public class WanderingHamsterSpawner : MonoBehaviour {
                 //_hamsterDirectors[rand].DirectHamster(tempHamster.GetComponent<WanderingHamster>());
             }
         }
-
-
     }
 
     // Update is called once per frame

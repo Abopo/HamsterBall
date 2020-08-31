@@ -156,7 +156,6 @@ public class HamsterMeter : MonoBehaviour {
             LoseShield();
         }
 		
-		Debug.Log(_curStock);
 		HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
        	HamsterFillBallEvent.start();
         _curStock += inc;

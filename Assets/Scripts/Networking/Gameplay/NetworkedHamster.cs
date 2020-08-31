@@ -98,8 +98,10 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                     //hS.HamsterLine.Add(_hamster);
                 }
             }
-        }
 
+            // Increase the spawners hamster count
+            _hamster.ParentSpawner.releasedHamsterCount++;
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
@@ -180,7 +182,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
 
     private void OnDestroy() {
         if (PhotonNetwork.connectedAndReady) {
-            Debug.Log("Network destroy hamster");
+            //Debug.Log("Network destroy hamster");
 
             // Only the master client should try and destroy things
              if (PhotonNetwork.isMasterClient) {

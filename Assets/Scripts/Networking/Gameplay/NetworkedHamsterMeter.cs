@@ -62,11 +62,13 @@ public class NetworkedHamsterMeter : Photon.MonoBehaviour {
             }
         }
 
-        if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.H)) {
+#if UNITY_EDITOR
+        if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.H)) {
             _hamsterMeter.IncreaseStock(1);
             _hamsterMeter.IncreaseStock(1);
             _hamsterMeter.IncreaseStock(1);
         }
+#endif
     }
 
     public void NeedSync() {

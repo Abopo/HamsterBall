@@ -42,7 +42,7 @@ public class StoryPlayerInfo : MonoBehaviour {
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode) {
         // If we've loaded in story select
-        if (scene.name == "StorySelect") {
+        if (scene.name == "StorySelect" || scene.name == "StoryMode-Demo") {
             // Turn on the info boxes
             foreach (PlayerInfoBox pib in _playerInfoBoxes) {
                 if (pib != null) {

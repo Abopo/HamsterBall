@@ -13,6 +13,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
 	}
 
     void OnPhotonInstantiate(PhotonMessageInfo info) {
@@ -129,7 +130,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
         //_bubble.CollisionWithBoard(_bubble.HomeBubbleManager);
 
         if(PhotonNetwork.isMasterClient) {
-            _bubble.HomeBubbleManager.boardChangedEvent.AddListener(SendSynchCheck);
+            //_bubble.HomeBubbleManager.boardChangedEvent.AddListener(SendSynchCheck);
         }
     }
 
@@ -150,18 +151,27 @@ public class NetworkedBubble : Photon.MonoBehaviour {
 
     // Only used by master client
     public void SendSynchCheck() {
-        photonView.RPC("SynchCheck", PhotonTargets.Others, _bubble.node, _bubble.locked);
+        photonView.RPC("SynchCheck", PhotonTargets.Others, _bubble.team, _bubble.node, _bubble.locked);
     }
 
     [PunRPC]
-    void SynchCheck(int node, bool locked) {
-        if (_bubble.HomeBubbleManager.BoardIsStable) {
-            //if (_bubble.node != node) {
-            //    Debug.LogError("Bubble at node " + _bubble.node + " out of synch, moveing to node " + node);
+    void SynchCheck(int team, int node, bool locked) {
+        if (_bubble.team != team) {
+            _bubble.team = team;
+            _bubble.HomeBubbleManager = FindHomeBubbleManager(_bubble.team);
+        }
 
-            //    _bubble.node = node;
-            //    _bubble.transform.position = _bubble.HomeBubbleManager.nodeList[node].nPosition;
-            //}
+        if (_bubble.HomeBubbleManager == null) {
+            _bubble.HomeBubbleManager = FindHomeBubbleManager(_bubble.team);
+        }
+
+        if (_bubble.HomeBubbleManager.BoardIsStable) {
+            if (_bubble.node != node) {
+                Debug.LogError("Bubble at node " + _bubble.node + " out of synch, moveing to node " + node);
+
+                _bubble.node = node;
+                _bubble.transform.position = _bubble.HomeBubbleManager.nodeList[node].nPosition;
+            }
 
             if (_bubble.locked != locked) {
                 _bubble.locked = locked;
@@ -178,8 +188,13 @@ public class NetworkedBubble : Photon.MonoBehaviour {
         _bubble.GenerateDropJunk(inc);
     }
 
+    public void DelaySyncCheck(float delay) {
+        _syncTimer = 0;
+        _syncTimer -= delay;
+    }
+
     private void OnDestroy() {
-        Debug.Log("Network destroy bubble 2");
+        //Debug.Log("Network destroy bubble 2");
 
         if (PhotonNetwork.connectedAndReady) {
             // Only the master client should try and destroy things

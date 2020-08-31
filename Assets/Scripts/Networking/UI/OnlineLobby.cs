@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class OnlineLobby : MonoBehaviour {
 
     public string roomName;
+    public string findRoomName;
     public RectTransform scrollViewContent;
     public GameObject roomInfoObj;
     public GameObject nameWarningObj;
@@ -15,6 +16,8 @@ public class OnlineLobby : MonoBehaviour {
     public InputField playerNameInput;
 
     public Toggle twoPlayerToggle;
+
+    public Menu findRoomMenu;
 
     List<GameObject> rooms = new List<GameObject>();
 
@@ -83,6 +86,10 @@ public class OnlineLobby : MonoBehaviour {
         ToggleRoomWarning(false);
     }
 
+    public void FindRoomName(string name) {
+        findRoomName = name;
+    }
+
     public void CreateRoom() {
         if (PhotonNetwork.connectedAndReady) {
             if (PhotonNetwork.playerName != "") {
@@ -108,11 +115,22 @@ public class OnlineLobby : MonoBehaviour {
         }
     }
 
+    public void FindRoomButton() {
+        // Open the Find Room menu
+        findRoomMenu.Activate();
+    }
+
     public void TryJoinRoom(string rName) {
         if (PhotonNetwork.playerName != "") {
             PhotonNetwork.JoinRoom(rName);
         } else {
             ToggleNameWarning(true);
+        }
+    }
+
+    public void FindJoinRoom() {
+        if (PhotonNetwork.playerName != "" && findRoomName != "") {
+            PhotonNetwork.JoinRoom(findRoomName);
         }
     }
 

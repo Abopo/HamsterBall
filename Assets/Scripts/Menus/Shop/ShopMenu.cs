@@ -112,11 +112,13 @@ public class ShopMenu : MonoBehaviour {
                 MovePageRight();
             }
 
+#if UNITY_EDITOR
             // Dev cheat
             if (Input.GetKey(KeyCode.Z) && Input.GetKeyDown(KeyCode.M)) {
                 playerCurrency = 5000;
                 currencyText.text = playerCurrency.ToString();
             }
+#endif
         }
     }
 
