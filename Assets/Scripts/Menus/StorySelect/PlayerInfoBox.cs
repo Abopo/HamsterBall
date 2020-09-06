@@ -11,6 +11,8 @@ public class PlayerInfoBox : MonoBehaviour {
     public CharaInfo characterInfo;
     public bool playerAssigned;
     public int playerID;
+    public SpriteRenderer playerSprite;
+
     public GameObject activeObjects;
     public GameObject deactiveObjects;
 
@@ -19,7 +21,6 @@ public class PlayerInfoBox : MonoBehaviour {
         get { return _myPlayer; }
     }
 
-    SpriteRenderer _sprite;
     Sprite _boySprite;
     Sprite _girlSprite;
     //Sprite[] characterSprites = new Sprite[8];
@@ -31,8 +32,6 @@ public class PlayerInfoBox : MonoBehaviour {
 
 
     private void Awake() {
-        _sprite = GetComponentInChildren<SpriteRenderer>(true);
-
         Sprite[] icons = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-False-Colors-Master-File");
         _boySprite = icons[1];
         _girlSprite = icons[4];
@@ -139,11 +138,11 @@ public class PlayerInfoBox : MonoBehaviour {
 
         // Set sprite to correct character
         if (charaInfo.name == CHARACTERS.BOY) {
-            _sprite.sprite = _boySprite;
-            _sprite.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + charaInfo.color);
+            playerSprite.sprite = _boySprite;
+            playerSprite.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + charaInfo.color);
         } else {
-            _sprite.sprite = _girlSprite;
-            _sprite.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + charaInfo.color);
+            playerSprite.sprite = _girlSprite;
+            playerSprite.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + charaInfo.color);
         }
     }
 
@@ -161,16 +160,6 @@ public class PlayerInfoBox : MonoBehaviour {
             player.playerNum = playerID;
             player.charaInfo = characterInfo;
             player.team = 0;
-
-            /*
-            if (charaColor < CHARACTERCOLORS.GIRL1) {
-                player.charaInfo.name = CHARACTERS.BOY;
-                player.charaInfo.color = (int)charaColor + 1;
-            } else {
-                player.charaInfo.name = CHARACTERS.GIRL;
-                player.charaInfo.color = (int)charaColor - 3;
-            }
-            */
 
             playerManager.AddPlayer(player);
         }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using UnityEngine.Analytics;
 using System.Collections;
 using System.Collections.Generic;
 using Rewired;
@@ -222,10 +223,16 @@ public class GameManager : MonoBehaviour {
                     int[,] coopHighscores = ES3.Load<int[,]>("CoopHighScores");
                     SetHighscores(coopHighscores);
                     ES3.Save<int[,]>("CoopHighScores", coopHighscores);
+
+                    // Analytics
+                    ReportSoloHighscore(coopHighscores[stage[0] - 1, stage[1] - 1]);
                 } else {
                     int[,] soloHighscores = ES3.Load<int[,]>("SoloHighScores");
                     SetHighscores(soloHighscores);
                     ES3.Save<int[,]>("SoloHighScores", soloHighscores);
+
+                    // Analytics
+                    ReportSoloHighscore(soloHighscores[stage[0] - 1, stage[1] - 1]);
                 }
 
                 // reset overflows
@@ -261,6 +268,19 @@ public class GameManager : MonoBehaviour {
                 highscoresArray[stage[0] - 1, stage[1] - 1] = PlayerController.totalThrowCount;
             }
         }
+    }
+
+    void ReportSoloHighscore(int highscore) {
+        string eventName = stage[0].ToString() + "-" + stage[1].ToString() + "SoloHighscores";
+        AnalyticsEvent.Custom(eventName, new Dictionary<string, object> {
+            {"SoloHighscore", highscore }
+        });
+    }
+    void ReportCoopHighscore(int highscore) {
+        string eventName = stage[0].ToString() + "-" + stage[1].ToString() + "CoopHighscores";
+        AnalyticsEvent.Custom(eventName, new Dictionary<string, object> {
+            {"CoopHighscore", highscore }
+        });
     }
 
     void UnlockNextLevel() {

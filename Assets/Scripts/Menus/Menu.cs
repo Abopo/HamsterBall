@@ -13,6 +13,7 @@ public class Menu : MonoBehaviour {
     public bool holdsSelection; // whether or not this menu should keep track of the previously selected option
     public bool pauses;
 
+    public GameObject menuObj;
     public MenuOption selectedOption;
 
     [SerializeField]
@@ -116,6 +117,10 @@ public class Menu : MonoBehaviour {
 
     // Open the menu
     public virtual void Activate() {
+        if(menuObj != null) {
+            menuObj.SetActive(true);
+        }
+
         TakeFocus();
 
         if(_gameManager == null) {
@@ -130,6 +135,10 @@ public class Menu : MonoBehaviour {
     public virtual void Deactivate() {
         // Make sure to only go through this if we have focus
         if (hasFocus) {
+            if (menuObj != null) {
+                menuObj.SetActive(false);
+            }
+
             _gameManager.Unpause();
 
             LoseFocus();

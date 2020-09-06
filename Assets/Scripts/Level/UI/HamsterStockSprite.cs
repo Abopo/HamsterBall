@@ -19,14 +19,18 @@ public class HamsterStockSprite : MonoBehaviour {
 	}
 
     public void Transparent() {
-        foreach(SpriteRenderer s in _sprites) {
-            s.color = new Color(s.color.r, s.color.g, s.color.b, 0.5f);
+        if (_sprites != null) {
+            foreach (SpriteRenderer s in _sprites) {
+                s.color = new Color(s.color.r, s.color.g, s.color.b, 0.5f);
+            }
         }
     }
 
     public void FillIn() {
-        foreach (SpriteRenderer s in _sprites) {
-            s.color = new Color(s.color.r, s.color.g, s.color.b, 1f);
+        if (_sprites != null) {
+            foreach (SpriteRenderer s in _sprites) {
+                s.color = new Color(s.color.r, s.color.g, s.color.b, 1f);
+            }
         }
     }
 }

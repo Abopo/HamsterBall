@@ -8,13 +8,11 @@ using Rewired;
 public class VillageCharacterSelect : CharacterSelectWindow {
 
     PlayerController _playerController;
-    GameObject _childObject;
 
     protected override void Awake() {
         base.Awake();
 
         _playerController = FindObjectOfType<PlayerController>();
-        _childObject = transform.GetChild(0).gameObject;
     }
     // Use this for initialization
     protected override void Start () {
@@ -27,6 +25,10 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     }
 
     public void Activate(PlayerController pCon) {
+        if (menuObj != null) {
+            menuObj.SetActive(true);
+        }
+
         _playerController = pCon;
         _controllingPlayer = ReInput.players.GetPlayer(pCon.inputState.playerID);
 
@@ -36,7 +38,6 @@ public class VillageCharacterSelect : CharacterSelectWindow {
         // Set the selection to the players character
         SetSelectionToCharacter(pCon.CharaInfo);
 
-        _childObject.SetActive(true);
         _isActive = true;
 
         // Wait a frame to avoid input overflow
@@ -49,15 +50,18 @@ public class VillageCharacterSelect : CharacterSelectWindow {
     }
 
     public override void Deactivate() {
-        _childObject.SetActive(false);
+        if (menuObj != null) {
+            menuObj.SetActive(false);
+        }
+
         _isActive = false;
 
         _chosenBoyPalette = null;
         _chosenGirlPalette = null;
 
-        LoseFocus();
-
         _gameManager.Unpause();
+
+        LoseFocus();
     }
 
     public override void ChooseBoy() {

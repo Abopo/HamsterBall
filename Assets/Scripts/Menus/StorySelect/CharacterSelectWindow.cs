@@ -17,8 +17,6 @@ public class CharacterSelectWindow : Menu {
     protected List<Material> _boyPalettes = new List<Material>();
     protected List<Material> _girlPalettes = new List<Material>();
 
-    public GameObject menuObject;
-
     // The selected color of the other player
     protected Material _chosenBoyPalette;
     protected Material _chosenGirlPalette;
@@ -141,6 +139,10 @@ public class CharacterSelectWindow : Menu {
     }
 
     public void Activate(PlayerInfoBox pib) {
+        if (menuObj != null) {
+            menuObj.SetActive(true);
+        }
+
         _playerInfoBox = pib;
         _controllingPlayer = pib.MyPlayer;
 
@@ -169,7 +171,6 @@ public class CharacterSelectWindow : Menu {
             }
         }
 
-        menuObject.SetActive(true);
         _isActive = true;
         _storySelectMenu.DisableUI();
 
@@ -223,7 +224,6 @@ public class CharacterSelectWindow : Menu {
     public override void Deactivate() {
         base.Deactivate();
 
-        menuObject.SetActive(false);
         _isActive = false;
 
         _chosenBoyPalette = null;

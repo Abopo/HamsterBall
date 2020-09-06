@@ -8,6 +8,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     public int photonID;
     public Hamster tryingToCatchHamster;
     public Bubble thrownBubble;
+    public SuperTextMesh playerName;
 
     PlayerController _playerController;
     InputState _serializedInput;
@@ -64,6 +65,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
                 playerSpawner.SetupSwitchMeter(_playerController);
             }
         }
+
+        playerName.text = photonView.owner.NickName;
 
         FindObjectOfType<GameManager>().gameOverEvent.AddListener(OnGameEnd);
     }

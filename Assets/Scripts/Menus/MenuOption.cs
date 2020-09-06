@@ -15,6 +15,8 @@ public class MenuOption : MonoBehaviour {
     public bool isFirstSelection;
     public bool isReady = true;
 
+    public bool searchForAdj;
+
     //protected Vector2 _selectedPos;
     public bool isHighlighted;
     protected bool _justHighlighted; // use this to stop inputs from flowing over into multiple options.
@@ -46,8 +48,6 @@ public class MenuOption : MonoBehaviour {
             _player = ReInput.players.GetPlayer(0);
         }
 
-        //FindAdjOptions();
-
         if (isFirstSelection) {
             isHighlighted = true;
             _justHighlighted = true;
@@ -65,6 +65,10 @@ public class MenuOption : MonoBehaviour {
         //_selectedPos = transform.position;
 
         _allOtherOptions = FindObjectsOfType<MenuOption>();
+
+        if (searchForAdj) {
+            FindAdjOptions();
+        }
     }
 
     public void SetParentMenu(Menu parentMenu) {
@@ -131,7 +135,7 @@ public class MenuOption : MonoBehaviour {
         }
     }
 
-    public void CheckInput() {
+    public virtual void CheckInput() {
         if (isHighlighted && !_justHighlighted) {
             if (_player.GetButtonDown("Submit")) {
                 Select();

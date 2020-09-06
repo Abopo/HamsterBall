@@ -7,8 +7,6 @@ public enum SPECIALSPAWNMETHOD { BOTH = 0, BALLS, PIPE, NONE, NUM_METHODS };
 
 public class GameSetupWindow : Menu {
 
-    public GameObject menuObj;
-
     public Text aaText;
     public Text hsmText;
     public Text rainbowText;

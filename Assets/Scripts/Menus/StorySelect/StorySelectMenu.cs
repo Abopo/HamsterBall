@@ -59,6 +59,8 @@ public class StorySelectMenu : MonoBehaviour {
         if (!_gameManager.demoMode) {
             // Load saved world
             LoadSaveData();
+        } else {
+            LoadDemoData();
         }
     }
 
@@ -90,6 +92,13 @@ public class StorySelectMenu : MonoBehaviour {
 
         // Set curWorld to new world
         _curWorld = world-1;
+    }
+
+    void LoadDemoData() {
+        // Load where the player last left off
+        int storyPos = ES3.Load<int>("DemoPos", 1);
+
+        worlds[0].Activate(storyPos - 1);
     }
 
     // Update is called once per frame

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ConfirmPurchaseMenu : Menu {
-    public GameObject menuObject;
     public MenuButton yesButton;
 
     bool _active;
@@ -22,8 +21,8 @@ public class ConfirmPurchaseMenu : Menu {
 
         _gameManager = FindObjectOfType<GameManager>();
 
-        if (!_active && menuObject.activeSelf) {
-            menuObject.SetActive(false);
+        if (!_active && menuObj.activeSelf) {
+            menuObj.SetActive(false);
         }
     }
 
@@ -43,7 +42,6 @@ public class ConfirmPurchaseMenu : Menu {
     public override void Activate() {
         base.Activate();
 
-        menuObject.SetActive(true);
         _active = true;
 
         // Set YES button to selected
@@ -60,7 +58,6 @@ public class ConfirmPurchaseMenu : Menu {
         base.Deactivate();
 
         // Close the menu
-        menuObject.SetActive(false);
         _active = false;
     }
 }

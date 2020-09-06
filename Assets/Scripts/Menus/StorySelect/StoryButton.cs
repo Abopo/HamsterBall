@@ -89,8 +89,12 @@ public class StoryButton : MenuButton {
         // Set the stage in the game manager
         FindObjectOfType<GameManager>().stage = stageNumber;
 
-        // Set the new story position to here
-        ES3.Save<int[]>("StoryPos", stageNumber);
+        if (_gameManager.demoMode) {
+            ES3.Save<int>("DemoPos", stageNumber[1]);
+        } else {
+            // Set the new story position to here
+            ES3.Save<int[]>("StoryPos", stageNumber);
+        }
 
         // Load the players
         FindObjectOfType<StoryPlayerInfo>().LoadPlayers();

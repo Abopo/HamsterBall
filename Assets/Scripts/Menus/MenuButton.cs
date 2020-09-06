@@ -65,7 +65,7 @@ public class MenuButton : MenuOption {
             base.Select();
 
             if (IsReady) {
-                GetComponent<Button>().onClick.Invoke();
+                _button.onClick.Invoke();
             }
         }
     }

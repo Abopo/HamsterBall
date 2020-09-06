@@ -6,11 +6,17 @@ using System.IO;
 public class MainMenu : MonoBehaviour {
     public bool resetPrefs;
 
+    PauseMenu _pauseMenu;
+    HowToPlayMenu _howToPlay;
     GameManager _gameManager;
 
-	// Use this for initialization
-	void Start () {
-        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+        _pauseMenu = GetComponent<PauseMenu>();
+        _howToPlay = FindObjectOfType<HowToPlayMenu>();
+    }
+    // Use this for initialization
+    void Start () {
         _gameManager.isOnline = false;
     }
 
@@ -20,15 +26,22 @@ public class MainMenu : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        if (InputState.GetButtonOnAnyControllerPressed("Pause") && !_pauseMenu.IsActive) {
+            // Open the menu
+            _pauseMenu.Activate(0);
+        }
+
     }
 
     public void LoadStoryMode() {
-        _gameManager.isOnline = false;
-        SceneManager.LoadScene("StorySelect");
+        _gameManager.StoryButton();
+        //_gameManager.isOnline = false;
+        //SceneManager.LoadScene("StorySelect");
     }
 
     public void LoadLocalMultiplayer() {
-        SceneManager.LoadScene("LocalPlay");
+        _gameManager.LocalPlayButton();
+        //SceneManager.LoadScene("LocalPlay");
     }
 
     public void LoadOnline() {
@@ -43,6 +56,10 @@ public class MainMenu : MonoBehaviour {
 
     public void LoadOptions() {
         SceneManager.LoadScene("OptionsMenu");
+    }
+
+    public void HowToPlay() {
+        _howToPlay.Activate();
     }
 
     public void QuitGame() {

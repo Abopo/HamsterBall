@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GoalMenu : MonoBehaviour {
+    public Image backer;
     public SuperTextMesh stageName;
     public GameObject scoreStuff;
     public SuperTextMesh goalText;
@@ -90,6 +89,10 @@ public class GoalMenu : MonoBehaviour {
                 conditionLeftText.gameObject.SetActive(false);
                 break;
         }
+
+        // Load backer sprite
+        Sprite[] backerSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Special-Stage-Boxes-GUI");
+        backer.sprite = backerSprites[(int)_gameManager.selectedBoard+1];
     }
 
     // Update is called once per frame

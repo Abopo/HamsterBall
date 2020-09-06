@@ -29,7 +29,7 @@ public class ShopMenu : MonoBehaviour {
     }
 
     bool IsActive {
-        get { return !_exitMenu.menuObject.activeSelf && !_confirmMenu.menuObject.activeSelf; }
+        get { return !_exitMenu.menuObj.activeSelf && !_confirmMenu.menuObj.activeSelf; }
     }
 
     protected void Awake() {
