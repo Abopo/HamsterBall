@@ -36,6 +36,8 @@ public class SubwayTrain : MonoBehaviour {
             // Maybe move?
             _moveTimer += Time.deltaTime;
             if(_moveTimer >= _startTime - 2f) {
+                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubwayPass);
+                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubwayRumble);
                 mainCamera.StartShake(3f, 6f, new Vector2(0.03f, 0.03f));
             }
             if(_moveTimer >= _startTime) {
@@ -47,7 +49,6 @@ public class SubwayTrain : MonoBehaviour {
     void StartMoving() {
         _isMoving = true;
         _moveTimer = 0f;
-
         mainCamera.StartShake(_moveTime, 8f, new Vector2(0.08f, 0.08f));
     }
 

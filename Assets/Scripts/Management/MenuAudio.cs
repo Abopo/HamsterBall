@@ -78,7 +78,7 @@ public class MenuAudio : MonoBehaviour {
                 // For some reason we have to create a new instance every time here
 		        SoundManager.mainAudio.MenuGeneralEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MenuGeneral);
                 SoundManager.mainAudio.MenuGeneralEvent.start();
-
+                SoundManager.mainAudio.Door();
                 musicPlaying = 1;
             } else if (sceneIndex > 12) {
                 // We're in a level so play level music

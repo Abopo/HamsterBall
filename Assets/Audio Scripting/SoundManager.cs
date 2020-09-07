@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviour {
 	public string CountdownThree;
     public string CountdownTwo;
     public string CountdownOne;
-    public string CountdownScramble;
+    public string CountdownToScramble;
 
     public string CountDown321;
 
@@ -97,9 +97,15 @@ public class SoundManager : MonoBehaviour {
 	public string Shift;
 	public string Petrify;
     public string VillageSpring;
+    public string DoorSound;
+    public FMOD.Studio.EventInstance DoorEvent;
 
-	//Music
-	public string MusicMain;
+    //STAGE SOUNDS
+    public string SubwayPass;
+    public string SubwayRumble;
+
+    //Music
+    public string MusicMain;
 	public FMOD.Studio.EventInstance MusicMainEvent;
 	public string HappyDaysMusic;
 	public FMOD.Studio.EventInstance HappyDaysMusicEvent;
@@ -121,6 +127,7 @@ public class SoundManager : MonoBehaviour {
 	public FMOD.Studio.EventInstance MatchEndMusicEvent;
 	public string MenuGeneral;
 	public FMOD.Studio.EventInstance MenuGeneralEvent;
+
 
 
 	void Awake () {
@@ -173,6 +180,11 @@ public class SoundManager : MonoBehaviour {
             FMODUnity.RuntimeManager.PlayOneShot("event:/Hamster/SkullCollected");
         }
     }
-	//SoundManager.mainAudio.Footstep()
-	//FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
+    //SoundManager.mainAudio.Footstep()
+    //FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
+
+    public void Door() {
+        DoorEvent = FMODUnity.RuntimeManager.CreateInstance(DoorSound);
+        DoorEvent.start();
+    }
 }

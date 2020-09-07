@@ -35,7 +35,7 @@ public class VillageDoor : MonoBehaviour {
 	void Update () {
         if (_isPlayerHere && !_gameManager.isPaused) {
             if (_playerInput.GetButtonDown("Interact")) {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/Other Sounds/Door Enter");
+                
                 EnterDoor();
             }
         }
@@ -50,8 +50,12 @@ public class VillageDoor : MonoBehaviour {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.LoadScene(_sceneToLoad, LoadSceneMode.Additive);
 
+        //SoundManager.mainAudio.Door();
+
         // Set the player's respawn point to this door
         _villagePlayerSpawn.SetSpawnPosition(transform.position);
+
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -71,9 +75,11 @@ public class VillageDoor : MonoBehaviour {
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+   
         if (mode == LoadSceneMode.Additive) {
             // Set the new scene to active
             SceneManager.SetActiveScene(scene);
+            
         }
     }
 }
