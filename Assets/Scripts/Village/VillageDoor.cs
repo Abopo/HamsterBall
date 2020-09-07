@@ -17,6 +17,8 @@ public class VillageDoor : MonoBehaviour {
     VillagePlayerSpawn _villagePlayerSpawn;
     GameManager _gameManager;
 
+    bool _isActive = true;
+
     private void Awake() {
         _playerInput = ReInput.players.GetPlayer(0);
 
@@ -29,6 +31,12 @@ public class VillageDoor : MonoBehaviour {
     protected virtual void Start () {
         _isPlayerHere = false;
 
+        if(_sceneToLoad == "ShopMenu" || _sceneToLoad == "OptionsMenu") {
+            if(_gameManager.demoMode) {
+                // Deactivate this door
+                _isActive = false;
+            }
+        }
 	}
 	
 	// Update is called once per frame
@@ -59,7 +67,7 @@ public class VillageDoor : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.gameObject.tag == "Player") {
+        if(collision.gameObject.tag == "Player" && _isActive) {
             _isPlayerHere = true;
             _playerController = collision.GetComponent<PlayerController>();
             _interactIcon.SetActive(true);

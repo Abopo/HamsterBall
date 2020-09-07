@@ -61,13 +61,6 @@ public class GameCountdown : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.C)) {
-            FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownThree);
-			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownTwo);
-			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownOne);
-			FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownToScramble);
-        }
-
         if (_done || !started) {
             return;
         }
@@ -98,7 +91,7 @@ public class GameCountdown : MonoBehaviour {
 					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownOne);
                     break;
                 case 3:
-					FMODUnity.RuntimeManager.PlayOneShot("event:/Game Sounds/Scramble_Crowd");
+					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownScramble);
                     _displayText.text = "<c=rainbow><j=once>Scramble!";
                     _minScale = 3f;
                     GameStart();

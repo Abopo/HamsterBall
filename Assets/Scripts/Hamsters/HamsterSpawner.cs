@@ -33,7 +33,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
     public bool AnySpecials {
         get { return canBeRainbow || canBeSkull || canBeBomb || canBePlasma; }
     }
-    List<int> specialTypes = new List<int>();
+    List<int> _specialTypes = new List<int>();
+    public List<int> SpecialTypes { get => _specialTypes; }
 
     System.Random _random;
     public static int spawnSeed;
@@ -60,6 +61,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     public List<Hamster> HamsterLine {
         get { return _hamsterLine; }
     }
+
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
@@ -150,18 +152,18 @@ public class HamsterSpawner : Photon.PunBehaviour {
         }
 
         if (canBeSkull) {
-            specialTypes.Add((int)HAMSTER_TYPES.SKULL);
+            _specialTypes.Add((int)HAMSTER_TYPES.SKULL);
         }
         if (canBeRainbow) {
-            specialTypes.Add((int)HAMSTER_TYPES.RAINBOW);
-            specialTypes.Add((int)HAMSTER_TYPES.RAINBOW); // Adding a second time increases the chance of this type to be chosen
+            _specialTypes.Add((int)HAMSTER_TYPES.RAINBOW);
+            _specialTypes.Add((int)HAMSTER_TYPES.RAINBOW); // Adding a second time increases the chance of this type to be chosen
         }
         if (canBePlasma) {
-            specialTypes.Add(0);
+            _specialTypes.Add(0);
         }
         if (canBeBomb) {
-            specialTypes.Add((int)HAMSTER_TYPES.BOMB);
-            specialTypes.Add((int)HAMSTER_TYPES.BOMB);
+            _specialTypes.Add((int)HAMSTER_TYPES.BOMB);
+            _specialTypes.Add((int)HAMSTER_TYPES.BOMB);
         }
     }
 
@@ -308,8 +310,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
                 // This hamster was spawned via a special bubble
 
                 // Choose a random special type
-                int randType = Random.Range(0, specialTypes.Count);
-                hamster.SetType(specialTypes[randType]);
+                int randType = Random.Range(0, _specialTypes.Count);
+                hamster.SetType(_specialTypes[randType]);
                 hamster.special = true;
 
                 _nextHamsterType = -1;
@@ -332,7 +334,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     void InstantiateNetworkHamster() {
         // Set up instantiation data
-        object[] hamsterInfo = new object[5];
+        object[] hamsterInfo = new object[6];
         hamsterInfo[0] = false; // has exitedPipe
         if (rightSidePipe) {
             hamsterInfo[1] = true; // hamster.inRightPipe
@@ -340,8 +342,22 @@ public class HamsterSpawner : Photon.PunBehaviour {
             hamsterInfo[1] = false;
         }
         hamsterInfo[2] = team;
-        hamsterInfo[3] = _nextHamsterType;
-        hamsterInfo[4] = false; // isGravity
+
+        if(_nextHamsterType == (int)HAMSTER_TYPES.SPECIAL) {
+            // Determine which special type to be
+            int randType = Random.Range(0, _specialTypes.Count);
+            hamsterInfo[3] = _specialTypes[randType];
+            hamsterInfo[5] = true;
+        } else {
+            hamsterInfo[3] = _nextHamsterType;
+            hamsterInfo[5] = false;
+        }
+
+        if ((int)hamsterInfo[3] == (int)HAMSTER_TYPES.PLASMA) {
+            hamsterInfo[4] = true; // isGravity
+        } else {
+            hamsterInfo[4] = false; // isGravity
+        }
 
         // Use the network instantiate method
         PhotonNetwork.Instantiate("Prefabs/Networking/Hamster_PUN", _spawnPosition, Quaternion.identity, 0, hamsterInfo);
@@ -355,10 +371,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
             if (_hamsterInfo.SpecialSpawnOffset >= 0) {
                 // Decide if this hamster will be special
                 int special = _random.Next(_hamsterInfo.SpecialSpawnOffset, 16);
-                if (special == 15 && specialTypes.Count > 0) {
+                if (special == 15 && _specialTypes.Count > 0) {
                     // Choose which special hamster it will be
-                    int sType = Random.Range(0, specialTypes.Count); // We don't use the set _random variable because we want players to get different special types
-                    switch (specialTypes[sType]) {
+                    int sType = Random.Range(0, _specialTypes.Count); // We don't use the set _random variable because we want players to get different special types
+                    switch (_specialTypes[sType]) {
                         case 8: // Rainbow
                             rType = (int)HAMSTER_TYPES.RAINBOW;
                             break;
@@ -459,8 +475,6 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     public void ReleaseNextHamster() {
         if (_hamsterLine.Count > 0) {
-            //Debug.Log("Release hamster: " + _hamsterLine[0].type.ToString());
-
             // Make sure the first hamster is valid
             if (_hamsterLine[0] == null) {
                 // Remove the released hamster from the list

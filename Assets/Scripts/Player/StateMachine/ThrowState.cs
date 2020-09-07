@@ -236,12 +236,12 @@ public class ThrowState : PlayerState {
             // If we are the master client
             if (PhotonNetwork.isMasterClient) {
                 // Just go ahead and throw
-                playerController.PhotonView.RPC("ThrowBubble", PhotonTargets.Others, aimingArrow.localRotation);
+                playerController.PhotonView.RPC("ThrowBubble", PhotonTargets.Others, playerController.transform.position, aimingArrow.localRotation);
 
                 StartThrow();
             } else {
                 // Check with the master client to double check if we are ok to throw
-                playerController.PhotonView.RPC("TryThrowBubble", PhotonTargets.MasterClient, aimingArrow.localRotation);
+                playerController.PhotonView.RPC("TryThrowBubble", PhotonTargets.MasterClient, playerController.transform.position, aimingArrow.localRotation);
 
                 // Hold onto the thrown bubble just in case
                 playerController.GetComponent<NetworkedPlayer>().thrownBubble = playerController.heldBall;

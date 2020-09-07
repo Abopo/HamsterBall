@@ -8,7 +8,8 @@ public class ResultsScreen : MonoBehaviour {
     public SuperTextMesh winningTeamText;
     public Image winningTeamSprite;
     public MenuButton mainMenuButton;
-    public Image[] flowers; // These are the "stars" players earn depending on how good they did
+    public SpriteRenderer flower;
+    public Sprite[] flowerSprites; // These are the "stars" players earn depending on how good they did
     public bool isContinue;
 
     MenuOption[] _menuOptions;
@@ -51,24 +52,6 @@ public class ResultsScreen : MonoBehaviour {
                 }
             }
         }
-
-        // Don't allow players to return to the main menu in demo mode
-        if (mainMenuButton != null && _gameManager.demoMode) {
-            mainMenuButton.isReady = false;
-            mainMenuButton.gameObject.SetActive(false);
-        }
-
-        // If we are in demo mode and it's a com match
-        if(_gameManager.demoMode && _demoManager.ComMatch && _winTimer >= _demoWaitTime) {
-            // If the whole set is over
-            if(_levelManager.setOver) {
-                // Start a new random com match
-                _demoManager.StartComMatch();
-            } else {
-                // Continue to next game of the match
-                _levelManager.NextGame();
-            }
-        }
     }
 
     public void SetWinningTeamText(int winTeam) {
@@ -76,18 +59,24 @@ public class ResultsScreen : MonoBehaviour {
             if (winningTeamText != null) {
                 winningTeamText.text = "Left Team Wins!";
             }
-            winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[5];
+            if (winningTeamSprite != null) {
+                winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[5];
+            }
         } else if(winTeam == 1) {
             if (winningTeamText != null) {
                 winningTeamText.text = "Right Team Wins!";
             }
-            winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[9];
+            if (winningTeamSprite != null) {
+                winningTeamSprite.sprite = Resources.LoadAll<Sprite>("Art/UI/Level UI/Demo-GUI-Assets2")[9];
+            }
         } else {
             if (winningTeamText != null) {
                 winningTeamText.text = "Draw";
             }
-            winningTeamText.gameObject.SetActive(true);
-            winningTeamSprite.enabled = false;
+            if (winningTeamSprite != null) {
+                winningTeamText.gameObject.SetActive(true);
+                winningTeamSprite.enabled = false;
+            }
         }
     }
 
@@ -151,31 +140,31 @@ public class ResultsScreen : MonoBehaviour {
 
     // If the results of this seem off, make sure gameManager variables are being updated BEFORE this function
     void EarnFlowers() {
-        if(flowers == null) {
+        if(flower == null) {
             Debug.LogError("Null flowers");
             return;
         }
         int flowerCount = 1;
-
-        // First flower is earned just by beating the stage
-        flowers[0].gameObject.SetActive(true);
 
         // TODO: also adjust if playing solo or coop
         // Next two are earned depending on the game mode
         switch(_gameManager.gameMode) {
             case GAME_MODE.SP_CLEAR:
                 // Compare time
-                flowerCount += SetFlowers((int)_gameManager.timeOverflow);
+                flowerCount += GetFlowers((int)_gameManager.timeOverflow);
                 break;
             case GAME_MODE.SP_POINTS:
                 // Throws used
-                flowerCount += SetFlowers(PlayerController.totalThrowCount);
+                flowerCount += GetFlowers(PlayerController.totalThrowCount);
                 break;
             case GAME_MODE.MP_VERSUS:
                 // Points?
-                flowerCount += SetFlowers(_gameManager.scoreOverflow);
+                flowerCount += GetFlowers(_gameManager.scoreOverflow);
                 break;
         }
+
+        // Set the flower sprite
+        flower.sprite = flowerSprites[flowerCount-1];
 
         // Save the flower count (if it's better!)
         if (_gameManager.isCoop) {
@@ -195,28 +184,24 @@ public class ResultsScreen : MonoBehaviour {
     }
 
     // Returns how many flowers were set
-    int SetFlowers(int goal) {
+    int GetFlowers(int goal) {
         int flowerCount = 0;
 
         switch (_gameManager.gameMode) {
             case GAME_MODE.SP_CLEAR:
             case GAME_MODE.SP_POINTS:
                 if (goal < _gameManager.flowerRequirement1) {
-                    flowers[1].gameObject.SetActive(true);
                     flowerCount++;
                 }
                 if (goal < _gameManager.flowerRequirement2) {
-                    flowers[2].gameObject.SetActive(true);
                     flowerCount++;
                 }
                 break;
             case GAME_MODE.MP_VERSUS:
                 if (goal > _gameManager.flowerRequirement1) {
-                    flowers[1].gameObject.SetActive(true);
                     flowerCount++;
                 }
                 if (goal > _gameManager.flowerRequirement2) {
-                    flowers[2].gameObject.SetActive(true);
                     flowerCount++;
                 }
                 break;

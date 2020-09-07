@@ -13,6 +13,8 @@ public class TutorialManager : MonoBehaviour {
 
     bool _tutorialFinished = false;
 
+    bool _controller = false;
+
     PlayerController _playerController;
     PlayerController _aiController;
 
@@ -20,12 +22,11 @@ public class TutorialManager : MonoBehaviour {
     LevelManager _levelManager;
 
     private void Awake() {
+        _gameManager = FindObjectOfType<GameManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
     }
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
-
         GetPlayer();
 
         cutsceneManager.cutsceneEnd.AddListener(CutsceneEnded);
@@ -38,6 +39,10 @@ public class TutorialManager : MonoBehaviour {
         tutorialInfoText.gameObject.SetActive(false);
 
         _tutorialTime = 0.5f;
+
+        if(ReInput.controllers.joystickCount > 0) {
+            _controller = true;
+        }
 	}
 
     void GetPlayer() {
@@ -95,13 +100,21 @@ public class TutorialManager : MonoBehaviour {
         switch(_tutorialIndex) {
             case 0:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MovementTutorial"));
-                tutorialInfoText.text = "Move with <c=green>A/D<c=black>, Jump with <c=green>W<c=black>. Get up high!";
+                if (_controller) {
+                    tutorialInfoText.text = "Move with <c=white>Left Joystick<c=black>, Jump with <c=green>A<c=black>. Get up high!";
+                } else {
+                    tutorialInfoText.text = "Move with <c=green>A/D<c=black>, Jump with <c=green>W<c=black>. Get up high!";
+                }
                 _tutorialIndex++; // 1
                 _tutorialTime = -1;
                 break;
             case 1:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/BubbleTutorial"));
-                tutorialInfoText.text = "Catch a hamster with <c=green>V<c=black>!";
+                if (_controller) {
+                    tutorialInfoText.text = "Catch a hamster with <c=blue>X<c=black>!";
+                } else {
+                    tutorialInfoText.text = "Catch a hamster with <c=green>J<c=black>!";
+                }
                 _tutorialIndex++; // 2
                 _tutorialTime = -1;
                 // Unlock the catch state
@@ -109,7 +122,11 @@ public class TutorialManager : MonoBehaviour {
                 break;
             case 2:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/AimTutorial"));
-                tutorialInfoText.text = "Pick a good spot and start aiming with <c=green>V<c=black>!";
+                if (_controller) {
+                    tutorialInfoText.text = "Pick a good spot and start aiming with <c=blue>X<c=black>!";
+                } else {
+                    tutorialInfoText.text = "Pick a good spot and start aiming with <c=green>J<c=black>!";
+                }
                 _tutorialIndex++; // 3
                 _tutorialTime = -1;
                 // Unlock the throw state
@@ -117,19 +134,31 @@ public class TutorialManager : MonoBehaviour {
                 break;
             case 3:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/ThrowTutorial"));
-                tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=green>V<c=black>!";
+                if (_controller) {
+                    tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=blue>X<c=black>!";
+                } else {
+                    tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=green>J<c=black>!";
+                }
                 _tutorialIndex++; // 4
                 _tutorialTime = -1;
                 break;
             case 4:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MatchingTutorial"));
-                tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=green>V<c=black>!";
+                if (_controller) {
+                    tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=blue>X<c=black>!";
+                } else {
+                    tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=green>J<c=black>!";
+                }
                 _tutorialIndex++; // 5
                 _tutorialTime = 15f;
                 break;
             case 5:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/DroppingSwappingTutorial"));
-                tutorialInfoText.text = "Press the <c=green>N<c=black> key to do...something?";
+                if (_controller) {
+                    tutorialInfoText.text = "Press the <c=yellow>Y<c=black> key to do...something?";
+                } else {
+                    tutorialInfoText.text = "Press the <c=green>L<c=black> key to do...something?";
+                }
                 _tutorialIndex++; // 6
                 _tutorialTime = -1;
                 // Re-lock the catch state so player can't win the match
@@ -171,6 +200,7 @@ public class TutorialManager : MonoBehaviour {
 
     void CutsceneEnded() {
         tutorialInfoText.gameObject.SetActive(true);
+        _levelManager.GameStart();
     }
 
     // We kind of have to fake a game end scenario

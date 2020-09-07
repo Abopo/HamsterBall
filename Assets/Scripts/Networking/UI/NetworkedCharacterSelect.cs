@@ -55,8 +55,6 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 	}
 
     void InitializeSelectors() {
-        Debug.Log("Initialize Selectors");
-
         // Find all the selectors
         CharacterSelector[] charaSelectors = FindObjectsOfType<CharacterSelector>();
 
@@ -70,27 +68,6 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
                     charaSelectors[j].NetworkInitialize();
                     charaSelectors[j].Activate(false, true);
 
-                    /*
-                    // If it hasn't been initialize yet
-                    if (charaSelectors[j].playerNum == -1) {
-                        Debug.Log("Initizalizing selector");
-
-                        // Initialize it
-                        charaSelectors[j].NetworkInitialize();
-                       
-                        // If we own this selector
-                        if (charaSelectors[j].ownerId == PhotonNetwork.player.ID) {
-                            // Activate it with a controller
-                            charaSelectors[j].Activate(false, true);
-                        } else {
-                            // Activate it with no controller
-                            charaSelectors[j].Activate(false, false);
-                        }
-
-                        // Add it to the character select
-                        _characterSelect.AddSelector(charaSelectors[j]);
-                    }
-                    */
                 }
             }
         }
@@ -99,9 +76,12 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     void InitializeSelector(int playerID) {
         Debug.Log("Initialize player " + playerID);
 
+        // Figure out what player we are based on everyone's player numbers
+        int playerNum = FindPlayerNumber();
+
         // Find the next selector
         CharacterSelectResources charaResources = FindObjectOfType<CharacterSelectResources>();
-        CharacterSelector cs = charaResources.charaSelectors[PhotonNetwork.room.PlayerCount-1];
+        CharacterSelector cs = charaResources.charaSelectors[playerNum];
 
         if (!cs.isActive) {
             // Take ownership of the selector and the associated player
@@ -114,6 +94,37 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
             // Activate it
             cs.Activate(false, true);
         }
+    }
+
+    int FindPlayerNumber() {
+        int playerNum = 0;
+
+        // We will determine our player number based on our network id
+
+        // Get and order the players in ascending id order
+        PhotonPlayer[] allPlayers = PhotonNetwork.playerList;
+        int n = allPlayers.Length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (allPlayers[j].ID > allPlayers[j + 1].ID) {
+                    // swap temp and arr[i] 
+                    PhotonPlayer temp = allPlayers[j];
+                    allPlayers[j] = allPlayers[j + 1];
+                    allPlayers[j + 1] = temp;
+                }
+            }
+        }   
+
+        // Then go through until we find our id, marking up our num as we go
+        foreach (PhotonPlayer pPlayer in allPlayers) {
+            if (pPlayer.ID == PhotonNetwork.player.ID) {
+                break;
+            }
+
+            playerNum++;
+        }
+
+        return playerNum;
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer otherPlayer) {
@@ -184,6 +195,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
         // Master client has started setting up the game, so freeze player and show some text
         StopPlayerMovement();
 
+        _characterSelect.Deactivate();
+
         gameSetupText.gameObject.SetActive(true);
     }
 
@@ -191,6 +204,8 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     public void GameSetupCancel() {
         // Master client backed out of game setup
         ResumePlayerMovement();
+
+        _characterSelect.Activate();
 
         gameSetupText.gameObject.SetActive(false);
     }

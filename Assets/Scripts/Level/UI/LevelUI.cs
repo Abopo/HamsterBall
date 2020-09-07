@@ -19,8 +19,13 @@ public class LevelUI : MonoBehaviour {
         SetupGameMarkers();
 	}
 
-    void SetupGameMarkers() {
+    public void SetupGameMarkers() {
         _gameMarkers = GetComponentsInChildren<GameMarker>();
+
+        // Clear all the game markers first
+        foreach (GameMarker gM in _gameMarkers) {
+            gM.FillOut();
+        }
 
         if (_gameManager.isSinglePlayer || _gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             foreach(GameMarker gM in _gameMarkers) {

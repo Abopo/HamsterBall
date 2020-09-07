@@ -145,18 +145,17 @@ public class InputState {
 
         return null;
     }
-    public static Player AnyMenuButtonOnAnyControllerPressed() {
+    public static Player PlayerActivateInput() {
+        Player inputPlayer = null;
         foreach (Player player in ReInput.players.Players) {
-            player.controllers.maps.SetMapsEnabled(false, "Default");
-
-            if (player.GetAnyButtonDown()) {
-                return player;
+            if (player.GetButtonDown("Submit") || player.GetButtonDown("Cancel") || player.GetButtonDown("Extra") ||
+                player.GetButtonDown("Swing")) {
+                inputPlayer = player;
+                break;
             }
-
-            player.controllers.maps.SetAllMapsEnabled(true);
         }
 
-        return null;
+        return inputPlayer;
     }
     public static bool GetButtonOnAnyControllerPressed(string button) {
         foreach(Player player in ReInput.players.AllPlayers) {

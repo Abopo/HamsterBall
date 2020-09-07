@@ -18,7 +18,7 @@ public class BubbleManager : MonoBehaviour {
     public int team; // -1 = no team, 0 = left team, 1 = right team
     public bool testMode;
 
-    protected Transform _ceiling;
+    public Transform ceiling;
 
     // 10 rows
     // alternating between 12 and 11 columns
@@ -72,7 +72,7 @@ public class BubbleManager : MonoBehaviour {
 
     int _roundResult;
     protected bool _gameEndingSequence = false;
-    public bool GameEndingSequence { get => _gameEndingSequence; }
+    public bool GameEndingSequence { get => _gameEndingSequence; set => _gameEndingSequence = value; }
 
     GameObject _bubbleObj;
     GameObject _nodeObj;
@@ -119,7 +119,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
 
-    int linesToAdd = 0;
+    public int linesToAdd = 0;
 
     Vector3 _initialPos;
     bool _isShaking;
@@ -242,11 +242,6 @@ public class BubbleManager : MonoBehaviour {
             _bubbleSeed = new System.Random((int)Time.realtimeSinceStartup);
             _specialSeed = new System.Random((int)Time.realtimeSinceStartup + 1);
             SeedNextLineBubbles();
-        }
-
-        // When networked, we spawn the next line of bubbles ahead of time
-        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
-            _netBubMan.SpawnNextLineBubbles();
         }
 
         _hamsterMeter.Initialize(_baseLineLength, this);
@@ -681,12 +676,27 @@ public class BubbleManager : MonoBehaviour {
             _levelManager.ActivateResultsScreen(team, _roundResult);
         }
 
+#if UNITY_EDITOR
         if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.L)) {
             TryAddLine();
         }
         if(Input.GetKeyDown(KeyCode.P)) {
             boardChangedEvent.Invoke();
         }
+        if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.F)) {
+            // Drop some bubbles to test synching
+            int count = 0;
+            for (int i = Bubbles.Length - 1; i > 0; --i) {
+                if (Bubbles[i] != null) {
+                    Bubbles[i].Drop();
+                    count++;
+                    if (count >= 12) {
+                        break;
+                    }
+                }
+            }
+        }
+#endif
 
         _boardIsStable = IsBoardStable();
 
@@ -697,9 +707,6 @@ public class BubbleManager : MonoBehaviour {
         }
 
         if ((_justAddedBubble || _justRemovedBubble) && _boardIsStable) {
-
-            CheckBubbleAnchors();
-
             boardChangedEvent.Invoke();
             _justAddedBubble = false;
             _justRemovedBubble = false;
@@ -807,6 +814,7 @@ public class BubbleManager : MonoBehaviour {
 
         newBubble.node = node;
         newBubble.transform.position = nodeList[node].nPosition;
+        newBubble.locked = true;
 
         // assign adj bubbles
         AssignAdjBubbles(newBubble, node);
@@ -862,6 +870,8 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public virtual void AddLine() {
+        Debug.Log("Add line");
+
         // We're gonna modify the nodesList so we should stop this coroutine in case it's mid-stuff
         if (_checkNodesCanBeHit != null) {
             StopCoroutine(_checkNodesCanBeHit);
@@ -969,7 +979,7 @@ public class BubbleManager : MonoBehaviour {
 
             // Init bubble using the types that were decided ahead of time
             InitBubble(bubble, _nextLineBubbles[nextLineIndex]);
-            AddBubble(bubble);
+            AddBubble(bubble, nodeList[i].number);
         }
     }
 
@@ -1044,10 +1054,10 @@ public class BubbleManager : MonoBehaviour {
         transform.Translate(0f, -0.67f, 0f, Space.World);
 
         // Spawn/push down the ceiling
-        if(_ceiling == null) {
-            _ceiling = GameObject.FindGameObjectWithTag("Ceiling").transform;
+        if(ceiling == null) {
+            ceiling = GameObject.FindGameObjectWithTag("Ceiling").transform;
         }
-        _ceiling.Translate(0f, -0.67f, 0f, Space.World);
+        ceiling.Translate(0f, -0.67f, 0f, Space.World);
 
         // Update bottom line length as well
         // when the board is pushed down, the bottom line swaps length
@@ -1110,17 +1120,23 @@ public class BubbleManager : MonoBehaviour {
             }
         }
 
-        // If there's a bubble on the bottom line
-        if (CheckBottomLine()) {
-            _gameEndingSequence = true;
+        if (!PhotonNetwork.connectedAndReady || PhotonNetwork.isMasterClient) {
+            // If there's a bubble on the bottom line
+            if (CheckBottomLine()) {
+                _gameEndingSequence = true;
 
-            // Check for a tie
-            if (_enemyBubbleManager != null && _enemyBubbleManager.CheckBottomLine()) {
-                // It's a tie!
-                EndGame(0);
-            } else {
-                // We lost :(
-                EndGame(-1);
+                // Check for a tie
+                if (_enemyBubbleManager != null && _enemyBubbleManager.CheckBottomLine()) {
+                    // It's a tie!
+                    EndGame(0);
+                } else {
+                    // We lost :(
+                    EndGame(-1);
+                }
+
+                if(PhotonNetwork.isMasterClient) {
+                    _netBubMan.SendLostMessage();
+                }
             }
         }
     }
@@ -1190,6 +1206,10 @@ public class BubbleManager : MonoBehaviour {
     void OnBoardChanged() {
         //Debug.Log("Board has changed");
 
+        CheckBubbleAnchors();
+
+        CheckSecondToLastRow();
+
         // If we have AI
         // TODO: maybe only do this if THIS side's players are ai
         if (_gameManager.playerManager.AreAI) {
@@ -1206,8 +1226,6 @@ public class BubbleManager : MonoBehaviour {
 
             GetLowestLine();
         }
-
-        CheckSecondToLastRow();
     }
 
     // Drop potentials are used by the AI to determine how many bubbles will drop if a particular bubble is popped.

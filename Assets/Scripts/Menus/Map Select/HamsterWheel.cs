@@ -20,6 +20,8 @@ public class HamsterWheel : MonoBehaviour {
         get { return _rotatingRight || _rotatingLeft; }
     }
 
+    bool _keepRotating; // generally only used for networking
+
     int _index = 0;
     BOARDS[] _stages = new BOARDS[8];
     StageIcon[] _stageIcons;
@@ -155,7 +157,7 @@ public class HamsterWheel : MonoBehaviour {
 
         stageDescription.text = "";
 
-        if (_photonView != null && PhotonNetwork.connectedAndReady) {
+        if (_photonView != null && PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, false);
         }
 
@@ -182,7 +184,7 @@ public class HamsterWheel : MonoBehaviour {
 
         stageDescription.text = "";
 
-        if (_photonView != null && PhotonNetwork.connectedAndReady) {
+        if (_photonView != null && PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
             _photonView.RPC("RotateWheel", PhotonTargets.OthersBuffered, true);
         }
 
@@ -191,10 +193,25 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     void EndRotation() {
-        // End the rotation
-        _rotatingRight = false;
-        _rotatingLeft = false;
         transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, _desiredRotation);
+
+        // If we'r enot going to keep rotating
+        if (!_keepRotating) {
+            // End the rotation
+            _rotatingRight = false;
+            _rotatingLeft = false;
+        } else {
+            if(_rotatingRight) {
+                _rotatingRight = false;
+                RotateRight();
+            } else if(_rotatingLeft) {
+                _rotatingLeft = false;
+                RotateLeft();
+            }
+
+            // Don't carry this over to next rotation
+            _keepRotating = false;
+        }
 
         // Increase size of current stage icon
         _stageIcons[_index].ScaleUp();
@@ -282,10 +299,18 @@ public class HamsterWheel : MonoBehaviour {
 
     [PunRPC]
     void RotateWheel(bool left) {
-        if (left) {
-            RotateLeft();
+        // If we're rotating the same direction
+        if ((left && _rotatingLeft) || (!left && _rotatingRight)) {
+            // It means we need to continue forward
+            _keepRotating = true;
         } else {
-            RotateRight();
+            _keepRotating = false;
+
+            if (left) {
+                RotateLeft();
+            } else {
+                RotateRight();
+            }
         }
     }
 

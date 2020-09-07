@@ -20,6 +20,7 @@ public class LocalPlayMenu : MonoBehaviour {
         // If this is the demo
         if (_gameManager.demoMode) {
             // Skip straight to character select
+            _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
             SceneManager.LoadScene("PlayableCharacterSelect");
         }
     }

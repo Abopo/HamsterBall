@@ -4,8 +4,6 @@ using Rewired;
 using System.Collections;
 
 public class AISetupWindow : Menu {
-    public GameObject menuObj;
-
     public AISetupOption ai1Setup;
     public AISetupOption ai2Setup;
     public AISetupOption ai3Setup;

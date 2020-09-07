@@ -41,6 +41,11 @@ public class HamsterMeter : MonoBehaviour {
 
     private void Awake() {
         _audioSource = GetComponent<AudioSource>();
+
+        if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SP_CLEAR) {
+            // Hide ourself
+            gameObject.SetActive(false);
+        }
     }
 
     // Use this for initialization
@@ -156,7 +161,6 @@ public class HamsterMeter : MonoBehaviour {
             LoseShield();
         }
 		
-		Debug.Log(_curStock);
 		HamsterFillBallEvent.setParameterValue("CurrentStock", _curStock);
        	HamsterFillBallEvent.start();
         _curStock += inc;
@@ -204,6 +208,11 @@ public class HamsterMeter : MonoBehaviour {
         }
 
         UpdateStockSprites();
+
+        // Networking
+        if(PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            GetComponent<NetworkedHamsterMeter>().NeedSync();
+        }
     }
 
     void CreateNewStockSprites() {
@@ -367,6 +376,13 @@ public class HamsterMeter : MonoBehaviour {
             foreach (Animator anim in animators) {
                 anim.SetInteger("Type", type);
             }
+        }
+    }
+
+    public void DecreaseStock(int inc) {
+        for(int i = 0; i < inc; ++i) {
+            _stockSprites[_curStock - 1].GetComponent<HamsterStockSprite>().Transparent();
+            _curStock--;
         }
     }
 

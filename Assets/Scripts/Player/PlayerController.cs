@@ -200,21 +200,7 @@ public class PlayerController : Entity {
         // Ignore collision with our own attack object
         Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), attackObj.GetComponent<CircleCollider2D>());
 
-        // Find a proper bubble manager
-        GameObject bubbleManager = null;
-        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-            bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1");
-        } else {
-            if (team == 0) {
-                bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1");
-            } else if (team == 1) {
-                bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2");
-            }
-        }
-
-        if(bubbleManager != null) {
-            _homeBubbleManager = bubbleManager.GetComponent<BubbleManager>();
-        }
+        FindHomeBubbleManager();
 
         totalThrowCount = 0;
 
@@ -309,6 +295,24 @@ public class PlayerController : Entity {
         }
     }
 
+    public void FindHomeBubbleManager() {
+        // Find a proper bubble manager
+        GameObject bubbleManager = null;
+        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1");
+        } else {
+            if (team == 0) {
+                bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1");
+            } else if (team == 1) {
+                bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager2");
+            }
+        }
+
+        if (bubbleManager != null) {
+            _homeBubbleManager = bubbleManager.GetComponent<BubbleManager>();
+        }
+    }
+
     // Update is called once per frame
     protected override void Update () {
         base.Update();
@@ -392,12 +396,6 @@ public class PlayerController : Entity {
             attackObj.gameObject.SetActive(false);
         }
 
-		if(Input.GetKeyDown(KeyCode.Y))
-		{
-			Debug.Log("Stop All Events");
-			//SoundManager.mainAudio.MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
-		}
-
 		//_playerAnimationTriggers.PlayerFootstepEvent.setParameterValue("Surface", platformIndex);
 	}
 
@@ -439,7 +437,7 @@ public class PlayerController : Entity {
         if (CurState != PLAYER_STATE.SHIFT) {
             Shift();
 
-            if (_photonView != null && _photonView.isMine) {
+            if (_photonView != null && _photonView.isMine && !_gameManager.gameIsOver) {
                 _photonView.RPC("ShiftPlayer", PhotonTargets.Others);
             }
         }

@@ -7,7 +7,6 @@ using UnityEngine.Events;
 using Rewired;
 
 public class VillageManager : MonoBehaviour {
-    public bool resetData;
 
     PauseMenu _pauseMenu;
     GameManager _gameManager;
@@ -78,14 +77,6 @@ public class VillageManager : MonoBehaviour {
     }
 
     void InitPlayerPrefs() {
-        if (resetData) {
-            // TODO: Remove for final build
-            ES3.Save<int>("FirstTimePlaying", 0);
-
-            // Delete the save file
-            ES3.DeleteFile();
-        }
-
         // These prefs are only reset on the first launch of the game.
         if (ES3.Load<int>("FirstTimePlaying", 0) == 0) {
             int[] storyProgress = new int[2] { 3, 10 };

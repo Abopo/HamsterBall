@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class StoryButton : MenuOption {
+public class StoryButton : MenuButton {
     public bool hasCutscene;
     public string fileToLoad;
 
@@ -20,6 +20,8 @@ public class StoryButton : MenuOption {
     public int spFlower3Requirement;
     public int cpFlower2Requirement;
     public int cpFlower3Requirement;
+
+    public Image flower;
 
     StorySelectMenu _storySelectMenu;
     BoardLoader _boardLoader;
@@ -43,6 +45,25 @@ public class StoryButton : MenuOption {
         } else {
             isReady = true;
             Unlock();
+            SetFlowerData();
+        }
+    }
+
+    void SetFlowerData() {
+        int[,] flowerData;
+
+        if (!_storySelectMenu.storyPlayerInfo.IsCoop) {
+            flowerData = ES3.Load<int[,]>("SoloFlowers");
+        } else {
+            flowerData = ES3.Load<int[,]>("CoopFlowers");
+        }
+
+        int flowerCount = flowerData[stageNumber[0] - 1, stageNumber[1] - 1];
+        if (flowerCount > 0) {
+            flower.gameObject.SetActive(true);
+            flower.sprite = _storySelectMenu.resources.hangingFlowerSprites[flowerCount - 1];
+        } else {
+            flower.gameObject.SetActive(false);
         }
     }
 
@@ -68,8 +89,12 @@ public class StoryButton : MenuOption {
         // Set the stage in the game manager
         FindObjectOfType<GameManager>().stage = stageNumber;
 
-        // Set the new story position to here
-        ES3.Save<int[]>("StoryPos", stageNumber);
+        if (_gameManager.demoMode) {
+            ES3.Save<int>("DemoPos", stageNumber[1]);
+        } else {
+            // Set the new story position to here
+            ES3.Save<int[]>("StoryPos", stageNumber);
+        }
 
         // Load the players
         FindObjectOfType<StoryPlayerInfo>().LoadPlayers();
@@ -99,7 +124,7 @@ public class StoryButton : MenuOption {
     }
 
     public void Unlock() {
-        transform.GetChild(1).GetComponent<Image>().enabled = false;
+        transform.Find("Locked_Overlay").GetComponent<Image>().enabled = false;
         isLocked = false;
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ExitMenu : Menu {
-    public GameObject menuObject;
     public MenuButton yesButton;
 
     public string returnMenu;
@@ -21,8 +20,8 @@ public class ExitMenu : Menu {
 
         _gameManager = FindObjectOfType<GameManager>();
 
-        if(!_active && menuObject.activeSelf) {
-            menuObject.SetActive(false);
+        if(!_active && menuObj.activeSelf) {
+            menuObj.SetActive(false);
         }
     }
 
@@ -42,7 +41,6 @@ public class ExitMenu : Menu {
     public override void Activate() {
         base.Activate();
 
-        menuObject.SetActive(true);
         _active = true;
 
         // Set YES button to selected
@@ -78,7 +76,6 @@ public class ExitMenu : Menu {
         yield return null;
 
         // Close the menu
-        menuObject.SetActive(false);
         _active = false;
     }
 }

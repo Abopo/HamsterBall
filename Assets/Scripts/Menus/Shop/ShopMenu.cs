@@ -29,7 +29,7 @@ public class ShopMenu : MonoBehaviour {
     }
 
     bool IsActive {
-        get { return !_exitMenu.menuObject.activeSelf && !_confirmMenu.menuObject.activeSelf; }
+        get { return !_exitMenu.menuObj.activeSelf && !_confirmMenu.menuObj.activeSelf; }
     }
 
     protected void Awake() {
@@ -54,8 +54,48 @@ public class ShopMenu : MonoBehaviour {
         playerCurrency = ES3.Load<int>("Currency", 100);
         currencyText.text = playerCurrency.ToString();
 
+        SetupShopItemAdjOptions();
+
+        ShowFirstPage();
+
         DisableActionButton();
     }
+
+    void SetupShopItemAdjOptions() {
+        // Alright so we gotta have the shop items find their adjOptions
+        // but if they're all active it gets fucked up, so we gotta one by one
+        // disable all the other pages, then tell the items to find their stuff
+
+        foreach(ShopPage page in _allPages) {
+            // Disable all the other pages
+            DisableAllPages();
+
+            // Enable this page
+            page.ShowContent();
+
+            // Have all of this pages items find their adjOptions
+            page.InitializeOptions();
+        }
+
+    }
+
+    void DisableAllPages() {
+        foreach(ShopPage page in _allPages) {
+            page.HideContent();
+        }
+    }
+
+    void ShowFirstPage() {
+        // Show whichever page has focus first, hide the others
+        foreach(ShopPage page in _allPages) {
+            if(page.hasFocus) {
+                page.ShowContent();
+            } else {
+                page.HideContent();
+            }
+        }
+    }
+
     // Update is called once per frame
     protected void Update() {
         if (IsActive) {
@@ -72,11 +112,13 @@ public class ShopMenu : MonoBehaviour {
                 MovePageRight();
             }
 
+#if UNITY_EDITOR
             // Dev cheat
             if (Input.GetKey(KeyCode.Z) && Input.GetKeyDown(KeyCode.M)) {
                 playerCurrency = 5000;
                 currencyText.text = playerCurrency.ToString();
             }
+#endif
         }
     }
 

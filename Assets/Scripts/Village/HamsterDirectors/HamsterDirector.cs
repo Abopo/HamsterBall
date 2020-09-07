@@ -18,7 +18,7 @@ public class HamsterDirector : MonoBehaviour {
     }
 
     protected void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.tag == "Hamster") {
+        if(collision.tag == "VillageHamster") {
             DirectHamster(collision.GetComponent<WanderingHamster>());
         }
     }

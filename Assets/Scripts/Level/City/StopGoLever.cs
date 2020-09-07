@@ -46,6 +46,7 @@ public class StopGoLever : MonoBehaviour {
     }
 
     public void ChangePosition(StopGoButton invoker) {
+
         _button = invoker;
         _isRotating = true;
     }

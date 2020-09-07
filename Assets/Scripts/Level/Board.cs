@@ -93,6 +93,18 @@ public class Board : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        
+
+    }
+
+    private void OnDestroy() {
+        if (PhotonNetwork.connectedAndReady) {
+            // Only the owner should try and destroy the bubble
+            if (PhotonNetwork.player == GetComponent<PhotonView>().owner) {
+                PhotonNetwork.Destroy(gameObject);
+            } else if (PhotonNetwork.isMasterClient) {
+                GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.masterClient);
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
     }
 }

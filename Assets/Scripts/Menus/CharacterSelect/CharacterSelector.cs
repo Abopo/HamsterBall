@@ -226,7 +226,7 @@ public class CharacterSelector : MonoBehaviour {
         if (isActive) {
             // Make sure our icon stays highlighted
             if (!curCharacterIcon.isHighlighted) {
-                curCharacterIcon.isHighlighted = true;
+                curCharacterIcon.Highlight();
             }
 
             if (_player != null && takeInput && isLocal) {

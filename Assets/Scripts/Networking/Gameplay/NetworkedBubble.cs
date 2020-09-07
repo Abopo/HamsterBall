@@ -8,6 +8,9 @@ public class NetworkedBubble : Photon.MonoBehaviour {
     Bubble _bubble;
     GameObject _spiralEffectObj;
 
+    float _syncTime = 1.5f;
+    float _syncTimer = 0f;
+
     // Use this for initialization
     void Start () {
 
@@ -77,7 +80,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
             playerController.heldBall.isPlasma = (bool)photonView.instantiationData[2];
 
         // Otherwise it's parent should be a water bubble
-        } else {
+        } else if (spawnType == -50) {
             // Find the parent water bubble
             PhotonView parentBubble = PhotonView.Find((int)photonView.instantiationData[4]);
             parentBubble.GetComponent<WaterBubble>().CaughtBubble = _bubble;
@@ -103,7 +106,15 @@ public class NetworkedBubble : Photon.MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
+		if(PhotonNetwork.isMasterClient && _bubble.HomeBubbleManager != null && _bubble.HomeBubbleManager.BoardIsStable) {
+            _syncTimer += Time.deltaTime;
+            if(_syncTimer >= _syncTime) {
+                SendSynchCheck();
+                _syncTimer = 0f;
+            }
+        } else {
+            _syncTimer = 0f;
+        }
 	}
     
     [PunRPC]
@@ -111,11 +122,15 @@ public class NetworkedBubble : Photon.MonoBehaviour {
         // Find the proper bubble manager
         _bubble.HomeBubbleManager = FindHomeBubbleManager(team);
 
-        _bubble.HomeBubbleManager.AddBubble(_bubble, node);
-        _bubble.CollisionWithBoard(_bubble.HomeBubbleManager);
+        // If the node doesn't line up with our current node
+        if (_bubble.node != node) {
+            // something went wrong and we need to correct
+            _bubble.HomeBubbleManager.AddBubble(_bubble, node);
+        }
+        //_bubble.CollisionWithBoard(_bubble.HomeBubbleManager);
 
         if(PhotonNetwork.isMasterClient) {
-            _bubble.HomeBubbleManager.boardChangedEvent.AddListener(SendSynchCheck);
+            //_bubble.HomeBubbleManager.boardChangedEvent.AddListener(SendSynchCheck);
         }
     }
 
@@ -135,17 +150,60 @@ public class NetworkedBubble : Photon.MonoBehaviour {
     }
 
     // Only used by master client
-    void SendSynchCheck() {
-        photonView.RPC("SynchCheck", PhotonTargets.Others, _bubble.node);
+    public void SendSynchCheck() {
+        photonView.RPC("SynchCheck", PhotonTargets.Others, _bubble.team, _bubble.node, _bubble.locked);
     }
 
     [PunRPC]
-    void SynchCheck(int node) {
-        if(_bubble.node != node) {
-            Debug.LogError("Bubble at node " + _bubble.node + " out of synch, moveing to node " + node);
+    void SynchCheck(int team, int node, bool locked) {
+        if (_bubble.team != team) {
+            _bubble.team = team;
+            _bubble.HomeBubbleManager = FindHomeBubbleManager(_bubble.team);
+        }
 
-            _bubble.node = node;
-            _bubble.transform.position = _bubble.HomeBubbleManager.nodeList[node].nPosition;
+        if (_bubble.HomeBubbleManager == null) {
+            _bubble.HomeBubbleManager = FindHomeBubbleManager(_bubble.team);
+        }
+
+        if (_bubble.HomeBubbleManager.BoardIsStable) {
+            if (_bubble.node != node) {
+                Debug.LogError("Bubble at node " + _bubble.node + " out of synch, moveing to node " + node);
+
+                _bubble.node = node;
+                _bubble.transform.position = _bubble.HomeBubbleManager.nodeList[node].nPosition;
+            }
+
+            if (_bubble.locked != locked) {
+                _bubble.locked = locked;
+                if (_bubble.locked) {
+                    _bubble.transform.position = _bubble.HomeBubbleManager.nodeList[node].nPosition;
+                    _bubble.gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    void NetworkDrop(int inc) {
+        _bubble.GenerateDropJunk(inc);
+    }
+
+    public void DelaySyncCheck(float delay) {
+        _syncTimer = 0;
+        _syncTimer -= delay;
+    }
+
+    private void OnDestroy() {
+        //Debug.Log("Network destroy bubble 2");
+
+        if (PhotonNetwork.connectedAndReady) {
+            // Only the master client should try and destroy things
+            if (PhotonNetwork.isMasterClient) {
+                if (PhotonNetwork.player != photonView.owner) {
+                    photonView.TransferOwnership(PhotonNetwork.masterClient);
+                }
+                PhotonNetwork.Destroy(gameObject);
+            }
         }
     }
 }

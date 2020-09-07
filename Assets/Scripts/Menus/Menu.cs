@@ -13,6 +13,7 @@ public class Menu : MonoBehaviour {
     public bool holdsSelection; // whether or not this menu should keep track of the previously selected option
     public bool pauses;
 
+    public GameObject menuObj;
     public MenuOption selectedOption;
 
     [SerializeField]
@@ -39,7 +40,9 @@ public class Menu : MonoBehaviour {
 
     // Start is called before the first frame update
     protected virtual void Start() {
-
+        if(_menuOptions.Length == 0) {
+            GetChildOptions();
+        }
     }
 
     // Update is called once per frame
@@ -114,6 +117,10 @@ public class Menu : MonoBehaviour {
 
     // Open the menu
     public virtual void Activate() {
+        if(menuObj != null) {
+            menuObj.SetActive(true);
+        }
+
         TakeFocus();
 
         if(_gameManager == null) {
@@ -128,6 +135,10 @@ public class Menu : MonoBehaviour {
     public virtual void Deactivate() {
         // Make sure to only go through this if we have focus
         if (hasFocus) {
+            if (menuObj != null) {
+                menuObj.SetActive(false);
+            }
+
             _gameManager.Unpause();
 
             LoseFocus();
@@ -160,6 +171,10 @@ public class Menu : MonoBehaviour {
 
     IEnumerator EnableButtonsLater() {
         yield return null;
+
+        if(_menuOptions != null && _menuOptions.Length == 0) {
+            GetChildOptions();
+        }
 
         if (_menuOptions != null) {
             foreach (MenuOption mO in _menuOptions) {

@@ -2,16 +2,15 @@
 using UnityEngine.UI;
 
 public class StorySelectMenu : MonoBehaviour {
-    public Text chapter;
-    public Text location;
-    public Text gameType;
-    public Text highscoreSolo;
-    public Text highscoreCoop;
-    public Image soloFlower;
-    public Image coopFlower;
-    public Text flowerRequirement1;
-    public Text flowerRequirement2;
-    public Text winCondition;
+    public SuperTextMesh chapter;
+    public Image gameType;
+    public SuperTextMesh highscoreSolo;
+    public SuperTextMesh highscoreCoop;
+    public SpriteRenderer soloFlower;
+    public SpriteRenderer coopFlower;
+    public SuperTextMesh flowerRequirement1;
+    public SuperTextMesh flowerRequirement2;
+    public SuperTextMesh winCondition;
     public CharacterSelectWindow characterSelectWindow;
 
     public World[] worlds = new World[2];
@@ -28,9 +27,6 @@ public class StorySelectMenu : MonoBehaviour {
 
     float _worldYPos = 0f;
 
-    Sprite[] _flowerSprites = new Sprite[3];
-    Color[] _flowerColors = new Color[3];
-
     public int CurWorld {
         get { return _curWorld; }
     }
@@ -45,13 +41,14 @@ public class StorySelectMenu : MonoBehaviour {
     }
 
     GameManager _gameManager;
-    StoryPlayerInfo _storyPlayerInfo;
+    public StoryPlayerInfo storyPlayerInfo;
+    public StorySelectResources resources;
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
-        _storyPlayerInfo = FindObjectOfType<StoryPlayerInfo>();
+        storyPlayerInfo = FindObjectOfType<StoryPlayerInfo>();
         _stagePicture = FindObjectOfType<StagePicture>();
-        LoadFlowerSprites();
+        resources = GetComponent<StorySelectResources>();
     }
     // Use this for initialization
     void Start () {
@@ -62,6 +59,8 @@ public class StorySelectMenu : MonoBehaviour {
         if (!_gameManager.demoMode) {
             // Load saved world
             LoadSaveData();
+        } else {
+            LoadDemoData();
         }
     }
 
@@ -95,15 +94,11 @@ public class StorySelectMenu : MonoBehaviour {
         _curWorld = world-1;
     }
 
-    void LoadFlowerSprites() {
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/Effects/PointShapes");
-        _flowerSprites[0] = sprites[23];
-        _flowerSprites[1] = sprites[24];
-        _flowerSprites[2] = sprites[25];
+    void LoadDemoData() {
+        // Load where the player last left off
+        int storyPos = ES3.Load<int>("DemoPos", 1);
 
-        _flowerColors[0] = new Color(0.79f, 0.42f, 0.04f);
-        _flowerColors[1] = new Color(0.79f, 0.79f, 0.79f);
-        _flowerColors[2] = new Color(1f, 0.73f, 0.25f);
+        worlds[0].Activate(storyPos - 1);
     }
 
     // Update is called once per frame
@@ -136,30 +131,27 @@ public class StorySelectMenu : MonoBehaviour {
         int world = storyButton.GetComponentInParent<World>().worldNum;
         chapter.text = "Chapter " + world;
 
-        // Set the location name
-        location.text = storyButton.locationName;
-
         // Set stage info and highscore text
         int[,] soloHighScores = ES3.Load<int[,]>("SoloHighScores");
         int[,] coopHighScores = ES3.Load<int[,]>("CoopHighScores");
 
         switch (storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
-                gameType.text = "Versus Stage";
+                gameType.sprite = resources.gameModes[2];
 
                 highscoreSolo.text = soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
                 highscoreCoop.text = coopHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
 
                 break;
             case GAME_MODE.SP_POINTS:
-                gameType.text = "Point Challenge";
+                gameType.sprite = resources.gameModes[1];
 
                 highscoreSolo.text = soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
                 highscoreCoop.text = coopHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1].ToString();
 
                 break;
             case GAME_MODE.SP_CLEAR:
-                gameType.text = "Puzzle Stage";
+                gameType.sprite = resources.gameModes[0];
 
                 int seconds = Mathf.FloorToInt(soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1] % 60);
                 int minutes = Mathf.FloorToInt(soloHighScores[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1] / 60);
@@ -173,12 +165,11 @@ public class StorySelectMenu : MonoBehaviour {
 
         // Set flower stuff
         SetFlowerData(storyButton);
-        if (_storyPlayerInfo.IsCoop) {
+        if (storyPlayerInfo.IsCoop) {
             SetFlowerRequirementTexts(storyButton, storyButton.cpFlower2Requirement, storyButton.cpFlower3Requirement);
         } else {
             SetFlowerRequirementTexts(storyButton, storyButton.spFlower2Requirement, storyButton.spFlower3Requirement);
         }
-
 
         // Update the stage picture
         _stagePicture.UpdateImages(storyButton);
@@ -192,8 +183,7 @@ public class StorySelectMenu : MonoBehaviour {
         int soloFlowerCount = soloFlowerData[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1];
         if (soloFlowerCount > 0) {
             soloFlower.gameObject.SetActive(true);
-            soloFlower.sprite = _flowerSprites[soloFlowerCount - 1];
-            soloFlower.color = _flowerColors[soloFlowerCount - 1];
+            soloFlower.sprite = resources.flowerSprites[soloFlowerCount - 1];
         } else {
             soloFlower.gameObject.SetActive(false);
         }
@@ -202,8 +192,7 @@ public class StorySelectMenu : MonoBehaviour {
         int coopFlowerCount = coopFlowerData[storyButton.stageNumber[0] - 1, storyButton.stageNumber[1] - 1];
         if (coopFlowerCount > 0) {
             coopFlower.gameObject.SetActive(true);
-            coopFlower.sprite = _flowerSprites[coopFlowerCount - 1];
-            coopFlower.color = _flowerColors[coopFlowerCount - 1];
+            coopFlower.sprite = resources.flowerSprites[coopFlowerCount - 1];
         } else {
             coopFlower.gameObject.SetActive(false);
         }
@@ -213,16 +202,16 @@ public class StorySelectMenu : MonoBehaviour {
         switch(storyButton.gameType) {
             case GAME_MODE.MP_VERSUS:
             case GAME_MODE.SP_POINTS:
-                    flowerRequirement1.text = ": " + fr1.ToString();
-                    flowerRequirement2.text = ": " + fr2.ToString();
+                    flowerRequirement1.text = fr1.ToString();
+                    flowerRequirement2.text = fr2.ToString();
                 break;
             case GAME_MODE.SP_CLEAR:
                     int seconds = fr1 % 60;
                     int minutes = fr1 / 60;
-                    flowerRequirement1.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
+                    flowerRequirement1.text = string.Format("{0}:{1:00}", minutes, seconds);
                     seconds = fr2 % 60;
                     minutes = fr2 / 60;
-                    flowerRequirement2.text = ": " + string.Format("{0}:{1:00}", minutes, seconds);
+                    flowerRequirement2.text = string.Format("{0}:{1:00}", minutes, seconds);
                 break;
         }
     }

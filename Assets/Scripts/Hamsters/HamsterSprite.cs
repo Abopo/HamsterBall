@@ -129,4 +129,22 @@ public class HamsterSprite : MonoBehaviour {
         _specialMove = true;
     }
 
+    public void ResetSprite() {
+        // Make sure sprite is solid
+        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.8823529f);
+
+        // TODO: reset animator to deal with plasma pop?
+
+        transform.localPosition = new Vector3(0f, 0f, -0.5f);
+        transform.localScale = new Vector3(0.14647f, 0.14647f, 0.14647f);
+
+        _rigidbody.GetComponent<Animator>().SetInteger("State", 0);
+
+        _rigidbody.isKinematic = true;
+        _rigidbody.gravityScale = 0;
+
+        _rigidbody.velocity = Vector2.zero;
+
+        _specialMove = false;
+    }
 }

@@ -171,6 +171,7 @@ public class SoundManager : MonoBehaviour {
 
     public void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.P))
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/Hamster/SkullConnect");
@@ -179,6 +180,7 @@ public class SoundManager : MonoBehaviour {
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/Hamster/SkullCollected");
         }
+        */
     }
     //SoundManager.mainAudio.Footstep()
     //FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);

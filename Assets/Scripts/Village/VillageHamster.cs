@@ -13,6 +13,7 @@ public class VillageHamster : MonoBehaviour {
     // I'm thinking there might need to be a despawnIndex as well?
 
     public DialogueDictionary dialogueDictionary;
+    public string demoDialogue;
 
     int _villageIndex; // The current index of the village
 
@@ -29,14 +30,20 @@ public class VillageHamster : MonoBehaviour {
         } else {
             hamsterDialogue = GetComponentInChildren<HamsterDialogue>();
 
-            // Search backwards for the closest dialogue to the current index
-            int tempIndex = _villageIndex;
-            if(hamsterDialogue != null) {
-                while(!dialogueDictionary.ContainsKey(tempIndex)) {
-                    tempIndex--;
-                }
+            if (hamsterDialogue != null && FindObjectOfType<GameManager>().demoMode) {
+                hamsterDialogue.dialogue = demoDialogue;
+            } else {
+                // Search backwards for the closest dialogue to the current index
+                int tempIndex = _villageIndex;
+                if (hamsterDialogue != null) {
+                    while (!dialogueDictionary.ContainsKey(tempIndex) && tempIndex > 0) {
+                        tempIndex--;
+                    }
 
-                hamsterDialogue.dialogue = dialogueDictionary[tempIndex];
+                    if (dialogueDictionary.ContainsKey(tempIndex)) {
+                        hamsterDialogue.dialogue = dialogueDictionary[tempIndex];
+                    }
+                }
             }
         }
 	}

@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour {
     GameManager _gameManager;
     BubbleManager _bubbleManager;
     LevelUI _levelUI;
+    public LevelUI LevelUI { get => _levelUI; }
 
     public float LevelTimer {
         get { return _levelTimer; }
@@ -41,6 +42,7 @@ public class LevelManager : MonoBehaviour {
         get { return _gameOver; }
         set { _gameOver = value; }
     }
+
 
     private void Awake() {
         pauseMenu = FindObjectOfType<PauseMenu>();
@@ -70,7 +72,7 @@ public class LevelManager : MonoBehaviour {
             continueLevel = false;
         }
 
-        _levelUI = GetComponentInChildren<LevelUI>();
+        _levelUI = FindObjectOfType<LevelUI>();
 
         // Failsafe for a missing countdown
         GameCountdown gc = FindObjectOfType<GameCountdown>();
@@ -161,8 +163,9 @@ public class LevelManager : MonoBehaviour {
             }
         }
 
+#if UNITY_EDITOR
         // Testing stuff
-        if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.M)) {
+        if (Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.M)) {
             bool paused;
             SoundManager.mainAudio.MusicMainEvent.getPaused(out paused);
             if (paused) {
@@ -175,6 +178,8 @@ public class LevelManager : MonoBehaviour {
             GameEnd();
             ActivateResultsScreen(0, 1);
         }
+#endif
+
     }
 
     void IncreaseMarginMultiplier() {
@@ -257,6 +262,15 @@ public class LevelManager : MonoBehaviour {
             if(finalResult == 0) {
                 IncreaseLeftTeamGames();
                 IncreaseRightTeamGames();
+                // If there are still games to play
+                if(_gameManager.leftTeamGames < 2 || _gameManager.rightTeamGames < 2) {
+                    // Just show the continue screen
+                    continueScreen.Activate(finalResult);
+                } else {
+                    // Start the banner sequence
+                    FindObjectOfType<GameEndSequence>().StartSequence(finalResult);
+                }
+                /*
                 if (_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
                     // the whole set was a draw
                     FindObjectOfType<GameEndSequence>().StartSequence(0);
@@ -275,6 +289,7 @@ public class LevelManager : MonoBehaviour {
                     // Set not done so activate continue screen
                     continueScreen.Activate(finalResult);
                 }
+                */
             } else {
                 // If the left team has won
                 if(finalResult == -1) {
@@ -317,7 +332,8 @@ public class LevelManager : MonoBehaviour {
         }
 
         // If we're online
-        if(_gameManager.isOnline) {
+        if(PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+
             GetComponent<NetworkedLevelManager>().SendResultsCheck(team, result);
         }
     }

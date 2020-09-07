@@ -6,8 +6,7 @@ using Rewired;
 
 public class PauseMenu : Menu {
 
-    public GameObject optionsMenu;
-    public GameObject pauseMenu;
+    public Menu optionsMenu;
     public SuperTextMesh aimAssist;
 
     bool _isActive;
@@ -59,7 +58,6 @@ public class PauseMenu : Menu {
             return;
         }
 
-        pauseMenu.SetActive(true);
         _isActive = true;
         _justActivated = true;
 
@@ -88,8 +86,6 @@ public class PauseMenu : Menu {
 
         SetAimAssistText();
 
-        pauseMenu.SetActive(true);
-
         // Pause the game
         _gameManager.FullPause();
     }
@@ -99,27 +95,26 @@ public class PauseMenu : Menu {
 
         _gameManager.Unpause();
         _isActive = false;
-        pauseMenu.SetActive(false);
     }
 
     public void OpenOptionsMenu() {
         // Turn off buttons on pause menu
-        foreach(MenuButton mB in _buttons) {
-            mB.isReady = false;
-        }
+        //foreach(MenuButton mB in _buttons) {
+        //    mB.isReady = false;
+        //}
 
         // Enable options menu
-        optionsMenu.SetActive(true);
+        optionsMenu.Activate();
     }
 
     public void CloseOptionsMenu() {
         // Turn on buttons on pause menu
-        foreach (MenuButton mB in _buttons) {
-            mB.isReady = true;
-        }
+        //foreach (MenuButton mB in _buttons) {
+        //    mB.isReady = true;
+        //}
 
         // Disable options menu
-        optionsMenu.SetActive(false);
+        optionsMenu.Deactivate();
     }
 
     public void AimAssistButton() {

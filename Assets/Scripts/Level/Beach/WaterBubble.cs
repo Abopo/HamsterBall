@@ -107,8 +107,14 @@ public class WaterBubble : MonoBehaviour {
             }
         }
 
+        Debug.Log("Water bubble caught hamster");
+
         // The hamster was caught.
         hamster.Caught();
+
+        if(PhotonNetwork.connectedAndReady) {
+            GetComponent<PhotonView>().RPC("CatchHamster", PhotonTargets.Others, hamster.hamsterNum);
+        }
     }
 
     void BoardCollide(BubbleManager bubbleManager) {
@@ -174,7 +180,7 @@ public class WaterBubble : MonoBehaviour {
         if (PhotonNetwork.connectedAndReady) {
             if (PhotonNetwork.isMasterClient) {
                 // Make sure we destroy ourselves on the network
-                PhotonNetwork.Destroy(this.gameObject);
+                PhotonNetwork.Destroy(gameObject);
             }
         } else {
             // Destroy self

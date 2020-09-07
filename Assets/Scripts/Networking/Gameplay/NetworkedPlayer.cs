@@ -5,8 +5,10 @@ using Photon;
 
 [RequireComponent(typeof(PhotonView))]
 public class NetworkedPlayer : Photon.MonoBehaviour {
+    public int photonID;
     public Hamster tryingToCatchHamster;
     public Bubble thrownBubble;
+    public SuperTextMesh playerName;
 
     PlayerController _playerController;
     InputState _serializedInput;
@@ -24,11 +26,13 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     Vector3 _arrowAngle;
 
     PhotonTransformView _photonTransformView;
+    GameManager _gameManager;
 
     private void Awake() {
         _playerController = GetComponent<PlayerController>();
         _serializedInput = new InputState();
         _photonTransformView = GetComponent<PhotonTransformView>();
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     public void Start() {
@@ -39,6 +43,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         // If we have instantiation data
         if (photonView.instantiationData != null) {
             // Then we were spawned by the Player Spawner and need to initialize stuff
+            photonID = photonView.ownerId;
 
             if (photonView.owner == PhotonNetwork.player) {
                 _playerController.SetInputID(0);
@@ -51,6 +56,8 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             tempInfo.color = (int)photonView.instantiationData[3];
             _playerController.SetCharacterInfo(tempInfo);
 
+            _playerController.FindHomeBubbleManager();
+
             // Make sure our player spawner has us in its list
             NetworkedPlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<NetworkedPlayerSpawner>();
             playerSpawner.AddPlayer(_playerController);
@@ -58,6 +65,10 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
                 playerSpawner.SetupSwitchMeter(_playerController);
             }
         }
+
+        playerName.text = photonView.owner.NickName;
+
+        FindObjectOfType<GameManager>().gameOverEvent.AddListener(OnGameEnd);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
@@ -166,7 +177,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        if (PhotonNetwork.connectedAndReady) {
+        if (PhotonNetwork.connectedAndReady && !_gameManager.gameIsOver) {
             if (!photonView.isMine && _correctState != (int)_playerController.CurState) {
                 _bufferTimer += Time.deltaTime;
                 if (_bufferTimer >= _bufferTime) {
@@ -318,21 +329,25 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     }
 
     [PunRPC]
-    void ThrowBubble(Quaternion arrowRot) {
+    void ThrowBubble(Vector3 playerPos, Quaternion arrowRot) {
+        // We need to make sure the player is in exactly the right position when they throw
+        _playerController.transform.position = playerPos;
+
+        // Then throw the bubble
         ThrowState throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);
         throwState.aimingArrow.localRotation = arrowRot;
         throwState.StartThrow();
     }
 
     [PunRPC]
-    void TryThrowBubble(Quaternion arrowRot) {
+    void TryThrowBubble(Vector3 playerPos, Quaternion arrowRot) {
         // Only the master client can check
         if (PhotonNetwork.isMasterClient) {
             // Check if the player has been punched or not
             // If we're still in the throw state we're good
             if (_playerController.CurState == PLAYER_STATE.THROW) {
                 // Send back the confirmation
-                GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.All, arrowRot);
+                GetComponent<PhotonView>().RPC("ThrowBubble", PhotonTargets.All, playerPos, arrowRot);
 
                 // If we've been knocked out of the throw state
             } else {
@@ -358,5 +373,27 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     [PunRPC]
     void ShiftPlayer() {
         _playerController.StartShift();
+    }
+
+    void OnGameEnd() {
+        // stop synching position
+        _photonTransformView.enabled = false;
+    }
+
+    private void OnDestroy() {
+        if (PhotonNetwork.connectedAndReady) {
+            // TODO: this is the quick fix for now, maybe update to be better
+            if (GetComponent<CSPlayerController>() != null) {
+                return;
+            }
+
+            // Only the master client should try and destroy things
+            if (PhotonNetwork.isMasterClient) {
+                if (PhotonNetwork.player != photonView.owner) {
+                    photonView.TransferOwnership(PhotonNetwork.masterClient);
+                }
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
     }
 }

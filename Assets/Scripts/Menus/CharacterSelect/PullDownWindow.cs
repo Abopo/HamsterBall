@@ -5,7 +5,7 @@ using UnityEngine;
 public class PullDownWindow : MonoBehaviour {
     public GameObject changeText;
 
-    CSPlayerController _playerController;
+    public CSPlayerController _playerController;
     public CSPlayerController PlayerController {
         get { return _playerController; }
     }
@@ -49,7 +49,7 @@ public class PullDownWindow : MonoBehaviour {
                 _isHiding = false;
             }
         }
-	}
+    }
 
     public void Show() {
         _isShowing = true;

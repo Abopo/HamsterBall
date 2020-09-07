@@ -11,15 +11,16 @@ public class PlayerInfoBox : MonoBehaviour {
     public CharaInfo characterInfo;
     public bool playerAssigned;
     public int playerID;
-    public Text playerText;
-    public GameObject[] infoObjects;
+    public SpriteRenderer playerSprite;
+
+    public GameObject activeObjects;
+    public GameObject deactiveObjects;
 
     Player _myPlayer;
     public Player MyPlayer {
         get { return _myPlayer; }
     }
 
-    SpriteRenderer _sprite;
     Sprite _boySprite;
     Sprite _girlSprite;
     //Sprite[] characterSprites = new Sprite[8];
@@ -31,24 +32,9 @@ public class PlayerInfoBox : MonoBehaviour {
 
 
     private void Awake() {
-        _sprite = GetComponentInChildren<SpriteRenderer>(true);
-
-        Sprite[] icons = Resources.LoadAll<Sprite>("Art/UI/Character Select/Characer_Icons_Sharpened");
+        Sprite[] icons = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-False-Colors-Master-File");
         _boySprite = icons[1];
-        _girlSprite = icons[2];
-
-        /*
-        Sprite[] boySprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Warp-Screen-Assets");
-        Sprite[] girlSprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Girl-Icon");
-        characterSprites[0] = boySprites[0];
-        characterSprites[1] = boySprites[1];
-        characterSprites[2] = boySprites[2];
-        characterSprites[3] = boySprites[3];
-        characterSprites[4] = girlSprites[0];
-        characterSprites[5] = girlSprites[1];
-        characterSprites[6] = girlSprites[2];
-        characterSprites[7] = girlSprites[3];
-        */
+        _girlSprite = icons[4];
 
         SceneManager.sceneLoaded += OnLevelLoaded;
     }
@@ -114,22 +100,6 @@ public class PlayerInfoBox : MonoBehaviour {
                     }
                 }
             }
-            
-            /*
-            foreach (Joystick jStick in ReInput.controllers.Joysticks) {
-                // Don't check the controller already assigned to player1
-                if (_player1.controllers.ContainsController(jStick)) {
-                    continue;
-                }
-
-                if(jStick.GetAnyButtonDown()) {
-                    _myPlayer.controllers.AddController(jStick, false);
-                    // Open the character select window so the player can choose a character
-                    _characterSelectWindow.Activate(this);
-                    _gameManager.isCoop = true;
-                }
-            }
-            */
         } else {
             // if the player wants to change characters
             if(_myPlayer.GetButtonDown("Shift")) {
@@ -155,50 +125,31 @@ public class PlayerInfoBox : MonoBehaviour {
         characterInfo = charaInfo;
 
         if (playerID == 0) {
-            playerText.text = "Player 1";
             ES3.Save<int>("Player1Character", charaInfo.name);
             ES3.Save<int>("Player1Color", charaInfo.color);
         } else {
-            playerText.text = "Player 2";
             ES3.Save<int>("Player2Character", charaInfo.name);
             ES3.Save<int>("Player2Color", charaInfo.color);
         }
 
         // Turn on the correct UI
-        foreach (GameObject gO in infoObjects) {
-            if (gO != null) {
-                gO.SetActive(true);
-            }
-        }
+        activeObjects.SetActive(true);
+        deactiveObjects.SetActive(false);
 
         // Set sprite to correct character
-        if(charaInfo.name == CHARACTERS.BOY) {
-            _sprite.sprite = _boySprite;
-            if (charaInfo.color > 1) {
-                _sprite.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + charaInfo.color);
-            } else {
-                _sprite.material = new Material(Shader.Find("Sprites/Default"));
-            }
+        if (charaInfo.name == CHARACTERS.BOY) {
+            playerSprite.sprite = _boySprite;
+            playerSprite.material = Resources.Load<Material>("Materials/Character Palettes/Boy/Boy" + charaInfo.color);
         } else {
-            _sprite.sprite = _girlSprite;
-            if (charaInfo.color > 1) {
-                _sprite.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + charaInfo.color);
-            } else {
-                _sprite.material = new Material(Shader.Find("Sprites/Default"));
-            }
+            playerSprite.sprite = _girlSprite;
+            playerSprite.material = Resources.Load<Material>("Materials/Character Palettes/Girl/Girl" + charaInfo.color);
         }
-        //_sprite.sprite = characterSprites[charaInfo.name == CHARACTERS.BOY ? charaInfo.color - 1 : charaInfo.color + 3];
     }
 
     void TurnOff() {
-        playerText.text = "Press any button to join!";
-
         // Turn off the correct UI
-        foreach (GameObject gO in infoObjects) {
-            if (gO != null) {
-                gO.SetActive(false);
-            }
-        }
+        activeObjects.SetActive(false);
+        deactiveObjects.SetActive(true);
     }
 
     public void LoadCharacter() {
@@ -209,16 +160,6 @@ public class PlayerInfoBox : MonoBehaviour {
             player.playerNum = playerID;
             player.charaInfo = characterInfo;
             player.team = 0;
-
-            /*
-            if (charaColor < CHARACTERCOLORS.GIRL1) {
-                player.charaInfo.name = CHARACTERS.BOY;
-                player.charaInfo.color = (int)charaColor + 1;
-            } else {
-                player.charaInfo.name = CHARACTERS.GIRL;
-                player.charaInfo.color = (int)charaColor - 3;
-            }
-            */
 
             playerManager.AddPlayer(player);
         }

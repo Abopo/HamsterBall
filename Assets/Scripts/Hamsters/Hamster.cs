@@ -43,6 +43,7 @@ public class Hamster : Entity {
     float _longIdleTime = 5f;
 
     public HamsterSpawner ParentSpawner {
+        get { return _parentSpawner; }
         set { _parentSpawner = value; }
     }
 
@@ -371,6 +372,9 @@ public class Hamster : Entity {
             }
             UpdateVelocity();
         } else if (other.tag == "Pipe Turn 2") {
+            // Make sure we are lined up in the pipe well
+            transform.position = new Vector3(other.transform.position.x, transform.position.y, transform.position.z);
+
             // Turn into main pipe
             FaceUp();
 

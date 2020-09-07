@@ -71,7 +71,7 @@ public class Bubble : MonoBehaviour {
     AudioSource _audioSource;
     AudioClip _iceClip;
 
-    bool _destroy = false;
+    public bool toDestroy = false;
     bool _boardChanged = false;
 
 	public FMOD.Studio.EventInstance BubbleDropEvent;
@@ -92,6 +92,7 @@ public class Bubble : MonoBehaviour {
     public bool Petrified {
         get { return _petrified; }
     }
+
 
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -165,7 +166,7 @@ public class Bubble : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if(_destroy) {
+        if(toDestroy) {
             DestroySelf();
         }
 
@@ -186,9 +187,11 @@ public class Bubble : MonoBehaviour {
             }
         }
 
+#if UNITY_EDITOR
         if(Input.GetKeyDown(KeyCode.U)) {
             BoardChanged();
         }
+#endif
 
     }
 
@@ -383,51 +386,51 @@ public class Bubble : MonoBehaviour {
         }
 		if (other.gameObject.tag == "Bubble") {
 			if(!locked && other.transform.GetComponent<Bubble>().locked) {
-                if (!PhotonNetwork.connectedAndReady || (GetComponent<PhotonView>().owner == PhotonNetwork.player)) {
+                //if (!PhotonNetwork.connectedAndReady || PhotonNetwork.isMasterClient) {
                     CollisionWithBoard(other.transform.GetComponent<Bubble>()._homeBubbleManager);
-                } else {
+                //} else {
                     // Stop moving and sit in place.
-                    _velocity = Vector2.zero;
-                    locked = true;
-                }
+                //    _velocity = Vector2.zero;
+                //    locked = true;
+                //}
             }
 		}
         if(other.gameObject.tag == "Ceiling" && !locked) {
             CollisionWithBoard(other.transform.GetComponent<Ceiling>().bubbleManager);
         }
         if (other.gameObject.tag == "Bottom") {
-            if (type == HAMSTER_TYPES.SKULL) {
-                int inc = 1 * (_dropCombo ? 3 : 1);
-
-                // Calculate score before the margin multiplier
-                int incScore = inc * 100;
-                _homeBubbleManager.IncreaseScore(incScore);
-
-                // If we are not playing single player or team survival
-                if (!_gameManager.isSinglePlayer && _gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
-                    GenerateDropJunk(inc);
-                }
-            } else {
-                int inc = 2 * (_dropCombo ? 3 : 1);
-                
-                // Calculate score before the margin multiplier
-                int incScore = inc * 100;
-                _homeBubbleManager.IncreaseScore(incScore);
-
-                // If we are not playing single player or team survival
-                if (!_gameManager.isSinglePlayer && _gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
-                    GenerateDropJunk(inc);
-                }
-            }
-
-            // Remove self from bubble manager
-            //_homeBubbleManager.RemoveBubble(node);
-
-            _destroy = true;
+            HandleDrop();
 		}
 	}
 
-    void GenerateDropJunk(int amount) {
+    void HandleDrop() {
+        // Determine drop strength
+        int inc = 0;
+        if (type == HAMSTER_TYPES.SKULL) {
+            inc = 1 * (_dropCombo ? 3 : 1);
+        } else {
+            inc = 2 * (_dropCombo ? 3 : 1);
+        }
+
+        toDestroy = true;
+
+        if (!PhotonNetwork.connectedAndReady) {
+            // Calculate score before the margin multiplier
+            int incScore = inc * 100;
+            _homeBubbleManager.IncreaseScore(incScore);
+
+            // If we are not playing single player or team survival
+            if (!_gameManager.isSinglePlayer && _gameManager.gameMode != GAME_MODE.TEAMSURVIVAL) {
+                GenerateDropJunk(inc);
+            }
+        } else {
+            if(PhotonNetwork.isMasterClient) {
+                GetComponent<PhotonView>().RPC("NetworkDrop", PhotonTargets.All, inc);
+            }
+        }
+    }
+
+    public void GenerateDropJunk(int amount) {
         // Multiply by the Margin Multiplier
         amount = (int)(amount * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
 
@@ -464,13 +467,15 @@ public class Bubble : MonoBehaviour {
 
         _homeBubbleManager.boardChangedEvent.AddListener(BoardChanged);
 
-        if (!PhotonNetwork.connectedAndReady) {
-            _homeBubbleManager.AddBubble(this);
-        } else if (GetComponent<PhotonView>().owner == PhotonNetwork.player) { // if we own this bubble
-            _homeBubbleManager.AddBubble(this);
-            GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, team, node);
+        _homeBubbleManager.AddBubble(this);
+
+        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
+            // Make sure the owner is the master client
+            GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.masterClient);
+            _homeBubbleManager.boardChangedEvent.AddListener(GetComponent<NetworkedBubble>().SendSynchCheck);
+            //GetComponent<PhotonView>().RPC("AddToBoard", PhotonTargets.Others, team, node);
         }
-     
+
         // Loop through adjbubbles to see if we connected with a matching color
         bool sameType = false;
         foreach (Bubble bub in adjBubbles) {
@@ -886,6 +891,9 @@ public class Bubble : MonoBehaviour {
     }
 
     public bool IsAnchorPoint() {
+        if(_homeBubbleManager == null) {
+            _homeBubbleManager = FindHomeBubbleManager();
+        }
 		if (node < _homeBubbleManager.TopLineLength) {
 			return true;
 		}
@@ -1192,10 +1200,31 @@ public class Bubble : MonoBehaviour {
         _velocity += force;
     }
 
-    void DestroySelf() {
-        if(PhotonNetwork.connectedAndReady) {
-            if (PhotonNetwork.isMasterClient) {
+    BubbleManager FindHomeBubbleManager() {
+        BubbleManager homeBubMan = null;
+
+        BubbleManager[] bubManagers = FindObjectsOfType<BubbleManager>();
+        foreach (BubbleManager bMan in bubManagers) {
+            if (bMan.team == team) {
+                homeBubMan = bMan;
+                break;
+            }
+        }
+
+        return homeBubMan;
+    }
+
+    public void DestroySelf() {
+        toDestroy = false;
+
+        if (PhotonNetwork.connectedAndReady) {
+            // Only the owner should try and destroy the bubble
+            if (PhotonNetwork.player == GetComponent<NetworkedBubble>().photonView.owner) {
+                //Debug.Log("Network destroy bubble 1");
                 PhotonNetwork.Destroy(gameObject);
+            } else {
+                // if we're not the owner, don't destroy it, but just deactivate it
+                gameObject.SetActive(false);
             }
         } else {
             Destroy(gameObject);
