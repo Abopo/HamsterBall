@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 // Basically just rotates the lever into place
 public class StopGoLever : MonoBehaviour {
+
+    public FMOD.Studio.EventInstance LeverMoveEvent;
     public float rotSpeed;
 
     bool _isLeft;
@@ -46,12 +48,17 @@ public class StopGoLever : MonoBehaviour {
     }
 
     public void ChangePosition(StopGoButton invoker) {
-
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.LeverStart);
+        LeverMoveEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.LeverMove);
+        LeverMoveEvent.start();
         _button = invoker;
         _isRotating = true;
     }
 
     void EndRotation() {
+        LeverMoveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        LeverMoveEvent.release();
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.LeverStop);
         _isRotating = false;
         _button.FinishPress();
     }
