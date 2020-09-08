@@ -26,11 +26,10 @@ public class MainMenu : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (InputState.GetButtonOnAnyControllerPressed("Pause") && !_pauseMenu.IsActive) {
+        if (InputState.GetButtonOnAnyControllerPressed("Pause") && !_pauseMenu.IsActive && WelcomeScreen.shown) {
             // Open the menu
             _pauseMenu.Activate(0);
         }
-
     }
 
     public void LoadStoryMode() {

@@ -42,13 +42,11 @@ public class TitleScreen : MonoBehaviour {
                 ES3.Save<int>("Corporation", 0);
                 ES3.Save<int>("Laboratory", 0);
                 ES3.Save<int>("Airship", 0);
-
-                SceneManager.LoadScene("PlayableCharacterSelect");
             }
             
             // Load village
             LoadingScreen.sceneToLoad = "VillageScene";
-            SceneManager.LoadScene("LoadingScreen");
+            SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Additive);
         }
     }
 }

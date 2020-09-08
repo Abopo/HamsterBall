@@ -10,7 +10,7 @@ public class CharaInfo {
     public int team;
 }
 
-public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, BAT, OWL, SNAIL, LIZARD, LACKEY, NUM_CHARACTERS };
+public enum CHARACTERS { BOY = 0, GIRL, ROOSTER, BAT, OWL, GOAT, SNAIL, LIZARD, LACKEY, NUM_CHARACTERS };
 
 public class CharacterSelector : MonoBehaviour {
     public CharacterWindow charaWindow;

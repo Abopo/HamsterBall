@@ -38,26 +38,18 @@ public class HamsterDialogueBox : MonoBehaviour {
             case HAMSTER_TYPES.YELLOW:
                 ColorUtility.TryParseHtmlString("#F5F167", out outColor);
                 break;
-            case HAMSTER_TYPES.SKULL:
-                ColorUtility.TryParseHtmlString("#FFFFFF", out outColor);
-                break;
-            case HAMSTER_TYPES.RAINBOW:
-                ColorUtility.TryParseHtmlString("#FFFFFF", out outColor);
-                break;
-            case HAMSTER_TYPES.BOMB:
-                ColorUtility.TryParseHtmlString("#FFFFFF", out outColor);
-                break;
         }
 
-        Image[] images = transform.GetComponentsInChildren<Image>(true);
-        foreach (Image im in images) {
-            im.color = outColor;
+        if(color != HAMSTER_TYPES.RAINBOW && color != HAMSTER_TYPES.SKULL) {
+            Image[] images = transform.GetComponentsInChildren<Image>(true);
+            foreach (Image im in images) {
+                im.color = outColor;
+            }
         }
     }
 
     // Update is called once per frame
     void Update() {
-
         // If the dialogue has gone to the 4th line
         if (dialogueText.rawBottomRightTextBounds.y < -75f) {
             // Extend the box down

@@ -69,7 +69,7 @@ public class MenuAudio : MonoBehaviour {
                 SoundManager.mainAudio.ForestAmbienceEvent.start();
 
                 musicPlaying = 0;
-            } else if (sceneIndex < 15 && musicPlaying != 1) {
+            } else if (sceneIndex < 16 && musicPlaying != 1) {
                 // We're in a menu so play menu music
                 Debug.Log("Play Menu Music");
 
@@ -80,9 +80,9 @@ public class MenuAudio : MonoBehaviour {
                 // For some reason we have to create a new instance every time here
 		        SoundManager.mainAudio.MenuGeneralEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.MenuGeneral);
                 SoundManager.mainAudio.MenuGeneralEvent.start();
-                SoundManager.mainAudio.Door();
+                //SoundManager.mainAudio.Door();
                 musicPlaying = 1;
-            } else if (sceneIndex > 12) {
+            } else if (sceneIndex > 15) {
                 // We're in a level so play level music
                 Debug.Log("Stop menu music");
                 SoundManager.mainAudio.MenuGeneralEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);

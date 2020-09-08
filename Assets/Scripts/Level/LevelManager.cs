@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour {
     public ResultsScreen spResultsScreen;
     public ResultsScreen continueScreen;
     public PauseMenu pauseMenu;
-    public Text marginMultiplierText;
+    public SuperTextMesh marginMultiplierText;
 
     public BOARDS board;
 
@@ -174,9 +174,12 @@ public class LevelManager : MonoBehaviour {
                 SoundManager.mainAudio.MusicMainEvent.setPaused(true);
             }
         }
-        if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.K)) {
+        if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.K)) {
             GameEnd();
             ActivateResultsScreen(0, 1);
+        }
+        if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.N)) {
+            IncreaseMarginMultiplier();
         }
 #endif
 
@@ -192,23 +195,45 @@ public class LevelManager : MonoBehaviour {
             marginMultiplier = 5;
         }
 
-        marginMultiplierText.text = "x" + marginMultiplier.ToString();
-        marginMultiplierText.fontSize = 9 + Mathf.CeilToInt(marginMultiplier);
+        Color outColor = Color.black;
+
         if (marginMultiplier == 1f) {
             marginMultiplierText.color = Color.black;
         } else if (marginMultiplier == 1.5f) {
-            marginMultiplierText.color = Color.blue;
+            ColorUtility.TryParseHtmlString("#3131FF", out outColor);
+            marginMultiplierText.size = 22;
         } else if (marginMultiplier == 2f) {
-            marginMultiplierText.color = Color.cyan;
+            ColorUtility.TryParseHtmlString("#36FDFD", out outColor);
+            //outColor = Color.cyan;
+            marginMultiplierText.size = 24;
         } else if (marginMultiplier == 2.5f) {
-            marginMultiplierText.color = Color.green;
+            ColorUtility.TryParseHtmlString("#4CFF4C", out outColor);
+            //outColor = Color.green;
+            marginMultiplierText.size = 22;
         } else if (marginMultiplier == 3f) {
-            marginMultiplierText.color = Color.magenta;
+            ColorUtility.TryParseHtmlString("#E000B0", out outColor);
+            //outColor = Color.magenta;
+            marginMultiplierText.size = 24;
         } else if (marginMultiplier == 3.5f) {
-            marginMultiplierText.color = Color.yellow;
-        } else if (marginMultiplier >= 4f) {
-            marginMultiplierText.color = Color.red;
+            ColorUtility.TryParseHtmlString("#FDEE3A", out outColor);
+            //outColor = Color.yellow;
+            marginMultiplierText.size = 22;
+        } else if (marginMultiplier == 4f) {
+            ColorUtility.TryParseHtmlString("#E91919", out outColor);
+            //outColor = Color.red;
+            marginMultiplierText.size = 24;
+        } else if (marginMultiplier == 4.5f) {
+            ColorUtility.TryParseHtmlString("#E91919", out outColor);
+            //outColor = Color.red;
+            marginMultiplierText.size = 21;
+        } else if(marginMultiplier >= 5f) {
+            ColorUtility.TryParseHtmlString("#E91919", out outColor);
+            marginMultiplierText.size = 30;
         }
+
+        marginMultiplierText.color = outColor;
+
+        marginMultiplierText.text = "<w=expand>x" + marginMultiplier.ToString();
     }
 
     public void PauseGame(int playerID) {

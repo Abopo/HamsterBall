@@ -8,7 +8,9 @@ public class WelcomeScreen : MonoBehaviour {
 
     GameManager _gameManager;
 
-    static bool shown = false;
+    public static bool shown = false;
+
+    bool _frameskip = true;
 
     private void Awake() {
         _gameManager = FindObjectOfType<GameManager>();
@@ -17,21 +19,31 @@ public class WelcomeScreen : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         if (_gameManager.demoMode && !shown) {
-            // Pause the game
-            _gameManager.FullPause();
-
-            // Show the menu
-            _menuObj.SetActive(true);
-
-            shown = true;
+            FindObjectOfType<VillageManager>().villageStart.AddListener(OnVillageStart);
         }
+    }
+    void OnVillageStart() {
+        // Pause the game
+        // TODO: just stop player movement instead of pausing?
+        _gameManager.FullPause();
+
+        // Show the menu
+        _menuObj.SetActive(true);
+
+        _frameskip = true;
     }
 
     // Update is called once per frame
     void Update() {
-        if(InputState.GetButtonOnAnyControllerPressed("Submit") || InputState.GetButtonOnAnyControllerPressed("Cancel")) {
+    }
+
+    private void LateUpdate() {
+        if (!_frameskip && InputState.GetButtonOnAnyControllerPressed("Submit") || InputState.GetButtonOnAnyControllerPressed("Cancel")) {
             _gameManager.Unpause();
             _menuObj.SetActive(false);
+            shown = true;
         }
+
+        _frameskip = false;
     }
 }
