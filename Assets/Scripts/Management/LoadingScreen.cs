@@ -20,6 +20,10 @@ public class LoadingScreen : MonoBehaviour {
         _sceneLoaded = false;
 
         _player = ReInput.players.GetPlayer(0);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        SceneManager.UnloadSceneAsync("Title Screen");
     }
 
     // Update is called once per frame
@@ -56,5 +60,9 @@ public class LoadingScreen : MonoBehaviour {
 
         _sceneLoaded = true;
         loadingText.text = "Press any button";
+    }
+
+    void OnSceneLoaded(Scene newScene, LoadSceneMode mode) {
+        //SceneManager.UnloadSceneAsync("TitleScreen");
     }
 }

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 114415162697588778}
-  - {fileID: 114795977104228084}
-  - {fileID: 114210261691205886}
-  - {fileID: 114092262740324650}
-  - {fileID: 114623021896371442}
-  - {fileID: 114127896028201694}
+  - {fileID: 114813690448634792}
+  - {fileID: 114466366098476672}
+  - {fileID: 114339433170069760}
+  - {fileID: 114084537207023028}
+  - {fileID: 114529982179308516}
   EditorEvents:
   - {fileID: 114025627498928602}
   - {fileID: 114690211175869342}
@@ -110,9 +110,10 @@ MonoBehaviour:
   - {fileID: 114688319002698122}
   MasterBanks:
   - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   StringsBanks:
   - {fileID: 114415162697588778}
-  stringsBankWriteTime: 637350838443169148
+  stringsBankWriteTime: 637351548931867638
   cacheVersion: 3
 --- !u!114 &114000420078026184
 MonoBehaviour:
@@ -129,6 +130,22 @@ MonoBehaviour:
   Name: PoppedCount
   Min: 0
   Max: 10
+  Default: 0
+--- !u!114 &114000953480784482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
   Default: 0
 --- !u!114 &114003475472722480
 MonoBehaviour:
@@ -209,12 +226,12 @@ MonoBehaviour:
   Path: event:/Music/CityMusic
   guid: 99f6ec0ae87460498aed5387e3f00091
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114279659869745094}
+  - {fileID: 114691041085040056}
   MinDistance: 0
   MaxDistance: 0
   Length: 190889
@@ -345,7 +362,7 @@ MonoBehaviour:
   Path: event:/Ambiences/Forest Ambience
   guid: 4865bb2cb76ce44589611712db4dfacc
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -432,7 +449,7 @@ MonoBehaviour:
   Path: event:/Hamster/RainbowBallBreak
   guid: 039bc0c78867844d8b6dcc8650f2748f
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -695,12 +712,12 @@ MonoBehaviour:
   Path: event:/Hamster/BallBreak
   guid: 9e13551e1cbbb7438609422c280e106a
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114981734594420774}
+  - {fileID: 114972669440664734}
   MinDistance: 13
   MaxDistance: 16
   Length: 554
@@ -735,12 +752,12 @@ MonoBehaviour:
   Path: event:/Footsteps/GrassFootstepEvent(old)
   guid: dc0d83fc1818514286c11b0d19a4f828
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114954073817845378}
+  - {fileID: 114093936849656842}
   MinDistance: 13
   MaxDistance: 16
   Length: 1632
@@ -823,7 +840,7 @@ MonoBehaviour:
   Path: event:/Player Sounds/SwingNet
   guid: 3703ad12d291c045932296c17ce247bd
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -894,12 +911,12 @@ MonoBehaviour:
   Path: event:/Footsteps/SnowFootstepEvent
   guid: 3d1227f09b3e8848aba2b5f5f619d793
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114102321524605018}
+  - {fileID: 114112797454237214}
   MinDistance: 13
   MaxDistance: 16
   Length: 1455
@@ -982,7 +999,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Petrify Bubble
   guid: 7c0290119fb50e4ab30d13bc607cb730
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -1069,7 +1086,7 @@ MonoBehaviour:
   Path: event:/Hamster/BubblesDrop
   guid: 453d806d428c2f42aa09408b704fb37b
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1140,7 +1157,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Countdown_321
   guid: 5032d30433eab041b06e5e6fc7f934dc
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1211,15 +1228,35 @@ MonoBehaviour:
   Path: event:/Player Sounds/ThrowLaunchAngleLoop
   guid: 723f978398b6c54c9ef003039d6b5b28
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 114620400043056480}
+  - {fileID: 114718092838476112}
   MinDistance: 11
   MaxDistance: 14
   Length: 19863
+--- !u!114 &114084537207023028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\WorkingCopy\trunk\Hamster
+    Scramble_FMODProject\Build\Desktop\Ambience Bank.bank
+  lastModified: 637237864177632530
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 450
+  Exists: 1
 --- !u!114 &114086084424279720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1368,6 +1405,22 @@ MonoBehaviour:
   Min: 0
   Max: 5
   Default: 0
+--- !u!114 &114093936849656842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114094818305625962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,7 +1532,7 @@ MonoBehaviour:
   Path: event:/Menu Sounds/SubMenu_Toggle
   guid: 4b861bef34c8af47bac21df6eb3b7a86
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1583,6 +1636,38 @@ MonoBehaviour:
   Min: 0
   Max: 3
   Default: 0
+--- !u!114 &114112797454237214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
+--- !u!114 &114118429186603448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114119055494715638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1630,7 +1715,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd_Two
   guid: 420d04b297b6f34384af8f9e0a9934a8
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1866,6 +1951,22 @@ MonoBehaviour:
   Min: 0
   Max: 5
   Default: 0
+--- !u!114 &114142850927528110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114143085812257890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1978,6 +2079,22 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114146249406379072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114146288554502422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2089,7 +2206,7 @@ MonoBehaviour:
   Path: event:/Stages/SubwayPass
   guid: 8099770500e7394cb2337785a7d20176
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -2208,6 +2325,22 @@ MonoBehaviour:
   Name: PoppedCount
   Min: 0
   Max: 10
+  Default: 0
+--- !u!114 &114165948176340380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
   Default: 0
 --- !u!114 &114168130768607552
 MonoBehaviour:
@@ -2528,12 +2661,12 @@ MonoBehaviour:
   Path: event:/Music/LaboratoryMusic
   guid: 5afaf82aa249204095380838f26db9b0
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114548607874698364}
+  - {fileID: 114882759278968708}
   MinDistance: 0
   MaxDistance: 0
   Length: 193613
@@ -2552,12 +2685,12 @@ MonoBehaviour:
   Path: event:/Hamster/HamsterFillingBall
   guid: 18d0e160d5eda14da003cc7e1e911866
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 114766520158745166}
+  - {fileID: 114000953480784482}
   MinDistance: 0
   MaxDistance: 0
   Length: 800
@@ -2740,7 +2873,7 @@ MonoBehaviour:
   FileSizes:
   - Name: 
     Value: 34172704
-  Exists: 1
+  Exists: 0
 --- !u!114 &114212112685680070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2821,6 +2954,22 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114229581676732548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114230126828184604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2852,7 +3001,7 @@ MonoBehaviour:
   Path: event:/Hamster/HamsterOrbCreation
   guid: a35513f06f96a243b372c0f5ccfc359a
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -2962,7 +3111,7 @@ MonoBehaviour:
   Path: event:/Hamster/WallBounce
   guid: cbd2b8cfecb9c54fa612f3463aba1526
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -3034,6 +3183,22 @@ MonoBehaviour:
   Min: 0.386363
   Max: 0.923773
   Default: 0.386363
+--- !u!114 &114245202477392428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114246264508324092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3273,7 +3438,7 @@ MonoBehaviour:
   Path: event:/Music/MenuMusic
   guid: 2cf21b362e30d3479fbe7422efaaa90e
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -3761,6 +3926,22 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114306056486566284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114306816114669656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3778,6 +3959,22 @@ MonoBehaviour:
   Max: 0.923773
   Default: 0.386363
 --- !u!114 &114307355395980348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
+--- !u!114 &114307997125341064
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3856,7 +4053,7 @@ MonoBehaviour:
   Path: event:/Stages/SubwayRumble
   guid: 0f1a5570a5a74640a4522452ee302b9a
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 1
@@ -3975,7 +4172,7 @@ MonoBehaviour:
   Path: event:/Hamster/WallBounce Success
   guid: e6d0e7ff786b054388d12bcf66ac44d9
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4078,7 +4275,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd Sounds/MediumCrowd1
   guid: 8ff796fda0c01a4a98d070e13d994da9
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4101,7 +4298,7 @@ MonoBehaviour:
   Path: event:/Other Sounds/Door Enter
   guid: 5a25364741b18d499d80a942caf0bec8
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -4140,16 +4337,36 @@ MonoBehaviour:
   Path: event:/Footsteps/ConcreteFootstepEvent
   guid: 9eae84165293e84cbe6b2790d1e7fc69
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114694705825565736}
-  - {fileID: 114310369595236722}
+  - {fileID: 114670596871045500}
+  - {fileID: 114307997125341064}
   MinDistance: 13
   MaxDistance: 16
   Length: 333
+--- !u!114 &114339433170069760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\WorkingCopy\trunk\Hamster
+    Scramble_FMODProject\Build\Desktop\Music Bank.bank
+  lastModified: 637076191551371301
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 450
+  Exists: 1
 --- !u!114 &114340737879372520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4437,7 +4654,7 @@ MonoBehaviour:
   Path: event:/Hamster/BombHamster
   guid: 8a31d792c266e54aa7fdb3162053a200
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4540,12 +4757,12 @@ MonoBehaviour:
   Path: event:/Footsteps/WoodFootstepEvent
   guid: 40241db92afe094e918ef28ded9d06c4
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114032750811701904}
+  - {fileID: 114306056486566284}
   MinDistance: 13
   MaxDistance: 16
   Length: 1298
@@ -4596,7 +4813,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd Sounds/LargeCrowd
   guid: 2707de1011395d418527733a93f43b5b
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4619,7 +4836,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Scramble_Crowd
   guid: 309dcef1a6bc7844ac2ce8003f467039
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4642,7 +4859,7 @@ MonoBehaviour:
   Path: event:/Ambiences/Beach Ambience
   guid: e319c56dabf9e1479cdcd7fbbcf091c4
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -4745,13 +4962,13 @@ MonoBehaviour:
   Path: event:/Footsteps/GrassFootstepEvent
   guid: e483ea60da687542b170c32b0a682149
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114944730172433806}
-  - {fileID: 114356489019017598}
+  - {fileID: 114118429186603448}
+  - {fileID: 114878947434458422}
   MinDistance: 13
   MaxDistance: 16
   Length: 460
@@ -4802,7 +5019,7 @@ MonoBehaviour:
   Path: event:/Stages/LeverStart
   guid: 7c4770d9b5a69947b1cf94467f7f9219
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -4991,12 +5208,12 @@ MonoBehaviour:
   Path: event:/Hamster/HamsterFillingBall (old)
   guid: 16324c33b822474793a86a7c28678928
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114690288260537864}
+  - {fileID: 114645759199271118}
   MinDistance: 0
   MaxDistance: 0
   Length: 875
@@ -5047,7 +5264,7 @@ MonoBehaviour:
   Path: event:/Hamster/HamsterTravel
   guid: 101a4452b015204eb3f71c7211a37c91
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -5086,7 +5303,7 @@ MonoBehaviour:
   Path: event:/Player Sounds/PlayerJump
   guid: 0ca792d2bce9954e877dbbeed6a0ab28
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -5171,7 +5388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: Hamster Scramble_FMODProject\Build\Desktop\Master Bank.strings.bank
-  lastModified: 637350838443169148
+  lastModified: 637351548931867638
   LoadResult: 0
   FileSizes:
   - Name: 
@@ -5400,7 +5617,7 @@ MonoBehaviour:
   Path: event:/Menu Sounds/MainMenu_Back
   guid: d0a04b9fea0f694d81d7b2e067719e2e
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -5455,12 +5672,12 @@ MonoBehaviour:
   Path: event:/Music/Beach Music
   guid: 0ea551778a57d74dbed67e8e832d1faa
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114747202406617912}
+  - {fileID: 114229581676732548}
   MinDistance: 0
   MaxDistance: 0
   Length: 210593
@@ -5592,6 +5809,26 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114466366098476672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\WorkingCopy\trunk\Hamster
+    Scramble_FMODProject\Build\Desktop\Master Bank.bank
+  lastModified: 637351589475087161
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 34171936
+  Exists: 1
 --- !u!114 &114470981528337070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5607,7 +5844,7 @@ MonoBehaviour:
   Path: event:/Stages/LeverStop
   guid: 2118d72f8664da429b040ab50ee7a6ae
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -5726,7 +5963,7 @@ MonoBehaviour:
   Path: event:/Ambiences/Snow Ambience
   guid: 181107bb9910f84ea78bf2cf0a3f5e02
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -5990,6 +6227,22 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114511037160657020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &114511401290702702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6165,7 +6418,7 @@ MonoBehaviour:
   Path: event:/Player Sounds/ThrowStart
   guid: cc75a9c7e8eba743a59be867260182d0
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -6188,7 +6441,7 @@ MonoBehaviour:
   Path: event:/Player Sounds/PlayerAttackConnect
   guid: fd43d5b9fdc2894795a332c9f0556cc2
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -6211,7 +6464,7 @@ MonoBehaviour:
   Path: snapshot:/Petrify
   guid: c47ca3a2ea5d0147871873c8d5ec5eac
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -6267,6 +6520,26 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114529982179308516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\WorkingCopy\trunk\Hamster
+    Scramble_FMODProject\Build\Desktop\Player Bank.bank
+  lastModified: 637076191551391280
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 450
+  Exists: 1
 --- !u!114 &114532063799843536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6298,7 +6571,7 @@ MonoBehaviour:
   Path: event:/Player Sounds/Shift
   guid: ad65237ab2dcb14b9eef133bf4de5ff1
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -6337,12 +6610,12 @@ MonoBehaviour:
   Path: event:/Footsteps/UmbrellaFootstepEvent
   guid: 95fb1b6a01b0a74da9086075133b7fd9
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114571839767358310}
+  - {fileID: 114742298133662166}
   MinDistance: 13
   MaxDistance: 16
   Length: 158
@@ -6361,14 +6634,14 @@ MonoBehaviour:
   Path: event:/Hamster/Hamster TalkLow
   guid: 9efb513535036342841f61207e72d283
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114797210810115688}
-  MinDistance: 13
-  MaxDistance: 16
+  - {fileID: 114623698865849182}
+  MinDistance: 0
+  MaxDistance: 0
   Length: 132
 --- !u!114 &114538798839567184
 MonoBehaviour:
@@ -6417,7 +6690,7 @@ MonoBehaviour:
   Path: event:/Hamster/RainbowHamsterConnect
   guid: f6d5673a0d859d439ea7bcae03532e66
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6542,7 +6815,7 @@ MonoBehaviour:
   Path: event:/Hamster/SkullCollected
   guid: f13cfb158b72804799b8521a56d93c75
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6661,7 +6934,7 @@ MonoBehaviour:
   Path: event:/Hamster/HamsterCollected
   guid: be233711dff4d747921efdd18403a375
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6764,12 +7037,12 @@ MonoBehaviour:
   Path: event:/Footsteps/IceFootstepEvent
   guid: cad32bebee720248be6bcb6634922190
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114342177963020776}
+  - {fileID: 114245202477392428}
   MinDistance: 13
   MaxDistance: 16
   Length: 1167
@@ -6836,7 +7109,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd Sounds/SmallCrowd1
   guid: b453424ff58d144990fa9af4e3886548
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6875,7 +7148,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Countdown_Go
   guid: c6e6920cd255db42ba7b5e970c076e75
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -6962,7 +7235,7 @@ MonoBehaviour:
   Path: event:/Menu Sounds/SubMenu_Back
   guid: 830d9cf6db061942bb1525fe2686b850
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -7001,7 +7274,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/NewLine
   guid: c3aa25e1ea24e14fb327947482b0e92f
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -7121,6 +7394,22 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114589554821165650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114589968139888650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7152,14 +7441,14 @@ MonoBehaviour:
   Path: event:/Hamster/Hamster Talk
   guid: 0af4c023c15135449d98f0b963e3c234
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114673147403538684}
-  MinDistance: 13
-  MaxDistance: 16
+  - {fileID: 114725051507630330}
+  MinDistance: 0
+  MaxDistance: 0
   Length: 132
 --- !u!114 &114591038323102276
 MonoBehaviour:
@@ -7208,7 +7497,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd Sounds/LargeCrowd1
   guid: 59532d940e9f4e4ca09c2764fb2604f0
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -7247,12 +7536,12 @@ MonoBehaviour:
   Path: event:/Music/CorperationMusic
   guid: 37eca41c6646444d94cbd4ee3262fa94
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114496308476541026}
+  - {fileID: 114146249406379072}
   MinDistance: 0
   MaxDistance: 0
   Length: 204167
@@ -7271,7 +7560,7 @@ MonoBehaviour:
   Path: snapshot:/Underwater
   guid: 8f054ba2c47e1b45a02123440eb8a3cc
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -7294,7 +7583,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/MultiMatch
   guid: 3c56c9509d62f14c89dc305bd8c06cda
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -7563,7 +7852,7 @@ MonoBehaviour:
   Path: event:/Hamster/HammsterConnect
   guid: 319333a7a43a644ea0f80c618f5e0686
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -7666,7 +7955,7 @@ MonoBehaviour:
   Path: event:/Music/Village Music
   guid: 3060dac94a0d524580f6040e0df3a667
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -7774,6 +8063,22 @@ MonoBehaviour:
   - Name: 
     Value: 450
   Exists: 1
+--- !u!114 &114623698865849182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: PoppedCount
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114626726053411256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7917,12 +8222,12 @@ MonoBehaviour:
   Path: event:/Player Sounds/ThrowLaunchAngleLoop1
   guid: 3b4ad594edf5ff4186e45e75391fada7
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 114604590168311298}
+  - {fileID: 114973106363865494}
   MinDistance: 11
   MaxDistance: 14
   Length: 19863
@@ -7941,7 +8246,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Team Combo
   guid: e7a030ebb9a7224ebe25ce08b0edde31
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -8028,7 +8333,7 @@ MonoBehaviour:
   Path: event:/Music/Menu General
   guid: 252bfa0db9ea02449ec4f059040c4df2
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -8067,6 +8372,22 @@ MonoBehaviour:
   Name: VoiceEmotion
   Min: 0
   Max: 5
+  Default: 0
+--- !u!114 &114645759199271118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CurrentStock
+  Min: 0
+  Max: 24
   Default: 0
 --- !u!114 &114645831942412362
 MonoBehaviour:
@@ -8131,7 +8452,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Petrify
   guid: 297361365d2e7a4ca207270068a11f5f
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -8154,12 +8475,12 @@ MonoBehaviour:
   Path: event:/Music/Forest Music
   guid: bc27ffc9d2463147b0f5c464892d9c8c
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114188574197122808}
+  - {fileID: 114511037160657020}
   MinDistance: 0
   MaxDistance: 0
   Length: 206473
@@ -8178,7 +8499,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd Sounds/SmallCrowd
   guid: 9f7217442d32334585426f2969c792e3
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -8329,6 +8650,22 @@ MonoBehaviour:
   Name: PoppedCount
   Min: 0
   Max: 10
+  Default: 0
+--- !u!114 &114670596871045500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Parameter 1
+  Min: 0
+  Max: 1
   Default: 0
 --- !u!114 &114670703921457980
 MonoBehaviour:
@@ -8489,7 +8826,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd Sounds/MediumCrowd
   guid: bef9701c7ff821499d4b0584d3f68daf
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -8512,7 +8849,7 @@ MonoBehaviour:
   Path: event:/Hamster/SameColorHamsterConnect
   guid: 49a01754dfb020438bdb6f0aba4e1c08
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -8535,7 +8872,7 @@ MonoBehaviour:
   Path: event:/Stages/LeverMove
   guid: a53ad47eb3b9604d9bcb5f2c477d9626
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -8574,7 +8911,7 @@ MonoBehaviour:
   Path: event:/Player Sounds/PlayerAttack
   guid: 0803ebb90520aa4c8b787044952400b9
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -8615,6 +8952,22 @@ MonoBehaviour:
   Max: 0.923773
   Default: 0.386363
 --- !u!114 &114690962706272878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
+  Default: 0
+--- !u!114 &114691041085040056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8949,7 +9302,7 @@ MonoBehaviour:
   Path: event:/Hamster/SkullConnect
   guid: e1bada8c886b9346a9834e10cbc03d44
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -8957,6 +9310,22 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 718
+--- !u!114 &114718092838476112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
 --- !u!114 &114724705441964446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9002,6 +9371,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
+--- !u!114 &114725051507630330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: PoppedCount
   Min: 0
   Max: 10
   Default: 0
@@ -9388,7 +9773,7 @@ MonoBehaviour:
   Path: event:/Hamster/RainbowHamsterCollected
   guid: 7a395a3504f28e40951dd5670fc82993
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -9396,6 +9781,22 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 1500
+--- !u!114 &114742298133662166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: FootstepSurface
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114744921463803224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9475,7 +9876,7 @@ MonoBehaviour:
   Path: event:/Player Sounds/Throw
   guid: 20f40eeb16826340a802de382e85c365
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -9546,12 +9947,12 @@ MonoBehaviour:
   Path: event:/Music/MainMusic
   guid: c8fad95ae3e5834aba40f90a2ea97ea2
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114023377940375108}
+  - {fileID: 114142850927528110}
   MinDistance: 0
   MaxDistance: 0
   Length: 151000
@@ -9874,7 +10275,7 @@ MonoBehaviour:
   Path: event:/Menu Sounds/MainMenu_Select
   guid: 145b65e9028b7a4f8cd65dbf357aebdd
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -9913,15 +10314,15 @@ MonoBehaviour:
   Path: event:/Hamster/Hamster TalkHigh
   guid: 72739b895d0e9f43b8ebaab98d8cb734
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114877104269057068}
-  - {fileID: 114130215879946424}
-  MinDistance: 13
-  MaxDistance: 16
+  - {fileID: 114888228080750786}
+  - {fileID: 114930948828842220}
+  MinDistance: 0
+  MaxDistance: 0
   Length: 132
 --- !u!114 &114790880569256020
 MonoBehaviour:
@@ -10070,7 +10471,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Spring
   guid: 8b53f0474d03234a89b6a484ef5655b1
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -10141,7 +10542,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/CounterMatch
   guid: bfc0253d05728f489c0d55837e2ee7fc
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -10245,6 +10646,26 @@ MonoBehaviour:
   Min: 0
   Max: 5
   Default: 0
+--- !u!114 &114813690448634792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Users\Kevin\Documents\My Games\MY Games\HamsterScramble\WorkingCopy\trunk\Hamster
+    Scramble_FMODProject\Build\Desktop\Board Bank.bank
+  lastModified: 637076191550210647
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 450
+  Exists: 1
 --- !u!114 &114817051768409354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10276,7 +10697,7 @@ MonoBehaviour:
   Path: event:/Menu Sounds/MainMenu_Toggle
   guid: d01d27dcf063d742a1a8b2912af4759c
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -10347,7 +10768,7 @@ MonoBehaviour:
   Path: snapshot:/DuckAllButCombos
   guid: c2922fe3170b33468f69f0b6f0751081
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -10402,7 +10823,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd_Three
   guid: cff7bd25f81fdf4dbf659b38941065f8
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -10441,7 +10862,7 @@ MonoBehaviour:
   Path: event:/Music/Match End
   guid: c7c95d7a2e69bf4abb85624f684524d6
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -10624,7 +11045,7 @@ MonoBehaviour:
   Path: event:/Menu Sounds/MainMenu_GameStart
   guid: 90298854f989c24f87a13543bd611960
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -10695,7 +11116,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Shift Meter
   guid: c0136f400b82ac40924b3b785947c753
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -10943,6 +11364,22 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114878947434458422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Parameter 1
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114881839425872980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10974,6 +11411,22 @@ MonoBehaviour:
   Name: FootstepSurface
   Min: 0
   Max: 10
+  Default: 0
+--- !u!114 &114882759278968708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: RowDanger
+  Min: 0
+  Max: 3
   Default: 0
 --- !u!114 &114883389379662842
 MonoBehaviour:
@@ -11023,6 +11476,22 @@ MonoBehaviour:
   Min: 0
   Max: 10
   Default: 0
+--- !u!114 &114888228080750786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: PoppedCount
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114888301095577656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11038,7 +11507,7 @@ MonoBehaviour:
   Path: event:/Game Sounds/Crowd_One
   guid: 00a2a952d39433448faec668599cbd27
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -11381,12 +11850,12 @@ MonoBehaviour:
   Path: event:/Music/Mountain Music
   guid: 4f1f678085528c41816216e33ab888fc
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114202218959007928}
+  - {fileID: 114165948176340380}
   MinDistance: 0
   MaxDistance: 0
   Length: 205473
@@ -11646,6 +12115,22 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114930948828842220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: VoiceEmotion
+  Min: 0
+  Max: 5
+  Default: 0
 --- !u!114 &114932246224473552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11741,12 +12226,12 @@ MonoBehaviour:
   Path: event:/Footsteps/Footstep Land
   guid: c5f956e63a8b7f43ab69d3ff34374565
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 114884373777665106}
+  - {fileID: 114589554821165650}
   MinDistance: 13
   MaxDistance: 16
   Length: 1510
@@ -12092,6 +12577,22 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114972669440664734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: PoppedCount
+  Min: 0
+  Max: 10
+  Default: 0
 --- !u!114 &114972680711760024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12109,6 +12610,22 @@ MonoBehaviour:
   Max: 3
   Default: 0
 --- !u!114 &114972770394129120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: LaunchAngle
+  Min: 0.386363
+  Max: 0.923773
+  Default: 0.386363
+--- !u!114 &114973106363865494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12283,7 +12800,7 @@ MonoBehaviour:
   Path: event:/Menu Sounds/SubMenu_Select
   guid: 166367655dc2574e92c7ba95065740a4
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -12360,7 +12877,7 @@ MonoBehaviour:
   Path: snapshot:/BallFillOverRide
   guid: fbaef70b04fe5149b2e0c147598f9650
   Banks:
-  - {fileID: 114210261691205886}
+  - {fileID: 114466366098476672}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0

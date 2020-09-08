@@ -40,6 +40,7 @@ public class PlayerSpawner : MonoBehaviour {
         icons[(int)CHARACTERS.ROOSTER] = sprites[9];
         icons[(int)CHARACTERS.BAT] = sprites[0];
         icons[(int)CHARACTERS.OWL] = sprites[8];
+        icons[(int)CHARACTERS.GOAT] = sprites[5];
         icons[(int)CHARACTERS.SNAIL] = sprites[10];
         icons[(int)CHARACTERS.LIZARD] = sprites[7];
         icons[(int)CHARACTERS.LACKEY] = sprites[6];

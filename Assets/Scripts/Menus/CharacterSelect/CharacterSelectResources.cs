@@ -11,8 +11,8 @@ public class CharaSelectInfo {
 public class CharacterSelectResources : MonoBehaviour {
     public CharacterSelector[] charaSelectors;
 
-    List<CharaSelectInfo>[] _charaInfo = new List<CharaSelectInfo>[8];
-    List<Sprite>[] _charaPortraits = new List<Sprite>[8];
+    List<CharaSelectInfo>[] _charaInfo = new List<CharaSelectInfo>[(int)CHARACTERS.NUM_CHARACTERS];
+    List<Sprite>[] _charaPortraits = new List<Sprite>[(int)CHARACTERS.NUM_CHARACTERS];
 
     string[] _charaNames;
 
@@ -119,6 +119,24 @@ public class CharacterSelectResources : MonoBehaviour {
                 _charaInfo[(int)CHARACTERS.OWL].Add(tempInfo);
             }
         }
+
+        // Goat
+        _charaInfo[(int)CHARACTERS.GOAT] = new List<CharaSelectInfo>();
+        RuntimeAnimatorController goalAnimator = Resources.Load("Art/Animations/Player/Goat/Animation Objects/Goat") as RuntimeAnimatorController;
+        paletteData = ES3.Load<bool[]>("GoatPalettes", new bool[0]);
+
+        for (int i = 0; i < paletteData.Length; ++i) {
+            // If this palette is unlocked
+            if (paletteData[i] == true) {
+                tempInfo = new CharaSelectInfo();
+                tempInfo.animator = goalAnimator;
+                tempInfo.material = Resources.Load<Material>("Materials/Character Palettes/Goat/Goat" + (i + 1));
+                tempInfo.isTaken = false;
+                _charaInfo[(int)CHARACTERS.GOAT].Add(tempInfo);
+            }
+        }
+
+
 
         // Snail
         _charaInfo[(int)CHARACTERS.SNAIL] = new List<CharaSelectInfo>();
@@ -234,16 +252,25 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
         _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
 
+        // Goat
+        _charaPortraits[(int)CHARACTERS.GOAT] = new List<Sprite>();
+        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-False-Colors-Master-File");
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
+
     }
 
     void LoadCharacterNames() {
-        _charaNames = new string[8];
+        _charaNames = new string[(int)CHARACTERS.NUM_CHARACTERS];
 
         _charaNames[(int)CHARACTERS.BOY] = "KADEN";
         _charaNames[(int)CHARACTERS.GIRL] = "QUINN";
         _charaNames[(int)CHARACTERS.ROOSTER] = "ROOBEN";
         _charaNames[(int)CHARACTERS.BAT] = "CARMELA";
         _charaNames[(int)CHARACTERS.OWL] = "GAIL";
+        _charaNames[(int)CHARACTERS.GOAT] = "BEXAL";
         _charaNames[(int)CHARACTERS.SNAIL] = "DON";
         _charaNames[(int)CHARACTERS.LIZARD] = "JODI";
         _charaNames[(int)CHARACTERS.LACKEY] = "CARL";

@@ -14,8 +14,12 @@ public class HamsterDialogue : MonoBehaviour {
 
     InteractIcon _interactIcon;
 
+    HamsterDialogueBox _dialogueBox;
+
     Player _playerInput;
     GameManager _gameManager;
+
+    public FMOD.Studio.EventInstance HamsterTalkEvent;
 
     private void Awake() {
         _dialogueCanvas = transform.GetChild(0).gameObject;
@@ -23,12 +27,32 @@ public class HamsterDialogue : MonoBehaviour {
 
         _interactIcon = GetComponentInChildren<InteractIcon>();
 
+        _dialogueBox = GetComponentInChildren<HamsterDialogueBox>(true);
+
         _playerInput = ReInput.players.GetPlayer(0);
         _gameManager = FindObjectOfType<GameManager>();
     }
     // Use this for initialization
     void Start () {
         _isPlayerHere = false;
+
+        // Load the right talking sound
+        switch (_dialogueBox.color) {
+            case HAMSTER_TYPES.RED:
+            case HAMSTER_TYPES.GRAY:
+            case HAMSTER_TYPES.PURPLE:
+                HamsterTalkEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTalk);
+                break;
+            case HAMSTER_TYPES.PINK:
+            case HAMSTER_TYPES.YELLOW:
+                HamsterTalkEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTalkHigh);
+                break;
+            case HAMSTER_TYPES.BLUE:
+            case HAMSTER_TYPES.GREEN:
+            case HAMSTER_TYPES.RAINBOW:
+                HamsterTalkEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.HamsterTalkLow);
+                break;
+        }
 
         // Hide the dialogue box just in case
         HideDialogue();
@@ -45,6 +69,11 @@ public class HamsterDialogue : MonoBehaviour {
                 }
             }
         }
+
+        if(_dialogueCanvas.activeSelf && _textWriter.done) {
+            // Stop the hamster talking sound
+            HamsterTalkEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
     }
 
     void DisplayDialogue() {
@@ -52,6 +81,9 @@ public class HamsterDialogue : MonoBehaviour {
             _dialogueCanvas.SetActive(true);
             _textWriter.StartWriting(dialogue);
             _interactIcon.Deactivate();
+
+            // Start the hamster talking sound
+            HamsterTalkEvent.start();
         }
     }
 
