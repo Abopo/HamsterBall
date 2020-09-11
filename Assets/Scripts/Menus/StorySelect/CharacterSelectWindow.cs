@@ -263,13 +263,9 @@ public class CharacterSelectWindow : Menu {
         CharaInfo charaInfo = new CharaInfo();
         charaInfo.name = CHARACTERS.GIRL;
 
-        if (_girlPaletteIndex == 0) {
-            charaInfo.color = 0;
-        } else {
-            // Get the color out of the material name
-            string paletteString = new String(_girlPalettes[_girlPaletteIndex].name.Where(Char.IsDigit).ToArray());
-            charaInfo.color = int.Parse(paletteString);
-        }
+        // Get the color out of the material name
+        string paletteString = new String(_girlPalettes[_girlPaletteIndex].name.Where(Char.IsDigit).ToArray());
+        charaInfo.color = int.Parse(paletteString);
 
         _playerInfoBox.SetCharacter(charaInfo);
 

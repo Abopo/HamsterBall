@@ -158,16 +158,6 @@ public class CutsceneCharacter : MonoBehaviour {
     public void SetCharacter(string chara, string expression) {
         curCharacter = chara;
 
-        // Get the characters name'
-        /*
-        string charaName = "";
-        int i = 0;
-        while(chara[i] != '_') {
-            charaName += chara[i];
-            i++;
-        }
-        */
-
         // Load the image of the character
         SetExpression(expression);
     }

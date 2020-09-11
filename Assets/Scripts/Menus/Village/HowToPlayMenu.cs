@@ -31,11 +31,11 @@ public class HowToPlayMenu : Menu {
 
     void SetupText() {
         if(_controller) {
-            catText.text = "Press <c=blue>X<c=black> to catch hamsters\nHolding a hamster press <c=blue>X<c=black> to aim\nLine up a good shot and press<c=blue>X<c=black> one more time to throw !";
+            catText.text = "Press <c=blue>X<c=black> to catch hamsters\nHolding a hamster press <c=blue>X<c=black> to aim\nLine up a good shot and press<c=blue>X<c=black> one more time to throw!";
             swapText.text = "When your meter is full press <c=yellow>Y<c=black> to SWAP into your opponent's area.\nHarass them by throwing at their board or stealing their hamsters!";
             attackText.text = "If someone has swapped into your area, attack them with the <c=red>B<c=black> button!";
         } else {
-            catText.text = "Press <c=blue>J<c=black> to catch hamsters/nHolding a hamster press<c=blue>J<c=black> to aim/nLine up a good shot and press<c=blue>J<c=black> one more time to throw !";
+            catText.text = "Press <c=blue>J<c=black> to catch hamsters\nHolding a hamster press<c=blue>J<c=black> to aim\nLine up a good shot and press <c=blue>J<c=black> one more time to throw!";
             swapText.text = "When your meter is full press <c=yellow>L<c=black> to SWAP into your opponent's area.\nHarass them by throwing at their board or stealing their hamsters!";
             attackText.text = "If someone has swapped into your area, attack them with the <c=red>K<c=black> button!";
         }

@@ -18,7 +18,6 @@ public class StopGoLever : MonoBehaviour {
 
     StopGoButton _button;
 
-
     // Start is called before the first frame update
     void Start() {
         _isLeft = true;
@@ -48,18 +47,19 @@ public class StopGoLever : MonoBehaviour {
     }
 
     public void ChangePosition(StopGoButton invoker) {
+
+
         FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/LeverStart1");
         LeverMoveEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Stages/LeverMove1");
         LeverMoveEvent.start();
-        _button = invoker;
-        _isRotating = true;
     }
 
     void EndRotation() {
+        _isRotating = false;
+        _button.FinishPress();
+
         LeverMoveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         LeverMoveEvent.release();
         FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/LeverStop1");
-        _isRotating = false;
-        _button.FinishPress();
     }
 }

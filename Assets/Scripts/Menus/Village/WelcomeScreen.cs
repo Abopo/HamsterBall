@@ -39,11 +39,15 @@ public class WelcomeScreen : MonoBehaviour {
 
     private void LateUpdate() {
         if (!_frameskip && InputState.GetButtonOnAnyControllerPressed("Submit") || InputState.GetButtonOnAnyControllerPressed("Cancel")) {
-            _gameManager.Unpause();
-            _menuObj.SetActive(false);
-            shown = true;
+            Close();
         }
 
         _frameskip = false;
+    }
+
+    public void Close() {
+        _gameManager.Unpause();
+        _menuObj.SetActive(false);
+        shown = true;
     }
 }

@@ -12,6 +12,7 @@ public class PlayerInfoBox : MonoBehaviour {
     public bool playerAssigned;
     public int playerID;
     public SpriteRenderer playerSprite;
+    public SuperTextMesh buttonText;
 
     public GameObject activeObjects;
     public GameObject deactiveObjects;
@@ -53,6 +54,12 @@ public class PlayerInfoBox : MonoBehaviour {
 
         // Get the first player
         _player1 = ReInput.players.GetPlayer(0);
+
+        if(ReInput.controllers.joystickCount > 0) {
+            buttonText.text = "Y";
+        } else {
+            buttonText.text = "L";
+        }
 
         _characterSelectWindow = FindObjectOfType<CharacterSelectWindow>();
     }

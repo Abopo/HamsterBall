@@ -9,8 +9,12 @@ public class StopGoButton : MonoBehaviour {
 
     public StopGoLever lever;
 
+    PhotonView _photonView;
     // Maybe the buttons could be on some kind of timer in addition to hitting them?
 
+    private void Awake() {
+        _photonView = GetComponent<PhotonView>();
+    }
     // Start is called before the first frame update
     void Start() {
         if(pressed) {
@@ -49,12 +53,16 @@ public class StopGoButton : MonoBehaviour {
         leftStoplight.Stop();
         rightStoplight.Stop();
 
-        // Move the lever
-        lever.ChangePosition(this);
-
         // Turn on other stoplights
         otherButton.leftStoplight.Go();
         otherButton.rightStoplight.Go();
+
+        if(PhotonNetwork.connectedAndReady) {
+            _photonView.RPC("NetworkPress", PhotonTargets.Others);
+        }
+
+        // Move the lever
+        lever.ChangePosition(this);
     }
 
     public void FinishPress() {

@@ -69,8 +69,6 @@ public class GameManager : MonoBehaviour {
             playerManager = GetComponent<PlayerManager>();
             gameSettings = GetComponent<GameSettings>();
 
-            LoadGameData();
-
             //QualitySettings.vSyncCount = 0;
             //Application.targetFrameRate = 200;
         }
@@ -84,10 +82,15 @@ public class GameManager : MonoBehaviour {
 
             // Options
             ES3.Save<float>("MasterVolume", 100f);
+            ES3.Save<float>("BGMVolume", 100f);
+            ES3.Save<float>("SFXVolume", 100f);
             ES3.Save<int>("AimAssist", 1);
         }
 
         AudioListener.volume = (ES3.Load("MasterVolume", 100f) / 100);
+        FMODUnity.RuntimeManager.GetBus("bus:/Music").setVolume(ES3.Load("BGMVolume", 100f) / 100);
+        FMODUnity.RuntimeManager.GetBus("bus:/SFX").setVolume(ES3.Load("SFXVolume", 100f) / 100);
+
         gameSettings.aimAssistSetting = (AIMASSIST)ES3.Load("AimAssist", 1);
     }
 
@@ -109,6 +112,8 @@ public class GameManager : MonoBehaviour {
 
         selectedBoard = BOARDS.NUM_STAGES;
         prevLevel = "";
+
+        LoadGameData();
 
         //SetDemoMode(demoMode);
 

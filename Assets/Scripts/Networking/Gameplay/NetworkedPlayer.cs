@@ -66,7 +66,12 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             }
         }
 
-        playerName.text = photonView.owner.NickName;
+        if (photonView.owner != null) {
+            playerName.text = photonView.owner.NickName;
+
+            // Send name over?
+            photonView.RPC("SendName", PhotonTargets.OthersBuffered, photonView.owner.NickName);
+        }
 
         FindObjectOfType<GameManager>().gameOverEvent.AddListener(OnGameEnd);
     }
@@ -373,6 +378,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     [PunRPC]
     void ShiftPlayer() {
         _playerController.StartShift();
+    }
+
+    [PunRPC]
+    void SendName(string nickname) {
+        playerName.text = nickname;
     }
 
     void OnGameEnd() {

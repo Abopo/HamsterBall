@@ -393,11 +393,17 @@ public class LevelManager : MonoBehaviour {
 
     void IncreaseLeftTeamGames() {
         _gameManager.leftTeamGames++;
+        if(_levelUI == null) {
+            _levelUI = FindObjectOfType<LevelUI>();
+        }
         _levelUI.FillInGameMarker(0);
     }
 
     void IncreaseRightTeamGames() {
         _gameManager.rightTeamGames++;
+        if (_levelUI == null) {
+            _levelUI = FindObjectOfType<LevelUI>();
+        }
         _levelUI.FillInGameMarker(1);
     }
 

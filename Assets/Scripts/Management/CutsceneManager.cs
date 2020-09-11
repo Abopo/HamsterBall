@@ -111,8 +111,10 @@ public class CutsceneManager : MonoBehaviour {
         //titleText.gameObject.SetActive(true);
         leftChara1.gameObject.SetActive(true);
         leftChara2.gameObject.SetActive(true);
+        leftChara3.gameObject.SetActive(true);
         rightChara1.gameObject.SetActive(true);
         rightChara2.gameObject.SetActive(true);
+        rightChara3.gameObject.SetActive(true);
         backgroundSprite.gameObject.SetActive(true);
         textBacker.gameObject.SetActive(true);
         dialoguetext.gameObject.SetActive(true);
@@ -142,8 +144,10 @@ public class CutsceneManager : MonoBehaviour {
         //titleText.gameObject.SetActive(false);
         leftChara1.gameObject.SetActive(false);
         leftChara2.gameObject.SetActive(false);
+        leftChara3.gameObject.SetActive(false);
         rightChara1.gameObject.SetActive(false);
         rightChara2.gameObject.SetActive(false);
+        rightChara3.gameObject.SetActive(false);
         backgroundSprite.gameObject.SetActive(false);
         textBacker.gameObject.SetActive(false);
         dialoguetext.gameObject.SetActive(false);
@@ -151,8 +155,10 @@ public class CutsceneManager : MonoBehaviour {
         // Move characters off screen as well
         leftChara1.GoOffscreen();
         leftChara2.GoOffscreen();
+        leftChara3.GoOffscreen();
         rightChara1.GoOffscreen();
         rightChara2.GoOffscreen();
+        rightChara3.GoOffscreen();
 
         // Turn off the skip cutscene window
         skipCutsceneWindow.SetActive(false);
@@ -165,7 +171,7 @@ public class CutsceneManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         // If a character is sliding, wait for them to finish
-        if (leftChara1.IsMoving || leftChara2.IsMoving || rightChara1.IsMoving || rightChara2.IsMoving) {
+        if (leftChara1.IsMoving || leftChara2.IsMoving || leftChara3.IsMoving || rightChara1.IsMoving || rightChara2.IsMoving || rightChara3.IsMoving) {
             return;
         }
 

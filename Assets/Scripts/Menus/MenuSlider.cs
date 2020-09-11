@@ -20,8 +20,6 @@ public class MenuSlider : MenuOption {
     // Update is called once per frame
     protected override void Update() {
         base.Update();
-
-
     }
 
     public override void CheckInput() {
@@ -31,11 +29,17 @@ public class MenuSlider : MenuOption {
         if (_player.GetButtonRepeating("Right")) {
             // Mode slider right
             _slider.value += 5;
+            if (_slider.value > 100) {
+                _slider.value = 100;
+            }
         }
         // Left
         if (_player.GetButtonRepeating("Left")) {
             // Move slider left
             _slider.value -= 5;
+            if (_slider.value < 0) {
+                _slider.value = 0;
+            }
         }
     }
 

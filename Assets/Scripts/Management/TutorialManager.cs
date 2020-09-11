@@ -101,9 +101,9 @@ public class TutorialManager : MonoBehaviour {
             case 0:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MovementTutorial"));
                 if (_controller) {
-                    tutorialInfoText.text = "Move with <c=white>Left Joystick<c=black>, Jump with <c=green>A<c=black>. Get up high!";
+                    tutorialInfoText.text = "Move with <c=white>Left Joystick<c=white>, Jump with <c=green>A<c=white>. Get up high!";
                 } else {
-                    tutorialInfoText.text = "Move with <c=green>A/D<c=black>, Jump with <c=green>W<c=black>. Get up high!";
+                    tutorialInfoText.text = "Move with <c=green>A/D<c=white>, Jump with <c=green>W<c=white>. Get up high!";
                 }
                 _tutorialIndex++; // 1
                 _tutorialTime = -1;
@@ -111,9 +111,9 @@ public class TutorialManager : MonoBehaviour {
             case 1:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/BubbleTutorial"));
                 if (_controller) {
-                    tutorialInfoText.text = "Catch a hamster with <c=blue>X<c=black>!";
+                    tutorialInfoText.text = "Catch a hamster with <c=4356FF>X<c=white>!";
                 } else {
-                    tutorialInfoText.text = "Catch a hamster with <c=green>J<c=black>!";
+                    tutorialInfoText.text = "Catch a hamster with <c=4356FF>J<c=white>!";
                 }
                 _tutorialIndex++; // 2
                 _tutorialTime = -1;
@@ -123,9 +123,9 @@ public class TutorialManager : MonoBehaviour {
             case 2:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/AimTutorial"));
                 if (_controller) {
-                    tutorialInfoText.text = "Pick a good spot and start aiming with <c=blue>X<c=black>!";
+                    tutorialInfoText.text = "Pick a good spot and start aiming with <c=4356FF>X<c=white>!";
                 } else {
-                    tutorialInfoText.text = "Pick a good spot and start aiming with <c=green>J<c=black>!";
+                    tutorialInfoText.text = "Pick a good spot and start aiming with <c=4356FF>J<c=white>!";
                 }
                 _tutorialIndex++; // 3
                 _tutorialTime = -1;
@@ -135,9 +135,9 @@ public class TutorialManager : MonoBehaviour {
             case 3:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/ThrowTutorial"));
                 if (_controller) {
-                    tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=blue>X<c=black>!";
+                    tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=4356FF>X<c=white>!";
                 } else {
-                    tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=green>J<c=black>!";
+                    tutorialInfoText.text = "Aim at matching colored balls, and throw with <c=4356FF>J<c=white>!";
                 }
                 _tutorialIndex++; // 4
                 _tutorialTime = -1;
@@ -145,9 +145,9 @@ public class TutorialManager : MonoBehaviour {
             case 4:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MatchingTutorial"));
                 if (_controller) {
-                    tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=blue>X<c=black>!";
+                    tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=4356FF>X<c=white>!";
                 } else {
-                    tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=green>J<c=black>!";
+                    tutorialInfoText.text = "Try to make some matches! Catch, aim, throw all with <c=4356FF>J<c=white>!";
                 }
                 _tutorialIndex++; // 5
                 _tutorialTime = 15f;
@@ -155,9 +155,9 @@ public class TutorialManager : MonoBehaviour {
             case 5:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/DroppingSwappingTutorial"));
                 if (_controller) {
-                    tutorialInfoText.text = "Press the <c=yellow>Y<c=black> key to do...something?";
+                    tutorialInfoText.text = "Press the <c=yellow>Y<c=white> key to do...something?";
                 } else {
-                    tutorialInfoText.text = "Press the <c=green>L<c=black> key to do...something?";
+                    tutorialInfoText.text = "Press the <c=yellow>L<c=white> key to do...something?";
                 }
                 _tutorialIndex++; // 6
                 _tutorialTime = -1;

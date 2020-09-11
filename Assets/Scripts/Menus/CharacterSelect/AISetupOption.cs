@@ -4,7 +4,7 @@ using System.Collections;
 
 public class AISetupOption : MenuOption {
     public PlayerInfo aiInfo;
-    public Text aiDifficultyText;
+    public SuperTextMesh aiDifficultyText;
 
     bool _justMoved;
 
@@ -77,7 +77,7 @@ public class AISetupOption : MenuOption {
             case 1:
             case 2:
             case 3:
-                aiDifficultyText.color = Color.blue;
+                aiDifficultyText.color = Color.cyan;
                 break;
             case 4:
             case 5:

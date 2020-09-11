@@ -12,10 +12,14 @@ public class DemoManager : MonoBehaviour {
     float _waitTime = 30f;
     float _waitTimer = 0f;
 
+    float _nextMatchTime = 5f;
+    float _nextMatchTimer = 0f;
+
     SuperTextMesh _controllerText;
 
     GameManager _gameManager;
     PlayerManager _playerManager;
+    LevelManager _levelManager;
 
     public bool ComMatch {
         get { return _comMatch; }
@@ -63,10 +67,31 @@ public class DemoManager : MonoBehaviour {
                 // Return to the character select screen
                 _gameManager.CharacterSelectButton();
             }
+
+            // If the match is over and the results are showing
+            // Continue to the next game
+            if(_levelManager.GameOver) {
+                _nextMatchTimer += Time.deltaTime;
+                if(_nextMatchTimer >= _nextMatchTime) {
+                    _nextMatchTimer = 0f;
+
+                    // If the set isn't over yet
+                    if(_gameManager.leftTeamGames < 2 || _gameManager.rightTeamGames < 2) {
+                        // Hit continue
+                        _levelManager.continueScreen.ContinueToNextLevel();
+                    } else {
+                        // We want to start a new random cpu match
+                        StartComMatch();
+                    }
+                }
+            }
         }
     }
 
     public void StartComMatch() {
+        // Make sure the game manager is clean
+        _gameManager.CleanUp(true);
+
         // Make two random com players
         PlayerInfo com1 = new PlayerInfo();
         com1.playerNum = 1;
@@ -93,18 +118,21 @@ public class DemoManager : MonoBehaviour {
         _playerManager.AddPlayer(com2);
 
         // Show the text
-        _controllerText.enabled = true;
+        //_controllerText.enabled = true;
 
         _comMatch = true;
 
+
         // Load a random stage
-        int board = Random.Range(0, 3);
+        int board = Random.Range(0, 4);
         _gameManager.selectedBoard = (BOARDS)board;
         SceneManager.LoadScene("VersusMultiplayer");
     }
 
     void OnSceneChange(Scene scene, LoadSceneMode mode) {
         _curScene = scene.name;
+
+        _levelManager = FindObjectOfType<LevelManager>();
     }
 
     bool AnyButtonPressed() {

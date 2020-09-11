@@ -89,6 +89,9 @@ public class HamsterDialogue : MonoBehaviour {
 
     void HideDialogue() {
         _dialogueCanvas.SetActive(false);
+
+        // Make sure we stop the talking sounds
+        HamsterTalkEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

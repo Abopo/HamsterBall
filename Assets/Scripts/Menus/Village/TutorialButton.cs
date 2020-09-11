@@ -41,7 +41,7 @@ public class TutorialButton : MonoBehaviour {
         // Set up the level
         GameManager _gameManager = _playerManager.GetComponent<GameManager>();
         _gameManager.selectedBoard = BOARDS.FOREST;
-        _gameManager.gameMode = GAME_MODE.MP_VERSUS;
+        _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
 
         // Load the tutorial scene
         SceneManager.LoadScene("OpeningTutorial");

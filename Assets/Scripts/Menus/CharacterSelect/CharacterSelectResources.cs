@@ -211,10 +211,10 @@ public class CharacterSelectResources : MonoBehaviour {
 
         // Rooster
         _charaPortraits[(int)CHARACTERS.ROOSTER] = new List<Sprite>();
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[15]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[16]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[17]);
-        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[18]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[27]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[28]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[29]);
+        _charaPortraits[(int)CHARACTERS.ROOSTER].Add(sprites[30]);
 
         // Bat
         _charaPortraits[(int)CHARACTERS.BAT] = new List<Sprite>();
@@ -223,42 +223,40 @@ public class CharacterSelectResources : MonoBehaviour {
         _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[2]);
         _charaPortraits[(int)CHARACTERS.BAT].Add(sprites[3]);
 
-        // Snail
-        _charaPortraits[(int)CHARACTERS.SNAIL] = new List<Sprite>();
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[19]);
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[22]);
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[20]);
-        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[21]);
-
-        // Lackey
-        _charaPortraits[(int)CHARACTERS.LACKEY] = new List<Sprite>();
-        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[12]);
-        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[13]);
-        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[14]);
-
-        // Lizard
-        _charaPortraits[(int)CHARACTERS.LIZARD] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-Master-File");
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[24]);
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[25]);
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[24]);
-        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[25]);
 
         // Owl
         _charaPortraits[(int)CHARACTERS.OWL] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-False-Colors-Master-File");
-        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
-        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
-        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
-        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[8]);
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[23]);
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[24]);
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[25]);
+        _charaPortraits[(int)CHARACTERS.OWL].Add(sprites[26]);
 
         // Goat
         _charaPortraits[(int)CHARACTERS.GOAT] = new List<Sprite>();
-        sprites = Resources.LoadAll<Sprite>("Art/UI/Character Select/Character-Icons-False-Colors-Master-File");
-        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
-        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
-        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
-        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[5]);
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[12]);
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[13]);
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[14]);
+        _charaPortraits[(int)CHARACTERS.GOAT].Add(sprites[15]);
+
+        // Snail
+        _charaPortraits[(int)CHARACTERS.SNAIL] = new List<Sprite>();
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[31]);
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[32]);
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[33]);
+        _charaPortraits[(int)CHARACTERS.SNAIL].Add(sprites[34]);
+
+        // Lizard
+        _charaPortraits[(int)CHARACTERS.LIZARD] = new List<Sprite>();
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[19]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[20]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[21]);
+        _charaPortraits[(int)CHARACTERS.LIZARD].Add(sprites[22]);
+
+        // Lackey
+        _charaPortraits[(int)CHARACTERS.LACKEY] = new List<Sprite>();
+        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[16]);
+        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[17]);
+        _charaPortraits[(int)CHARACTERS.LACKEY].Add(sprites[18]);
 
     }
 

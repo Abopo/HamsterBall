@@ -17,6 +17,8 @@ public class MenuOption : MonoBehaviour {
 
     public bool searchForAdj;
 
+    public bool displaySelector;
+
     //protected Vector2 _selectedPos;
     public bool isHighlighted;
     protected bool _justHighlighted; // use this to stop inputs from flowing over into multiple options.
@@ -191,6 +193,12 @@ public class MenuOption : MonoBehaviour {
             selector.transform.position = new Vector3(transform.position.x,
                                                        transform.position.y,
                                                        selector.transform.position.z);
+
+            if(!displaySelector) {
+                selector.GetComponent<Image>().enabled = false;
+            } else {
+                selector.GetComponent<Image>().enabled = true;
+            }
         }
 
         // Play a little sound

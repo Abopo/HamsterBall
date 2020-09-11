@@ -2,10 +2,11 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class MasterVolumeSlider : MenuOption {
+public class MasterVolumeSlider : MenuSlider {
 
-    public Text volumeText;
-    Slider _slider;
+    public SuperTextMesh volumeText;
+
+    public int volumeType; // 0 - master, 1 - bgm, 2 - sfx
 
     FMOD.Studio.Bus MasterBus;
     FMOD.Studio.Bus MusicBus;
@@ -18,7 +19,13 @@ public class MasterVolumeSlider : MenuOption {
 
         //_selectedPos = transform.parent.position;
         _slider = GetComponentInChildren<Slider>();
-        _slider.value = AudioListener.volume * 100;
+        if (volumeType == 0) {
+            _slider.value = ES3.Load("MasterVolume", 100f);
+        } else if(volumeType == 1) {
+            _slider.value = ES3.Load("BGMVolume", 100f);
+        } else if(volumeType == 2) {
+            _slider.value = ES3.Load("SFXVolume", 100f);
+        }
 
         MasterBus = FMODUnity.RuntimeManager.GetBus("bus:/");
         MusicBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");
@@ -28,25 +35,6 @@ public class MasterVolumeSlider : MenuOption {
     // Update is called once per frame
     protected override void Update() {
         base.Update();
-
-        if(isHighlighted) {
-            // Right
-            if (_player.GetButtonDown("Right")) {
-                // Adjust slider to the right
-                _slider.value += 5;
-                if(_slider.value > 100) {
-                    _slider.value = 100;
-                }
-            }
-            // Left
-            if (_player.GetButtonDown("Left")) {
-                // Adjust slider to the left
-                _slider.value -= 5;
-                if(_slider.value < 0) {
-                    _slider.value = 0;
-                }
-            }
-        }
     }
 
     protected override void Select() {
@@ -54,11 +42,18 @@ public class MasterVolumeSlider : MenuOption {
     }
 
     public void UpdateVolumeValue() {
-        AudioListener.volume = (_slider.value / 100);
         volumeText.text = _slider.value.ToString();
-        //MusicBus.setVolume(AudioListener.volume);
-        //SFXBus.setVolume(AudioListener.volume);
-        MasterBus.setVolume(AudioListener.volume);
-        ES3.Save<float>("MasterVolume", _slider.value);
+
+        if(volumeType == 0) {
+            AudioListener.volume = (_slider.value / 100);
+            MasterBus.setVolume(AudioListener.volume);
+            ES3.Save<float>("MasterVolume", _slider.value);
+        } else if (volumeType == 1) {
+            MusicBus.setVolume(_slider.value / 100);
+            ES3.Save<float>("BGMVolume", _slider.value);
+        } else if(volumeType == 2) {
+            SFXBus.setVolume(_slider.value / 100);
+            ES3.Save<float>("SFXVolume", _slider.value);
+        }
     }
 }

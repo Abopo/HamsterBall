@@ -90,18 +90,21 @@ public class GameEndSequence : MonoBehaviour {
         if (_sequence < 1) {
             ShiftState tempShiftState;
 
-            tempShiftState = (ShiftState)_leftTeam[0].GetPlayerState(PLAYER_STATE.SHIFT);
-            tempShiftState.endGameShift = true;
-            _leftTeam[0].ChangeState(PLAYER_STATE.SHIFT);
-            _leftTeam[0].Animator.SetBool("Won Game", _gameResult == -1 || _gameResult == 0);
-            tempShiftState.SetLandingPosition(new Vector3(-playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
+            if (_leftTeam.Count > 0) {
+                tempShiftState = (ShiftState)_leftTeam[0].GetPlayerState(PLAYER_STATE.SHIFT);
+                tempShiftState.endGameShift = true;
+                _leftTeam[0].ChangeState(PLAYER_STATE.SHIFT);
+                _leftTeam[0].Animator.SetBool("Won Game", _gameResult == -1 || _gameResult == 0);
+                tempShiftState.SetLandingPosition(new Vector3(-playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
+            }
 
-            tempShiftState = (ShiftState)_rightTeam[0].GetPlayerState(PLAYER_STATE.SHIFT);
-            tempShiftState.endGameShift = true;
-            _rightTeam[0].ChangeState(PLAYER_STATE.SHIFT);
-            _rightTeam[0].Animator.SetBool("Won Game", _gameResult == 1 || _gameResult == 0);
-            tempShiftState.SetLandingPosition(new Vector3(playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
-
+            if (_rightTeam.Count > 0) {
+                tempShiftState = (ShiftState)_rightTeam[0].GetPlayerState(PLAYER_STATE.SHIFT);
+                tempShiftState.endGameShift = true;
+                _rightTeam[0].ChangeState(PLAYER_STATE.SHIFT);
+                _rightTeam[0].Animator.SetBool("Won Game", _gameResult == 1 || _gameResult == 0);
+                tempShiftState.SetLandingPosition(new Vector3(playerPos1.position.x, playerPos1.position.y, playerPos1.position.z));
+            }
 
             _matchEndMusic.start();
 
@@ -118,10 +121,6 @@ public class GameEndSequence : MonoBehaviour {
                 _leftTeam[1].ChangeState(PLAYER_STATE.SHIFT);
                 _leftTeam[1].Animator.SetBool("Won Game", _gameResult == -1 || _gameResult == 0);
                 tempShiftState.SetLandingPosition(new Vector3(-playerPos2.position.x, playerPos2.position.y, playerPos2.position.z));
-
-                //_leftTeam[1].transform.position = new Vector3(-playerPos2.position.x, playerPos2.position.y, playerPos2.position.z);
-                //_leftTeam[1].transform.localScale = new Vector3(2f, 2f, 2f);
-                //_leftTeam[1].SpriteRenderer.sortingOrder = 25;
             }
             if (_rightTeam.Count > 1) {
                 tempShiftState = (ShiftState)_rightTeam[1].GetPlayerState(PLAYER_STATE.SHIFT);
@@ -129,10 +128,6 @@ public class GameEndSequence : MonoBehaviour {
                 _rightTeam[1].ChangeState(PLAYER_STATE.SHIFT);
                 _rightTeam[1].Animator.SetBool("Won Game", _gameResult == 1 || _gameResult == 0);
                 tempShiftState.SetLandingPosition(new Vector3(playerPos2.position.x, playerPos2.position.y, playerPos2.position.z));
-                
-                //_rightTeam[1].transform.position = playerPos2.position;
-                //_rightTeam[1].transform.localScale = new Vector3(2f, 2f, 2f);
-                //_rightTeam[1].SpriteRenderer.sortingOrder = 25;
             }
 
             _sequence++;

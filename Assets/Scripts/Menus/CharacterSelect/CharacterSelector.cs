@@ -243,39 +243,39 @@ public class CharacterSelector : MonoBehaviour {
 
         if (!lockedIn) {
             // Right
-            if (_player.GetButtonDown("MoveRight")) {
+            if (_player.GetButtonRepeating("Right")) {
                 if (curCharacterIcon.adjOptions[0] != null && curCharacterIcon.adjOptions[0].IsReady) {
                     // move selector to adjOptions[0]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[0]);
                 }
             }
             // Left
-            if (_player.GetButtonDown("MoveLeft")) {
+            if (_player.GetButtonRepeating("Left")) {
                 if (curCharacterIcon.adjOptions[2] != null && curCharacterIcon.adjOptions[2].IsReady) {
                     // move selector to adjOptions[2]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[2]);
                 }
             }
             // Up
-            if (_player.GetButtonDown("MoveUp")) {
+            if (_player.GetButtonRepeating("Up")) {
                 if (curCharacterIcon.adjOptions[3] != null && curCharacterIcon.adjOptions[3].IsReady) {
                     // move selector to adjOptions[3]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[3]);
                 }
             }
             // Down
-            if (_player.GetButtonDown("MoveDown")) {
+            if (_player.GetButtonRepeating("Down")) {
                 if (curCharacterIcon.adjOptions[1] != null && curCharacterIcon.adjOptions[1].IsReady) {
                     // move selector to adjOptions[1]
                     HighlightIcon((CharacterIcon)curCharacterIcon.adjOptions[1]);
                 }
             }
         } else if(lockedIn && !isReady) {
-            if(_player.GetButtonDown("MoveRight")) {
+            if(_player.GetButtonDown("Right")) {
                 // Change Color to the right
                 ChangeColorRight();
             }
-            if (_player.GetButtonDown("MoveLeft")) {
+            if (_player.GetButtonDown("Left")) {
                 // Change color to the left
                 ChangeColorLeft();
             }
