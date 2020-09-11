@@ -48,8 +48,8 @@ public class StopGoLever : MonoBehaviour {
     }
 
     public void ChangePosition(StopGoButton invoker) {
-        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.LeverStart);
-        LeverMoveEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.LeverMove);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/LeverStart1");
+        LeverMoveEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Stages/LeverMove1");
         LeverMoveEvent.start();
         _button = invoker;
         _isRotating = true;
@@ -58,7 +58,7 @@ public class StopGoLever : MonoBehaviour {
     void EndRotation() {
         LeverMoveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         LeverMoveEvent.release();
-        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.LeverStop);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/LeverStop1");
         _isRotating = false;
         _button.FinishPress();
     }

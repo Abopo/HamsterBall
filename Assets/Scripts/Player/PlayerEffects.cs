@@ -179,7 +179,7 @@ public class PlayerEffects : MonoBehaviour {
         }
         else if (_gameManager.selectedBoard == BOARDS.CITY)
         {
-            footstepString1 = SoundManager.mainAudio.ConcreteFootstep;
+            footstepString1 = "event:/Footsteps/ConcreteFootstepEvent";
             footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
         }
         else

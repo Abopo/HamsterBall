@@ -36,8 +36,8 @@ public class SubwayTrain : MonoBehaviour {
             // Maybe move?
             _moveTimer += Time.deltaTime;
             if(_moveTimer >= _startTime - 2f) {
-                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubwayPass);
-                FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.SubwayRumble);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/SubwayPass1");
+                //FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/SubwayRumble");
                 mainCamera.StartShake(3f, 6f, new Vector2(0.03f, 0.03f));
             }
             if(_moveTimer >= _startTime) {

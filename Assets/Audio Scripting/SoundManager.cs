@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviour {
 	public string CountdownThree;
     public string CountdownTwo;
     public string CountdownOne;
-    public string CountdownScramble;
+    public string CountdownToScramble = "event:/Game Sounds/Scramble_Crowd";
 
     public string CountDown321;
 
@@ -104,9 +104,9 @@ public class SoundManager : MonoBehaviour {
     public string SubwayPass;
     public string SubwayRumble;
 
-    public string LeverStart;
-    public string LeverStop;
-    public string LeverMove;
+    public string LeverStart = "event:/Stages/LeverStart1";
+    public string LeverStop = "event:/Stages/LeverStop1";
+    public string LeverMove = "event:/Stages/LeverMove1";
 
     //Music
     public string MusicMain;

@@ -91,7 +91,7 @@ public class GameCountdown : MonoBehaviour {
 					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownOne);
                     break;
                 case 3:
-					FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CountdownScramble);
+					FMODUnity.RuntimeManager.PlayOneShot("event:/Game Sounds/Scramble_Crowd");
                     _displayText.text = "<c=rainbow><j=once>Scramble!";
                     _minScale = 3f;
                     GameStart();
