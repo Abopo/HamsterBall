@@ -7,1277 +7,798 @@
 [LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Priority: 2, Stack Size: 65536, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Priority: 3, Stack Size: 49152, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 00000001DFBD9D88 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : manager 0000000025A431B8 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Priority: 0, Stack Size: 65536, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] PlaybackSystem::init                     : done
 [LOG] Thread::initThread                       : Init FMOD Studio bank load thread. Priority: 0, Stack Size: 65536, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] Manager::init                            : done.
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_35.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_35.bank'
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_36.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_36.bank'
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_37.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_37.bank'
 [LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_38.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_38.bank'
-[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_39.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_39.bank'
-[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_40.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_40.bank'
-[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000000B16CFB98 : node = 00000001608283F0
-[LOG] SystemI::createSound                     : add node to async list : head = 00000000B12578E8.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000B16CFB98
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000160828508
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Menu_General', format=2, channels=2, frequency=48000, lengthbytes=838080, lengthpcm=2838778, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.999969.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000B16CFB98
-[LOG] SoundI::getSubSound                      : sound 00000000B16CFB98.  Subsound index 0 / 1
-[LOG] SoundI::release                          : HS_Forest Ambience-001 (0000000130090658)
-[LOG] SoundI::release                          :     HS_Forest Ambience-001 (00000000B0CD60C8)
-[LOG] SoundI::release                          :     HS_Forest Ambience-001 (00000001300836C8)
-[LOG] SoundI::release                          : HS_Forest Ambience-002 (000000013008AE98)
-[LOG] SoundI::release                          :     HS_Forest Ambience-002 (00000000B0CD53C8)
-[LOG] SoundI::release                          :     HS_Forest Ambience-002 (0000000130083368)
-[LOG] SoundI::release                          : Village_fullv2 (000000013008A988)
-[LOG] SoundI::release                          :     Village_fullv2 (00000000B0CD5F28)
-[LOG] SoundI::release                          :     Village_fullv2 (000000013008ACE8)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=214172, lengthpcm=53543, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=217600, lengthpcm=54400, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=216288, lengthpcm=54072, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back-002.wav (00000000B12514A8)
-[LOG] SoundI::release                          : HS_MainMenu_Back-004.wav (00000000B1251168)
-[LOG] SoundI::release                          : HS_MainMenu_Back-001.wav (00000000B1250E28)
-[LOG] SoundI::release                          : HS_MainMenu_Back-003.wav (00000000B124F5C8)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-001.wav (00000000B124F288)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-003.wav (00000000B1251988)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-002.wav (00000000B1250FC8)
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_41.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_41.bank'
-[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] Manager::receiveLiveUpdateBank           : Received live update bank path: fmod:///remote/C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_42.bank
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Users/Ryan/AppData/Local/FMOD Studio/UnsavedProjects/Hotswap-hy5XGf/hotswap_42.bank'
-[LOG] Manager::readBank                        : fileversion = 103, compatVersion = 99 (oldest = 44, newest = 103)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=216288, lengthpcm=54072, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=214172, lengthpcm=53543, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=217600, lengthpcm=54400, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back-001.wav (00000000B124F768)
-[LOG] SoundI::release                          : HS_MainMenu_Back-004.wav (00000000B124F908)
-[LOG] SoundI::release                          : HS_MainMenu_Back-003.wav (00000000B1250128)
-[LOG] SoundI::release                          : HS_MainMenu_Back-002.wav (00000000B1250AE8)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-002.wav (00000000B124EC08)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-003.wav (00000000B1250948)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-001.wav (00000000B124EA68)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000000B16D2E38 : node = 0000000160828540
-[LOG] SystemI::createSound                     : add node to async list : head = 00000000B12578E8.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000B16D2E38
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000160828658
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSound                     :     filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     :     setdata soundi = 00000000B16D3858 : node = 0000000160827430
-[LOG] SystemI::createSound                     :     add node to async list : head = 00000000B12578E8.  list count = 0
-[LOG] SystemI::createSound                     :     filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     :     setdata soundi = 00000000B16D3A08 : node = 00000001608276D0
-[LOG] SystemI::createSound                     :     add node to async list : head = 00000000B12578E8.  list count = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Village_fullv2', format=2, channels=2, frequency=48000, lengthbytes=1813632, lengthpcm=6043278, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.996857.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000B16D2E38
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000B16D3858
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000160827548
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Forest Ambience-002', format=2, channels=2, frequency=48000, lengthbytes=2145216, lengthpcm=7756266, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.109985.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000B16D3858
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000B16D3A08
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000001608277E8
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Forest Ambience-001', format=2, channels=2, frequency=48000, lengthbytes=1771840, lengthpcm=7756266, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.297668.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000B16D3A08
-[LOG] SoundI::getSubSound                      : sound 00000000B16D2E38.  Subsound index 0 / 1
-[LOG] SoundI::getSubSound                      : sound 00000000B16D3858.  Subsound index 0 / 1
-[LOG] SoundI::getSubSound                      : sound 00000000B16D3A08.  Subsound index 0 / 1
-[LOG] SoundI::release                          : Menu_General (00000000B16CFB98)
-[LOG] SoundI::release                          :     Menu_General (00000000B1252348)
-[LOG] SoundI::release                          :     Menu_General (00000000B16CFD48)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000000480A9388 : node = 00000001608283F0
-[LOG] SystemI::createSound                     : add node to async list : head = 00000000B12578E8.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000480A9388
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000160828508
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Menu_General', format=2, channels=2, frequency=48000, lengthbytes=838080, lengthpcm=2838778, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.999969.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000480A9388
-[LOG] SoundI::getSubSound                      : sound 00000000480A9388.  Subsound index 0 / 1
-[LOG] SoundI::release                          : Village_fullv2 (00000000B16D2E38)
-[LOG] SoundI::release                          :     Village_fullv2 (00000000B1251988)
-[LOG] SoundI::release                          :     Village_fullv2 (00000000B16D3BB8)
-[LOG] SoundI::release                          : HS_Forest Ambience-001 (00000000B16D3A08)
-[LOG] SoundI::release                          :     HS_Forest Ambience-001 (00000000B124FDE8)
-[LOG] SoundI::release                          :     HS_Forest Ambience-001 (00000000B16D4428)
-[LOG] SoundI::release                          : HS_Forest Ambience-002 (00000000B16D3858)
-[LOG] SoundI::release                          :     HS_Forest Ambience-002 (00000000B1250E28)
-[LOG] SoundI::release                          :     HS_Forest Ambience-002 (00000000B16D40C8)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-005.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-005.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[WRN] SoundSourceInstrumentInstance::startChannelIfReady : Loading delay exceeded, sound may play at incorrect time
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=216288, lengthpcm=54072, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-004.wav (00000000B12517E8)
-[LOG] SoundI::release                          : HS_MainMenu_Back-001.wav (00000000B1251B28)
-[LOG] SoundI::release                          : HS_SubMenu_Toggle-005.wav (00000000B1251988)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=214172, lengthpcm=53543, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[WRN] SoundSourceInstrumentInstance::startChannelIfReady : Loading delay exceeded, sound may play at incorrect time
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-002.wav (00000000B124EC08)
-[LOG] SoundI::release                          : HS_MainMenu_Back-004.wav (00000000B124FC48)
-[LOG] SoundI::release                          : HS_SubMenu_Toggle-003.wav (00000000B124F288)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=217600, lengthpcm=54400, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[WRN] SoundSourceInstrumentInstance::startChannelIfReady : Loading delay exceeded, sound may play at incorrect time
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=216288, lengthpcm=54072, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-003.wav (00000000B1250468)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=214172, lengthpcm=53543, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back-001.wav (00000000B1250128)
-[LOG] SoundI::release                          : HS_SubMenu_Toggle-004.wav (00000000B1250E28)
-[LOG] SoundI::release                          : HS_MainMenu_Back-002.wav (00000000B124EC08)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=217600, lengthpcm=54400, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-004.wav (00000000B124EDA8)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-004.wav', mode=0x0200C202
-[LOG] SoundI::release                          : HS_MainMenu_Back-003.wav (00000000B1251B28)
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=214172, lengthpcm=53543, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-002.wav (00000000B1250468)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=216288, lengthpcm=54072, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back-004.wav (00000000B1251B28)
-[LOG] SoundI::release                          : HS_MainMenu_Back-002.wav (00000000B1250128)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-001.wav (00000000B12517E8)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back_Synth-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=202336, lengthpcm=50584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=214172, lengthpcm=53543, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=217600, lengthpcm=54400, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back-004.wav (00000000B124EC08)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back-004.wav (00000000B1252348)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Back-004.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211444, lengthpcm=52861, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SoundI::release                          : HS_MainMenu_Back-001.wav (00000000B1252688)
-[LOG] SoundI::release                          : HS_MainMenu_Back-003.wav (00000000B124FDE8)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Select_Punch-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Select_Punch-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=220128, lengthpcm=55032, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_Ball Break_Squeak-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_Ball Break_Squeak-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=29560, lengthpcm=7390, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Select_Wood-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Select_Wood-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=250976, lengthpcm=62744, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Select_Synth-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_MainMenu_Select_Synth-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=235084, lengthpcm=58771, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_Ball Break_Squeak-005.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_Ball Break_Squeak-005.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=21436, lengthpcm=5359, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-002.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-002.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=211208, lengthpcm=52802, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[WRN] SoundSourceInstrumentInstance::startChannelIfReady : Loading delay exceeded, sound may play at incorrect time
-[LOG] SoundI::release                          : HS_MainMenu_Back-002.wav (00000000B124F288)
-[LOG] SoundI::release                          : HS_MainMenu_Back-004.wav (00000000B1252348)
-[LOG] SoundI::release                          : HS_Ball Break_Squeak-005.wav (00000000B1250128)
-[LOG] SoundI::release                          : HS_Ball Break_Squeak-001.wav (00000000B124FDE8)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-001.wav (00000000B12521A8)
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-003.wav (00000000B124F908)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-003.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Toggle-003.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=214172, lengthpcm=53543, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[WRN] SoundSourceInstrumentInstance::startChannelIfReady : Loading delay exceeded, sound may play at incorrect time
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-004.wav (00000000B124FC48)
-[LOG] SystemI::createSoundInternal             : Create name='fmod:///remote/C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Select-001.wav', mode=0x0200C202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] ProfileRemoteFile::fileOpen              : Attemping to open remote file 'C:/Games I'm Working On/Hamster Scramble/Hamster Scramble_FMODProject/Assets/HS_SubMenu_Select-001.wav'
-[LOG] SystemI::createSoundInternal             : Sample 0/0: name='(null)', format=2, channels=2, frequency=44100, lengthbytes=254308, lengthpcm=63577, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.000000.
-[WRN] SoundSourceInstrumentInstance::startChannelIfReady : Loading delay exceeded, sound may play at incorrect time
-[LOG] SoundI::release                          : HS_MainMenu_Back_Synth-002.wav (00000000B1252008)
-[LOG] SoundI::release                          : HS_SubMenu_Toggle-002.wav (00000000B124EC08)
-[LOG] SoundI::release                          : HS_MainMenu_Select_Punch-001.wav (00000000B124F768)
-[LOG] SoundI::release                          : HS_MainMenu_Select_Synth-002.wav (00000000B1250E28)
-[LOG] SoundI::release                          : HS_MainMenu_Select_Wood-002.wav (00000000B12524E8)
-[LOG] SoundI::release                          : HS_SubMenu_Toggle-003.wav (00000000B1251B28)
-[LOG] SystemI::createSound                     : filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000000B16CFB98 : node = 0000000160827820
-[LOG] SystemI::createSound                     : add node to async list : head = 00000000B12578E8.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000B16CFB98
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000160827938
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSound                     :     filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     :     setdata soundi = 00000000B16CF328 : node = 0000000160828540
-[LOG] SystemI::createSound                     :     add node to async list : head = 00000000B12578E8.  list count = 0
-[LOG] SystemI::createSound                     :     filename = Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank : mode 02010082
-[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     :     setdata soundi = 00000000B16D0258 : node = 0000000160826B00
-[LOG] SystemI::createSound                     :     add node to async list : head = 00000000B12578E8.  list count = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Village_fullv2', format=2, channels=2, frequency=48000, lengthbytes=1813632, lengthpcm=6043278, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.996857.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000B16CFB98
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000B16CF328
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000160828658
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Forest Ambience-002', format=2, channels=2, frequency=48000, lengthbytes=2145216, lengthpcm=7756266, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.109985.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000B16CF328
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000B16D0258
-[LOG] SystemI::createSoundInternal             :     Create name='Hamster Scramble_FMODProject\Build\Desktop/Master Bank.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 232
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 33764672
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 407616
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000160826C18
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='HS_Forest Ambience-001', format=2, channels=2, frequency=48000, lengthbytes=1771840, lengthpcm=7756266, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.297668.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000B16D0258
-[LOG] SoundI::getSubSound                      : sound 00000000B16CFB98.  Subsound index 0 / 1
-[LOG] SoundI::getSubSound                      : sound 00000000B16CF328.  Subsound index 0 / 1
-[LOG] SoundI::getSubSound                      : sound 00000000B16D0258.  Subsound index 0 / 1
-[LOG] SoundI::release                          : Menu_General (00000000480A9388)
-[LOG] SoundI::release                          :     Menu_General (00000000B124EA68)
-[LOG] SoundI::release                          :     Menu_General (00000000480A7BE8)
-[LOG] SoundI::release                          : Village_fullv2 (00000000B16CFB98)
-[LOG] SoundI::release                          :     Village_fullv2 (00000000B1251B28)
-[LOG] SoundI::release                          :     Village_fullv2 (00000000B16D0918)
-[LOG] SoundI::release                          : HS_Forest Ambience-001 (00000000B16D0258)
-[LOG] SoundI::release                          :     HS_Forest Ambience-001 (00000000B124FC48)
-[LOG] SoundI::release                          :     HS_Forest Ambience-001 (00000000B16CFD48)
-[LOG] SoundI::release                          : HS_Forest Ambience-002 (00000000B16CF328)
-[LOG] SoundI::release                          :     HS_Forest Ambience-002 (00000000B124F288)
-[LOG] SoundI::release                          :     HS_Forest Ambience-002 (00000000B16CAFA8)
-[LOG] SoundI::release                          :  (00000000295944C8)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-001 (00000000B0CD3688)
-[LOG] SoundI::release                          :  (000000012FFD0948)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-002 (00000000B0CCE3A8)
-[LOG] SoundI::release                          :  (0000000029592DC8)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-003 (00000000B0CD3828)
-[LOG] SoundI::release                          :  (0000000238DDE038)
-[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-004 (00000000B153A5F8)
-[LOG] SoundI::release                          :  (0000000083BB55C8)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-001 (00000000B1893E08)
-[LOG] SoundI::release                          :  (0000000063BCADF8)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-002 (000000005719B0D8)
-[LOG] SoundI::release                          :  (0000000083BB5738)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-003 (00000000B18973A8)
-[LOG] SoundI::release                          :  (0000000063BD2268)
-[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-004 (0000000160B4A908)
-[LOG] SoundI::release                          :  (000000012FFD3748)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-002 (00000000B0CD1AE8)
-[LOG] SoundI::release                          :  (0000000238DDD908)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-004 (00000000B153BE58)
-[LOG] SoundI::release                          :  (0000000174DCFA88)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-005 (00000000B189AE28)
-[LOG] SoundI::release                          :  (0000000238DE3F18)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-006 (00000000B0CD1608)
-[LOG] SoundI::release                          :  (0000000063BCE778)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-007 (0000000029EB8498)
-[LOG] SoundI::release                          :  (0000000063BCC4F8)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-008 (0000000029EB7118)
-[LOG] SoundI::release                          :  (0000000029593AB8)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-001 (00000000B0CD3348)
-[LOG] SoundI::release                          :  (0000000063BCC218)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-002 (0000000029EB8158)
-[LOG] SoundI::release                          :  (0000000083BB45F8)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-003 (00000000B1894968)
-[LOG] SoundI::release                          :  (000000012FFD32F8)
-[LOG] SoundI::release                          :     HS_Attack_SynthScatter-004 (00000000B0CD46C8)
-[LOG] SoundI::release                          :  (0000000174DD0BC8)
-[LOG] SoundI::release                          :     HS_Attack_Noise-001 (00000000B1536698)
-[LOG] SoundI::release                          :  (0000000174DD3858)
-[LOG] SoundI::release                          :     HS_Attack_Noise-002 (00000000B1898728)
-[LOG] SoundI::release                          :  (0000000238DDFA18)
-[LOG] SoundI::release                          :     HS_Attack_Noise-003 (00000000B1538A58)
-[LOG] SoundI::release                          :  (0000000174DCDAE8)
-[LOG] SoundI::release                          :     HS_Attack_Noise-004 (00000000B153C198)
-[LOG] SoundI::release                          :  (0000000238DE1118)
-[LOG] SoundI::release                          :     HS_Grunts_Jump-001 (00000000B153DD38)
-[LOG] SoundI::release                          :  (0000000238DDED28)
-[LOG] SoundI::release                          :     HS_Grunts_Jump-002 (00000000B153CB58)
-[LOG] SoundI::release                          :  (0000000083BB3A78)
-[LOG] SoundI::release                          :     HS_Grunts_Jump-003 (000000012F330B78)
-[LOG] SoundI::release                          :  (0000000063BCD4C8)
-[LOG] SoundI::release                          :     HS_Grunts_Jump-004 (0000000029EB7FB8)
-[LOG] SoundI::release                          :  (0000000063BCD918)
-[LOG] SoundI::release                          :     HS_Jump_2-001 (000000005719AA58)
-[LOG] SoundI::release                          :  (0000000083BB13A8)
-[LOG] SoundI::release                          :     HS_Jump_2-002 (000000012F331878)
-[LOG] SoundI::release                          :  (0000000238DDD068)
-[LOG] SoundI::release                          :     HS_Jump_2-003 (00000000B153B2F8)
-[LOG] SoundI::release                          :  (0000000238DDFE68)
-[LOG] SoundI::release                          :     HS_Jump_2-004 (00000000B153D038)
-[LOG] SoundI::release                          :  (0000000238DE0598)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Grill-001 (00000000B1539A98)
-[LOG] SoundI::release                          :  (0000000063BC7028)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Grill-002 (000000012F15C698)
-[LOG] SoundI::release                          :  (000000004F073378)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Grill-003 (00000000B0CCF3E8)
-[LOG] SoundI::release                          :  (0000000063BCFE78)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Synth-002 (000000005719CAD8)
-[LOG] SoundI::release                          :  (0000000238DE1E08)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Synth-003 (00000000B1537BB8)
-[LOG] SoundI::release                          :  (0000000174DD08E8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Synth-001 (00000000B189A608)
-[LOG] SoundI::release                          :  (0000000083BB4038)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-001 (00000000B1894E48)
-[LOG] SoundI::release                          :  (000000012FFD1078)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-002 (00000000B0CD1128)
-[LOG] SoundI::release                          :  (0000000063BCF5D8)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-003 (0000000017E62A08)
-[LOG] SoundI::release                          :  (0000000238DDE488)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-004 (00000000B153D378)
-[LOG] SoundI::release                          :  (0000000063BCB808)
-[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-002 (0000000029EB7458)
-[LOG] SoundI::release                          :  (000000012FFD1D68)
-[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-003 (00000000B0CD4A08)
-[LOG] SoundI::release                          :  (0000000083BB4E98)
-[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-004 (00000000B18959A8)
-[LOG] SoundI::release                          :  (0000000083BB4318)
-[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-001 (00000000B1898248)
-[LOG] SoundI::release                          :  (0000000063BCF2F8)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-003 (000000005719D158)
-[LOG] SoundI::release                          :  (0000000063BD02C8)
-[LOG] SoundI::release                          :     HS_SubMenu_Select-001 (0000000029836418)
-[LOG] SoundI::release                          :  (0000000238DDE5F8)
-[LOG] SoundI::release                          :     HS_SubMenu_Select-002 (00000000B153D1D8)
-[LOG] SoundI::release                          :  (0000000063BCBC58)
-[LOG] SoundI::release                          :     FillingBlocks-001 (000000005719B418)
-[LOG] SoundI::release                          :  (0000000063BD4658)
-[LOG] SoundI::release                          :     FillingBlocks-002 (000000012F15A138)
-[LOG] SoundI::release                          :  (000000012FFD38B8)
-[LOG] SoundI::release                          :     FillingBlocks-003 (00000000B0CD1E28)
-[LOG] SoundI::release                          :  (0000000063BC9CB8)
-[LOG] SoundI::release                          :     FillingBlocks-004 (000000012F15C838)
-[LOG] SoundI::release                          :  (0000000063BCD358)
-[LOG] SoundI::release                          :     HS_Throw_Synth-001 (0000000057199EF8)
-[LOG] SoundI::release                          :  (0000000174DD2CD8)
-[LOG] SoundI::release                          :     HS_Throw_Synth-002 (00000000B15390D8)
-[LOG] SoundI::release                          :  (000000012FFD21B8)
-[LOG] SoundI::release                          :     HS_Throw_Synth-003 (00000000B0CD41E8)
-[LOG] SoundI::release                          :  (0000000174DD2438)
-[LOG] SoundI::release                          :     HS_Throw_Synth-004 (00000000B1537D58)
-[LOG] SoundI::release                          :  (0000000083BAF578)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-001 (000000012F331538)
-[LOG] SoundI::release                          :  (000000012FFD42C8)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-002 (00000000B0CCF588)
-[LOG] SoundI::release                          :  (00000000295941E8)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-003 (00000000B0CD2B28)
-[LOG] SoundI::release                          :  (0000000083BB3D58)
-[LOG] SoundI::release                          :     HS_Throw_HiNoise-004 (00000000B18966A8)
-[LOG] SoundI::release                          :  (0000000063BD23D8)
-[LOG] SoundI::release                          :     HS_Throw_LowNoise-001 (000000012F15BCD8)
-[LOG] SoundI::release                          :  (0000000083BB0268)
-[LOG] SoundI::release                          :     HS_Throw_LowNoise-003 (00000000B1896508)
-[LOG] SoundI::release                          :  (000000012FFD2EA8)
-[LOG] SoundI::release                          :     HS_Throw_LowNoise-004 (00000000B0CD2168)
-[LOG] SoundI::release                          :  (0000000063BC64A8)
-[LOG] SoundI::release                          :     HS_Grunts_Attack-001 (000000012F15C1B8)
-[LOG] SoundI::release                          :  (0000000063BCDBF8)
-[LOG] SoundI::release                          :     HS_Grunts_Attack-002 (0000000029837798)
-[LOG] SoundI::release                          :  (0000000063BC9E28)
-[LOG] SoundI::release                          :     HS_Grunts_Attack-003 (0000000057199BB8)
-[LOG] SoundI::release                          :  (0000000063BC7FF8)
-[LOG] SoundI::release                          :     HS_Throw_Glass-001 (000000012F15CEB8)
-[LOG] SoundI::release                          :  (0000000174DD3E18)
-[LOG] SoundI::release                          :     HS_Throw_Glass-002 (00000000B18990E8)
-[LOG] SoundI::release                          :  (0000000238DE2988)
-[LOG] SoundI::release                          :     HS_Throw_Glass-003 (00000000B1539C38)
-[LOG] SoundI::release                          :  (0000000063BCE328)
-[LOG] SoundI::release                          :     HS_Throw_Glass-004 (0000000029EB6F78)
-[LOG] SoundI::release                          :  (0000000174DD4C78)
-[LOG] SoundI::release                          :     Lever_Hit (00000000B1897208)
-[LOG] SoundI::release                          :  (0000000083BAFF88)
-[LOG] SoundI::release                          :     Crowd_Scramble (000000012F3304F8)
-[LOG] SoundI::release                          :  (0000000063BC5088)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-001 (000000012F15D1F8)
-[LOG] SoundI::release                          :  (0000000083BB1968)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-002 (000000012F332238)
-[LOG] SoundI::release                          :  (0000000083BAFE18)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-003 (000000012F332BF8)
-[LOG] SoundI::release                          :  (0000000174DD3B38)
-[LOG] SoundI::release                          :     HS_Swing Net_Noise-004 (00000000B18995C8)
-[LOG] SoundI::release                          :  (0000000238DDD1D8)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-001 (00000000B153A118)
-[LOG] SoundI::release                          :  (0000000174DD43D8)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-002 (00000000B18947C8)
-[LOG] SoundI::release                          :  (000000012FFD2778)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-003 (00000000B0CD1948)
-[LOG] SoundI::release                          :  (0000000063BCE1B8)
-[LOG] SoundI::release                          :     HS_Swing Net_Synth-004 (0000000029837458)
-[LOG] SoundI::release                          :  (0000000083BB3068)
-[LOG] SoundI::release                          :     ThrowLoop-001 (000000012F331058)
-[LOG] SoundI::release                          :  (0000000063BC9588)
-[LOG] SoundI::release                          :     MultiMatch (0000000057199D58)
-[LOG] SoundI::release                          :  (000000012FFD3E78)
-[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-005 (00000000B0CD3EA8)
-[LOG] SoundI::release                          :  (0000000047790E38)
-[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-006 (00000000B0CD4EE8)
-[LOG] SoundI::release                          :  (000000012FFD17A8)
-[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-007 (00000000B0CCE888)
-[LOG] SoundI::release                          :  (0000000063BC9868)
-[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-001 (000000005719B758)
-[LOG] SoundI::release                          :  (0000000063BCF188)
-[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-002 (0000000017E62048)
-[LOG] SoundI::release                          :  (0000000063BD16E8)
-[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-003 (0000000160B4EEE8)
-[LOG] SoundI::release                          :  (000000012FFD3018)
-[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-004 (00000000B0CD24A8)
-[LOG] SoundI::release                          :  (0000000063BCFD08)
-[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-004 (000000005719C118)
-[LOG] SoundI::release                          :  (0000000063BD1408)
-[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-005 (000000012F15D058)
-[LOG] SoundI::release                          :  (0000000063BD30C8)
-[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-006 (0000000160B4F228)
-[LOG] SoundI::release                          :  (0000000174DD3CA8)
-[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-007 (00000000B1893928)
-[LOG] SoundI::release                          :  (0000000238DE26A8)
-[LOG] SoundI::release                          :     Crowd_2 (00000000B15364F8)
-[LOG] SoundI::release                          :  (000000012FFD35D8)
-[LOG] SoundI::release                          :     HS_BallDrop_HighSynth (00000000B0CCE6E8)
-[LOG] SoundI::release                          :  (0000000238DDEBB8)
-[LOG] SoundI::release                          :     HS_BallDrop_LowSynth (00000000B153DB98)
-[LOG] SoundI::release                          :  (0000000083BAF6E8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Coin (00000000B1899AA8)
-[LOG] SoundI::release                          :  (0000000083BB27C8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Crunch (000000012F330358)
-[LOG] SoundI::release                          :  (0000000083BAFCA8)
-[LOG] SoundI::release                          :     HS_SubMenu_Toggle-004 (000000012F3328B8)
-[LOG] SoundI::release                          :  (0000000063BCF8B8)
-[LOG] SoundI::release                          :     HS_SubMenu_Toggle-005 (0000000029EB75F8)
-[LOG] SoundI::release                          :  (0000000174DD01B8)
-[LOG] SoundI::release                          :     HS_SubMenu_Toggle-002 (00000000B189B168)
-[LOG] SoundI::release                          :  (0000000083BB17F8)
-[LOG] SoundI::release                          :     HS_SubMenu_Toggle-003 (000000012F333278)
-[LOG] SoundI::release                          :  (0000000063BC6338)
-[LOG] SoundI::release                          :     HS_321_Number (000000012F15B318)
-[LOG] SoundI::release                          :  (000000012FFD0C28)
-[LOG] SoundI::release                          :     Large Clap_Hamsters-003 (00000000B0CD0C48)
-[LOG] SoundI::release                          :  (0000000238DE19B8)
-[LOG] SoundI::release                          :     Large Clap_Hamsters-004 (00000000B153BB18)
-[LOG] SoundI::release                          :  (0000000083BB03D8)
-[LOG] SoundI::release                          :     Door Open-003 (00000000B1893FA8)
-[LOG] SoundI::release                          :  (0000000174DCEC28)
-[LOG] SoundI::release                          :     Door Open-004 (00000000B153B978)
-[LOG] SoundI::release                          :  (0000000238DDF008)
-[LOG] SoundI::release                          :     Door Open-001 (00000000B1538098)
-[LOG] SoundI::release                          :  (0000000063BCB978)
-[LOG] SoundI::release                          :     HS_ThrowLoop (2) (0000000029EB7AD8)
-[LOG] SoundI::release                          :  (000000012FFD2BC8)
-[LOG] SoundI::release                          :     HS_Bike Loop_master (00000000B0CD05C8)
-[LOG] SoundI::release                          :  (0000000083BB5CF8)
-[LOG] SoundI::release                          :     HS_ThrowLoop (3) (00000000B1898C08)
-[LOG] SoundI::release                          :  (0000000083BB1238)
-[LOG] SoundI::release                          :     HS_RainbowPlop-002 (000000012F3309D8)
-[LOG] SoundI::release                          :  (0000000238DDDBE8)
-[LOG] SoundI::release                          :     HS_RainbowPlop-003 (00000000B1538D98)
-[LOG] SoundI::release                          :  (0000000238DDF458)
-[LOG] SoundI::release                          :     HS_RainbowPlop-004 (00000000B153AAD8)
-[LOG] SoundI::release                          :  (0000000174DD4828)
-[LOG] SoundI::release                          :     HS_RainbowPlop-001 (00000000B1899F88)
-[LOG] SoundI::release                          :  (0000000083BAF858)
-[LOG] SoundI::release                          :     Lever_Stop (000000012F331D58)
-[LOG] SoundI::release                          :  (000000004F072968)
-[LOG] SoundI::release                          :     Subway 01 (00000000B0CD1C88)
-[LOG] SoundI::release                          :  (0000000083BB5A18)
-[LOG] SoundI::release                          :     HS_SubMenu_Back-003 (00000000B1895808)
-[LOG] SoundI::release                          :  (0000000174DD39C8)
-[LOG] SoundI::release                          :     HS_SubMenu_Back-004 (00000000B1895328)
-[LOG] SoundI::release                          :  (0000000063BC7A38)
-[LOG] SoundI::release                          :     HS_SubMenu_Back-001 (000000012F15C018)
-[LOG] SoundI::release                          :  (0000000063BCEBC8)
-[LOG] SoundI::release                          :     HS_SubMenu_Back-002 (0000000017E62EE8)
-[LOG] SoundI::release                          :  (0000000174DD1FE8)
-[LOG] SoundI::release                          :     Explosion (00000000B189A468)
-[LOG] SoundI::release                          :  (000000012FFD4158)
-[LOG] SoundI::release                          :     Spring-001 (00000000B0CD2E68)
-[LOG] SoundI::release                          :  (0000000063BCCAB8)
-[LOG] SoundI::release                          :     HS_MainMenu_Select_Punch-001 (0000000029EB72B8)
-[LOG] SoundI::release                          :  (000000012FFD1638)
-[LOG] SoundI::release                          :     HS_MainMenu_Select_Wood-001 (00000000B0CCED68)
-[LOG] SoundI::release                          :  (0000000063BD0158)
-[LOG] SoundI::release                          :     HS_MainMenu_Select_Wood-002 (0000000029837C78)
-[LOG] SoundI::release                          :  (0000000238DDF2E8)
-[LOG] SoundI::release                          :     HS_Game Start (00000000B15361B8)
-[LOG] SoundI::release                          :  (000000012FFD3468)
-[LOG] SoundI::release                          :     HS_MainMenu_Select_Synth-001 (00000000B0CD31A8)
-[LOG] SoundI::release                          :  (0000000174DCEAB8)
-[LOG] SoundI::release                          :     HS_MainMenu_Select_Synth-002 (00000000B1538238)
-[LOG] SoundI::release                          :  (0000000174DCF078)
-[LOG] SoundI::release                          :     Umbrella Footsteps-003 (00000000B1537878)
-[LOG] SoundI::release                          :  (000000012FFD3188)
-[LOG] SoundI::release                          :     Umbrella Footsteps-004 (00000000B0CD17A8)
-[LOG] SoundI::release                          :  (0000000174DD0608)
-[LOG] SoundI::release                          :     Umbrella Footsteps-005 (00000000B189A948)
-[LOG] SoundI::release                          :  (0000000083BB48D8)
-[LOG] SoundI::release                          :     Umbrella Footsteps-006 (00000000B1894FE8)
-[LOG] SoundI::release                          :  (0000000063BCDA88)
-[LOG] SoundI::release                          :     Umbrella Footsteps-001 (000000005719AF38)
-[LOG] SoundI::release                          :  (0000000063BD44E8)
-[LOG] SoundI::release                          :     Umbrella Footsteps-002 (000000012F1595D8)
-[LOG] SoundI::release                          :  (0000000083BAF9C8)
-[LOG] SoundI::release                          :     HS_Ball Break_Pop-001 (00000000B1898F48)
-[LOG] SoundI::release                          :  (0000000174DD18B8)
-[LOG] SoundI::release                          :     Concrete_FS-001 (00000000B189AAE8)
-[LOG] SoundI::release                          :  (0000000063BCB3B8)
-[LOG] SoundI::release                          :     Concrete_FS-002 (0000000029836278)
-[LOG] SoundI::release                          :  (0000000063BD09F8)
-[LOG] SoundI::release                          :     Concrete_FS-003 (0000000160B4EA08)
-[LOG] SoundI::release                          :  (0000000238DE1B28)
-[LOG] SoundI::release                          :     Concrete_FS-004 (00000000B153BCB8)
-[LOG] SoundI::release                          :  (0000000063BCE048)
-[LOG] SoundI::release                          :     Concrete_FS-005 (000000005719A8B8)
-[LOG] SoundI::release                          :  (0000000063BCE608)
-[LOG] SoundI::release                          :     Concrete_FS-006 (0000000029EB6758)
-[LOG] SoundI::release                          :  (0000000238DE2AF8)
-[LOG] SoundI::release                          :     Concrete_FS-007 (00000000B153AE18)
-[LOG] SoundI::release                          :  (0000000083BB3EC8)
-[LOG] SoundI::release                          :     Concrete_FS-008 (00000000B1898A68)
-[LOG] SoundI::release                          :  (0000000174DD22C8)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-003 (00000000B153B7D8)
-[LOG] SoundI::release                          :  (0000000063BD05A8)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-004 (0000000017E61EA8)
-[LOG] SoundI::release                          :  (0000000083BB0B08)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-005 (000000012F3316D8)
-[LOG] SoundI::release                          :  (0000000083BAE5A8)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-001 (000000012F333A98)
-[LOG] SoundI::release                          :  (0000000063BCE8E8)
-[LOG] SoundI::release                          :     HS_Ball Break_Squeak-002 (0000000029EB6A98)
-[LOG] SoundI::release                          :  (0000000083BB4D28)
-[LOG] SoundI::release                          :     HS_HamsterWhisp_Init_Whoosh (00000000B1896028)
-[LOG] SoundI::release                          :  (0000000083BB2C18)
-[LOG] SoundI::release                          :     HS_Filling Blocks_HiNoise (00000000B1895E88)
-[LOG] SoundI::release                          :  (0000000174DD2158)
-[LOG] SoundI::release                          :     LeverMove (00000000B153C4D8)
-[LOG] SoundI::release                          :  (0000000238DDDA78)
-[LOG] SoundI::release                          :     Shift_Synth (00000000B15376D8)
-[LOG] SoundI::release                          :  (000000012FFD0F08)
-[LOG] SoundI::release                          :     Shift_Noise Low (00000000B0CCE548)
-[LOG] SoundI::release                          :  (0000000083BB1C48)
-[LOG] SoundI::release                          :     Shift_Noise High (000000012F331EF8)
-[LOG] SoundI::release                          :  (000000012FFD3D08)
-[LOG] SoundI::release                          :     Shift_Noise Hit (00000000B0CD0F88)
-[LOG] SoundI::release                          :  (0000000083BAE158)
-[LOG] SoundI::release                          :     Small Clap (00000000B1895668)
-[LOG] SoundI::release                          :  (0000000174DD4DE8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_LowNoise-003 (00000000B1897548)
-[LOG] SoundI::release                          :  (0000000063BCBF38)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-001 (000000005719D498)
-[LOG] SoundI::release                          :  (0000000063BCC7D8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-002 (00000000298368F8)
-[LOG] SoundI::release                          :  (000000004F072DB8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-004 (00000000B0CD27E8)
-[LOG] SoundI::release                          :  (0000000083BAE438)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-001 (000000012F333C38)
-[LOG] SoundI::release                          :  (000000012FFD4438)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-002 (00000000B0CCEF08)
-[LOG] SoundI::release                          :  (0000000083BB0DE8)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-003 (00000000B1899288)
-[LOG] SoundI::release                          :  (0000000174DD1468)
-[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-004 (00000000B1538BF8)
-[LOG] SoundI::release                          :  (0000000238DE2258)
-[LOG] SoundI::release                          :     Medium Clap_Hamsters-008 (00000000B15398F8)
-[LOG] SoundI::release                          :  (0000000083BB2378)
-[LOG] SoundI::release                          :     Medium Clap_Hamsters-007 (00000000B1897F08)
-[LOG] SoundI::release                          :  (000000004F072F28)
-[LOG] SoundI::release                          :     CounterMatch-001 (00000000B0CD2988)
-[LOG] SoundI::release                          :  (0000000238DDE8D8)
-[LOG] SoundI::release                          :     Shift Meter-003 (00000000B153AC78)
-[LOG] SoundI::release                          :  (0000000063BC8B78)
-[LOG] SoundI::release                          :     HS_New Line_Low Noise (000000012F15A2D8)
-[LOG] SoundI::release                          :  (0000000083BB4488)
-[LOG] SoundI::release                          :     HS_New Line_Noise (00000000B18980A8)
-[LOG] SoundI::release                          :  (0000000063BD20F8)
-[LOG] SoundI::release                          :     HS_New Line_GroundBoost (0000000160B4F3C8)
-[LOG] SoundI::release                          :  (0000000083BB10C8)
-[LOG] SoundI::release                          :     HS_New Line_Synth (000000012F3311F8)
-[LOG] SoundI::release                          :  (000000012FFD2328)
-[LOG] SoundI::release                          :     HS_New Line_Ground (00000000B0CD0AA8)
-[LOG] SoundI::release                          :  (0000000063BCFB98)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-002 (0000000029836F78)
-[LOG] SoundI::release                          :  (0000000083BB2AA8)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-003 (000000012F333758)
-[LOG] SoundI::release                          :  (0000000063BCA558)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-004 (000000012F15A7B8)
-[LOG] SoundI::release                          :  (0000000174DCE948)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-005 (00000000B153B638)
-[LOG] SoundI::release                          :  (0000000063BD0438)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-006 (0000000029EB6DD8)
-[LOG] SoundI::release                          :  (0000000063BC8168)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-007 (000000012F15AFD8)
-[LOG] SoundI::release                          :  (000000012FFD45A8)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-008 (00000000B0CD12C8)
-[LOG] SoundI::release                          :  (0000000063BD4D88)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-001 (000000012F15CD18)
-[LOG] SoundI::release                          :  (0000000063BC75E8)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-005 (000000012F159C58)
-[LOG] SoundI::release                          :  (0000000174DD53A8)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-006 (00000000B1897888)
-[LOG] SoundI::release                          :  (0000000174DD0D38)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-007 (00000000B1538578)
-[LOG] SoundI::release                          :  (0000000083BB1518)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-001 (0000000017E62BA8)
-[LOG] SoundI::release                          :  (0000000174DCE218)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-002 (00000000B1893AC8)
-[LOG] SoundI::release                          :  (0000000083BB58A8)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-003 (00000000B18976E8)
-[LOG] SoundI::release                          :  (0000000063BCD1E8)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-004 (0000000017E62388)
-[LOG] SoundI::release                          :  (000000012FFD1ED8)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-005 (00000000B0CCEBC8)
-[LOG] SoundI::release                          :  (0000000238DDFCF8)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-007 (00000000B1539418)
-[LOG] SoundI::release                          :  (0000000063BD2C78)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-001 (0000000160B4E868)
-[LOG] SoundI::release                          :  (0000000083BB4A48)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-003 (00000000B1896848)
-[LOG] SoundI::release                          :  (0000000083BB00F8)
-[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-004 (000000012F332A58)
-[LOG] SoundI::release                          :  (0000000083BB1DB8)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-004 (000000012F331BB8)
-[LOG] SoundI::release                          :  (0000000174DCF7A8)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-005 (00000000B189B308)
-[LOG] SoundI::release                          :  (0000000238DE2F48)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-006 (00000000B0CD0768)
-[LOG] SoundI::release                          :  (0000000174DD4B08)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-007 (00000000B18954C8)
-[LOG] SoundI::release                          :  (0000000083BAECD8)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-008 (00000000B1899C48)
-[LOG] SoundI::release                          :  (0000000238DDFB88)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-001 (00000000B1536358)
-[LOG] SoundI::release                          :  (0000000063BCB528)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-002 (00000000298375F8)
-[LOG] SoundI::release                          :  (0000000238DE0878)
-[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-003 (00000000B1536018)
-[LOG] SoundI::release                          :  (0000000083BB2658)
-[LOG] SoundI::release                          :     HS_Clothing Foley-002 (00000000B1896D28)
-[LOG] SoundI::release                          :  (0000000063BCDD68)
-[LOG] SoundI::release                          :     HS_Clothing Foley-003 (0000000029837938)
-[LOG] SoundI::release                          :  (0000000083BB5008)
-[LOG] SoundI::release                          :     HS_Clothing Foley-004 (00000000B1894628)
-[LOG] SoundI::release                          :  (0000000063BC5648)
-[LOG] SoundI::release                          :     HS_Clothing Foley-001 (000000012F15AE38)
-[LOG] SoundI::release                          :  (0000000063BCC948)
-[LOG] SoundI::release                          :     HS_321_Zero (00000000298360D8)
-[LOG] SoundI::release                          :  (0000000063BCAB18)
-[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-002 (000000005719ABF8)
-[LOG] SoundI::release                          :  (0000000174DD15D8)
-[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-003 (00000000B153A2B8)
-[LOG] SoundI::release                          :  (0000000063BC8728)
-[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-004 (000000012F15CB78)
-[LOG] SoundI::release                          :  (0000000174DCEF08)
-[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-007 (00000000B15383D8)
-[LOG] SoundI::release                          :  (0000000083BB06B8)
-[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-008 (000000012F330018)
-[LOG] SoundI::release                          :  (0000000063BCA278)
-[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-001 (000000012F159438)
-[LOG] SoundI::release                          :  (0000000083BB41A8)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-004 (00000000B18942E8)
-[LOG] SoundI::release                          :  (0000000083BB1AD8)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-005 (000000012F332578)
-[LOG] SoundI::release                          :  (0000000174DD0048)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-006 (00000000B1536B78)
-[LOG] SoundI::release                          :  (0000000063BC99D8)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-007 (000000005719A578)
-[LOG] SoundI::release                          :  (0000000174DD4268)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-008 (00000000B18969E8)
-[LOG] SoundI::release                          :  (0000000063BD4C18)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-001 (0000000160B4E048)
-[LOG] SoundI::release                          :  (0000000063BD26B8)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-002 (000000012F15AC98)
-[LOG] SoundI::release                          :  (0000000174DD3F88)
-[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-003 (00000000B1896368)
-[LOG] SoundI::release                          :  (000000012FFD4718)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-001 (3) (00000000B0CD2308)
-[LOG] SoundI::release                          :  (0000000238DDD798)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-002 (3) (00000000B1537398)
-[LOG] SoundI::release                          :  (0000000063BD4098)
-[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-004 (3) (000000012F15A958)
-[LOG] SoundI::release                          :  (0000000063BCC668)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-003 (000000005719C2B8)
-[LOG] SoundI::release                          :  (0000000083BB0548)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-004 (000000012F3301B8)
-[LOG] SoundI::release                          :  (0000000063BCCC28)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-001 (0000000029836C38)
-[LOG] SoundI::release                          :  (0000000238DE0CC8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-002 (00000000B15369D8)
-[LOG] SoundI::release                          :  (0000000063BCD638)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-003 (000000005719C798)
-[LOG] SoundI::release                          :  (0000000238DE09E8)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-004 (00000000B1539F78)
-[LOG] SoundI::release                          :  (0000000174DD2718)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-001 (00000000B15388B8)
-[LOG] SoundI::release                          :  (000000012FFD1918)
-[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-002 (00000000B0CD4388)
-[LOG] SoundI::release                          :  (0000000063BCB698)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-001 (00000000298365B8)
-[LOG] SoundI::release                          :  (0000000174DCD808)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-002 (00000000B153AFB8)
-[LOG] SoundI::release                          :  (0000000063BD2B08)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-003 (0000000160B4DB68)
-[LOG] SoundI::release                          :  (0000000174DCE7D8)
-[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-004 (00000000B189A7A8)
-[LOG] SoundI::release                          :  (0000000238DE4A98)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-001 (00000000B0CD3008)
-[LOG] SoundI::release                          :  (0000000063BC8E58)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-002 (000000012F15B4B8)
-[LOG] SoundI::release                          :  (0000000063BD1298)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-003 (000000012F15B7F8)
-[LOG] SoundI::release                          :  (0000000083BAF128)
-[LOG] SoundI::release                          :     HS_Throw Start_Synth-004 (000000012F332718)
-[LOG] SoundI::release                          :  (000000012FFD2D38)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-001 (00000000B0CD2CC8)
-[LOG] SoundI::release                          :  (0000000063BCB0D8)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-002 (0000000029837E18)
-[LOG] SoundI::release                          :  (0000000063BC96F8)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-003 (000000005719BA98)
-[LOG] SoundI::release                          :  (00000000477916D8)
-[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-004 (00000000B0CD5708)
-[LOG] SoundI::release                          :  (0000000063BC5C08)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-001 (000000012F15BE78)
-[LOG] SoundI::release                          :  (0000000063BCF748)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-002 (0000000017E63568)
-[LOG] SoundI::release                          :  (0000000174DCED98)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-003 (00000000B153C338)
-[LOG] SoundI::release                          :  (0000000238DDEA48)
-[LOG] SoundI::release                          :     HS_Throw Start_Glass-004 (00000000B153C818)
-[LOG] SoundI::release                          :  (0000000174DD3408)
-[LOG] SoundI::release                          :     Crowd_1 (00000000B18983E8)
-[LOG] SoundI::release                          :  (0000000083BB3908)
-[LOG] SoundI::release                          :     Crowd_3 (00000000B1896B88)
-[LOG] SoundI::release                          :  (0000000174DCD698)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Wood-004 (00000000B1537538)
-[LOG] SoundI::release                          :  (0000000083BB2208)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Wood-005 (000000012F330838)
-[LOG] SoundI::release                          :  (0000000238DDF738)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Wood-001 (00000000B153A938)
-[LOG] SoundI::release                          :  (0000000238DE3508)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-001 (00000000B0CD0428)
-[LOG] SoundI::release                          :  (0000000063BCFFE8)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-002 (000000005719C458)
-[LOG] SoundI::release                          :  (000000012FFD2498)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-003 (00000000B0CD4528)
-[LOG] SoundI::release                          :  (0000000174DD2B68)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-004 (00000000B1537EF8)
-[LOG] SoundI::release                          :  (0000000238DE0FA8)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-005 (00000000B1537058)
-[LOG] SoundI::release                          :  (0000000083BB31D8)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-001 (000000012F333418)
-[LOG] SoundI::release                          :  (0000000174DD1D08)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-002 (00000000B189A2C8)
-[LOG] SoundI::release                          :  (000000012FFD2608)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-003 (00000000B0CD3B68)
-[LOG] SoundI::release                          :  (0000000083BB0828)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-004 (000000012F3330D8)
-[LOG] SoundI::release                          :  (0000000063BCD078)
-[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-005 (0000000017E62D48)
-[LOG] SoundI::release                          :  (0000000083BB5458)
-[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-002 (00000000B18961C8)
-[LOG] SoundI::release                          :  (0000000174DCFED8)
-[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-003 (00000000B153A798)
-[LOG] SoundI::release                          :  (0000000083BAF298)
-[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-004 (000000012F330D18)
-[LOG] SoundI::release                          :  (0000000083BAE888)
-[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-001 (000000012F3335B8)
-[LOG] SoundI::release                          :  (0000000174DD50C8)
-[LOG] SoundI::release                          :     HS_MainMenu_Back-001 (00000000B1899DE8)
-[LOG] SoundI::release                          :  (0000000238DE3DA8)
-[LOG] SoundI::release                          :     HS_MainMenu_Back-002 (00000000B0CCFDA8)
-[LOG] SoundI::release                          :  (0000000083BB3348)
-[LOG] SoundI::release                          :     HS_MainMenu_Back-003 (000000012F331A18)
-[LOG] SoundI::release                          :  (0000000063BCC388)
-[LOG] SoundI::release                          :     HS_MainMenu_Back-004 (0000000029EB82F8)
-[LOG] SoundI::release                          :  (0000000063BCF018)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-005 (0000000017E63A48)
-[LOG] SoundI::release                          :  (0000000063BCC0A8)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-006 (000000005719A098)
-[LOG] SoundI::release                          :  (0000000063BD4938)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-001 (0000000160B4F088)
-[LOG] SoundI::release                          :  (0000000238DE3228)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-007 (00000000B0CCFA68)
-[LOG] SoundI::release                          :  (0000000083BB4768)
-[LOG] SoundI::release                          :     HS_Clothing Foley-006 (00000000B1894148)
-[LOG] SoundI::release                          :  (0000000174DD40F8)
-[LOG] SoundI::release                          :     HS_Clothing Foley-007 (00000000B1895B48)
-[LOG] SoundI::release                          :  (0000000083BB1688)
-[LOG] SoundI::release                          :     HS_Clothing Foley-008 (000000012F332D98)
-[LOG] SoundI::release                          :  (0000000238DE0148)
-[LOG] SoundI::release                          :     HS_Clothing Foley-005 (00000000B153D858)
-[LOG] SoundI::release                          :  (0000000083BB2938)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-003 (00000000B1897A28)
-[LOG] SoundI::release                          :  (0000000063BCBAE8)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-004 (000000005719C938)
-[LOG] SoundI::release                          :  (0000000063BCE498)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-005 (0000000029EB7798)
-[LOG] SoundI::release                          :  (0000000238DDF5C8)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-001 (00000000B1539DD8)
-[LOG] SoundI::release                          :  (000000012FFD14C8)
-[LOG] SoundI::release                          :     HS_Footstep_Scuff-002 (00000000B0CCFF48)
-[LOG] SoundI::release                          :  (0000000063BC8FC8)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Noise (000000012F15B658)
-[LOG] SoundI::release                          :  (0000000238DDE318)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-005 (00000000B153CE98)
-[LOG] SoundI::release                          :  (0000000083BAE718)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-006 (000000012F331398)
-[LOG] SoundI::release                          :  (0000000174DD3578)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-008 (00000000B1898588)
-[LOG] SoundI::release                          :  (0000000063BC9B48)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-001 (000000012F15AAF8)
-[LOG] SoundI::release                          :  (0000000063BCEA58)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-002 (0000000029837118)
-[LOG] SoundI::release                          :  (000000012FFD1A88)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-003 (00000000B0CCEA28)
-[LOG] SoundI::release                          :  (0000000083BB3798)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-004 (00000000B1896EC8)
-[LOG] SoundI::release                          :  (0000000063BCCD98)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-007 (0000000029EB7E18)
-[LOG] SoundI::release                          :  (0000000174DD1018)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-002 (00000000B1536D18)
-[LOG] SoundI::release                          :  (000000012FFD2A58)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-003 (00000000B0CD4868)
-[LOG] SoundI::release                          :  (0000000238DDDEC8)
-[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-004 (00000000B153D518)
-[LOG] SoundI::release                          :  (0000000174DD4548)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-001 (00000000B1894CA8)
-[LOG] SoundI::release                          :  (0000000063BD0B68)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-002 (000000012F159918)
-[LOG] SoundI::release                          :  (0000000063BC8448)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-003 (000000012F15B178)
-[LOG] SoundI::release                          :  (000000004F073C18)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-004 (00000000B0CCF728)
-[LOG] SoundI::release                          :  (0000000083BB52E8)
-[LOG] SoundI::release                          :     HS_Footstep_Noise-005 (00000000B1894B08)
-[LOG] SoundI::release                          :  (0000000238DDF178)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-002 (00000000B1536838)
-[LOG] SoundI::release                          :  (0000000063BC51F8)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-003 (0000000057199A18)
-[LOG] SoundI::release                          :  (0000000238DE0B58)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-004 (00000000B153B158)
-[LOG] SoundI::release                          :  (0000000063BD3238)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-005 (0000000160B4FD88)
-[LOG] SoundI::release                          :  (0000000083BB1F28)
-[LOG] SoundI::release                          :     HS_Footstep_Grass-001 (000000012F3338F8)
-[LOG] SoundI::release                          :  (0000000238DE0428)
-[LOG] SoundI::release                          :     Skull Connect-002 (00000000B1538F38)
-[LOG] SoundI::release                          :  (0000000238DDD348)
-[LOG] SoundI::release                          :     Skull Connect-001 (00000000B153B498)
-[LOG] SoundI::release                          :  (0000000063BC5D78)
-[LOG] SoundI::release                          :     Skull Connect-003 (000000012F159DF8)
-[LOG] SoundI::release                          :  (0000000063BC9138)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-011 (000000005719AD98)
-[LOG] SoundI::release                          :  (0000000063BD2998)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-012 (000000012F15B998)
-[LOG] SoundI::release                          :  (0000000083BB3628)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-013 (00000000B18988C8)
-[LOG] SoundI::release                          :  (0000000029592C58)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-014 (00000000B0CD34E8)
-[LOG] SoundI::release                          :  (0000000174DD2E48)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-015 (00000000B189B648)
-[LOG] SoundI::release                          :  (0000000063BCEEA8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-016 (0000000017E63088)
-[LOG] SoundI::release                          :  (0000000063BCF468)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-017 (0000000017E62528)
-[LOG] SoundI::release                          :  (0000000083BB5B88)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-018 (00000000B1895CE8)
-[LOG] SoundI::release                          :  (0000000063BC57B8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-019 (000000012F159F98)
-[LOG] SoundI::release                          :  (0000000238DE30B8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-020 (00000000B0CD00E8)
-[LOG] SoundI::release                          :  (0000000174DD1E78)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-021 (00000000B1537A18)
-[LOG] SoundI::release                          :  (0000000063BC5928)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-022 (000000005719CC78)
-[LOG] SoundI::release                          :  (0000000238DDDD58)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-023 (00000000B153D9F8)
-[LOG] SoundI::release                          :  (000000012FFD1BF8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-024 (00000000B0CD0908)
-[LOG] SoundI::release                          :  (0000000063BCDED8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-025 (000000005719BF78)
-[LOG] SoundI::release                          :  (0000000174DD4F58)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-026 (00000000B1897D68)
-[LOG] SoundI::release                          :  (000000012FFD3B98)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-028 (00000000B0CCFC08)
-[LOG] SoundI::release                          :  (0000000063BCAF68)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-029 (000000005719CFB8)
-[LOG] SoundI::release                          :  (0000000238DDF8A8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-030 (00000000B1539278)
-[LOG] SoundI::release                          :  (0000000083BB3BE8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-031 (00000000B1893C68)
-[LOG] SoundI::release                          :  (0000000083BB0998)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-032 (000000012F333DD8)
-[LOG] SoundI::release                          :  (0000000238DE0708)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-033 (00000000B153C678)
-[LOG] SoundI::release                          :  (0000000174DD2FB8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-034 (00000000B1536EB8)
-[LOG] SoundI::release                          :  (0000000083BAEB68)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-035 (000000012F330698)
-[LOG] SoundI::release                          :  (0000000238DE02B8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-001 (00000000B1538718)
-[LOG] SoundI::release                          :  (000000012FFD11E8)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-008 (00000000B0CD0DE8)
-[LOG] SoundI::release                          :  (0000000238DE1C98)
-[LOG] SoundI::release                          :     HS_Seagull_Oneshot-010 (00000000B153A458)
-[LOG] SoundI::release                          :  (0000000063BC9418)
-[LOG] SoundI::release                          :     Grass Footstep-001 (000000005719CE18)
-[LOG] SoundI::release                          :  (0000000083BB4BB8)
-[LOG] SoundI::release                          :     Grass Footstep-002 (00000000B1898DA8)
-[LOG] SoundI::release                          :  (000000012FFD0D98)
-[LOG] SoundI::release                          :     Grass Footstep-003 (00000000B0CD39C8)
-[LOG] SoundI::release                          :  (0000000083BB5178)
-[LOG] SoundI::release                          :     Grass Footstep-004 (00000000B1897BC8)
-[LOG] SoundI::release                          :  (0000000238DE0E38)
-[LOG] SoundI::release                          :     Grass Footstep-005 (00000000B153BFF8)
-[LOG] SoundI::release                          :  (000000004F0723A8)
-[LOG] SoundI::release                          :     Grass Footstep-006 (00000000B0CD1FC8)
-[LOG] SoundI::release                          :  (0000000063BCCF08)
-[LOG] SoundI::release                          :     Grass Footstep-007 (0000000017E633C8)
-[LOG] SoundI::release                          :  (0000000174DD5238)
-[LOG] SoundI::release                          :     Grass Footstep-008 (00000000B1897068)
-[LOG] SoundI::release                          :  (0000000174DCFBF8)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-002 (00000000B189AFC8)
-[LOG] SoundI::release                          :  (0000000083BB0C78)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-003 (000000012F330EB8)
-[LOG] SoundI::release                          :  (0000000238DE3C38)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-004 (00000000B0CD4048)
-[LOG] SoundI::release                          :  (000000004F073208)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-001 (00000000B0CCF0A8)
-[LOG] SoundI::release                          :  (0000000063BD19C8)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-003 (000000012F15BB38)
-[LOG] SoundI::release                          :  (0000000238DDE768)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-004 (00000000B153D6B8)
-[LOG] SoundI::release                          :  (0000000083BAEFB8)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-001 (00000000B1894488)
-[LOG] SoundI::release                          :  (0000000174DD3298)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-002 (00000000B1899908)
-[LOG] SoundI::release                          :  (0000000063BCB248)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-002 (0000000029836DD8)
-[LOG] SoundI::release                          :  (0000000063BCAC88)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-003 (000000005719BDD8)
-[LOG] SoundI::release                          :  (0000000238DE4928)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-004 (00000000B153CCF8)
-[LOG] SoundI::release                          :  (0000000083BB34B8)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-001 (000000012F332F38)
-[LOG] SoundI::release                          :  (0000000174DD46B8)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-003 (00000000B1895188)
-[LOG] SoundI::release                          :  (0000000063BD3688)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-004 (000000012F159AB8)
-[LOG] SoundI::release                          :  (0000000063BC7D18)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-001 (000000012F15C4F8)
-[LOG] SoundI::release                          :  (0000000063BC92A8)
-[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-002 (000000005719B278)
-[LOG] SoundI::release                          :  (0000000063BD1858)
-[LOG] SoundI::release                          :     Team Combo (000000012F159778)
-[LOG] SoundI::release                          :  (0000000063BCFA28)
-[LOG] SoundI::release                          :     Collect Skull Hamster-003 (0000000029EB7C78)
-[LOG] SoundI::release                          :  (0000000063BC82D8)
-[LOG] SoundI::release                          :     Collect Skull Hamster-002 (000000012F15A618)
-[LOG] SoundI::release                          :  (000000004F0727F8)
-[LOG] SoundI::release                          :     Collect Skull Hamster-001 (00000000B0CD2648)
-[LOG] SoundI::release                          :  (0000000083BB5E68)
-[LOG] SoundI::release                          :     HS_Hamster Connect_SynthNoise (00000000B1899428)
-[LOG] SoundI::release                          :  (0000000063BC8CE8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Stutter (000000012F15A478)
-[LOG] SoundI::release                          :  (000000012FFD3FE8)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Latch (00000000B0CD1468)
-[LOG] SoundI::release                          :  (0000000238DE1288)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Stutter2 (00000000B153C9B8)
-[LOG] SoundI::release                          :  (0000000174DD4998)
-[LOG] SoundI::release                          :     HS_Hamster Connect_Rise (00000000B1899768)
-[LOG] SoundI::release                          :  (000000012FFD2048)
-[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-003 (00000000B0CCF8C8)
-[LOG] SoundI::release                          :  (0000000174DCFD68)
-[LOG] SoundI::release                          :     HS_Hamster Collected_LowNoise-004 (00000000B189A128)
-[LOG] SoundI::release                          :  (0000000063BCED38)
-[LOG] SoundI::release                          :     HS_RainbowGlisten(short)-004 (00000000298372B8)
-[LOG] SoundI::release                          :  (0000000174DCE4F8)
-[LOG] SoundI::release                          :     HS_RainbowGlisten(short)-001 (00000000B189AC88)
-[LOG] SoundI::release                          :  (0000000083BAE9F8)
-[LOG] SoundI::release                          :     HS_RainbowGlisten(short)-002 (000000012F3323D8)
-[LOG] SoundI::release                          :  (0000000238DE1568)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-001 (00000000B15371F8)
-[LOG] SoundI::release                          :  (0000000063BCD7A8)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-002 (0000000029837AD8)
-[LOG] SoundI::release                          :  (000000004F072C48)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-003 (00000000B0CCF248)
-[LOG] SoundI::release                          :  (0000000174DCE668)
-[LOG] SoundI::release                          :     HS_Attack_SynthLow-004 (00000000B189B4A8)
-[LOG] SoundI::release                          :  (0000000083BAF408)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-001 (000000012F332098)
-[LOG] SoundI::release                          :  (000000012FFD0AB8)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-002 (00000000B0CD0288)
-[LOG] SoundI::release                          :  (0000000174DD12F8)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-003 (00000000B15395B8)
-[LOG] SoundI::release                          :  (0000000063BD0718)
-[LOG] SoundI::release                          :     HS_Attack_LowNoise-004 (0000000017E626C8)
-[LOG] SoundI::release                          :  (000000012FFD28E8)
-[LOG] SoundI::release                          :     HS_Attack_Punch-001 (00000000B0CD3D08)
-[LOG] SoundI::release                          :  (0000000063BD4378)
-[LOG] SoundI::release                          :     HS_Attack_Punch-002 (000000012F15C9D8)
-[LOG] SoundI::release                          :  (0000000063BCBDC8)
-[LOG] SoundI::release                          :     HS_Attack_Punch-003 (0000000029836A98)
-[LOG] SoundI::release                          :  (0000000174DCD978)
-[LOG] SoundI::release                          :     HS_Attack_Punch-004 (00000000B1539758)
-[LOG] SoundI::release                          : HS_SubMenu_Select-001.wav (00000000B12517E8)
+[LOG] SoundI::release                          : HS_Forest Ambience-001 (000000027CA989D8)
+[LOG] SoundI::release                          :     HS_Forest Ambience-001 (000000006E64D2E8)
+[LOG] SoundI::release                          :     HS_Forest Ambience-001 (000000027CA99098)
+[LOG] SoundI::release                          : HS_Forest Ambience-002 (000000027CA953D8)
+[LOG] SoundI::release                          :     HS_Forest Ambience-002 (000000006E64DE48)
+[LOG] SoundI::release                          :     HS_Forest Ambience-002 (000000027CA98EE8)
+[LOG] SoundI::release                          : hamster_ball_lobby_full (000000027CA97748)
+[LOG] SoundI::release                          :     hamster_ball_lobby_full (000000006E64DFE8)
+[LOG] SoundI::release                          :     hamster_ball_lobby_full (000000027CA964B8)
+[LOG] SoundI::release                          :  (000000006E6DFCE8)
+[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-001 (000000006E647648)
+[LOG] SoundI::release                          :  (000000027DF73D58)
+[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-002 (000000006E6467A8)
+[LOG] SoundI::release                          :  (000000006E6DEA38)
+[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-003 (000000006E648688)
+[LOG] SoundI::release                          :  (000000006E500DD8)
+[LOG] SoundI::release                          :     HS_Ball Break_Dyoo-004 (000000027DF01FF8)
+[LOG] SoundI::release                          :  (000000027CF5C108)
+[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-001 (000000006E4C9A28)
+[LOG] SoundI::release                          :  (000000004D9BD068)
+[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-002 (000000027D30A978)
+[LOG] SoundI::release                          :  (000000027CF5BE28)
+[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-003 (000000006E4CE4E8)
+[LOG] SoundI::release                          :  (0000000025C30708)
+[LOG] SoundI::release                          :     HS_Ball Break_UpPitch-004 (000000027C872298)
+[LOG] SoundI::release                          :  (000000027DF74318)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-002 (000000006E649A08)
+[LOG] SoundI::release                          :  (000000006E5034A8)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-004 (000000027DF01158)
+[LOG] SoundI::release                          :  (000000006E5027B8)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-005 (000000006E4CFA08)
+[LOG] SoundI::release                          :  (000000027DF6D2F8)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-006 (000000006E64BC28)
+[LOG] SoundI::release                          :  (000000004D9C3678)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-007 (000000004E9290E8)
+[LOG] SoundI::release                          :  (000000004D9C2F48)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-008 (000000004E92B7E8)
+[LOG] SoundI::release                          :  (000000006E6E3D98)
+[LOG] SoundI::release                          :     HS_Attack_SynthScatter-001 (000000006E6496C8)
+[LOG] SoundI::release                          :  (000000004D9C3AC8)
+[LOG] SoundI::release                          :     HS_Attack_SynthScatter-002 (000000004E92B4A8)
+[LOG] SoundI::release                          :  (000000027CF5D248)
+[LOG] SoundI::release                          :     HS_Attack_SynthScatter-003 (000000006E4CCE28)
+[LOG] SoundI::release                          :  (000000027DF72C18)
+[LOG] SoundI::release                          :     HS_Attack_SynthScatter-004 (000000006E647B28)
+[LOG] SoundI::release                          :  (000000006E500C68)
+[LOG] SoundI::release                          :     HS_Attack_Noise-001 (000000027DF065D8)
+[LOG] SoundI::release                          :  (000000006E507C88)
+[LOG] SoundI::release                          :     HS_Attack_Noise-002 (000000006E4CD4A8)
+[LOG] SoundI::release                          :  (000000027DF6F6E8)
+[LOG] SoundI::release                          :     HS_Attack_Noise-003 (000000027DF06C58)
+[LOG] SoundI::release                          :  (000000006E504A38)
+[LOG] SoundI::release                          :     HS_Attack_Noise-004 (000000027DF07138)
+[LOG] SoundI::release                          :  (000000027DF6F128)
+[LOG] SoundI::release                          :     HS_Grunts_Jump-001 (000000027DF07C98)
+[LOG] SoundI::release                          :  (000000027DF6C8E8)
+[LOG] SoundI::release                          :     HS_Grunts_Jump-002 (000000027DF046F8)
+[LOG] SoundI::release                          :  (000000027CF5AB78)
+[LOG] SoundI::release                          :     HS_Grunts_Jump-003 (000000006E48F888)
+[LOG] SoundI::release                          :  (000000004D9C37E8)
+[LOG] SoundI::release                          :     HS_Grunts_Jump-004 (000000004E929288)
+[LOG] SoundI::release                          :  (000000004D9BE768)
+[LOG] SoundI::release                          :     HS_Jump_2-001 (000000027D307D98)
+[LOG] SoundI::release                          :  (000000027CF57648)
+[LOG] SoundI::release                          :     HS_Jump_2-002 (000000006E4910E8)
+[LOG] SoundI::release                          :  (000000027DF71F28)
+[LOG] SoundI::release                          :     HS_Jump_2-003 (000000027DF04218)
+[LOG] SoundI::release                          :  (000000027DF6D188)
+[LOG] SoundI::release                          :     HS_Jump_2-004 (000000027DF07618)
+[LOG] SoundI::release                          :  (000000027DF6DB98)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Grill-001 (000000027DF06918)
+[LOG] SoundI::release                          :  (000000004D9BFFD8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Grill-002 (000000027C872F98)
+[LOG] SoundI::release                          :  (000000027DF72AA8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Grill-003 (000000006E64B8E8)
+[LOG] SoundI::release                          :  (000000004D9BE8D8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Synth-002 (000000027D307BF8)
+[LOG] SoundI::release                          :  (000000006E502C08)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Synth-003 (000000027DF03858)
+[LOG] SoundI::release                          :  (000000006E5031C8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Synth-001 (000000006E4CF528)
+[LOG] SoundI::release                          :  (000000027CF5B9D8)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-001 (000000006E4CDB28)
+[LOG] SoundI::release                          :  (000000027DF71238)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-002 (000000006E646468)
+[LOG] SoundI::release                          :  (000000027CF59E88)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-003 (000000004E92AFC8)
+[LOG] SoundI::release                          :  (000000027DF71C48)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_HighWhoosh-004 (000000027DF07E38)
+[LOG] SoundI::release                          :  (000000004D9C4C08)
+[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-002 (000000004E9288C8)
+[LOG] SoundI::release                          :  (000000027DF73EC8)
+[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-003 (000000006E64C5E8)
+[LOG] SoundI::release                          :  (000000027CF5B588)
+[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-004 (000000006E4CD988)
+[LOG] SoundI::release                          :  (000000006E506E28)
+[LOG] SoundI::release                          :     HS_Filling Blocks_Suck-001 (000000006E4CEB68)
+[LOG] SoundI::release                          :  (000000004D9BDD58)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-003 (000000027D309E18)
+[LOG] SoundI::release                          :  (000000004D9C3958)
+[LOG] SoundI::release                          :     HS_SubMenu_Select-001 (000000004E928F48)
+[LOG] SoundI::release                          :  (000000027DF6DD08)
+[LOG] SoundI::release                          :     HS_SubMenu_Select-002 (000000027DF08998)
+[LOG] SoundI::release                          :  (000000004D9BF8A8)
+[LOG] SoundI::release                          :     FillingBlocks-001 (000000027D3073D8)
+[LOG] SoundI::release                          :  (0000000025C2E318)
+[LOG] SoundI::release                          :     FillingBlocks-002 (000000027C871F58)
+[LOG] SoundI::release                          :  (000000027DF6E438)
+[LOG] SoundI::release                          :     FillingBlocks-003 (000000006E64AA48)
+[LOG] SoundI::release                          :  (000000004D9C0878)
+[LOG] SoundI::release                          :     FillingBlocks-004 (000000027C8732D8)
+[LOG] SoundI::release                          :  (000000004D9BE5F8)
+[LOG] SoundI::release                          :     HS_Throw_Synth-001 (000000027D30A2F8)
+[LOG] SoundI::release                          :  (000000006E5052D8)
+[LOG] SoundI::release                          :     HS_Throw_Synth-002 (000000027DF060F8)
+[LOG] SoundI::release                          :  (000000027DF6DFE8)
+[LOG] SoundI::release                          :     HS_Throw_Synth-003 (000000006E64BDC8)
+[LOG] SoundI::release                          :  (000000006E502088)
+[LOG] SoundI::release                          :     HS_Throw_Synth-004 (000000027DF02E98)
+[LOG] SoundI::release                          :  (000000027CF59FF8)
+[LOG] SoundI::release                          :     HS_Throw_HiNoise-001 (000000006E491288)
+[LOG] SoundI::release                          :  (000000027DF74038)
+[LOG] SoundI::release                          :     HS_Throw_HiNoise-002 (000000006E648348)
+[LOG] SoundI::release                          :  (000000006E6E16C8)
+[LOG] SoundI::release                          :     HS_Throw_HiNoise-003 (000000006E64C928)
+[LOG] SoundI::release                          :  (000000027CF5CF68)
+[LOG] SoundI::release                          :     HS_Throw_HiNoise-004 (000000006E4C8B88)
+[LOG] SoundI::release                          :  (0000000025C2E488)
+[LOG] SoundI::release                          :     HS_Throw_LowNoise-001 (000000027C872918)
+[LOG] SoundI::release                          :  (000000027CF57928)
+[LOG] SoundI::release                          :     HS_Throw_LowNoise-003 (000000006E4CD648)
+[LOG] SoundI::release                          :  (000000027DF717F8)
+[LOG] SoundI::release                          :     HS_Throw_LowNoise-004 (000000006E647CC8)
+[LOG] SoundI::release                          :  (000000004D9C23C8)
+[LOG] SoundI::release                          :     HS_Grunts_Attack-001 (000000027C872778)
+[LOG] SoundI::release                          :  (000000004D9C30B8)
+[LOG] SoundI::release                          :     HS_Grunts_Attack-002 (000000004E929DE8)
+[LOG] SoundI::release                          :  (000000004D9BD798)
+[LOG] SoundI::release                          :     HS_Grunts_Attack-003 (000000027D30A638)
+[LOG] SoundI::release                          :  (000000004D9C1568)
+[LOG] SoundI::release                          :     HS_Throw_Glass-001 (000000027C8713F8)
+[LOG] SoundI::release                          :  (000000006E506B48)
+[LOG] SoundI::release                          :     HS_Throw_Glass-002 (000000006E4CCAE8)
+[LOG] SoundI::release                          :  (000000027DF6E2C8)
+[LOG] SoundI::release                          :     HS_Throw_Glass-003 (000000027DF03038)
+[LOG] SoundI::release                          :  (000000004D9C2DD8)
+[LOG] SoundI::release                          :     HS_Throw_Glass-004 (000000004E92BE68)
+[LOG] SoundI::release                          :  (000000006E5069D8)
+[LOG] SoundI::release                          :     Lever_Hit (000000006E4CADA8)
+[LOG] SoundI::release                          :  (000000027CF5AE58)
+[LOG] SoundI::release                          :     Crowd_Scramble (000000006E491C48)
+[LOG] SoundI::release                          :  (000000004D9C1848)
+[LOG] SoundI::release                          :     HS_Swing Net_Noise-001 (000000027C873478)
+[LOG] SoundI::release                          :  (000000027CF58618)
+[LOG] SoundI::release                          :     HS_Swing Net_Noise-002 (000000006E48F068)
+[LOG] SoundI::release                          :  (000000027CF56F18)
+[LOG] SoundI::release                          :     HS_Swing Net_Noise-003 (000000006E48FBC8)
+[LOG] SoundI::release                          :  (000000006E505728)
+[LOG] SoundI::release                          :     HS_Swing Net_Noise-004 (000000006E4CC7A8)
+[LOG] SoundI::release                          :  (000000027DF6CD38)
+[LOG] SoundI::release                          :     HS_Swing Net_Synth-001 (000000027DF04558)
+[LOG] SoundI::release                          :  (000000006E5062A8)
+[LOG] SoundI::release                          :     HS_Swing Net_Synth-002 (000000006E4C9F08)
+[LOG] SoundI::release                          :  (000000027DF741A8)
+[LOG] SoundI::release                          :     HS_Swing Net_Synth-003 (000000006E64A3C8)
+[LOG] SoundI::release                          :  (000000004D9BFCF8)
+[LOG] SoundI::release                          :     HS_Swing Net_Synth-004 (000000004E92A948)
+[LOG] SoundI::release                          :  (000000027CF57088)
+[LOG] SoundI::release                          :     ThrowLoop-001 (000000006E4903E8)
+[LOG] SoundI::release                          :  (000000004D9C20E8)
+[LOG] SoundI::release                          :     MultiMatch (000000027D30ACB8)
+[LOG] SoundI::release                          :  (000000027DF70548)
+[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-005 (000000006E64A8A8)
+[LOG] SoundI::release                          :  (000000006E6E3218)
+[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-006 (000000006E649BA8)
+[LOG] SoundI::release                          :  (000000027DF6FE18)
+[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-007 (000000006E648B68)
+[LOG] SoundI::release                          :  (000000004D9BD348)
+[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-001 (000000027D30A7D8)
+[LOG] SoundI::release                          :  (000000027CF560B8)
+[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-002 (000000004E92AE28)
+[LOG] SoundI::release                          :  (0000000025C30B58)
+[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-003 (000000004CF9B908)
+[LOG] SoundI::release                          :  (000000027DF73628)
+[LOG] SoundI::release                          :     HS_Bass_SnowFootsteps-004 (000000006E649EE8)
+[LOG] SoundI::release                          :  (000000004D9C1118)
+[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-004 (000000027D308C38)
+[LOG] SoundI::release                          :  (0000000025C2E5F8)
+[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-005 (000000027C870558)
+[LOG] SoundI::release                          :  (0000000025C2D908)
+[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-006 (000000004CF9BC48)
+[LOG] SoundI::release                          :  (000000006E505898)
+[LOG] SoundI::release                          :     HS_Snow_SnowFootsteps-007 (000000006E4CB0E8)
+[LOG] SoundI::release                          :  (000000006E5006A8)
+[LOG] SoundI::release                          :     Crowd_2 (000000027DF04078)
+[LOG] SoundI::release                          :  (000000027DF731D8)
+[LOG] SoundI::release                          :     HS_BallDrop_HighSynth (000000006E646E28)
+[LOG] SoundI::release                          :  (000000027DF6EFB8)
+[LOG] SoundI::release                          :     HS_BallDrop_LowSynth (000000027DF07958)
+[LOG] SoundI::release                          :  (000000027CF55988)
+[LOG] SoundI::release                          :     HS_Hamster Connect_Coin (000000006E492468)
+[LOG] SoundI::release                          :  (000000027CF5A5B8)
+[LOG] SoundI::release                          :     HS_Hamster Connect_Crunch (000000006E490C08)
+[LOG] SoundI::release                          :  (000000027CF5AFC8)
+[LOG] SoundI::release                          :     HS_SubMenu_Toggle-004 (000000006E492128)
+[LOG] SoundI::release                          :  (000000004D9C4088)
+[LOG] SoundI::release                          :     HS_SubMenu_Toggle-005 (000000004E92B308)
+[LOG] SoundI::release                          :  (000000006E501C38)
+[LOG] SoundI::release                          :     HS_SubMenu_Toggle-002 (000000006E4CFD48)
+[LOG] SoundI::release                          :  (000000027CF59308)
+[LOG] SoundI::release                          :     HS_SubMenu_Toggle-003 (000000006E4908C8)
+[LOG] SoundI::release                          :  (000000004D9BD628)
+[LOG] SoundI::release                          :     HS_321_Number (000000027C870898)
+[LOG] SoundI::release                          :  (000000027DF6E9F8)
+[LOG] SoundI::release                          :     Large Clap_Hamsters-003 (000000006E648828)
+[LOG] SoundI::release                          :  (000000006E502A98)
+[LOG] SoundI::release                          :     Large Clap_Hamsters-004 (000000027DF01638)
+[LOG] SoundI::release                          :  (000000027CF58EB8)
+[LOG] SoundI::release                          :     Door Open-003 (000000006E4CF1E8)
+[LOG] SoundI::release                          :  (000000006E500988)
+[LOG] SoundI::release                          :     Door Open-004 (000000027DF05598)
+[LOG] SoundI::release                          :  (000000006E5003C8)
+[LOG] SoundI::release                          :     Door Open-001 (000000027DF01CB8)
+[LOG] SoundI::release                          :  (000000004D9C4648)
+[LOG] SoundI::release                          :     HS_ThrowLoop (2) (000000004E9295C8)
+[LOG] SoundI::release                          :  (000000027DF6D8B8)
+[LOG] SoundI::release                          :     HS_Bike Loop_master (000000006E64A568)
+[LOG] SoundI::release                          :  (000000027CF5B138)
+[LOG] SoundI::release                          :     HS_ThrowLoop (3) (000000006E4CF048)
+[LOG] SoundI::release                          :  (000000027CF5A898)
+[LOG] SoundI::release                          :     HS_RainbowPlop-002 (000000006E490DA8)
+[LOG] SoundI::release                          :  (000000027DF70B08)
+[LOG] SoundI::release                          :     HS_RainbowPlop-003 (000000027DF06F98)
+[LOG] SoundI::release                          :  (000000027DF6ECD8)
+[LOG] SoundI::release                          :     HS_RainbowPlop-004 (000000027DF00FB8)
+[LOG] SoundI::release                          :  (000000006E507558)
+[LOG] SoundI::release                          :     HS_RainbowPlop-001 (000000006E4C9548)
+[LOG] SoundI::release                          :  (000000027CF5A2D8)
+[LOG] SoundI::release                          :     Lever_Stop (000000006E492C88)
+[LOG] SoundI::release                          :  (000000027DF73348)
+[LOG] SoundI::release                          :     Subway 01 (000000006E6484E8)
+[LOG] SoundI::release                          :  (000000027CF5B2A8)
+[LOG] SoundI::release                          :     HS_SubMenu_Back-003 (000000006E4CB768)
+[LOG] SoundI::release                          :  (000000006E5073E8)
+[LOG] SoundI::release                          :     HS_SubMenu_Back-004 (000000006E4CC2C8)
+[LOG] SoundI::release                          :  (000000004D9BF458)
+[LOG] SoundI::release                          :     HS_SubMenu_Back-001 (000000027C8725D8)
+[LOG] SoundI::release                          :  (000000004D9C4368)
+[LOG] SoundI::release                          :     HS_SubMenu_Back-002 (000000004E92BB28)
+[LOG] SoundI::release                          :  (000000006E504028)
+[LOG] SoundI::release                          :     Explosion (000000006E4CFBA8)
+[LOG] SoundI::release                          :  (000000027DF73BE8)
+[LOG] SoundI::release                          :     Spring-001 (000000006E64B268)
+[LOG] SoundI::release                          :  (000000004D9C3DA8)
+[LOG] SoundI::release                          :     HS_MainMenu_Select_Punch-001 (000000004E9283E8)
+[LOG] SoundI::release                          :  (000000027DF72D88)
+[LOG] SoundI::release                          :     HS_MainMenu_Select_Wood-001 (000000006E64BF68)
+[LOG] SoundI::release                          :  (000000004D9BF008)
+[LOG] SoundI::release                          :     HS_MainMenu_Select_Wood-002 (000000027D308418)
+[LOG] SoundI::release                          :  (000000027DF6CEA8)
+[LOG] SoundI::release                          :     HS_Game Start (000000027DF03378)
+[LOG] SoundI::release                          :  (000000027DF724E8)
+[LOG] SoundI::release                          :     HS_MainMenu_Select_Synth-001 (000000006E64A088)
+[LOG] SoundI::release                          :  (000000006E501AC8)
+[LOG] SoundI::release                          :     HS_MainMenu_Select_Synth-002 (000000027DF024D8)
+[LOG] SoundI::release                          :  (000000006E5000E8)
+[LOG] SoundI::release                          :     Umbrella Footsteps-003 (000000027DF02CF8)
+[LOG] SoundI::release                          :  (000000027DF71518)
+[LOG] SoundI::release                          :     Umbrella Footsteps-004 (000000006E6489C8)
+[LOG] SoundI::release                          :  (000000006E5017E8)
+[LOG] SoundI::release                          :     Umbrella Footsteps-005 (000000006E4D0708)
+[LOG] SoundI::release                          :  (000000027CF5C3E8)
+[LOG] SoundI::release                          :     Umbrella Footsteps-006 (000000006E4CB5C8)
+[LOG] SoundI::release                          :  (000000004D9C0148)
+[LOG] SoundI::release                          :     Umbrella Footsteps-001 (000000027D309C78)
+[LOG] SoundI::release                          :  (0000000025C302B8)
+[LOG] SoundI::release                          :     Umbrella Footsteps-002 (000000027C873618)
+[LOG] SoundI::release                          :  (000000027CF574D8)
+[LOG] SoundI::release                          :     HS_Ball Break_Pop-001 (000000006E4CDE68)
+[LOG] SoundI::release                          :  (000000006E504FF8)
+[LOG] SoundI::release                          :     Concrete_FS-001 (000000006E4CCC88)
+[LOG] SoundI::release                          :  (000000004D9C3F18)
+[LOG] SoundI::release                          :     Concrete_FS-002 (000000004E929AA8)
+[LOG] SoundI::release                          :  (0000000025C2F458)
+[LOG] SoundI::release                          :     Concrete_FS-003 (000000004CF9C2C8)
+[LOG] SoundI::release                          :  (000000006E5024D8)
+[LOG] SoundI::release                          :     Concrete_FS-004 (000000027DF050B8)
+[LOG] SoundI::release                          :  (000000004D9BDEC8)
+[LOG] SoundI::release                          :     Concrete_FS-005 (000000027D308758)
+[LOG] SoundI::release                          :  (000000004D9C3C38)
+[LOG] SoundI::release                          :     Concrete_FS-006 (000000004E92AC88)
+[LOG] SoundI::release                          :  (000000027DF6F9C8)
+[LOG] SoundI::release                          :     Concrete_FS-007 (000000027DF03D38)
+[LOG] SoundI::release                          :  (000000027CF5BF98)
+[LOG] SoundI::release                          :     Concrete_FS-008 (000000006E4CC468)
+[LOG] SoundI::release                          :  (000000006E500818)
+[LOG] SoundI::release                          :     HS_Ball Break_Squeak-003 (000000027DF031D8)
+[LOG] SoundI::release                          :  (000000027CF588F8)
+[LOG] SoundI::release                          :     HS_Ball Break_Squeak-004 (000000004E929908)
+[LOG] SoundI::release                          :  (000000027CF5A728)
+[LOG] SoundI::release                          :     HS_Ball Break_Squeak-005 (000000006E491428)
+[LOG] SoundI::release                          :  (000000027CF598C8)
+[LOG] SoundI::release                          :     HS_Ball Break_Squeak-001 (000000006E48FF08)
+[LOG] SoundI::release                          :  (000000004D9C4A98)
+[LOG] SoundI::release                          :     HS_Ball Break_Squeak-002 (000000004E92A468)
+[LOG] SoundI::release                          :  (000000027CF5CB18)
+[LOG] SoundI::release                          :     HS_HamsterWhisp_Init_Whoosh (000000006E4CAC08)
+[LOG] SoundI::release                          :  (000000027CF55F48)
+[LOG] SoundI::release                          :     HS_Filling Blocks_HiNoise (000000006E4CA0A8)
+[LOG] SoundI::release                          :  (000000006E504198)
+[LOG] SoundI::release                          :     LeverMove (000000006E4D0088)
+[LOG] SoundI::release                          :  (000000006E501678)
+[LOG] SoundI::release                          :     Shift_Synth (000000027DF02818)
+[LOG] SoundI::release                          :  (000000027DF73908)
+[LOG] SoundI::release                          :     Shift_Noise Low (000000006E6481A8)
+[LOG] SoundI::release                          :  (000000027CF556A8)
+[LOG] SoundI::release                          :     Shift_Noise High (000000006E4927A8)
+[LOG] SoundI::release                          :  (000000027DF6FCA8)
+[LOG] SoundI::release                          :     Shift_Noise Hit (000000006E64A708)
+[LOG] SoundI::release                          :  (000000027CF56678)
+[LOG] SoundI::release                          :     Small Clap (000000006E4CA8C8)
+[LOG] SoundI::release                          :  (000000006E507108)
+[LOG] SoundI::release                          :     HS_Hamster Collected_LowNoise-003 (000000006E4CBC48)
+[LOG] SoundI::release                          :  (000000004D9C09E8)
+[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-001 (000000027D3095F8)
+[LOG] SoundI::release                          :  (000000004D9BED28)
+[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-002 (000000027D308278)
+[LOG] SoundI::release                          :  (000000006E6E02A8)
+[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-004 (000000006E64C2A8)
+[LOG] SoundI::release                          :  (000000027CF55DD8)
+[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-001 (000000006E48F548)
+[LOG] SoundI::release                          :  (000000027DF72378)
+[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-002 (000000006E646948)
+[LOG] SoundI::release                          :  (000000027CF57D78)
+[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-003 (000000006E4CA248)
+[LOG] SoundI::release                          :  (000000006E5055B8)
+[LOG] SoundI::release                          :     HS_Hamster Collected_Synth-004 (000000027DF05738)
+[LOG] SoundI::release                          :  (000000006E502D78)
+[LOG] SoundI::release                          :     Medium Clap_Hamsters-008 (000000027DF06438)
+[LOG] SoundI::release                          :  (000000027CF55AF8)
+[LOG] SoundI::release                          :     Medium Clap_Hamsters-007 (000000006E4CED08)
+[LOG] SoundI::release                          :  (000000006E6E2248)
+[LOG] SoundI::release                          :     CounterMatch-001 (000000006E64C788)
+[LOG] SoundI::release                          :  (000000027DF71688)
+[LOG] SoundI::release                          :     Shift Meter-003 (000000027DF03518)
+[LOG] SoundI::release                          :  (000000004D9C1C98)
+[LOG] SoundI::release                          :     HS_New Line_Low Noise (000000027C8710B8)
+[LOG] SoundI::release                          :  (000000006E506CB8)
+[LOG] SoundI::release                          :     HS_New Line_Noise (000000006E4CDCC8)
+[LOG] SoundI::release                          :  (0000000025C30148)
+[LOG] SoundI::release                          :     HS_New Line_GroundBoost (000000004CF9C128)
+[LOG] SoundI::release                          :  (000000027CF56C38)
+[LOG] SoundI::release                          :     HS_New Line_Synth (000000006E490A68)
+[LOG] SoundI::release                          :  (000000027DF6E888)
+[LOG] SoundI::release                          :     HS_New Line_Ground (000000006E64A228)
+[LOG] SoundI::release                          :  (000000004D9BFE68)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-002 (000000004E9280A8)
+[LOG] SoundI::release                          :  (000000027CF58338)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-003 (000000006E48F6E8)
+[LOG] SoundI::release                          :  (000000004D9C2538)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-004 (000000027C871598)
+[LOG] SoundI::release                          :  (000000006E504758)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-005 (000000027DF01E58)
+[LOG] SoundI::release                          :  (000000004D9C3508)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-006 (000000004E92AAE8)
+[LOG] SoundI::release                          :  (000000004D9C0E38)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-007 (000000027C871DB8)
+[LOG] SoundI::release                          :  (000000027DF6EB68)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-008 (000000006E649528)
+[LOG] SoundI::release                          :  (0000000025C2E768)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Crack-001 (000000027C870BD8)
+[LOG] SoundI::release                          :  (000000004D9C0FA8)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-005 (000000027C873E38)
+[LOG] SoundI::release                          :  (000000006E5076C8)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-006 (000000006E4C93A8)
+[LOG] SoundI::release                          :  (000000006E501DA8)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-007 (000000027DF03ED8)
+[LOG] SoundI::release                          :  (000000027CF581C8)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-001 (000000004E92A128)
+[LOG] SoundI::release                          :  (000000006E504478)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-002 (000000006E4CBDE8)
+[LOG] SoundI::release                          :  (000000027CF5C558)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-003 (000000006E4C8D28)
+[LOG] SoundI::release                          :  (000000027CF5AA08)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Bass-004 (000000004E929C48)
+[LOG] SoundI::release                          :  (000000027DF6E158)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-005 (000000006E646AE8)
+[LOG] SoundI::release                          :  (000000027DF71AD8)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-007 (000000027DF039F8)
+[LOG] SoundI::release                          :  (0000000025C2DA78)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-001 (000000004CF9BDE8)
+[LOG] SoundI::release                          :  (000000027CF5C6C8)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-003 (000000006E4C9BC8)
+[LOG] SoundI::release                          :  (000000027CF5A168)
+[LOG] SoundI::release                          :     HS_SnowFootstepsLand_Snow-004 (000000006E4915C8)
+[LOG] SoundI::release                          :  (000000027CF55538)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-004 (000000006E48FD68)
+[LOG] SoundI::release                          :  (000000006E503BD8)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-005 (000000006E4D0568)
+[LOG] SoundI::release                          :  (000000027DF6CBC8)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-006 (000000006E64B5A8)
+[LOG] SoundI::release                          :  (000000006E506588)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-007 (000000006E4CAA68)
+[LOG] SoundI::release                          :  (000000027CF56228)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-008 (000000006E4C9888)
+[LOG] SoundI::release                          :  (000000027DF6FF88)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-001 (000000027DF05258)
+[LOG] SoundI::release                          :  (000000004D9C44D8)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-002 (000000004E928588)
+[LOG] SoundI::release                          :  (000000006E500AF8)
+[LOG] SoundI::release                          :     HS_IceFootstepsLand_Tink-003 (000000027DF01498)
+[LOG] SoundI::release                          :  (000000027CF57EE8)
+[LOG] SoundI::release                          :     HS_Clothing Foley-002 (000000006E4CEEA8)
+[LOG] SoundI::release                          :  (000000004D9C3228)
+[LOG] SoundI::release                          :     HS_Clothing Foley-003 (000000004E92A2C8)
+[LOG] SoundI::release                          :  (000000027CF5B418)
+[LOG] SoundI::release                          :     HS_Clothing Foley-004 (000000006E4CE348)
+[LOG] SoundI::release                          :  (000000004D9C16D8)
+[LOG] SoundI::release                          :     HS_Clothing Foley-001 (000000027C8706F8)
+[LOG] SoundI::release                          :  (000000004D9C4D78)
+[LOG] SoundI::release                          :     HS_321_Zero (000000004E92B648)
+[LOG] SoundI::release                          :  (000000004D9C13F8)
+[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-002 (000000027D30A498)
+[LOG] SoundI::release                          :  (000000006E504BA8)
+[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-003 (000000027DF06298)
+[LOG] SoundI::release                          :  (000000004D9C1B28)
+[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-004 (000000027C870F18)
+[LOG] SoundI::release                          :  (000000006E505B78)
+[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-007 (000000027DF017D8)
+[LOG] SoundI::release                          :  (000000027CF595E8)
+[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-008 (000000006E492948)
+[LOG] SoundI::release                          :  (000000004D9BDA78)
+[LOG] SoundI::release                          :     HS_Tink_IceFootsteps-001 (000000027C870078)
+[LOG] SoundI::release                          :  (000000027CF5C278)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-004 (000000006E4CC608)
+[LOG] SoundI::release                          :  (000000027CF58BD8)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-005 (000000006E48FA28)
+[LOG] SoundI::release                          :  (000000006E502928)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-006 (000000027DF01B18)
+[LOG] SoundI::release                          :  (000000004D9C2988)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-007 (000000027D30AE58)
+[LOG] SoundI::release                          :  (000000006E507278)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-008 (000000006E4CE828)
+[LOG] SoundI::release                          :  (0000000025C2EBB8)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-001 (000000004CF9C468)
+[LOG] SoundI::release                          :  (0000000025C30428)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-002 (000000027C8703B8)
+[LOG] SoundI::release                          :  (000000006E506868)
+[LOG] SoundI::release                          :     HS_Crack_IceFootsteps-003 (000000006E4CE688)
+[LOG] SoundI::release                          :  (000000027DF73068)
+[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-001 (3) (000000006E648EA8)
+[LOG] SoundI::release                          :  (000000006E501958)
+[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-002 (3) (000000027DF05DB8)
+[LOG] SoundI::release                          :  (0000000025C2E1A8)
+[LOG] SoundI::release                          :     HS_Wall Bounce_BounceSynth-004 (3) (000000027C872C58)
+[LOG] SoundI::release                          :  (000000004D9C2AF8)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-003 (000000027D308A98)
+[LOG] SoundI::release                          :  (000000027CF584A8)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-004 (000000006E490588)
+[LOG] SoundI::release                          :  (000000004D9C02B8)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-001 (000000027D3092B8)
+[LOG] SoundI::release                          :  (000000027DF6F298)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowNoise-002 (000000027DF00C78)
+[LOG] SoundI::release                          :  (000000004D9BE038)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-003 (000000027D307718)
+[LOG] SoundI::release                          :  (000000006E5010B8)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-004 (000000027DF029B8)
+[LOG] SoundI::release                          :  (000000006E5048C8)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-001 (000000027DF04A38)
+[LOG] SoundI::release                          :  (000000027DF700F8)
+[LOG] SoundI::release                          :     HS_Wall Bounce_LowSynth-002 (000000006E649388)
+[LOG] SoundI::release                          :  (000000004D9BFA18)
+[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-001 (000000027D308F78)
+[LOG] SoundI::release                          :  (000000006E501F18)
+[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-002 (000000027DF053F8)
+[LOG] SoundI::release                          :  (0000000025C2F5C8)
+[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-003 (000000027C8720F8)
+[LOG] SoundI::release                          :  (000000006E503338)
+[LOG] SoundI::release                          :     HS_Throw Start_HiNoise-004 (000000006E4CFEE8)
+[LOG] SoundI::release                          :  (000000027DF6C778)
+[LOG] SoundI::release                          :     HS_Throw Start_Synth-001 (000000006E6491E8)
+[LOG] SoundI::release                          :  (000000004D9C1F78)
+[LOG] SoundI::release                          :     HS_Throw Start_Synth-002 (000000027C871738)
+[LOG] SoundI::release                          :  (0000000025C309E8)
+[LOG] SoundI::release                          :     HS_Throw Start_Synth-003 (000000027C871A78)
+[LOG] SoundI::release                          :  (000000027CF59198)
+[LOG] SoundI::release                          :     HS_Throw Start_Synth-004 (000000006E490248)
+[LOG] SoundI::release                          :  (000000027DF72938)
+[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-001 (000000006E649D48)
+[LOG] SoundI::release                          :  (000000004D9BEE98)
+[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-002 (000000027D308DD8)
+[LOG] SoundI::release                          :  (000000004D9C2258)
+[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-003 (000000027D30AB18)
+[LOG] SoundI::release                          :  (000000006E6DF2D8)
+[LOG] SoundI::release                          :     HS_Throw Start_LowNoise-004 (000000006E64CC68)
+[LOG] SoundI::release                          :  (000000004D9BD1D8)
+[LOG] SoundI::release                          :     HS_Throw Start_Glass-001 (000000027C873AF8)
+[LOG] SoundI::release                          :  (000000027CF56398)
+[LOG] SoundI::release                          :     HS_Throw Start_Glass-002 (000000004E929F88)
+[LOG] SoundI::release                          :  (000000006E503788)
+[LOG] SoundI::release                          :     HS_Throw Start_Glass-003 (000000027DF043B8)
+[LOG] SoundI::release                          :  (000000027DF72098)
+[LOG] SoundI::release                          :     HS_Throw Start_Glass-004 (000000027DF077B8)
+[LOG] SoundI::release                          :  (000000006E5079A8)
+[LOG] SoundI::release                          :     Crowd_1 (000000006E4CAF48)
+[LOG] SoundI::release                          :  (000000027CF5D0D8)
+[LOG] SoundI::release                          :     Crowd_3 (000000006E4CD7E8)
+[LOG] SoundI::release                          :  (000000006E5045E8)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Wood-004 (000000027DF02198)
+[LOG] SoundI::release                          :  (000000027CF59D18)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Wood-005 (000000006E490728)
+[LOG] SoundI::release                          :  (000000006E503A68)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Wood-001 (000000027DF02B58)
+[LOG] SoundI::release                          :  (000000027DF6D468)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-001 (000000006E64AD88)
+[LOG] SoundI::release                          :  (000000004D9C1288)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-002 (000000027D309FB8)
+[LOG] SoundI::release                          :  (000000027DF706B8)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-003 (000000006E648D08)
+[LOG] SoundI::release                          :  (000000006E503618)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-004 (000000027DF04898)
+[LOG] SoundI::release                          :  (000000006E500F48)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Noise-005 (000000027DF036B8)
+[LOG] SoundI::release                          :  (000000027CF57C08)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-001 (000000006E492AE8)
+[LOG] SoundI::release                          :  (000000006E502EE8)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-002 (000000006E4CF868)
+[LOG] SoundI::release                          :  (000000027DF72658)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-003 (000000006E64C108)
+[LOG] SoundI::release                          :  (000000027CF58D48)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-004 (000000006E4900A8)
+[LOG] SoundI::release                          :  (000000027CF59758)
+[LOG] SoundI::release                          :     HS_MainMenu_Toggle_Synth-005 (000000004E928DA8)
+[LOG] SoundI::release                          :  (000000027CF5C838)
+[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-002 (000000006E4CCFC8)
+[LOG] SoundI::release                          :  (000000006E503EB8)
+[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-003 (000000027DF02338)
+[LOG] SoundI::release                          :  (000000027CF55C68)
+[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-004 (000000006E491908)
+[LOG] SoundI::release                          :  (000000027CF59478)
+[LOG] SoundI::release                          :     HS_MainMenu_Back_Synth-001 (000000006E490F48)
+[LOG] SoundI::release                          :  (000000006E506138)
+[LOG] SoundI::release                          :     HS_MainMenu_Back-001 (000000006E4CD168)
+[LOG] SoundI::release                          :  (000000027DF70DE8)
+[LOG] SoundI::release                          :     HS_MainMenu_Back-002 (000000006E649048)
+[LOG] SoundI::release                          :  (000000027CF58A68)
+[LOG] SoundI::release                          :     HS_MainMenu_Back-003 (000000006E491768)
+[LOG] SoundI::release                          :  (000000004D9C4928)
+[LOG] SoundI::release                          :     HS_MainMenu_Back-004 (000000004E929428)
+[LOG] SoundI::release                          :  (000000027CF58788)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-005 (000000004E928728)
+[LOG] SoundI::release                          :  (000000004D9BF2E8)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-006 (000000027D307238)
+[LOG] SoundI::release                          :  (0000000025C2DEC8)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-001 (000000004CF99548)
+[LOG] SoundI::release                          :  (000000027DF703D8)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-007 (000000006E648008)
+[LOG] SoundI::release                          :  (000000027CF5BB48)
+[LOG] SoundI::release                          :     HS_Clothing Foley-006 (000000006E4CE1A8)
+[LOG] SoundI::release                          :  (000000006E506418)
+[LOG] SoundI::release                          :     HS_Clothing Foley-007 (000000006E4CE008)
+[LOG] SoundI::release                          :  (000000027CF55818)
+[LOG] SoundI::release                          :     HS_Clothing Foley-008 (000000006E491AA8)
+[LOG] SoundI::release                          :  (000000027DF70998)
+[LOG] SoundI::release                          :     HS_Clothing Foley-005 (000000027DF07AF8)
+[LOG] SoundI::release                          :  (000000027CF5CDF8)
+[LOG] SoundI::release                          :     HS_Footstep_Scuff-003 (000000006E4CA3E8)
+[LOG] SoundI::release                          :  (000000004D9BE1A8)
+[LOG] SoundI::release                          :     HS_Footstep_Scuff-004 (000000027D307A58)
+[LOG] SoundI::release                          :  (000000004D9C2C68)
+[LOG] SoundI::release                          :     HS_Footstep_Scuff-005 (000000004E928C08)
+[LOG] SoundI::release                          :  (000000027DF70F58)
+[LOG] SoundI::release                          :     HS_Footstep_Scuff-001 (000000027DF03B98)
+[LOG] SoundI::release                          :  (000000027DF6FB38)
+[LOG] SoundI::release                          :     HS_Footstep_Scuff-002 (000000006E64BA88)
+[LOG] SoundI::release                          :  (000000004D9C0428)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Noise (000000027D3088F8)
+[LOG] SoundI::release                          :  (000000027DF6D018)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-005 (000000027DF08318)
+[LOG] SoundI::release                          :  (000000027CF5A448)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-006 (000000006E492E28)
+[LOG] SoundI::release                          :  (000000006E507B18)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-008 (000000006E4C96E8)
+[LOG] SoundI::release                          :  (000000004D9C0CC8)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-001 (000000027C873958)
+[LOG] SoundI::release                          :  (000000004D9C3398)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-002 (000000004E92A608)
+[LOG] SoundI::release                          :  (000000027DF70268)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-003 (000000006E647988)
+[LOG] SoundI::release                          :  (000000027CF571F8)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Branch-004 (000000006E4C9D68)
+[LOG] SoundI::release                          :  (000000004D9C47B8)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-007 (000000004E928248)
+[LOG] SoundI::release                          :  (000000006E505168)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-002 (000000027DF058D8)
+[LOG] SoundI::release                          :  (000000027DF6F408)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-003 (000000006E64C448)
+[LOG] SoundI::release                          :  (000000027DF713A8)
+[LOG] SoundI::release                          :     HS_GrassFootstep_Grass-004 (000000027DF084B8)
+[LOG] SoundI::release                          :  (000000006E505E58)
+[LOG] SoundI::release                          :     HS_Footstep_Noise-001 (000000006E4CA728)
+[LOG] SoundI::release                          :  (0000000025C30E38)
+[LOG] SoundI::release                          :     HS_Footstep_Noise-002 (000000027C872DF8)
+[LOG] SoundI::release                          :  (000000004D9BD908)
+[LOG] SoundI::release                          :     HS_Footstep_Noise-003 (000000027C870D78)
+[LOG] SoundI::release                          :  (000000027DF72EF8)
+[LOG] SoundI::release                          :     HS_Footstep_Noise-004 (000000006E647168)
+[LOG] SoundI::release                          :  (000000027CF5B868)
+[LOG] SoundI::release                          :     HS_Footstep_Noise-005 (000000006E4CB428)
+[LOG] SoundI::release                          :  (000000027DF6DE78)
+[LOG] SoundI::release                          :     HS_Footstep_Grass-002 (000000027DF06AB8)
+[LOG] SoundI::release                          :  (000000004D9C0598)
+[LOG] SoundI::release                          :     HS_Footstep_Grass-003 (000000027D30A158)
+[LOG] SoundI::release                          :  (000000027DF6F578)
+[LOG] SoundI::release                          :     HS_Footstep_Grass-004 (000000027DF06DF8)
+[LOG] SoundI::release                          :  (0000000025C2DBE8)
+[LOG] SoundI::release                          :     HS_Footstep_Grass-005 (000000004CF9BF88)
+[LOG] SoundI::release                          :  (000000027CF56AC8)
+[LOG] SoundI::release                          :     HS_Footstep_Grass-001 (000000006E492608)
+[LOG] SoundI::release                          :  (000000027DF6F858)
+[LOG] SoundI::release                          :     Skull Connect-002 (000000027DF012F8)
+[LOG] SoundI::release                          :  (000000006E502648)
+[LOG] SoundI::release                          :     Skull Connect-001 (000000027DF04D78)
+[LOG] SoundI::release                          :  (000000004D9C26A8)
+[LOG] SoundI::release                          :     Skull Connect-003 (000000027C870A38)
+[LOG] SoundI::release                          :  (000000004D9BD4B8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-011 (000000027D3078B8)
+[LOG] SoundI::release                          :  (0000000025C2EA48)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-012 (000000027C8737B8)
+[LOG] SoundI::release                          :  (000000027CF59BA8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-013 (000000006E4CC948)
+[LOG] SoundI::release                          :  (000000006E6DF168)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-014 (000000006E6462C8)
+[LOG] SoundI::release                          :  (000000006E503D48)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-015 (000000006E4CF388)
+[LOG] SoundI::release                          :  (000000027CF577B8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-016 (000000004E929768)
+[LOG] SoundI::release                          :  (000000027CF58058)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-017 (000000004E92BCC8)
+[LOG] SoundI::release                          :  (000000027CF5C9A8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-018 (000000006E4C9068)
+[LOG] SoundI::release                          :  (000000004D9C2818)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-019 (000000027C871C18)
+[LOG] SoundI::release                          :  (000000027DF72208)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-020 (000000006E6477E8)
+[LOG] SoundI::release                          :  (000000006E502368)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-021 (000000027DF00E18)
+[LOG] SoundI::release                          :  (000000004D9C0708)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-022 (000000027D307578)
+[LOG] SoundI::release                          :  (000000027DF6EE48)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-023 (000000027DF07478)
+[LOG] SoundI::release                          :  (000000027DF6D5D8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-024 (000000006E64AF28)
+[LOG] SoundI::release                          :  (000000004D9BF738)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-025 (000000027D309798)
+[LOG] SoundI::release                          :  (000000006E507838)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-026 (000000006E4C9208)
+[LOG] SoundI::release                          :  (000000027DF6E718)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-028 (000000006E646608)
+[LOG] SoundI::release                          :  (000000004D9BEA48)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-029 (000000027D3080D8)
+[LOG] SoundI::release                          :  (000000006E5021F8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-030 (000000027DF05F58)
+[LOG] SoundI::release                          :  (000000027CF5B6F8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-031 (000000006E4CB288)
+[LOG] SoundI::release                          :  (000000027CF57368)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-032 (000000006E48F3A8)
+[LOG] SoundI::release                          :  (000000006E500258)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-033 (000000027DF04BD8)
+[LOG] SoundI::release                          :  (000000006E505448)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-034 (000000027DF05A78)
+[LOG] SoundI::release                          :  (000000027CF56DA8)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-035 (000000006E491DE8)
+[LOG] SoundI::release                          :  (000000006E501398)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-001 (000000027DF02678)
+[LOG] SoundI::release                          :  (000000027DF6D748)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-008 (000000006E64B0C8)
+[LOG] SoundI::release                          :  (000000006E500538)
+[LOG] SoundI::release                          :     HS_Seagull_Oneshot-010 (000000027DF072D8)
+[LOG] SoundI::release                          :  (000000004D9C1E08)
+[LOG] SoundI::release                          :     Grass Footstep-001 (000000027D307098)
+[LOG] SoundI::release                          :  (000000027CF5BCB8)
+[LOG] SoundI::release                          :     Grass Footstep-002 (000000006E4CBF88)
+[LOG] SoundI::release                          :  (000000027DF70828)
+[LOG] SoundI::release                          :     Grass Footstep-003 (000000006E646FC8)
+[LOG] SoundI::release                          :  (000000027CF5CC88)
+[LOG] SoundI::release                          :     Grass Footstep-004 (000000006E4CBAA8)
+[LOG] SoundI::release                          :  (000000006E5038F8)
+[LOG] SoundI::release                          :     Grass Footstep-005 (000000027DF06778)
+[LOG] SoundI::release                          :  (000000027DF734B8)
+[LOG] SoundI::release                          :     Grass Footstep-006 (000000006E647308)
+[LOG] SoundI::release                          :  (000000027CF56958)
+[LOG] SoundI::release                          :     Grass Footstep-007 (000000004E92B988)
+[LOG] SoundI::release                          :  (000000006E5066F8)
+[LOG] SoundI::release                          :     Grass Footstep-008 (000000006E4C8EC8)
+[LOG] SoundI::release                          :  (000000006E501228)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-002 (000000006E4D0228)
+[LOG] SoundI::release                          :  (000000027CF57A98)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-003 (000000006E491F88)
+[LOG] SoundI::release                          :  (000000027DF70C78)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-004 (000000027DF087F8)
+[LOG] SoundI::release                          :  (000000027DF74488)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowSynth-001 (000000006E64B408)
+[LOG] SoundI::release                          :  (0000000025C2F2E8)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-003 (000000027C872438)
+[LOG] SoundI::release                          :  (000000027DF6CA58)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-004 (000000027DF07FD8)
+[LOG] SoundI::release                          :  (000000027CF56508)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-001 (000000006E4CB908)
+[LOG] SoundI::release                          :  (000000006E505FC8)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_LowNoise-002 (000000006E4CE9C8)
+[LOG] SoundI::release                          :  (000000004D9BFB88)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-002 (000000027D309118)
+[LOG] SoundI::release                          :  (000000004D9BDBE8)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-003 (000000027D309AD8)
+[LOG] SoundI::release                          :  (000000027DF71DB8)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-004 (000000027DF08658)
+[LOG] SoundI::release                          :  (000000027CF59A38)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_BounceSynth-001 (000000006E4922C8)
+[LOG] SoundI::release                          :  (000000006E506F98)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-003 (000000006E4CD308)
+[LOG] SoundI::release                          :  (0000000025C30878)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-004 (000000027C873C98)
+[LOG] SoundI::release                          :  (000000004D9BF5C8)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-001 (000000027C872AB8)
+[LOG] SoundI::release                          :  (000000004D9BE318)
+[LOG] SoundI::release                          :     HS_Wall Bounce Connect_HighNoise-002 (000000027D307F38)
+[LOG] SoundI::release                          :  (0000000025C2E8D8)
+[LOG] SoundI::release                          :     Team Combo (000000027C8718D8)
+[LOG] SoundI::release                          :  (000000004D9C41F8)
+[LOG] SoundI::release                          :     Collect Skull Hamster-003 (000000004E92A7A8)
+[LOG] SoundI::release                          :  (000000004D9BE488)
+[LOG] SoundI::release                          :     Collect Skull Hamster-002 (000000027C870218)
+[LOG] SoundI::release                          :  (000000027DF73A78)
+[LOG] SoundI::release                          :     Collect Skull Hamster-001 (000000006E6474A8)
+[LOG] SoundI::release                          :  (000000006E507DF8)
+[LOG] SoundI::release                          :     HS_Hamster Connect_SynthNoise (000000006E4CC128)
+[LOG] SoundI::release                          :  (000000004D9C19B8)
+[LOG] SoundI::release                          :     HS_Hamster Connect_Stutter (000000027C871258)
+[LOG] SoundI::release                          :  (000000027DF71968)
+[LOG] SoundI::release                          :     HS_Hamster Connect_Latch (000000006E646C88)
+[LOG] SoundI::release                          :  (000000027DF6DA28)
+[LOG] SoundI::release                          :     HS_Hamster Connect_Stutter2 (000000027DF08178)
+[LOG] SoundI::release                          :  (000000006E505CE8)
+[LOG] SoundI::release                          :     HS_Hamster Connect_Rise (000000006E4CA588)
+[LOG] SoundI::release                          :  (000000027DF73798)
+[LOG] SoundI::release                          :     HS_Hamster Collected_HiNoise-003 (000000006E64ABE8)
+[LOG] SoundI::release                          :  (000000006E504E88)
+[LOG] SoundI::release                          :     HS_Hamster Collected_LowNoise-004 (000000006E4D03C8)
+[LOG] SoundI::release                          :  (000000004D9BEBB8)
+[LOG] SoundI::release                          :     HS_RainbowGlisten(short)-004 (000000027D309458)
+[LOG] SoundI::release                          :  (000000006E504308)
+[LOG] SoundI::release                          :     HS_RainbowGlisten(short)-001 (000000006E4CF6C8)
+[LOG] SoundI::release                          :  (000000027CF5ACE8)
+[LOG] SoundI::release                          :     HS_RainbowGlisten(short)-002 (000000006E48F208)
+[LOG] SoundI::release                          :  (000000006E501508)
+[LOG] SoundI::release                          :     HS_Attack_SynthLow-001 (000000027DF05C18)
+[LOG] SoundI::release                          :  (000000004D9BF178)
+[LOG] SoundI::release                          :     HS_Attack_SynthLow-002 (000000027D309938)
+[LOG] SoundI::release                          :  (000000027DF727C8)
+[LOG] SoundI::release                          :     HS_Attack_SynthLow-003 (000000006E64B748)
+[LOG] SoundI::release                          :  (000000006E503058)
+[LOG] SoundI::release                          :     HS_Attack_SynthLow-004 (000000006E4D08A8)
+[LOG] SoundI::release                          :  (000000027CF59028)
+[LOG] SoundI::release                          :     HS_Attack_LowNoise-001 (000000004E92B168)
+[LOG] SoundI::release                          :  (000000027DF710C8)
+[LOG] SoundI::release                          :     HS_Attack_LowNoise-002 (000000006E649868)
+[LOG] SoundI::release                          :  (000000006E504D18)
+[LOG] SoundI::release                          :     HS_Attack_LowNoise-003 (000000027DF01978)
+[LOG] SoundI::release                          :  (000000027CF567E8)
+[LOG] SoundI::release                          :     HS_Attack_LowNoise-004 (000000004E928A68)
+[LOG] SoundI::release                          :  (000000027DF6E5A8)
+[LOG] SoundI::release                          :     HS_Attack_Punch-001 (000000006E647E68)
+[LOG] SoundI::release                          :  (0000000025C2F178)
+[LOG] SoundI::release                          :     HS_Attack_Punch-002 (000000027C873138)
+[LOG] SoundI::release                          :  (000000004D9C0B58)
+[LOG] SoundI::release                          :     HS_Attack_Punch-003 (000000027D3085B8)
+[LOG] SoundI::release                          :  (000000006E505A08)
+[LOG] SoundI::release                          :     HS_Attack_Punch-004 (000000027DF04F18)
 [LOG] Thread::callback                         : FMOD Studio update thread finished.
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
-[LOG] ProfileClient::markForDead               : Closing client connection
 [LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
-[LOG] FMOD_OS_Net_Read                         : Interrupted.[LOG] Thread::callback                         : FMOD profiler thread (send) finished.
-[ERR] ProfileClient::recvThreadLoopFunction    : Recv thread loop returned 16
-[LOG] Thread::callback                         : FMOD profiler thread (recv) finished.
 [LOG] Thread::callback                         : FMOD Studio sample load thread finished.
 [LOG] LiveUpdate::release                      : 
 [LOG] LiveUpdate::reset                        : Reset connection (reason Disconnected)
