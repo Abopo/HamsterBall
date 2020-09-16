@@ -130,7 +130,8 @@ public class StageMusic : MonoBehaviour {
 
     void GameEnd() {
         // Stop the music
-        //_stageMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        _stageMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        _stageAmbience.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         Debug.Log("GAMEENDFUNCTION");
     }
 

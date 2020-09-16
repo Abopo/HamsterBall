@@ -61,6 +61,7 @@
     <object class="GroupTrack" id="{e69095bb-e973-4140-ba3a-bebf7aaf5942}">
         <relationship name="automationTracks">
             <destination>{81b596b8-37f3-4abf-8bf9-70eebfb49c57}</destination>
+            <destination>{a6815484-6ae2-4990-97be-99f43485c489}</destination>
         </relationship>
         <relationship name="modules">
             <destination>{a8b63e48-4fd0-49a2-874f-55c92ce44b1e}</destination>
@@ -96,10 +97,18 @@
             <destination>{fcc9c382-bdb9-49cb-b9e6-a8ca837b1400}</destination>
         </relationship>
     </object>
+    <object class="AutomationTrack" id="{a6815484-6ae2-4990-97be-99f43485c489}">
+        <relationship name="automator">
+            <destination>{e335f8bf-45f6-405e-b6df-15eb1af5450d}</destination>
+        </relationship>
+    </object>
     <object class="SnapshotModule" id="{a8b63e48-4fd0-49a2-874f-55c92ce44b1e}">
         <property name="length">
             <value>6</value>
         </property>
+        <relationship name="automators">
+            <destination>{e335f8bf-45f6-405e-b6df-15eb1af5450d}</destination>
+        </relationship>
         <relationship name="event">
             <destination>{a2a37cc4-5dea-4701-8718-73c8d5ec5eac}</destination>
         </relationship>
@@ -131,6 +140,11 @@
     </object>
     <object class="MixerBusPanner" id="{dd6958d6-ba45-4461-a8eb-fc3766196ed2}"/>
     <object class="MixerBusFader" id="{ea448b1d-d794-4838-82fa-e92ec8439d10}"/>
+    <object class="Automator" id="{e335f8bf-45f6-405e-b6df-15eb1af5450d}">
+        <property name="nameOfPropertyBeingAutomated">
+            <value>intensity</value>
+        </property>
+    </object>
     <object class="Automator" id="{fcc9c382-bdb9-49cb-b9e6-a8ca837b1400}">
         <property name="nameOfPropertyBeingAutomated">
             <value>volume</value>
@@ -172,7 +186,7 @@
     <object class="MixerBusFader" id="{8771a02f-3e00-4117-9b74-b722e168672a}"/>
     <object class="AutomationPoint" id="{3dc5c39e-9b71-4b89-b8bb-53a1bfd7ae1f}">
         <property name="position">
-            <value>6.4952830188679247</value>
+            <value>6.0234558561765752</value>
         </property>
         <property name="value">
             <value>-80</value>

@@ -132,9 +132,10 @@ public class SoundManager : MonoBehaviour {
 	public string MenuGeneral;
 	public FMOD.Studio.EventInstance MenuGeneralEvent;
 
+    public FMOD.Studio.EventInstance PetrifyEvent;
 
 
-	void Awake () {
+    void Awake () {
         /*if (mainAudio != null) {
             DestroyImmediate(this);
         } else {
@@ -188,6 +189,18 @@ public class SoundManager : MonoBehaviour {
     }
     //SoundManager.mainAudio.Footstep()
     //FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.testSound);
+
+    public void PlayPetrifyEvent(bool play) {
+        if (play == true) { 
+            PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Game Sounds/Petrify");
+            PetrifyEvent.start();
+        }
+
+        if (play == false) {
+            PetrifyEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            PetrifyEvent.release();
+        }
+    }
 
     public void Door() {
         DoorEvent = FMODUnity.RuntimeManager.CreateInstance(DoorSound);

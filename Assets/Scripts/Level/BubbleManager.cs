@@ -134,8 +134,7 @@ public class BubbleManager : MonoBehaviour {
     DividerFlash _divider;
 
     ScoreManager _scoreManager;
-
-    public FMOD.Studio.EventInstance PetrifyEvent;
+    
 
     BubbleManager _enemyBubbleManager;
     GameManager _gameManager;
@@ -677,8 +676,7 @@ public class BubbleManager : MonoBehaviour {
             }
 
             // stop the petrify sound
-
-            PetrifyEvent.release();
+            
             
             _petrifySequence = false;
 
@@ -1168,9 +1166,8 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void StartPetrifySequence(Bubble bub) {
-        PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Game Sounds/Petrify");
-        PetrifyEvent.start();
 
+        SoundManager.mainAudio.PlayPetrifyEvent(true);
         StartCoroutine(bub.Petrify());
     }
 

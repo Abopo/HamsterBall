@@ -57,6 +57,8 @@ public class GameEndSequence : MonoBehaviour {
 
         GetPlayers();
 
+
+
         // Set the banner sprites and text
         switch(winningTeam) {
             case 0: // Draw
@@ -87,6 +89,7 @@ public class GameEndSequence : MonoBehaviour {
     }
 
     public void ShiftFirstPlayers() {
+        SoundManager.mainAudio.PlayPetrifyEvent(false);
         if (_sequence < 1) {
             ShiftState tempShiftState;
 
