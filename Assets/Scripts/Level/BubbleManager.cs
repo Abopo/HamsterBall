@@ -677,7 +677,9 @@ public class BubbleManager : MonoBehaviour {
             }
 
             // stop the petrify sound
+
             PetrifyEvent.release();
+            
             _petrifySequence = false;
 
             _levelManager.ActivateResultsScreen(team, _roundResult);
@@ -1166,7 +1168,7 @@ public class BubbleManager : MonoBehaviour {
     }
 
     public void StartPetrifySequence(Bubble bub) {
-        PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Petrify);
+        PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Game Sounds/Petrify");
         PetrifyEvent.start();
 
         StartCoroutine(bub.Petrify());
