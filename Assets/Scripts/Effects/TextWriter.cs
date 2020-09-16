@@ -32,6 +32,14 @@ public class TextWriter : MonoBehaviour {
             if(_writeTimer >= _writeDelay) {
                 // Display the next character
                 _displayString += _textToWrite[_index];
+
+                // Display rich text tags all at once
+                if(_textToWrite[_index] == '<') {
+                    while(_textToWrite[_index] != '>') {
+                        _displayString += _textToWrite[++_index];
+                    }
+                }
+
                 displayText.text = _displayString;
 
                 // TODO: Maybe play a little typey sound

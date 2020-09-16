@@ -27,6 +27,8 @@ public class Node : MonoBehaviour {
             adjBubbles = value;
         }
     }
+
+    public BubbleManager homeBubbleManager;
     
     void Awake() {
         adjBubbles = new Bubble[6];
@@ -37,6 +39,11 @@ public class Node : MonoBehaviour {
         //GetComponentInParent<BubbleManager>().boardChangedEvent.AddListener(CheckCanBeHit);
         CheckRelevancy();
 	}
+
+    public void Initialize(BubbleManager bubMan, int num) {
+        homeBubbleManager = bubMan;
+        number = num;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -171,7 +178,12 @@ public class Node : MonoBehaviour {
     }
 
     // Whether or not this node has any adjBubbles at all
+    // or is the top row
     public bool Floating() {
+        if(number < homeBubbleManager.TopLineLength) {
+            return false;
+        }
+
         foreach(Bubble bub in adjBubbles) {
             if(bub != null) {
                 return false;

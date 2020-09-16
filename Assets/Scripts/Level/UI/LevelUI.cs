@@ -43,7 +43,7 @@ public class LevelUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (levelTimer != null) {
+        if (levelTimer != null && _levelManager != null) {
             int seconds = Mathf.FloorToInt(_levelManager.LevelTimer % 60);
             int minutes = Mathf.FloorToInt(_levelManager.LevelTimer / 60);
             levelTimer.text = string.Format("{0}:{1:00}", minutes, seconds);

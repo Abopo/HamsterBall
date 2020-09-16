@@ -71,8 +71,8 @@ public class BubbleManager : MonoBehaviour {
     public bool GameOver { get => _gameOver; }
 
     int _roundResult;
-    protected bool _gameEndingSequence = false;
-    public bool GameEndingSequence { get => _gameEndingSequence; set => _gameEndingSequence = value; }
+    protected bool _petrifySequence = false;
+    public bool PetrifySequence { get => _petrifySequence; set => _petrifySequence = value; }
 
     GameObject _bubbleObj;
     GameObject _nodeObj;
@@ -134,6 +134,8 @@ public class BubbleManager : MonoBehaviour {
     DividerFlash _divider;
 
     ScoreManager _scoreManager;
+
+    public FMOD.Studio.EventInstance PetrifyEvent;
 
     BubbleManager _enemyBubbleManager;
     GameManager _gameManager;
@@ -244,7 +246,9 @@ public class BubbleManager : MonoBehaviour {
             SeedNextLineBubbles();
         }
 
-        _hamsterMeter.Initialize(_baseLineLength, this);
+        if (_hamsterMeter != null) {
+            _hamsterMeter.Initialize(_baseLineLength, this);
+        }
 
         // Send RPC if we are networked
         if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
@@ -284,7 +288,8 @@ public class BubbleManager : MonoBehaviour {
             for(int j = 0; j < lineLength; ++j) {
                 nodeSpawnPos = new Vector3((transform.position.x+xOffset) + (0.84f * j), (transform.position.y + 2.9f) - (_nodeHeight * i), -1);
                 newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
-                newNode.GetComponent<Node>().number = nodeList.Count;
+                //newNode.GetComponent<Node>().number = nodeList.Count;
+                newNode.GetComponent<Node>().Initialize(this, nodeList.Count);
                 nodeList.Add(newNode.GetComponent<Node>());
                 newNode.transform.parent = _nodesParent;
             }
@@ -661,7 +666,7 @@ public class BubbleManager : MonoBehaviour {
             return;
         }
 
-        if (_gameEndingSequence) {
+        if (_petrifySequence) {
             // Wait until all the bubbles are petrified (or something weird happened and the sequence ended prematurely)
             foreach (Bubble bub in _bubbles) {
                 // If a bubble is still petrifying
@@ -671,7 +676,9 @@ public class BubbleManager : MonoBehaviour {
                 }
             }
 
-            _gameEndingSequence = false;
+            // stop the petrify sound
+            PetrifyEvent.release();
+            _petrifySequence = false;
 
             _levelManager.ActivateResultsScreen(team, _roundResult);
         }
@@ -922,7 +929,8 @@ public class BubbleManager : MonoBehaviour {
             newNode = Instantiate(_nodeObj, nodeSpawnPos, Quaternion.identity) as GameObject;
             newNode.transform.parent = _nodesParent;
             newNode.transform.SetAsFirstSibling();
-            newNode.GetComponent<Node>().number = j;
+            //newNode.GetComponent<Node>().number = j;
+            newNode.GetComponent<Node>().Initialize(this, j);
             nodeList.Insert(0, newNode.GetComponent<Node>());
         }
 
@@ -1123,7 +1131,7 @@ public class BubbleManager : MonoBehaviour {
         if (!PhotonNetwork.connectedAndReady || PhotonNetwork.isMasterClient) {
             // If there's a bubble on the bottom line
             if (CheckBottomLine()) {
-                _gameEndingSequence = true;
+                _petrifySequence = true;
 
                 // Check for a tie
                 if (_enemyBubbleManager != null && _enemyBubbleManager.CheckBottomLine()) {
@@ -1149,11 +1157,19 @@ public class BubbleManager : MonoBehaviour {
                 bubbleOnBottomLine = true;
 
                 // Game is over, begin petrification from bubble that hit bottom line
-                StartCoroutine(_bubbles[i].Petrify());
+                StartPetrifySequence(_bubbles[i]);
+                //StartCoroutine(_bubbles[i].Petrify());
             }
         }
 
         return bubbleOnBottomLine;
+    }
+
+    public void StartPetrifySequence(Bubble bub) {
+        PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Petrify);
+        PetrifyEvent.start();
+
+        StartCoroutine(bub.Petrify());
     }
 
     // TODO: Move this to the level manager?
@@ -1198,7 +1214,7 @@ public class BubbleManager : MonoBehaviour {
             _gameManager.EndGame(-1, 0);
         }
 
-        if(!_gameEndingSequence) {
+        if(!_petrifySequence) {
             _levelManager.ActivateResultsScreen(team, _roundResult);
         }
     }

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 public class PullDownWindow : MonoBehaviour {
-    public GameObject changeText;
+    public SuperTextMesh changeText;
 
     public CSPlayerController _playerController;
     public CSPlayerController PlayerController {
@@ -27,7 +28,11 @@ public class PullDownWindow : MonoBehaviour {
         // Make sure the window is up at the start
         transform.localPosition = new Vector3(transform.localPosition.x, _upYPos, transform.localPosition.z);
 
-        changeText.SetActive(false);
+        if(ReInput.controllers.joystickCount == 0) {
+            changeText.text = "L to change";
+        }
+
+        changeText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -62,10 +67,10 @@ public class PullDownWindow : MonoBehaviour {
     }
 
     public void PlayerLeft() {
-        changeText.SetActive(true);
+        changeText.gameObject.SetActive(true);
     }
     public void PlayerReturned() {
-        changeText.SetActive(false);
+        changeText.gameObject.SetActive(false);
     }
 
 }

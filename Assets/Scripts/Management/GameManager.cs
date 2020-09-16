@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Rewired;
 
 public enum GAME_MODE { SP_POINTS = 0, SP_MATCH, SP_CLEAR, MP_VERSUS, MP_PARTY, SURVIVAL, TEAMSURVIVAL, NUM_MODES }
-public enum MENU { STORY = 0, VERSUS, EDITOR, ONLINE };
+public enum MENU { STORY = 0, VERSUS, EDITOR, ONLINE, VILLAGE };
 
 public class GameManager : MonoBehaviour {
     public bool testMode;
@@ -230,7 +230,7 @@ public class GameManager : MonoBehaviour {
                     ES3.Save<int[,]>("CoopHighScores", coopHighscores);
 
                     // Analytics
-                    ReportSoloHighscore(coopHighscores[stage[0] - 1, stage[1] - 1]);
+                    ReportCoopHighscore(coopHighscores[stage[0] - 1, stage[1] - 1]);
                 } else {
                     int[,] soloHighscores = ES3.Load<int[,]>("SoloHighScores");
                     SetHighscores(soloHighscores);

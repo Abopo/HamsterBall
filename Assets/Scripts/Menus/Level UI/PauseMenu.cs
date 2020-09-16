@@ -156,6 +156,9 @@ public class PauseMenu : Menu {
             case MENU.EDITOR:
                 _gameManager.BoardEditorButton();
                 break;
+            case MENU.VILLAGE:
+                _gameManager.VillageButton();
+                break;
         }
     }
 

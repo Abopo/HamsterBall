@@ -101,7 +101,7 @@ public class TutorialManager : MonoBehaviour {
             case 0:
                 cutsceneManager.StartCutscene(GetCorrectTutorial("Tutorials/MovementTutorial"));
                 if (_controller) {
-                    tutorialInfoText.text = "Move with <c=white>Left Joystick<c=white>, Jump with <c=green>A<c=white>. Get up high!";
+                    tutorialInfoText.text = "Move with Left Joystick, Jump with <c=green>A<c=white>. Get up high!";
                 } else {
                     tutorialInfoText.text = "Move with <c=green>A/D<c=white>, Jump with <c=green>W<c=white>. Get up high!";
                 }

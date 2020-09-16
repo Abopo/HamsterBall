@@ -42,6 +42,10 @@ public class TutorialButton : MonoBehaviour {
         GameManager _gameManager = _playerManager.GetComponent<GameManager>();
         _gameManager.selectedBoard = BOARDS.FOREST;
         _gameManager.SetGameMode(GAME_MODE.MP_VERSUS);
+        _gameManager.prevMenu = MENU.VILLAGE;
+
+        // Set the welcome screen to seen?
+        WelcomeScreen.shown = true;
 
         // Load the tutorial scene
         SceneManager.LoadScene("OpeningTutorial");

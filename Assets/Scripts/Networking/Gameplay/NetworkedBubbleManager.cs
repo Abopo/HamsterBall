@@ -462,13 +462,14 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
             // just petrify something
             for(int i = _bubbleManager.Bubbles.Length-1; i > 0; --i) {
                 if(_bubbleManager.Bubbles[i] != null) {
-                    StartCoroutine(_bubbleManager.Bubbles[i].Petrify());
+                    _bubbleManager.StartPetrifySequence(_bubbleManager.Bubbles[i]);
+                    //StartCoroutine(_bubbleManager.Bubbles[i].Petrify());
                     break;
                 }
             }
         }
 
-        _bubbleManager.GameEndingSequence = true;
+        _bubbleManager.PetrifySequence = true;
 
         // TODO: handle ties
         // End the game

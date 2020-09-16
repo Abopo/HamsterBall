@@ -75,7 +75,6 @@ public class Bubble : MonoBehaviour {
     bool _boardChanged = false;
 
 	public FMOD.Studio.EventInstance BubbleDropEvent;
-	public FMOD.Studio.EventInstance PetrifyEvent;
 	public FMOD.Studio.EventInstance PetrifyBubbleEvent;
 
     PlayerController _playerController;
@@ -1125,10 +1124,6 @@ public class Bubble : MonoBehaviour {
 		PetrifyBubbleEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.PetrifyBubble);
 		PetrifyBubbleEvent.start();
 		PetrifyBubbleEvent.release();
-
-		PetrifyEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.Petrify);
-		PetrifyEvent.start();
-		//PetrifyEvent.release();
 
         yield return new WaitForSeconds(0.2f);
 

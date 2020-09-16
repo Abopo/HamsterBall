@@ -12,7 +12,7 @@ public class DemoManager : MonoBehaviour {
     float _waitTime = 30f;
     float _waitTimer = 0f;
 
-    float _nextMatchTime = 5f;
+    float _nextMatchTime = 15f;
     float _nextMatchTimer = 0f;
 
     SuperTextMesh _controllerText;
@@ -76,7 +76,7 @@ public class DemoManager : MonoBehaviour {
                     _nextMatchTimer = 0f;
 
                     // If the set isn't over yet
-                    if(_gameManager.leftTeamGames < 2 || _gameManager.rightTeamGames < 2) {
+                    if(_gameManager.leftTeamGames < 2 && _gameManager.rightTeamGames < 2) {
                         // Hit continue
                         _levelManager.continueScreen.ContinueToNextLevel();
                     } else {

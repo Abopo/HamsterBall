@@ -15,6 +15,8 @@ public class StopGoLever : MonoBehaviour {
     }
 
     bool _isRotating;
+    Vector3 leftPos = new Vector3(0f, 0f, 0f);
+    Vector3 rightPos = new Vector3(0f, 0f, 255f);
 
     StopGoButton _button;
 
@@ -28,26 +30,49 @@ public class StopGoLever : MonoBehaviour {
         if(_isRotating) {
             if(_isLeft) {
                 // Rotate to the right
+                if(Vector3.Distance(transform.eulerAngles, rightPos) > 0.01f) {
+                    float angle = Mathf.MoveTowardsAngle(transform.eulerAngles.z, 255f, rotSpeed * Time.deltaTime);
+                    transform.eulerAngles = new Vector3(0f, 0f, angle);
+                } else {
+                    transform.eulerAngles = rightPos;
+                    _isLeft = false;
+                    EndRotation();
+                }
+
+                /*
                 transform.Rotate(0f, 0f, -rotSpeed * Time.deltaTime);
                 if (Mathf.Abs(transform.rotation.eulerAngles.z - 255f) < 2f) {
                     transform.rotation = Quaternion.Euler(0f, 0f, -105f);
                     _isLeft = false;
                     EndRotation();
                 }
+                */
             } else {
                 // Rotate left
+                if (Vector3.Distance(transform.eulerAngles, leftPos) > 0.01f) {
+                    float angle = Mathf.MoveTowardsAngle(transform.eulerAngles.z, 0f, rotSpeed * Time.deltaTime);
+                    transform.eulerAngles = new Vector3(0f, 0f, angle);
+                } else {
+                    transform.eulerAngles = leftPos;
+                    _isLeft = true;
+                    EndRotation();
+                }
+
+                /*
                 transform.Rotate(0f, 0f, rotSpeed * Time.deltaTime);
                 if (transform.rotation.eulerAngles.z < 2f) {
                     transform.rotation = Quaternion.identity;
                     _isLeft = true;
                     EndRotation();
                 }
+                */
             }
         }
     }
 
     public void ChangePosition(StopGoButton invoker) {
-
+        _button = invoker;
+        _isRotating = true;
 
         FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/LeverStart1");
         LeverMoveEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Stages/LeverMove1");

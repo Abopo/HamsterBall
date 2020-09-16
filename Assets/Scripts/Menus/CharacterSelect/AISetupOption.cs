@@ -72,7 +72,6 @@ public class AISetupOption : MenuOption {
     }
 
     void UpdateText() {
-        aiDifficultyText.text = aiInfo.difficulty.ToString();
         switch (aiInfo.difficulty) {
             case 1:
             case 2:
@@ -93,6 +92,8 @@ public class AISetupOption : MenuOption {
                 aiDifficultyText.color = Color.red;
                 break;
         }
+
+        aiDifficultyText.text = aiInfo.difficulty.ToString();
     }
 
 }

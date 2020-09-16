@@ -55,7 +55,7 @@ public class CutsceneCharacter : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        transform.Translate(_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
+        //transform.Translate(_slideSpeed * Time.unscaledDeltaTime, 0f, 0f);
         //_rectTransform.anchoredPosition = new Vector2(offScreenPos, _rectTransform.localPosition.y);
     }
 

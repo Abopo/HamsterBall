@@ -113,6 +113,10 @@ public class ResultsScreen : MonoBehaviour {
             if (_gameManager.IsLastLevel() && result == -1) {
                 EarnFlowers();
             }
+        } else if (SceneManager.GetActiveScene().name == "OpeningTutorial") {
+            SetSinglePlayerResultsText(result);
+
+            flower.sprite = flowerSprites[2];
         } else {
             SetWinningTeamText(result);
         }
