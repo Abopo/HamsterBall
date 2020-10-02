@@ -26,11 +26,12 @@ public class MenuButton : MenuOption {
     }
 
     void Initialize() {
-        _baseScale = transform.localScale;
-        _selectedScale = new Vector3(_baseScale.x * 1.1f,
-                                     _baseScale.y * 1.1f,
-                                     _baseScale.z);
-
+        if (_baseScale.x == 0) {
+            _baseScale = transform.localScale;
+            _selectedScale = new Vector3(_baseScale.x * 1.1f,
+                                         _baseScale.y * 1.1f,
+                                         _baseScale.z);
+        }
         _button = GetComponent<Button>();
     }
 

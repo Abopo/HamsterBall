@@ -12,7 +12,9 @@ public class EntityPhysics : MonoBehaviour {
     private Entity entity;
     private Collider2D _myCollider;
 
-    private float _skin = 0.005f;
+    private float _skinX = 0.005f;
+    public float SkinX { get => _skinX; set => _skinX = value; }
+    private float _skinY = 0.005f;
 
     private Ray2D _ray;
     private RaycastHit2D _hit;
@@ -44,6 +46,7 @@ public class EntityPhysics : MonoBehaviour {
     public bool IsOnPassthrough {
         get { return isOnPassthrough; }
     }
+
 
     private void Awake() {
         entity = GetComponent<Entity>();
@@ -81,12 +84,12 @@ public class EntityPhysics : MonoBehaviour {
             _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
             // Draw last so it matches position
             //Debug.DrawRay(new Vector2(_ray.origin.x+deltaX, _ray.origin.y), _ray.direction * Mathf.Abs(deltaX));
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX), collisionMaskX);
+            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX)+_skinX, collisionMaskX);
             if (_hit) {
                 float dst = Vector2.Distance(_ray.origin, _hit.point);
 
-                if (dst > _skin) {
-                    deltaX = dst * dir + _skin;
+                if (dst < _skinX) {
+                    deltaX = -dir * _skinX;
                 } else {
                     deltaX = 0;
                 }
@@ -144,8 +147,8 @@ public class EntityPhysics : MonoBehaviour {
 
                 float dst = Vector2.Distance(_ray.origin, _hit.point);
 
-                if (dst > _skin) {
-                    deltaY = dst * dir + _skin;
+                if (dst > _skinY) {
+                    deltaY = dst * dir + _skinY;
                 } else {
                     deltaY = 0;
                 }

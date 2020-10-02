@@ -17,7 +17,7 @@ public class VillageHamster : MonoBehaviour {
 
     int _villageIndex; // The current index of the village
 
-    HamsterDialogue hamsterDialogue;
+    protected HamsterDialogue hamsterDialogue;
     VillageManager _villageManager;
 
 	// Use this for initialization

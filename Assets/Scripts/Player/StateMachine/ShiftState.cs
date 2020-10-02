@@ -48,7 +48,7 @@ public class ShiftState : PlayerState {
 
         _takeOffPosition = playerController.transform.position;
 
-        float shiftDistance = 12.5f;
+        float shiftDistance = 12.8f;
         //if(playerController.LevelManager.mirroredLevel) {
         //shiftDistance = Mathf.Abs(playerController.transform.position.x) * 2;
         //}

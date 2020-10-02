@@ -119,6 +119,8 @@ public class StagePicture : MonoBehaviour {
     }
 
     void SetBorder(StoryButton storyButton) {
-        border.sprite = borderImages[storyButton.locationName];
+        if (borderImages.ContainsKey(storyButton.locationName)) {
+            border.sprite = borderImages[storyButton.locationName];
+        }
     }
 }

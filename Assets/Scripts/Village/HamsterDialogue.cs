@@ -21,7 +21,7 @@ public class HamsterDialogue : MonoBehaviour {
 
     public FMOD.Studio.EventInstance HamsterTalkEvent;
 
-    private void Awake() {
+    protected virtual void Awake() {
         _dialogueCanvas = transform.GetChild(0).gameObject;
         _textWriter = GetComponent<TextWriter>();
 
@@ -33,7 +33,7 @@ public class HamsterDialogue : MonoBehaviour {
         _gameManager = FindObjectOfType<GameManager>();
     }
     // Use this for initialization
-    void Start () {
+    protected virtual void Start () {
         _isPlayerHere = false;
 
         // Load the right talking sound
@@ -59,7 +59,7 @@ public class HamsterDialogue : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    protected virtual void Update () {
         if (_isPlayerHere && !_gameManager.isPaused) {
             if (_playerInput.GetButtonDown("Interact")) {
                 if(!_dialogueCanvas.activeSelf) {
@@ -76,7 +76,7 @@ public class HamsterDialogue : MonoBehaviour {
         }
     }
 
-    void DisplayDialogue() {
+    protected virtual void DisplayDialogue() {
         if (dialogue != "") {
             _dialogueCanvas.SetActive(true);
             _textWriter.StartWriting(dialogue);

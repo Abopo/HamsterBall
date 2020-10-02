@@ -27,7 +27,7 @@ public class LevelUI : MonoBehaviour {
             gM.FillOut();
         }
 
-        if (_gameManager.isSinglePlayer || _gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+        if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
             foreach(GameMarker gM in _gameMarkers) {
                 gM.gameObject.SetActive(false);
             }

@@ -230,9 +230,9 @@ public class StorySelectMenu : MonoBehaviour {
 
             // Place the next world in correct location
             if (dir > 0) {
-                worlds[_curWorld + dir].transform.localPosition = new Vector3(700, _worldYPos, 0);
+                worlds[_curWorld + dir].transform.localPosition = new Vector3(750, _worldYPos, 0);
             } else if(dir < 0) {
-                worlds[_curWorld + dir].transform.localPosition = new Vector3(-700, _worldYPos, 0);
+                worlds[_curWorld + dir].transform.localPosition = new Vector3(-750, _worldYPos, 0);
             }
         }
     }

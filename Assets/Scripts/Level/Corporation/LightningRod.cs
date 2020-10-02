@@ -21,6 +21,7 @@ public class LightningRod : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        /*
 		if(!_isActive) {
             _lightningTimer += Time.deltaTime;
 
@@ -37,16 +38,25 @@ public class LightningRod : MonoBehaviour {
                 Deactivate();
             }
         }
+        */
 	}
 
-    void Activate() {
+    public void StartSparks() {
+
+    }
+
+    public void StopSparks() {
+
+    }
+
+    public void Activate() {
         _isActive = true;
         _activeTimer = 0f;
 
         lightningObj.SetActive(true);
     }
 
-    void Deactivate() {
+    public void Deactivate() {
         _isActive = false;
 
         lightningObj.SetActive(false);

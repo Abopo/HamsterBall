@@ -676,7 +676,7 @@ public class BubbleManager : MonoBehaviour {
             }
 
             // stop the petrify sound
-            
+            //PetrifyEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             
             _petrifySequence = false;
 

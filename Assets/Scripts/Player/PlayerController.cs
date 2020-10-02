@@ -26,6 +26,7 @@ public class PlayerController : Entity {
     public int team; // -1 = no team, 0 = left team, 1 = right team
     public int playerNum;
 	public InputState inputState;
+    public bool hasControl = true;
 
     public int atkModifier; // Modifies the amount of junk generated when making matches
 
@@ -156,6 +157,7 @@ public class PlayerController : Entity {
         get { return _photonView; }
     }
 
+
     // Events
     public UnityEvent significantEvent;
 
@@ -214,7 +216,9 @@ public class PlayerController : Entity {
 
         //	start in idle
         ChangeState(PLAYER_STATE.IDLE);
-	}
+
+        hasControl = true;
+    }
 
     protected virtual void InitStates() {
         _states[0] = new IdleState();
@@ -350,7 +354,9 @@ public class PlayerController : Entity {
 
         // Don't do any of this stuff if the game is paused
         if (!_gameManager.isPaused) {
-            CheckInput();
+            if (hasControl) {
+                CheckInput();
+            }
             direction = _animator.GetBool("FacingRight") ? 1 : -1;
 
             UpdateBubbles();
@@ -374,7 +380,9 @@ public class PlayerController : Entity {
 
             // State update stuff
             if (currentState != null) {
-                currentState.CheckInput(inputState);
+                if (hasControl) {
+                    currentState.CheckInput(inputState);
+                }
                 if (!_justChangedState) { // Give the game a frame to update animations and stuff before heading into update
                     currentState.Update();
                 }

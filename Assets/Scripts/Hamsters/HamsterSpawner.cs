@@ -41,6 +41,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
     public static string spawnPattern = "";
     public static int nextHamsterNum;
 
+    HamsterSpawnAnimation _hamSpawnAnim;
+
     GameManager _gameManager;
     LevelManager _levelManager;
     HamsterScan _hamsterScan;
@@ -64,6 +66,8 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
 
     private void Awake() {
+        _hamSpawnAnim = GetComponent<HamsterSpawnAnimation>();
+
         _gameManager = FindObjectOfType<GameManager>();
         _levelManager = FindObjectOfType<LevelManager>();
 
@@ -275,6 +279,10 @@ public class HamsterSpawner : Photon.PunBehaviour {
 
     public void SpawnHamster() {
         GameObject hamsterGO;
+
+        if(_hamSpawnAnim != null) {
+            _hamSpawnAnim.SpawnAnim();
+        }
         
         // If we are online and connected
         if (PhotonNetwork.connectedAndReady) {

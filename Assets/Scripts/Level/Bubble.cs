@@ -704,10 +704,17 @@ public class Bubble : MonoBehaviour {
 
     void GenerateGarbage(int matchCount, int comboBonus) {
         // Calculate amount of garbage to generate
-        //int garbageCount = (int)Mathf.Pow((matchCount - 2), 2); // 3 = 1, 4 = 4, 5 = 9, 6 = 16, 7 = 25, 8 = 36
         int garbageCount = 3;
-        for (int i = 0; i <= matchCount-3; ++i) {
-            garbageCount += (3 * i) + (i - 1); // 3 = 2, 4 = 5, 5 = 12, 6 = 23, 7 = 38, 8 = 57
+        for (int i = 0; i <= matchCount - 3; ++i) {
+            if (i < 4) {
+                garbageCount += (3 * i) + (i - 1); // 3 = 2, 4 = 5, 5 = 12, 6 = 23
+            } else if (i < 9) {
+                // Above 6 matches each additional ball gives diminishing returns
+                garbageCount += 6 - (i-6); // 7 = 29, 8 = 34, 9 = 38, 10 = 41, 11 = 43, 12 = 44
+            } else {
+                // at this point you only get 1 more garbage per ball
+                garbageCount += 1;
+            }
         }
         
         // Calculate score before the margin multiplier
