@@ -99,6 +99,44 @@ public class InputState {
             shift.isJustPressed = _player.GetButtonDown("Shift");
             shift.isJustReleased = _player.GetButtonUp("Shift");
 
+            // Axis stuff ///////////////////////////
+
+            // Axis seems kinda sensitive when pushing up/down, so make sure we are really pushing left/right
+            if (_player.GetAxis("Vertical") < 0.4f && _player.GetAxis("Vertical") > -0.4f) {
+                // Right
+                if (_player.GetAxis("Horizontal") > 0.1f) {
+                    if (_player.GetAxisPrev("Horizontal") <= 0.1f) {
+                        right.isJustPressed = true;
+                    } else {
+                        right.isJustPressed = false;
+                    }
+                    right.isDown = true;
+                } else {
+                    if (_player.GetAxisPrev("Horizontal") > 0.1f) {
+                        right.isJustReleased = true;
+                    } else {
+                        left.isJustReleased = false;
+                    }
+                    right.isDown = false;
+                }
+                // Left
+                if (_player.GetAxis("Horizontal") < -0.1f) {
+                    if (_player.GetAxisPrev("Horizontal") >= -0.1f) {
+                        left.isJustPressed = true;
+                    } else {
+                        left.isJustPressed = false;
+                    }
+                    left.isDown = true;
+                } else {
+                    if (_player.GetAxisPrev("Horizontal") < -0.1f) {
+                        left.isJustReleased = true;
+                    } else {
+                        left.isJustReleased = false;
+                    }
+                    left.isDown = false;
+                }
+            }
+
             if(shift.isDown) {
                 upJustPressed = true;
             }
@@ -122,6 +160,10 @@ public class InputState {
         } else if(playerID >= 0) {
             _player = ReInput.players.GetPlayer(playerID);
         }
+    } 
+
+    public float GetAxis(string axis) {
+        return _player.GetAxis(axis);
     }
 
     public bool AnyButtonPressed() {

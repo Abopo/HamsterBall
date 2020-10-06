@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4036567429036239340}
   - component: {fileID: 4144003809040397830}
+  - component: {fileID: 787472035829923044}
   m_Layer: 0
   m_Name: Rewired Input Manager
   m_TagString: Untagged
@@ -186,7 +187,7 @@ MonoBehaviour:
         _ruleSets: []
     - _id: 1
       _name: Player0
-      _descriptiveName: Player0
+      _descriptiveName: Player 1
       _startPlaying: 1
       _defaultJoystickMaps:
       - _enabled: 1
@@ -217,7 +218,7 @@ MonoBehaviour:
         _ruleSets: []
     - _id: 2
       _name: Player1
-      _descriptiveName: Player1
+      _descriptiveName: Player 2
       _startPlaying: 1
       _defaultJoystickMaps:
       - _enabled: 1
@@ -248,7 +249,7 @@ MonoBehaviour:
         _ruleSets: []
     - _id: 3
       _name: Player2
-      _descriptiveName: Player2
+      _descriptiveName: Player 3
       _startPlaying: 1
       _defaultJoystickMaps:
       - _enabled: 1
@@ -273,7 +274,7 @@ MonoBehaviour:
         _ruleSets: []
     - _id: 4
       _name: Player3
-      _descriptiveName: Player3
+      _descriptiveName: Player 4
       _startPlaying: 1
       _defaultJoystickMaps:
       - _enabled: 1
@@ -296,35 +297,13 @@ MonoBehaviour:
       _controllerMapEnablerSettings:
         _enabled: 1
         _ruleSets: []
-    - _id: 5
-      _name: Coop Player
-      _descriptiveName: Only used to story coop.
-      _startPlaying: 1
-      _defaultJoystickMaps:
-      - _enabled: 1
-        _categoryId: 0
-        _layoutId: 0
-      _defaultMouseMaps: []
-      _defaultKeyboardMaps: []
-      _defaultCustomControllerMaps: []
-      _startingCustomControllers: []
-      _assignMouseOnStart: 0
-      _assignKeyboardOnStart: 0
-      _excludeFromControllerAutoAssignment: 1
-      _controllerMapLayoutManagerSettings:
-        _enabled: 1
-        _loadFromUserDataStore: 1
-        _ruleSets: []
-      _controllerMapEnablerSettings:
-        _enabled: 1
-        _ruleSets: []
     actions:
     - _id: 0
       _name: Horizontal
       _type: 0
       _descriptiveName: Move Horizontal
-      _positiveDescriptiveName: 
-      _negativeDescriptiveName: 
+      _positiveDescriptiveName: MoveRight
+      _negativeDescriptiveName: MoveLeft
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 2
@@ -553,6 +532,15 @@ MonoBehaviour:
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 4
+    - _id: 29
+      _name: Vertical
+      _type: 0
+      _descriptiveName: Vertical
+      _positiveDescriptiveName: MoveUp
+      _negativeDescriptiveName: MoveDown
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -579,7 +567,7 @@ MonoBehaviour:
       - categoryId: 0
         actionIds: 
       - categoryId: 2
-        actionIds: 00000000020000000300000004000000050000000b0000000c0000000d0000000e00000018000000
+        actionIds: 1d000000000000000d0000000e00000002000000030000000400000005000000180000000b0000000c000000
       - categoryId: 3
         actionIds: 0800000009000000150000000f000000100000001100000012000000130000000a000000140000001600000017000000
       - categoryId: 4
@@ -710,6 +698,28 @@ MonoBehaviour:
       customControllerUid: 0
       actionElementMaps:
       - _actionCategoryId: 0
+        _actionId: 0
+        _elementType: 0
+        _elementIdentifierId: 0
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 29
+        _elementType: 0
+        _elementIdentifierId: 1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
         _actionId: 11
         _elementType: 0
         _elementIdentifierId: 0
@@ -798,7 +808,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 11
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: 20
         _axisRange: 0
@@ -809,12 +819,12 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 12
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: 22
         _axisRange: 0
         _invert: 0
-        _axisContribution: 0
+        _axisContribution: 1
         _keyboardKeyCode: 0
         _modifierKey1: 0
         _modifierKey2: 0
@@ -1150,18 +1160,18 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 12
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: -1
         _axisRange: 0
         _invert: 0
-        _axisContribution: 0
+        _axisContribution: 1
         _keyboardKeyCode: 97
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 11
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: -1
         _axisRange: 0
@@ -1340,18 +1350,18 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 12
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: -1
         _axisRange: 0
         _invert: 0
-        _axisContribution: 0
+        _axisContribution: 1
         _keyboardKeyCode: 276
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 11
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: -1
         _axisRange: 0
@@ -1563,18 +1573,18 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 12
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: -1
         _axisRange: 0
         _invert: 0
-        _axisContribution: 0
+        _axisContribution: 1
         _keyboardKeyCode: 97
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 11
+        _actionId: 0
         _elementType: 1
         _elementIdentifierId: -1
         _axisRange: 0
@@ -2076,7 +2086,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 6
-    actionIdCounter: 29
+    actionIdCounter: 30
     actionCategoryIdCounter: 5
     inputBehaviorIdCounter: 3
     mapCategoryIdCounter: 5
@@ -2093,3 +2103,21 @@ MonoBehaviour:
     controllerMapEnablerSetIdCounter: 0
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7,
     type: 2}
+--- !u!114 &787472035829923044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4040397582141064198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307e2fe016d34e8438488ad3bf56abd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 1
+  loadDataOnStart: 1
+  loadJoystickAssignments: 0
+  loadKeyboardAssignments: 1
+  loadMouseAssignments: 1
+  playerPrefsKeyPrefix: RewiredSaveData

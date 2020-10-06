@@ -188,6 +188,8 @@ public class EntityPhysics : MonoBehaviour {
 
                 if(_hit.transform.gameObject.layer == 18 /*Passthrough*/) {
                     isOnPassthrough = true;
+                } else {
+                    isOnPassthrough = false;
                 }
                 //floorHitCount++;
                 //entity.CollisionResponseY(_hit.collider);

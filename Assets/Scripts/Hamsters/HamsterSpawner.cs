@@ -221,20 +221,12 @@ public class HamsterSpawner : Photon.PunBehaviour {
         } else {
             //UpdateHamstersInLine();
         }
+
         _releaseTimer += Time.deltaTime;
         if (_releaseTimer >= _spawnTime) {
             // If we can release a hamster and have one to release
             if (releasedHamsterCount < maxReleasedHamsterCount && _hamsterLine.Count > 0 && _hamsterLine[0].inLine == true) {
-                // If we are online and connected
-                //if (_networked != null) {
-                    // And we are the master client
-                //    if (PhotonNetwork.isMasterClient) {
-                        // Release a hamster via the network
-                //        _networked.ReleaseHamster();
-                //    }
-                //} else {
-                    ReleaseNextHamster();
-                //}
+                ReleaseNextHamster();
                 _releaseTimer = 0;
             }
         }

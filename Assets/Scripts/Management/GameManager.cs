@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour {
 
     public UnityEvent gameOverEvent;
 
+    public static GameManager instance;
+
     bool _alive;
 
     void Awake() {
@@ -126,6 +128,7 @@ public class GameManager : MonoBehaviour {
             _alive = false;
             DestroyImmediate(this.gameObject);
         } else {
+            instance = this;
             _alive = true;
         }
     }

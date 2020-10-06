@@ -159,8 +159,6 @@ public class PlayerManager : MonoBehaviour {
         foreach(PlayerInfo p in _players) {
             p.aimAssist = on;
         }
-
-        
     }
 
     public void ClearAllPlayers() {

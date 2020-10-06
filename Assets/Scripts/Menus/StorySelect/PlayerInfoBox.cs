@@ -164,7 +164,7 @@ public class PlayerInfoBox : MonoBehaviour {
             PlayerManager playerManager = FindObjectOfType<PlayerManager>();
 
             PlayerInfo player = new PlayerInfo();
-            player.playerNum = playerID;
+            player.playerNum = _myPlayer.id;
             player.charaInfo = characterInfo;
             player.team = 0;
 

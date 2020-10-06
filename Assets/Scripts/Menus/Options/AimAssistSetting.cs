@@ -8,7 +8,7 @@ using Rewired;
 public enum AIMASSIST { ALWAYS = 0, AFTERLOSS, NEVER }
 public class AimAssistSetting : MenuOption {
 
-    public Text text;
+    public SuperTextMesh text;
 
     GameSettings _gameSettings;
 

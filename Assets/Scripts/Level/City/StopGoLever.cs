@@ -9,6 +9,8 @@ public class StopGoLever : MonoBehaviour {
     public FMOD.Studio.EventInstance LeverMoveEvent;
     public float rotSpeed;
 
+    public StopGoButton rightButton;
+
     bool _isLeft;
     public bool IsLeft {
         get { return _isLeft; }
@@ -20,6 +22,17 @@ public class StopGoLever : MonoBehaviour {
 
     StopGoButton _button;
 
+    // Auto time is used in singleplayer, automatically activates lever
+    float _autoTime = 5.0f;
+    float _autoTimer = 0f;
+
+    GameManager _gameManager;
+    Animator _animator;
+
+    private void Awake() {
+        _gameManager = GameManager.instance;
+        _animator = GetComponent<Animator>();
+    }
     // Start is called before the first frame update
     void Start() {
         _isLeft = true;
@@ -27,10 +40,10 @@ public class StopGoLever : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(_isRotating) {
-            if(_isLeft) {
+        if (_isRotating) {
+            if (_isLeft) {
                 // Rotate to the right
-                if(Vector3.Distance(transform.eulerAngles, rightPos) > 0.01f) {
+                if (Vector3.Distance(transform.eulerAngles, rightPos) > 0.01f) {
                     float angle = Mathf.MoveTowardsAngle(transform.eulerAngles.z, 255f, rotSpeed * Time.deltaTime);
                     transform.eulerAngles = new Vector3(0f, 0f, angle);
                 } else {
@@ -38,15 +51,6 @@ public class StopGoLever : MonoBehaviour {
                     _isLeft = false;
                     EndRotation();
                 }
-
-                /*
-                transform.Rotate(0f, 0f, -rotSpeed * Time.deltaTime);
-                if (Mathf.Abs(transform.rotation.eulerAngles.z - 255f) < 2f) {
-                    transform.rotation = Quaternion.Euler(0f, 0f, -105f);
-                    _isLeft = false;
-                    EndRotation();
-                }
-                */
             } else {
                 // Rotate left
                 if (Vector3.Distance(transform.eulerAngles, leftPos) > 0.01f) {
@@ -57,15 +61,19 @@ public class StopGoLever : MonoBehaviour {
                     _isLeft = true;
                     EndRotation();
                 }
-
-                /*
-                transform.Rotate(0f, 0f, rotSpeed * Time.deltaTime);
-                if (transform.rotation.eulerAngles.z < 2f) {
-                    transform.rotation = Quaternion.identity;
-                    _isLeft = true;
-                    EndRotation();
+            }
+        } else {
+            // If we're playing a singleplayer stage
+            if (_gameManager.isSinglePlayer) {
+                // Since single player is always on the left side, if the lever is on the right run the auto timer
+                if (!_isLeft) {
+                    _autoTimer += Time.deltaTime;
+                    if (_autoTimer >= _autoTime) {
+                        // Automatically change position via right button
+                        rightButton.Press();
+                        _autoTimer = 0f;
+                    }
                 }
-                */
             }
         }
     }
@@ -86,5 +94,14 @@ public class StopGoLever : MonoBehaviour {
         LeverMoveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         LeverMoveEvent.release();
         FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/LeverStop1");
+
+        if (_gameManager.isSinglePlayer) {
+            // Since single player is always on the left side, if the lever is on the right run the auto timer
+            if (!_isLeft) {
+                _animator.Play("LeverMeterBuild");
+            } else {
+                _animator.Play("LeverIdle");
+            }
+        }
     }
 }

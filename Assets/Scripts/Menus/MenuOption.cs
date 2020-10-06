@@ -66,6 +66,10 @@ public class MenuOption : MonoBehaviour {
     protected virtual void Start () {
         //_selectedPos = transform.position;
 
+        if (_player == null) {
+            _player = ReInput.players.GetPlayer(0);
+        }
+
         _allOtherOptions = FindObjectsOfType<MenuOption>();
 
         if (searchForAdj) {
@@ -138,6 +142,10 @@ public class MenuOption : MonoBehaviour {
     }
 
     public virtual void CheckInput() {
+        if (_player == null) {
+            _player = ReInput.players.GetPlayer(0);
+        }
+
         if (isHighlighted && !_justHighlighted) {
             if (_player.GetButtonDown("Submit")) {
                 Select();

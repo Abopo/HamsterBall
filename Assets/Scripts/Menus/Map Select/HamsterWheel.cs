@@ -118,9 +118,9 @@ public class HamsterWheel : MonoBehaviour {
     }
 
     void CheckInput() {
-        if (InputState.GetButtonOnAnyController("MoveLeft")) {
+        if (InputState.GetButtonOnAnyController("Left")) {
             RotateLeft();
-        } else if (InputState.GetButtonOnAnyController("MoveRight")) {
+        } else if (InputState.GetButtonOnAnyController("Right")) {
             RotateRight();
         }
 

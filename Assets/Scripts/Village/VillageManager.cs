@@ -39,7 +39,7 @@ public class VillageManager : MonoBehaviour {
 	}
 
     void GetVillageIndex() {
-        int[] storyProgress = ES3.Load<int[]>("StoryProgress");
+        int[] storyProgress = ES3.Load<int[]>("StoryProgress", new int[] { 1, 1 });
         int chapter = storyProgress[0];
         int stage = storyProgress[1];
 

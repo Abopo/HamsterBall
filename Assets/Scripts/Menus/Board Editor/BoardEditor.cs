@@ -162,7 +162,9 @@ public class BoardEditor : MonoBehaviour {
         StreamWriter streamWriter = new StreamWriter(file);
 
         // Save the filename
+        //streamWriter.WriteLine("Stage Name");
         streamWriter.WriteLine(_fileName);
+        streamWriter.WriteLine("\n");
 
     #region Save Layout
         // Save the bubble layout
@@ -278,13 +280,13 @@ public class BoardEditor : MonoBehaviour {
         streamWriter.WriteLine(tempLine);
         tempLine = skullToggle.isOn ? "Y" : "N";
         streamWriter.WriteLine(tempLine);
-        tempLine = "Gravity";
-        streamWriter.WriteLine(tempLine);
-        tempLine = "N";
-        streamWriter.WriteLine(tempLine);
         tempLine = "Bomb";
         streamWriter.WriteLine(tempLine);
         tempLine = bombToggle.isOn ? "Y" : "N";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "Gravity";
+        streamWriter.WriteLine(tempLine);
+        tempLine = "N";
         streamWriter.WriteLine(tempLine);
         tempLine = "End";
         streamWriter.WriteLine(tempLine);
@@ -325,8 +327,6 @@ public class BoardEditor : MonoBehaviour {
         tempLine = "Board";
         streamWriter.WriteLine(tempLine);
         streamWriter.Write(_levelScene);
-        tempLine = "\n";
-        streamWriter.WriteLine(tempLine);
 
         // Save the level
         /*
@@ -382,8 +382,12 @@ public class BoardEditor : MonoBehaviour {
             i++;
         }
 
-        //_readChar = (char)_reader.Read();
+        // Get to the layout data
+        while (_linesFromFile[fileIndex] != "Bubble Layout") {
+            fileIndex++;
+        }
         fileIndex++;
+
         char _readChar = _linesFromFile[fileIndex][stringIndex++];
         while (_readChar != 'E') {
             if (_readChar != ',') {

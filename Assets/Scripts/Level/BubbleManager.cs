@@ -763,11 +763,20 @@ public class BubbleManager : MonoBehaviour {
                 _bubbles[i].SetAnchors();
             }
         }
+
+        bool plasmaEffect = false;
         // Then have plasmas set anchors if there are any
         foreach (Bubble b in _bubbles) {
             if (b != null && b.isPlasma && !b.foundAnchor) {
                 b.PlasmaAnchor((int)b.type);
+                plasmaEffect = true;
             }
+        }
+
+        // If there were any active plasma effects 
+        if(plasmaEffect) {
+            // Play the plasma effect sound
+
         }
 
         // Then check bubbles for drops

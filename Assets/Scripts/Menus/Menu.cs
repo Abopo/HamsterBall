@@ -103,14 +103,19 @@ public class Menu : MonoBehaviour {
         // Otherwise wait for OnEnable to trigger
     }
 
-    protected virtual void LoseFocus() {
+    public virtual void LoseFocus() {
         hasFocus = false;
 
         if (_menuOptions != null) {
+            Selectable tempSelectable;
             foreach (MenuOption mO in _menuOptions) {
                 mO.Unhighlight();
                 mO.isReady = false;
-                mO.GetComponent<Selectable>().interactable = false;
+                tempSelectable = mO.GetComponent<Selectable>();
+                    
+                if(tempSelectable != null) {
+                    tempSelectable.interactable = false;
+                }
             }
         }
     }

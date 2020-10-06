@@ -5,7 +5,7 @@ public class ThrowState : PlayerState {
 
     public Transform aimingArrow;
 
-	float rotateSpeed = 60f;
+	float rotateSpeed = 75f;
     float bubbleSpeed = 14f; // How fast the bubble goes when thrown
 
     // Small cooldown between readying aim and throwing.
@@ -106,7 +106,7 @@ public class ThrowState : PlayerState {
         }
 
         if (inputState.left.isDown) {
-            aimingArrow.Rotate(Vector3.forward, rotateSpeed * Time.deltaTime/* * _direction*/);
+            aimingArrow.Rotate(Vector3.forward, rotateSpeed * Mathf.Abs(inputState.GetAxis("Horizontal")) * Time.deltaTime/* * _direction*/);
             LimitArrowRotation();
 
             PlayAimChangeSound();
@@ -115,7 +115,7 @@ public class ThrowState : PlayerState {
                 _aimingLine.Stop();
             }
         } else if (inputState.right.isDown) {
-            aimingArrow.Rotate(Vector3.forward, -rotateSpeed * Time.deltaTime/* * _direction*/);
+            aimingArrow.Rotate(Vector3.forward, -rotateSpeed * Mathf.Abs(inputState.GetAxis("Horizontal")) * Time.deltaTime/* * _direction*/);
             LimitArrowRotation();
 
             PlayAimChangeSound();
@@ -130,7 +130,6 @@ public class ThrowState : PlayerState {
 
             playerController.PlayerAudio.StopThrowAngleClip();
         }
-
 
         if (inputState.swing.isJustPressed && throwTimer >= throwTime) {
             // Networking

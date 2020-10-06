@@ -332,25 +332,6 @@ public class Hamster : Entity {
     }
 
     protected void PipeMovement(Collider2D other) {
-        if (other.tag == "Pipe Entrance Left") {
-            inRightPipe = false;
-            ReenterPipe(other.transform);
-        } else if (other.tag == "Pipe Entrance Right") {
-            inRightPipe = true;
-            ReenterPipe(other.transform);
-        } else if (other.tag == "Single Pipe Entrance") {
-            SinglePipeEntrance spe = other.GetComponent<SinglePipeEntrance>();
-
-            // For some boards, there are only 1 entrance to the loop so
-            // figure out which direction hamsters will go based on their facing
-            if (spe.GetDirection()) {
-                inRightPipe = false;
-            } else {
-                inRightPipe = true;
-            }
-            ReenterPipe(other.transform);
-        }
-
         if (other.tag == "PipeCornerLeft") {
             FaceRight();
             if (other.name == "PipeExit") {
@@ -380,22 +361,22 @@ public class Hamster : Entity {
 
             UpdateVelocity();
         } else if (other.tag == "Bottom Pipe Entrance Left") {
-            exitedPipe = false;
+            ReenterPipe(other.GetComponent<PipeEntrance>().parentSpawner);
             inRightPipe = false;
         } else if (other.tag == "Bottom Pipe Entrance Right") {
-            exitedPipe = false;
+            ReenterPipe(other.GetComponent<PipeEntrance>().parentSpawner);
             inRightPipe = true;
         }
     }
 
-    void ReenterPipe(Transform pipe) {
-        // Turn off standard physics
+    void ReenterPipe(HamsterSpawner spawner) {
         exitedPipe = false;
-        velocity = new Vector2(velocity.x, 0);
-        transform.position = new Vector3(pipe.position.x, transform.position.y, transform.position.z);
 
-        // Go down pipe
-        FaceDown();
+        // If we entered a pipe different from our original spawner
+        if(spawner != null && spawner != _parentSpawner) {
+            // Set the new pipe as our parent
+            _parentSpawner = spawner;
+        }
     }
 
     protected void LineCollisions(Collider2D other) {
