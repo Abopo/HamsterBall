@@ -31,7 +31,7 @@ public class LightningManager : MonoBehaviour {
     
     // Update is called once per frame
     void Update() {
-        if(!_levelManager.gameStarted) {
+        if(_levelManager == null || !_levelManager.gameStarted) {
             return;
         }
 

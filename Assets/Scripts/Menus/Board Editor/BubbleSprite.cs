@@ -8,8 +8,6 @@ public class BubbleSprite : MonoBehaviour {
     public int node = -1;
 
     public bool isGravity;
-    public GameObject spiralEffectObj;
-    public GameObject spiralEffectInstance;
     public Animator bubbleAnimator;
     public Animator hamsterAnimator;
     public bool isIce;
@@ -17,16 +15,25 @@ public class BubbleSprite : MonoBehaviour {
 
     HAMSTER_TYPES type;
 
+    PlasmaEffect _plasmaEffect;
+
     BoardEditor _boardEditor;
 
     public HAMSTER_TYPES Type {
         get { return type; }
     }
 
+    private void Awake() {
+        _boardEditor = FindObjectOfType<BoardEditor>();
+        _plasmaEffect = GetComponentInChildren<PlasmaEffect>();
+    }
     // Use this for initialization
     void Start () {
-        _boardEditor = FindObjectOfType<BoardEditor>();
-	}
+        if (isGravity) {
+            // Turn on plasma effect
+            _plasmaEffect.ForceActivate((int)type);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -63,11 +70,11 @@ public class BubbleSprite : MonoBehaviour {
     public void SetIsGravity(bool isGrav) {
         if(isGrav) {
             isGravity = true;
-            spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-            spiralEffectInstance.transform.parent = transform;
-            spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+            // Turn on plasma effect
+            _plasmaEffect.ForceActivate((int)type);
         } else {
             isGravity = false;
+            _plasmaEffect.Deactivate();
         }
     }
 

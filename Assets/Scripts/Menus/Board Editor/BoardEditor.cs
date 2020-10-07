@@ -189,9 +189,6 @@ public class BoardEditor : MonoBehaviour {
             for(int j = index; j < lineLength; ++j, ++index) {
                 if (_nodes[j].bubble != null) {
                     tempType = _nodes[j].bubble.Type;
-                    if(_nodes[j].bubble.isGravity) {
-                        tempLine += "G";
-                    }
                     switch (tempType) {
                         case HAMSTER_TYPES.GREEN:
                             tempLine += "0";
@@ -226,6 +223,9 @@ public class BoardEditor : MonoBehaviour {
                     }
                     if(_nodes[j].bubble.isIce) {
                         tempLine += "I";
+                    }
+                    if (_nodes[j].bubble.isGravity) {
+                        tempLine += "P";
                     }
                 } else {
                     tempLine += "N";
@@ -411,9 +411,13 @@ public class BoardEditor : MonoBehaviour {
                         CreateBubbleSprite((int)HAMSTER_TYPES.BOMB, nodeIndex);
                         break;
                     case 'G': // Gravity
+                    case 'P': // Plasma
+                        // Set the previous sprite to be ice
+                        _nodes[--nodeIndex].bubble.SetIsGravity(true);
+
                         // Get the next char for the type
-                        _readChar = _linesFromFile[fileIndex][stringIndex++];
-                        CreateBubbleSprite((int)char.GetNumericValue(_readChar) + 11, nodeIndex);
+                        //_readChar = _linesFromFile[fileIndex][stringIndex++];
+                        //CreateBubbleSprite((int)char.GetNumericValue(_readChar) + 11, nodeIndex);
                         break;
                     case 'I': // Ice
                         // Set the previous sprite to be ice

@@ -161,9 +161,13 @@ public class BoardLoader : MonoBehaviour {
                         bubbles[bubIndex].type = HAMSTER_TYPES.BOMB;
                         break;
                     case 'G': // Gravity
-                        _readChar = _linesFromFile[_fileIndex][stringIndex++];
-                        bubbles[bubIndex].type = (HAMSTER_TYPES)char.GetNumericValue(_readChar);
-                        bubbles[bubIndex].isGravity = true;
+                    case 'P': // Plasma
+                              // Set the previous bubble to be ice
+                        bubbles[--bubIndex].isGravity = true;
+
+                        //_readChar = _linesFromFile[_fileIndex][stringIndex++];
+                        //bubbles[bubIndex].type = (HAMSTER_TYPES)char.GetNumericValue(_readChar);
+                        //bubbles[bubIndex].isGravity = true;
                         break;
                     case 'I': // Ice
                         // Set the previous bubble to be ice

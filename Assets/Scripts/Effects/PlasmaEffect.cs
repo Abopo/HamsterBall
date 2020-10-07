@@ -14,10 +14,11 @@ public class PlasmaEffect : MonoBehaviour {
     private void Awake() {
         _bubble = transform.parent.GetComponent<Bubble>();
         _animators = GetComponentsInChildren<Animator>();
+
+        Deactivate();
     }
     // Start is called before the first frame update
     void Start() {
-        Deactivate();
     }
 
     // Update is called once per frame
@@ -27,15 +28,16 @@ public class PlasmaEffect : MonoBehaviour {
 
     public void Activate(int type) {
         // Turn on all the plasma in open adj spots
-        for (int i = 0; i < 6; ++i) {
-            if(_bubble.adjBubbles[i] == null) {
-                plasma[i].SetActive(true);
-                plasma[i].GetComponent<SpriteRenderer>().enabled = true;
-            } else {
-                plasma[i].SetActive(false);
+        if (_bubble != null) {
+            for (int i = 0; i < 6; ++i) {
+                if (_bubble.adjBubbles[i] == null) {
+                    plasma[i].SetActive(true);
+                    plasma[i].GetComponent<SpriteRenderer>().enabled = true;
+                } else {
+                    plasma[i].SetActive(false);
+                }
             }
         }
-
         // Set animator type
         foreach (Animator anim in _animators) {
             anim.SetInteger("Type", type);
@@ -48,6 +50,18 @@ public class PlasmaEffect : MonoBehaviour {
         // Turn on all the plasma
         foreach (GameObject pRen in plasma) {
             pRen.SetActive(false);
+        }
+    }
+
+    public void ForceActivate(int type) {
+        for (int i = 0; i < 6; ++i) {
+            plasma[i].SetActive(true);
+            plasma[i].GetComponent<SpriteRenderer>().enabled = true;
+        }
+
+        // Set animator type
+        foreach (Animator anim in _animators) {
+            anim.SetInteger("Type", type);
         }
     }
 }
