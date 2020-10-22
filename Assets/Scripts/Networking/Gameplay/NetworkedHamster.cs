@@ -138,7 +138,7 @@ public class NetworkedHamster : Photon.MonoBehaviour {
                 if(Vector2.Distance(_hamsterPos, _hamster.transform.position) > 1) {
                     // Teleport to the position
                     // or maybe lerp there?
-                    Debug.Log("Hamster too far, teleporting.");
+                    //Debug.Log("Hamster too far, teleporting.");
                     _hamster.transform.position = _hamsterPos;
 
                     // If we teleport, we might miss pip stuff, so sync that too

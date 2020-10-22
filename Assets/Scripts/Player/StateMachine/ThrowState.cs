@@ -46,6 +46,8 @@ public class ThrowState : PlayerState {
 
         // For now this is only for the AI
         playerController.significantEvent.Invoke();
+
+        throwTimer = 0f;
     }
 
     // Update is called once per frame

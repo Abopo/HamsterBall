@@ -47,6 +47,14 @@ public class NetworkedWaterBubble : MonoBehaviour {
     }
 
     [PunRPC]
+    public void Pop() {
+        if(PhotonNetwork.isMasterClient) {
+            DropNetworkHamster();
+        }
+
+        _waterBubble.Pop();
+    }
+
     public void DropNetworkHamster() {
         if (_waterBubble.CaughtBubble != null) {
             // Set up instantiation data

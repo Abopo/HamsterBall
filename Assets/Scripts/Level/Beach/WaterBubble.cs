@@ -78,7 +78,7 @@ public class WaterBubble : MonoBehaviour {
         } else if (other.tag == "Attack") {
             if (_caughtBubble != null) {
                 if (PhotonNetwork.connectedAndReady) {
-                    PhotonNetwork.RPC(GetComponent<PhotonView>(), "DropNetworkHamster", PhotonTargets.MasterClient, false);
+                    PhotonNetwork.RPC(GetComponent<PhotonView>(), "Pop", PhotonTargets.All, false);
                 } else {
                     // Drop the caught bubble
                     DropHamster();
@@ -90,8 +90,10 @@ public class WaterBubble : MonoBehaviour {
     }
 
     public void CatchHamster(Hamster hamster) {
-        if (PhotonNetwork.connectedAndReady && PhotonNetwork.isMasterClient) {
-            GetComponent<NetworkedWaterBubble>().InstantiateNetworkBubble(hamster);
+        if (PhotonNetwork.connectedAndReady) {
+            if (PhotonNetwork.isMasterClient) {
+                GetComponent<NetworkedWaterBubble>().InstantiateNetworkBubble(hamster);
+            }
         } else {
             GameObject bubble = Instantiate(bubbleObj) as GameObject;
             bubble.transform.parent = this.transform;

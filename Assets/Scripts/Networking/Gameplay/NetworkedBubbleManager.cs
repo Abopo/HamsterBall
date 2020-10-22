@@ -259,6 +259,11 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
         _playerLinesReady = 0;
 
+        if (PhotonNetwork.isMasterClient) {
+            // Delay the bubble updates so line adding is smoother
+            DelayBubbleUpdates();
+        }
+
         // Send out the rpc to add a line before creating the network bubbles
         photonView.RPC("AddLine", PhotonTargets.AllViaServer);
     }
@@ -267,7 +272,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
     void AddLine() {
         Debug.Log("Try add a line");
 
-        // Add a line to our bubble manager
+        // Use bubble manager to move all the bubbles down to prepare for adding the new line
         _bubbleManager.TryAddLine();
     }
 
@@ -302,17 +307,16 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
         // Tell the master client we've added our line
         photonView.RPC("PlayerLineAdded", PhotonTargets.MasterClient);
 
-        if(PhotonNetwork.isMasterClient) {
-            // Delay the bubble updates so line adding is smoother
-            DelayBubbleUpdates();
-        }
-
         // We've finished adding the line, so it should be safe to set the board to stable
         isBusy = false;
     }
 
     void DelayBubbleUpdates() {
-        foreach(Bubble bub in _bubbleManager.Bubbles) {
+        // Delay our own board sync
+        _syncTimer = -3f;
+
+        // As well as all the bubbles individual syncing
+        foreach (Bubble bub in _bubbleManager.Bubbles) {
             if (bub != null) {
                 bub.GetComponent<NetworkedBubble>().DelaySyncCheck(3);
             }
