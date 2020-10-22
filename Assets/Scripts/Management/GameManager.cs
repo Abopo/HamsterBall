@@ -208,12 +208,9 @@ public class GameManager : MonoBehaviour {
             return;
         }
 
-        gameOverEvent.Invoke();
-
-        // Pause the game
-        // FullPause();
-
         gameIsOver = true;
+
+        gameOverEvent.Invoke();
 
         // If we are playing a story level (and if it's a versus stage it's all done)
         if (IsStoryLevel()) {

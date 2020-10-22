@@ -167,7 +167,7 @@ public class NetworkedBubble : Photon.MonoBehaviour {
 
         if (_bubble.HomeBubbleManager.BoardIsStable) {
             if (_bubble.node != node) {
-                Debug.LogError("Bubble at node " + _bubble.node + " out of synch, moveing to node " + node);
+                Debug.LogError("Bubble at node " + _bubble.node + " out of synch, moving to node " + node);
 
                 _bubble.node = node;
                 _bubble.transform.position = _bubble.HomeBubbleManager.nodeList[node].nPosition;

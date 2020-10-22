@@ -6,6 +6,7 @@ using Photon;
 public class HamsterSpawner : Photon.PunBehaviour {
     public GameObject hamsterObj;
     public bool twoTubes;
+    public bool innerSpawn;
     public int team;
     public bool rightSidePipe;
     public bool testMode;
@@ -289,14 +290,14 @@ public class HamsterSpawner : Photon.PunBehaviour {
             if (rightSidePipe) {
                 hamster.Flip();
                 hamster.inRightPipe = true;
-                if(twoTubes) {
+                if(innerSpawn) {
                     hamster.FaceRight();
                 } else {
                     hamster.FaceLeft();
                 }
             } else {
                 hamster.inRightPipe = false;
-                if (twoTubes) {
+                if (innerSpawn) {
                     hamster.FaceLeft();
                 } else {
                     hamster.FaceRight();
@@ -535,7 +536,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     void HamsterLineMove() {
         foreach(Hamster ham in _hamsterLine) {
             ham.SetState(1);
-            if (twoTubes) {
+            if (innerSpawn) {
                 if (rightSidePipe) {
                     ham.FaceRight();
                 } else {
@@ -552,7 +553,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     }
 
     public void UpdateHamstersInLine() {
-        if (twoTubes) {
+        if (innerSpawn) {
             for (int i = 1; i < _hamsterLine.Count; ++i) {
                 if (_hamsterLine[i].inLine) {
                     _hamsterLine[i].transform.position = new Vector3(_hamsterLine[i - 1].transform.position.x + (rightSidePipe ? -0.65f : 0.65f),

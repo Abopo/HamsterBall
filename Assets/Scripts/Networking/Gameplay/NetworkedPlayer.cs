@@ -24,6 +24,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     bool attackPressed = false;
 
     Vector3 _arrowAngle;
+    bool _facingRight;
 
     PhotonTransformView _photonTransformView;
     GameManager _gameManager;
@@ -106,9 +107,15 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
             ResetInput();
 
+            // If we're in the throw state
             if (_playerController.CurState == PLAYER_STATE.THROW) {
+                // Serialize the aiming angle
                 _arrowAngle = ((ThrowState)_playerController.currentState).aimingArrow.localEulerAngles;
                 stream.Serialize(ref _arrowAngle);
+
+                // And the player's facing?
+                _facingRight = _playerController.FacingRight;
+                stream.Serialize(ref _facingRight);
             }
         } else {
             // Receive latest state information
@@ -143,6 +150,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
 
             if (_playerController.CurState == PLAYER_STATE.THROW) {
                 stream.Serialize(ref _arrowAngle);
+                stream.Serialize(ref _facingRight);
             }
         }
     }
@@ -204,6 +212,11 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             if (!photonView.isMine && _playerController.CurState == PLAYER_STATE.THROW) {
                 // Update the arrow to be in the right direction
                 ((ThrowState)_playerController.currentState).aimingArrow.localEulerAngles = _arrowAngle;
+                
+                // Make sure player is facing the correct direction
+                if(_playerController.FacingRight != _facingRight) {
+                    _playerController.Flip();
+                }
             }
         }
     }
@@ -337,6 +350,10 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
     void ThrowBubble(Vector3 playerPos, Quaternion arrowRot) {
         // We need to make sure the player is in exactly the right position when they throw
         _playerController.transform.position = playerPos;
+        // And that they are facing the correct direction
+        if (_playerController.FacingRight != _facingRight) {
+            _playerController.Flip();
+        }
 
         // Then throw the bubble
         ThrowState throwState = (ThrowState)_playerController.GetPlayerState(PLAYER_STATE.THROW);

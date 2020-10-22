@@ -130,6 +130,9 @@ public class HamsterSprite : MonoBehaviour {
     }
 
     public void ResetSprite() {
+        // Make sure our object is active
+        gameObject.SetActive(true);
+
         // Make sure sprite is solid
         GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.8823529f);
 

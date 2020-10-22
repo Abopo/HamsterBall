@@ -106,7 +106,7 @@ public class ThrowState : PlayerState {
         }
 
         if (inputState.left.isDown) {
-            aimingArrow.Rotate(Vector3.forward, rotateSpeed * Mathf.Abs(inputState.GetAxis("Horizontal")) * Time.deltaTime/* * _direction*/);
+            aimingArrow.Rotate(Vector3.forward, rotateSpeed * Mathf.Abs(inputState.aimAxis) * Time.deltaTime/* * _direction*/);
             LimitArrowRotation();
 
             PlayAimChangeSound();
@@ -115,7 +115,7 @@ public class ThrowState : PlayerState {
                 _aimingLine.Stop();
             }
         } else if (inputState.right.isDown) {
-            aimingArrow.Rotate(Vector3.forward, -rotateSpeed * Mathf.Abs(inputState.GetAxis("Horizontal")) * Time.deltaTime/* * _direction*/);
+            aimingArrow.Rotate(Vector3.forward, -rotateSpeed * Mathf.Abs(inputState.aimAxis) * Time.deltaTime/* * _direction*/);
             LimitArrowRotation();
 
             PlayAimChangeSound();

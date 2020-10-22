@@ -73,9 +73,9 @@ public class HamsterWheel : MonoBehaviour {
         _stages[2] = BOARDS.BEACH;
         _stages[3] = BOARDS.CITY;
         _stages[4] = BOARDS.CORPORATION;
-        _stages[5] = BOARDS.CORPORATION;
-        _stages[6] = BOARDS.LABORATORY;
-        _stages[7] = BOARDS.AIRSHIP;
+        _stages[5] = BOARDS.LABORATORY;
+        _stages[6] = BOARDS.AIRSHIP;
+        _stages[7] = BOARDS.CRASH;
 
         _curRotSpeed = 0;
         _desiredRotation = transform.rotation.eulerAngles.z;

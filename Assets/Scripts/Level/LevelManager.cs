@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using System.Collections;
 using Rewired;
 
-public enum BOARDS { FOREST = 0, MOUNTAIN, BEACH, CITY, CORPORATION, LABORATORY, AIRSHIP, NUM_STAGES };
+public enum BOARDS { FOREST = 0, MOUNTAIN, BEACH, CITY, CORPORATION, LABORATORY, AIRSHIP, CRASH, NUM_STAGES };
 public class LevelManager : MonoBehaviour {
     public ResultsScreen mpResultsScreen;
     public ResultsScreen spResultsScreen;
@@ -107,6 +107,9 @@ public class LevelManager : MonoBehaviour {
                 break;
             case BOARDS.AIRSHIP:
                 prefabPath += "Airship Board";
+                break;
+            case BOARDS.CRASH:
+                prefabPath += "CrashedAirship 1";
                 break;
         }
 

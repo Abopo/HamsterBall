@@ -6,8 +6,14 @@ public class AISetupOption : MenuOption {
     public PlayerInfo aiInfo;
     public SuperTextMesh aiDifficultyText;
 
+    Selectable _selectable;
     bool _justMoved;
 
+    protected override void Awake() {
+        base.Awake();
+
+        _selectable = GetComponent<Selectable>();
+    }
     // Use this for initialization
     protected override void Start () {
         base.Start();
@@ -28,12 +34,12 @@ public class AISetupOption : MenuOption {
 
         if (isHighlighted && !_justMoved) {
             // Right
-            if (InputState.GetButtonOnAnyControllerPressed("MoveRight")) {
+            if (InputState.GetButtonOnAnyControllerPressed("Right")) {
                 IncreaseAIDifficulty();
                 _justMoved = true;
             }
             // Left
-            if (InputState.GetButtonOnAnyControllerPressed("MoveLeft")) {
+            if (InputState.GetButtonOnAnyControllerPressed("Left")) {
                 DecreaseAIDifficulty();
                 _justMoved = true;
             }
@@ -47,6 +53,12 @@ public class AISetupOption : MenuOption {
 
     protected override void Select() {
         //base.Select();
+    }
+
+    public override void Highlight() {
+        base.Highlight();
+
+        _selectable.Select();
     }
 
     public void IncreaseAIDifficulty() {

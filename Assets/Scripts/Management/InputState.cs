@@ -24,6 +24,7 @@ public class InputState {
     public button   start;
     public button   pause;
     public button   select;
+    public float    aimAxis;
 
     // Used within the class to keep track of joystick inputs
     bool upJustPressed;
@@ -140,6 +141,8 @@ public class InputState {
             if(shift.isDown) {
                 upJustPressed = true;
             }
+
+            aimAxis = _player.GetAxis("Horizontal");
 
             // Menu inputs
             submit.isDown = _player.GetButton("Submit");

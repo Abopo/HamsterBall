@@ -5,7 +5,7 @@ using UnityEngine;
 public class BigBubbleManager : BubbleManager {
 
     protected override void Awake() {
-        _baseLineLength = 29;
+        _baseLineLength = 27;
 
         base.Awake();
     }

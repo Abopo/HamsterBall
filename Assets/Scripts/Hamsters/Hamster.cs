@@ -75,6 +75,8 @@ public class Hamster : Entity {
         _animator.SetInteger("State", _curState);
         _animator.SetInteger("Type", (int)type);
 
+        GameManager.instance.gameOverEvent.AddListener(OnGameOver);
+
         moveSpeedModifier = 0;
 
         UpdateVelocity();
@@ -142,9 +144,6 @@ public class Hamster : Entity {
     void PlasmaInitialize() {
         isPlasma = true;
         _animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/PlasmaHamster");
-        //spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-        //spiralEffectInstance.transform.parent = transform;
-        //spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
         _moveSpeed = gravityMoveSpeed;
         gravity = 10;
     }
@@ -198,19 +197,21 @@ public class Hamster : Entity {
     protected override void Update () {
         base.Update();
 
-        // Don't update if the game is over
-        if (_gameManager.gameIsOver) {
-            return;
+        if (!wasCaught) {
+            _physics.SnapToSlope();
         }
 
-        _physics.SnapToSlope();
-
-        if (exitedPipe) {
+        if (_curState == 5) {
+            ApplyGravity();
+        } else if (exitedPipe) {
             if (!_physics.IsTouchingFloor) {
                 _curState = 2;
                 ApplyGravity();
-            } else {
-                _curState = 1;
+
+            // If we're on the floor, but still in the fall state
+            } else if(_curState == 2) {
+                // determine which state we should be in
+                DetermineState();
             }
 
             // Wall flips
@@ -238,7 +239,7 @@ public class Hamster : Entity {
             // Update long idle timer
             _longIdleTimer += Time.deltaTime;
             if(_longIdleTimer >= _longIdleTime) {
-                //_animator.SetBool("LongIdle", true);
+                _animator.SetBool("LongIdle", true);
                 _longIdleTimer = -3f - Random.Range(2f, 7f);
             }
         } else {
@@ -253,7 +254,7 @@ public class Hamster : Entity {
 	}
     
     private void FixedUpdate() {
-        if (_curState != 0 && !_gameManager.isPaused && !_gameManager.gameIsOver) {
+        if (_curState != 0 && !_gameManager.isPaused) {
             _physics.MoveX(velocity.x * Time.deltaTime);
             _physics.MoveY(velocity.y * Time.deltaTime);
         }
@@ -266,6 +267,36 @@ public class Hamster : Entity {
 			velocity.x = -curMoveSpeed * (exitedPipe ? WaterMultiplier : 1) - moveSpeedModifier;
 		}
 	}
+
+    void DetermineState() {
+        if(GameManager.instance.gameIsOver) {
+            // Check if our team won or lost
+
+            // Find corresponding bubble manager
+            bool wonGame = false;
+            if(team == 0) {
+                GameObject bubMan = GameObject.FindGameObjectWithTag("BubbleManager1");
+                if (bubMan != null) {
+                    wonGame = bubMan.GetComponent<BubbleManager>().wonGame;
+                }
+            } else {
+                GameObject bubMan = GameObject.FindGameObjectWithTag("BubbleManager2");
+                if (bubMan != null) {
+                    wonGame = bubMan.GetComponent<BubbleManager>().wonGame;
+                }
+            }
+
+            _curState = wonGame ? 3 : 4;
+
+            // Since we don't have win/lost anims yet, just idle lol
+            _curState = 0;
+
+            // If we're in a pipe for this, make sure we are facing a normal direction
+            FaceRight();
+        } else {
+            _curState = 1;
+        }
+    }
 
     public override void Spring(float springForce) {
         base.Spring(springForce);
@@ -301,6 +332,41 @@ public class Hamster : Entity {
             // Line collisions
             LineCollisions(other);
         }
+
+        // If we got hit by fire
+        if(other.tag == "Fire" && exitedPipe && !wasCaught) {
+            // We gotta jump outta the stage
+            BAIL();
+        }
+    }
+
+    void BAIL() {
+        // Stop moving
+        velocity = Vector2.zero;
+
+        // Set state to 5
+        SetState(5);
+
+        // Remove all colliders and stuff?
+        GetComponent<Collider2D>().enabled = false;
+
+        // If we were snapped to a slope we aint no more
+        _physics.snappedToSlope = false;
+
+        float rX = Random.Range(1f, 2f);
+        float rY = Random.Range(0f, 3f);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(rX, 10f + rY);
+
+        // Set ourselves to 'caught' so we can't accidentally get for real caught
+        wasCaught = true;
+
+        if (_parentSpawner != null) {
+            // Reduce our parent spawner's hamsterCount
+            _parentSpawner.ReduceHamsterCount();
+        }
+
+        // Push our sprite forward
+        transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 20;
     }
 
     void OnTriggerStay2D(Collider2D other) {
@@ -391,8 +457,10 @@ public class Hamster : Entity {
     }
 
     public override void CollisionResponseY(Collider2D collider) {
-        if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/ || collider.gameObject.layer == 19/*HamOnly*/) {
+        if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/ || collider.gameObject.layer == 19/*HamOnly*/
+            || collider.gameObject.layer == 24 /*FallthroughSlope*/ || collider.gameObject.layer == 23 /*Stairstep*/) {
             velocity.y = 0.0f;
+            DetermineState();
         }
     }
 
@@ -433,7 +501,22 @@ public class Hamster : Entity {
                 break;
             case 2: // Fall
                 break;
+            case 3: // Win
+                break;
+            case 4: // Lose
+                break;
+            case 5: // Bail
+                velocity = Vector2.zero;
+                break;
         }
+    }
+
+    void OnGameOver() {
+        // Stop moving
+        curMoveSpeed = 0f;
+
+        // Figure out what state to be in 
+        DetermineState();
     }
 
     public override void Respawn() {

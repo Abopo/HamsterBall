@@ -276,7 +276,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
         // Add in our line bubbles
         if(_nextLineBubbles.Count <= 0) {
-            Debug.LogError("Uhoh no line bubbles ready");
+            Debug.LogError("Uh-oh no line bubbles ready");
             if(PhotonNetwork.isMasterClient) {
                 SpawnNextLineBubbles();
             }

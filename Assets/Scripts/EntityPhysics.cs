@@ -31,6 +31,11 @@ public class EntityPhysics : MonoBehaviour {
     private int rightHitCount; // this is a counter for how much of the top of the player is colliding
     private bool isOnPassthrough;
 
+    bool detectPassthrough = true;
+    bool redetecting = false;
+    float detectPTtime = 0.1f;
+    float detectPTtimer = 0.0f;
+
     public bool snappedToSlope;
 
     public bool IsTouchingFloor {
@@ -62,6 +67,13 @@ public class EntityPhysics : MonoBehaviour {
     }
 
     void Update() {
+        if(redetecting) {
+            detectPTtimer += Time.deltaTime;
+            if(detectPTtimer >= detectPTtime) {
+                DetectPassthroughsForReal();
+                redetecting = false;
+            }
+        }
     }
 
     private void FixedUpdate() {
@@ -74,28 +86,30 @@ public class EntityPhysics : MonoBehaviour {
             return;
         }
 
-        for (int i = 0; i < 10; ++i) {
-            float dir = Mathf.Sign(deltaX);
-            //float x = _pos.x + _offset.x + _scaledRadiusX * dir;
-            float x = _myCollider.bounds.center.x + _myCollider.bounds.extents.x*dir;
-            //float y = (_pos.y + _offset.y - _scaledRadiusY/1.1f) + _scaledRadiusY / 2.1f * i;
-            float y = (_myCollider.bounds.center.y - _myCollider.bounds.extents.y / 1.05f) + _myCollider.bounds.extents.y / 4.7f * i;
+        if (_myCollider.enabled) {
+            for (int i = 0; i < 10; ++i) {
+                float dir = Mathf.Sign(deltaX);
+                //float x = _pos.x + _offset.x + _scaledRadiusX * dir;
+                float x = _myCollider.bounds.center.x + _myCollider.bounds.extents.x * dir;
+                //float y = (_pos.y + _offset.y - _scaledRadiusY/1.1f) + _scaledRadiusY / 2.1f * i;
+                float y = (_myCollider.bounds.center.y - _myCollider.bounds.extents.y / 1.05f) + _myCollider.bounds.extents.y / 4.7f * i;
 
-            _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
-            // Draw last so it matches position
-            //Debug.DrawRay(new Vector2(_ray.origin.x+deltaX, _ray.origin.y), _ray.direction * Mathf.Abs(deltaX));
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX)+_skinX, collisionMaskX);
-            if (_hit) {
-                float dst = Vector2.Distance(_ray.origin, _hit.point);
+                _ray = new Ray2D(new Vector2(x, y), Vector2.right * dir);
+                // Draw last so it matches position
+                //Debug.DrawRay(new Vector2(_ray.origin.x+deltaX, _ray.origin.y), _ray.direction * Mathf.Abs(deltaX));
+                _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(deltaX) + _skinX, collisionMaskX);
+                if (_hit) {
+                    float dst = Vector2.Distance(_ray.origin, _hit.point);
 
-                if (dst < _skinX) {
-                    deltaX = -dir * _skinX;
-                } else {
-                    deltaX = 0;
+                    if (dst < _skinX) {
+                        deltaX = -dir * _skinX;
+                    } else {
+                        deltaX = 0;
+                    }
+
+                    entity.CollisionResponseX(_hit.collider);
+                    break;
                 }
-
-                entity.CollisionResponseX(_hit.collider);
-                break;
             }
         }
 
@@ -118,44 +132,48 @@ public class EntityPhysics : MonoBehaviour {
         // If we are moving upward
         if (inDeltaY > 0) {
             collisionMaskY = collisionMaskY & ~(1 << 18); // Remove the "Passthrough" layer from the mask
-        } else {
+            
+        // If we care about passthroughs
+        } else if(detectPassthrough) {
             collisionMaskY = collisionMaskY | (1 << 18); // Add the "Passthrough" layer to the mask
         }
 
-        for (int i = 0; i < 3; ++i) {
-            float dir = Mathf.Sign(inDeltaY);
-            //float x = (_pos.x + _offset.x - _scaledRadiusX/1.1f) + (_scaledRadiusX/1.1f) * i;
-            float x = (_myCollider.bounds.center.x - _myCollider.bounds.extents.x / 1.2f) + _myCollider.bounds.extents.x / 1.2f * i;
+        if (_myCollider.enabled) {
+            for (int i = 0; i < 3; ++i) {
+                float dir = Mathf.Sign(inDeltaY);
+                //float x = (_pos.x + _offset.x - _scaledRadiusX/1.1f) + (_scaledRadiusX/1.1f) * i;
+                float x = (_myCollider.bounds.center.x - _myCollider.bounds.extents.x / 1.2f) + _myCollider.bounds.extents.x / 1.2f * i;
 
-            //float y = _pos.y + offsetY + _scaledRadiusY * dir;
-            float y = _myCollider.bounds.center.y + _myCollider.bounds.extents.y*dir;
+                //float y = _pos.y + offsetY + _scaledRadiusY * dir;
+                float y = _myCollider.bounds.center.y + _myCollider.bounds.extents.y * dir;
 
-            _ray = new Ray2D(new Vector2(x, y), Vector2.up * dir);
-            // Add the delta so it lines up with where the player will move
-            //Debug.DrawLine(new Vector3(_ray.origin.x - 0.1f, _ray.origin.y + deltaY), new Vector3(_ray.origin.x + 0.1f, _ray.origin.y + deltaY), Color.green);
-            //Debug.DrawRay(new Vector2(_ray.origin.x, _ray.origin.y + deltaY), _ray.direction * Mathf.Abs(inDeltaY));
-            _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(inDeltaY), collisionMaskY);
-            if (_hit) {
-                if (dir == 1) {
-                    ceilingHitCount++;
-                } else if (dir == -1) {
-                    floorHitCount++;
+                _ray = new Ray2D(new Vector2(x, y), Vector2.up * dir);
+                // Add the delta so it lines up with where the player will move
+                //Debug.DrawLine(new Vector3(_ray.origin.x - 0.1f, _ray.origin.y + deltaY), new Vector3(_ray.origin.x + 0.1f, _ray.origin.y + deltaY), Color.green);
+                //Debug.DrawRay(new Vector2(_ray.origin.x, _ray.origin.y + deltaY), _ray.direction * Mathf.Abs(inDeltaY));
+                _hit = Physics2D.Raycast(_ray.origin, _ray.direction, Mathf.Abs(inDeltaY), collisionMaskY);
+                if (_hit) {
+                    if (dir == 1) {
+                        ceilingHitCount++;
+                    } else if (dir == -1) {
+                        floorHitCount++;
+                    }
+                    if (ceilingHitCount > 1 || floorHitCount > 1) {
+                        continue;
+                    }
+
+                    float dst = Vector2.Distance(_ray.origin, _hit.point);
+
+                    if (dst > _skinY) {
+                        deltaY = dst * dir + _skinY;
+                    } else {
+                        deltaY = 0;
+                    }
+
+                    isTouchingFloor = true;
+                    entity.Grounded = true;
+                    entity.CollisionResponseY(_hit.collider);
                 }
-                if (ceilingHitCount > 1 || floorHitCount > 1) {
-                    continue;
-                }
-
-                float dst = Vector2.Distance(_ray.origin, _hit.point);
-
-                if (dst > _skinY) {
-                    deltaY = dst * dir + _skinY;
-                } else {
-                    deltaY = 0;
-                }
-
-                isTouchingFloor = true;
-                entity.Grounded = true;
-                entity.CollisionResponseY(_hit.collider);
             }
         }
 
@@ -349,9 +367,9 @@ public class EntityPhysics : MonoBehaviour {
         snappedToSlope = false;
         float curYPos = _myCollider.bounds.center.y - _myCollider.bounds.extents.y;
 
-        _ray = new Ray2D(new Vector2(_myCollider.bounds.center.x, transform.position.y), Vector2.up * -1);
-        //Debug.DrawRay(_ray.origin, _ray.direction * 1f);
-        _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 1f, collisionMaskSlope);
+        _ray = new Ray2D(new Vector2(_myCollider.bounds.center.x, _myCollider.bounds.center.y - _myCollider.bounds.extents.y + 0.2f), Vector2.up * -1);
+        Debug.DrawRay(_ray.origin, _ray.direction * 0.5f);
+        _hit = Physics2D.Raycast(_ray.origin, _ray.direction, 0.5f, collisionMaskSlope);
         if(_hit && _hit.distance-_myCollider.bounds.extents.y < 0.3f) {
             //Debug.Log("Snap to Slope");
 
@@ -359,10 +377,38 @@ public class EntityPhysics : MonoBehaviour {
             entity.Grounded = true;
             snappedToSlope = true;
 
+            if (_hit.transform.gameObject.layer == 24 /*passthroughslope*/) {
+                isOnPassthrough = true;
+            } else {
+                isOnPassthrough = false;
+            }
+
             float wantYPos = _hit.point.y+0.02f;
             float yMove = wantYPos - curYPos;
             transform.Translate(0.0f, yMove, 0.0f);
             entity.CollisionResponseY(_hit.collider);
         }
+    }
+
+    public void IgnorePassthrough() {
+        detectPassthrough = false;
+
+        collisionMaskY = collisionMaskY & ~(1 << 18);
+
+        collisionMaskSlope = collisionMaskSlope & ~(1 << 24);
+    }
+    public void DetectPassthrough() {
+        // To make sure the player gets through the platform, actually wait a small amount of time before fully
+        // activating passthroughs again
+        redetecting = true;
+        detectPTtimer = 0f;
+    }
+
+    void DetectPassthroughsForReal() {
+        detectPassthrough = true;
+
+        collisionMaskY = collisionMaskY | (1 << 18);
+
+        collisionMaskSlope = collisionMaskSlope | (1 << 24);
     }
 }

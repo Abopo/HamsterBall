@@ -21,6 +21,7 @@ public class AIBrain : MonoBehaviour {
     PlayerController _playerController;
     HamsterScan _hamsterScan;
     AIBoardScan _boardScan;
+    AIMapScan _mapScan;
 
     List<AIAction> _actions = new List<AIAction>();
     public AIAction curAction;
@@ -57,7 +58,7 @@ public class AIBrain : MonoBehaviour {
         _playerController = GetComponent<PlayerController>();
         _hamsterScan = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<HamsterScan>();
         _boardScan = GetComponent<AIBoardScan>();
-
+        _mapScan = GetComponent<AIMapScan>();
 
         _buttons = FindObjectsOfType<StopGoButton>();
 
@@ -608,11 +609,23 @@ public class AIBrain : MonoBehaviour {
     void HorizontalChase(GameObject chaseObj) {
         // if the hamster is to our left
         if (chaseObj.transform.position.x - transform.position.x < 0f) {
-            curAction.horWant = -1;
+            // If there is lightning to our left and the lightning is closer than the obj
+            if (_mapScan.LightningOnLeft && _mapScan.LightningDistLeft < Mathf.Abs(transform.position.x - chaseObj.transform.position.x)) {
+                // Don't go left, maybe find new action
+                ChooseNewAction();
+            } else {
+                curAction.horWant = -1;
+            }
             // if the hamster is to our right
         } else if (chaseObj.transform.position.x - transform.position.x > 0f) {
-            curAction.horWant = 1;
-            // if the hamster is close enough to grab
+            // If there is lightning to our right and the lightning is closer than the obj
+            if (_mapScan.LightningOnRight && _mapScan.LightningDistRight < Mathf.Abs(transform.position.x - chaseObj.transform.position.x)) {
+                // Don't go right, maybe find new action
+                ChooseNewAction();
+            } else {
+                curAction.horWant = 1;
+            }
+        // if the hamster is close enough to grab
         } else {
             curAction.horWant = 0;
         }

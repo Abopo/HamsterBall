@@ -41,6 +41,16 @@ public class AIMapScan : MonoBehaviour {
     float _scaledRadiusX;
     float _scaledRadiusY;
 
+
+    // Stage specific
+    LayerMask _lightningMask;
+    Ray2D _lightningRay;
+    RaycastHit2D _lightningHit;
+    bool _lightningOnLeft;
+    float _lightningDistLeft;
+    bool _lightningOnRight;
+    float _lightningDistRight;
+
     public float LeftWallDistance {
         get { return _leftWallDistance; }
     }
@@ -79,6 +89,11 @@ public class AIMapScan : MonoBehaviour {
         get { return _closestDrop; }
     }
 
+    public bool LightningOnLeft { get => _lightningOnLeft; }
+    public bool LightningOnRight { get => _lightningOnRight; }
+    public float LightningDistLeft { get => _lightningDistLeft; }
+    public float LightningDistRight { get => _lightningDistRight; }
+
     // Use this for initialization
     void Start() {
         _playerController = GetComponent<PlayerController>();
@@ -86,6 +101,8 @@ public class AIMapScan : MonoBehaviour {
         BoxCollider2D _collider = GetComponent<BoxCollider2D>();
         _scaledRadiusX = Mathf.Abs(_collider.size.x / 2 * transform.localScale.x);
         _scaledRadiusY = Mathf.Abs(_collider.size.y / 2 * transform.localScale.y);
+
+        _lightningMask = _lightningMask | (1 << 25);
     }
 
     // Update is called once per frame
@@ -101,6 +118,9 @@ public class AIMapScan : MonoBehaviour {
             CheckJumpDistancesNew();
         }
         CheckDropDistances();
+
+        // Stage Specific
+        CheckForLightning();
     }
 
     void CheckWallDistances() {
@@ -268,5 +288,29 @@ public class AIMapScan : MonoBehaviour {
             rayOffsetX += 0.1f;
         }
 
+    }
+
+    void CheckForLightning() {
+        _lightningRay = new Ray2D(_pos, Vector2.right);
+        _lightningHit = Physics2D.Raycast(_lightningRay.origin, _lightningRay.direction, 5f, _lightningMask);
+        if(_lightningHit) {
+            // Lightning to our right
+            _lightningOnRight = true;
+            _lightningDistRight = Mathf.Abs(transform.position.x - _lightningHit.transform.position.x);
+        } else {
+            _lightningOnRight = false;
+            _lightningDistRight = 100;
+        }
+
+        _lightningRay = new Ray2D(_pos, -Vector2.right);
+        _lightningHit = Physics2D.Raycast(_lightningRay.origin, _lightningRay.direction, 5f, _lightningMask);
+        if (_lightningHit) {
+            // Lightning to our left
+            _lightningOnLeft = true;
+            _lightningDistLeft = Mathf.Abs(transform.position.x - _lightningHit.transform.position.x);
+        } else {
+            _lightningOnLeft = false;
+            _lightningDistRight = 100;
+        }
     }
 }

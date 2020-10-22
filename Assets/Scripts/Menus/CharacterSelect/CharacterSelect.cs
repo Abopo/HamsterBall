@@ -81,7 +81,7 @@ public class CharacterSelect : Menu {
     // Update is called once per frame
     protected override void Update () {
         if (hasFocus && _waitFrames > 5) {
-            if (!pressStartText.activeSelf) {
+            if (!pressStartText.activeSelf && !_gameManager.demoMode) {
                 if (InputState.GetButtonOnAnyControllerPressed("Pause") && pauseMenu != null) {
                     // Show menu asking if player really wants to go back
                     pauseMenu.Activate();

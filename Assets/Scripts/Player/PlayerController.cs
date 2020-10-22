@@ -441,7 +441,17 @@ public class PlayerController : Entity {
 
         if(_physics.IsTouchingFloor && _physics.IsOnPassthrough && inputState.down.isJustPressed && CurState != PLAYER_STATE.THROW) {
             // Move player slightly downward to pass through certain platforms
-            transform.Translate(0f, -0.05f, 0f);
+            //transform.Translate(0f, -0.05f, 0f);
+        }
+
+        // If the player is holding down
+        if(inputState.down.isDown) {
+            // Ignore any passthrough platforms
+            _physics.IgnorePassthrough();
+        }
+        if(inputState.down.isJustReleased) {
+            // Don't ignore passthrough platforms anymore
+            _physics.DetectPassthrough();
         }
     }
 
@@ -616,6 +626,13 @@ public class PlayerController : Entity {
         }
 	}
 
+    private void OnTriggerStay2D(Collider2D collision) {
+        if (collision.tag == "Fire" && !_isInvuln) {
+            ChangeState(PLAYER_STATE.HIT);
+            ((HitState)GetPlayerState(PLAYER_STATE.HIT)).Knockback((int)Mathf.Sign(transform.position.x - collision.transform.position.x));
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collider) {
         if (collider.name == "Ice Platform") {
             _traction = 1.0f;
@@ -632,20 +649,16 @@ public class PlayerController : Entity {
 	public override void CollisionResponseY(Collider2D collider) {
         //base.CollisionResponseY(collider);
 
-		if (collider.gameObject.layer == 21 /*Platform*/ || collider.gameObject.layer == 18/*Fallthrough*/ || 
-            collider.gameObject.layer == 13/*Grate*/ || collider.gameObject.layer == 23/*Stair Step*/) {
-
-            // Only change the platform type if we're landing on the floor
-            if (velocity.y < 0f && GetComponent<EntityPhysics>().IsTouchingFloor) {
-                PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
-                if (CurState == PLAYER_STATE.FALL) {
-                    // We should be in fall state sooo
-                    ((FallState)currentState).Land();
-                }
+        // Only change the platform type if we're landing on the floor
+        if (velocity.y < 0f && GetComponent<EntityPhysics>().IsTouchingFloor) {
+            PlatformTypeCheck(collider.gameObject.GetComponent<Platform>());
+            if (CurState == PLAYER_STATE.FALL) {
+                // We should be in fall state sooo
+                ((FallState)currentState).Land();
             }
-
-            velocity.y = 0.0f;
         }
+
+        velocity.y = 0.0f;
 
         if (collider.name == "Ice Platform") {
             _traction = 0.2f;

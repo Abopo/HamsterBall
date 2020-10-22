@@ -337,6 +337,8 @@ public class AIController : MonoBehaviour {
             return;
         }
 
+        _targetPlatform = _mapScan.ClosestJump;
+
         // If it's to our left
         if (_mapScan.ClosestJump.transform.position.x < transform.position.x) {
             _input.left.isDown = true;
@@ -443,9 +445,15 @@ public class AIController : MonoBehaviour {
         }
 
         // If we are already jumping, go for the highest jump!
-        // TODO: Don't do this for small steps
         if(_playerController.CurState == PLAYER_STATE.JUMP) {
-            _input.jump.isDown = true;
+            // If we're trying to jump onto a platform and it's below us
+            if (_targetPlatform != null && _targetPlatform.transform.position.y < transform.position.y) {
+                // We can let go of jump to land
+                _input.jump.isDown = false;
+            // Otherwise, keep holding jump
+            } else {
+                _input.jump.isDown = true;
+            }
         }
         if (_mapScan.LeftJumpDistance < 1.75f && _input.left.isDown && !_mapScan.IsUnderCeiling) {
             _input.jump.isDown = true;
@@ -514,12 +522,14 @@ public class AIController : MonoBehaviour {
             // If bubble is on the right
             if (AngleDir(_toNodeWant.normalized, aimDirection.normalized) < 0) {
                 _input.right.isDown = true;
+                _input.aimAxis = 0.9f;
                 // If bubble is on the left
             } else if (AngleDir(_toNodeWant.normalized, aimDirection.normalized) > 0) {
                 _input.left.isDown = true;
+                _input.aimAxis = -0.9f;
             }
 
-            // If we are aiming at the node
+        // If we are aiming at the node
         } else if(_actionTimer > _actionTime || _isAimed) {
             // Throw
 

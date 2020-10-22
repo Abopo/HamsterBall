@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 public class CharacterWindow : MonoBehaviour {
 
@@ -88,6 +89,11 @@ public class CharacterWindow : MonoBehaviour {
             if (tB.numPlayers > 0) {
                 // Make sure our com text is showing
                 comText.enabled = true;
+
+                if(ReInput.controllers.joystickCount == 0) {
+                    comText.text = "(space for COM)";
+                }
+
                 return;
             }
         }

@@ -33,10 +33,10 @@ public class DataManager : MonoBehaviour {
             ES3.Save<int>("Mountain", 1);
             ES3.Save<int>("Beach", 1);
             ES3.Save<int>("City", 1);
-            ES3.Save<int>("Sewers", 1);
             ES3.Save<int>("Corporation", 1);
             ES3.Save<int>("Laboratory", 1);
             ES3.Save<int>("Airship", 1);
+            ES3.Save<int>("Crashed Ship", 1);
 
             // Chosen players
             ES3.Save<int>("Player1Character", CHARACTERS.BOY);

@@ -66,7 +66,7 @@ public class Wind : MonoBehaviour {
 
         _windBlowTimer = 0f;
 
-        mainCamera.StartShake(_windBlowTime);
+        mainCamera.StartShake(_windBlowTime, 8f, new Vector2(0.05f, 0.05f));
     }
 
     void StopBlowing() {
