@@ -61,6 +61,10 @@ public class MainMenu : MonoBehaviour {
         _howToPlay.Activate();
     }
 
+    public void BoardEditor() {
+        SceneManager.LoadScene("BoardEditor");
+    }
+
     public void QuitGame() {
         Application.Quit();
     }
