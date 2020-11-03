@@ -10,7 +10,7 @@ public class DemoModeToggle : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         theToggle = GetComponent<Toggle>();
 
         theToggle.isOn = _gameManager.demoMode;

@@ -16,7 +16,7 @@ static class STMCustomInspectorTools {
 			}
 		//name:
 			EditorGUI.BeginChangeCheck();
-			myObject.name = EditorGUILayout.TextField(myObject.name);
+			myObject.name = EditorGUILayout.DelayedTextField(myObject.name);
 			if(EditorGUI.EndChangeCheck()){
 				AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(myObject), myObject.name);
 				//Undo.RecordObject (myObject, "Change Asset Name");

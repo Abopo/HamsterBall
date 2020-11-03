@@ -39,7 +39,7 @@ public class STMTextInfo
 	public int rawIndex; //where this character is on the unfiltered text (_text)
 	public float indent = 0f; //distance from left-oriented margin that a new row will start from
 	public STMDrawAnimData drawAnimData; //which draw animation will be used
-	public float size; //localspace size
+	public Vector2 size; //localspace size
 	//public Vector3 offset = Vector3.zero; //offset of this character, independent of effects. meant for superscript text
 	public SuperTextMesh.Alignment alignment; //how this text will be aligned
 	public SuperTextMesh.DrawOrder drawOrder;
@@ -78,7 +78,7 @@ public class STMTextInfo
 	 */
 	public bool isQuad = false; //cached value for fast checking!
 	public int quadIndex = -1;
-	public STMMaterialData materialData;
+	public STMMaterialData materialData = null;
 	public STMSoundClipData soundClipData;
     public int IdxIdentifier; // RV: Lookup Identifier.
     public bool InfoInUse; // RV: Shows if this identifier is being used or not.
@@ -90,8 +90,15 @@ public class STMTextInfo
     private int chMinY;
     private int chMaxY;
 	private int chAdvance;
+	private Vector2 chUvBottomLeft = Vector2.zero;
+	private Vector2 chUvBottomRight = Vector2.zero;
+	private Vector2 chUvTopLeft = Vector2.zero;
+	private Vector2 chUvTopRight = Vector2.zero;
 	//private int chBearing;
 	public int chSize = 1; //quality
+
+	public bool submeshChange = false;
+	public bool invoked = false;
 	//public FontStyle chStyle;
 
 	//values grabbed from UICharInfo. Jeez
@@ -99,9 +106,9 @@ public class STMTextInfo
 	//public Vector2 cursorPos = Vector2.zero;
 	//^^^ having this value default like this fixes NaN values on solo linebreaks. ugh.
 
-	public void UpdateCachedValuesIfChanged()
+	public void UpdateCachedValuesIfChanged(bool force)
     {
-        if(chGlyphIndex != ch.index)
+        if(force || chGlyphIndex != ch.index)
         {
             chGlyphIndex = ch.index;
             chMinX = ch.minX;
@@ -110,6 +117,10 @@ public class STMTextInfo
             chMaxY = ch.maxY;
 			chAdvance = ch.advance;
 			chSize = ch.size;
+			chUvBottomLeft = ch.uvBottomLeft;
+			chUvBottomRight = ch.uvBottomRight;
+			chUvTopLeft = ch.uvTopLeft;
+			chUvTopRight = ch.uvTopRight;
 		//	chStyle = ch.style;
 			//chBearing = ch.bearing;
         }
@@ -118,39 +129,112 @@ public class STMTextInfo
     }
 
 	public char character{
-		get{
+		get
+		{
+			/*
+			//not needed right now
+			if(chGlyphIndex > char.MaxValue || chGlyphIndex < char.MinValue)
+			{
+				return ''; //return null
+			*/
 			return System.Convert.ToChar(chGlyphIndex);
 		}
 	}
-	public Vector2 ratio{
-		get{
-			Vector2 size = Vector2.zero;
+	public float uvHeight
+    {
+        get
+        {
+            if(chUvBottomLeft.x != chUvTopLeft.x)
+            {
+                //this thing is rotated!!!
+                return chUvTopLeft.y - chUvTopRight.y;
+            }
+            return chUvBottomLeft.y - chUvTopLeft.y;
+        }
+    }
+    public float uvWidth
+    {
+        get
+        {
+            if(chUvBottomRight.y != chUvBottomLeft.y)
+            {
+                //this thing is rotated!!!
+                return chUvTopLeft.x - chUvBottomLeft.x;
+            }
+            return chUvBottomRight.x - chUvBottomLeft.x;
+        }
+    }
+	private Vector2 uvMidReturn = Vector2.zero;
+	public Vector2 uvMid
+	{
+		get
+		{
+			if (chUvTopLeft.x!=chUvBottomLeft.x){
+				uvMidReturn.x = (chUvTopLeft.x + chUvBottomLeft.x) * 0.5f;
+				uvMidReturn.y = (chUvTopLeft.y + chUvTopRight.y) * 0.5f;
+			}
+			else
+			{
+				uvMidReturn.x = (chUvTopLeft.x + chUvTopRight.x) * 0.5f;
+				uvMidReturn.y = (chUvTopLeft.y + chUvBottomLeft.y) * 0.5f;
+			}
+			return uvMidReturn;
+		}
+	}
+
+	//this code would work if the shader didn't care about rotation
+	public Vector2 ratio
+	{
+		get
+		{
+			Vector2 ratioSize = Vector2.zero;
 
 			if(isQuad)
 			{ //use quad's ratio
-				size.x = quadData.size.x;
-				size.y = quadData.size.y;
+				ratioSize.x = quadData.size.x;
+				ratioSize.y = quadData.size.y;
 			}
 			else
 			{ //use letter
-				size.x = (float)chMaxX - (float)chMinX;
-				size.y = (float)chMaxY - (float)chMinY;
+				ratioSize.x = uvWidth;
+				ratioSize.y = uvHeight;
+			}
+			return ratioSize;
+
+		}
+	}
+	
+	/*
+	public Vector2 ratio{
+		get{
+			Vector2 ratioSize = Vector2.zero;
+
+			if(isQuad)
+			{ //use quad's ratio
+				ratioSize.x = quadData.size.x;
+				ratioSize.y = quadData.size.y;
+			}
+			else
+			{ //use letter
+				ratioSize.x = (float)chMaxX - (float)chMinX;
+				ratioSize.y = (float)chMaxY - (float)chMinY;
 			}
 
-			if(size.x > size.y) //wide
+			if(ratioSize.x > ratioSize.y) //wide
 			{
-				return new Vector2(1f, size.y / size.x);
+				return new Vector2(1f, ratioSize.y / ratioSize.x);
 			}
-			else if(size.x < size.y) //tall
+			else if(ratioSize.x < ratioSize.y) //tall
 			{
-				return new Vector2(size.x / size.y, 1f);
+				return new Vector2(ratioSize.x / ratioSize.y, 1f);
 			}
 			else //square
 			{
-				return Vector2.one;
+				return new Vector3(1f,1f);
 			}
 		}
 	}
+	*/
 
     private Vector3 _topLeftVert;
 	public Vector3 TopLeftVert
@@ -258,9 +342,9 @@ public class STMTextInfo
     public Vector3 RelativePos(Vector3 yeah)
     {
         // RV: This is the OH YEAH method. OH YEAH!!!!! I, for one, feel refreshed.
-        RelativePos_Multiplier = (size / chSize); //ch.size is quality
+        RelativePos_Multiplier = (size.y / chSize); //ch.size is quality
 		//Debug.Log("My multiplier: " + RelativePos_Multiplier + "the numerator was: " + size + " the denomonator was: " + chSize);
-        RelativePos_ReturnVal.x = pos.x + offset.x + yeah.x * RelativePos_Multiplier;
+        RelativePos_ReturnVal.x = pos.x + offset.x + yeah.x * (size.x / chSize);
         RelativePos_ReturnVal.y = pos.y + offset.y + yeah.y * RelativePos_Multiplier;
         RelativePos_ReturnVal.z = pos.z + offset.z + yeah.z * RelativePos_Multiplier;
 
@@ -271,9 +355,9 @@ public class STMTextInfo
     public Vector3 RelativePos2(Vector3 yeah)
     {
         //for quads
-        RelativePos2_ReturnVal.x = pos.x + offset.x + yeah.x * size;
-        RelativePos2_ReturnVal.y = pos.y + offset.y + yeah.y * size;
-        RelativePos2_ReturnVal.z = pos.z + offset.z + yeah.z * size;
+        RelativePos2_ReturnVal.x = pos.x + offset.x + yeah.x * size.x;
+        RelativePos2_ReturnVal.y = pos.y + offset.y + yeah.y * size.y;
+        RelativePos2_ReturnVal.z = pos.z + offset.z + yeah.z;
 
         return RelativePos2_ReturnVal; //ch.size is quality
 
@@ -282,11 +366,11 @@ public class STMTextInfo
 		get{
 			if(isQuad)
 			{
-				return quadData.size.x * size;
+				return quadData.size.x * size.x;
 			}
 			else
 			{
-				return chMaxX * (size / chSize);
+				return chMaxX * (size.x / chSize);
 			}
 		}
 	}
@@ -304,13 +388,13 @@ public class STMTextInfo
         //for getting letter position and autowrap data
 		if(quadData != null)
         {
-            Advance_ReturnVal.x = ((quadData.size.x + quadData.advance) * size) + (extraSpacing * size / myQuality);
+            Advance_ReturnVal.x = ((quadData.size.x + quadData.advance) * size.x) + (extraSpacing * size.x / myQuality);
             Advance_ReturnVal.y = 0f;
             Advance_ReturnVal.z = 0f;
 		}
         else
         {
-            Advance_ReturnVal.x = (chAdvance + (extraSpacing * size)) * (size / myQuality);
+            Advance_ReturnVal.x = (chAdvance + (extraSpacing * size.x)) * (size.x / myQuality);
             Advance_ReturnVal.y = 0f;
             Advance_ReturnVal.z = 0f;
 		}
@@ -325,13 +409,16 @@ public class STMTextInfo
 	public STMTextInfo(){ //dont use this unless ur gonna override it
 		this.ch = new CharacterInfo();
 		this.pos = Vector3.zero;
-		this.offset = Vector3.zero;
+		this.offset.x = 0f;
+		this.offset.y = 0f;
+		this.offset.z = 0f;
 		this.line = 0;
 		this.rawIndex = 0;
 		this.indent = 0;
 		//this.colorData = ScriptableObject.CreateInstance<STMColorData>();
 //		this.colorData.color = Color.white;
-		this.size = 16;
+		this.size.x = 16f;
+		this.size.y = 16f;
         //this.delayData = ScriptableObject.CreateInstance<STMDelayData>();
         this.ev.Clear();// = new List<string>(); // RV: Why make new ones here? Clearing should be fine...
 		this.ev2.Clear();// = new List<string>(); // RV: Same here...
@@ -339,15 +426,42 @@ public class STMTextInfo
 		this.unreadTime = -1f;
 		this.quadIndex = -1;
 		this.isQuad = false;
+
+		this.submeshChange = false;
+		this.invoked = false;
 	}
 	public STMTextInfo(SuperTextMesh stm){ //for setting "defaults"
+		SetValues(stm);
+	}
+	public void SetValues(SuperTextMesh stm)
+	{
 		this.ch.style = stm.style;
+//reset these ones too because of caching changes:
+		this.gradientData = null;
+		this.colorData = null;
+		this.textureData = null;
+
+		this.delayData = null;
+		this.waveData = null;
+		this.jitterData = null;
+		this.audioClipData = null;
+		this.fontData = null;
+		this.quadData = null;
+
+
 		//this.colorData = ScriptableObject.CreateInstance<STMColorData>();
 //		this.colorData.color = stm.color;
-		this.offset = Vector3.zero;
+		this.offset.x = 0f;
+		this.offset.y = 0f;
+		this.offset.z = 0f;
 		this.indent = 0;
 		this.rawIndex = 0;
-		this.size = stm.size;
+		this.size.x = stm.size;
+		this.size.y = stm.size;
+
+		this.ev.Clear();// 
+		this.ev2.Clear();//
+
 		this.alignment = stm.alignment;
 		this.stopPreviousSound = stm.stopPreviousSound;
 		this.pitchMode = stm.pitchMode;
@@ -356,16 +470,45 @@ public class STMTextInfo
 		this.maxPitch = stm.maxPitch;
 		this.speedReadPitch = stm.speedReadPitch;
 		this.readDelay = stm.readDelay;
-		this.drawAnimData = Resources.Load<STMDrawAnimData>("STMDrawAnims/" + stm.drawAnimName);
-		if(this.drawAnimData == null){
-			STMDrawAnimData[] tmpDrawAnims = Resources.LoadAll<STMDrawAnimData>("STMDrawAnims");
-			if(tmpDrawAnims.Length > 0){
-				this.drawAnimData = tmpDrawAnims[0]; //get first one
+		if(this.drawAnimData != null)
+		{
+			if(this.drawAnimData.name != stm.drawAnimName)
+			{
+				this.drawAnimData = Resources.Load<STMDrawAnimData>("STMDrawAnims/" + stm.drawAnimName);
+				if(this.drawAnimData == null)
+				{
+					STMDrawAnimData[] tmpDrawAnims = Resources.LoadAll<STMDrawAnimData>("STMDrawAnims");
+					if(tmpDrawAnims.Length > 0)
+					{
+						this.drawAnimData = tmpDrawAnims[0]; //get first one
+					}
+				}
+			}
+			//else do nothing, already has a match!
+		}
+		else
+		{
+			this.drawAnimData = Resources.Load<STMDrawAnimData>("STMDrawAnims/" + stm.drawAnimName);
+			if(this.drawAnimData == null) //still null?
+			{
+				STMDrawAnimData[] tmpDrawAnims = Resources.LoadAll<STMDrawAnimData>("STMDrawAnims");
+				if(tmpDrawAnims.Length > 0)
+				{
+					this.drawAnimData = tmpDrawAnims[0]; //get first one
+				}
 			}
 		}
 		this.drawOrder = stm.drawOrder;
 		this.quadIndex = -1;
 		this.isQuad = false;
+
+
+		this.materialData = null;
+		this.soundClipData = null;
+		this.quadIndex = -1;
+
+		this.submeshChange = false;
+		this.invoked = false;
 	}
 
 	public STMTextInfo(STMTextInfo clone, CharacterInfo ch) : this(clone){ //clone everything but character. used for auto hyphens
@@ -375,14 +518,29 @@ public class STMTextInfo
 	}
 	
 	public STMTextInfo(STMTextInfo clone){
+		SetValues(clone);
+	}
+	public void SetValues(STMTextInfo clone)
+	{
 		this.ch = clone.ch;
 		this.pos = clone.pos;
-		this.offset = clone.offset;
+		this.offset.x = clone.offset.x;
+		this.offset.y = clone.offset.y;
+		this.offset.z = clone.offset.z;
 		this.line = clone.line;
 		this.rawIndex = clone.rawIndex;
 		this.indent = clone.indent;
-		this.ev = new List<string>(clone.ev);
-		this.ev2 = new List<string>(clone.ev2);
+		
+		if(clone.ev.Count > 0) //this check saves a TON of time... but im sure there's an even better way? can it just be set directly...?
+			this.ev = new List<string>(clone.ev);
+		if(clone.ev2.Count > 0)
+			this.ev2 = new List<string>(clone.ev2);
+		
+		//yeah... does this cause errors? events are just strings so i dont see why... hm
+		//this.ev = clone.ev;
+		//this.ev2 = clone.ev2;
+
+
 		this.colorData = clone.colorData;
 		//this.colorData = ScriptableObject.CreateInstance<STMColorData>();
 //		this.colorData.color = clone.colorData.color;
@@ -419,6 +577,9 @@ public class STMTextInfo
 		this.soundClipData = clone.soundClipData;
 
 		this.quadIndex = clone.quadIndex;
+
+		this.submeshChange = clone.submeshChange;
+		this.invoked = false;
 	}
 }
 /*

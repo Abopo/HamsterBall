@@ -22,7 +22,7 @@ public class PauseMenu : Menu {
     protected override void Awake() {
         base.Awake();
         _buttons = GetComponentsInChildren<MenuButton>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
 
     // Use this for initialization

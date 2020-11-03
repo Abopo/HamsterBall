@@ -14,6 +14,8 @@ public class STMWaveControl{
 	public AnimationCurve curveX = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f,0f)); //unfortunately, there isn't a way to completely instantiate a sine/cos wave that loops in just one line of code, so I can't do that, here. no way to loop
 	public AnimationCurve curveY = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f,0f));
 	public AnimationCurve curveZ = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f,0f));
+
+	public AnimationCurve multiOverTime = new AnimationCurve(new Keyframe(0f,1f,0f,0f), new Keyframe(1f,1f,0f,0f));
 	[UnityEngine.Serialization.FormerlySerializedAs("offset")]
 	[Range(0f,1f)]
 	[Tooltip("Timing offset compared to other waves.")]
@@ -43,6 +45,8 @@ public class STMWaveControl{
 			this.speed = EditorGUILayout.Vector3Field("Speed", this.speed);
 			this.strength = EditorGUILayout.Vector3Field("Strength", this.strength);
 			this.density = EditorGUILayout.Vector3Field("Density", this.density);
+
+			this.multiOverTime = EditorGUILayout.CurveField("Multi Over Time", this.multiOverTime);
 
 			EditorGUI.indentLevel--;
 		}

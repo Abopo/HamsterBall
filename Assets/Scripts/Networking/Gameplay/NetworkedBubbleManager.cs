@@ -24,7 +24,7 @@ public class NetworkedBubbleManager : Photon.MonoBehaviour {
 
     private void Awake() {
         _bubbleManager = GetComponent<BubbleManager>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         _bubbleObj = Resources.Load<GameObject>("Prefabs/Level/Bubble");
     }

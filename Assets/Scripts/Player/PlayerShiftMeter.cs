@@ -30,6 +30,9 @@ public class PlayerShiftMeter : MonoBehaviour {
         if(!_display) {
             gameObject.SetActive(false);
         }
+
+        // Outline should be hidden by default
+        outline.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,7 +47,8 @@ public class PlayerShiftMeter : MonoBehaviour {
                 _shiftMeterBack.gameObject.SetActive(true);
                 _shiftMeterFront.gameObject.SetActive(true);
 
-                outline.enabled = false;
+                outline.gameObject.SetActive(false);
+                //outline.enabled = false;
                 //_effect.gameObject.SetActive(false);
             }
 
@@ -59,8 +63,31 @@ public class PlayerShiftMeter : MonoBehaviour {
             _shiftMeterFront.gameObject.SetActive(false);
 
             // Show the effect
-            outline.enabled = true;
+            outline.gameObject.SetActive(true);
+            //outline.enabled = true;
             //_effect.gameObject.SetActive(true);
         }
+    }
+
+    public void HideEffects() {
+        _display = false;
+
+        // Hide the meter
+        _shiftMeterBack.gameObject.SetActive(false);
+        _shiftMeterFront.gameObject.SetActive(false);
+
+        // Show the effect
+        outline.gameObject.SetActive(false);
+    }
+
+    public void ShowEffects() {
+        _display = true;
+
+        // Hide the meter
+        _shiftMeterBack.gameObject.SetActive(true);
+        _shiftMeterFront.gameObject.SetActive(true);
+
+        // Show the effect
+        outline.gameObject.SetActive(true);
     }
 }

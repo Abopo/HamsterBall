@@ -29,7 +29,7 @@ public class VillageManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _gameManager.isSinglePlayer = true;
         _gameManager.isOnline = false;
 

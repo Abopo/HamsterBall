@@ -58,7 +58,7 @@ public class BoardEditor : MonoBehaviour {
         _levelScene = "Laboratory - SinglePlayer";
         _fileName = "";
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _gameManager.prevMenu = MENU.EDITOR;
         if (_gameManager.prevLevel != "") {
             LoadBoard(_gameManager.prevLevel);

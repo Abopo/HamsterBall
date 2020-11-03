@@ -28,7 +28,7 @@ public class GameSetupWindow : Menu {
     public void Initialize() {
         gameObject.SetActive(true);
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _gameManager.GetComponent<PlayerManager>().SetAimAssist(_aimAssist);
 
         Activate();
@@ -245,7 +245,7 @@ public class GameSetupWindow : Menu {
 
     // Sets the game up for demo mode and skips this menu
     public void DemoSetup() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         _gameManager.GetComponent<PlayerManager>().SetAimAssist(false);
         _gameManager.gameSettings.HamsterSpawnMax = 8;

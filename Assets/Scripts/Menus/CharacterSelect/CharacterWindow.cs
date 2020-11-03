@@ -6,11 +6,11 @@ using Rewired;
 public class CharacterWindow : MonoBehaviour {
 
     public int num;
-    public SuperTextMesh pressAnyButton;
+    public GameObject pressAnyButton;
     public SpriteRenderer charaPortrait;
-    public SuperTextMesh charaName;
-    public SuperTextMesh pNum;
-    public SuperTextMesh comText;
+    public GameObject charaName;
+    public GameObject pNum;
+    public GameObject comText;
     public PullDownWindow pullDownWindow;
     public GameObject colorArrows;
 
@@ -61,15 +61,17 @@ public class CharacterWindow : MonoBehaviour {
         pullDownWindow.PlayerController.Animator.SetBool("FacingRight", pullDownWindow.PlayerController.FacingRight);
 
         charaPortrait.enabled = true;
-        charaName.gameObject.SetActive(true);
+        charaName.SetActive(true);
         pressAnyButton.gameObject.SetActive(false);
-        pNum.gameObject.SetActive(true);
-        comText.enabled = false;
+        pNum.SetActive(true);
+        if (comText != null) {
+            comText.SetActive(false);
+        }
 
         if (ai) {
-            pNum.text = "C" + (playerNum+1);
+            pNum.GetComponentInChildren<SuperTextMesh>().text = "C" + (playerNum+1);
         } else {
-            pNum.text = "P" + (playerNum+1);
+            pNum.GetComponentInChildren<SuperTextMesh>().text = "P" + (playerNum+1);
         }
     }
     public void Deactivate() {
@@ -78,7 +80,7 @@ public class CharacterWindow : MonoBehaviour {
 
         pullDownWindow.PlayerController.Animator.gameObject.SetActive(false);
         charaPortrait.enabled = false;
-        charaName.gameObject.SetActive(false);
+        charaName.SetActive(false);
         pNum.gameObject.SetActive(false);
         pressAnyButton.gameObject.SetActive(true);
     }
@@ -88,16 +90,16 @@ public class CharacterWindow : MonoBehaviour {
         foreach (TeamBox tB in _teamBoxes) {
             if (tB.numPlayers > 0) {
                 // Make sure our com text is showing
-                comText.enabled = true;
+                comText.SetActive(true);
 
                 if(ReInput.controllers.joystickCount == 0) {
-                    comText.text = "(space for COM)";
+                    comText.GetComponentInChildren<SuperTextMesh>().text = "(space for COM)";
                 }
 
                 return;
             }
         }
 
-        comText.enabled = false;
+        comText.SetActive(false);
     }
 }

@@ -19,7 +19,7 @@ public class ConfirmPurchaseMenu : Menu {
     protected override void Start() {
         base.Start();
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         if (!_active && menuObj.activeSelf) {
             menuObj.SetActive(false);

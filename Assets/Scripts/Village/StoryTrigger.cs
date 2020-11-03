@@ -10,7 +10,7 @@ public class StoryTrigger : MonoBehaviour {
 
     private void Awake() {
         _villagePlayerSpawn = FindObjectOfType<VillagePlayerSpawn>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
     // Use this for initialization
     void Start () {

@@ -15,7 +15,7 @@ public class OptionsMenu : MonoBehaviour {
         _curPageIndex = 0;
 
         // Find the control remapper canvas from the game manager
-        _controlMapper = FindObjectOfType<GameManager>().GetComponentInChildren<ControlMapper>();
+        _controlMapper = GameManager.instance.GetComponentInChildren<ControlMapper>();
 	}
 	
 	// Update is called once per frame

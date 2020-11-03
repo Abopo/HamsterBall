@@ -61,7 +61,7 @@ public class Hamster : Entity {
     // Use this for initialization
     protected override void Start () {
 		base.Start ();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         wasCaught = false;
 
@@ -85,7 +85,7 @@ public class Hamster : Entity {
     public void Initialize(int inTeam) {
         team = inTeam;
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         GameObject lm = GameObject.FindGameObjectWithTag("LevelManager");
         if (lm != null) {

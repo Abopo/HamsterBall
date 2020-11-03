@@ -30,7 +30,7 @@ public class VillageHamster : MonoBehaviour {
         } else {
             hamsterDialogue = GetComponentInChildren<HamsterDialogue>();
 
-            if (hamsterDialogue != null && FindObjectOfType<GameManager>().demoMode) {
+            if (hamsterDialogue != null && GameManager.instance.demoMode) {
                 hamsterDialogue.dialogue = demoDialogue;
             } else {
                 // Search backwards for the closest dialogue to the current index

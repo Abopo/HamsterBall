@@ -172,7 +172,7 @@ public class PlayerController : Entity {
         _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         _animator = GetComponentInChildren<Animator>();
         _playerEffects = GetComponentInChildren<PlayerEffects>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _levelManager = FindObjectOfType<LevelManager>();
 
         inputState = new InputState();
@@ -670,6 +670,9 @@ public class PlayerController : Entity {
     void PlatformTypeCheck(Platform plat) {
         if (plat != null) {
             platformIndex = plat.platformIndex;
+
+            // React to the player landing on us
+            plat.React();
         }
     }
     

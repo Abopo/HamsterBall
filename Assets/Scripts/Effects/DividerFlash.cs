@@ -20,7 +20,7 @@ public class DividerFlash : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        _material = GetComponent<MeshRenderer>().material;
+        //_material = GetComponent<MeshRenderer>().material;
 
         _dangerFlash = GetComponentInChildren<SpriteRenderer>();
         if (_dangerFlash != null) {
@@ -33,14 +33,17 @@ public class DividerFlash : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if(isFlashing) {
+            // Old stuff
+            /*
             _flashTimer += Time.deltaTime;
 
             if (_flashTimer >= _flashTime) {
                 Flash();
                 _flashTimer = 0f;
             }
+            */
 
-            // New flash testing
+            // New flash
             if (_dangerFlash != null) {
                 if (_dangerUp) {
                     _dangerTimer += Time.deltaTime;

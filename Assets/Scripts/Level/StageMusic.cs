@@ -15,7 +15,7 @@ public class StageMusic : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
     }
     // Start is called before the first frame update

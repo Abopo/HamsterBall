@@ -11,7 +11,7 @@ public class BackButton : MenuButton {
     protected override void Start () {
         base.Start();
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 	}
 
     // Update is called once per frame

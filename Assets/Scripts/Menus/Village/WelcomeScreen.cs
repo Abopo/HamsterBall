@@ -13,7 +13,7 @@ public class WelcomeScreen : MonoBehaviour {
     bool _frameskip = true;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _menuObj = transform.GetChild(0).gameObject;
     }
     // Start is called before the first frame update

@@ -37,7 +37,7 @@ public class GameCountdown : MonoBehaviour {
         _done = false;
 
         // If this is a continued level
-        if (FindObjectOfType<GameManager>().prevLevel != "") {
+        if (GameManager.instance.prevLevel != "") {
             // Skip the countdown and just start
             GameStart();
         } else if (!PhotonNetwork.connectedAndReady && autoStart) {

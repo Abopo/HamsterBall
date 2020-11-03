@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         _totalScore = _gameManager.scoreOverflow;
         _totalScoreText.text = _totalScore.ToString();

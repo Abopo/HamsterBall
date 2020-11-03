@@ -69,6 +69,9 @@ public class SuperTextMeshData : ScriptableObject { //the actual textdata manage
 	public float superscriptSize = 0.5f;
 	public float subscriptOffset = -0.2f;
 	public float subscriptSize = 0.5f;
+	public Font inspectorFont;
+
+
 
     public void RebuildDictionaries(){
     	waves = Resources.LoadAll<STMWaveData>("STMWaves").ToDictionary(x => x.name, x => x);

@@ -51,6 +51,7 @@ public class CSPlayerController : PlayerController {
         if (inputState != null) {
             playerInputID = inputState.playerID;
         } else {
+
             playerInputID = -1;
         }
 

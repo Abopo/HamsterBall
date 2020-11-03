@@ -431,7 +431,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void ResetGames() {
-        GameManager gM = FindObjectOfType<GameManager>();
+        GameManager gM = GameManager.instance;
         gM.leftTeamGames = 0;
         gM.rightTeamGames = 0;
     }

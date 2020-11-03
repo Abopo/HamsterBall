@@ -11,7 +11,7 @@ public class RetryButton : MenuButton {
         base.Start();
 
         _boardLoader = FindObjectOfType<BoardLoader>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
 
     // Update is called once per frame

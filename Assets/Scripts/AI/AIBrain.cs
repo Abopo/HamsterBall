@@ -62,7 +62,7 @@ public class AIBrain : MonoBehaviour {
 
         _buttons = FindObjectsOfType<StopGoButton>();
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
     // Use this for initialization
     void Start () {

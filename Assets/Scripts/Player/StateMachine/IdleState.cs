@@ -62,7 +62,7 @@ public class IdleState : PlayerState {
             _longIdleTimer = 0f;
         }
 
-        playerController.ApplyGravity();
+        //playerController.ApplyGravity();
 
         // Check below the player to make sure they 
         // are standing on something

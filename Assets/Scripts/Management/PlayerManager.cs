@@ -51,7 +51,7 @@ public class PlayerManager : MonoBehaviour {
         newPlayer.team = 0;
         _players.Add(newPlayer);
 
-        GameManager gameManager = FindObjectOfType<GameManager>();
+        GameManager gameManager = GameManager.instance;
         if (!gameManager.isSinglePlayer) {
             PlayerInfo newPlayer2 = new PlayerInfo();
             newPlayer2.playerNum = 1;

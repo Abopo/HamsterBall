@@ -32,7 +32,7 @@ public class StoryButton : MenuButton {
 
         _storySelectMenu = FindObjectOfType<StorySelectMenu>();
         _boardLoader = FindObjectOfType<BoardLoader>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
 
     // Use this for initialization
@@ -71,7 +71,6 @@ public class StoryButton : MenuButton {
     protected override void Update () {
         base.Update();
 
-
         if (isLocked) {
             isReady = false;
         } else {
@@ -87,7 +86,7 @@ public class StoryButton : MenuButton {
         }
 
         // Set the stage in the game manager
-        FindObjectOfType<GameManager>().stage = stageNumber;
+        GameManager.instance.stage = stageNumber;
 
         if (_gameManager.demoMode) {
             ES3.Save<int>("DemoPos", stageNumber[1]);
@@ -119,6 +118,9 @@ public class StoryButton : MenuButton {
             base.Highlight();
 
             // Change UI to display stuff about this event
+            if(_storySelectMenu == null) {
+                _storySelectMenu = FindObjectOfType<StorySelectMenu>();
+            }
             _storySelectMenu.UpdateUI(this);
         }
     }

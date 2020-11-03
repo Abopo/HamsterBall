@@ -27,7 +27,7 @@ public class WaterBubbleGenerator : MonoBehaviour {
 
     private void Awake() {
         _levelManager = FindObjectOfType<LevelManager>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         _photonView = GetComponent<PhotonView>();
     }

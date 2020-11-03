@@ -16,7 +16,7 @@ public class AimAssistSetting : MenuOption {
     protected override void Start() {
         base.Start();
 
-        _gameSettings = FindObjectOfType<GameManager>().gameSettings;
+        _gameSettings = GameManager.instance.gameSettings;
 
         SetText();
     }

@@ -91,7 +91,7 @@ public class CharacterSelector : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _playerManager = FindObjectOfType<PlayerManager>();
 
         aiIndex = 0;
@@ -375,7 +375,7 @@ public class CharacterSelector : MonoBehaviour {
         // Change animator to correct character
         charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaInfo[(int)charaIcon.charaName][0].animator;
         // Change name to correct character
-        charaWindow.charaName.text = _resources.CharaNames[(int)charaIcon.charaName];
+        charaWindow.charaName.GetComponentInChildren<SuperTextMesh>().text = _resources.CharaNames[(int)charaIcon.charaName];
 
         // Play idle animation
         charaWindow.CharaAnimator.SetInteger("PlayerState", 0);
@@ -437,7 +437,7 @@ public class CharacterSelector : MonoBehaviour {
         tempInfo.color = charaColor;
         tempInfo.team = charaWindow.PlayerController.team;
         // TODO: Make it so they can't get a team at all in the character select
-        if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SURVIVAL) {
+        if(GameManager.instance.gameMode == GAME_MODE.SURVIVAL) {
             tempInfo.team = -1;
         }
 

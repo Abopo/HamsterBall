@@ -29,7 +29,7 @@ public class AISetupWindow : Menu {
         gameObject.SetActive(true);
         _playerManager = FindObjectOfType<PlayerManager>();
         _csResources = FindObjectOfType<CharacterSelectResources>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         // Make sure aisetups are inactive at first
         ai1Setup.gameObject.SetActive(false);
@@ -135,7 +135,7 @@ public class AISetupWindow : Menu {
 
     public void OpenGameSetup() {
         //SceneManager.LoadScene("MapSelect2");
-        if (FindObjectOfType<GameManager>().demoMode) {
+        if (GameManager.instance.demoMode) {
             gameSetupWindow.DemoSetup();
         } else {
             // Turn on GameSetupWindow

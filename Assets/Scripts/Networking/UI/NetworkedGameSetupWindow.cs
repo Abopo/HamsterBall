@@ -8,7 +8,7 @@ public class NetworkedGameSetupWindow : Photon.MonoBehaviour {
     GameSettings _gameSettings;
 
     private void Awake() {
-        _gameSettings = FindObjectOfType<GameManager>().gameSettings;
+        _gameSettings = GameManager.instance.gameSettings;
     }
 
     // Use this for initialization

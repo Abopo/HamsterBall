@@ -13,7 +13,7 @@ public class SurvivalManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         _bubbleManager = GetComponent<BubbleManager>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         // Adjust addLineTime based on the number of players in the game
         _addLineTime = 60f - _gameManager.playerManager.NumPlayers * 10;

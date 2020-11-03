@@ -11,6 +11,7 @@
 		_Cutoff ("Cutoff", Range(0,1)) = 0.0001 //text cutoff
 		[Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull Mode", Float) = 0
 		[Enum(Normal,2,On Top,6)] _ZTestMode ("ZTest Mode", Float) = 2
+        //[Enum(Off,0,On,1)] _ZWrite("ZWrite", Float) = 0 //"On"
 	}
 	SubShader {
 		Tags { 

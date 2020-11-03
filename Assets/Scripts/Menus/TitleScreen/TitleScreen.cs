@@ -14,7 +14,7 @@ public class TitleScreen : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
 
     // Update is called once per frame

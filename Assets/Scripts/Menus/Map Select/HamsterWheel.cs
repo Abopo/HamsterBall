@@ -51,7 +51,7 @@ public class HamsterWheel : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         _stageIcons = GetComponentsInChildren<StageIcon>();
         // Scale down all the stage icons

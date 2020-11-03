@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour {
 
     private void Awake() {
         pauseMenu = FindObjectOfType<PauseMenu>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         board = _gameManager.selectedBoard;
 
         // If we're not online
@@ -141,7 +141,7 @@ public class LevelManager : MonoBehaviour {
                 // Update margin stuff
                 _marginTimer += Time.deltaTime;
                 if (_marginTimer >= _marginTime) {
-                    IncreaseMarginMultiplier();
+                    //IncreaseMarginMultiplier();
                     _marginTime = 30f;
                     _marginTimer = 0f;
                 }
@@ -182,7 +182,7 @@ public class LevelManager : MonoBehaviour {
             ActivateResultsScreen(0, 1);
         }
         if(Input.GetKey(KeyCode.Q) && Input.GetKeyDown(KeyCode.N)) {
-            IncreaseMarginMultiplier();
+            //IncreaseMarginMultiplier();
         }
 #endif
 

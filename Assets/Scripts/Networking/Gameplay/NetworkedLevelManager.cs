@@ -26,11 +26,11 @@ public class NetworkedLevelManager : Photon.MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _playerManager = FindObjectOfType<GameManager>().GetComponent<PlayerManager>();
+        _playerManager = GameManager.instance.GetComponent<PlayerManager>();
         _gameCountdown = FindObjectOfType<GameCountdown>();
         _levelManager = GetComponent<LevelManager>();
         _netPlayerSpawner = GetComponent<NetworkedPlayerSpawner>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
     // Use this for initialization
     void Start() {

@@ -24,7 +24,7 @@ public class Board : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         switch (_gameManager.gameMode) {
             case GAME_MODE.MP_VERSUS:

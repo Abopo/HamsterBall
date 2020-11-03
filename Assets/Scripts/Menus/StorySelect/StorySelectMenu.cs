@@ -6,8 +6,8 @@ public class StorySelectMenu : MonoBehaviour {
     public Image gameType;
     public SuperTextMesh highscoreSolo;
     public SuperTextMesh highscoreCoop;
-    public SpriteRenderer soloFlower;
-    public SpriteRenderer coopFlower;
+    public Image soloFlower;
+    public Image coopFlower;
     public SuperTextMesh flowerRequirement1;
     public SuperTextMesh flowerRequirement2;
     public SuperTextMesh winCondition;
@@ -45,7 +45,7 @@ public class StorySelectMenu : MonoBehaviour {
     public StorySelectResources resources;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         storyPlayerInfo = FindObjectOfType<StoryPlayerInfo>();
         _stagePicture = FindObjectOfType<StagePicture>();
         resources = GetComponent<StorySelectResources>();
@@ -55,6 +55,10 @@ public class StorySelectMenu : MonoBehaviour {
         _gameManager.prevMenu = MENU.STORY;
 
         _worldYPos = worlds[0].transform.localPosition.y;
+
+        // Set the move world speed
+        // Should take 1/2 a second to complete
+        worldMoveSpeed = Screen.currentResolution.width;
 
         if (!_gameManager.demoMode) {
             // Load saved world
@@ -106,11 +110,11 @@ public class StorySelectMenu : MonoBehaviour {
         CheckInput();
 
 		if(_movingWorld) {
-            worlds[_curWorld].transform.Translate(worldMoveSpeed * -_worldDif * Time.deltaTime, 0f, 0f, Space.World);
-            worlds[_curWorld+_worldDif].transform.Translate(worldMoveSpeed * -_worldDif * Time.deltaTime, 0f, 0f, Space.World);
+            worlds[_curWorld].transform.Translate(worldMoveSpeed * -_worldDif * Time.deltaTime, 0f, 0f);
+            worlds[_curWorld+_worldDif].transform.Translate(worldMoveSpeed * -_worldDif * Time.deltaTime, 0f, 0f);
 
-            if(_worldDif > 0 && worlds[_curWorld + _worldDif].transform.position.x < 0 ||
-               _worldDif < 0 && worlds[_curWorld + _worldDif].transform.position.x > 0) {
+            if(_worldDif > 0 && worlds[_curWorld + _worldDif].transform.localPosition.x < 0 ||
+               _worldDif < 0 && worlds[_curWorld + _worldDif].transform.localPosition.x > 0) {
                 EndMoveWorlds();
             }
         }
@@ -121,7 +125,7 @@ public class StorySelectMenu : MonoBehaviour {
             if (characterSelectWindow.hasFocus) {
                 characterSelectWindow.Deactivate();
             } else {
-                FindObjectOfType<GameManager>().VillageButton();
+                GameManager.instance.VillageButton();
             }
         }
     }
@@ -184,6 +188,7 @@ public class StorySelectMenu : MonoBehaviour {
         if (soloFlowerCount > 0) {
             soloFlower.gameObject.SetActive(true);
             soloFlower.sprite = resources.flowerSprites[soloFlowerCount - 1];
+            soloFlower.SetNativeSize();
         } else {
             soloFlower.gameObject.SetActive(false);
         }
@@ -193,6 +198,7 @@ public class StorySelectMenu : MonoBehaviour {
         if (coopFlowerCount > 0) {
             coopFlower.gameObject.SetActive(true);
             coopFlower.sprite = resources.flowerSprites[coopFlowerCount - 1];
+            coopFlower.SetNativeSize();
         } else {
             coopFlower.gameObject.SetActive(false);
         }
@@ -235,6 +241,10 @@ public class StorySelectMenu : MonoBehaviour {
                 worlds[_curWorld + dir].transform.localPosition = new Vector3(-750, _worldYPos, 0);
             }
         }
+
+        // Set the move world speed
+        // Should take 1/2 a second to complete
+        worldMoveSpeed = worlds[0].GetComponentInParent<Canvas>().pixelRect.width;
     }
 
     void EndMoveWorlds() {

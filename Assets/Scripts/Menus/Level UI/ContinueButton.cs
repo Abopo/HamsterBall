@@ -10,7 +10,7 @@ public class ContinueButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //_gameManager = FindObjectOfType<GameManager>();
+        //_gameManager = GameManager.instance;
         //_levelManager = FindObjectOfType<LevelManager>();
 	}
 	

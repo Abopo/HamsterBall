@@ -19,7 +19,7 @@ public class PlayerCountSelectMenu : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         lpMenu = FindObjectOfType<LocalPlayMenu>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 	}
 	
 	// Update is called once per frame

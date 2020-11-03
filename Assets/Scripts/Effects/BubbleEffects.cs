@@ -47,12 +47,14 @@ public class BubbleEffects : MonoBehaviour {
     // Use this for initialization
     void Start () {
         Sprite[] sprites = Resources.LoadAll<Sprite>("Art/Effects/Shots-GUI");
+        Material spriteMaterial = new Material(Shader.Find("Sprites/Default"));
 
         // Team effects
         _teamEffectObj = new GameObject();
         _teamEffectObj.SetActive(false);
         _teamEffectObj.AddComponent<SpriteRenderer>();
         _teamEffectObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
+        _teamEffectObj.GetComponent<SpriteRenderer>().material = spriteMaterial;
         _teamEffectObj.AddComponent<AudioSource>();
         _teamComboSprite = sprites[9];
         _teamDropSprite = sprites[10];
@@ -63,8 +65,9 @@ public class BubbleEffects : MonoBehaviour {
         _counterEffectObj = new GameObject();
         _counterEffectObj.SetActive(false);
         _counterEffectObj.AddComponent<SpriteRenderer>();
-        _counterEffectObj.AddComponent<AudioSource>();
         _counterEffectObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
+        _counterEffectObj.GetComponent<SpriteRenderer>().material = spriteMaterial;
+        _counterEffectObj.AddComponent<AudioSource>();
         _counterDropSprite = sprites[2];
         _counterMatchSprite = sprites[3];
 
@@ -76,6 +79,7 @@ public class BubbleEffects : MonoBehaviour {
         _multiMatchEffectObj.AddComponent<SpriteRenderer>();
         _multiMatchEffectObj.GetComponent<SpriteRenderer>().sprite = sprites[4];
         _multiMatchEffectObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
+        _multiMatchEffectObj.GetComponent<SpriteRenderer>().material = spriteMaterial;
         _multiMatchEffectObj.AddComponent<AudioSource>();
         _multiMatchEffectObj.GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Audio/SFX/BankShot");
         _multiMatchEffectObj.AddComponent<DestroyTimer>();
@@ -85,6 +89,7 @@ public class BubbleEffects : MonoBehaviour {
         _comboEffectObj.SetActive(false);
         _comboEffectObj.AddComponent<SpriteRenderer>();
         _comboEffectObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
+        _comboEffectObj.GetComponent<SpriteRenderer>().material = spriteMaterial;
         _comboEffectObj.AddComponent<AudioSource>();
         _matchComboSprites = Resources.LoadAll<Sprite>("Art/Effects/MatchCombo");
 
@@ -95,6 +100,7 @@ public class BubbleEffects : MonoBehaviour {
         _bankEffectObj.SetActive(false);
         _bankEffectObj.AddComponent<SpriteRenderer>();
         _bankEffectObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
+        _bankEffectObj.GetComponent<SpriteRenderer>().material = spriteMaterial;
         _bankEffectObj.AddComponent<DestroyTimer>();
         _bankEffectObj.AddComponent<AudioSource>();
         _bankEffectObj.GetComponent<AudioSource>().volume = 0.5f;
@@ -105,6 +111,7 @@ public class BubbleEffects : MonoBehaviour {
         _bombExplosionObj = new GameObject();
         _bombExplosionObj.AddComponent<SpriteRenderer>();
         _bombExplosionObj.GetComponent<SpriteRenderer>().sortingOrder = 16;
+        _bombExplosionObj.GetComponent<SpriteRenderer>().material = spriteMaterial;
         _bombExplosionObj.AddComponent<Animator>();
         _bombExplosionObj.AddComponent<AudioSource>();
         _bombExplosionObj.SetActive(false);

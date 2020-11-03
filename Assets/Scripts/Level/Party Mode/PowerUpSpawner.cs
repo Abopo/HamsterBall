@@ -30,7 +30,7 @@ public class PowerUpSpawner : MonoBehaviour {
         Transform spawnPoint = transform.GetChild(0);
         _spawnPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z + 5f);
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _hamsterSpawner = GetComponent<HamsterSpawner>();
     }
 

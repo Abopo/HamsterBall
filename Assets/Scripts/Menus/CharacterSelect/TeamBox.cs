@@ -15,7 +15,7 @@ public class TeamBox : MonoBehaviour {
 	void Start () {
         playerMarkers = GetComponentsInChildren<GameMarker>();
 
-        if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SURVIVAL) {
+        if(GameManager.instance.gameMode == GAME_MODE.SURVIVAL) {
             // There are no teams for base survival, so turn off the team signs
             GetComponent<SpriteRenderer>().enabled = false;
             playerMarkers[0].GetComponent<SpriteRenderer>().enabled = false;

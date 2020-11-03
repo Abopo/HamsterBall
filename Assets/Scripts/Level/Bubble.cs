@@ -64,6 +64,8 @@ public class Bubble : MonoBehaviour {
     protected bool _petrified; // Only used during game end sequence
     public bool petrifying; // If this bubble is running the petrify coroutine
 
+    public static float marginMultiplier = 1f;
+
     BubbleManager _homeBubbleManager;
     GameManager _gameManager;
     Rigidbody2D _rigidbody;
@@ -113,7 +115,7 @@ public class Bubble : MonoBehaviour {
         _popAnimation = GetComponent<BubblePopAnimation>();
         _popAnimation.LoadPieces(inType);
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         _audioSource = GetComponent<AudioSource>();
         _iceClip = Resources.Load<AudioClip>("Audio/SFX/IceBreak");
@@ -149,9 +151,7 @@ public class Bubble : MonoBehaviour {
         if (plasma && !isPlasma) {
             isPlasma = true;
             bubbleAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/Plasma_Bubble");
-            //GameObject spiralEffectInstance = Instantiate(spiralEffectObj, transform.position, Quaternion.Euler(-90, 0, 0)) as GameObject;
-            //spiralEffectInstance.transform.parent = transform;
-            //spiralEffectInstance.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+            bubbleAnimator.SetInteger("Type", (int)type);
         } else {
             isPlasma = false;
             bubbleAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Bubble");
@@ -431,7 +431,7 @@ public class Bubble : MonoBehaviour {
 
     public void GenerateDropJunk(int amount) {
         // Multiply by the Margin Multiplier
-        amount = (int)(amount * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+        amount = (int)(amount * marginMultiplier);
 
         if (_playerController != null) {
             // Add the player's atk modifier
@@ -722,7 +722,7 @@ public class Bubble : MonoBehaviour {
         _homeBubbleManager.IncreaseScore(incScore);
 
         // Multiply by the Margin Multiplier
-        garbageCount = (int)((garbageCount + comboBonus) * GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().marginMultiplier);
+        garbageCount = (int)((garbageCount + comboBonus) * marginMultiplier);
 
         // If this bubble was thrown by a player
         if (_playerController != null) {

@@ -54,7 +54,7 @@ public class Entity : MonoBehaviour {
             _animator = GetComponentInChildren<Animator>();
         }
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 		_physics = GetComponent<EntityPhysics>();
     }
 

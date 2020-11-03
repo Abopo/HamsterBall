@@ -56,7 +56,7 @@ v2f vert (appdata v)
     o.vertex = UnityObjectToClipPos(o.vertex);
     #endif
     o.color.rgb = _ShadowColor.rgb;
-    o.color.a = v.color.a;
+    o.color.a = v.color.a * _ShadowColor.a;
     o.uv_MainTex = TRANSFORM_TEX(v.uv_MainTex, _MainTex);
     o.uv2_MaskTex = TRANSFORM_TEX(v.uv2_MaskTex, _MaskTex);
     #ifdef PIXELSNAP_ON

@@ -48,12 +48,12 @@ public class GameSetupOption : MenuOption {
 
         if(_isSelected && !_justSelected) {
             // Right
-            if (!_justMoved && InputState.GetButtonOnAnyControllerPressed("MoveRight")) {
+            if (!_justMoved && InputState.GetButtonOnAnyControllerPressed("Right")) {
                 rightButton.onClick.Invoke();
                 _justMoved = true;
             }
             // Left
-            if (!_justMoved && InputState.GetButtonOnAnyControllerPressed("MoveLeft")) {
+            if (!_justMoved && InputState.GetButtonOnAnyControllerPressed("Left")) {
                 leftButton.onClick.Invoke();
                 _justMoved = true;
             }
@@ -72,13 +72,22 @@ public class GameSetupOption : MenuOption {
     }
 
     public override void Highlight() {
-        selector.transform.position = new Vector3(textPosition.position.x,
-                                                   textPosition.position.y,
-                                                   selector.transform.position.z);
+        if (selector != null) {
+            selector.transform.position = new Vector3(transform.position.x,
+                                                       transform.position.y,
+                                                       selector.transform.position.z);
+
+            if (!displaySelector) {
+                selector.GetComponent<Image>().enabled = false;
+            } else {
+                selector.GetComponent<Image>().enabled = true;
+            }
+        }
+
         if (!infoBox.activeSelf) {
             infoBox.SetActive(true);
         }
-        infoBox.transform.position = new Vector3(textPosition.position.x - 2.5f,
+        infoBox.transform.position = new Vector3(textPosition.position.x - 75f,
                                                   textPosition.position.y,
                                                   infoBox.transform.position.z);
         infoBoxText.text = infoText;

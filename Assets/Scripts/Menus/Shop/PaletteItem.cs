@@ -36,7 +36,7 @@ public class PaletteItem : ShopItem {
             palettePath = "Materials/Character Palettes/Owl/Owl" + paletteNum;
         } else if (_itemInfo.itemName.Contains("Bexal")) {
             icon.sprite = characterIcons[5];
-            animatorPath += "Bexal/Animation Objects/Goat";
+            animatorPath += "Goat/Animation Objects/Goat";
             palettePath = "Materials/Character Palettes/Goat/Goat" + paletteNum;
         } else if (_itemInfo.itemName.Contains("Don")) {
             icon.sprite = characterIcons[10];

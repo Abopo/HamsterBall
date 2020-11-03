@@ -15,7 +15,7 @@ public class LocalPlayMenu : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         // If this is the demo
         if (_gameManager.demoMode) {
@@ -34,7 +34,7 @@ public class LocalPlayMenu : MonoBehaviour {
 	void Update () {
         if (_isActive) {
             if (ReInput.players.GetPlayer(0).GetButtonDown("Cancel")) {
-                FindObjectOfType<GameManager>().VillageButton();
+                GameManager.instance.VillageButton();
             }
         }
     }

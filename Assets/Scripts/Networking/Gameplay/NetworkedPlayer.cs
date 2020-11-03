@@ -33,7 +33,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
         _playerController = GetComponent<PlayerController>();
         _serializedInput = new InputState();
         _photonTransformView = GetComponent<PhotonTransformView>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
 
     public void Start() {
@@ -74,7 +74,7 @@ public class NetworkedPlayer : Photon.MonoBehaviour {
             photonView.RPC("SendName", PhotonTargets.OthersBuffered, photonView.owner.NickName);
         }
 
-        FindObjectOfType<GameManager>().gameOverEvent.AddListener(OnGameEnd);
+        GameManager.instance.gameOverEvent.AddListener(OnGameEnd);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {

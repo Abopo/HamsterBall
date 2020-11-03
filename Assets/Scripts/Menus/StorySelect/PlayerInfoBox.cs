@@ -42,7 +42,7 @@ public class PlayerInfoBox : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
 
         _myPlayer = ReInput.players.GetPlayer(playerID);
 

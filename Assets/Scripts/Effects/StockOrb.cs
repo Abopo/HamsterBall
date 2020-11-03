@@ -39,7 +39,7 @@ public class StockOrb : MonoBehaviour {
 	
     public void Initialize() {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _trailRenderer = GetComponent<TrailRenderer>();
 

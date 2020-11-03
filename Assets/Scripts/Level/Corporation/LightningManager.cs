@@ -12,6 +12,8 @@ public class LightningManager : MonoBehaviour {
     float _lightningTimer = 0f;
     float _lightningTime = 15f;
 
+    bool _prepping = false;
+
     bool _isActive = false;
     float _activeTimer = 0f;
     float _activeTime = 5f;
@@ -45,6 +47,7 @@ public class LightningManager : MonoBehaviour {
                 _lightningTimer = 0f;
             } else if (_lightningTimer >= _lightningTime - 5f) {
                 // Show some sparks
+                StartPrep();
 
                 // Turn on second meter
                 meterLights[1].enabled = true;
@@ -59,6 +62,18 @@ public class LightningManager : MonoBehaviour {
                 _activeTimer = 0f;
             }
         }
+    }
+
+    void StartPrep() {
+        // Only do once
+        if(_prepping) {
+            return;
+        }
+
+        foreach (LightningRod lRod in _lightningRods) {
+            lRod.StartSparks();
+        }
+        _prepping = true;
     }
 
     void Activate() {
@@ -80,6 +95,7 @@ public class LightningManager : MonoBehaviour {
         DisableSprites();
 
         _isActive = false;
+        _prepping = false;
     }
 
     void DisableSprites() {

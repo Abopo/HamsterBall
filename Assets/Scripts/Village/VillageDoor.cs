@@ -25,7 +25,7 @@ public class VillageDoor : MonoBehaviour {
         _interactIcon = transform.Find("Interact Icon").GetComponent<InteractIcon>();
 
         _villagePlayerSpawn = FindObjectOfType<VillagePlayerSpawn>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
     // Use this for initialization
     protected virtual void Start () {

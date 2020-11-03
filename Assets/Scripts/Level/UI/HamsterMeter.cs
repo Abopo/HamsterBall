@@ -42,7 +42,7 @@ public class HamsterMeter : MonoBehaviour {
     private void Awake() {
         _audioSource = GetComponent<AudioSource>();
 
-        if(FindObjectOfType<GameManager>().gameMode == GAME_MODE.SP_CLEAR) {
+        if(GameManager.instance.gameMode == GAME_MODE.SP_CLEAR) {
             // Hide ourself
             gameObject.SetActive(false);
         }

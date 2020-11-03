@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _pauseMenu = GetComponent<PauseMenu>();
         _howToPlay = FindObjectOfType<HowToPlayMenu>();
     }
@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (InputState.GetButtonOnAnyControllerPressed("Pause") && !_pauseMenu.IsActive && WelcomeScreen.shown) {
+        if (InputState.GetButtonOnAnyControllerPressed("Pause") && !_pauseMenu.IsActive /*&& WelcomeScreen.shown*/) {
             // Open the menu
             _pauseMenu.Activate(0);
         }

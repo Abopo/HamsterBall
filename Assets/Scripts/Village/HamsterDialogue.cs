@@ -30,7 +30,7 @@ public class HamsterDialogue : MonoBehaviour {
         _dialogueBox = GetComponentInChildren<HamsterDialogueBox>(true);
 
         _playerInput = ReInput.players.GetPlayer(0);
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
     // Use this for initialization
     protected virtual void Start () {

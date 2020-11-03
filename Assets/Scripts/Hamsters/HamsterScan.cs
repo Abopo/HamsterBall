@@ -83,7 +83,7 @@ public class HamsterScan : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // Only used in single player modes
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         if (_gameManager.gameMode == GAME_MODE.SP_CLEAR) {
             _bubbleManager = GameObject.FindGameObjectWithTag("BubbleManager1").GetComponent<BubbleManager>();
             _bubbleManager.boardChangedEvent.AddListener(OnBoardChanged);

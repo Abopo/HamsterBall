@@ -37,7 +37,7 @@ public class OnlineLobby : MonoBehaviour {
 
         roomName = "myRoom";
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _gameManager.isOnline = true;
         _gameManager.isSinglePlayer = false;
 
@@ -187,6 +187,6 @@ public class OnlineLobby : MonoBehaviour {
     }
 
     public void OnDisconnectedFromPhoton() {
-        FindObjectOfType<GameManager>().VillageButton();
+        GameManager.instance.VillageButton();
     }
 }

@@ -21,7 +21,7 @@ public class Ceiling : MonoBehaviour {
             bubbleManager.ceiling = transform;
         }
 
-        if(bigCeiling && !FindObjectOfType<GameManager>().isSinglePlayer) {
+        if(bigCeiling && !GameManager.instance.isSinglePlayer) {
             gameObject.SetActive(false);
         }
     }

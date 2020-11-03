@@ -28,7 +28,7 @@ public class Menu : MonoBehaviour {
         GetChildOptions();
 
         _eventSystem = EventSystem.current.GetComponent<EventSystem>();
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
     }
 
     protected void GetChildOptions() {
@@ -129,7 +129,7 @@ public class Menu : MonoBehaviour {
         TakeFocus();
 
         if(_gameManager == null) {
-            _gameManager = FindObjectOfType<GameManager>();
+            _gameManager = GameManager.instance;
         }
         if (pauses && !_gameManager.isPaused) {
             _gameManager.FullPause();

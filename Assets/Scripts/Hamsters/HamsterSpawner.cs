@@ -69,7 +69,7 @@ public class HamsterSpawner : Photon.PunBehaviour {
     private void Awake() {
         _hamSpawnAnim = GetComponent<HamsterSpawnAnimation>();
 
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _levelManager = FindObjectOfType<LevelManager>();
 
         if (PhotonNetwork.connectedAndReady) {

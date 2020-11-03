@@ -24,7 +24,7 @@ public class GoalMenu : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _levelManager = FindObjectOfType<LevelManager>();
         _bubbleManager = FindObjectOfType<BubbleManager>();
         _conditionLeft = _gameManager.conditionLimit;

@@ -1,12 +1,13 @@
 //Copyright (c) 2016-2019 Kai Clavier [kaiclavier.com] Do Not Distribute
-//Super Text Mesh v1.9
+//Super Text Mesh v1.9.1
 using UnityEngine;
 using UnityEngine.Events; //for the OnComplete event
 #if UNITY_EDITOR
 using UnityEditor; //for loading default stuff and menu thing
 #endif
 using System; // For access to the array class
-using System.Linq; //for sorting inspector stuff by creation date, and removing doubles from lists
+using System.Linq;
+//for sorting inspector stuff by creation date, and removing doubles from lists
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI; //for in-game UI stuff
@@ -19,26 +20,43 @@ using UnityEngine.SceneManagement; //for OnSceneLoaded
 [CustomEditor(typeof(SuperTextMesh))]
 [CanEditMultipleObjects] //sure why not
 public class SuperTextMeshEditor : Editor{
+	private SuperTextMesh stm;
+	private Rect r;
+	private GUIStyle foldoutStyle = null;
+	private GUIStyle textDataStyle = null;
+	private Texture2D textDataIcon = null;
+	private Rect tempRect;
+	private GUIContent editTextDataContent = new GUIContent("", "Edit TextData");
 	override public void OnInspectorGUI(){
 		serializedObject.Update(); //for onvalidate stuff!
-		var stm = target as SuperTextMesh; //get this text mesh as a component
+		stm = target as SuperTextMesh; //get this text mesh as a component
 		
 	//Actually Drawing it to the inspector:
-		Rect r = GUILayoutUtility.GetRect(EditorGUIUtility.fieldWidth, 0f); //get width on inspector, minus scrollbar
+		r = GUILayoutUtility.GetRect(EditorGUIUtility.fieldWidth, 0f); //get width on inspector, minus scrollbar
 
-		GUIStyle foldoutStyle = new GUIStyle(EditorStyles.foldout); //create a new foldout style, for the bold foldout headers
-		foldoutStyle.fontStyle = FontStyle.Bold; //set it to look like a header
+		if(foldoutStyle == null)
+		{
+			foldoutStyle = new GUIStyle(EditorStyles.foldout); //create a new foldout style, for the bold foldout headers
+			foldoutStyle.fontStyle = FontStyle.Bold; //set it to look like a header
+		}
 	//TEXT DATA ICON
 		//Object textDataObject = stm.data; //get text data object
-		GUIStyle textDataStyle = new GUIStyle(EditorStyles.label);
+		if(textDataStyle == null)
+		{
+			textDataStyle = new GUIStyle(EditorStyles.label);
+		}
 		//textDataStyle.fixedWidth = 14;
 		//textDataStyle.fixedHeight = 14;
 		//Get Texture2D one of these two ways:
 		//Texture2D textDataIcon = AssetDatabase.LoadAssetAtPath("Assets/Clavian/SuperTextMesh/Scripts/SuperTextMeshDataIcon.png", typeof(Texture2D)) as Texture2D;
-		Texture2D textDataIcon = EditorGUIUtility.ObjectContent(stm.data, typeof(SuperTextMeshData)).image as Texture2D;
-		textDataStyle.normal.background = textDataIcon; //apply
-		textDataStyle.active.background = textDataIcon;
-		if(GUI.Button(new Rect(r.width - 2, r.y, 16, 16), new GUIContent("", "Edit TextData"), textDataStyle)){ //place at exact spot
+		if(textDataIcon == null)
+		{
+			textDataIcon = EditorGUIUtility.ObjectContent(stm.data, typeof(SuperTextMeshData)).image as Texture2D;
+			textDataStyle.normal.background = textDataIcon; //apply
+			textDataStyle.active.background = textDataIcon;
+		}
+		tempRect.Set(r.width - 2, r.y, 16, 16);
+		if(GUI.Button(tempRect, editTextDataContent, textDataStyle)){ //place at exact spot
 			//EditorWindow.GetWindow()
 			//EditorUtility.FocusProjectWindow();
 			//Selection.activeObject = textDataObject; //go to textdata!
@@ -205,9 +223,11 @@ public class SuperTextMeshEditor : Editor{
 			//Sound Clips:
 			//This one's a bit different! Since it's folders of clips...
 				stm.data.showSoundClipsFoldout = EditorGUILayout.Foldout(stm.data.showSoundClipsFoldout, "Sound Clips", foldoutStyle);
-				if(stm.data.showSoundClipsFoldout){
+				if(stm.data.showSoundClipsFoldout)
+				{
 				//Gather all data:
-					foreach(KeyValuePair<string, STMSoundClipData> i in stm.data.soundClips.OrderBy(x => -x.Value.GetInstanceID())){
+					foreach(KeyValuePair<string, STMSoundClipData> i in stm.data.soundClips.OrderBy(x => -x.Value.GetInstanceID()))
+					{
 						EditorGUI.indentLevel++;
 						i.Value.showFoldout = EditorGUILayout.Foldout(i.Value.showFoldout, i.Key, foldoutStyle);
 						EditorGUI.indentLevel--;
@@ -218,10 +238,12 @@ public class SuperTextMeshEditor : Editor{
 				}
 			//Quads:
 				stm.data.showQuadsFoldout = EditorGUILayout.Foldout(stm.data.showQuadsFoldout, "Quads", foldoutStyle);
-				if(stm.data.showQuadsFoldout){
+				if(stm.data.showQuadsFoldout)
+				{
 					EditorGUILayout.HelpBox("For information on how this works, please refer to the sample image under 'Quads' in the documentation.", MessageType.None, true);
 				//Gather all data:
-					foreach(KeyValuePair<string, STMQuadData> i in stm.data.quads.OrderBy(x => -x.Value.GetInstanceID())){
+					foreach(KeyValuePair<string, STMQuadData> i in stm.data.quads.OrderBy(x => -x.Value.GetInstanceID()))
+					{
 						EditorGUI.indentLevel++;
 						i.Value.showFoldout = EditorGUILayout.Foldout(i.Value.showFoldout, i.Key, foldoutStyle);
 						EditorGUI.indentLevel--;
@@ -232,9 +254,11 @@ public class SuperTextMeshEditor : Editor{
 				}
 			//Materials:
 				stm.data.showMaterialsFoldout = EditorGUILayout.Foldout(stm.data.showMaterialsFoldout, "Materials", foldoutStyle);
-				if(stm.data.showMaterialsFoldout){
+				if(stm.data.showMaterialsFoldout)
+				{
 				//Gather all data:
-					foreach(KeyValuePair<string, STMMaterialData> i in stm.data.materials.OrderBy(x => -x.Value.GetInstanceID())){
+					foreach(KeyValuePair<string, STMMaterialData> i in stm.data.materials.OrderBy(x => -x.Value.GetInstanceID()))
+					{
 						EditorGUI.indentLevel++;
 						i.Value.showFoldout = EditorGUILayout.Foldout(i.Value.showFoldout, i.Key, foldoutStyle);
 						EditorGUI.indentLevel--;
@@ -248,13 +272,15 @@ public class SuperTextMeshEditor : Editor{
 			}
 
 			stm.data.showAutomaticFoldout = EditorGUILayout.Foldout(stm.data.showAutomaticFoldout, "Automatic", foldoutStyle);
-			if(stm.data.showAutomaticFoldout){
+			if(stm.data.showAutomaticFoldout)
+			{
 				EditorGUI.indentLevel++;
 			//AutoDelays:
 				stm.data.showAutoDelaysFoldout = EditorGUILayout.Foldout(stm.data.showAutoDelaysFoldout, "AutoDelays", foldoutStyle);
 				if(stm.data.showAutoDelaysFoldout){
 				//Gather all data:
-					foreach(KeyValuePair<string, STMDelayData> i in stm.data.autoDelays.OrderBy(x => -x.Value.GetInstanceID())){
+					foreach(KeyValuePair<string, STMDelayData> i in stm.data.autoDelays.OrderBy(x => -x.Value.GetInstanceID()))
+					{
 						EditorGUI.indentLevel++;
 						i.Value.showFoldout = EditorGUILayout.Foldout(i.Value.showFoldout, i.Key, foldoutStyle);
 						EditorGUI.indentLevel--;
@@ -265,7 +291,8 @@ public class SuperTextMeshEditor : Editor{
 				}
 			//AutoClips:
 				stm.data.showAutoClipsFoldout = EditorGUILayout.Foldout(stm.data.showAutoClipsFoldout, "AutoClips", foldoutStyle);
-				if(stm.data.showAutoClipsFoldout){
+				if(stm.data.showAutoClipsFoldout)
+				{
 				//Gather all data:
 					//STMSoundClipData[] allAutoClips = Resources.LoadAll<STMSoundClipData>("STMAutoClips").OrderBy(x => -x.GetInstanceID()).ToArray(); //do this so order keeps consistent
 					foreach(KeyValuePair<string, STMAutoClipData> i in stm.data.autoClips.OrderBy(x => -x.Value.GetInstanceID())){
@@ -280,7 +307,8 @@ public class SuperTextMeshEditor : Editor{
 				EditorGUI.indentLevel--;
 			}
 			stm.data.showMasterFoldout = EditorGUILayout.Foldout(stm.data.showMasterFoldout, "Master", foldoutStyle);
-			if(stm.data.showMasterFoldout){
+			if(stm.data.showMasterFoldout)
+			{
 				EditorGUI.indentLevel++;
 				EditorGUILayout.PropertyField(serializedData.FindProperty("disableAnimatedText"), true);
 				EditorGUILayout.PropertyField(serializedData.FindProperty("defaultFont"));
@@ -291,38 +319,79 @@ public class SuperTextMeshEditor : Editor{
 				EditorGUILayout.PropertyField(serializedData.FindProperty("superscriptSize"));
 				EditorGUILayout.PropertyField(serializedData.FindProperty("subscriptOffset"));
 				EditorGUILayout.PropertyField(serializedData.FindProperty("subscriptSize"));
+				EditorGUILayout.PropertyField(serializedData.FindProperty("inspectorFont"));
 				EditorGUI.indentLevel--;
 			}
-			if(GUILayout.Button("Refresh Database")){
+			if(GUILayout.Button("Refresh Database"))
+			{
 				stm.data = null;
 			}
 
 			serializedData.ApplyModifiedProperties();
 		}else{ //draw actual text mesh inspector:
 			
+			Font oldFont = GUI.skin.font;
+			if(stm.data.inspectorFont != null)
+			{
+				GUI.skin.font = stm.data.inspectorFont;
+			}
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("_text"));
-
+			GUI.skin.font = oldFont;
+/*			
+			EditorGUILayout.LabelField("Text");
+			Vector2 scroll = Vector2.zero;
+			scroll = EditorGUILayout.BeginScrollView(scroll, false, true);
+			GUIStyle textAreaStyle = new GUIStyle(GUI.skin.textArea);
+			stm._text = EditorGUILayout.TextArea(stm._text, textAreaStyle, new GUILayoutOption[]{GUILayout.MinHeight(80), GUILayout.MaxHeight(200), GUILayout.ExpandHeight(false), GUILayout.Width(Screen.width - 50)});
+			EditorGUILayout.EndScrollView();
+*/
 			stm.showAppearanceFoldout = EditorGUILayout.Foldout(stm.showAppearanceFoldout, "Appearance", foldoutStyle);
-			if(stm.showAppearanceFoldout){
+			if(stm.showAppearanceFoldout)
+			{
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("font"));
-				EditorGUILayout.PropertyField(serializedObject.FindProperty("color")); //richtext default stuff...
-				if(stm.bestFit == SuperTextMesh.BestFitMode.Always){ //no editing value
+				EditorGUILayout.PropertyField(serializedObject.FindProperty("_color")); //richtext default stuff...
+				//stm.color = EditorGUILayout.ColorField("Color", stm.color);
+				if(stm.bestFit == SuperTextMesh.BestFitMode.Always)//no editing value
+				{ 
 					EditorGUI.BeginDisabledGroup(true);
 					EditorGUILayout.FloatField("Size", stm.size * stm.bestFitMulti);
 					EditorGUI.EndDisabledGroup();
-				}else if(stm.bestFit == SuperTextMesh.BestFitMode.OverLimit){
+				}
+				else if(stm.bestFit == SuperTextMesh.BestFitMode.HorizontalAlways)
+				{
 					EditorGUILayout.BeginHorizontal();
 					EditorGUILayout.PropertyField(serializedObject.FindProperty("size"));
 					EditorGUI.BeginDisabledGroup(true);
 					EditorGUILayout.FloatField(stm.size * stm.bestFitMulti);
 					EditorGUI.EndDisabledGroup();
 					EditorGUILayout.EndHorizontal();
-				}else{ //no best fit value
+				}
+				else if(stm.bestFit == SuperTextMesh.BestFitMode.OverLimit)
+				{
+					EditorGUILayout.BeginHorizontal();
+					EditorGUILayout.PropertyField(serializedObject.FindProperty("size"));
+					EditorGUI.BeginDisabledGroup(true);
+					EditorGUILayout.FloatField(stm.size * stm.bestFitMulti);
+					EditorGUI.EndDisabledGroup();
+					EditorGUILayout.EndHorizontal();
+				}
+				else if(stm.bestFit == SuperTextMesh.BestFitMode.HorizontalOverLimit)
+				{
+					EditorGUILayout.BeginHorizontal();
+					EditorGUILayout.PropertyField(serializedObject.FindProperty("size"));
+					EditorGUI.BeginDisabledGroup(true);
+					EditorGUILayout.FloatField(stm.size * stm.bestFitMulti);
+					EditorGUI.EndDisabledGroup();
+					EditorGUILayout.EndHorizontal();
+				}
+				else //no best fit value
+				{
 					EditorGUILayout.PropertyField(serializedObject.FindProperty("size"));
 				}
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("bestFit"));
 
-				if(stm.font != null){
+				if(stm.font != null)
+				{
 					EditorGUI.BeginDisabledGroup(!stm.font.dynamic);
 					EditorGUILayout.PropertyField(serializedObject.FindProperty("style"));
 					EditorGUI.EndDisabledGroup();
@@ -331,7 +400,8 @@ public class SuperTextMeshEditor : Editor{
 
 				EditorGUILayout.Space(); //////////////////SPACE
 				
-				if(stm.font != null){
+				if(stm.font != null)
+				{
 					EditorGUILayout.BeginHorizontal();
 					EditorGUI.BeginDisabledGroup(!stm.font.dynamic || stm.autoQuality);
 					EditorGUILayout.PropertyField(serializedObject.FindProperty("quality")); //text rendering
@@ -381,7 +451,13 @@ public class SuperTextMeshEditor : Editor{
 				if(stm.textMaterial != null){
 					stm.showMaterialFoldout = EditorGUILayout.Foldout(stm.showMaterialFoldout, "Material", foldoutStyle);
 					if(stm.showMaterialFoldout){ //show shader settings
+						EditorGUI.BeginChangeCheck();
+						//Undo.RecordObject(stm, "Changed Super Text Mesh Material");
 						STMCustomInspectorTools.DrawMaterialEditor(stm.textMaterial);
+						if(EditorGUI.EndChangeCheck())
+						{
+							stm.Rebuild();
+						}
 					}
 				}
 			}
@@ -408,6 +484,7 @@ public class SuperTextMeshEditor : Editor{
 				}
 				//if(!uiMode.boolValue){ //restrict this to non-ui only...?
 					EditorGUILayout.PropertyField(serializedObject.FindProperty("alignment"));
+
 				//}
 				EditorGUILayout.Space(); //////////////////SPACE
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("lineSpacing")); //text formatting
@@ -438,6 +515,7 @@ public class SuperTextMeshEditor : Editor{
 			if(stm.showTimingFoldout){
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("ignoreTimeScale"));
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("disableAnimatedText"));
+				EditorGUILayout.PropertyField(serializedObject.FindProperty("forceAnimation"));
 				EditorGUILayout.Space(); //////////////////SPACE
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("readDelay")); //technical stuff
 				if(stm.readDelay > 0f){
@@ -494,6 +572,28 @@ public class SuperTextMeshEditor : Editor{
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("onPreParse"));
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("onCustomEvent"));
 			}
+
+			stm.showBetaFoldout = EditorGUILayout.Foldout(stm.showBetaFoldout, "Beta", foldoutStyle);
+			if(stm.showBetaFoldout)
+			{
+				EditorGUILayout.PropertyField(serializedObject.FindProperty("rtl"));
+				/*
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.PropertyField(serializedObject.FindProperty("validateMesh"));
+				if(!stm.validateMesh)
+				{
+					if(GUILayout.Button("Validate"))
+					{
+						//stm.OnValidate();
+						stm.OnValidate();
+						stm.validateAppearance = true;
+						stm.Update();
+					}
+				}
+				EditorGUILayout.EndHorizontal();
+				*/
+			}
+
 			//EditorGUILayout.Space(); //////////////////SPACE
 			//EditorGUILayout.PropertyField(debugMode);
 		}
@@ -508,7 +608,10 @@ public class SuperTextMeshEditor : Editor{
 [ExecuteInEditMode]
 [DisallowMultipleComponent]
 public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic... rip
+	
+	
 	//foldout bools for editor. not on the GUI script, cause they get forgotten
+	public bool showTextFoldout = true;
 	public bool showAppearanceFoldout = true;
 	public bool showMaterialFoldout = true;
 	public bool showPositionFoldout = true;
@@ -516,6 +619,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	public bool showFunctionalityFoldout = false;
 	public bool showAudioFoldout = false;
 	public bool showEventFoldout = false;
+	public bool showBetaFoldout = false;
 	
 	#if UNITY_EDITOR
 	private static Transform MakeObjectFromAssetPath(MenuCommand menuCommand, string assetName)
@@ -529,10 +633,16 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		Selection.activeObject = newObject;
 		return newObject.transform;
 	}
-	private static void AttachToCanvas(Transform thisTransform)
+	private static void AttachToCanvas(Transform thisTransform, MenuCommand menuCommand)
 	{
 		//force-attach to canvas if it exists, or auto-create new one.
 		Canvas myCanvas = (Canvas)FindObjectOfType(typeof(Canvas)); //find a canvas in the scene
+		//just in case this is a prefab canvas
+		if(myCanvas == null)
+		{
+			GameObject myParent = menuCommand.context as GameObject;
+			if(myParent != null) myCanvas = myParent.GetComponentInParent<Canvas>();
+		}
 		if(myCanvas == null){ //create a new canvas to parent to!
 			GameObject newObject = new GameObject();
 			newObject.transform.name = "Canvas";
@@ -551,22 +661,22 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	}
 	[MenuItem("GameObject/UI/Super Text", false, 2001)] //instantiate a prefab of this
 	private static void MakeNewUIText(MenuCommand menuCommand){
-		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Text"));
+		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Text"), menuCommand);
 	}
 	[MenuItem("GameObject/UI/Super Button", false, 2031)]
 	private static void MakeNewUIButton(MenuCommand menuCommand)
 	{
-		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Button"));
+		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Button"), menuCommand);
 	}
 	[MenuItem("GameObject/UI/Super Toggle", false, 2032)]
 	private static void MakeNewUIToggle(MenuCommand menuCommand)
 	{
-		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Toggle"));
+		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Toggle"), menuCommand);
 	}
 	[MenuItem("GameObject/UI/Super Dropdown", false, 2036)]
 	private static void MakeNewUIDropdown(MenuCommand menuCommand)
 	{
-		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Dropdown"));
+		AttachToCanvas(MakeObjectFromAssetPath(menuCommand, "Super Dropdown"), menuCommand);
 	}
 	/*
 	[MenuItem("GameObject/UI/Super Input Field", false, 2038)]
@@ -660,8 +770,27 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	[HideInInspector] public string hyphenedText; //text, with junk added to it
 	[Tooltip("Font to be used by this text mesh. .rtf, .otf, and Unity fonts are supported.")]
 	public Font font;
+
+	[UnityEngine.Serialization.FormerlySerializedAs("color")]
+	[Tooltip("this was the old value for colour as isn't used by STM anymore. Don't use it!")]
+	public Color32 _color32 = Color.white; //these may be parked as public but please don't use them. sorry.
 	[Tooltip("Default color of the text mesh. This can be changed with the <c> tag! See the docs for more info.")]
-	public Color32 color = Color.white;
+	public Color _color = Color.white; //i wish marking this as internal didn't break stuff (well, you know why this doesn't work........ shoulda used namespaces)
+	public Color color
+	{
+		get
+		{
+			return _color;
+		}
+		set
+		{
+			_color = value;
+		}
+	}
+	//[UnityEngine.Serialization.FormerlySerializedAs("color")]
+	//private Color32 color32 = Color.white;
+	[Tooltip("If true, Super Text Mesh will call SetMesh() every frame it is active. This is primarily to be used together with animating a changing color value.")]
+	public bool forceAnimation = false;
 	[Tooltip("Will the text listen to tags like <b> and <i>? See docs for a full list of tags.")]
 	public bool richText = true; //care about formatting like <b>?
 	[Tooltip("Delay in seconds between letters getting read out. Disabled if set to 0.")]
@@ -785,7 +914,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			return autoWrap;
 		}
 	}
-	private RectTransform tr{
+	public RectTransform tr{
 		get{
 			return t as RectTransform;
 		}
@@ -929,13 +1058,14 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	private Vector2[] endUv = new Vector2[0];
 	private Vector2[] endUv2 = new Vector2[0]; //overlay images
 	private List<Vector4> ratiosAndUvMids = new List<Vector4>(); //ratios of each letter, to be embedded into uv3
+	private List<Vector4> isUvRotated = new List<Vector4>();
 	//private Vector2[] uvMids = new Vector2[0]; //centre of the UV on this letter, to be embedded into uv4
 	private Vector3[] startVerts = new Vector3[0];
 	private Color32[] startCol32 = new Color32[0];
 	private Vector3[] midVerts = new Vector3[0];
 	private Color32[] midCol32 = new Color32[0];
 
-	private List<SubMeshData> subMeshes = new List<SubMeshData>();
+	//private List<SubMeshData> subMeshes = new List<SubMeshData>();
 
 	#pragma warning disable //hide warning that says this is never used
 	private float timeDrawn; //Time.time when the mesh was drawn. or Time.unscaledTime, depending
@@ -949,13 +1079,16 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	[Tooltip("For UI text. If true, quality is automatically set to be the same as size.")]
 	public bool autoQuality = false;
 
-	public enum DrawOrder{
+	public enum DrawOrder
+	{
 		LeftToRight,
 		AllAtOnce,
 		OneWordAtATime,
 		Random,
 		RightToLeft,
-		ReverseLTR
+		ReverseLTR,
+		RTLOneWordAtATime,
+		OneLineAtATime
 	}
 	[Tooltip("What order the text will draw in. 'All At Once' will ignore read delay. 'Robot' displays one word at a time. If set to 'Random', Read Delay becomes the time it'll take to draw the whole mesh.")]
 	public DrawOrder drawOrder = DrawOrder.LeftToRight;
@@ -971,15 +1104,23 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 
 	//characters where a hyphen/linebreak could be inserted at. unicode is soft hyphen, hair space, zero width space
 	private char[] linebreakFriendlyChars = new char[]{' ', '\n', '\t', '-', '\u00AD', '\u200A', '\u200B'};
+
+	[Tooltip("Adjusts paragraphs for text that was input right-to-left.")]
+	public bool rtl = false;
 	//private List<
 
 	[System.Serializable]
-	public enum BestFitMode{
+	public enum BestFitMode
+	{
 		Off,
 		Always,
-		OverLimit
+		OverLimit,
+		HorizontalAlways,
+		HorizontalOverLimit
 	}
 	public BestFitMode bestFit = BestFitMode.Off;
+
+	//public bool validateMesh = true;
 
 	//same as info[info.Count-1].pos.y ut cached
 
@@ -1042,11 +1183,14 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			//Gizmos.DrawLine()
 		//}
 	}
+	private bool fontTextureJustRebuilt = true;
 	void OnFontTextureRebuilt(Font changedFont){
 		//if (changedFont != font) //ignore if font doesn't exist on this mesh
 		//    return;
 		//Rebuild(currentReadTime, currentReadTime > 0f ? true : autoRead); //the font texture attached to this mesh has changed. a rebuild is neccesary.
-		if(textMesh != null && info.Count > 0 && allFonts.Contains(changedFont)){ 
+		if(textMesh != null && hyphenedText.Length > 0 && allFonts.Contains(changedFont))
+		{ 
+			fontTextureJustRebuilt = true;
 			//2018-05-29: only rebuild if this mesh actually contains the font!
 			//RebuildTextInfo();
 			
@@ -1061,7 +1205,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	}
 	#if UNITY_5_4_OR_NEWER
 	void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode){
-		if(this != null && t.gameObject.activeInHierarchy){ //stupid
+		if(this != null && t.gameObject.activeInHierarchy && this.enabled){ //stupid
 			StartCoroutine(WaitFrameThenRebuild()); //just do it anyway
 		/*
 			if(loadSceneMode == LoadSceneMode.Single){
@@ -1085,19 +1229,32 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	
 	void OnEnable(){
 		Init();
-		if(Application.isPlaying){ //cause autoread to work
-			if(callReadFunction && rememberReadPosition){ //remember read position?
-				if(currentReadTime == 0f){ //same as Start()
+		if(Application.isPlaying)
+		{ //cause autoread to work
+			if(callReadFunction && rememberReadPosition)
+			{ //remember read position?
+				if(currentReadTime == 0f)//same as Start()
+				{ 
 					Rebuild(autoRead);
-				}else if(currentReadTime >= totalReadTime){ //it finished reading?
+				}
+				else if(currentReadTime >= totalReadTime)
+				{ //it finished reading?
 					Rebuild(currentReadTime, true, false);
 					//SetMesh(currentReadTime); //skip to end w/o events
-				}else{ //it was halfway thru
+				}
+				else
+				{ //it was halfway thru
 					Rebuild(currentReadTime, autoRead);
 				}
-			}else{ //act like Start()
+			}
+			else
+			{ //act like Start()
 				Rebuild(autoRead);
 			}
+		}
+		else
+		{
+			Rebuild();
 		}
 	}
 	void Start(){
@@ -1111,27 +1268,41 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		if(uiMode){
 			DestroyImmediate(textMesh);
 			c.Clear();
+			//c.SetMesh(null);
 		}else{
 			DestroyImmediate(f.sharedMesh);
 		}
 	}
-	void OnDestroy(){
+	void OnDestroy()
+	{
 		//UnInit();
 	}
-	void Init(){
+	void Init()
+	{
 		//uiMode = t is RectTransform;
 
 		#if UNITY_5_4_OR_NEWER
 		SceneManager.sceneLoaded += OnSceneLoaded; //hopefully not an issue if called multiple times?
 		#endif
 		Font.textureRebuilt += OnFontTextureRebuilt;
+		#if UNITY_EDITOR
+		Undo.undoRedoPerformed += OnUndoRedo;
+		#endif
 	}
-	void UnInit(){
+	void UnInit()
+	{
 		#if UNITY_5_4_OR_NEWER
 		SceneManager.sceneLoaded -= OnSceneLoaded;
 		#endif
 		Font.textureRebuilt -= OnFontTextureRebuilt;
+		#if UNITY_EDITOR
+		Undo.undoRedoPerformed -= OnUndoRedo;
+		#endif
 		StopReadRoutine();
+	}
+	void OnUndoRedo()
+	{
+		Rebuild();
 	}
 	void StopReadRoutine(){
 		if(readRoutine != null){
@@ -1150,10 +1321,18 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	}
 	*/
 	#if UNITY_EDITOR //just for updating when the editor changes
-	private bool validateAppearance = false;
+	internal bool validateAppearance = false;
 	#endif
-	void OnValidate() {
-		if(font != null && !font.dynamic){
+	public void OnValidate() {
+		//legacy support, for updating color storage...
+		if(_color32 != Color.white)
+		{
+		//	Debug.Log("Converted old Color32 value on '" + t.name + "' to Color!"); //works so well you don't even need the debug, apparently!
+			_color = _color32;
+			_color32 = Color.white;
+		}
+		if(font != null && !font.dynamic)
+		{
 			if(font.fontSize > 0){
 				quality = font.fontSize;
 			}else{
@@ -1175,6 +1354,14 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		if(minPitch > maxPitch){minPitch = maxPitch;}
 		if(maxPitch < minPitch){maxPitch = minPitch;}
 		if(speedReadScale < 0.01f){speedReadScale = 0.01f;}
+/*
+		if(validateMesh)
+		{
+			#if UNITY_EDITOR
+			validateAppearance = true;
+			#endif
+		}
+*/
 		#if UNITY_EDITOR
 		validateAppearance = true;
 		#endif
@@ -1204,18 +1391,23 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	}
 	#endif
 
-	public void InitializeFont(){
-		if(uiMode){ //UI mode
-			if(font == null && textMaterial == null){
+	public void InitializeFont()
+	{
+		if(uiMode)//UI mode
+		{ 
+			if(font == null && textMaterial == null)
+			{
 				size = 32;
 				color = new Color32(50,50,50,255);
 			}
-			if(textMaterial == null){
+			if(textMaterial == null)
+			{
 				//textMaterial = (Material)AssetDatabase.LoadAssetAtPath(STMCustomInspectorTools.ClavianPath + "Resources/DefaultSTMMaterials/UIDefault.mat", typeof(Material));
 				textMaterial = Resources.Load<Material>("DefaultSTMMaterials/UIDefault");
 				//sticking with resource folder since it works in builds
 			}
-			if(font == null){
+			if(font == null)
+			{
 				if(data.defaultFont != null)
 				{
 					font = data.defaultFont;
@@ -1225,8 +1417,11 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 					font = Resources.GetBuiltinResource<Font>("Arial.ttf");
 				}
 			}
-		}else{
-			if(font == null){
+		}
+		else
+		{
+			if(font == null)
+			{
 				if(data.defaultFont != null)
 				{
 					font = data.defaultFont;
@@ -1263,13 +1458,28 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		Rebuild(startTime, readAutomatically, true);
 	}
 	private bool doEvents = true;
-	public void Rebuild(float startTime, bool readAutomatically, bool executeEvents){
+	private bool currentlyRebuilding = false;
+	//private bool fontTextureRebuildRequest = false;
+	public void Rebuild(float startTime, bool readAutomatically, bool executeEvents)
+	{
+		if(currentlyRebuilding)
+		{
+			return; //don't rebuild
+		}
+		currentlyRebuilding = true;
+		//fontTextureRebuildRequest = fontTextureJustRebuilt;
+		//if(uiMode) 
 		doEvents = executeEvents;
 		if(uiMode) Canvas.ForceUpdateCanvases(); //so that everything gets set correctly on awake/start
-		if(onRebuildEvent != null && onRebuildEvent.GetPersistentEventCount() > 0) onRebuildEvent.Invoke(); //is it better to just check for null???
-		if(OnRebuildEvent != null) OnRebuildEvent();
-		if(startTime < totalReadTime){
-			pauseCount = 0; //only reset if reeading from the very start, not appending
+		//if(uiMode) LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)tr.root);
+		if(!fontTextureJustRebuilt)
+		{
+			if(onRebuildEvent != null && onRebuildEvent.GetPersistentEventCount() > 0) onRebuildEvent.Invoke(); //is it better to just check for null???
+			if(OnRebuildEvent != null) OnRebuildEvent();
+		}
+		if(startTime < totalReadTime)
+		{
+			pauseCount = 0; //only reset if reading from the very start, not appending
 		} 
 		autoPauseStopPoint = -VerticalLimit;
 		currentPauseCount = 0;
@@ -1283,7 +1493,8 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		//Initialize:
 		InitializeFont();
 		RebuildTextInfo();
-		if(audioSource != null){//initialize an audio source, if there's one. these settings are needed to behave properly
+		if(audioSource != null)//initialize an audio source, if there's one. these settings are needed to behave properly
+		{
 			audioSource.loop = false;
 			audioSource.playOnAwake = false;
 		}
@@ -1296,21 +1507,57 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 				//Debug.Log("Not autoreading");
 				SetMesh(0f); //show nothing
 			}
-		}else{
+		}
+		else
+		{
 			//Debug.Log("No need to read");
 			StopReadRoutine();
 			//SetMesh(-1f); //skip to end
-			ShowAllText();
+			ShowAllText(false, true);
 		}
 		ApplyMaterials();
 		if(uiMode) LayoutRebuilder.MarkLayoutForRebuild(tr);
-	}
-	void Update() {
-		#if UNITY_EDITOR
-		//2019.04.22 hope making this rquire validate appearance doesn't break anything...
-		if(!Application.isPlaying){ //do same thing as onvalidate
-			Rebuild(autoRead); //doing it this way avoids the material getting lost when duplicating
+		//if(uiMode) LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)tr.root);
+		currentlyRebuilding = false;
+/*
+		//if a font texture rebuild was requested somewhere within this loop...
+		if(fontTextureRebuildRequest == false && fontTextureJustRebuilt)
+		{ 
+			//do the same kind of rebuild as in OnFontTextureRebuilt
+			Rebuild(currentReadTime, currentReadTime > 0f ? true : autoRead);
 		}
+*/
+		fontTextureJustRebuilt = false;
+	}
+	#if UNITY_EDITOR
+	private Transform Validate_lastParent = null;
+	private float Validate_lastWidth = 0f;
+	private float Validate_lastHeight = 0f;
+	#endif
+	internal void Update() {
+		#if UNITY_EDITOR
+		if(uiMode && (tr.rect.width != Validate_lastWidth || tr.rect.height != Validate_lastHeight))
+		{
+			Validate_lastWidth = tr.rect.width;
+			Validate_lastHeight = tr.rect.height;
+			Rebuild(autoRead);
+		}
+		//force validate if transform changes
+		if(t.parent != Validate_lastParent)
+		{
+			validateAppearance = true;
+			Validate_lastParent = t.parent;
+		}
+		//i hope this validateMesh call doesn't break anything!!!! 2019/10/20
+
+			//2019.04.22 hope making this rquire validate appearance doesn't break anything...
+		if(!Application.isPlaying && validateAppearance){ //do same thing as onvalidate
+			Rebuild(autoRead); //doing it this way avoids the material getting lost when duplicating
+			//Debug.Log("rebuilding");
+			validateAppearance = false;
+		}
+
+
 		if(validateAppearance && t.gameObject.activeInHierarchy == true && Application.isPlaying){ 
 			Rebuild(autoRead);
 			validateAppearance = false;
@@ -1321,10 +1568,10 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			//RequestAllCharacters(); //keep characters on font texture 
 			//v1.4.2: not sure if neccesary, thanks to OnFontTextureRebuilt()?
 			//but I'm not sure. it does seem to use a bit of CPU for more meshes, though
-			if(!reading && areWeAnimating && currentReadTime >= totalReadTime){
+			if(!reading && (areWeAnimating || forceAnimation) && currentReadTime >= totalReadTime){
 				currentReadTime += GetDeltaTime; //keep updating this, for the jitters
 			}
-			if(!reading && !unreading && areWeAnimating && (readDelay == 0f || currentReadTime >= totalReadTime)){ //if the mesh needs to keep updating after it's been read out
+			if(!reading && !unreading && (areWeAnimating || forceAnimation) && (readDelay == 0f || currentReadTime >= totalReadTime)){ //if the mesh needs to keep updating after it's been read out
 				//if(currentReadTime >= totalReadTime){ //as long as it's set to auto read, or the current read time is above total read time
 					//Debug.Log(currentReadTime + "/" + totalReadTime);
 				SetMesh(-1f);
@@ -1332,6 +1579,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			}
 		}
 	}
+	private STMTextInfo UpdateMesh_info;
 	void UpdatePreReadMesh(bool undrawingMesh){ //update data needed for pre-existing mesh
 		UpdateMesh(0f);
 
@@ -1345,9 +1593,10 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 
 		STMDrawAnimData myUndrawAnim = UndrawAnim; //just in case...
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){
-			STMDrawAnimData myAnimData = undrawingMesh ? myUndrawAnim : info[i].drawAnimData; //which animation data to use?
+			UpdateMesh_info = info[i];
+			STMDrawAnimData myAnimData = undrawingMesh ? myUndrawAnim : UpdateMesh_info.drawAnimData; //which animation data to use?
 
-			if(info[i].drawAnimData.startColor != Color.clear){ //use a specific start color
+			if(UpdateMesh_info.drawAnimData.startColor != Color.clear){ //use a specific start color
 				startCol32[4*i + 0] = myAnimData.startColor;
 				startCol32[4*i + 1] = myAnimData.startColor;
 				startCol32[4*i + 2] = myAnimData.startColor;
@@ -1362,10 +1611,10 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 														(endVerts[4*i + 0].y + endVerts[4*i + 1].y + endVerts[4*i + 2].y + endVerts[4*i + 3].y) * 0.25f,
 														(endVerts[4*i + 0].z + endVerts[4*i + 1].z + endVerts[4*i + 2].z + endVerts[4*i + 3].z) * 0.25f);
 			
-			startVerts[4*i + 0] = Vector3.Scale((endVerts[4*i + 0] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * info[i].size);
-			startVerts[4*i + 1] = Vector3.Scale((endVerts[4*i + 1] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * info[i].size);
-			startVerts[4*i + 2] = Vector3.Scale((endVerts[4*i + 2] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * info[i].size);
-			startVerts[4*i + 3] = Vector3.Scale((endVerts[4*i + 3] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * info[i].size);
+			startVerts[4*i + 0] = Vector3.Scale((endVerts[4*i + 0] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * UpdateMesh_info.size.y);
+			startVerts[4*i + 1] = Vector3.Scale((endVerts[4*i + 1] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * UpdateMesh_info.size.y);
+			startVerts[4*i + 2] = Vector3.Scale((endVerts[4*i + 2] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * UpdateMesh_info.size.y);
+			startVerts[4*i + 3] = Vector3.Scale((endVerts[4*i + 3] - middle), myAnimData.startScale) + middle + (myAnimData.startOffset * UpdateMesh_info.size.y);
 		}
 	}
 	public void Read(){
@@ -1398,10 +1647,10 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		speedReading = false;
 	}
 	public void ShowAllText(){
-		ShowAllText(false); //actually show all text
+		ShowAllText(false, false); //actually show all text
 	}
 	private bool wasReadingBefore = false;
-	private void ShowAllText(bool unreadingMesh){
+	private void ShowAllText(bool unreadingMesh, bool forceCompleteEvent){
 		speedReading = false;
 		if(unreadingMesh)
 		{
@@ -1425,7 +1674,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			//if(leftoverText.Length > 0f){ //set leftover text, if any
 			//	Debug.Log(leftoverText);
 			//}
-			if(wasReadingBefore)
+			if(wasReadingBefore || forceCompleteEvent)
 			{
 				if(onCompleteEvent != null) onCompleteEvent.Invoke();
 				if(OnCompleteEvent != null) OnCompleteEvent();
@@ -1461,14 +1710,20 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 
 		STMDrawAnimData myUndrawAnim = UndrawAnim; //get the undraw animation, locally
 		//get modified drawnMesh!
-		midVerts = new Vector3[hyphenedText.Length * 4];
-		midCol32 = new Color32[hyphenedText.Length * 4];
+		int arraySize = hyphenedText.Length * 4;
+
+		if (midVerts.Length != arraySize)
+			Array.Resize(ref midVerts, arraySize);
+
+		if (midCol32.Length != arraySize)
+			Array.Resize(ref midCol32, arraySize);
 
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //for each point
+			UpdateMesh_info = info[i];
 			//lerp between start and end
-			//Debug.Log((myTime - info[i].readTime) / info[i].animTime);
-			STMDrawAnimData myAnimData = undrawingMesh ? myUndrawAnim : info[i].drawAnimData; //which anim to use
-			float myReadTime = undrawingMesh ? info[i].unreadTime : info[i].readTime; //what timing to use
+			//Debug.Log((myTime - UpdateMesh_info.readTime) / UpdateMesh_info.animTime);
+			STMDrawAnimData myAnimData = undrawingMesh ? myUndrawAnim : UpdateMesh_info.drawAnimData; //which anim to use
+			float myReadTime = undrawingMesh ? UpdateMesh_info.unreadTime : UpdateMesh_info.readTime; //what timing to use
 			//animate properly! (is there a way to do this by manipulating anim time?? yeah probably tbh)
 			float divideAnimAmount = myAnimData.animTime == 0f ? 0.0000001f : myAnimData.animTime; //so it doesn't get NaN'd
 			float divideFadeAmount = myAnimData.fadeTime == 0f ? 0.0000001f : myAnimData.fadeTime; //how long fading will last...
@@ -1580,7 +1835,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			currentUnReadTime += GetDeltaTime2;
 			yield return null;
 		}
-		ShowAllText(true);
+		ShowAllText(true, false);
 	}
 	/*
 	bool IsThisLetterAnimating(int i){ //return true if this letter is animating in some way, not related to drawanim
@@ -1592,22 +1847,24 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		return false;
 	}
 	*/
+	private STMTextInfo DoEvent_info;
 	void DoEvent(int i){
 		if(doEvents)
 		{
-			if(info[i].ev.Count > 0){ //invoke events...
-				for(int j=0, jL=info[i].ev.Count; j<jL; j++){
-					if(onCustomEvent != null) onCustomEvent.Invoke(info[i].ev[j], info[i]); //call the event!
-					if(OnCustomEvent != null) OnCustomEvent.Invoke(info[i].ev[j], info[i]);
+			DoEvent_info = info[i];
+			if(DoEvent_info.ev.Count > 0){ //invoke events...
+				for(int j=0, jL=DoEvent_info.ev.Count; j<jL; j++){
+					if(onCustomEvent != null) onCustomEvent.Invoke(DoEvent_info.ev[j], DoEvent_info); //call the event!
+					if(OnCustomEvent != null) OnCustomEvent.Invoke(DoEvent_info.ev[j], DoEvent_info);
 				}
-				info[i].ev.Clear(); //since you only want events to be invoked once, I don't see the harm in clearing them this way instead of keeping track
+				DoEvent_info.ev.Clear(); //since you only want events to be invoked once, I don't see the harm in clearing them this way instead of keeping track
 			}
-			if(info[i].ev2.Count > 0){ //end repeating events!
-				for(int j=0, jL=info[i].ev2.Count; j<jL; j++){
-					if(onCustomEvent != null) onCustomEvent.Invoke(info[i].ev2[j], info[i]); //call the event!
-					if(OnCustomEvent != null) OnCustomEvent.Invoke(info[i].ev2[j], info[i]);
+			if(DoEvent_info.ev2.Count > 0){ //end repeating events!
+				for(int j=0, jL=DoEvent_info.ev2.Count; j<jL; j++){
+					if(onCustomEvent != null) onCustomEvent.Invoke(DoEvent_info.ev2[j], DoEvent_info); //call the event!
+					if(OnCustomEvent != null) OnCustomEvent.Invoke(DoEvent_info.ev2[j], DoEvent_info);
 				}
-				info[i].ev2.Clear();
+				DoEvent_info.ev2.Clear();
 			}
 		}
 	}
@@ -1636,7 +1893,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	}
 	*/
 	string SpecialKeyToName(char ch){ //since you can't put these in filenames
-		switch(char.ToLower(ch)){
+		switch(ch){
 			case ' ': return "space";
 			case '\t': return "tab";
 			case '\n': return "line break";
@@ -1658,14 +1915,16 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			default: return new string(ch,1).ToLower(); //always ignore case
 		}
 	}
+	private STMTextInfo PlaySound_info;
 	public virtual void PlaySound(int i){
 		if(audioSource != null){//audio stuff
-			if(info[i].stopPreviousSound || !audioSource.isPlaying){
+			PlaySound_info = info[i];
+			if(PlaySound_info.stopPreviousSound || !audioSource.isPlaying){
 				audioSource.Stop();
-				string nameToSearch = info[i].isQuad ? info[i].quadData.name : SpecialKeyToName(hyphenedText[i]);
+				string nameToSearch = PlaySound_info.isQuad ? PlaySound_info.quadData.name : SpecialKeyToName(hyphenedText[i]);
 				AudioClip mySoundClip = null;
-				if(info[i].soundClipData != null){
-					STMSoundClipData.AutoClip tmpAutoClip = info[i].soundClipData.clips.Find(x => x.name.ToLower() == nameToSearch); //find auto clip
+				if(PlaySound_info.soundClipData != null){
+					STMSoundClipData.AutoClip tmpAutoClip = PlaySound_info.soundClipData.clips.Find(x => x.name.ToLower() == nameToSearch); //find auto clip
 					if(tmpAutoClip != null){
 						mySoundClip = tmpAutoClip.clip;
 					}
@@ -1681,30 +1940,30 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 					audioSource.clip = mySoundClip;
 				}else if(myAutoClip != null){ //if there's a sound clip for this character in Text Data
 					audioSource.clip = myAutoClip.clip;
-				}else if(info[i].audioClipData != null){ //use sounds attached to character
-					audioSource.clip = info[i].audioClipData.clips.Length > 0 ? info[i].audioClipData.clips[UnityEngine.Random.Range(0,info[i].audioClipData.clips.Length)] : null;
+				}else if(PlaySound_info.audioClipData != null){ //use sounds attached to character
+					audioSource.clip = PlaySound_info.audioClipData.clips.Length > 0 ? PlaySound_info.audioClipData.clips[UnityEngine.Random.Range(0,PlaySound_info.audioClipData.clips.Length)] : null;
 				}else if(audioClips.Length > 0){ //use a random audio clip
 					audioSource.clip = audioClips.Length > 0 ? audioClips[UnityEngine.Random.Range(0,audioClips.Length)] : null; //get one of the clips
 				}else{
 					audioSource.clip = null;
 				}
 				if(audioSource.clip != null){
-					switch(info[i].pitchMode){
+					switch(PlaySound_info.pitchMode){
 						case PitchMode.Perlin:
-							audioSource.pitch = (Mathf.PerlinNoise(GetTime * perlinPitchMulti, 0f) * (info[i].maxPitch - info[i].minPitch)) + info[i].minPitch; //perlin noise
+							audioSource.pitch = (Mathf.PerlinNoise(GetTime * perlinPitchMulti, 0f) * (PlaySound_info.maxPitch - PlaySound_info.minPitch)) + PlaySound_info.minPitch; //perlin noise
 							break;
 						case PitchMode.Random:
-							audioSource.pitch = UnityEngine.Random.Range(info[i].minPitch,info[i].maxPitch);
+							audioSource.pitch = UnityEngine.Random.Range(PlaySound_info.minPitch,PlaySound_info.maxPitch);
 							break;
 						case PitchMode.Single:
-							audioSource.pitch = info[i].overridePitch;
+							audioSource.pitch = PlaySound_info.overridePitch;
 							break;
 						default:
 							audioSource.pitch = 1f; //because of speedread pitch
 							break;
 					}
 					if(speedReading){
-						audioSource.pitch += info[i].speedReadPitch;
+						audioSource.pitch += PlaySound_info.speedReadPitch;
 					}
 					audioSource.Play();
 				}
@@ -1772,6 +2031,10 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		}
 	}
 	bool ValidHexcode (string hex){ //check if a hex code contains the right amount of characters, and allowed characters
+		if(hex.Length < 3)
+		{
+			return false;
+		}
 		if(hex.Substring(0,1) == "#"){
 			hex = hex.Substring(1,hex.Length-1); //trim off #
 		}
@@ -1844,11 +2107,99 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		}
 		return thisCol;
 	}
+	/*
+	first, flip order of words in every paragraph.
+	then, flip order of lines in a paragraph
+
+	maybe... flip order of all words
+	then flip order of all lines?
+	*/
+	
+	private string FlipParagraphs(string myText, bool flipInfo)
+	{
+
+		string[] paragraphs = myText.Split('\n'); //keep paragraphs in order, but order of words in paragraph
+		//so now, paragraphs is an array of... all text, slpit at linebreaks.
+
+		//lets make a list of all textinfo, divided by paragraph
+		List<List<List<STMTextInfo>>> infoGraphs = new List<List<List<STMTextInfo>>>();
+		int infoIndex = 0;
+		List<STMTextInfo> infoWord = new List<STMTextInfo>();
+		List<STMTextInfo> newInfo = new List<STMTextInfo>();
+		for(int i=0; i<paragraphs.Length; i++)
+		{
+			paragraphs[i] = String.Join(" ", paragraphs[i].Split(' ').Reverse().ToArray());
+
+			if(flipInfo)
+			{
+				infoGraphs.Add(new List<List<STMTextInfo>>());
+				//for every letter in this paragraph...
+				for(int j=0; j<paragraphs[i].Length; j++)
+				{
+					//if this character is a space, the character we are splitting words at...
+					if(infoIndex == 0 || paragraphs[i][j] == ' ')
+					{
+						//infoWord.Reverse(); //flip last word
+						//add new word
+						infoWord = new List<STMTextInfo>();
+						infoGraphs[i].Add(infoWord);
+					}
+					infoWord.Add(info[infoIndex]);
+					infoIndex++;
+					
+				}
+				//add one extra for linebreak or end of string character
+				if(info.Count > infoIndex)
+				{
+					infoWord.Add(info[infoIndex]);
+					//infoWord.Add(new STMTextInfo(this));
+					infoIndex++;
+				}
+				
+				//reverse info stuff
+				//infoWord.Reverse(); //flip last word
+			//	infoGraphs[i].Reverse(); //this'll prolly be off by a bit, need to put lefotver spaces in right place?
+			}
+			
+			
+		}
+		if(flipInfo)
+		{
+			for(int i=0; i<infoGraphs.Count; i++)
+			{
+				for(int j=0; j<infoGraphs[i].Count; j++)
+				{
+					for(int k=0; k<infoGraphs[i][j].Count; k++)
+					{
+						newInfo.Add(infoGraphs[i][j][k]);
+					}
+				}
+			}
+			//Debug.Log("Old info length was " + info.Count + " new one is... " + newInfo.Count);
+			info = newInfo;
+		}
+		return String.Join("\n", paragraphs);
+		
+
+/*
+		string[] paragraphs = myText.Split('\n'); //keep paragraphs in order, but order of words in paragraph
+		for(int i=0; i<paragraphs.Length; i++)
+		{
+			paragraphs[i] = String.Join(" ", paragraphs[i].Split(' ').Reverse().ToArray());
+		}
+		return String.Join("\n", paragraphs);
+*/
+	}
+	
 	public string preParsedText = "";
+	private STMTextInfo ParseText_info = new STMTextInfo();
+	private string[] ParseText_dividedString;
 	string ParseText(string myText)
 	{
 		//return a cleaned up string and update textinfo!
-		info.Clear();
+		info.Clear(); //no more... we cache now
+
+
 		preParsedText = myText; //save it anyway
 		if((onPreParse != null && onPreParse.GetPersistentEventCount() > 0) || OnPreParse != null)
 		{
@@ -1859,28 +2210,44 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			preParsedText = tempContainer.text; //remember this state for later
 		}
 
+		
+		
+		if(rtl)
+		{
+			myText = FlipParagraphs(myText, false);
+		}
+
+		//resize list to fit
+		//if (info.Count < myText.Length)
+		//	info = new List<STMTextInfo>(new STMTextInfo[myText.Length+1]);
+
 		//set defaults:
-		STMTextInfo myInfo = new STMTextInfo(this); //info for this one character, carried over from last
+		//STMTextInfo myInfo = new STMTextInfo(this); //info for this one character, carried over from last
+		ParseText_info.SetValues(this);
 		allTags.Clear();
 		int deletedChars = 0; //for figuring out rawindex
 		string insertAfter = "";
+		infoCount = 0;
 		for(int i=0; i<myText.Length; i++)
 		{ //for each character to parse thru,
-			if(info.Count == i && i > 0)
-			{ //no other delay yet...? /hasnt checkedAgain yet
-				//if a quad got put in last time...
-				if(info[i-1].isQuad)
-				{
-					//no delay data set yet and quad name is a registered autodelay?
-					if(data.autoDelays.ContainsKey(info[i-1].quadData.name))
+			if(readDelay > 0f)
+			{
+				if(infoCount == i && i > 0)
+				{ //no other delay yet...? /hasnt checkedAgain yet
+					//if a quad got put in last time...
+					if(info[i-1].isQuad)
 					{
-						//put delay on next char
-						myInfo.delayData = data.autoDelays[info[i-1].quadData.name];
+						//no delay data set yet and quad name is a registered autodelay?
+						if(data.autoDelays.ContainsKey(info[i-1].quadData.name))
+						{
+							//put delay on next char
+							ParseText_info.delayData = data.autoDelays[info[i-1].quadData.name];
+						}
 					}
-				}
-				else if(data.autoDelays.ContainsKey(SpecialKeyToName(myText[i-1])) && (myText[i] == ' ' || myText[i] == '\n' || myText[i] == '\t' || ( myText.Length - i > 4 && myText.Substring(i,4) == "<br>" ))) //only if next character is "free". So strings like "Oh......... okay." only see the last delay on periods!
-				{ 
-					myInfo.delayData = data.autoDelays[SpecialKeyToName(myText[i-1])];
+					else if(data.autoDelays.ContainsKey(SpecialKeyToName(myText[i-1])) && (myText[i] == ' ' || myText[i] == '\n' || myText[i] == '\t' || ( myText.Length - i > 4 && myText.Substring(i,4) == "<br>" ))) //only if next character is "free". So strings like "Oh......... okay." only see the last delay on periods!
+					{ 
+						ParseText_info.delayData = data.autoDelays[SpecialKeyToName(myText[i-1])];
+					}
 				}
 			}
 			bool checkAgain = false;
@@ -1905,60 +2272,77 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 							break;
 					//Color
 						case "<c=":
-							myInfo.colorData = null; //clear to default
-							myInfo.gradientData = null;
-							myInfo.textureData = null;
+							ParseText_info.colorData = null; //clear to default
+							ParseText_info.gradientData = null;
+							ParseText_info.textureData = null;
 
-							if(data.textures.ContainsKey(myString)){// is this a texture?
-								myInfo.textureData = data.textures[myString];
-								//AddMaterial(myInfo.) add material here
-							}else{
+							ParseText_dividedString = myString.Split(','); //divide it up at commas
+
+							for(int d=0; d<ParseText_dividedString.Length; d++)
+							{
+								//Debug.Log(ParseText_dividedString[d]);
+
+								if(data.textures.ContainsKey(ParseText_dividedString[d])){// is this a texture?
+								
+									ParseText_info.textureData = data.textures[ParseText_dividedString[d]];
+									ParseText_info.submeshChange = true;
+									continue;
+									//AddMaterial(ParseText_info.) add material here
+								}
 								//is it a custom color tag?
-								if(data.gradients.ContainsKey(myString)){ //is this a gradient?
-									myInfo.gradientData = data.gradients[myString];
+								if(data.gradients.ContainsKey(ParseText_dividedString[d])) //is this a gradient?
+								{
+									ParseText_info.gradientData = data.gradients[ParseText_dividedString[d]];
+									continue;
 								}
-								else{ //no? try for HEX code & default color
-									myInfo.colorData = GetColor(myString);
-								}
+								//no? try for HEX code & default color
+								ParseText_info.colorData = GetColor(ParseText_dividedString[d]);
 							}
 							break;
 						case "</c>":
-							myInfo.colorData = null; //clear to default
-							myInfo.gradientData = null;
-							myInfo.textureData = null;
+							ParseText_info.colorData = null; //clear to default
+							ParseText_info.gradientData = null;
+							if(ParseText_info.textureData != null)
+							{
+								ParseText_info.submeshChange = true;
+							}
+							ParseText_info.textureData = null;
 							break;
 					//Size
 						case "<s=":
 							float thisSize;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisSize)){ //parse as a float
-								myInfo.size = thisSize * size; //set size relative to the one set in inspector!
+								ParseText_info.size.x = thisSize * size; //set size relative to the one set in inspector!
+								ParseText_info.size.y = thisSize * size;
 							}
 							break;
 						case "<size=":
 							float thisSize2;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisSize2)){ //parse as a float
-								myInfo.size = thisSize2; //set size directly!
+								ParseText_info.size.x = thisSize2; //set size directly!
+								ParseText_info.size.y = thisSize2;
 							}
 							break;
 						case "</s>":
 						case "</size>":
-							myInfo.size = size;
+							ParseText_info.size.x = size;
+							ParseText_info.size.y = size;
 							break;
 					//Delay
 						case "<d=":
 							if(data.delays.ContainsKey(myString)){ //is there a delay defined in textdata?
-								myInfo.delayData = data.delays[myString];//NOTE: delays get overridden, not added
+								ParseText_info.delayData = data.delays[myString];//NOTE: delays get overridden, not added
 							}else{ //see if it's an integer
 								int thisDelay2;
 								if(int.TryParse(myString, out thisDelay2)){ //parse as an int
-									myInfo.delayData = ScriptableObject.CreateInstance<STMDelayData>(); //create new delay data
-									myInfo.delayData.count = thisDelay2;
+									ParseText_info.delayData = ScriptableObject.CreateInstance<STMDelayData>(); //create new delay data
+									ParseText_info.delayData.count = thisDelay2;
 								}
 							}
 							break;
 						case "<d>":
 							if(data.delays.ContainsKey("default")){ //is there a delay defined?
-								myInfo.delayData = data.delays["default"];
+								ParseText_info.delayData = data.delays["default"];
 							}else{
 								Debug.Log("Default delay isn't defined!");
 							}
@@ -1968,20 +2352,20 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 							float thisTiming;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisTiming)){ //parse as a float
 								if(thisTiming < 0f) thisTiming = 0f; //or else it'll cause a loop!
-								myInfo.readTime = thisTiming; //set time to be this float
+								ParseText_info.readTime = thisTiming; //set time to be this float
 							}
 							break;
 					//Event
 						case "<e=":
-							myInfo.ev.Add(myString); //remember the event!
+							ParseText_info.ev.Add(myString); //remember the event!
 							break;
 					//Repeating Event
 						case "<e2=":
-							myInfo.ev2.Add(myString); //remember the event!
+							ParseText_info.ev2.Add(myString); //remember the event!
 							break;
 						case "</e>":
 						case "</e2>":
-							myInfo.ev2.Clear(); //forget all. Kinda janky, but whatever. It'll do for now!
+							ParseText_info.ev2.Clear(); //forget all. Kinda janky, but whatever. It'll do for now!
 							break;
 					//Voice
 						case "<v=":
@@ -1990,250 +2374,257 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 							}
 							break;
 						case "</v>":
-							//myInfo.voiceData = null; //forget it!
+							//ParseText_info.voiceData = null; //forget it!
 							//return everything to default.
-							myInfo = new STMTextInfo(this);
+							ParseText_info = new STMTextInfo(this);
 							break;
 					//Font
 						case "<f=": //this switches the font for the whole mesh, but I might as well include it
 						case "<font=":
 							if(data.fonts.ContainsKey(myString)){
 								//useFont = data.fonts[myString].font; //remember the font in this wayyy
-								myInfo.fontData = data.fonts[myString];
+								ParseText_info.fontData = data.fonts[myString];
 							}else{
 								Debug.Log("Unknown font: '" + myString + "'. Fonts can be defined within the Text Data Inspector and are case-sensitive.");
 							}
+							ParseText_info.submeshChange = true;
 							break; //switching to a non-dynamic font can return some errors
 						case "</f>":
 						case "</font>":
 							//useFont = null; //forget it!
-							myInfo.fontData = null;
+							ParseText_info.fontData = null;
+							ParseText_info.submeshChange = true;
 							break;
 					//Quad
 						case "<q=":
 						case "<quad=":
-							string[] myDividedString = myString.Split(','); //divide it up at commas
+							ParseText_dividedString = myString.Split(','); //divide it up at commas
 							//if quad exists and if this letter doesn't already have quad data:
-							if(data.quads.ContainsKey(myDividedString[0]) && myInfo.quadData == null){
-								if(myDividedString.Length == 1){
+							if(data.quads.ContainsKey(ParseText_dividedString[0]) && ParseText_info.quadData == null){
+								if(ParseText_dividedString.Length == 1){
 									// normal quad
-									myInfo.quadData = data.quads[myString];
-									myInfo.isQuad = true; //just assign this manually to save eveyone's time
+									ParseText_info.quadData = data.quads[myString];
+									ParseText_info.isQuad = true; //just assign this manually to save eveyone's time
 									insertAfter = "\u2000"; //a character to get used for the quad, in hyphenedtext
-								}else if(myDividedString.Length == 2){
+								}else if(ParseText_dividedString.Length == 2){
 									int thisQuadIndex;
-									if(int.TryParse(myDividedString[1], out thisQuadIndex)){
-										myInfo.quadData = data.quads[myDividedString[0]];
-										myInfo.isQuad = true;
-										myInfo.quadIndex = thisQuadIndex;
+									if(int.TryParse(ParseText_dividedString[1], out thisQuadIndex)){
+										ParseText_info.quadData = data.quads[ParseText_dividedString[0]];
+										ParseText_info.isQuad = true;
+										ParseText_info.quadIndex = thisQuadIndex;
 										insertAfter = "\u2000"; //insert unicode quad to take its place
 									}
 									//override index
-								}else if(myDividedString.Length == 3){
+								}else if(ParseText_dividedString.Length == 3){
 									int thisQuadIndexX;
 									int thisQuadIndexY;
-									if(int.TryParse(myDividedString[1], out thisQuadIndexX) && int.TryParse(myDividedString[2], out thisQuadIndexY)){
+									if(int.TryParse(ParseText_dividedString[1], out thisQuadIndexX) && int.TryParse(ParseText_dividedString[2], out thisQuadIndexY)){
 										//do some math to figure out what index this x and Y value points to
-										myInfo.quadData = data.quads[myDividedString[0]];
-										myInfo.isQuad = true;
-										myInfo.quadIndex = myInfo.quadData.columns * thisQuadIndexX + thisQuadIndexY;
+										ParseText_info.quadData = data.quads[ParseText_dividedString[0]];
+										ParseText_info.isQuad = true;
+										ParseText_info.quadIndex = ParseText_info.quadData.columns * thisQuadIndexX + thisQuadIndexY;
 										insertAfter = "\u2000"; //insert unicode quad to take its place
 									}
 								}
 							}
+							ParseText_info.submeshChange = true;
 							break;
 					//Material
 						case "<m=":
 						case "<material=":
 							if(data.materials.ContainsKey(myString)){
-								myInfo.materialData = data.materials[myString];
+								ParseText_info.materialData = data.materials[myString];
 							}
+							ParseText_info.submeshChange = true;
 							break;
 						case "</m>":
 						case "</material>":
-							myInfo.materialData = null;
+							ParseText_info.materialData = null;
+							ParseText_info.submeshChange = true;
 							break;
 					//Bold & Italic
 						case "<b>":
-							myInfo.ch.style = AddStyle(myInfo.ch.style, FontStyle.Bold); //mark this character as bold
+							ParseText_info.ch.style = AddStyle(ParseText_info.ch.style, FontStyle.Bold); //mark this character as bold
 							break;
 						case "</b>":
-							myInfo.ch.style = SubtractStyle(myInfo.ch.style, FontStyle.Bold);
+							ParseText_info.ch.style = SubtractStyle(ParseText_info.ch.style, FontStyle.Bold);
 							break;
 						case "<i>":
-							myInfo.ch.style = AddStyle(myInfo.ch.style, FontStyle.Italic); //mark this character as italic
+							ParseText_info.ch.style = AddStyle(ParseText_info.ch.style, FontStyle.Italic); //mark this character as italic
 							break;
 						case "</i>":
-							myInfo.ch.style = SubtractStyle(myInfo.ch.style, FontStyle.Italic);
+							ParseText_info.ch.style = SubtractStyle(ParseText_info.ch.style, FontStyle.Italic);
 							break;
 					//Waves
 						case "<w=":
 							if(data.waves.ContainsKey(myString)){ //is it a preset?
-								myInfo.waveData = data.waves[myString];
+								ParseText_info.waveData = data.waves[myString];
 							}
 							break;
 						case "<w>":
 							if(data.waves.ContainsKey("default")){
-								myInfo.waveData = data.waves["default"]; //mark this character as bold
+								ParseText_info.waveData = data.waves["default"]; //mark this character as bold
 							}else{
 //								Debug.Log("Default wave isn't defined!");
 								//Resources.UnloadAsset(thisWave); //force it to search again??
 							}
 							break;
 						case "</w>":
-							myInfo.waveData = null;
+							ParseText_info.waveData = null;
 							break;
 					//Jitters
 						case "<j=":
 							if(data.jitters.ContainsKey(myString)){ //is it a preset?
-								myInfo.jitterData = data.jitters[myString];
+								ParseText_info.jitterData = data.jitters[myString];
 							}
 							break;
 						case "<j>":
 							if(data.jitters.ContainsKey("default")){
-								myInfo.jitterData = data.jitters["default"];
+								ParseText_info.jitterData = data.jitters["default"];
 							}else{
 								Debug.Log("Default jitter isn't defined!");
 								//Resources.UnloadAsset(thisJitter); //force it to search again?
 							}
 							break;
 						case "</j>":
-							myInfo.jitterData = null;
+							ParseText_info.jitterData = null;
 							break;
 					//Alignment
 						case "<a=":
 							switch(myString.ToLower()){ //not case sensitive, for some reason? why not
-								case "left": myInfo.alignment = Alignment.Left; break;
-								case "right": myInfo.alignment = Alignment.Right; break;
-								case "center": case "centre": myInfo.alignment = Alignment.Center; break;
-								case "just": case "justify": case "justified": myInfo.alignment = Alignment.Justified; break;
-								case "just2": case "justify2": case "justified2": myInfo.alignment = Alignment.ForceJustified; break;
+								case "left": ParseText_info.alignment = Alignment.Left; break;
+								case "right": ParseText_info.alignment = Alignment.Right; break;
+								case "center": case "centre": ParseText_info.alignment = Alignment.Center; break;
+								case "just": case "justify": case "justified": ParseText_info.alignment = Alignment.Justified; break;
+								case "just2": case "justify2": case "justified2": ParseText_info.alignment = Alignment.ForceJustified; break;
 							}
 							break;
 						case "</a>":
-							myInfo.alignment = alignment; //return to default for mesh
+							ParseText_info.alignment = alignment; //return to default for mesh
 							break;
 					//Audio Settings
 						case "<stopPreviousSound=":
 							switch(myString.ToLower()){
-								case "true": myInfo.stopPreviousSound = true; break;
-								case "false": myInfo.stopPreviousSound = false; break;
+								case "true": ParseText_info.stopPreviousSound = true; break;
+								case "false": ParseText_info.stopPreviousSound = false; break;
 							}
 							break;
 						case "</stopPreviousSound>":
-							myInfo.stopPreviousSound = stopPreviousSound; //reset to default
+							ParseText_info.stopPreviousSound = stopPreviousSound; //reset to default
 							break;
 						case "<pitchMode=":
 							switch(myString.ToLower()){
-								case "normal": myInfo.pitchMode = PitchMode.Normal; break;
-								case "single": myInfo.pitchMode = PitchMode.Single; break;
-								case "random": myInfo.pitchMode = PitchMode.Random; break;
-								case "perlin": myInfo.pitchMode = PitchMode.Perlin; break;
+								case "normal": ParseText_info.pitchMode = PitchMode.Normal; break;
+								case "single": ParseText_info.pitchMode = PitchMode.Single; break;
+								case "random": ParseText_info.pitchMode = PitchMode.Random; break;
+								case "perlin": ParseText_info.pitchMode = PitchMode.Perlin; break;
 							}
 							break;
 						case "</pitchMode>":
-							myInfo.pitchMode = pitchMode; //return to default
+							ParseText_info.pitchMode = pitchMode; //return to default
 							break;
 						case "<overridePitch=":
 							float thisOverridePitch;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisOverridePitch)){ //parse as a float
-								myInfo.overridePitch = thisOverridePitch; //set time to be this float
+								ParseText_info.overridePitch = thisOverridePitch; //set time to be this float
 							}
 							break;
 						case "</overridePitch>":
-							myInfo.overridePitch = overridePitch;
+							ParseText_info.overridePitch = overridePitch;
 							break;
 						case "<minPitch=":
 							float thisMinPitch;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisMinPitch)){ //parse as a float
-								myInfo.minPitch = thisMinPitch; //set time to be this float
+								ParseText_info.minPitch = thisMinPitch; //set time to be this float
 							}
 							break;
 						case "</minPitch>":
-							myInfo.minPitch = minPitch;
+							ParseText_info.minPitch = minPitch;
 							break;
 						case "<maxPitch=":
 							float thisMaxPitch;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisMaxPitch)){ //parse as a float
-								myInfo.maxPitch = thisMaxPitch; //set time to be this float
+								ParseText_info.maxPitch = thisMaxPitch; //set time to be this float
 							}
 							break;
 						case "</maxPitch>":
-							myInfo.maxPitch = maxPitch;
+							ParseText_info.maxPitch = maxPitch;
 							break;
 						case "<speedReadPitch=":
 							float thisSpeedReadPitch;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisSpeedReadPitch)){ //parse as a float
-								myInfo.speedReadPitch = thisSpeedReadPitch; //set time to be this float
+								ParseText_info.speedReadPitch = thisSpeedReadPitch; //set time to be this float
 							}
 							break;
 						case "</speedReadPitch>":
-							myInfo.speedReadPitch = speedReadPitch;
+							ParseText_info.speedReadPitch = speedReadPitch;
 							break;
 						case "<readDelay=":
 							float thisReadDelay;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisReadDelay)){ //parse as a float
-								myInfo.readDelay = thisReadDelay; //set time to be this float
+								ParseText_info.readDelay = thisReadDelay; //set time to be this float
 							}
 							break;
 						case "</readDelay>":
-							myInfo.readDelay = readDelay;
+							ParseText_info.readDelay = readDelay;
 							break;
 						case "<drawAnim=":
 							if(data.drawAnims.ContainsKey(myString)){
-								myInfo.drawAnimData = data.drawAnims[myString]; //set draw animation
+								ParseText_info.drawAnimData = data.drawAnims[myString]; //set draw animation
 							}else if(data.drawAnims.ContainsKey("Appear")){
-								myInfo.drawAnimData = data.drawAnims["Appear"]; //get first one
+								ParseText_info.drawAnimData = data.drawAnims["Appear"]; //get first one
 							}else{
 								Debug.Log("'Appear' draw animation isn't defined!");
 							}
 							break;
 						case "</drawAnim>":
 							if(data.drawAnims.ContainsKey(drawAnimName)){
-								myInfo.drawAnimData = data.drawAnims[drawAnimName]; //return to default
+								ParseText_info.drawAnimData = data.drawAnims[drawAnimName]; //return to default
 							}else if(data.drawAnims.ContainsKey("Appear")){
-								myInfo.drawAnimData = data.drawAnims["Appear"]; //get first one
+								ParseText_info.drawAnimData = data.drawAnims["Appear"]; //get first one
 							}else{
 								Debug.Log("'Appear' draw animation isn't defined!");
 							}
 							break;
 						case "<drawOrder=":
 							switch(myString.ToLower()){
-								case "lefttoright": case "ltr": myInfo.drawOrder = DrawOrder.LeftToRight; break;
-								case "allatonce": case "all": myInfo.drawOrder = DrawOrder.AllAtOnce; break;
-								case "onewordatatime": case "robot": myInfo.drawOrder = DrawOrder.OneWordAtATime; break;
-								case "random": myInfo.drawOrder = DrawOrder.Random; break;
-								case "righttoleft": case "rtl": myInfo.drawOrder = DrawOrder.RightToLeft; break;
-								case "reverseltr": myInfo.drawOrder = DrawOrder.ReverseLTR; break;
+								case "lefttoright": case "ltr": ParseText_info.drawOrder = DrawOrder.LeftToRight; break;
+								case "allatonce": case "all": ParseText_info.drawOrder = DrawOrder.AllAtOnce; break;
+								case "onewordatatime": case "robot": ParseText_info.drawOrder = DrawOrder.OneWordAtATime; break;
+								case "random": ParseText_info.drawOrder = DrawOrder.Random; break;
+								case "righttoleft": case "rtl": ParseText_info.drawOrder = DrawOrder.RightToLeft; break;
+								case "reverseltr": ParseText_info.drawOrder = DrawOrder.ReverseLTR; break;
+								case "rtlonewordatatime": case "rtlrobot": ParseText_info.drawOrder = DrawOrder.RTLOneWordAtATime; break;
+								case "onelineatatime": case "computer": ParseText_info.drawOrder = DrawOrder.OneLineAtATime; break;
 							}
 							break;
 						case "</drawOrder>":
-							myInfo.drawOrder = drawOrder; //return to default
+							ParseText_info.drawOrder = drawOrder; //return to default
 							break;
 						case "<clips=":
 							if(data.soundClips.ContainsKey(myString)){
-								myInfo.soundClipData = data.soundClips[myString];
+								ParseText_info.soundClipData = data.soundClips[myString];
 							}
 							break;
 						case "</clips>":
-							myInfo.soundClipData = null;
+							ParseText_info.soundClipData = null;
 							break;
 						case "<audioClips=":
 							if(data.audioClips.ContainsKey(myString)){
-								myInfo.audioClipData = data.audioClips[myString];
+								ParseText_info.audioClipData = data.audioClips[myString];
 							}
 							break;
 						case "</audioClips>":
-							myInfo.audioClipData = null;
+							ParseText_info.audioClipData = null;
 							break;
 						case "<indent=": //set the indent to be here
 							float thisIndent;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisIndent)){ //parse as a float
-								myInfo.indent = thisIndent; //set time to be this float
+								ParseText_info.indent = thisIndent; //set time to be this float
 							}
 							break;
 						case "</indent>": //return to normal
-							myInfo.indent = 0f;
+							ParseText_info.indent = 0f;
 							break;
 						case "<pause>":
 							//tell mesh to pause here
@@ -2245,41 +2636,48 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 							//call all cancel tags
 
 							//color
-							myInfo.colorData = null;
-							myInfo.gradientData = null;
-							myInfo.textureData = null;
+							ParseText_info.colorData = null;
+							ParseText_info.gradientData = null;
+							ParseText_info.textureData = null;
 
-							myInfo.size = size;
+							ParseText_info.size.x = size;
+							ParseText_info.size.y = size;
 
-							myInfo.ev2.Clear();
+							ParseText_info.ev2.Clear();
+
+							ParseText_info.offset.y = 0f;
 							break;
 						//y offset
 						case "<y=":
 							float thisyOffset;
 							if(float.TryParse(myString, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out thisyOffset)){ //parse as a float
-								myInfo.offset.y = thisyOffset * myInfo.size; //set time to be this float
+								ParseText_info.offset.y = thisyOffset * ParseText_info.size.y; //set time to be this float
 							}
 							break;
 						case "</y>":
-							myInfo.offset.y = 0f;
+							ParseText_info.offset.y = 0f;
 							break;
 						case "<sup>":
 							//set size and y offset at the same time
-							myInfo.offset.y = data.superscriptOffset * myInfo.size;
-							myInfo.size = data.superscriptSize * myInfo.size;
+							ParseText_info.offset.y = data.superscriptOffset * ParseText_info.size.y;
+							ParseText_info.size.x = data.superscriptSize * ParseText_info.size.x;
+							ParseText_info.size.y = data.superscriptSize * ParseText_info.size.y;
 							break;
 						case "</sup>":
-							myInfo.offset.y = 0f;
-							myInfo.size = size;
+							ParseText_info.offset.y = 0f;
+							ParseText_info.size.x = size;
+							ParseText_info.size.y = size;
 							break;
 						case "<sub>":
 							//set size and y offset at the same time
-							myInfo.offset.y = data.subscriptOffset * myInfo.size;
-							myInfo.size = data.subscriptSize * myInfo.size;
+							ParseText_info.offset.y = data.subscriptOffset * ParseText_info.size.y;
+							ParseText_info.size.x = data.subscriptSize * ParseText_info.size.x;
+							ParseText_info.size.y = data.subscriptSize * ParseText_info.size.y;
 							break;
 						case "</sub>":
-							myInfo.offset.y = 0f;
-							myInfo.size = size;
+							ParseText_info.offset.y = 0f;
+							ParseText_info.size.x = size;
+							ParseText_info.size.y = size;
 							break;
 						//unicode
 						case "<u=":
@@ -2320,25 +2718,51 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 				}
 			}
 
-			if(info.Count - 1 == i){
-				info[i] = new STMTextInfo(myInfo); //update older one, it was checking again
+			if(infoCount - 1 == i)
+			{
+			//	info[i].SetValues(ParseText_info);
+				info[i] = new STMTextInfo(ParseText_info); //update older one, it was checking again
 				//Debug.Log("Updating older character " + myText[i].ToString() + " to be " + info[i].style);
-			}else{
-				info.Add(new STMTextInfo(myInfo) ); //add new HAS TO BE NEW OR ELSE IT JUST REFERENCES
 			}
-			if(checkAgain){
+			else
+			{
+				/*
+				if(i >= infoCount)
+				{
+					info.Add( new STMTextInfo(ParseText_info) ); //add new HAS TO BE NEW OR ELSE IT JUST REFERENCES
+				}
+				else
+				{
+					info[i].SetValues(ParseText_info);
+				}
+				*/
+				info.Add( new STMTextInfo(ParseText_info) ); //add new HAS TO BE NEW OR ELSE IT JUST REFERENCES	
+				infoCount++;
+			}
+			if(checkAgain)
+			{
 				i--;
-			}else{ //stuff that gets reset!! single-use tags.
-				myInfo.delayData = null;// reset
-				myInfo.quadData = null;
-				myInfo.isQuad = false;
-				myInfo.ev.Clear();
-				myInfo.readTime = -1f; //say that timing hasn't been set for this letter yet
-				myInfo.quadIndex = -1;
 			}
-			myInfo.rawIndex = i + deletedChars;
+			else //stuff that gets reset!! single-use tags.
+			{ 
+				ParseText_info.delayData = null;// reset
+				ParseText_info.quadData = null;
+				ParseText_info.ev.Clear();
+				ParseText_info.readTime = -1f; //say that timing hasn't been set for this letter yet
+				ParseText_info.quadIndex = -1;
+				if(ParseText_info.isQuad) //DONT reset
+				{
+					ParseText_info.submeshChange = true;
+				}
+				else
+				{
+					ParseText_info.submeshChange = false;
+				}
+				ParseText_info.isQuad = false;
+			}
+			ParseText_info.rawIndex = i + deletedChars;
 		}
-		if(info.Count > myText.Length){
+		if(infoCount > myText.Length){
 			//add extra char to myText for tacked-on event
 			myText += "\u200B";
 		}
@@ -2360,52 +2784,81 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		}
 		return quality; //default
 	}
+	private STMTextInfo RequestAllCharacters_info;
 	void RequestAllCharacters(){ //by calling this every frame, should keep specific letters in the texture? not sure if it's a waste
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){
-			Font myFont = info[i].fontData != null ? info[i].fontData.font : font; //use info's font, or default?
-			myFont.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(myFont,info[i]), info[i].ch.style); //request characters to draw
+			RequestAllCharacters_info = info[i];
+			Font myFont = RequestAllCharacters_info.fontData != null ? RequestAllCharacters_info.fontData.font : font; //use info's font, or default?
+			myFont.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(myFont,RequestAllCharacters_info), RequestAllCharacters_info.ch.style); //request characters to draw
 			//and special characters:
 			myFont.RequestCharactersInTexture("-", GetFontSize(myFont,info[i]), FontStyle.Normal); //still call this, for when you're inserting hyphens anyway
 		}
 	}
 	
-	void FigureOutUnwrappedLimits(Vector3 pos){
+	private Font Limits_font;
+	private CharacterInfo Limits_ch;
+	private STMTextInfo Limits_info;
+	private int Limits_lineBreaks;
+	void FigureOutUnwrappedLimits(Vector3 pos)
+	{
 //		if(uiMode){ //remove startup warnings
-		unwrappedBottomRightTextBounds = Vector3.zero;
+		unwrappedBottomRightTextBounds.x = 0f;
+		unwrappedBottomRightTextBounds.y = 0f;
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //from character info...
-			Font myFont = info[i].fontData != null ? info[i].fontData.font : font; //use info's font, or default?
-			myFont.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(myFont,info[i]), info[i].ch.style); //request characters to draw
-			CharacterInfo ch;
-			if(myFont.GetCharacterInfo(hyphenedText[i], out ch, GetFontSize(myFont,info[i]), info[i].ch.style)){ //does this character exist?
-				info[i].ch = ch; //remember character info!
-				info[i].UpdateCachedValuesIfChanged();
-	//			SetTextGenSettings(info[i], i);
+			if(hyphenedText.Length != iL)
+			{
+				return;
+			}
+			Limits_info = info[i];
+			Limits_font = Limits_info.fontData != null ? Limits_info.fontData.font : font; //use info's font, or default?
+			Limits_font.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(Limits_font,Limits_info), Limits_info.ch.style); //request characters to draw
+			//CharacterInfo ch;
+			if(Limits_font.GetCharacterInfo(hyphenedText[i], out Limits_ch, GetFontSize(Limits_font,Limits_info), Limits_info.ch.style)){ //does this character exist?
+				Limits_info.ch = Limits_ch; //remember character info!
+				Limits_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//			SetTextGenSettings(Limits_info, i);
 			}
 			else
 			{
-				myFont = data.defaultFont;
-				if(myFont.GetCharacterInfo(hyphenedText[i], out ch, GetFontSize(myFont,info[i]), info[i].ch.style))
+				Limits_font = data.defaultFont;
+				if(Limits_font.GetCharacterInfo(hyphenedText[i], out Limits_ch, GetFontSize(Limits_font,Limits_info), Limits_info.ch.style))
 				{
 					//change the font on this mesh to the default
-					info[i].fontData = new STMFontData(data.defaultFont);
-					info[i].ch = ch; //remember character info!
-					info[i].UpdateCachedValuesIfChanged();
-	//				SetTextGenSettings(info[i], i);
+					Limits_info.fontData = new STMFontData(data.defaultFont);
+					Limits_info.ch = Limits_ch; //remember character info!
+					Limits_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//				SetTextGenSettings(Limits_info, i);
 				}
 			}
 		}
+		Limits_lineBreaks = 0;
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //for each character to draw...
-			Font myFont = info[i].fontData != null ? info[i].fontData.font : font; //use info's font, or default?
-			float myQuality = (float)GetFontSize(myFont,info[i]);
+			Limits_info = info[i];
+			Limits_font = Limits_info.fontData != null ? Limits_info.fontData.font : font; //use info's font, or default?
+			float myQuality = (float)GetFontSize(Limits_font,Limits_info);
 			if(hyphenedText[i] == '\n'){//drop a line
-				pos = new Vector3(info[i].indent, pos.y, 0); //assume left-orintated for now. go back to start of row
-				pos.y -= lineSpacing * info[i].size; //drop down
+				//start new row at the X position of the indent character
+				pos.x = Limits_info.indent; //assume left-orintated for now. go back to start of row
+				if(lineHeights.Count > Limits_lineBreaks)
+				{
+					pos.y -= lineHeights[Limits_lineBreaks+1]; //drop down
+				}
+				Limits_lineBreaks++;
 			}
+			/*
+			if(hyphenedText[i] == '\n'){//drop a line
+				//pos = new Vector3(Limits_info.indent, pos.y, 0); //assume left-orintated for now. go back to start of row
+				pos.x = Limits_info.indent;
+				pos.y -= lineSpacing * Limits_info.size; //drop down
+			}
+			*/
 			else if(hyphenedText[i] == '\t'){//tab?
-				pos += new Vector3(myQuality * 0.5f * tabSize, 0,0) * (info[i].size / myQuality);
+				pos.x += myQuality * 0.5f * tabSize * (Limits_info.size.x / myQuality);
+				//pos += new Vector3(myQuality * 0.5f * tabSize, 0,0) * (Limits_info.size / myQuality);
 			}
 			else{// Advance character position
-				pos += info[i].Advance(characterSpacing,myQuality);
+				//pos += Limits_info.Advance(characterSpacing,myQuality);
+				pos.x += Limits_info.Advance(characterSpacing,myQuality).x;
 			}//remember position data for whatever
 			unwrappedBottomRightTextBounds.x = Mathf.Max(unwrappedBottomRightTextBounds.x, pos.x);
 			unwrappedBottomRightTextBounds.y = Mathf.Min(unwrappedBottomRightTextBounds.y, pos.y);
@@ -2430,22 +2883,33 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		}
 	}
 	*/
+	private float BestFit_vertLimit = 0f;
 	void CalculateBestFitMulti()
 	{
+		BestFit_vertLimit = VerticalLimit;
 		bestFitMulti = 1f;
-		if(AutoWrap > 0f){ //use autowrap?
-			if(bestFit != BestFitMode.Off){
-				bestFitMulti = AutoWrap / unwrappedBottomRightTextBounds.x * 0.99999f; //use this number to keep it just below xMax
-				if(VerticalLimit > 0f && -unwrappedBottomRightTextBounds.y > VerticalLimit / bestFitMulti)
-				{
-					bestFitMulti = -VerticalLimit / unwrappedBottomRightTextBounds.y * 0.99999f;
-					//pos.y -= VerticalLimit + unwrappedBottomRightTextBounds.y;
+		if(bestFit != BestFitMode.Off)
+		{
+			//Debug.Log("bounds: " + -unwrappedBottomRightTextBounds.y + " multiplied limit: " + BestFit_vertLimit / bestFitMulti, this);
 
-					//Debug.Log(-VerticalLimit / unwrappedBottomRightTextBounds.y);
-				}
-				if(bestFit == BestFitMode.OverLimit && bestFitMulti > 1f){
-					bestFitMulti = 1f; //don't multiply
-				}
+			//autowrap
+			if(Rebuild_autoWrap > 0f)
+			{
+				bestFitMulti = Rebuild_autoWrap / unwrappedBottomRightTextBounds.x * 0.99999f; //use this number to keep it just below xMax
+			}
+
+			//vertical limit
+			if((bestFit != BestFitMode.HorizontalAlways && bestFit != BestFitMode.HorizontalOverLimit) && BestFit_vertLimit > 0f && -unwrappedBottomRightTextBounds.y > BestFit_vertLimit / bestFitMulti)
+			{
+				bestFitMulti = -BestFit_vertLimit / unwrappedBottomRightTextBounds.y * 0.99999f;
+				//pos.y -= VerticalLimit + unwrappedBottomRightTextBounds.y;
+
+				//Debug.Log(-VerticalLimit / unwrappedBottomRightTextBounds.y);
+			}
+
+			if((bestFit == BestFitMode.OverLimit || bestFit == BestFitMode.HorizontalOverLimit) && bestFitMulti > 1f)
+			{
+				bestFitMulti = 1f; //don't multiply
 			}
 		}
 	}
@@ -2453,16 +2917,23 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	{
 		//before assigning position to letters, figure out what the biggest character in each row is
 		lineHeights.Clear();
-		float biggest = info.Count > 0 ? info[0].size: size; //just in case this gets called somehow
-		for(int i=0, iL=hyphenedText.Length; i<iL; i++){
-			if(hyphenedText[i] == '\n'){ //linebreak?
-				lineHeights.Add(biggest);
+		//don't factor in linespacing for the very first line
+		float biggest = infoCount > 0 ? info[0].size.y * lineSpacing : size * lineSpacing; //just in case this gets called somehow
+		for(int i=0, iL=infoCount; i<iL; i++)
+		{
+			if(hyphenedText[i] == '\n' || hyphenedText[i] == '\u200B')
+			{ //linebreak?
+				lineHeights.Add(biggest); //don't add linebreak size, but...
 				//if there's another character beyond this linebreak...
-				if(hyphenedText.Length-1 > i){
-					biggest = info[i+1].size; //start with next row's first character
+				if(infoCount-1 > i)
+				{
+					biggest = info[i+1].size.y * lineSpacing; //start with next row's first character
 				}
-			}else{
-				biggest = Mathf.Max(biggest, info[i].size);
+			}
+			else
+			{
+				
+				biggest = Mathf.Max(biggest, info[i].size.y * lineSpacing);
 			}
 		}
 		lineHeights.Add(biggest); //final line
@@ -2503,86 +2974,121 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		}
 	}
 */
+	private Vector3 Rebuild_pos = Vector3.zero;
+	private Font Rebuild_font = null;
+	private CharacterInfo Rebuild_ch;
+	private CharacterInfo Rebuild_hyphenCh;
+	private CharacterInfo Rebuild_breakCh;
+	private float Rebuild_autoWrap;
+	private int infoCount = 0;
+	private STMTextInfo Rebuild_info;
 	void RebuildTextInfo(){ 
+		Rebuild_autoWrap = AutoWrap;
 		drawText = ParseText(text); //remove parsing junk (<col>, <b>), and fill textinfo again
+		
 		lineBreaks.Clear(); //index of line break characters, for centering
 		hyphenedText = string.Copy(drawText);
 		CalculateLineHeights(); //figure out line heigts for unwrapped equation
 		//Debug.Log("lines: " + lineHeights.Count);
-		Vector3 pos = new Vector3(info.Count > 0 ? info[0].indent : 0f, 
-								lineHeights.Count > 0 ? -lineHeights[0] : -size, 
-								0f); //keep track of where to place this text
 		
-		FigureOutUnwrappedLimits(pos);
+		//keep track of where to place this text
+		//infoCount = hyphenedText.Length;
+		Rebuild_pos.x = infoCount > 0 ? info[0].indent : 0f;
+		Rebuild_pos.y = lineHeights.Count > 0 ? -lineHeights[0] : -size;
+		Rebuild_pos.z = 0f; 
+		
+		//if(bestFit == BestFitMode.Off)
+		//{
+			FigureOutUnwrappedLimits(Rebuild_pos);
+		//}
+		//else
+		//{
+		//	unwrappedBottomRightTextBounds.x = 1f;
+		//	unwrappedBottomRightTextBounds.y = 1f;
+		//}
 		CalculateBestFitMulti();
 		//apply this multi to every letter early
 		for(int i=0; i<hyphenedText.Length; i++)
 		{
-			info[i].size *= bestFitMulti;
+			if(bestFit == BestFitMode.HorizontalAlways || bestFit == BestFitMode.HorizontalOverLimit)
+			{
+				info[i].size.x *= bestFitMulti;
+			}
+			else
+			{
+				info[i].size.x *= bestFitMulti;
+				info[i].size.y *= bestFitMulti;
+				info[i].offset.x *= bestFitMulti;
+				info[i].offset.y *= bestFitMulti;
+			}
 		}
 
 		CalculateLineHeights(); //now with multi applied, redo line heights
 
-		pos.x = info.Count > 0 ? info[0].indent : 0f;
-		pos.y = lineHeights.Count > 0 ? -lineHeights[0] : size;
+		Rebuild_pos.x = infoCount > 0 ? info[0].indent : 0f;
+		Rebuild_pos.y = lineHeights.Count > 0 ? -lineHeights[0] : size;
 		totalWidth = 0f;
 		allFonts.Clear();
-		if(AutoWrap > 0f){ //use autowrap?
+		if(Rebuild_autoWrap > 0f){ //use autowrap?
+
+			//if(rtl)
+			//	hyphenedText = FlipParagraphs(hyphenedText, false);
 			
 			//TODO see if setting "quality" to be info[i].ch.size has any GC issues, now: 2016-10-26
 			for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //first, get character info...
-				Font myFont = info[i].fontData != null ? info[i].fontData.font : font; //use info's font, or default?
-				//info[i].size *= bestFitMulti;
+				Rebuild_info = info[i];
+				Rebuild_font = Rebuild_info.fontData != null ? Rebuild_info.fontData.font : font; //use info's font, or default?
+				//Rebuild_info.size *= bestFitMulti;
 
-				myFont.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(myFont,info[i]), info[i].ch.style); 
-				CharacterInfo ch;
-				if(myFont.GetCharacterInfo(hyphenedText[i], out ch, GetFontSize(myFont,info[i]), info[i].ch.style)){ //does this character exist?
-					info[i].ch = ch; //remember character info!
+				Rebuild_font.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style); 
+				if(Rebuild_font.GetCharacterInfo(hyphenedText[i], out Rebuild_ch, GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style)){ //does this character exist?
+					Rebuild_info.ch = Rebuild_ch; //remember character info!
 					// If the character changed, update the cached sizing values.
-					info[i].UpdateCachedValuesIfChanged();
-	//				SetTextGenSettings(info[i], i);
+					Rebuild_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//				SetTextGenSettings(Rebuild_info, i);
 				}
 				//else, don't draw anything! this charcter won't have info
 				//...is how it USED to work! instead, lets draw it in a fallback font:
 				else{
-					myFont = data.defaultFont;
-					if(myFont.GetCharacterInfo(hyphenedText[i], out ch, GetFontSize(myFont,info[i]), info[i].ch.style))
+					Rebuild_font = data.defaultFont;
+					if(Rebuild_font.GetCharacterInfo(hyphenedText[i], out Rebuild_ch, GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style))
 					{
 						//change the font on this mesh to the default
-						info[i].fontData = new STMFontData(data.defaultFont);
-						info[i].ch = ch; //remember character info!
-						info[i].UpdateCachedValuesIfChanged();
-	//					SetTextGenSettings(info[i], i);
+						Rebuild_info.fontData = new STMFontData(data.defaultFont);
+						Rebuild_info.ch = Rebuild_ch; //remember character info!
+						Rebuild_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//					SetTextGenSettings(Rebuild_info, i);
 					}
 				}
-				if(!allFonts.Contains(myFont)){ //if this font is not listed yet
-					allFonts.Add(myFont);
+				if(!allFonts.Contains(Rebuild_font)){ //if this font is not listed yet
+					allFonts.Add(Rebuild_font);
 				}
 			}
 
-			float lineWidth = info.Count > 0 ? info[0].indent : 0f;
+			float lineWidth = infoCount > 0 ? info[0].indent : 0f;
 			int previousBreak = -1;
-			for(int i=0; i<info.Count; i++){
-				Font myFont = info[i].fontData != null ? info[i].fontData.font : font; //use info's font, or default?
-				CharacterInfo breakCh; //moved these into this loop 2016-10-26
-				myFont.GetCharacterInfo('\n', out breakCh, GetFontSize(myFont,info[i]), style); //get data for linebreak
-				CharacterInfo hyphenCh;
-				myFont.RequestCharactersInTexture("\u00AD", GetFontSize(myFont,info[i]), style); //still call this, for when you're inserting hyphens anyway
-				myFont.GetCharacterInfo('\u00AD', out hyphenCh, GetFontSize(myFont,info[i]), style);
-				//float hyphenWidth = hyphenCh.advance * (info[i].size / info[i].ch.size); //have hyphen size match last character in row
+			for(int i=0; i<infoCount; i++){
+				Rebuild_info = info[i];
+				Rebuild_font = Rebuild_info.fontData != null ? Rebuild_info.fontData.font : font; //use info's font, or default?
+				//CharacterInfo breakCh; //moved these into this loop 2016-10-26
+				Rebuild_font.GetCharacterInfo('\n', out Rebuild_breakCh, GetFontSize(Rebuild_font,Rebuild_info), style); //get data for linebreak
+				//CharacterInfo hyphenCh;
+				Rebuild_font.RequestCharactersInTexture("\u00AD", GetFontSize(Rebuild_font,Rebuild_info), style); //still call this, for when you're inserting hyphens anyway
+				Rebuild_font.GetCharacterInfo('\u00AD', out Rebuild_hyphenCh, GetFontSize(Rebuild_font,Rebuild_info), style);
+				//float hyphenWidth = hyphenCh.advance * (Rebuild_info.size / Rebuild_info.ch.size); //have hyphen size match last character in row
 				
 				
 				if(hyphenedText[i] == '\n'){ //is this character a line break?
-					lineWidth = info[i].indent; //new line, reset
+					lineWidth = Rebuild_info.indent; //new line, reset
 				}else if(hyphenedText[i] == '\t'){ // linebreak with a tab...
-					lineWidth += 0.5f * tabSize * info[i].size;
-					totalWidth += 0.5f * tabSize * info[i].size;
+					lineWidth += 0.5f * tabSize * Rebuild_info.size.x;
+					totalWidth += 0.5f * tabSize * Rebuild_info.size.x;
 				}else{
-					lineWidth += info[i].Advance(characterSpacing).x;
-					totalWidth += info[i].Advance(characterSpacing).x;
+					lineWidth += Rebuild_info.Advance(characterSpacing).x;
+					totalWidth += Rebuild_info.Advance(characterSpacing).x;
 				}
 				//TODO: watch out for natural hyphens going over bounds limits
-				if(lineWidth > AutoWrap && i > previousBreak+1){
+				if(lineWidth > Rebuild_autoWrap && i > previousBreak+1){
 					allLinebreakIndexes = new int[linebreakFriendlyChars.Length]; //garbage but whatever
 					//get last index of every linebreak safe character
 					for(int j=0; j<linebreakFriendlyChars.Length; j++)
@@ -2594,7 +3100,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 					//int myTabBreak = hyphenedText.LastIndexOf('\t',i); //can break at a tab, too!
 					//int myActualBreak = Mathf.Max(new int[]{myBreak, myHyphenBreak, myTabBreak}); //get the largest of all 3
 					int myActualBreak = Mathf.Max(allLinebreakIndexes);
-					int lastBreak = hyphenedText.LastIndexOf('\n',i); //last place a ine break happened
+					int lastBreak = hyphenedText.LastIndexOf('\n',i); //last place a line break happened
 					if(!breakText && myActualBreak != -1 && myActualBreak > lastBreak){ //is there a space to do a line break? (and no hyphens...) AND we're not breaking text up at all
 						
 						//special case: if it's a space, remove that space!!! 2019-07-04
@@ -2603,7 +3109,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 							//replace this character with a linebreak
 							hyphenedText = hyphenedText.Remove(myActualBreak, 1);
 							hyphenedText = hyphenedText.Insert(myActualBreak, '\n'.ToString());
-							info[myActualBreak].UpdateCachedValuesIfChanged();
+							info[myActualBreak].UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
 							i = myActualBreak;
 							previousBreak = i;
 						}
@@ -2611,10 +3117,12 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 						else if(insertHyphens && hyphenedText[myActualBreak] != '-')
 						{
 							hyphenedText = hyphenedText.Insert(myActualBreak+1, "\u200B\n"); //soft hyphen and linebreak
-							info.Insert(myActualBreak+1,new STMTextInfo(info[myActualBreak], breakCh));
-							info[myActualBreak+1].UpdateCachedValuesIfChanged();
-							info.Insert(myActualBreak+1,new STMTextInfo(info[myActualBreak], hyphenCh));
-							info[myActualBreak+1].UpdateCachedValuesIfChanged();
+							info.Insert(myActualBreak+1,new STMTextInfo(info[myActualBreak], Rebuild_breakCh));
+							infoCount++;
+							info[myActualBreak+1].UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+							info.Insert(myActualBreak+1,new STMTextInfo(info[myActualBreak], Rebuild_hyphenCh));
+							infoCount++;
+							info[myActualBreak+1].UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
 							i = myActualBreak+2; //go back
 							previousBreak = i;
 						}
@@ -2622,8 +3130,9 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 						{
 							//insert a linebreak after
 							hyphenedText = hyphenedText.Insert(myActualBreak+1, '\n'.ToString());
-							info.Insert(myActualBreak+1,new STMTextInfo(info[myActualBreak], breakCh));
-							info[myActualBreak+1].UpdateCachedValuesIfChanged();
+							info.Insert(myActualBreak+1,new STMTextInfo(info[myActualBreak], Rebuild_breakCh));
+							infoCount++;
+							info[myActualBreak+1].UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
 							i = myActualBreak+1; //go back
 							previousBreak = i;
 						}
@@ -2635,18 +3144,21 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 						if(insertHyphens){
 							hyphenedText = hyphenedText.Insert(i, "\u00AD\n");
 							//Debug.Log("This needs a hyphen: " + hyphenedText);
-							info.Insert(i,new STMTextInfo(info[i], breakCh));
-							info[i].UpdateCachedValuesIfChanged();
-	//						SetTextGenSettings(info[i], i);
-							info.Insert(i,new STMTextInfo(info[i], hyphenCh));
-							info[i].UpdateCachedValuesIfChanged();
-	//						SetTextGenSettings(info[i], i);
+							info.Insert(i,new STMTextInfo(Rebuild_info, Rebuild_breakCh));
+							infoCount++;
+							Rebuild_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//						SetTextGenSettings(Rebuild_info, i);
+							info.Insert(i,new STMTextInfo(Rebuild_info, Rebuild_hyphenCh));
+							infoCount++;
+							Rebuild_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//						SetTextGenSettings(Rebuild_info, i);
 							previousBreak = i+1;
 						}else{
 							hyphenedText = hyphenedText.Insert(i, "\n");
-							info.Insert(i,new STMTextInfo(info[i], breakCh));
-							info[i].UpdateCachedValuesIfChanged();
-	//						SetTextGenSettings(info[i], i);
+							info.Insert(i,new STMTextInfo(Rebuild_info, Rebuild_breakCh));
+							infoCount++;
+							Rebuild_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//						SetTextGenSettings(Rebuild_info, i);
 							previousBreak = i;
 							//if(AutoWrap < info[i - indexOffset-1].size){ //otherwise, it'll loop foreverrr
 							//i += 1;
@@ -2655,58 +3167,96 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 							//indexOffset += 1;
 						}
 					}//no need to check for following space, it'll come up anyway
-					lineWidth = info[i].indent; //reset
+					lineWidth = Rebuild_info.indent; //reset
 				}
 			}
 		}else{ //no autowrap, no need to insert linebreaks
 			for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //from character info...
-				Font myFont = info[i].fontData != null ? info[i].fontData.font : font; //use info's font, or default?
+				Rebuild_info = info[i];
+				Rebuild_font = Rebuild_info.fontData != null ? Rebuild_info.fontData.font : font; //use info's font, or default?
 				//vvvv very important
-				myFont.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(myFont,info[i]), info[i].ch.style); //request characters to draw
-				//font.RequestCharactersInTexture(System.Text.Encoding.UTF8.GetString(System.BitConverter.GetBytes(info[i].ch.index)), GetFontSize(myFont,info[i]), info[i].ch.style); //request characters to draw
-				CharacterInfo ch;
+				Rebuild_font.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style); //request characters to draw
+				//font.RequestCharactersInTexture(System.Text.Encoding.UTF8.GetString(System.BitConverter.GetBytes(Rebuild_info.ch.index)), GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style); //request characters to draw
+				//CharacterInfo ch;
 				//get character from font if it exists
-				if(myFont.GetCharacterInfo(hyphenedText[i], out ch, GetFontSize(myFont,info[i]), info[i].ch.style)){ //does this character exist?
-					info[i].ch = ch; //remember character info!
-					info[i].UpdateCachedValuesIfChanged();
-	//				SetTextGenSettings(info[i], i);
+				if(Rebuild_font.GetCharacterInfo(hyphenedText[i], out Rebuild_ch, GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style)){ //does this character exist?
+					Rebuild_info.ch = Rebuild_ch; //remember character info!
+					Rebuild_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//				SetTextGenSettings(Rebuild_info, i);
 				}
 				else{
 					//get from default font instead
-					myFont = data.defaultFont;
-					if(myFont.GetCharacterInfo(hyphenedText[i], out ch, GetFontSize(myFont,info[i]), info[i].ch.style))
+					Rebuild_font = data.defaultFont;
+					if(Rebuild_font.GetCharacterInfo(hyphenedText[i], out Rebuild_ch, GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style))
 					{
 						//change the font on this mesh to the default
-						info[i].fontData = new STMFontData(data.defaultFont);
-						info[i].ch = ch; //remember character info!
-						info[i].UpdateCachedValuesIfChanged();
-	//					SetTextGenSettings(info[i], i);
+						Rebuild_info.fontData = new STMFontData(data.defaultFont);
+						Rebuild_info.ch = Rebuild_ch; //remember character info!
+						Rebuild_info.UpdateCachedValuesIfChanged(fontTextureJustRebuilt);
+	//					SetTextGenSettings(Rebuild_info, i);
 					}
 				}
-				if(!allFonts.Contains(myFont)){ //if this font is not listed yet
-					allFonts.Add(myFont);
+				if(!allFonts.Contains(Rebuild_font)){ //if this font is not listed yet
+					allFonts.Add(Rebuild_font);
 				}
 			}
 		}
 		CalculateLineHeights(); //now with multi applied, redo line heights
+
+		//yeah, at this point, line breaks have been inserted, without position applied to 
+		//so flip order for RTL text
+		if(rtl)
+		{
+			hyphenedText = FlipParagraphs(hyphenedText, true);
+/*
+			//redo this bit of code that's above... its just copy-pasted.
+			for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //from character info...
+				Rebuild_info = info[i];
+				Rebuild_font = Rebuild_info.fontData != null ? Rebuild_info.fontData.font : font; //use info's font, or default?
+				Rebuild_font.RequestCharactersInTexture(hyphenedText[i].ToString(), GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style); //request characters to draw
+				if(Rebuild_font.GetCharacterInfo(hyphenedText[i], out Rebuild_ch, GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style)){ //does this character exist?
+					Rebuild_info.ch = Rebuild_ch; //remember character info!
+					Rebuild_info.UpdateCachedValuesIfChanged();
+				}
+				else{
+					//get from default font instead
+					Rebuild_font = data.defaultFont;
+					if(Rebuild_font.GetCharacterInfo(hyphenedText[i], out Rebuild_ch, GetFontSize(Rebuild_font,Rebuild_info), Rebuild_info.ch.style))
+					{
+						//change the font on this mesh to the default
+						Rebuild_info.fontData = new STMFontData(data.defaultFont);
+						Rebuild_info.ch = Rebuild_ch; //remember character info!
+						Rebuild_info.UpdateCachedValuesIfChanged();
+					}
+				}
+				if(!allFonts.Contains(Rebuild_font)){ //if this font is not listed yet
+					allFonts.Add(Rebuild_font);
+				}
+			}
+*/
+		}
 		//get position
 		int passedLineBreaks = 0;
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //for each character to draw...
-			Font myFont = info[i].fontData != null ? info[i].fontData.font : font; //use info's font, or default?
+			Rebuild_info = info[i];
+			Rebuild_font = Rebuild_info.fontData != null ? Rebuild_info.fontData.font : font; //use info's font, or default?
 			//CharacterInfo ch; //moved this code to the loop above^^^^
-			//if(myFont.GetCharacterInfo(hyphenedText[i], out ch, quality, info[i].ch.style)){ //does this character exist?
-			//	info[i].ch = ch; //remember character info!
+			//if(myFont.GetCharacterInfo(hyphenedText[i], out ch, quality, Rebuild_info.ch.style)){ //does this character exist?
+			//	Rebuild_info.ch = ch; //remember character info!
 			//}//else, don't draw anything! this charcter won't have info
-			float myQuality = (float)GetFontSize(myFont,info[i]);
+			float myQuality = (float)GetFontSize(Rebuild_font,Rebuild_info);
 			//switched this to += since tags can control an initial offset now. 2019-05-11
-			info[i].pos = pos; //save this position data!
-			//info[i].line = currentLineCount;
+			Rebuild_info.pos = Rebuild_pos; //save this position data!
+			//Rebuild_info.line = currentLineCount;
 			if(hyphenedText[i] == '\n'){//drop a line
 				lineBreaks.Add(i == 0 ? 0 : i-1);//first character is a line break? set default
 				//start new row at the X position of the indent character
-				pos.x = info[i].indent; //assume left-orintated for now. go back to start of row
+				Rebuild_pos.x = Rebuild_info.indent; //assume left-orintated for now. go back to start of row
 				//Debug.Log(passedLineBreaks);
-				pos.y -= lineSpacing * lineHeights[passedLineBreaks]; //drop down
+				if(lineHeights.Count > passedLineBreaks)
+				{
+					Rebuild_pos.y -= lineHeights[passedLineBreaks+1]; //drop down
+				}
 				passedLineBreaks++;
 				//currentLineCount++;
 			}
@@ -2714,21 +3264,26 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 				lineBreaks.Add(i);
 			}
 			else if(hyphenedText[i] == '\t'){//tab?
-				pos += new Vector3(myQuality * 0.5f * tabSize, 0,0) * (info[i].size / myQuality);
+				Rebuild_pos.x += (myQuality * 0.5f * tabSize) * (Rebuild_info.size.x / myQuality);
+				//Rebuild_pos += new Vector3(myQuality * 0.5f * tabSize, 0,0) * (Rebuild_info.size / myQuality);
 			}
 			else{// Advance character position
-				pos += info[i].Advance(characterSpacing,myQuality);
+				Rebuild_pos.x += Rebuild_info.Advance(characterSpacing,myQuality).x;
+				//Rebuild_pos += Rebuild_info.Advance(characterSpacing,myQuality);
 			}//remember position data for whatever
 		}
 		lineBreaks = lineBreaks.Distinct().ToList(); //remove doubles, preventing horizontal offset glitch
+
 		
 		ApplyOffsetDataToTextInfo(); //just to clean up this very long function...
 		TrimCutoffText();
 		UpdateRTLDrawOrder();
-		ApplyTimingDataToTextInfo();
+		
 		ApplyUnreadTimingDataToTextInfo();
+		ApplyTimingDataToTextInfo();
 		PrepareSubmeshes();
 	}
+	
 	//
 	//public float lowestPosition = 0f;
 
@@ -2814,7 +3369,14 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 
 	private Vector3 offset = Vector3.zero;
 	private Vector3 uiOffset = Vector3.zero;
+	private float OffsetData_VerticalLimit = 0f;
+	private int OffsetData_rowStart = 0;
+	private float OffsetData_offsetRight = 0f;
+	private int OffsetData_spaceCount = 0;
+	private float OffsetData_maxHeight = 0f;
+	private float OffsetData_maxWidth = 0f;
 	void ApplyOffsetDataToTextInfo(){ //this works!!! ahhhh!!!
+		OffsetData_VerticalLimit = VerticalLimit; //cache it
 		float[] allMaxes = new float[lineBreaks.Count];
 		for(int i=0, iL=lineBreaks.Count; i<iL; i++){
 			//get max x data from this line
@@ -2830,48 +3392,92 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		rawBottomRightTextBounds.x = Mathf.Max(allMaxes);
 		rawBottomRightTextBounds.y = 0f;
 		//lowestY = 0f;
-		offset = Vector3.zero; //reset
+		//offset = Vector3.zero; //reset
+		offset.x = 0f;
+		offset.y = 0f;
+		offset.z = 0f;
 		//minY = 0f;
 		/* */
 		if(uiMode){
 			//ALIGN TO WHATEVER UI BOX HERE!!!
 			//RectTransform tr = t as RectTransform; //(RectTransform(t)) also works!
-			uiOffset = Vector3.zero;
+			//uiOffset = Vector3.zero;
+			uiOffset.x = 0f;
+			uiOffset.y = 0f;
+			uiOffset.z = 0f;
 			//TODO: during play mode, this doesn't update right...
 			switch(anchor){
-				case TextAnchor.UpperLeft: uiOffset = new Vector3(tr.rect.xMin, tr.rect.yMax, 0f); break;
-				case TextAnchor.UpperCenter: uiOffset = new Vector3((tr.rect.xMin + tr.rect.xMax) / 2f, tr.rect.yMax, 0f); break;
-				case TextAnchor.UpperRight: uiOffset = new Vector3(tr.rect.xMax, tr.rect.yMax, 0f); break;
-				case TextAnchor.MiddleLeft: uiOffset = new Vector3(tr.rect.xMin, (tr.rect.yMin + tr.rect.yMax) / 2f, 0f); break;
-				case TextAnchor.MiddleCenter: uiOffset = new Vector3((tr.rect.xMin + tr.rect.xMax) / 2f, (tr.rect.yMin + tr.rect.yMax) / 2f, 0f); break;
-				case TextAnchor.MiddleRight: uiOffset = new Vector3(tr.rect.xMax, (tr.rect.yMin + tr.rect.yMax) / 2f, 0f); break;
-				case TextAnchor.LowerLeft: uiOffset = new Vector3(tr.rect.xMin, tr.rect.yMin, 0f); break;
-				case TextAnchor.LowerCenter: uiOffset = new Vector3((tr.rect.xMin + tr.rect.xMax) / 2f, tr.rect.yMin, 0f); break;
-				case TextAnchor.LowerRight: uiOffset = new Vector3(tr.rect.xMax, tr.rect.yMin, 0f); break;
+				case TextAnchor.UpperLeft: 
+					//uiOffset = new Vector3(tr.rect.xMin, tr.rect.yMax, 0f); 
+					uiOffset.x = tr.rect.xMin;
+					uiOffset.y = tr.rect.yMax;
+					break;
+				case TextAnchor.UpperCenter: 
+					uiOffset.x = (tr.rect.xMin + tr.rect.xMax) / 2f;
+					uiOffset.y = tr.rect.yMax;
+					//uiOffset = new Vector3((tr.rect.xMin + tr.rect.xMax) / 2f, tr.rect.yMax, 0f); break;
+					break;
+				case TextAnchor.UpperRight: 
+					uiOffset.x = tr.rect.xMax;
+					uiOffset.y = tr.rect.yMax;
+					//uiOffset = new Vector3(tr.rect.xMax, tr.rect.yMax, 0f); 
+					break;
+				case TextAnchor.MiddleLeft: 
+					uiOffset.x = tr.rect.xMin;
+					uiOffset.y = (tr.rect.yMin + tr.rect.yMax) / 2f;
+					//uiOffset = new Vector3(tr.rect.xMin, (tr.rect.yMin + tr.rect.yMax) / 2f, 0f); 
+					break;
+				case TextAnchor.MiddleCenter: 
+					uiOffset.x = (tr.rect.xMin + tr.rect.xMax) / 2f;
+					uiOffset.y = (tr.rect.yMin + tr.rect.yMax) / 2f;
+					//uiOffset = new Vector3((tr.rect.xMin + tr.rect.xMax) / 2f, (tr.rect.yMin + tr.rect.yMax) / 2f, 0f); 
+					break;
+				case TextAnchor.MiddleRight: 
+					uiOffset.x = tr.rect.xMax;
+					uiOffset.y = (tr.rect.yMin + tr.rect.yMax) / 2f;
+					//uiOffset = new Vector3(tr.rect.xMax, (tr.rect.yMin + tr.rect.yMax) / 2f, 0f); 
+					break;
+				case TextAnchor.LowerLeft: 
+					uiOffset.x = tr.rect.xMin;
+					uiOffset.y = tr.rect.yMin;
+					//uiOffset = new Vector3(tr.rect.xMin, tr.rect.yMin, 0f); 
+					break;
+				case TextAnchor.LowerCenter: 
+					uiOffset.x = (tr.rect.xMin + tr.rect.xMax) / 2f;
+					uiOffset.y = tr.rect.yMin;
+					//uiOffset = new Vector3((tr.rect.xMin + tr.rect.xMax) / 2f, tr.rect.yMin, 0f); 
+					break;
+				case TextAnchor.LowerRight:
+					uiOffset.x = tr.rect.xMax;
+					uiOffset.y = tr.rect.yMin;
+					//uiOffset = new Vector3(tr.rect.xMax, tr.rect.yMin, 0f); 
+					break;
 			}
-			offset -= uiOffset;
+			offset.x -= uiOffset.x;
+			offset.y -= uiOffset.y;
+			//offset -= uiOffset;
 		}
 		//float lowestVert = 0f;
 		//float rightestVert = 0f;
 		//float mostLeftVert = Mathf.Infinity; //this is probably a bad idea
-		int rowStart = 0; //index of where this row starts
+		OffsetData_rowStart = 0; //index of where this row starts
 		lowestPosition = 0f;
 		for(int i=0, iL=lineBreaks.Count; i<iL; i++){ //for each line of text //2016-06-09 new alignment script
-			float myOffsetRight = 0f; //empty space on this row
-			myOffsetRight = rawBottomRightTextBounds.x - info[lineBreaks[i]].RelativeAdvance(characterSpacing).x;
+			OffsetData_offsetRight = 0f; //empty space on this row
+			OffsetData_offsetRight = rawBottomRightTextBounds.x - info[lineBreaks[i]].RelativeAdvance(characterSpacing).x;
 			
-			if(AutoWrap > 0f){
-				myOffsetRight += AutoWrap - rawBottomRightTextBounds.x;
+			if(Rebuild_autoWrap > 0f){
+				OffsetData_offsetRight += Rebuild_autoWrap - rawBottomRightTextBounds.x;
 			}
-			int spaceCount = 0;
-			for(int j=rowStart, jL=lineBreaks[i]+1; j<jL; j++){ //see how many spaces there are
+			OffsetData_spaceCount = 0;
+			for(int j=OffsetData_rowStart, jL=lineBreaks[i]+1; j<jL; j++){ //see how many spaces there are
 				if(hyphenedText[j] == ' '){
-					spaceCount++;
+					OffsetData_spaceCount++;
 				}
 			}
-			float justifySpace = spaceCount > 0 ? myOffsetRight / (float)spaceCount : 0f;
+			float justifySpace = OffsetData_spaceCount > 0 ? OffsetData_offsetRight / (float)OffsetData_spaceCount : 0f;
 			int passedSpaces = 0;
-			for(int j=rowStart, jL=lineBreaks[i]+1; j<jL; j++){//if this character is in the range...
+			for(int j=OffsetData_rowStart, jL=lineBreaks[i]+1; j<jL; j++){//if this character is in the range...
 				info[j].line = i; //tell info what line the letter is on here
 				if(hyphenedText[j] == ' '){
 					passedSpaces++;
@@ -2879,10 +3485,10 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 				//Debug.Log("Aligning character " + j + ", which is: '" + hyphenedText[j] + "'.");
 				switch(info[j].alignment){
 					case Alignment.Center:
-						info[j].pos.x += myOffsetRight / 2f; //use half of empty space
+						info[j].pos.x += OffsetData_offsetRight / 2f; //use half of empty space
 						break;
 					case Alignment.Right:
-						info[j].pos.x += myOffsetRight;
+						info[j].pos.x += OffsetData_offsetRight;
 						break;
 					case Alignment.Justified:
 						if(jL != hyphenedText.Length && drawText[jL - (hyphenedText.Length - drawText.Length)] != '\n'){ //not the very last row, or a row with a linebreak?
@@ -2902,7 +3508,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 					//}else{
 					rawBottomRightTextBounds.y = Mathf.Min(rawBottomRightTextBounds.y, info[j].pos.y);
 					//}
-					if(VerticalLimit == 0f || (VerticalLimit > 0f && verticalLimitMode == VerticalLimitMode.Ignore) || info[j].pos.y >= -VerticalLimit){ //only keep counting if it's not past the line count limit
+					if(OffsetData_VerticalLimit == 0f || (OffsetData_VerticalLimit > 0f && verticalLimitMode == VerticalLimitMode.Ignore) || info[j].pos.y >= -OffsetData_VerticalLimit){ //only keep counting if it's not past the line count limit
 						lowestPosition = Mathf.Min(lowestPosition, info[j].pos.y);
 					}
 					//maxX = Mathf.Max(maxX, info[j].BottomRightVert.x);
@@ -2915,7 +3521,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 				//mostLeftVert = Mathf.Min(mostLeftVert, info[j].BottomLeftVert.x);
 				//lowestY = Mathf.Min(lowestY, info[j].pos.y); 
 			}
-			rowStart = lineBreaks[i]+1;
+			OffsetData_rowStart = lineBreaks[i]+1;
 		}
 		//2018-01-06 this code is pointless since the limit doesn't matter in this state. But for some reason the limit is wrong so this looks better
 /*
@@ -2933,31 +3539,68 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		//minY = VerticalLimit > 0f ? -VerticalLimit + (size * bestFitMulti) : minY;
 		//float upperY = size; //push down
 		//float lowerY = size * (lineBreaks.Count - 1) * lineSpacing;
-		float maxHeight = VerticalLimit > 0f ? -VerticalLimit : rawBottomRightTextBounds.y;
-		float maxWidth = AutoWrap > 0f ? AutoWrap : rawBottomRightTextBounds.x; //if autowrapping, base it on box instead of text
+		OffsetData_maxHeight = OffsetData_VerticalLimit > 0f ? -OffsetData_VerticalLimit : rawBottomRightTextBounds.y;
+		OffsetData_maxWidth = Rebuild_autoWrap > 0f ? Rebuild_autoWrap : rawBottomRightTextBounds.x; //if autowrapping, base it on box instead of text
 		switch(anchor){
-			case TextAnchor.UpperLeft: offset += new Vector3(0, 0f, 0); break;
-			case TextAnchor.UpperCenter: offset += new Vector3(maxWidth * 0.5f, 0f, 0); break;
-			case TextAnchor.UpperRight: offset += new Vector3(maxWidth, 0f, 0); break;
-			case TextAnchor.MiddleLeft: offset += new Vector3(0, maxHeight * 0.5f, 0); break;
-			case TextAnchor.MiddleCenter: offset += new Vector3(maxWidth * 0.5f, maxHeight * 0.5f, 0); break;
-			case TextAnchor.MiddleRight: offset += new Vector3(maxWidth, maxHeight * 0.5f, 0); break;
-			case TextAnchor.LowerLeft: offset += new Vector3(0, maxHeight, 0); break;
-			case TextAnchor.LowerCenter: offset += new Vector3(maxWidth * 0.5f, maxHeight, 0); break;
-			case TextAnchor.LowerRight: offset += new Vector3(maxWidth, maxHeight, 0); break;
+			case TextAnchor.UpperLeft: 
+				//offset += new Vector3(0, 0f, 0); 
+				break;
+			case TextAnchor.UpperCenter: 
+				//offset += new Vector3(OffsetData_maxWidth * 0.5f, 0f, 0); 
+				offset.x += OffsetData_maxWidth * 0.5f;
+				break;
+			case TextAnchor.UpperRight: 
+				//offset += new Vector3(OffsetData_maxWidth, 0f, 0); 
+				offset.x += OffsetData_maxWidth;
+				break;
+			case TextAnchor.MiddleLeft: 
+				offset.y += OffsetData_maxHeight * 0.5f;
+				//offset += new Vector3(0, OffsetData_maxHeight * 0.5f, 0); 
+				break;
+			case TextAnchor.MiddleCenter: 
+				offset.x += OffsetData_maxWidth * 0.5f;
+				offset.y += OffsetData_maxHeight * 0.5f;
+				//offset += new Vector3(OffsetData_maxWidth * 0.5f, OffsetData_maxHeight * 0.5f, 0); 
+				break;
+			case TextAnchor.MiddleRight: 
+				offset.x += OffsetData_maxWidth;
+				offset.y += OffsetData_maxHeight * 0.5f;
+				//offset += new Vector3(OffsetData_maxWidth, OffsetData_maxHeight * 0.5f, 0); 
+				break;
+			case TextAnchor.LowerLeft: 
+				offset.y += OffsetData_maxHeight;
+				//offset += new Vector3(0, OffsetData_maxHeight, 0); 
+				break;
+			case TextAnchor.LowerCenter: 
+				offset.x += OffsetData_maxWidth * 0.5f;
+				offset.y += OffsetData_maxHeight;
+				//offset += new Vector3(OffsetData_maxWidth * 0.5f, OffsetData_maxHeight, 0); 
+				break;
+			case TextAnchor.LowerRight: 
+				offset.x += OffsetData_maxWidth;
+				offset.y += OffsetData_maxHeight;
+				//offset += new Vector3(OffsetData_maxWidth, OffsetData_maxHeight, 0); 
+				break;
 		}
-		for(int i=0, iL=info.Count; i<iL; i++){ //apply all offsets
+		//infoCount = hyphenedText.Length;
+		for(int i=0; i<infoCount; i++){ //apply all offsets
 			info[i].pos -= offset;
 			//if all text goes beyond the vertical limit, move it up
 		}
 		
-		rawTopLeftBounds = offset; //scale to show proper bounds even when parent is scaled weird
-		rawBottomRightBounds = new Vector3(AutoWrap > 0f ? offset.x - AutoWrap : offset.x - rawBottomRightTextBounds.x, 
-											VerticalLimit > 0f ? VerticalLimit + offset.y : offset.y - maxHeight, 
-											offset.z);
+
+		rawTopLeftBounds.x = offset.x;//scale to show proper bounds even when parent is scaled weird
+		rawTopLeftBounds.y = offset.y;
+		rawTopLeftBounds.z = offset.z;
+
+		rawBottomRightBounds.x = Rebuild_autoWrap > 0f ? offset.x - Rebuild_autoWrap : offset.x - rawBottomRightTextBounds.x;
+		rawBottomRightBounds.y = OffsetData_VerticalLimit > 0f ? OffsetData_VerticalLimit + offset.y : offset.y - OffsetData_maxHeight;
+		rawBottomRightBounds.z = offset.z;
 
 		//align text to fit within this new box:
-		anchorOffset = Vector3.zero;
+		anchorOffset.x = 0f;
+		anchorOffset.y = 0f;
+		anchorOffset.z = 0f;
 		switch(anchor){
 			case TextAnchor.UpperLeft:
 			case TextAnchor.UpperCenter:
@@ -2966,23 +3609,36 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			case TextAnchor.MiddleCenter:
 			case TextAnchor.MiddleRight:
 				//offsetDifference = (-lowestPosition) * 0.5f;
-				anchorOffset.y = VerticalLimit > -rawBottomRightTextBounds.y ? (-rawBottomRightTextBounds.y + rawTopLeftBounds.y - rawBottomRightBounds.y) * 0.5f : 0f;
+				anchorOffset.y = OffsetData_VerticalLimit > -rawBottomRightTextBounds.y ? (-rawBottomRightTextBounds.y + rawTopLeftBounds.y - rawBottomRightBounds.y) * 0.5f : 0f;
 				break;
 			case TextAnchor.LowerLeft:
 			case TextAnchor.LowerCenter:
 			case TextAnchor.LowerRight:
 				//Debug.Log(rawBottomRightTextBounds);
-				anchorOffset.y = VerticalLimit > -rawBottomRightTextBounds.y ? -rawBottomRightTextBounds.y + rawTopLeftBounds.y - rawBottomRightBounds.y : 0f;
+				anchorOffset.y = OffsetData_VerticalLimit > -rawBottomRightTextBounds.y ? -rawBottomRightTextBounds.y + rawTopLeftBounds.y - rawBottomRightBounds.y : 0f;
 				break;
 		}
 		RecalculateBounds();
 	}
-	Vector3 anchorOffset = Vector3.zero;
+	private Vector3 anchorOffset = Vector3.zero;
+	private Vector3 RecalculateBounds_point;
 	void RecalculateBounds(){
-		topLeftBounds = t.TransformPoint(-rawTopLeftBounds);
-		topRightBounds = t.TransformPoint(new Vector3(-rawBottomRightBounds.x, -rawTopLeftBounds.y, rawTopLeftBounds.z));
-		bottomLeftBounds = t.TransformPoint(new Vector3(-rawTopLeftBounds.x, -rawBottomRightBounds.y, rawBottomRightBounds.z));
-		bottomRightBounds = t.TransformPoint(-rawBottomRightBounds);
+		RecalculateBounds_point.x = -rawTopLeftBounds.x;
+		RecalculateBounds_point.y = -rawTopLeftBounds.y;
+		RecalculateBounds_point.z = -rawTopLeftBounds.z;
+		topLeftBounds = t.TransformPoint(RecalculateBounds_point);
+		RecalculateBounds_point.x = -rawBottomRightBounds.x;
+		RecalculateBounds_point.y = -rawTopLeftBounds.y;
+		RecalculateBounds_point.z = rawTopLeftBounds.z;
+		topRightBounds = t.TransformPoint(RecalculateBounds_point);
+		RecalculateBounds_point.x = -rawTopLeftBounds.x;
+		RecalculateBounds_point.y = -rawBottomRightBounds.y;
+		RecalculateBounds_point.z = rawBottomRightBounds.z;
+		bottomLeftBounds = t.TransformPoint(RecalculateBounds_point);
+		RecalculateBounds_point.x = -rawBottomRightBounds.x;
+		RecalculateBounds_point.y = -rawBottomRightBounds.y;
+		RecalculateBounds_point.z = -rawBottomRightBounds.z;
+		bottomRightBounds = t.TransformPoint(RecalculateBounds_point);
 
 		centerBounds = Vector3.Lerp(topLeftBounds, bottomRightBounds, 0.5f);
 
@@ -2996,8 +3652,12 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 	private Vector3 TextBounds_rightOffset = Vector3.zero;
 	private float TextBounds_diff = 0f;
 	void RecalculateBoundsOffsets(){
-		TextBounds_leftOffset = Vector3.zero;
-		TextBounds_rightOffset = Vector3.zero;
+		TextBounds_leftOffset.x = 0f;
+		TextBounds_leftOffset.y = 0f;
+		TextBounds_leftOffset.z = 0f;
+		TextBounds_rightOffset.x = 0f;
+		TextBounds_rightOffset.y = 0f;
+		TextBounds_rightOffset.z = 0f;
 		TextBounds_diff = rawBottomRightTextBounds.x + rawBottomRightBounds.x - offset.x; //distance between text bounds and autowrap, if any
 
 		switch(alignment){
@@ -3016,174 +3676,262 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 			//do nothing for left-aligned
 		}
 	}
+	private float RecalculateBounds_textBottom = 0f;
+	private Transform RecalculateBounds_t;
 	void RecalculateTextBounds(){
 		if(hyphenedText.Length > 0)
 		{
 			RecalculateBoundsOffsets();
-
+			RecalculateBounds_t = this.transform; //this is stupid
 			//TODO: figure out why subtracting offset in this one spot is so different
-			float textBoundsBottom = Mathf.Max(lowestDrawnPositionRaw - offset.y, lowestPosition - rawTopLeftBounds.y);
+			RecalculateBounds_textBottom = Mathf.Max(lowestDrawnPositionRaw - offset.y, lowestPosition - rawTopLeftBounds.y);
 			//line up with text...
 			//Debug.Log("lowest drawn: " + lowestDrawnPosition + " lowest: " + lowestPosition);
-			topLeftTextBounds = t.TransformPoint(-TextBounds_leftOffset - rawTopLeftBounds + anchorOffset);
-			topRightTextBounds = t.TransformPoint(new Vector3(furthestDrawnPosition, 0f, 0f) - rawTopLeftBounds - TextBounds_rightOffset + anchorOffset);
-			bottomLeftTextBounds = t.TransformPoint(new Vector3(-rawTopLeftBounds.x, textBoundsBottom, 0f) - TextBounds_leftOffset + anchorOffset);
-			bottomRightTextBounds = t.TransformPoint(new Vector3(furthestDrawnPosition - rawTopLeftBounds.x, textBoundsBottom, 0f) - TextBounds_rightOffset + anchorOffset);
+			RecalculateBounds_point.x = -TextBounds_leftOffset.x - rawTopLeftBounds.x + anchorOffset.x;
+			RecalculateBounds_point.y = -TextBounds_leftOffset.y - rawTopLeftBounds.y + anchorOffset.y;
+			RecalculateBounds_point.z = -TextBounds_leftOffset.z - rawTopLeftBounds.z + anchorOffset.z;
+			topLeftTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
+			RecalculateBounds_point.x =	furthestDrawnPosition - rawTopLeftBounds.x - TextBounds_rightOffset.x + anchorOffset.x;
+			RecalculateBounds_point.y = -rawTopLeftBounds.y - TextBounds_rightOffset.y + anchorOffset.y;
+			RecalculateBounds_point.z = -rawTopLeftBounds.z - TextBounds_rightOffset.z + anchorOffset.z;
+			topRightTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
+			RecalculateBounds_point.x =	-rawTopLeftBounds.x -TextBounds_leftOffset.x + anchorOffset.x;
+			RecalculateBounds_point.y = RecalculateBounds_textBottom -TextBounds_leftOffset.y + anchorOffset.y;
+			RecalculateBounds_point.z = -TextBounds_leftOffset.z + anchorOffset.z;
+			bottomLeftTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
+			RecalculateBounds_point.x =	furthestDrawnPosition - rawTopLeftBounds.x -TextBounds_rightOffset.x + anchorOffset.x;
+			RecalculateBounds_point.y = RecalculateBounds_textBottom -TextBounds_rightOffset.y + anchorOffset.y;
+			RecalculateBounds_point.z = -TextBounds_rightOffset.z + anchorOffset.z;
+			bottomRightTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
 
-			centerTextBounds = Vector3.Lerp(topLeftTextBounds, bottomRightTextBounds, 0.5f);
+			//centerTextBounds = Vector3.Lerp(topLeftTextBounds, bottomRightTextBounds, 0.5f);
+			centerTextBounds.x = Mathf.Lerp(topLeftTextBounds.x, bottomRightTextBounds.x, 0.5f);
+			centerTextBounds.y = Mathf.Lerp(topLeftTextBounds.y, bottomRightTextBounds.y, 0.5f);
+			//centerTextBounds.z = Mathf.Lerp(topLeftTextBounds.z, bottomRightTextBounds.z, 0.5f);
 		}
 		else
 		{
-			topLeftTextBounds = Vector3.zero;
-			topRightTextBounds = Vector3.zero;
-			bottomLeftTextBounds = Vector3.zero;
-			bottomRightTextBounds = Vector3.zero;
-			centerTextBounds = Vector3.zero;
+			topLeftTextBounds.x = 0f;
+			topLeftTextBounds.y = 0f;
+			topLeftTextBounds.z = 0f;
+			topRightTextBounds.x = 0f;
+			topRightTextBounds.y = 0f;
+			topRightTextBounds.z = 0f;
+			bottomLeftTextBounds.x = 0f;
+			bottomLeftTextBounds.y = 0f;
+			bottomLeftTextBounds.z = 0f;
+			bottomRightTextBounds.x = 0f;
+			bottomRightTextBounds.y = 0f;
+			bottomRightTextBounds.z = 0f;
+			centerTextBounds.x = 0f;
+			centerTextBounds.y = 0f;
+			centerTextBounds.z = 0f;
 		}
 	}
 	void RecalculateFinalTextBounds(){
 		if(hyphenedText.Length > 0)
 		{
 			RecalculateBoundsOffsets();
+			RecalculateBounds_t = this.transform; //this is stupid
 			//calculate final bounds:
-			finalTopLeftTextBounds = t.TransformPoint(-rawTopLeftBounds - TextBounds_leftOffset + anchorOffset);
-			finalTopRightTextBounds = t.TransformPoint(new Vector3(rawBottomRightTextBounds.x, 0f, 0f) - rawTopLeftBounds - TextBounds_rightOffset + anchorOffset);
-			finalBottomLeftTextBounds = t.TransformPoint(new Vector3(0f, lowestPosition, 0f) - rawTopLeftBounds - TextBounds_leftOffset + anchorOffset);
-			finalBottomRightTextBounds = t.TransformPoint(new Vector3(rawBottomRightTextBounds.x, lowestPosition, 0f) - rawTopLeftBounds - TextBounds_rightOffset + anchorOffset);
+			RecalculateBounds_point.x = -rawTopLeftBounds.x - TextBounds_leftOffset.x + anchorOffset.x;
+			RecalculateBounds_point.y =  -rawTopLeftBounds.y - TextBounds_leftOffset.y + anchorOffset.y;
+			RecalculateBounds_point.z =  -rawTopLeftBounds.z - TextBounds_leftOffset.z + anchorOffset.z;
+			finalTopLeftTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
+			RecalculateBounds_point.x = rawBottomRightTextBounds.x - rawTopLeftBounds.x - TextBounds_rightOffset.x + anchorOffset.x;
+			RecalculateBounds_point.y =  - rawTopLeftBounds.y - TextBounds_rightOffset.y + anchorOffset.y;
+			RecalculateBounds_point.z =  - rawTopLeftBounds.z - TextBounds_rightOffset.z + anchorOffset.z;
+			finalTopRightTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
+			RecalculateBounds_point.x =  - rawTopLeftBounds.x - TextBounds_leftOffset.x + anchorOffset.x;
+			RecalculateBounds_point.y = lowestPosition - rawTopLeftBounds.y - TextBounds_leftOffset.y + anchorOffset.y;
+			RecalculateBounds_point.z =  - rawTopLeftBounds.z - TextBounds_leftOffset.z + anchorOffset.z;
+			finalBottomLeftTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
+			RecalculateBounds_point.x = rawBottomRightTextBounds.x - rawTopLeftBounds.x - TextBounds_rightOffset.x + anchorOffset.x;
+			RecalculateBounds_point.y = lowestPosition - rawTopLeftBounds.y - TextBounds_rightOffset.y + anchorOffset.y;
+			RecalculateBounds_point.z =  - rawTopLeftBounds.z - TextBounds_rightOffset.z + anchorOffset.z;
+			finalBottomRightTextBounds = RecalculateBounds_t.TransformPoint(RecalculateBounds_point);
 
-			finalCenterTextBounds = Vector3.Lerp(finalTopLeftTextBounds, finalBottomRightTextBounds, 0.5f);
+			//finalCenterTextBounds = Vector3.Lerp(finalTopLeftTextBounds, finalBottomRightTextBounds, 0.5f);
+			finalCenterTextBounds.x = Mathf.Lerp(finalTopLeftTextBounds.x, finalBottomRightTextBounds.x, 0.5f);
+			finalCenterTextBounds.y = Mathf.Lerp(finalTopLeftTextBounds.y, finalBottomRightTextBounds.y, 0.5f);
 		}
 		else
 		{
-			finalTopLeftTextBounds = Vector3.zero;
-			finalTopRightTextBounds = Vector3.zero;
-			finalBottomLeftTextBounds = Vector3.zero;
-			finalBottomRightTextBounds = Vector3.zero;
-			finalCenterTextBounds = Vector3.zero;
+			finalTopLeftTextBounds.x = 0f;
+			finalTopLeftTextBounds.y = 0f;
+			finalTopLeftTextBounds.z = 0f;
+			finalTopRightTextBounds.x = 0f;
+			finalTopRightTextBounds.y = 0f;
+			finalTopRightTextBounds.z = 0f;
+			finalBottomLeftTextBounds.x = 0f;
+			finalBottomLeftTextBounds.y = 0f;
+			finalBottomLeftTextBounds.z = 0f;
+			finalBottomRightTextBounds.x = 0f;
+			finalBottomRightTextBounds.y = 0f;
+			finalBottomRightTextBounds.z = 0f;
+			finalCenterTextBounds.x = 0f;
+			finalCenterTextBounds.y = 0f;
+			finalCenterTextBounds.z = 0f;
 		}
 	}
 
-	private int[] drawOrderRTL;
+	private int[] drawOrderRTL = new int[0];
+	private int RTL_currentLine = -1;
+	private int RTL_lastEnd = -1;
 	void UpdateRTLDrawOrder (){ //update the RTL draw info, if needed
 		//if(drawOrder == DrawOrder.RightToLeft || undrawOrder == DrawOrder.RightToLeft){ //actually calculate? eh, do it anyway
 		drawOrderRTL = new int[hyphenedText.Length];
-		int currentLine = 0;
+	//if(drawOrderRTL.Length < hyphenedText.Length)
+	//		Array.Resize(ref drawOrderRTL, hyphenedText.Length);
+
+		RTL_currentLine = 0;
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){
-			int lastEnd = currentLine > 0 ? lineBreaks[currentLine-1] + 1 : 0;
-			if(currentLine < lineBreaks.Count){
-				drawOrderRTL[i] = -i + lineBreaks[currentLine] + lastEnd;
-				if(lineBreaks[currentLine] == i){ //this was the last character in this row
-					//Debug.Log("The end of this line was: " + lineBreaks[currentLine]);
-					currentLine++;
+			RTL_lastEnd = RTL_currentLine > 0 ? lineBreaks[RTL_currentLine-1] + 1 : 0;
+			if(RTL_currentLine < lineBreaks.Count){
+				drawOrderRTL[i] = -i + lineBreaks[RTL_currentLine] + RTL_lastEnd;
+				if(lineBreaks[RTL_currentLine] == i){ //this was the last character in this row
+					//Debug.Log("The end of this line was: " + lineBreaks[RTL_currentLine]);
+					RTL_currentLine++;
 				}
 			}
 		}
 		//}
 	}
+	private STMTextInfo Timing_textInfo;
+	//private STMTextInfo Timing_myTextInfo;
 	void ApplyTimingDataToTextInfo(){
 		float currentTiming = 0f;
 		float furthestPoint = 0f;
 		bool needsToRead = false;
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++){
-			int myIndex = i;
-			switch(info[i].drawOrder){
-				case DrawOrder.RightToLeft: myIndex = drawOrderRTL[i]; break;
-				case DrawOrder.ReverseLTR: myIndex = -i + iL - 1; break;
-			}
-			if(info[i].readDelay > 0f){ //a delay hasn't been set for this letter, yet
+			Timing_textInfo = info[i];
+			int myIndex = GetDrawOrder(Timing_textInfo.drawOrder, i, iL);
+			//Timing_textInfo = info[i];
+			Timing_textInfo = info[myIndex];
+			if(Timing_textInfo.readDelay > 0f){ //a delay hasn't been set for this letter, yet
 				needsToRead = true;
 			}
-			float additionalDelay = info[myIndex].delayData != null ? info[myIndex].delayData.count : 0f; //if there's no additional delay data attached... no additional delay
+			
+			float additionalDelay = Timing_textInfo.delayData != null ? Timing_textInfo.delayData.count : 0f; //if there's no additional delay data attached... no additional delay
 			//get the time it'll be drawn at...
-			if(info[myIndex].readTime < 0f){ //if a time hasn't been set for this letter yet
-				switch(info[i].drawOrder){
+			if(Timing_textInfo.readTime < 0f){ //if a time hasn't been set for this letter yet
+				switch(Timing_textInfo.drawOrder){
 					case DrawOrder.AllAtOnce:
-						info[i].readTime = currentTiming;
+						Timing_textInfo.readTime = currentTiming;
 						break;
 					case DrawOrder.Random:
-						info[i].readTime = UnityEngine.Random.Range(0f,info[i].readDelay);
+						Timing_textInfo.readTime = UnityEngine.Random.Range(0f,Timing_textInfo.readDelay);
 						break;
 					case DrawOrder.OneWordAtATime:
 						if(hyphenedText[i] == ' ' || hyphenedText[i] == '\n' || hyphenedText[i] == '\t' || hyphenedText[i] == '-'){ //only advance timing on a space, line break, or tab, or hyphen!
-							currentTiming += i == 0 ? additionalDelay * info[i].readDelay : info[i].readDelay + (additionalDelay * info[i].readDelay);
+							currentTiming += i == 0 ? additionalDelay * Timing_textInfo.readDelay : Timing_textInfo.readDelay + (additionalDelay * Timing_textInfo.readDelay);
 						}
-						info[i].readTime = currentTiming;
-						break;	
+						Timing_textInfo.readTime = currentTiming;
+						break;
+					case DrawOrder.OneLineAtATime:
+						if(hyphenedText[i] == '\n')
+						{
+							currentTiming += i == 0 ? additionalDelay * Timing_textInfo.readDelay : Timing_textInfo.readDelay + (additionalDelay * Timing_textInfo.readDelay);
+						}
+						Timing_textInfo.readTime = currentTiming;
+						break;
 					case DrawOrder.RightToLeft:
-						info[myIndex].readTime = currentTiming; //reverse order!
-						currentTiming += myIndex == 0 ? additionalDelay * info[i].readDelay : info[i].readDelay + (additionalDelay * info[i].readDelay);
+						Timing_textInfo.readTime = currentTiming; //reverse order!
+						currentTiming += myIndex == 0 ? additionalDelay * Timing_textInfo.readDelay : Timing_textInfo.readDelay + (additionalDelay * Timing_textInfo.readDelay);
 						break;
 					case DrawOrder.ReverseLTR:
-						currentTiming += i == 0 ? additionalDelay * info[i].readDelay : info[i].readDelay + (additionalDelay * info[i].readDelay);
-						info[myIndex].readTime = currentTiming;
+						currentTiming += i == 0 ? additionalDelay * Timing_textInfo.readDelay : Timing_textInfo.readDelay + (additionalDelay * Timing_textInfo.readDelay);
+						Timing_textInfo.readTime = currentTiming;
+						break;
+					case DrawOrder.RTLOneWordAtATime:
+						Timing_textInfo.readTime = currentTiming;
+						if(myIndex == 0 || hyphenedText[myIndex] == ' ' || hyphenedText[myIndex] == '\n' || hyphenedText[myIndex] == '\t' || hyphenedText[myIndex] == '-'){ //only advance timing on a space, line break, or tab, or hyphen!
+							currentTiming += Timing_textInfo.readDelay + (additionalDelay * Timing_textInfo.readDelay);
+						}
 						break;
 					default: //Left To Right
 						//dont add extra for first character
-						currentTiming += i == 0 ? additionalDelay * info[i].readDelay : info[i].readDelay + (additionalDelay * info[i].readDelay);
-						info[i].readTime = currentTiming;
+						currentTiming += i == 0 ? additionalDelay * Timing_textInfo.readDelay : Timing_textInfo.readDelay + (additionalDelay * Timing_textInfo.readDelay);
+						Timing_textInfo.readTime = currentTiming;
 						break;
 				}
 			}else{
-				currentTiming = info[myIndex].readTime; //pick up from here
+				currentTiming = Timing_textInfo.readTime; //pick up from here
 			}
-			float maxAnimTime = info[i].drawAnimData != null ? Mathf.Max(info[i].drawAnimData.animTime, info[i].drawAnimData.fadeTime) : 0f; //just for initialization, so an error doesn't get returned. drawanim should never be null, really
-			furthestPoint = Mathf.Max(info[myIndex].readTime + maxAnimTime, furthestPoint);
+			float maxAnimTime = Timing_textInfo.drawAnimData != null ? Mathf.Max(Timing_textInfo.drawAnimData.animTime, Timing_textInfo.drawAnimData.fadeTime) : 0f; //just for initialization, so an error doesn't get returned. drawanim should never be null, really
+			furthestPoint = Mathf.Max(Timing_textInfo.readTime + maxAnimTime, furthestPoint);
 		}
 		totalReadTime = furthestPoint + 0.00001f; //save it!
 		callReadFunction = needsToRead;
 	}
+	private STMTextInfo UnreadTiming_textInfo;
 	void ApplyUnreadTimingDataToTextInfo(){
 		//the other on the switch statement is different than the function above on purpose... might change in the future
 		//things have to be done in a slightly different order
 		float currentTiming = 0f;
 		float furthestPoint = 0f;
 		STMDrawAnimData myDrawAnim = UndrawAnim; //store undrawing animation since it'll be called multiple times
-		for(int i=0, iL=hyphenedText.Length; i<iL; i++){
-			int myIndex = i;
-			switch(undrawOrder){
-				case DrawOrder.RightToLeft: myIndex = drawOrderRTL[i]; break;
-				case DrawOrder.ReverseLTR: myIndex = -i + iL - 1; break;
-			}
-			switch(undrawOrder){
+		for(int i=0, iL=hyphenedText.Length; i<iL; i++)
+		{
+			int myIndex = GetDrawOrder(undrawOrder, i, iL);
+
+			UnreadTiming_textInfo = info[myIndex];
+			switch(undrawOrder)
+			{
 				case DrawOrder.AllAtOnce:
-					info[i].unreadTime = currentTiming;
+					UnreadTiming_textInfo.unreadTime = currentTiming;
 					break;
 				case DrawOrder.Random:
-					info[i].unreadTime = UnityEngine.Random.Range(0f,unreadDelay);
+					UnreadTiming_textInfo.unreadTime = UnityEngine.Random.Range(0f,unreadDelay);
 					break;
 				case DrawOrder.OneWordAtATime:
-					info[i].unreadTime = currentTiming;
+					UnreadTiming_textInfo.unreadTime = currentTiming;
 					if(hyphenedText[i] == ' ' || hyphenedText[i] == '\n' || hyphenedText[i] == '\t' || hyphenedText[i] == '-'){ //only advance timing on a space, line break, or tab, or hyphen!
 						currentTiming += unreadDelay;
 					}
-					break;	
+					break;
+				case DrawOrder.OneLineAtATime:
+					if(hyphenedText[i] == '\n')
+					{
+						currentTiming += unreadDelay;
+					}
+					UnreadTiming_textInfo.unreadTime = currentTiming;
+					break;
 				case DrawOrder.RightToLeft:
 					currentTiming += unreadDelay;
-					info[myIndex].unreadTime = currentTiming;
+					UnreadTiming_textInfo.unreadTime = currentTiming;
 					break;
 				case DrawOrder.ReverseLTR:
 					currentTiming += unreadDelay;
-					info[myIndex].unreadTime = currentTiming;
+					UnreadTiming_textInfo.unreadTime = currentTiming;
 					break;
-				default:
-					info[i].unreadTime = currentTiming;
-					currentTiming += unreadDelay; //<<< this is applied in opposide order as normal read info
+				case DrawOrder.RTLOneWordAtATime:
+					UnreadTiming_textInfo.unreadTime = currentTiming;
+					if(myIndex == 0 || hyphenedText[myIndex] == ' ' || hyphenedText[myIndex] == '\n' || hyphenedText[myIndex] == '\t' || hyphenedText[myIndex] == '-'){ //only advance timing on a space, line break, or tab, or hyphen!
+						currentTiming += unreadDelay;
+					}
+					break;
+				default: //left to right
+					UnreadTiming_textInfo.unreadTime = currentTiming;
+					currentTiming += unreadDelay; //<<< this is applied in opposite order as normal read info
 					break;
 			}
 			float maxAnimTime = myDrawAnim != null ? Mathf.Max(myDrawAnim.animTime, myDrawAnim.fadeTime) : 0f;
-			furthestPoint = Mathf.Max(info[myIndex].unreadTime + maxAnimTime, furthestPoint);
+			furthestPoint = Mathf.Max(UnreadTiming_textInfo.unreadTime + maxAnimTime, furthestPoint);
 		}
-		totalUnreadTime = furthestPoint; //save it!
+		totalUnreadTime = furthestPoint + 0.00001f; //save it!
 	}
 
 	Vector3 WavePosition_Vect = Vector3.zero;
+	private float WavePosition_multi = 0f;
 	Vector3 WavePosition(STMTextInfo myInfo, STMWaveControl wave, float myTime)
 	{
-		//multiply offset by 6 because ??????? seems to work
+		WavePosition_multi = wave.multiOverTime.Evaluate(myTime);
+		//multiply phase by 6 because ??????? seems to work
 		//multiply by universal size;
-		WavePosition_Vect.x = wave.curveX.Evaluate(((myTime * wave.speed.x) + wave.phase * 6f) + (myInfo.pos.x * wave.density.x / myInfo.size)) * wave.strength.x * myInfo.size;
-		WavePosition_Vect.y = wave.curveY.Evaluate(((myTime * wave.speed.y) + wave.phase * 6f) + (myInfo.pos.x * wave.density.y / myInfo.size)) * wave.strength.y * myInfo.size;
-		WavePosition_Vect.z = wave.curveZ.Evaluate(((myTime * wave.speed.z) + wave.phase * 6f) + (myInfo.pos.x * wave.density.z / myInfo.size)) * wave.strength.z * myInfo.size;
+		WavePosition_Vect.x = wave.curveX.Evaluate(((myTime * wave.speed.x) + wave.phase * 6f) + (myInfo.pos.x * wave.density.x / myInfo.size.x)) * wave.strength.x * myInfo.size.x * WavePosition_multi;
+		WavePosition_Vect.y = wave.curveY.Evaluate(((myTime * wave.speed.y) + wave.phase * 6f) + (myInfo.pos.x * wave.density.y / myInfo.size.y)) * wave.strength.y * myInfo.size.y * WavePosition_multi;
+		WavePosition_Vect.z = wave.curveZ.Evaluate(((myTime * wave.speed.z) + wave.phase * 6f) + (myInfo.pos.x * wave.density.z / myInfo.size.y)) * wave.strength.z * myInfo.size.y * WavePosition_multi;
 
 		return WavePosition_Vect;
 	}
@@ -3200,7 +3948,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 		//x pivot should be based on letter's width
 		//y pivot should be based on local height of mesh
 		WaveRotation_Pivot.x = myInfo.pos.x + rot.pivot.x * myInfo.RelativeWidth;
-		WaveRotation_Pivot.y = myInfo.pos.y + rot.pivot.y * myInfo.size;
+		WaveRotation_Pivot.y = myInfo.pos.y + rot.pivot.y * myInfo.size.y;
 		WaveRotation_Pivot.z = 0f;
 
 		WaveRotation_Offset.x = vertPos.x - WaveRotation_Pivot.x;
@@ -3224,7 +3972,7 @@ public class SuperTextMesh : MonoBehaviour, ILayoutElement { //MaskableGraphic..
 
 	Vector3 WaveScale(STMTextInfo myInfo, STMWaveScaleControl scale, Vector3 vertPos, float myTime){
 		
-		Vector3 pivot = myInfo.pos + new Vector3(scale.pivot.x * myInfo.RelativeWidth, scale.pivot.y * myInfo.size, 0f);
+		Vector3 pivot = myInfo.pos + new Vector3(scale.pivot.x * myInfo.RelativeWidth, scale.pivot.y * myInfo.size.y, 0f);
 		Vector3 offset = vertPos - pivot;
 		Vector3 newScale = new Vector3(scale.curveX.Evaluate(((myTime * scale.speed.x) + scale.phase * 6f) + (myInfo.pos.x * scale.density.x)) * scale.strength.x,
 										scale.curveY.Evaluate(((myTime * scale.speed.y) + scale.phase * 6f) + (myInfo.pos.x * scale.density.y)) * scale.strength.y,
@@ -3251,14 +3999,14 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 		{
 			case true:
 				//weird perlin jitter... could use some work, but it's a jitter effect that scales with time
-				JitterValue_MyJit.x = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * (jit.distance.Evaluate(Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x, 0f)) * jit.amount * (Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x, 0f) - 0.5f)) * myInfo.size;
-				JitterValue_MyJit.y = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * (jit.distance.Evaluate(Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x + 30f, 0f)) * jit.amount * (Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x + 30f, 0f) - 0.5f)) * myInfo.size;
+				JitterValue_MyJit.x = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * (jit.distance.Evaluate(Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x, 0f)) * jit.amount * (Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x, 0f) - 0.5f)) * myInfo.size.x;
+				JitterValue_MyJit.y = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * (jit.distance.Evaluate(Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x + 30f, 0f)) * jit.amount * (Mathf.PerlinNoise(jit.perlinTimeMulti * myTime + myInfo.pos.x + 30f, 0f) - 0.5f)) * myInfo.size.y;
 				JitterValue_MyJit.z = 0f;
 				break;
 			default:
 				//ditance over time... so jitters can also only happen AS a letter is drawn.
-				JitterValue_MyJit.x = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * jit.distance.Evaluate(UnityEngine.Random.value) * jit.amount * (UnityEngine.Random.value - 0.5f) * myInfo.size; //make jit follow curve
-				JitterValue_MyJit.y = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * jit.distance.Evaluate(UnityEngine.Random.value) * jit.amount * (UnityEngine.Random.value - 0.5f) * myInfo.size;
+				JitterValue_MyJit.x = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * jit.distance.Evaluate(UnityEngine.Random.value) * jit.amount * (UnityEngine.Random.value - 0.5f) * myInfo.size.x; //make jit follow curve
+				JitterValue_MyJit.y = jit.distanceOverTime.Evaluate(myTime / jit.distanceOverTimeMulti) * jit.distance.Evaluate(UnityEngine.Random.value) * jit.amount * (UnityEngine.Random.value - 0.5f) * myInfo.size.y;
 				JitterValue_MyJit.z = 0f;
 				break;
 		}
@@ -3266,35 +4014,7 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 		return JitterValue_MyJit;
 	}
 
-	void PrepareSubmeshes(){
-		//since this only needs to be calculated during Rebuild(), putting this in its own function.
-
-		subMeshes = new List<SubMeshData>(); //include default submesh
-		subMeshes.Add(new SubMeshData(this)); //add default submesh
-		for(int i=0, iL=hyphenedText.Length; i<iL; i++){ //go thru all info
-			//This also only needs to be changed on rebuild(), move it sometime 2016-10-26 TODO
-			//get and assign submesh/triangles for this letter
-			SubMeshData thisSubMesh = DoesSubmeshExist(this,info[i]); //is there a submesh for this texture yet?
-			//Debug.Log("This info's font is " + info[i].fontData);
-			if(thisSubMesh == null){ //doesn't exist yet??
-				thisSubMesh = new SubMeshData(this, info[i]); //create new
-				subMeshes.Add(thisSubMesh); //and add to submesh list
-			}
-			//vvvv doing is this way creates garbage
-			//thisSubMesh.tris.AddRange(new int[]{4*i+0,4*i+1,4*i+2,4*i+0,4*i+2,4*i+3}); //add tris for this letter
-			//vvvv this way seems fine tho
-			thisSubMesh.tris.Add(4*i + 0);
-			thisSubMesh.tris.Add(4*i + 1);
-			thisSubMesh.tris.Add(4*i + 2);
-			thisSubMesh.tris.Add(4*i + 0);
-			thisSubMesh.tris.Add(4*i + 2);
-			thisSubMesh.tris.Add(4*i + 3);
-		}
-
-
-		//subMeshes = new SubMeshData[subMeshCount]; //create an array to hold all these sebmeshes
-
-	}
+	
 
    //--------------------------------------------------
 	// Performance updates performed by RedVonix
@@ -3340,6 +4060,16 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 
 	private Vector3 realBaseOffset = Vector3.zero;
 
+	private int GetDrawOrder(DrawOrder myDrawOrder, int i, int iL)
+	{
+		switch(myDrawOrder)
+		{
+			case DrawOrder.RightToLeft: case DrawOrder.RTLOneWordAtATime: return drawOrderRTL[i];
+			case DrawOrder.ReverseLTR: return -i + iL - 1;
+		}
+		return i;
+	}
+
 	void UpdateMesh(float myTime) 
 	{ //set the data for the endmesh
 
@@ -3374,7 +4104,11 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 		if (ratiosAndUvMids.Count != targArraySize)
 			ratiosAndUvMids = new List<Vector4>(new Vector4[targArraySize]);
 
-		//if (uvMids.Length != targArraySize)
+		if(isUvRotated.Count != targArraySize)
+			isUvRotated = new List<Vector4>(new Vector4[targArraySize]);
+
+
+		//if (uvMids.Length < targArraySize)
 		//	Array.Resize(ref uvMids, targArraySize);
 
 		//int tallestVisibleIndex = 0;
@@ -3382,17 +4116,29 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 		//bool playedSoundThisFrame = false;
 		//float offsetDifference = 0f;
 		//info[info.Count-1].pos.y
-
+		
 		for(int i=0, iL=hyphenedText.Length; i<iL; i++)
 		{
+			
+			//Timing_textInfo = info[i];
+			//myIndex = GetDrawOrder(CurrentTextInfo.drawOrder, i, iL);
 			// RV: Grab the current STMTextInfo object only once from the list it's in, as acquiring it over tand over just adds unneeded overhead.
 			CurrentTextInfo = info[i];
+			int myIndex = GetDrawOrder(CurrentTextInfo.drawOrder, i, iL);
 			//Debug.Log(CurrentTextInfo.character);
 			ratioHold = CurrentTextInfo.ratio;
 			//ratios[4 * i + 0] = CurrentTextInfo.ratio;
 			//ratios[4 * i + 1] = CurrentTextInfo.ratio;
 			//ratios[4 * i + 2] = CurrentTextInfo.ratio;
 			//ratios[4 * i + 3] = CurrentTextInfo.ratio;
+
+			if(myIndex <= latestNumber) //temp fix events. but i think this breaks rtl text? 
+			{
+
+				CurrentTextInfo.invoked = true;
+			}
+
+
 			if(!reading)
 			{
 				//do every event
@@ -3405,9 +4151,17 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 			doEventAfter = false;
 			if (reading)
 			{
+				/*
+				okay the point of this is...
+				multiple characters can be printed a frame, and all of them should have their events played.
+				but only one should play a sound! and I suppose that should be... the... first one drawn this frame?
+				so relying on the index number is a problem since indexes can be whatever,
+				*/
+
 				float divideAnimAmount = CurrentTextInfo.drawAnimData.animTime == 0f ? 0.0000001f : CurrentTextInfo.drawAnimData.animTime; //so it doesn't get NaN'd
 				float myAnimPos = (myTime - CurrentTextInfo.readTime) / divideAnimAmount; // on a range between 0-1 on the curve, the position of the animation
-				if(myAnimPos > 0f && i > latestNumber){ 
+				if(myAnimPos > 0f && !CurrentTextInfo.invoked){ 
+					CurrentTextInfo.invoked = true;
 					doEventAfter = true;
 					//if(!playedSoundThisFrame){
 					//	playedSoundThisFrame = true;
@@ -3425,7 +4179,7 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 							furthestDrawnPosition = Mathf.Max(furthestDrawnPosition, CurrentTextInfo.RelativeAdvance(characterSpacing).x + offset.x + TextBounds_rightOffset.x);
 						}
 					}
-					latestNumber = Mathf.Max(latestNumber, i); //find latest number to start from next frame
+					latestNumber = Mathf.Max(latestNumber, myIndex); //find latest number to start from next frame
 					/*
 					if(info[i].pos.y + info[i].size + lowestLineOffset.y < 0f && //this number is below the limit
 						info[i].pos.y + info[i].size + lowestLineOffset.y > highestVisiblePoint){ //is this number taller than the current tallest number?
@@ -3458,12 +4212,13 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 			UpdateMesh_lowestLineOffset = anchorOffset;
 			//push text up if it goes below vertical limit. uses a multiple of size to keep consistent line drop sizes
 			//info[i].pos.y < -rawBottomRightBounds.y
+			//Debug.Log("lowest drawn position: " + lowestDrawnPosition + "bottom right bounds: " + -rawBottomRightBounds.y);
 			if(VerticalLimitStored > 0f && (verticalLimitMode == VerticalLimitMode.ShowLast || 
 										verticalLimitMode == VerticalLimitMode.AutoPause ||
 										verticalLimitMode == VerticalLimitMode.AutoPauseFull) &&
-				lowestDrawnPosition < -rawBottomRightBounds.y){ //if the bounds extend beyond the vertical limit
+				lowestDrawnPositionRaw < -rawBottomRightBounds.y){ //if the bounds extend beyond the vertical limit
 				
-				
+				//Debug.Log("pushing up");
 				//push text up!
 				//and round to nearest multiple of size, so text lines up with top of box
 				//UpdateMesh_lowestLineOffset.y = Mathf.Ceil((-lowestDrawnPosition - rawBottomRightBounds.y) / (size * lineSpacing)) * (size * lineSpacing);
@@ -3472,7 +4227,9 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 				//UpdateMesh_lowestLineOffset.y = -lowestDrawnPosition;
 				//UpdateMesh_lowestLineOffset.y = lineHeights[0];
 				//UpdateMesh_lowestLineOffset.y = -lowestDrawnPosition - rawBottomRightBounds.y;
-				for(int j=0; j<lineHeights.Count; j++){
+				for(int j=0; j<lineHeights.Count; j++)
+				{
+					UpdateMesh_lowestLineOffset.y += lineHeights[j];
 					//for every line...
 					if(UpdateMesh_lowestLineOffset.y >= -lowestDrawnPosition - rawBottomRightBounds.y){
 						break;
@@ -3490,6 +4247,7 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 					//UpdateMesh_lowestLineOffset.y = Mathf.Ceil(UpdateMesh_lowestLineOffset.y / (size * lineSpacing)) * (size * lineSpacing);
 				}
 			}
+			//Debug.Log(lowestDrawnPosition);
 
 		//Vertex data:
 		//animated stuffffff
@@ -3508,7 +4266,7 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 			//Vector3 UpdateMesh_waveValueRotation = Vector3.zero;
 			//Vector3 UpdateMesh_waveValueRotPivot = Vector3.zero;
 			
-			if(CurrentTextInfo.waveData != null && CurrentTextInfo.size != 0 && !data.disableAnimatedText && !disableAnimatedText){
+			if(CurrentTextInfo.waveData != null && CurrentTextInfo.size.y != 0 && !data.disableAnimatedText && !disableAnimatedText){
 				areWeAnimating = true;
 				float waveTime = CurrentTextInfo.waveData.animateFromTimeDrawn ? currentReadTime - CurrentTextInfo.readTime : GetTimeTime;
 				if(CurrentTextInfo.waveData.positionControl){
@@ -3593,7 +4351,7 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 
 			//for cutting off old text
 			if ((VerticalLimitStored > 0f && verticalLimitMode != VerticalLimitMode.Ignore) &&  //if vertical limit is on and not set to ignore...
-				(CurrentTextInfo.pos.y + CurrentTextInfo.size + UpdateMesh_lowestLineOffset.y - anchorOffset.y > -rawTopLeftBounds.y + 0.00001f/* || info[i].pos.y < -rawBottomRightBounds.y*/))
+				(CurrentTextInfo.pos.y + CurrentTextInfo.size.y + UpdateMesh_lowestLineOffset.y - anchorOffset.y > -rawTopLeftBounds.y + 0.00001f/* || info[i].pos.y < -rawBottomRightBounds.y*/))
 			{ //hide all text that extends beyond the vertical limit
 			  //if using a limited vertical space and this text's line is before the text that should be shown
 				endVerts[4 * i + 0] = Vector3.zero; //hide it!
@@ -3606,9 +4364,9 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 				//assign vertices
 				if(relativeBaseOffset)
 				{
-					realBaseOffset.x = baseOffset.x * info[i].size;
-					realBaseOffset.y = baseOffset.y * info[i].size;
-					realBaseOffset.z = baseOffset.z * info[i].size;
+					realBaseOffset.x = baseOffset.x * CurrentTextInfo.size.x;
+					realBaseOffset.y = baseOffset.y * CurrentTextInfo.size.y;
+					realBaseOffset.z = baseOffset.z;
 				}
 				else
 				{
@@ -3642,8 +4400,8 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 					endUv[4 * i + 2] = CurrentTextInfo.ch.uvBottomRight;
 					endUv[4 * i + 3] = CurrentTextInfo.ch.uvBottomLeft;
 
-					uvMidHold.x = (CurrentTextInfo.ch.uvTopLeft.x + CurrentTextInfo.ch.uvTopRight.x) * 0.5f;
-					uvMidHold.y = (CurrentTextInfo.ch.uvTopLeft.y + CurrentTextInfo.ch.uvBottomLeft.y) * 0.5f;
+					uvMidHold.x = CurrentTextInfo.uvMid.x;
+					uvMidHold.y = CurrentTextInfo.uvMid.y;
 				}
 				else
 				{
@@ -3672,7 +4430,26 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 			ratiosAndUvMids[4 * i + 1] = ratioAndUvHold;
 			ratiosAndUvMids[4 * i + 2] = ratioAndUvHold;
 			ratiosAndUvMids[4 * i + 3] = ratioAndUvHold;
+
+			//uv rotation data
+			ratioAndUvHold.x = endUv[4 * i + 0].x != endUv[4 * i + 3].x ? 1 : 0; //1 if rotated, 0 if not
+			ratioAndUvHold.y = CurrentTextInfo.size.y; //size of letter
+			//ratioAndUvHold.z = CurrentTextInfo.chSize / CurrentTextInfo.fontData.font.; //point size of letter
+			if(CurrentTextInfo.fontData != null)
+			{
+				ratioAndUvHold.z = CurrentTextInfo.chSize / ((CurrentTextInfo.fontData.font.material.mainTexture.width) / 4.0f);
+				ratioAndUvHold.w = CurrentTextInfo.chSize / ((CurrentTextInfo.fontData.font.material.mainTexture.height) / 4.0f);
+			}
+			else
+			{
+				ratioAndUvHold.z = CurrentTextInfo.chSize / ((font.material.mainTexture.width) / 4.0f);
+				ratioAndUvHold.w = CurrentTextInfo.chSize / ((font.material.mainTexture.height) / 4.0f);
+			}
 			
+			isUvRotated[4 * i + 0] = ratioAndUvHold;
+			isUvRotated[4 * i + 1] = ratioAndUvHold;
+			isUvRotated[4 * i + 2] = ratioAndUvHold;
+			isUvRotated[4 * i + 3] = ratioAndUvHold;
 
 			
 		//Scrolling Textures:
@@ -3689,7 +4466,7 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 				
 				float uv2Scale = 1f;
 				if(CurrentTextInfo.textureData.scaleWithText){
-					uv2Scale = 1f / CurrentTextInfo.size;
+					uv2Scale = 1f / CurrentTextInfo.size.y;
 				}
 
 				// Fetch values and store them in existing objects to avoid doing casting
@@ -3773,16 +4550,16 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 						switch (CurrentTextInfo.gradientData.smoothGradient)
 						{
 							case false: //hard gradient
-								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
+								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
 								break;
 							default:
-								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + ((CurrentTextInfo.pos.y + CurrentTextInfo.size) * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + ((CurrentTextInfo.pos.y + CurrentTextInfo.size) * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
+								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + ((CurrentTextInfo.pos.y + CurrentTextInfo.size.y) * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + ((CurrentTextInfo.pos.y + CurrentTextInfo.size.y) * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (CurrentTextInfo.pos.y * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
 								break;
 						}
 						break;
@@ -3790,19 +4567,26 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 						switch (CurrentTextInfo.gradientData.smoothGradient)
 						{
 							case false:
-								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f)); //this works!
-								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
+								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f)); //this works!
+								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
 								break;
 							default://smooth gradient
-								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f)); //this works!
-								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 1].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 2].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size), 1f));
-								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 3].x * CurrentTextInfo.gradientData.gradientSpread / info[i].size), 1f));
+								endCol32[4 * i + 0] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 0].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f)); //this works!
+								endCol32[4 * i + 1] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 1].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 2] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 2].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
+								endCol32[4 * i + 3] = CurrentTextInfo.gradientData.gradient.Evaluate(Mathf.Repeat((GetTimeTime * CurrentTextInfo.gradientData.scrollSpeed) + (endVerts[4 * i + 3].x * CurrentTextInfo.gradientData.gradientSpread / CurrentTextInfo.size.y), 1f));
 								break;
 						}
 						break;
+				}
+				if(CurrentTextInfo.colorData != null)
+				{
+					endCol32[4 * i + 0] *= CurrentTextInfo.colorData.color;
+					endCol32[4 * i + 1] *= CurrentTextInfo.colorData.color;
+					endCol32[4 * i + 2] *= CurrentTextInfo.colorData.color;
+					endCol32[4 * i + 3] *= CurrentTextInfo.colorData.color;
 				}
 			}
 			else if (CurrentTextInfo.textureData != null)
@@ -3811,6 +4595,14 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 				endCol32[4 * i + 1] = Color.white;
 				endCol32[4 * i + 2] = Color.white;
 				endCol32[4 * i + 3] = Color.white;
+				
+				if(CurrentTextInfo.colorData != null)
+				{
+					endCol32[4 * i + 0] *= CurrentTextInfo.colorData.color;
+					endCol32[4 * i + 1] *= CurrentTextInfo.colorData.color;
+					endCol32[4 * i + 2] *= CurrentTextInfo.colorData.color;
+					endCol32[4 * i + 3] *= CurrentTextInfo.colorData.color;
+				}
 			}
 			else if (CurrentTextInfo.colorData != null)
 			{ //use colordata
@@ -3839,8 +4631,9 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 				Array.Resize(ref UpdateMesh_Positions, hyphenedText.Length);
 
 			for(int i=0, iL=hyphenedText.Length; i<iL; i++){
-				UpdateMesh_Middles[i] = info[i].Middle;
-				UpdateMesh_Positions[i] = info[i].pos;
+				CurrentTextInfo = info[i];
+				UpdateMesh_Middles[i] = CurrentTextInfo.Middle;
+				UpdateMesh_Positions[i] = CurrentTextInfo.pos;
 			}
 			if(onVertexMod != null) onVertexMod.Invoke(endVerts, UpdateMesh_Middles, UpdateMesh_Positions); //modify end verts externally
 			if(OnVertexMod != null) OnVertexMod.Invoke(endVerts, UpdateMesh_Middles, UpdateMesh_Positions);
@@ -3857,209 +4650,284 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 		//}
 		//return mesh;
 	}
-	void SetMesh(float timeValue){
+	/* 
+	public void SetColor(Color32 setColor)
+	{
+
+	}
+	*/
+	public void SetMesh(float timeValue){
 		SetMesh(timeValue, false);
 	}
 	//actually update the mesh attached to the meshfilter
-	void SetMesh(float timeValue, bool undrawingMesh){ //0 == start mesh, < 0 == end mesh, > 0 == midway mesh
-		if(textMesh == null){
+	void SetMesh(float timeValue, bool undrawingMesh) //0 == start mesh, < 0 == end mesh, > 0 == midway mesh
+	{
+		if(textMesh == null)
+		{
 			textMesh = new Mesh(); //create the mesh initially
 			textMesh.MarkDynamic(); //just do it
 		}
 		textMesh.Clear();
-		if(text.Length > 0){
-			if(reading || unreading){ //which set to use...?
+		if(text.Length > 0)
+		{
+			if(reading || unreading)//which set to use...?
+			{ 
 				UpdateDrawnMesh(timeValue, undrawingMesh);
 				textMesh.vertices = midVerts;
 				textMesh.colors32 = midCol32;
-			}else if(timeValue == 0f || undrawingMesh){//show nothing
+			}
+			else if(timeValue == 0f || undrawingMesh){//show nothing
+			
 				UpdatePreReadMesh(undrawingMesh); //pas this so it know which animation to use. always renders a pre-read mesh
 				textMesh.vertices = startVerts;
 				textMesh.colors32 = startCol32;
 				//Debug.Log("showing empty");
-			}else{
+			}
+			else
+			{
 				UpdateMesh(totalReadTime+1f);
 				textMesh.vertices = endVerts;
 				textMesh.colors32 = endCol32;
 				//Debug.Log("showing filled");
 			}
 
+			//Debug.Log("text mesh verts: " + midVerts.Length + " enduv length: " + endUv.Length);
+
 			textMesh.uv = endUv; //this technically only needs to be set on Rebuild()
 			textMesh.uv2 = endUv2; //use 2nd texture...
 			//textMesh.uv3 = ratios; //for new shader!
 			textMesh.SetUVs(2, ratiosAndUvMids);
-
+			textMesh.SetUVs(3, isUvRotated);
+			
 			//apply tris and submeshes
-			if(subMeshes.Count > 1){ //this also only needs to be set on Rebuild()
+			if(submeshes.Count > 1)//this also only needs to be set on Rebuild()
+			{ 
 				//use submeshes instead of setting triangles for entire mesh:
-				textMesh.subMeshCount = subMeshes.Count;
-				for(int i=0, iL=subMeshes.Count; i<iL; i++){
-					textMesh.SetTriangles(subMeshes[i].tris, i); //apply to mesh
+				textMesh.subMeshCount = submeshes.Count;
+				for(int i=0, iL=textMesh.subMeshCount; i<iL; i++)
+				{
+					textMesh.SetTriangles(submeshes[i].tris, i); //apply to mesh
 				}
-			}else if(subMeshes.Count > 0){
+			}
+			else if(submeshes.Count > 0)
+			{
 				//do it this way because of errors with quads
 				textMesh.subMeshCount = 1;
 				//set triangles for entire mesh:
-				//textMesh.triangles = subMeshes[0].tris.ToArray();
-				//Debug.Log(subMeshes.Count);
-				textMesh.SetTriangles(subMeshes[0].tris, 0); //causes less garbage?
+				//textMesh.triangles = SubMeshes_subMeshes[0].tris.ToArray();
+				//Debug.Log(SubMeshes_subMeshes.Count);
+				textMesh.SetTriangles(submeshes[0].tris, 0); //causes less garbage?
 			}
 			//else, do nothing!!
-			//textMesh.UploadMeshData(false); //send to graphics API manually...?
+			//textMesh.isReadable = true;
+			textMesh.UploadMeshData(false); //send to graphics API manually...?
 		}
 		ApplyMesh();
 	}
-	void ApplyMesh(){
-		if(uiMode){ //UI mode
+	void ApplyMesh()
+	{
+		if(uiMode) //UI mode
+		{
 			c.SetMesh(textMesh);
-		}else{
+		}
+		else
+		{
 			f.sharedMesh = textMesh; //I dont think this has to be set multiple times but w/e
 		}
 	}
+	[ContextMenu("Clear Materials")]
+	public void ClearMaterials()
+	{
 
-	void ClearMaterials(){
 		//clear r.sharedMaterials, here
-		if(uiMode){
-			for(int i=0, iL=c.materialCount; i<iL; i++){
+		if(uiMode)
+		{
+			for(int i=0, iL=c.materialCount; i<iL; i++)
+			{
 				DestroyImmediate(c.GetMaterial(i));
 			}
 			c.materialCount = 0;
-		}else{
-			for(int i=0, iL=r.sharedMaterials.Length; i<iL; i++){
+		}
+		else
+		{
+			for(int i=0, iL=r.sharedMaterials.Length; i<iL; i++)
+			{
 				DestroyImmediate(r.sharedMaterials[i]);
 			}
 		}
-	}
-	private Canvas parentCanvas;
-	private Transform maskCanvas;
-	private float maskValue;
-	private Material[] newMats;
-	void ApplyMaterials(){ //turn submesh data into material data
-		//do a check first to see if materials need to change
-		ClearMaterials();
 
-		newMats = new Material[subMeshes.Count];
-		for(int i=0, iL=newMats.Length; i<iL; i++){
-			newMats[i] = subMeshes[i].AsMaterial;
+		//for(int i=0, iL=allMaterials.Count; i<iL; i++)
+		//{
+		//	DestroyImmediate(allMaterials[i]);
+		//}
+		SharedMaterialDataStorage.allMaterials.Clear();
+
+	}
+
+
+	
+
+	private Canvas parentCanvas;
+	void ApplyMaterials() //turn submesh data into material data
+	{
+		//do a check first to see if materials need to change
+		//ClearMaterials();
+		if (submeshMaterials.Length != submeshes.Count)
+			Array.Resize(ref submeshMaterials, submeshes.Count);
+
+		//submeshMaterials = new Material[submeshes.Count]; //material array just for this mesh
+		for(int i=0, iL=submeshMaterials.Length; i<iL; i++)
+		{
+			//assign existing material or create a new one here....
+			//submeshMaterials[i] = SubMeshes_subMeshes[i].AsMaterial;
 			//different details will have to be set here,
+	//		submeshMaterials[i] = allMaterials[submeshes[i].materialIndex].AsMaterial;
+			submeshMaterials[i] = submeshes[i].sharedMaterialData.AsMaterial;
+			//submeshMaterials[i] = submeshes[i].sharedMaterialData.material;
 		}
-		if(uiMode){//for now, simple way to disallow multiple materials on canvas, since it seems to cause a crash
+		if(uiMode)//for now, simple way to disallow multiple materials on canvas, since it seems to cause a crash
+		{
 			//2017-02-12 fixed it??
 			//2017-04-14 FIXED IT
-			if(this != null && t.gameObject.activeInHierarchy){ //prevents text from rendering weird
-				//masking
-				maskCanvas = MaskUtilities.FindRootSortOverrideCanvas(t);
-				maskValue = MaskUtilities.GetStencilDepth(transform, maskCanvas);
+			if(this != null && t.gameObject.activeInHierarchy)//prevents text from rendering weird
+			{ 
+				
 				//Debug.Log(t.name + ": " + maskValue);
 				#if UNITY_2017_1_OR_NEWER
 				parentCanvas = t.GetComponentInParent<Canvas>();
 				if(parentCanvas != null) parentCanvas.additionalShaderChannels |= AdditionalCanvasShaderChannels.TexCoord1;
-				c.materialCount = newMats.Length+1;
-				for(int j=0; j<c.materialCount-1; j++){
-					ApplyMasking(newMats[j]);
-					c.SetMaterial(newMats[j],j);
+				c.materialCount = submeshMaterials.Length+1;
+				for(int j=0; j<c.materialCount-1; j++)
+				{
+					//Debug.Log(submeshMaterials[j].name);
+					c.SetMaterial(submeshMaterials[j],j);
 				}
 				#else
 				//only show 1st material, multi materials were not supported before 2017.1
 				c.materialCount = 1;
-				ApplyMasking(newMats[0]);
-				c.SetMaterial(newMats[0],0);
+				if(submeshMaterials.Length > 0)
+				{
+					c.SetMaterial(submeshMaterials[0],0);
+				}
 				#endif
 			}
-		}else{
-			r.sharedMaterials = newMats; //update!
+		}
+		else
+		{
+			r.sharedMaterials = submeshMaterials; //update!
 		}
 		#if UNITY_EDITOR
 		HideInspectorStuff(); //this is the only time you're really gonna need this, so OnValidate() makes sense...?
 		#endif
 	}
-	//could use bitmasking stuff for this...
-	float MaskDepthToID(float depth)
+
+	//private int Submesh_Count = 0;
+
+	//tris for submeshes on THIS mesh to use
+	private List<SubmeshData> submeshes = new List<SubmeshData>();
+
+	private Material[] submeshMaterials = new Material[1]; //to be used when applying materials to a mesh
+
+
+	
+
+	//SubmeshData SubmeshExist_submesh = null;
+	SubmeshData DoesSubmeshExist(SharedMaterialData materialData)
 	{
-		if(depth >= 8)
+		for(int i=0; i<submeshes.Count; i++)
 		{
-			Debug.Log("Attempting to use a mask with depth >= 8");
-			return 0;
-		}
-		//proper stencil buffer, minus 1 for outside mask
-		return Mathf.Pow(2,depth)-1+(int)maskMode;
-	}
-	void ApplyMasking(Material newMaterial)
-	{
-		//3 if masking, 8 if not
-		newMaterial.SetFloat("_MaskComp", maskValue > 0 ? 3f : 8f);
-		//convert always
-		newMaterial.SetFloat("_MaskMode", MaskDepthToID(maskValue));
-		//always 0
-		newMaterial.SetFloat("_StencilOp", 0f);
-		//0 if masking, 255 if not
-		newMaterial.SetFloat("_StencilWriteMask", maskValue > 0 ? 0f : 255f);
-		//convert if masking, otherwise 255
-		newMaterial.SetFloat("_StencilReadMask", maskValue > 0 ? MaskDepthToID(maskValue) : 255f);
-	}
-	SubMeshData DoesSubmeshExist(SuperTextMesh stm, STMTextInfo info){ //find a submesh that this character can exist on
-		for(int i=0, iL=subMeshes.Count; i<iL; i++){
-			bool safe = true;
-
-			if(info.materialData != null){ //it has material data?
-				if(subMeshes[i].refMat != info.materialData.material){ //if the two materials dont match
-					safe = false;
-				}
-			}else{ //there's no material data on this letter, so compare to STM default
-				if(subMeshes[i].refMat != stm.textMaterial){ //
-					safe = false;
-				}
-			}
-
-			if(info.textureData != null){ //there's texture data?
-				if(subMeshes[i].refMask != info.textureData.texture){ //if the two textures dont match...
-					//return subMeshes[i];
-					//Debug.Log("Existing textures dont match.");
-					safe = false; //not the same!
-				}
-			}else{
-				//vvv check for this, since quads can use the refmask, too
-				if(info.quadData == null && subMeshes[i].refMask != null){ //if this submesh has texture data, is not null too
-					safe = false;
-					//Debug.Log("non-Existing textures dont match.");
-				}
-			}
-
-			if(info.fontData != null){
-				if(subMeshes[i].refFont != info.fontData.font){
-					//return subMeshes[i];
-					safe = false;
-					//Debug.Log("Existing fonts dont match.");
-				}
-			}
-			//submesh data ALWAYS has font, fontdata might not
-			else{ //no fontdata on the mesh?
-				if(subMeshes[i].refFont != stm.font){
-					safe = false;
-					//Debug.Log("non-Existing fonts dont match.");
-				}
-			}
-			//TODO: check for silhouette differences, too?
-			if(info.isQuad){ //if it has quad data 
-				if(subMeshes[i].refTex != info.quadData.texture){ //if the two textures aren't the same...
-					safe = false;
-				}
-				if((subMeshes[i].refTex == subMeshes[i].refMask) == info.quadData.silhouette){ //if they're not both a silhouette
-					safe = false;
-				}
-			}else{ //no quad data
-				if(subMeshes[i].refTex != null){ //but the submesh does have it
-					safe = false;
-				}
-			}
-			
-
-			if(safe){
-				return subMeshes[i]; //the two submeshes are the same!
+			if(submeshes[i].sharedMaterialData == materialData)
+			{
+			//	Debug.Log("Found a matching submesh and it has this material: " + submeshes[i].sharedMaterialData.debugOriginalName);
+				return submeshes[i];
 			}
 		}
-		//return new SubMeshData(stm, info);
 		return null;
+	}
+
+	//private SubMeshData SubMesh_Submesh;
+	
+	//private List<SubMeshData> SubMeshes_subMeshes = new List<SubMeshData>();
+	private SharedMaterialData Submesh_sharedMaterial = null;
+	private SubmeshData Submesh_submeshData = null;
+	private STMTextInfo Submesh_info;
+	void PrepareSubmeshes()
+	{
+		//since this only needs to be calculated during Rebuild(), putting this in its own function.
+	//	SubMeshes_subMeshes.Clear();
+		//SubMeshes_subMeshes = new List<SubMeshData>(); //include default submesh
+	//	SubMeshes_subMeshes.Add(new SubMeshData(this)); //add default submesh
+	//	Submesh_Count = 1;
+		//assign default
+		submeshes.Clear();
+
+		if(info.Count > 0 && info[0] != null && !info[0].submeshChange)
+		{
+			Submesh_sharedMaterial = SharedMaterialDataStorage.DoesSharedMaterialExist(this);
+			if(Submesh_sharedMaterial == null)
+			{
+				//Submesh_sharedMaterial = new SharedMaterialData(this);
+				SharedMaterialDataStorage.allMaterials.Add(new SharedMaterialData(this));
+				Submesh_sharedMaterial = SharedMaterialDataStorage.allMaterials[SharedMaterialDataStorage.allMaterials.Count-1];
+			}
+			Submesh_submeshData = DoesSubmeshExist(Submesh_sharedMaterial);
+			if(Submesh_submeshData == null)
+			{
+				//Submesh_submeshData = new SubmeshData(submeshes.Count);
+				submeshes.Add(new SubmeshData(Submesh_sharedMaterial));
+				Submesh_submeshData = submeshes[submeshes.Count-1];
+			}
+		}
+
+
+
+		
+
+		//cache a submesh to check against, and assign a default
+		//SubMesh_Submesh = SubMeshes_subMeshes[0];
+		for(int i=0, iL=hyphenedText.Length; i<iL; i++) //go thru all info
+		{
+			Submesh_info = info[i];
+			if(Submesh_info.submeshChange) //can still potentially return null, which is good
+			{
+				//Debug.Log("found a material change at " + i);
+				//This also only needs to be changed on rebuild(), move it sometime 2016-10-26 TODO
+				//get and assign submesh/triangles for this letter
+				//SubMesh_Submesh = DoesSubmeshExist(this,Submesh_info);
+				Submesh_sharedMaterial = SharedMaterialDataStorage.DoesSharedMaterialExist(this, Submesh_info); //is there a submesh for this texture yet?
+			}
+			//Debug.Log("This info's font is " + Submesh_info.fontData);
+			if(Submesh_sharedMaterial == null) //doesn't exist yet??
+			{
+				//Submesh_sharedMaterial = new SharedMaterialData(this, Submesh_info); //create new universal material
+				SharedMaterialDataStorage.allMaterials.Add(new SharedMaterialData(this, Submesh_info)); //and add to submesh list
+				Submesh_sharedMaterial = SharedMaterialDataStorage.allMaterials[SharedMaterialDataStorage.allMaterials.Count-1];
+
+				
+			}
+			if(Submesh_info.submeshChange)
+			{
+				Submesh_submeshData = DoesSubmeshExist(Submesh_sharedMaterial);
+				
+			}
+			if(Submesh_submeshData == null)
+			{
+				Submesh_submeshData = new SubmeshData(Submesh_sharedMaterial);
+				submeshes.Add(Submesh_submeshData);
+				//Submesh_Count++;
+			}
+
+			//vvvv doing is this way creates garbage
+			//SubMesh_Submesh.tris.AddRange(new int[]{4*i+0,4*i+1,4*i+2,4*i+0,4*i+2,4*i+3}); //add tris for this letter
+			//vvvv this way seems fine tho
+			Submesh_submeshData.tris.Add(4*i + 0);
+			Submesh_submeshData.tris.Add(4*i + 1);
+			Submesh_submeshData.tris.Add(4*i + 2);
+			Submesh_submeshData.tris.Add(4*i + 0);
+			Submesh_submeshData.tris.Add(4*i + 2);
+			Submesh_submeshData.tris.Add(4*i + 3);
+		}
+		//subMeshes = new SubMeshData[subMeshCount]; //create an array to hold all these sebmeshes
 	}
 
 	//ILayoutElement Stuff. Content Size Fitter.
@@ -4095,59 +4963,527 @@ Vector3 JitterValue_MyJit = Vector3.zero;
 	
 }
 [System.Serializable]
-public class SubMeshData { //used internally by STM for keeping track of submeshes
+public class SubmeshData
+{
+	public SharedMaterialData sharedMaterialData; //material to be used by this submesh
+	//public int materialIndex = -1;
+	public List<int> tris = new List<int>();
+/*
+	public SubmeshData(int index)
+	{
+		this.materialIndex = index;
+
+	}
+*/
+	public SubmeshData(SharedMaterialData data)
+	{
+		this.sharedMaterialData = data;
+	}
+}
+[System.Serializable]
+public static class SharedMaterialDataStorage
+{
+	//list of materials, shared with all text meshes. this is asking for trouble...
+	public static List<SharedMaterialData> allMaterials = new List<SharedMaterialData>();
+
+	private static Transform Submesh_maskCanvas;
+	private static float Submesh_stencilDepth;
+	private static SharedMaterialData MaterialExists_material = null;
+	public static SharedMaterialData DoesSharedMaterialExist(SuperTextMesh stm, STMTextInfo info) //find a material that this character can exist on
+	{
+		//masking
+		if(stm.uiMode)
+		{
+			Submesh_maskCanvas = MaskUtilities.FindRootSortOverrideCanvas(stm.t);
+			Submesh_stencilDepth = MaskUtilities.GetStencilDepth(stm.t, Submesh_maskCanvas);
+		}
+		else
+		{
+			Submesh_stencilDepth = -1f;
+		}
+	//	Debug.Log("Finding material for a submesh on " + stm.t.name);
+		//return subMeshes[0]; //debugging...
+		for(int i=0; i<allMaterials.Count; i++)
+		{
+			//cache a material to check against
+			MaterialExists_material = allMaterials[i];
+			if(MaterialExists_material == null)
+			{
+				continue;
+			}
+			//bool safe = true;
+			//Debug.Log("Trying out material named " + MaterialExists_material.debugOriginalName + " Hoping to find something with this font: " + MaterialExists_material.refFont.name + " and this texture: " + (MaterialExists_material.refTex == null ? "ITS NULL" : MaterialExists_material.refTex.name));
+		//does this data have material data attached?
+			if(info.materialData != null)//it has material data?
+			{ 
+				if(MaterialExists_material.refMat != info.materialData.material) //if the two materials dont match
+				{
+					//Debug.Log("materialdata was not null, but refmat did not match.");
+					continue;
+				}
+			}
+			else//there's no material data on this letter, so compare to STM default
+			{ 
+				if(MaterialExists_material.refMat != stm.textMaterial)
+				{ //
+					//Debug.Log("material data was not null, but didn't match STM's material");
+					continue;
+				}
+			}
+
+			//does masking value match
+			if(MaterialExists_material.uiStencilDepth != Submesh_stencilDepth)
+			{
+				continue;
+			}
+			if(MaterialExists_material.uiMaskMode != (int)stm.maskMode)
+			{
+				continue;
+			}
+
+
+			if(info.fontData != null)
+			{
+				if(info.quadData != null)
+				{
+					continue;
+				}
+				if(MaterialExists_material.refFont == null)
+				{
+					continue;
+				}
+				if(MaterialExists_material.refFont != info.fontData.font)
+				{
+					//return SubMesh_mySubMesh;
+					//safe = false;
+					//Debug.Log("font data was not null but ref font didn't match info font.");
+					continue;
+					//Debug.Log("Existing fonts dont match.");
+				}
+				if(info.fontData.overrideFilterMode)
+				{
+					if(info.quadData != null && MaterialExists_material.refFilter != info.quadData.filterMode) //if filter mode doesn't match
+					{
+						continue;
+					}
+				}
+				else
+				{
+					if(MaterialExists_material.refFilter != stm.filterMode) //if filter mode doesn't match
+					{
+						continue;
+					}
+				}
+				/*
+				//you shouldn't be using mismatched filter modes on the same font anyway!!
+				if(info.fontData.overrideFilterMode)
+				{
+					if(MaterialExists_material.refFilter != info.fontData.filterMode) //if filter mode doesn't match
+					{
+					//	Debug.Log("Woah no matching filter mode");
+						continue;
+					}
+				}
+				else
+				{
+					if(MaterialExists_material.refFilter != stm.filterMode) //if filter mode doesn't match
+					{
+						continue;
+					}
+				}
+				*/
+			}
+			//submesh data ALWAYS has font, fontdata might not
+			else //no fontdata on the mesh?
+			{
+				//TODO: check for silhouette differences, too?
+				if(info.quadData != null)//if it has quad data 
+				{ 
+					if(MaterialExists_material.refTex == null)
+					{
+						continue;
+					}
+					if(MaterialExists_material.refTex != info.quadData.texture) //if the two textures aren't the same...
+					{
+						//Debug.Log("info quad data was not null but material's reftex did not match the quad texture");
+						continue;
+						//safe = false;
+					}
+					if((MaterialExists_material.refTex == MaterialExists_material.refMask) == info.quadData.silhouette) //if they're not both a silhouette
+					{
+						//Debug.Log("quad data was not null but something w silhouettes");
+						continue;
+						//safe = false;
+					}
+					
+					
+			
+				}
+				else//no quad data
+				{ 
+					if(MaterialExists_material.refFont != stm.font)
+					{
+						//Debug.Log("font data was null, and material had a font that didn't match stm's");
+						continue;
+						//Debug.Log("non-Existing fonts dont match.");
+					}
+					if(MaterialExists_material.refTex != null) //but the submesh does have it
+					{
+						//Debug.Log("no quad data but ref texture was not null");
+						continue;
+						//safe = false;
+					}
+					if(MaterialExists_material.refFilter != stm.filterMode)
+					{
+						continue;
+					}
+				}
+			}
+			
+
+			if(info.textureData != null) //there's texture data?
+			{
+				if(MaterialExists_material.refMask != info.textureData.texture) //if the two textures dont match...
+				{
+					//return SubMesh_mySubMesh;
+					//Debug.Log("Existing textures dont match.");
+					//safe = false; //not the same!
+					//Debug.Log("info texture data was not null, but refmask didn't match texturedata");
+					continue;
+				}
+			}
+			else //no texture data so...
+			{
+				/*
+				if(MaterialExists_material.refMask != null) //if this material DOES have a texture, dont match
+				{
+					continue;
+				}
+				*/
+				/*
+				//vvv check for this, since quads can use the refmask, too
+				if(info.quadData == null && MaterialExists_material.refTex != null) //if this submesh has texture data (is a quad), is not null too
+				{
+				//	Debug.Log("info texture data was null, but quad was null and ref mask was not. but whatever");
+					//safe = false;
+					continue;
+					//Debug.Log("non-Existing textures dont match.");
+				}
+				*/
+
+			}
+			
+			//Debug.Log("Found a matching material! " + MaterialExists_material.materialName);
+			return MaterialExists_material; //the two submeshes are the same!
+		}
+		//Debug.Log("Did NOT find existing material");
+		//return new SubMeshData(stm, info);
+		return null;
+	}
+	public static SharedMaterialData DoesSharedMaterialExist(SuperTextMesh stm) //find a material that this character can exist on
+	{
+		//masking
+		if(stm.uiMode)
+		{
+			Submesh_maskCanvas = MaskUtilities.FindRootSortOverrideCanvas(stm.t);
+			Submesh_stencilDepth = MaskUtilities.GetStencilDepth(stm.t, Submesh_maskCanvas);
+		}
+		else
+		{
+			Submesh_stencilDepth = -1f;
+		}
+	//	Debug.Log("Finding material for STM named " + stm.t.name);
+		//return subMeshes[0]; //debugging...
+		for(int i=0; i<allMaterials.Count; i++)
+		{
+			//cache a material to check against
+			MaterialExists_material = allMaterials[i];
+			if(MaterialExists_material == null)
+			{
+				//Debug.Log("material is null");
+				continue;
+			}
+			//Debug.Log("Okay existing material is not null. So checking material named... " + MaterialExists_material.debugOriginalName);
+			//bool safe = true;
+
+			if(MaterialExists_material.refMat != stm.textMaterial)
+			{ //
+				//Debug.Log("ref material doesn't match");
+				continue;
+			}
+
+			//does masking value match
+			if(MaterialExists_material.uiStencilDepth != Submesh_stencilDepth)
+			{
+				//Debug.Log("ui mask value doesn't match but whatever");
+				continue;
+			}
+			if(MaterialExists_material.uiMaskMode != (int)stm.maskMode)
+			{
+				continue;
+			}
+
+			if(MaterialExists_material.refMask != null) //there's texture data?
+			{
+				//Debug.Log("ref mask is NOT null!");
+				continue;
+			}
+
+			if(MaterialExists_material.refFont != stm.font)
+			{
+				//Debug.Log("ref font does not match stm font");
+				continue;
+				//Debug.Log("non-Existing fonts dont match.");
+			}
+
+			if(MaterialExists_material.refTex != null) //if the two textures aren't the same...
+			{
+				//Debug.Log("ref Texture is NOT null");
+				continue;
+				//safe = false;
+			}
+			if(MaterialExists_material.refFilter != stm.filterMode)
+			{
+				//Debug.Log("Filter mode does NOT match default");
+				continue;
+			}
+			if(MaterialExists_material.refMask != null) //if they're not both a silhouette
+			{
+				//Debug.Log("refmask is NOT null");
+				continue;
+				//safe = false;
+			}	
+
+			//Debug.Log("Found a matching material! " + MaterialExists_material.debugOriginalName);
+			return MaterialExists_material; //the two submeshes are the same!
+		}
+		//return new SubMeshData(stm, info);
+		return null;
+	}
+}
+[System.Serializable]
+public class SharedMaterialData  //used internally by STM for keeping track of shared materials
+{
+	private Transform maskCanvas;
 	//public string name;
-	public List<int> tris = new List<int>(); 
-	public Material refMat; //material these tris will reference
+	//public List<int> tris = new List<int>(); 
+	public Material refMat; //material these tris will reference. not the actual material being used, but the one a new material will be created from.
 	public Font refFont; //maybe make these FontData, TextureData, ShaderData?
 	public Texture refTex; //for quads/inline images
 	public Texture refMask; //masks/textures/non-silhouette quads
 	public Vector2 maskTiling;
 	public FilterMode refFilter;
+	public float uiStencilDepth;
+	public int uiMaskMode = 0;
+
+	private Material material;
+	//public string debugOriginalName = "";
+
+	//public Material createdMaterial; //is this the best place to store it...?
 	
-	public SubMeshData(SuperTextMesh stm){ //create default
+	public SharedMaterialData(SuperTextMesh stm){ //create default
+		SetValues(stm);
+	//	debugOriginalName = "1: " + refMat.name + " - " + refFont.name + " - " + refFilter;
+		//SetMaterial();
+	}
+	public SharedMaterialData(SuperTextMesh stm, STMTextInfo info){ //from different data types
+		SetValues(stm,info);
+	//	debugOriginalName = "2: " + refMat.name + " - " + refFont.name + " - " + refFilter;
+		//SetMaterial();
+	}
+	public void SetValues(SuperTextMesh stm)
+	{
 		this.refMat = stm.textMaterial; //default text material
 		this.refFont = stm.font;
 		this.refFilter = stm.filterMode;
+		//masking
+		if(stm.uiMode)
+		{
+			maskCanvas = MaskUtilities.FindRootSortOverrideCanvas(stm.tr);
+			this.uiStencilDepth = MaskUtilities.GetStencilDepth(stm.tr, maskCanvas);
+			this.uiMaskMode = (int)stm.maskMode;
+		}
+		else
+		{
+			this.uiStencilDepth = -1;
+		}
 	}
-	public SubMeshData(SuperTextMesh stm, STMTextInfo info){ //from different data types
+	public void SetValues(SuperTextMesh stm, STMTextInfo info)
+	{
 		//this.refMask = texData.texture;
 		this.refMat = info.materialData != null ? info.materialData.material : stm.textMaterial;
 		this.refFont = info.fontData != null ? info.fontData.font : stm.font;
 		//this.refFilter = info.quadData != null ? info.quadData.filterMode : info.fontData != null ? info.fontData.overrideFilterMode ? info.fontData.filterMode : stm.filterMode;
 		//this one's so long... just write it out this way
-		if(info.isQuad){
-			if(info.quadData.overrideFilterMode){
+		if(info.isQuad)
+		{
+			this.refFont = null; //no font anymore
+			if(info.quadData.overrideFilterMode)
+			{
 				this.refFilter = info.quadData.filterMode;
-			}else{
+			}
+			else
+			{
 				this.refFilter = stm.filterMode;
 			}
-		}else if(info.fontData != null){
-			if(info.fontData.overrideFilterMode){
+		}
+		else if(info.fontData != null)
+		{
+			if(info.fontData.overrideFilterMode)
+			{
 				this.refFilter = info.fontData.filterMode;
-			}else{
+			}
+			else
+			{
 				this.refFilter = stm.filterMode;
 			}
-		}else{
+		}
+		else
+		{
 			this.refFilter = stm.filterMode;
 		}
 		this.refMask = info.textureData != null ? info.textureData.texture : null;
 		this.maskTiling = info.textureData != null ? info.textureData.tiling : Vector2.one;
-		if(info.isQuad && !info.quadData.silhouette){ //nah, use quad instead...
+		if(info.isQuad && !info.quadData.silhouette) //nah, use quad instead...
+		{
 			this.refMask = info.quadData.texture;
 		}
 		this.refTex = info.isQuad ? info.quadData.texture : null;
+		if(info.isQuad)
+		{
+			this.maskTiling = Vector2.one;
+		}
+
+		//masking
+		if(stm.uiMode)
+		{
+			maskCanvas = MaskUtilities.FindRootSortOverrideCanvas(stm.tr);
+			this.uiStencilDepth = MaskUtilities.GetStencilDepth(stm.tr, maskCanvas);
+			this.uiMaskMode = (int)stm.maskMode;
+		}
+		else
+		{
+			this.uiStencilDepth = -1;
+		}
+		
 	}
-	public Material AsMaterial{
-		get{
-			//create new material
-			Material newMat = new Material(refMat.shader);
-			newMat.CopyPropertiesFromMaterial(refMat);
-			newMat.SetTexture("_MainTex", refTex ?? refFont.material.mainTexture); //go w/ reftex unless its null, then use font
-			newMat.SetTexture("_MaskTex", refMask);
-			newMat.SetTextureScale("_MaskTex", maskTiling);
-			newMat.mainTexture.filterMode = refFilter;
-			return newMat;
+	float MaskDepthToID()
+	{
+		if(uiStencilDepth >= 8)
+		{
+			Debug.Log("Attempting to use a mask with depth >= 8");
+			return 0;
+		}
+		//proper stencil buffer, minus 1 for outside mask
+		return Mathf.Pow(2,uiStencilDepth)-1+uiMaskMode;
+	}
+	public string materialName;
+	public Material AsMaterial
+	{
+		get
+		{
+
+			if(material == null)
+			{
+				material = new Material(refMat.shader);//create new material
+			}
+			else
+			{
+				material.shader = refMat.shader;
+			}
+			
+			//Material newMat = new Material(refMat.shader);
+			material.CopyPropertiesFromMaterial(refMat);
+			/*
+			//this is a nice thought, but you can't read a font texture unfortunately!
+
+			//if texture filter mode doesn't match ref filter, create new texture
+			#if UNITY_5_4_OR_NEWER
+			//test this in a later unity version!
+			Graphics.CopyTexture(refTex ?? refFont.material.mainTexture, this.texture);
+			#else
+			//texture = new Texture2D((refTex ?? refFont.material.mainTexture).width, (refTex ?? refFont.material.mainTexture).height);
+			texture.Resize((refTex ?? refFont.material.mainTexture).width, (refTex ?? refFont.material.mainTexture).height);
+			pixels = ((Texture2D)(refTex ?? refFont.material.mainTexture)).GetPixels32();
+			texture.SetPixels32(pixels);
+			texture.wrapMode = (refTex ?? refFont.material.mainTexture).wrapMode;
+			texture.Apply();
+			#endif
+			material.SetTexture("_MainTex", texture); //go w/ reftex unless its null, then use font
+			*/
+			material.SetTexture("_MainTex", refTex ?? refFont.material.mainTexture); //go w/ reftex unless its null, then use font
+			material.SetTexture("_MaskTex", refMask);
+			material.SetTextureScale("_MaskTex", maskTiling);
+
+			
+
+			if(material.HasProperty("_BaseMap"))
+			{
+				if(material.GetTexture("_BaseMap") != null)
+				{
+					material.GetTexture("_BaseMap").filterMode = refFilter;
+				}
+			}
+			else if(material.HasProperty("_MainTex"))
+			{
+				if(material.GetTexture("_MainTex") != null)
+				{
+					material.GetTexture("_MainTex").filterMode = refFilter;
+				}
+				
+			}
+
+			//masking
+			//ApplyMasking(returnMaterial, uiMaskValue);
+
+			//0 should be inside, 1 should be outside.
+			if(uiStencilDepth > -1f)
+			{
+				//3 if masking, 8 if not
+				material.SetFloat("_MaskComp", uiStencilDepth > 0 ? 3f : 8f);
+				//convert always
+				material.SetFloat("_MaskMode", MaskDepthToID());
+				//always 0
+				material.SetFloat("_StencilOp", 0f);
+				//0 if masking, 255 if not
+				material.SetFloat("_StencilWriteMask", uiStencilDepth > 0 ? 0f : 255f);
+				//convert if masking, otherwise 255
+				material.SetFloat("_StencilReadMask", uiStencilDepth > 0 ? MaskDepthToID() : 255f);
+			}
+
+			materialName = "";
+			materialName += refMat != null ? refMat.name : "NULL MATERTIAL";
+			materialName += " - ";
+			if(refFont != null)
+			{
+				materialName += refFont.name;
+			}
+			else
+			{
+				if(refTex != null)
+				{
+					//materialName += "Quad:";
+					if(refMask != null)
+					{
+						materialName += refTex.name + "|" + refMask.name;
+					}
+					else
+					{
+						materialName += refTex.name + "|SILHOUETTE";
+					}
+				}
+				else
+				{
+					materialName += "NULL";
+				}
+			}
+			materialName += " - ";
+			materialName += refFilter;
+
+			material.name = materialName;
+
+			//Debug.Log("Just created a new material. See: " + material);
+			return material;
 		}
 	}
 	//LayoutElement Garbage

@@ -15,84 +15,67 @@ MonoBehaviour:
   AppID: eeacdd80-73d4-4bab-9a4d-6d8deb091178
   VoiceAppID: 
   ChatAppID: 
-  HostType: 1
-  PreferredRegion: 1
+  HostType: 4
+  PreferredRegion: 4
   EnabledRegions: -1
-  Protocol: 1
-  ServerAddress: 192.168.0.18
-  ServerPort: 4530
+  Protocol: 0
+  ServerAddress: 
+  ServerPort: 5055
   VoiceServerPort: 5055
-  JoinLobby: 1
+  JoinLobby: 0
   EnableLobbyStatistics: 0
   PunLogging: 0
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
+  - AddLine
+  - AddToBoard
+  - BoardLayoutCheck
+  - CatchHamster
+  - ChangePlayerState
   - Chat
+  - CheckHamster
+  - CSShift
   - DestroyRpc
+  - EnterPlayArea
+  - EnterPullDownWindow
+  - GameOverCheck
+  - GameSetupCancel
+  - GameSetupStart
+  - HamsterCaught
+  - HamsterMissed
   - InstantiateRpc
+  - MapSelectReady
+  - NetworkActivate
+  - NetworkDrop
+  - NetworkPress
+  - NewLineProcessFinished
+  - OwnerChanged
   - PickupItemInit
+  - PlayerLineAdded
+  - PlayerReady
+  - Pop
   - PunPickup
   - PunPickupSimple
   - PunRespawn
+  - ReleaseNetworkHamster
+  - ReloadCurrentLevel
   - RequestForPickupItems
   - RequestForPickupTimes
-  - ActivateCharacter
-  - GameSetup
-  - CatchHamster
-  - ThrowBubble
-  - SerializeGameSettings
-  - DeactivateCharacter
-  - DecidedNextLine
-  - AddLine
-  - AddToBoard
-  - CheckHamster
-  - HamsterCaught
-  - BoardLayoutCheck
-  - SyncLineBubbles
-  - HamsterMissed
-  - PlacementCheck
-  - TryThrowBubble
-  - ReloadCurrentLevel
-  - RotateWheel
-  - ActivateSelector
-  - NetworkActivate
-  - GameSetupCancel
-  - GameSetupStart
-  - SetStage
-  - EnterPlayArea
-  - EnterPullDownWindow
-  - Shift
-  - ShiftPlayer
-  - CSShift
-  - PlayerReady
-  - StartGameCountdown
-  - ChangePlayerState
-  - NetworkSpawnBubble
-  - NetworkSpawnBubbleFish
-  - DropNetworkHamster
-  - ReleaseNextHamster
-  - ReleaseNetworkHamster
-  - MapSelectReady
-  - StartGameStuff
-  - NetPop
-  - LineAdded
-  - NewLineProcessFinished
-  - PlayerLineAdded
-  - SynchCheck
-  - GameOverCheck
   - ResultsCheck
-  - ThrowFailed
-  - OwnerChanged
-  - SetupOK
-  - TryGameSetup
-  - NetworkDrop
-  - SyncGameCounts
-  - TrySyncMeter
-  - WeDied
-  - SetName
+  - RotateWheel
   - SendName
-  - RotateLever
-  - NetworkPress
-  - Pop
+  - SetStage
+  - SetupOK
+  - ShiftPlayer
+  - StartGameCountdown
+  - SyncGameCounts
+  - SynchCheck
+  - SyncLineBubbles
+  - ThrowBubble
+  - ThrowFailed
+  - TryGameSetup
+  - TrySyncMeter
+  - TryThrowBubble
+  - WeDied
   DisableAutoOpenWizard: 1

@@ -16,7 +16,7 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
     CharacterSelect _characterSelect;
 
     private void Awake() {
-        FindObjectOfType<GameManager>().gameMode = GAME_MODE.MP_VERSUS;
+        GameManager.instance.gameMode = GAME_MODE.MP_VERSUS;
     }
     // Use this for initialization
     void Start () {
@@ -28,7 +28,7 @@ public class NetworkedCharacterSelect : Photon.MonoBehaviour {
 
         gameSetupText.gameObject.SetActive(false);
 
-        GameManager gameManager = FindObjectOfType<GameManager>();
+        GameManager gameManager = GameManager.instance;
         if (gameManager.isPaused) {
             gameManager.Unpause();
         }

@@ -25,7 +25,7 @@ public class ResultsScreen : MonoBehaviour {
     DemoManager _demoManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _levelManager = FindObjectOfType<LevelManager>();
         _demoManager = _gameManager.GetComponentInChildren<DemoManager>();
     }
@@ -103,7 +103,7 @@ public class ResultsScreen : MonoBehaviour {
     public void Activate(int result) {
         gameObject.SetActive(true);
         if(_gameManager == null) {
-            _gameManager = FindObjectOfType<GameManager>();
+            _gameManager = GameManager.instance;
         }
 
         if (_gameManager.IsStoryLevel()) {

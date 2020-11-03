@@ -9,7 +9,7 @@ using System.Linq;
 public struct BubbleInfo {
     public bool isSet;
     public HAMSTER_TYPES type;
-    public bool isGravity;
+    public bool isPlasma;
     public bool isIce;
 }
 
@@ -146,7 +146,7 @@ public class BubbleManager : MonoBehaviour {
     NetworkedBubbleManager _netBubMan;
 
     protected virtual void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _levelManager = FindObjectOfType<LevelManager>();
         _netBubMan = GetComponent<NetworkedBubbleManager>();
 
@@ -406,7 +406,7 @@ public class BubbleManager : MonoBehaviour {
                     HAMSTER_TYPES type = startingBubbleInfo[i].type;
 
                     InitBubble(bubble, (int)type);
-                    bubble.SetPlasma(startingBubbleInfo[i].isGravity);
+                    bubble.SetPlasma(startingBubbleInfo[i].isPlasma);
                     bubble.SetIce(startingBubbleInfo[i].isIce);
                     bubble.node = i;
                     nodeList[i].bubble = bubble;

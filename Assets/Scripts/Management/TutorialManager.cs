@@ -22,7 +22,7 @@ public class TutorialManager : MonoBehaviour {
     LevelManager _levelManager;
 
     private void Awake() {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameManager = GameManager.instance;
         _levelManager = FindObjectOfType<LevelManager>();
     }
     // Use this for initialization
