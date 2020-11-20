@@ -6,24 +6,24 @@ public class OptionsMenu : MonoBehaviour {
 
     public OptionsPage[] pages;
 
-    int _curPageIndex;
+    public PopupWindow controlMapper;
 
-    ControlMapper _controlMapper;
+    int _curPageIndex;
 
     // Use this for initialization
     void Start () {
         _curPageIndex = 0;
 
         // Find the control remapper canvas from the game manager
-        _controlMapper = GameManager.instance.GetComponentInChildren<ControlMapper>();
+        //_controlMapper = GameManager.instance.GetComponentInChildren<ControlMapper>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if(InputState.GetButtonOnAnyControllerPressed("Right")) {
+        if(InputState.GetButtonOnAnyControllerPressed("PageRight")) {
             // Move page right
             MovePageRight();
-        } else if(InputState.GetButtonOnAnyControllerPressed("Left")) {
+        } else if(InputState.GetButtonOnAnyControllerPressed("PageLeft")) {
             // Move page left
             MovePageLeft();
         }
@@ -52,14 +52,14 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     public void OpenControlRemapper() {
-        _controlMapper.Open();
+        controlMapper.OpenPopup();
 
         // Disable focus on current page
         pages[_curPageIndex].LoseFocus();
     }
 
     public void CloseControlRemapper() {
-        _controlMapper.Close(false);
+        controlMapper.ClosePopup();
 
         // Enable current page
         pages[_curPageIndex].TakeFocus();

@@ -110,6 +110,7 @@ public class PlayerController : Entity {
     }
 
     bool _freeze; // Stops all player movement and input
+    public bool Freeze { get => _freeze; }
     float _freezeTimer = 0f;
     float _freezeTime = 0f;
 
@@ -156,7 +157,6 @@ public class PlayerController : Entity {
     public PhotonView PhotonView {
         get { return _photonView; }
     }
-
 
     // Events
     public UnityEvent significantEvent;

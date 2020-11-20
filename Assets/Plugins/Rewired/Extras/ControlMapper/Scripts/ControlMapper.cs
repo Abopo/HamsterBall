@@ -1005,7 +1005,7 @@ namespace Rewired.UI.ControlMapper {
             if(redraw) Redraw(true, true);
         }
 
-        private void OnRestoreDefaults() {
+        public void OnRestoreDefaults() {
             if(!initialized) return;
             ShowRestoreDefaultsWindow();
         }

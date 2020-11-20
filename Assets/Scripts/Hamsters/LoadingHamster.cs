@@ -20,4 +20,9 @@ public class LoadingHamster : MonoBehaviour {
     void Update() {
         
     }
+
+    public void ChooseRandomHamster() {
+        int color = Random.Range(0, 7);
+        _animator.SetInteger("Type", color);
+    }
 }

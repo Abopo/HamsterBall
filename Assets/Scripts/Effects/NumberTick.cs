@@ -59,7 +59,7 @@ public class NumberTick : MonoBehaviour {
         _value = startValue;
         _endValue = endValue;
 
-        _tickRate = Mathf.Abs(endValue - startValue) / 100;
+        _tickRate = Mathf.Abs(endValue - startValue) / 100f;
 
         if (_valueText != null) {
             _valueText.text = startValue.ToString();

@@ -1292,6 +1292,7 @@ public class BubbleManager : MonoBehaviour {
             }
         }
 
+        // If we got here there's no bubble on the low row
         if (_divider.isFlashing) {
             _divider.StopFlashing();
         }

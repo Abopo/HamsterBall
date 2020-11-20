@@ -57,8 +57,9 @@ public class VillageDoor : MonoBehaviour {
         SoundManager.mainAudio.Door();
 
         // Load the proper scene
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadScene(_sceneToLoad, LoadSceneMode.Additive);
+        _gameManager.sceneTransition.StartTransition(_sceneToLoad);
+        //SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.LoadScene(_sceneToLoad, LoadSceneMode.Additive);
 
         // Set the player's respawn point to this door
         _villagePlayerSpawn.SetSpawnPosition(transform.position);

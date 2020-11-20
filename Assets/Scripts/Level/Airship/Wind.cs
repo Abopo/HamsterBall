@@ -6,7 +6,8 @@ public class Wind : MonoBehaviour {
     public ParticleSystem leftwardWind;
     public ParticleSystem rightwardWind;
 
-    public float windForce;
+    public float playerPushForce;
+    public float ballPushForce;
 
     ShakeableTransform mainCamera;
 
@@ -39,7 +40,7 @@ public class Wind : MonoBehaviour {
     void Update() {
         if(_windBlowing) {
             // Find any bubbles that are in midair
-            PushThrownBubbles();
+            PushPlayersAndBubbles();
 
             _windBlowTimer += Time.deltaTime;
             if(_windBlowTimer >= _windBlowTime) {
@@ -78,17 +79,22 @@ public class Wind : MonoBehaviour {
         _windCooldownTimer = 0f;
     }
 
-    void PushThrownBubbles() {
+    void PushPlayersAndBubbles() {
         if(_allPlayers.Length == 0) {
             _allPlayers = FindObjectsOfType<PlayerController>();
         }
 
         // Run through all the players
         foreach (PlayerController player in _allPlayers) {
+            // Push the player
+            if(player.CurState != PLAYER_STATE.ATTACK && player.CurState != PLAYER_STATE.SHIFT && !player.Freeze) {
+                player.Physics.MoveX(playerPushForce * _windBlowingDir * Time.deltaTime);
+            }
+
             // if any of them have thrown a bubble and it's still in midair
             if(player.heldBall != null && player.heldBall.wasThrown && !player.heldBall.locked) {
                 // Push it based on wind direction
-                player.heldBall.AddForce(new Vector2(windForce * _windBlowingDir * Time.deltaTime, 0f));
+                player.heldBall.AddForce(new Vector2(ballPushForce * _windBlowingDir * Time.deltaTime, 0f));
             }
         }
     }

@@ -52,7 +52,9 @@ public class AISetupOption : MenuOption {
     }
 
     protected override void Select() {
-        //base.Select();
+        base.Select();
+        // Highlight the option beneath
+        adjOptions[1].Highlight();
     }
 
     public override void Highlight() {

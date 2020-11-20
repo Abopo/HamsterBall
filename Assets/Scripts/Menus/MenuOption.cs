@@ -16,8 +16,9 @@ public class MenuOption : MonoBehaviour {
     public bool isReady = true;
 
     public bool searchForAdj;
-
     public bool displaySelector;
+    public bool saveReturn; // if true, saves the previous option to return to it later
+
 
     //protected Vector2 _selectedPos;
     public bool isHighlighted;
@@ -181,6 +182,13 @@ public class MenuOption : MonoBehaviour {
         if (adjOptions[index] != null) {
             if (adjOptions[index].IsReady) {
                 _moved = true;
+
+                // If this option saves it's return value
+                if (adjOptions[index].saveReturn) {
+                    // Set the opposite index to ourself
+                    SaveReturn(index);
+                }
+
                 adjOptions[index].Highlight();
             } else {
                 // Search for a valid option in the same direction
@@ -189,6 +197,29 @@ public class MenuOption : MonoBehaviour {
                     validOption.Highlight();
                 }
             }
+        }
+    }
+
+    void SaveReturn(int index) {
+        int saveIndex = -1;
+
+        switch(index) {
+            case 0:
+                saveIndex = 2;
+                break;
+            case 1:
+                saveIndex = 3;
+                break;
+            case 2:
+                saveIndex = 0;
+                break;
+            case 3:
+                saveIndex = 1;
+                break;
+        }
+
+        if (saveIndex != -1) {
+            adjOptions[index].adjOptions[saveIndex] = this;
         }
     }
 

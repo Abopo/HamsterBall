@@ -1121,8 +1121,13 @@ public class Bubble : MonoBehaviour {
         petrifying = true;
         _petrified = true;
 
-        // Set the type to Gray
-        bubbleAnimator.SetInteger("Type", 3);
+        if(type == HAMSTER_TYPES.BOMB || isPlasma) {
+            // If we're certain special types pause our animation
+            bubbleAnimator.enabled = false;
+        } else {
+            // Set the type to Gray
+            bubbleAnimator.SetInteger("Type", 3);
+        }
 
         // Darken bubble and hamster sprite 
         bubbleAnimator.GetComponent<SpriteRenderer>().color = new Color(0.63f, 0.63f, 0.63f);

@@ -7,6 +7,7 @@ public class Board : MonoBehaviour {
     public GameObject leftCeiling;
     public GameObject rightCeiling;
     public GameObject bigCeiling;
+    public GameObject dangerBlock;
 
     public GameObject upperCenterWallCollider;
     public GameObject upperCenterWallOverlay;
@@ -21,9 +22,6 @@ public class Board : MonoBehaviour {
     GameManager _gameManager;
 
     private void Awake() {
-    }
-    // Start is called before the first frame update
-    void Start() {
         _gameManager = GameManager.instance;
 
         switch (_gameManager.gameMode) {
@@ -38,17 +36,16 @@ public class Board : MonoBehaviour {
                 if (bigCeiling != null) {
                     bigCeiling.SetActive(false);
                 }
+                if (dangerBlock != null) {
+                    dangerBlock.SetActive(false);
+                }
                 if (leftDivider != null) {
                     leftDivider.SetActive(true);
                 }
                 if (rightDivider != null) {
                     rightDivider.SetActive(true);
                 }
-                if (bigDivider != null) {
-                    bigDivider.SetActive(false);
-                }
                 break;
-
             case GAME_MODE.SP_CLEAR:
             case GAME_MODE.SURVIVAL:
                 if (leftCeiling != null) {
@@ -57,8 +54,8 @@ public class Board : MonoBehaviour {
                 if (rightCeiling != null) {
                     rightCeiling.SetActive(false);
                 }
-                if (bigCeiling != null) {
-                    bigCeiling.SetActive(true);
+                if (dangerBlock != null) {
+                    dangerBlock.SetActive(true);
                 }
                 goto case GAME_MODE.SP_POINTS;
             case GAME_MODE.SP_POINTS:
@@ -69,6 +66,15 @@ public class Board : MonoBehaviour {
                 break;
 
             case GAME_MODE.TEAMSURVIVAL:
+                if (leftCeiling != null) {
+                    leftCeiling.SetActive(false);
+                }
+                if (rightCeiling != null) {
+                    rightCeiling.SetActive(false);
+                }
+                if (dangerBlock != null) {
+                    dangerBlock.SetActive(false);
+                }
                 if (upperCenterWallCollider != null) {
                     upperCenterWallCollider.SetActive(false);
                 }
@@ -76,7 +82,7 @@ public class Board : MonoBehaviour {
                     upperCenterWallOverlay.SetActive(false);
                 }
                 if (bigCeiling != null) {
-                    bigCeiling.SetActive(false);
+                    bigCeiling.SetActive(true);
                 }
                 if (leftDivider != null) {
                     leftDivider.SetActive(false);
@@ -89,6 +95,9 @@ public class Board : MonoBehaviour {
                 }
                 break;
         }
+    }
+    // Start is called before the first frame update
+    void Start() {
     }
 
     // Update is called once per frame

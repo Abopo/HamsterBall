@@ -82,7 +82,7 @@ public class HamsterMeter : MonoBehaviour {
         _bubbleManager = bManager;
 
         int tallies = transform.childCount;
-        // Remove tallies until lined up with handicap.
+        // Remove/add tallies until lined up with length.
         while (lineLength != tallies) {
             if (lineLength < tallies) {
                 DestroyImmediate(transform.GetChild(tallies - 1).gameObject);
@@ -91,7 +91,7 @@ public class HamsterMeter : MonoBehaviour {
                 // Adjust Hamster Meter accordingly
                 // - Add a sprite
                 GameObject hamsterTally = GameObject.Instantiate(hamsterTallyObj, transform) as GameObject;
-                hamsterTally.transform.position = new Vector3(transform.GetChild(transform.childCount - 2).transform.position.x + 0.77f,
+                hamsterTally.transform.position = new Vector3(transform.GetChild(transform.childCount - 2).transform.position.x + 0.84f,
                                                                transform.position.y,
                                                                transform.position.z);
                 tallies++;

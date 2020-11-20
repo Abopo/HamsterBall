@@ -18,7 +18,7 @@ public class MasterVolumeSlider : MenuSlider {
         base.Start();
 
         //_selectedPos = transform.parent.position;
-        _slider = GetComponentInChildren<Slider>();
+        //_slider = GetComponentInChildren<Slider>();
         if (volumeType == 0) {
             _slider.value = ES3.Load("MasterVolume", 100f);
         } else if(volumeType == 1) {

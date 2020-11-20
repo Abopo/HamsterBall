@@ -45,6 +45,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -56,6 +58,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -67,7 +70,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -3
   m_Sprite: {fileID: 21300030, guid: 1c497621b1984f74eaeafad4a154f1e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -124,6 +127,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -135,6 +140,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -146,7 +152,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300010, guid: 1c497621b1984f74eaeafad4a154f1e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -247,6 +253,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -258,6 +266,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -269,7 +278,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300014, guid: 1c497621b1984f74eaeafad4a154f1e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -345,8 +354,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4396089131101487029}
   - component: {fileID: 3518222100665216694}
-  - component: {fileID: 1938051638778211468}
   - component: {fileID: 6063479776999516951}
+  - component: {fileID: 9140538560287732911}
+  - component: {fileID: 2531835860719773566}
   m_Layer: 0
   m_Name: KeyLetter
   m_TagString: Untagged
@@ -380,6 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ffcfb6d0266347848bf69a03919f483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showTextFoldout: 1
   showAppearanceFoldout: 1
   showMaterialFoldout: 1
   showPositionFoldout: 1
@@ -387,6 +398,7 @@ MonoBehaviour:
   showFunctionalityFoldout: 0
   showAudioFoldout: 0
   showEventFoldout: 0
+  showBetaFoldout: 0
   info:
   - pos: {x: -0.33666667, y: -0.5, z: 0}
     offset: {x: 0, y: 0, z: 0}
@@ -396,7 +408,7 @@ MonoBehaviour:
     rawIndex: 0
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 1
+    size: {x: 1, y: 1}
     alignment: 1
     drawOrder: 0
     ev: []
@@ -424,13 +436,17 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   _text: E
   drawText: E
   hyphenedText: E
   font: {fileID: 12800000, guid: 4cef79e3794c15e43956d875ccf465d8, type: 3}
-  color:
+  _color32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
+  _color: {r: 0, g: 0, b: 0, a: 1}
+  forceAnimation: 0
   richText: 1
   readDelay: 0
   speedReadScale: 2
@@ -477,70 +493,65 @@ MonoBehaviour:
   rawTopLeftBounds: {x: 0.33666667, y: -0.5, z: 0}
   rawBottomRightBounds: {x: -0.33666667, y: 0.5, z: 0}
   rawBottomRightTextBounds: {x: 0.67333335, y: -1, z: 0}
-  topLeftBounds: {x: -0.081233434, y: 0.19406012, z: 0.040965527}
-  topRightBounds: {x: 0.07842656, y: 0.19406012, z: 0.040965527}
-  bottomLeftBounds: {x: -0.081233434, y: -0.028454209, z: -0.040965527}
-  bottomRightBounds: {x: 0.07842656, y: -0.028454209, z: -0.040965527}
-  centerBounds: {x: -0.0014034361, y: 0.08280295, z: 0}
-  topLeftTextBounds: {x: -0.081233434, y: 0.19406012, z: 0.040965527}
-  topRightTextBounds: {x: 0.07842656, y: 0.19406012, z: 0.040965527}
-  bottomLeftTextBounds: {x: -0.081233434, y: -0.028454209, z: -0.040965527}
-  bottomRightTextBounds: {x: 0.07842656, y: -0.028454209, z: -0.040965527}
-  centerTextBounds: {x: -0.0014034361, y: 0.08280295, z: 0}
-  finalTopLeftTextBounds: {x: -0.081233434, y: 0.19406012, z: 0.040965527}
-  finalTopRightTextBounds: {x: 0.07842656, y: 0.19406012, z: 0.040965527}
-  finalBottomLeftTextBounds: {x: -0.081233434, y: -0.028454209, z: -0.040965527}
-  finalBottomRightTextBounds: {x: 0.07842656, y: -0.028454209, z: -0.040965527}
-  finalCenterTextBounds: {x: -0.0014034361, y: 0.08280295, z: 0}
+  topLeftBounds: {x: -0.09485082, y: 0.22018273, z: 0}
+  topRightBounds: {x: 0.092043936, y: 0.22018273, z: 0}
+  bottomLeftBounds: {x: -0.09485082, y: -0.05738372, z: 0}
+  bottomRightBounds: {x: 0.092043936, y: -0.05738372, z: 0}
+  centerBounds: {x: -0.0014034435, y: 0.08139951, z: 0}
+  topLeftTextBounds: {x: -0.09485082, y: 0.22018273, z: 0}
+  topRightTextBounds: {x: 0.092043936, y: 0.22018273, z: 0}
+  bottomLeftTextBounds: {x: -0.09485082, y: -0.05738372, z: 0}
+  bottomRightTextBounds: {x: 0.092043936, y: -0.05738372, z: 0}
+  centerTextBounds: {x: -0.0014034435, y: 0.08139951, z: 0}
+  finalTopLeftTextBounds: {x: -0.09485082, y: 0.22018273, z: 0}
+  finalTopRightTextBounds: {x: 0.092043936, y: 0.22018273, z: 0}
+  finalBottomLeftTextBounds: {x: -0.09485082, y: -0.05738372, z: 0}
+  finalBottomRightTextBounds: {x: 0.092043936, y: -0.05738372, z: 0}
+  finalCenterTextBounds: {x: -0.0014034435, y: 0.08139951, z: 0}
   unwrappedBottomRightTextBounds: {x: 0.67333335, y: -1, z: 0}
   onCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onUndrawnEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onRebuildEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onPrintEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onCustomEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: SuperTextMesh+CustomEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   onVertexMod:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: SuperTextMesh+VertexMod, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   onPreParse:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: SuperTextMesh+PreParse, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   debugMode: 0
   totalReadTime: 0.00001
-  totalUnreadTime: 0
+  totalUnreadTime: 0.00001
   currentReadTime: 0.00001
   autoRead: 1
   rememberReadPosition: 1
   autoQuality: 0
   drawOrder: 0
+  rtl: 0
   bestFit: 0
   latestNumber: 0
   currentUnReadTime: 0
   preParsedText: E
---- !u!23 &1938051638778211468
+--- !u!33 &6063479776999516951
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527073764328993828}
+  m_Mesh: {fileID: 0}
+--- !u!23 &9140538560287732911
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -554,6 +565,8 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -565,10 +578,11 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
+  m_StitchLightmapSeams: 1
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -576,12 +590,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &6063479776999516951
-MeshFilter:
+  m_SortingOrder: -1
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2531835860719773566
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8527073764328993828}
-  m_Mesh: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f3ec483f32772948a261212ed99562c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: -1
+  sortingLayer: Default

@@ -174,18 +174,20 @@ public class PlayerSpawner : MonoBehaviour {
 
     // TODO: this function is a little gross still, fix it up a bit
     public void SetupSwitchMeter(PlayerController player) {
-        if(player.team == 0) {
-            shiftMeters[leftMeters].gameObject.SetActive(true);
-            player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
-            shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
-            shiftMeters[leftMeters].GetIcon().material = player.SpriteRenderer.material;
-            shiftMeters[leftMeters++].GetIcon().enabled = true;
-        } else if(player.team == 1) {
-            shiftMeters[2 + rightMeters].gameObject.SetActive(true);
-            player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2+rightMeters]);
-            shiftMeters[2+rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
-            shiftMeters[2+rightMeters].GetIcon().material = player.SpriteRenderer.material;
-            shiftMeters[2+rightMeters++].GetIcon().enabled = true;
+        if (shiftMeters.Length > 0) {
+            if (player.team == 0) {
+                shiftMeters[leftMeters].gameObject.SetActive(true);
+                player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[leftMeters]);
+                shiftMeters[leftMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
+                shiftMeters[leftMeters].GetIcon().material = player.SpriteRenderer.material;
+                shiftMeters[leftMeters++].GetIcon().enabled = true;
+            } else if (player.team == 1) {
+                shiftMeters[2 + rightMeters].gameObject.SetActive(true);
+                player.GetComponent<PlayerGUI>().SetMeter(shiftMeters[2 + rightMeters]);
+                shiftMeters[2 + rightMeters].GetIcon().sprite = playerIcons[(int)player.CharaInfo.name];
+                shiftMeters[2 + rightMeters].GetIcon().material = player.SpriteRenderer.material;
+                shiftMeters[2 + rightMeters++].GetIcon().enabled = true;
+            }
         }
     }
 

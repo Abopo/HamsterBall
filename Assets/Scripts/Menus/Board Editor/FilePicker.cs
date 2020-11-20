@@ -35,8 +35,11 @@ public class FilePicker : MonoBehaviour {
         foreach (TextAsset tA in allFiles) {
             linesFromFile = tA.text.Split("\n"[0]);
             linesFromFile[0] = linesFromFile[0].Replace("\r", "");
-
-            CreateFileObject(linesFromFile[0]);
+            if(linesFromFile[0].Contains(".meta")) {
+                continue;
+            } else {
+                CreateFileObject(linesFromFile[0]);
+            }
         }
 #else
         // Load any player-made boards
@@ -44,7 +47,11 @@ public class FilePicker : MonoBehaviour {
         FileInfo[] boardFiles = createdBoards.GetFiles();
         foreach(FileInfo bF in boardFiles) {
             string name = bF.Name.Replace(".txt", "");
-            CreateFileObject(name);
+            if(name.Contains(".meta")) {
+                continue;
+            } else {
+                CreateFileObject(name);
+            }
         }
 #endif
 

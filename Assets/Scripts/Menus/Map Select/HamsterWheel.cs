@@ -253,10 +253,11 @@ public class HamsterWheel : MonoBehaviour {
         } else {
             //LoadingScreen.sceneToLoad = levelName;
             //SceneManager.LoadScene("LoadingScreen");
-            SceneManager.LoadScene(levelName);
+            //SceneManager.LoadScene(levelName);
+            _gameManager.sceneTransition.StartTransition(levelName);
         }
 
-		FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuGameStart);
+        FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.MainMenuGameStart);
     }
 
     public void LoadCharacterSelect() {

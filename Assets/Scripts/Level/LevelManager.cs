@@ -9,6 +9,7 @@ public enum BOARDS { FOREST = 0, MOUNTAIN, BEACH, CITY, CORPORATION, LABORATORY,
 public class LevelManager : MonoBehaviour {
     public ResultsScreen mpResultsScreen;
     public ResultsScreen spResultsScreen;
+    public SurvivalResults svResultsScreen;
     public ResultsScreen continueScreen;
     public PauseMenu pauseMenu;
     public SuperTextMesh marginMultiplierText;
@@ -49,11 +50,6 @@ public class LevelManager : MonoBehaviour {
         _gameManager = GameManager.instance;
         board = _gameManager.selectedBoard;
 
-        // If we're not online
-        if (!PhotonNetwork.connectedAndReady) {
-            LoadStagePrefab();
-        }
-
         SceneManager.sceneUnloaded += OnSceneExit;
 
         Debug.Log("Stop all events on Scene Switch");
@@ -63,6 +59,11 @@ public class LevelManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        // If we're not online
+        if (!PhotonNetwork.connectedAndReady) {
+            LoadStagePrefab();
+        }
+
         if (_gameManager.isSinglePlayer) {
             _bubbleManager = FindObjectOfType<BubbleManager>();
         }
@@ -284,7 +285,7 @@ public class LevelManager : MonoBehaviour {
         int finalResult = DetermineFinalResult(team, result);
 
         // If this was a versus match
-        if (!_gameManager.isSinglePlayer || _gameManager.gameMode == GAME_MODE.MP_VERSUS) {
+        if (!_gameManager.isSinglePlayer && _gameManager.gameMode == GAME_MODE.MP_VERSUS) {
             // Deal with best 2/3 stuff
             // Draw
             if(finalResult == 0) {
@@ -298,26 +299,6 @@ public class LevelManager : MonoBehaviour {
                     // Start the banner sequence
                     FindObjectOfType<GameEndSequence>().StartSequence(finalResult);
                 }
-                /*
-                if (_gameManager.leftTeamGames >= 2 && _gameManager.rightTeamGames >= 2) {
-                    // the whole set was a draw
-                    FindObjectOfType<GameEndSequence>().StartSequence(0);
-                    //ActivateFinalResultsScreen(0);
-                } else if (_gameManager.leftTeamGames >= 2) {
-                    // Left team has won the set
-                    // Activate final results screen
-                    FindObjectOfType<GameEndSequence>().StartSequence(-1);
-                    //ActivateFinalResultsScreen(-1);
-                } else if (_gameManager.rightTeamGames >= 2) {
-                    // Right team has won the set
-                    // Activate final results screen
-                    FindObjectOfType<GameEndSequence>().StartSequence(1);
-                    //ActivateFinalResultsScreen(1);
-                } else {
-                    // Set not done so activate continue screen
-                    continueScreen.Activate(finalResult);
-                }
-                */
             } else {
                 // If the left team has won
                 if(finalResult == -1) {
@@ -347,9 +328,9 @@ public class LevelManager : MonoBehaviour {
                 }
             }
         } else if (_gameManager.gameMode == GAME_MODE.SURVIVAL || _gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
-            // TODO: make a different results screen for these modes
-            ActivateFinalResultsScreen(finalResult);
-        // If this was a single player level
+            svResultsScreen.Activate();
+
+            // If this was a single player level
         } else {
             // If the player won and it's a continue level
             if (finalResult == -1 && continueLevel) {
@@ -386,7 +367,8 @@ public class LevelManager : MonoBehaviour {
                     spResultsScreen.Activate(result);
                 }
             }
-            // If we are in multiplayer
+
+        // If we are in multiplayer
         } else if (!_gameManager.isSinglePlayer && mpResultsScreen != null) {
             mpResultsScreen.Activate(result);
         } else {// TODO: failsafe some default results screen

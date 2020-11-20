@@ -51,12 +51,8 @@ public class Hamster : Entity {
         get { return _curState; }
     }
 
-    SpriteOutline _spriteOutline;
-
     protected override void Awake() {
         base.Awake();
-
-        _spriteOutline = GetComponentInChildren<SpriteOutline>();
     }
     // Use this for initialization
     protected override void Start () {
@@ -117,8 +113,6 @@ public class Hamster : Entity {
         }
         _animator.SetInteger("Type", (int)type);
 
-        SetOutlineColor();
-
         curMoveSpeed = _moveSpeed;
     }
 
@@ -135,8 +129,6 @@ public class Hamster : Entity {
         type = cType;
         _animator.SetInteger("Type", (int)type);
 
-        SetOutlineColor();
-
         curMoveSpeed = _moveSpeed;
     }
 
@@ -146,40 +138,6 @@ public class Hamster : Entity {
         _animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Art/Animations/Hamsters/AnimationObjects/Plasma/PlasmaHamster");
         _moveSpeed = gravityMoveSpeed;
         gravity = 10;
-    }
-
-    void SetOutlineColor() {
-        if(_spriteOutline != null) {
-            switch (type) {
-                case HAMSTER_TYPES.BLUE:
-                    _spriteOutline.color = Color.blue;
-                    break;
-                case HAMSTER_TYPES.GRAY:
-                    _spriteOutline.color = Color.gray;
-                    break;
-                case HAMSTER_TYPES.GREEN:
-                    _spriteOutline.color = Color.green;
-                    break;
-                case HAMSTER_TYPES.PINK:
-                    _spriteOutline.color = new Color(1.0f, 0f, 0.5f);
-                    break;
-                case HAMSTER_TYPES.PURPLE:
-                    _spriteOutline.color = new Color(0.8f, 0f, 1f);
-                    break;
-                case HAMSTER_TYPES.RED:
-                    _spriteOutline.color = Color.red;
-                    break;
-                case HAMSTER_TYPES.YELLOW:
-                    _spriteOutline.color = Color.yellow;
-                    break;
-                case HAMSTER_TYPES.SKULL:
-                    _spriteOutline.color = Color.black;
-                    break;
-                case HAMSTER_TYPES.RAINBOW:
-                    _spriteOutline.color = Color.white;
-                    break;
-            }
-        }
     }
 
     int SelectValidNormalType() {

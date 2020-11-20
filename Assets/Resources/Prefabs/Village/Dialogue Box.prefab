@@ -56,17 +56,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1127760167359782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.41960785, b: 0.41960785, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300006, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -76,6 +76,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7943544192891802699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1127760167359782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
@@ -248,7 +249,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1459018762355614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
@@ -270,7 +271,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1459018762355614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
@@ -309,6 +310,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 360865165690247606}
   - {fileID: 277106035922875202}
   m_Father: {fileID: 224040003984777938}
   m_RootOrder: 1
@@ -335,17 +337,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1504296290664760}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.33088237, b: 0.33088237, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -355,6 +357,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &114259823011345050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,7 +367,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1504296290664760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -378,6 +381,9 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!114 &114247054130327088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,11 +393,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 1504296290664760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!1 &99425572113933848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 360865165690247606}
+  m_Layer: 0
+  m_Name: Outline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &360865165690247606
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99425572113933848}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224683819317406402}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &241803465215131220
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,17 +489,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 241803465215131220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -468,6 +509,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &5056950137692239054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,7 +519,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 241803465215131220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
@@ -492,6 +534,7 @@ GameObject:
   - component: {fileID: 277106035922875202}
   - component: {fileID: 6868972751135729580}
   - component: {fileID: 7378622132225329631}
+  - component: {fileID: 4969223191731000458}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -511,7 +554,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224683819317406402}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -538,6 +581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ffcfb6d0266347848bf69a03919f483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showTextFoldout: 1
   showAppearanceFoldout: 1
   showMaterialFoldout: 1
   showPositionFoldout: 1
@@ -545,6 +589,7 @@ MonoBehaviour:
   showFunctionalityFoldout: 0
   showAudioFoldout: 0
   showEventFoldout: 0
+  showBetaFoldout: 0
   info:
   - pos: {x: -141.905, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
@@ -554,7 +599,7 @@ MonoBehaviour:
     rawIndex: 0
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -582,6 +627,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -122.6, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -590,7 +637,7 @@ MonoBehaviour:
     rawIndex: 0
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -618,6 +665,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -107.8325, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -626,7 +675,7 @@ MonoBehaviour:
     rawIndex: 1
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -654,6 +703,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -92.8175, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -662,7 +713,7 @@ MonoBehaviour:
     rawIndex: 2
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -690,6 +741,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -84.155, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -698,7 +751,7 @@ MonoBehaviour:
     rawIndex: 3
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -706,7 +759,7 @@ MonoBehaviour:
     colorData: {fileID: 0}
     gradientData: {fileID: 0}
     textureData: {fileID: 0}
-    delayData: {fileID: 11400000, guid: 3b262f9f40b554b17b2f2737c504350b, type: 2}
+    delayData: {fileID: 0}
     waveData: {fileID: 0}
     jitterData: {fileID: 0}
     readDelay: 0
@@ -726,6 +779,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -77.472496, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -734,7 +789,7 @@ MonoBehaviour:
     rawIndex: 4
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -762,6 +817,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -59.899994, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -770,7 +827,7 @@ MonoBehaviour:
     rawIndex: 5
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -798,6 +855,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -44.307495, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -806,7 +865,7 @@ MonoBehaviour:
     rawIndex: 6
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -834,6 +893,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -28.797493, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -842,7 +903,7 @@ MonoBehaviour:
     rawIndex: 7
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -870,6 +931,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -22.11499, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -878,7 +941,7 @@ MonoBehaviour:
     rawIndex: 8
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -906,6 +969,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -0.0874939, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -914,7 +979,7 @@ MonoBehaviour:
     rawIndex: 9
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -942,6 +1007,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 15.340012, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -950,7 +1017,7 @@ MonoBehaviour:
     rawIndex: 10
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -978,6 +1045,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 30.602509, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -986,7 +1055,7 @@ MonoBehaviour:
     rawIndex: 11
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1014,6 +1083,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 42.97751, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1022,7 +1093,7 @@ MonoBehaviour:
     rawIndex: 12
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1050,6 +1121,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 49.660004, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1058,7 +1131,7 @@ MonoBehaviour:
     rawIndex: 13
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1086,6 +1159,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 62.035004, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1094,7 +1169,7 @@ MonoBehaviour:
     rawIndex: 14
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1122,6 +1197,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 77.6275, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1130,7 +1207,7 @@ MonoBehaviour:
     rawIndex: 15
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1158,6 +1235,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 84.31, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1166,7 +1245,7 @@ MonoBehaviour:
     rawIndex: 16
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1194,6 +1273,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 99.655, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1202,7 +1283,7 @@ MonoBehaviour:
     rawIndex: 17
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1230,6 +1311,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 107.41, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1238,7 +1321,7 @@ MonoBehaviour:
     rawIndex: 18
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1266,6 +1349,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 122.837494, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1274,7 +1359,7 @@ MonoBehaviour:
     rawIndex: 19
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1302,6 +1387,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 137.85251, y: 0, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1310,7 +1397,7 @@ MonoBehaviour:
     rawIndex: 20
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1338,6 +1425,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -141.905, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1346,7 +1435,7 @@ MonoBehaviour:
     rawIndex: 21
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1374,6 +1463,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -126.4775, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1382,7 +1473,7 @@ MonoBehaviour:
     rawIndex: 22
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1410,6 +1501,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -119.795, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1418,7 +1511,7 @@ MonoBehaviour:
     rawIndex: 23
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1446,6 +1539,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -108.1625, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1454,7 +1549,7 @@ MonoBehaviour:
     rawIndex: 24
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1482,6 +1577,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -93.395, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1490,7 +1587,7 @@ MonoBehaviour:
     rawIndex: 25
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1518,6 +1615,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -71.36749, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1526,7 +1625,7 @@ MonoBehaviour:
     rawIndex: 26
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1554,6 +1653,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -64.68499, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1562,7 +1663,7 @@ MonoBehaviour:
     rawIndex: 27
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1590,6 +1691,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -52.969986, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1598,7 +1701,7 @@ MonoBehaviour:
     rawIndex: 28
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1626,6 +1729,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -37.377487, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1634,7 +1739,7 @@ MonoBehaviour:
     rawIndex: 29
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1662,6 +1767,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -21.867485, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1670,7 +1777,7 @@ MonoBehaviour:
     rawIndex: 30
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1698,6 +1805,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: -6.6049805, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1706,7 +1815,7 @@ MonoBehaviour:
     rawIndex: 31
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1734,6 +1843,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 8.905014, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1742,7 +1853,7 @@ MonoBehaviour:
     rawIndex: 32
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1770,6 +1881,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 22.847519, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1778,7 +1891,7 @@ MonoBehaviour:
     rawIndex: 33
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1806,6 +1919,8 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   - pos: {x: 37.120026, y: -24.75, z: 0}
     offset: {x: 0, y: 0, z: 0}
     readTime: 0
@@ -1814,7 +1929,7 @@ MonoBehaviour:
     rawIndex: 34
     indent: 0
     drawAnimData: {fileID: 11400000, guid: 79b3a58975db94dc0878c84bf4315875, type: 2}
-    size: 24.75
+    size: {x: 24.75, y: 24.75}
     alignment: 0
     drawOrder: 0
     ev: []
@@ -1822,7 +1937,7 @@ MonoBehaviour:
     colorData: {fileID: 0}
     gradientData: {fileID: 0}
     textureData: {fileID: 0}
-    delayData: {fileID: 11400000, guid: 6a3757d540dc8463f893157efdd75437, type: 2}
+    delayData: {fileID: 0}
     waveData: {fileID: 0}
     jitterData: {fileID: 0}
     readDelay: 0
@@ -1842,15 +1957,19 @@ MonoBehaviour:
     IdxIdentifier: 0
     InfoInUse: 0
     chSize: 300
+    submeshChange: 0
+    invoked: 1
   _text: 'Hey! You want to play a few rounds? '
   drawText: 'Hey! You want to play a few rounds? '
   hyphenedText: 'Hey! You want to play
 
     a few rounds? '
   font: {fileID: 12800000, guid: 4cef79e3794c15e43956d875ccf465d8, type: 3}
-  color:
+  _color32:
     serializedVersion: 2
     rgba: 4294967295
+  _color: {r: 1, g: 1, b: 1, a: 1}
+  forceAnimation: 0
   richText: 1
   readDelay: 0
   speedReadScale: 2
@@ -1892,74 +2011,81 @@ MonoBehaviour:
   verticalLimit: 0
   verticalLimitMode: 2
   leftoverText: 
-  textMaterial: {fileID: 2100000, guid: fee6af3a11816984384d391b346d71c0, type: 2}
+  textMaterial: {fileID: 2100000, guid: e490a80c3724140c0ad176edb075a09e, type: 2}
   textMesh: {fileID: 0}
   rawTopLeftBounds: {x: 141.905, y: -24.75, z: 0}
   rawBottomRightBounds: {x: -141.905, y: 24.75, z: 0}
   rawBottomRightTextBounds: {x: 279.7575, y: -49.5, z: 0}
-  topLeftBounds: {x: -1.4207361, y: 1.6013163, z: -1}
-  topRightBounds: {x: 1.5257155, y: 1.6013163, z: -1}
-  bottomLeftBounds: {x: -1.4207361, y: 1.0874186, z: -1}
-  bottomRightBounds: {x: 1.5257155, y: 1.0874186, z: -1}
-  centerBounds: {x: 0.052489698, y: 1.3443675, z: -1}
-  topLeftTextBounds: {x: -1.4207361, y: 1.6013163, z: -1}
-  topRightTextBounds: {x: 1.4836434, y: 1.6013163, z: -1}
-  bottomLeftTextBounds: {x: -1.4207361, y: 1.0874186, z: -1}
-  bottomRightTextBounds: {x: 1.4836434, y: 1.0874186, z: -1}
-  centerTextBounds: {x: 0.03145367, y: 1.3443675, z: -1}
-  finalTopLeftTextBounds: {x: -1.4207361, y: 1.6013163, z: -1}
-  finalTopRightTextBounds: {x: 1.4836434, y: 1.6013163, z: -1}
-  finalBottomLeftTextBounds: {x: -1.4207361, y: 1.0874186, z: -1}
-  finalBottomRightTextBounds: {x: 1.4836434, y: 1.0874186, z: -1}
-  finalCenterTextBounds: {x: 0.03145367, y: 1.3443675, z: -1}
+  topLeftBounds: {x: 7.59719, y: 3.491448, z: -1}
+  topRightBounds: {x: 10.838287, y: 3.491448, z: -1}
+  bottomLeftBounds: {x: 7.59719, y: 2.9261603, z: -1}
+  bottomRightBounds: {x: 10.838287, y: 2.9261603, z: -1}
+  centerBounds: {x: 9.217739, y: 3.2088041, z: -1}
+  topLeftTextBounds: {x: 7.59719, y: 3.491448, z: -1}
+  topRightTextBounds: {x: 10.792007, y: 3.491448, z: -1}
+  bottomLeftTextBounds: {x: 7.59719, y: 2.9261603, z: -1}
+  bottomRightTextBounds: {x: 10.792007, y: 2.9261603, z: -1}
+  centerTextBounds: {x: 9.194599, y: 3.2088041, z: -1}
+  finalTopLeftTextBounds: {x: 7.59719, y: 3.491448, z: -1}
+  finalTopRightTextBounds: {x: 10.792007, y: 3.491448, z: -1}
+  finalBottomLeftTextBounds: {x: 7.59719, y: 2.9261603, z: -1}
+  finalBottomRightTextBounds: {x: 10.792007, y: 2.9261603, z: -1}
+  finalCenterTextBounds: {x: 9.194599, y: 3.2088041, z: -1}
   unwrappedBottomRightTextBounds: {x: 472.1475, y: -24.75, z: 0}
   onCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onUndrawnEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onRebuildEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onPrintEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onCustomEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: SuperTextMesh+CustomEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   onVertexMod:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: SuperTextMesh+VertexMod, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   onPreParse:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: SuperTextMesh+PreParse, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   debugMode: 0
   totalReadTime: 0.00001
-  totalUnreadTime: 0
+  totalUnreadTime: 0.00001
   currentReadTime: 0.00001
   autoRead: 1
   rememberReadPosition: 1
   autoQuality: 0
   drawOrder: 0
+  rtl: 0
   bestFit: 0
   latestNumber: 35
   currentUnReadTime: 0
   preParsedText: 'Hey! You want to play a few rounds? '
+--- !u!114 &4969223191731000458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255895071848574257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41164bea91b66aa408ff1ff1e1f959c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  superTextMesh: {fileID: 7378622132225329631}
+  outlineParent: {fileID: 360865165690247606}
+  detailLevel: 8
+  size: 0.02
+  color:
+    serializedVersion: 2
+    rgba: 4278190080
+  updateEveryFrame: 1
 --- !u!1 &281201858247478050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2014,17 +2140,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 281201858247478050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e72af4c7f8771724cb7ee7d0c0aa0643, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2034,6 +2160,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &752159121414496689
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,6 +2212,7 @@ MonoBehaviour:
   dialogueText: {fileID: 7378622132225329631}
   bottomPieces: {fileID: 5632298211050919091}
   innerPieces: {fileID: 6009362434011704129}
+  color: 0
 --- !u!1 &1785188580539003517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2139,17 +2267,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1785188580539003517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e72af4c7f8771724cb7ee7d0c0aa0643, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2159,6 +2287,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1970881648540490785
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,17 +2342,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1970881648540490785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e72af4c7f8771724cb7ee7d0c0aa0643, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2233,6 +2362,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1984774945848699562
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,17 +2417,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1984774945848699562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e72af4c7f8771724cb7ee7d0c0aa0643, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2307,6 +2437,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2293209568357690086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2397,17 +2528,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3529097343280452197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2417,6 +2548,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &5210700770826222835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2426,7 +2558,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3529097343280452197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
@@ -2484,17 +2616,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3766944564325385131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300004, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 2
   m_PreserveAspect: 1
@@ -2504,6 +2636,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5135175084177445975
 GameObject:
   m_ObjectHideFlags: 0
@@ -2558,17 +2691,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5135175084177445975}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e72af4c7f8771724cb7ee7d0c0aa0643, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2578,6 +2711,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5879793456906455484
 GameObject:
   m_ObjectHideFlags: 0
@@ -2632,17 +2766,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5879793456906455484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e72af4c7f8771724cb7ee7d0c0aa0643, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2652,6 +2786,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &6315644875736260294
 GameObject:
   m_ObjectHideFlags: 0
@@ -2708,17 +2843,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6315644875736260294}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2728,6 +2863,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &6235275148083908464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2737,7 +2873,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6315644875736260294}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
@@ -2797,17 +2933,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6877894762944012122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300002, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
@@ -2817,6 +2953,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &2590470806847115064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2826,7 +2963,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6877894762944012122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
@@ -2884,17 +3021,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7169838080043899122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300002, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
@@ -2904,6 +3041,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7342825332913441427
 GameObject:
   m_ObjectHideFlags: 0
@@ -2960,17 +3098,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7342825332913441427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2980,6 +3118,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &1042137209253201346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2989,7 +3128,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7342825332913441427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
@@ -3047,17 +3186,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8302001421702101498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e72af4c7f8771724cb7ee7d0c0aa0643, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -3067,6 +3206,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8350125877185891961
 GameObject:
   m_ObjectHideFlags: 0
@@ -3121,17 +3261,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8350125877185891961}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300002, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
@@ -3141,6 +3281,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8636185506114178848
 GameObject:
   m_ObjectHideFlags: 0
@@ -3197,17 +3338,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8636185506114178848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300002, guid: c4c585ab5f9fcda4aac272ec48560dcd, type: 3}
   m_Type: 2
   m_PreserveAspect: 1
@@ -3217,6 +3358,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &8276857362410939194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3226,7 +3368,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8636185506114178848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1

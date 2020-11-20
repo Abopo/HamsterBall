@@ -56,6 +56,10 @@ public class MenuSlider : MenuOption {
 
         base.Highlight();
 
+        if(_slider == null) {
+            _slider = GetComponent<Slider>();
+        }
+
         _slider.Select();
     }
 }

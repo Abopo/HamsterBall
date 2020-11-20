@@ -92,7 +92,11 @@ public class GoalMenu : MonoBehaviour {
 
         // Load backer sprite
         Sprite[] backerSprites = Resources.LoadAll<Sprite>("Art/UI/Level UI/Special-Stage-Boxes-GUI");
-        backer.sprite = backerSprites[(int)_gameManager.selectedBoard+1];
+        if((int)_gameManager.selectedBoard+1 > backerSprites.Length) {
+            backer.sprite = backerSprites[0];
+        } else {
+            backer.sprite = backerSprites[(int)_gameManager.selectedBoard + 1];
+        }
     }
 
     // Update is called once per frame

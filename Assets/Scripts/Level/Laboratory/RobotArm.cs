@@ -12,9 +12,13 @@ public class RobotArm : MonoBehaviour {
 
     ConveyorManager _conveyor;
 
+    ParticleSystem[] _steamParticles;
+
     private void Awake() {
         _animator = GetComponent<Animator>();
         _conveyor = FindObjectOfType<ConveyorManager>();
+
+        _steamParticles = GetComponentsInChildren<ParticleSystem>();
     }
     // Start is called before the first frame update
     void Start() {
@@ -51,7 +55,9 @@ public class RobotArm : MonoBehaviour {
     }
 
     public void SteamParticles() {
-
+        foreach(ParticleSystem steam in _steamParticles) {
+            steam.Play();
+        }
     }
 
     public void PlaceTopper() {

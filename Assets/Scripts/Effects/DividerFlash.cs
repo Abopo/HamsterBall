@@ -22,7 +22,7 @@ public class DividerFlash : MonoBehaviour {
 	void Start () {
         //_material = GetComponent<MeshRenderer>().material;
 
-        _dangerFlash = GetComponentInChildren<SpriteRenderer>();
+        _dangerFlash = GetComponentInChildren<SpriteRenderer>(true);
         if (_dangerFlash != null) {
             _dangerFlash.enabled = false;
         }
@@ -85,7 +85,7 @@ public class DividerFlash : MonoBehaviour {
 
     public void StopFlashing() {
         isFlashing = false;
-        _material.color = brown;
+        //_material.color = brown;
 
         FMODUnity.RuntimeManager.PlayOneShot(SoundManager.mainAudio.CrowdSmall1);
 

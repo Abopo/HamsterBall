@@ -31,10 +31,13 @@ public class LevelUI : MonoBehaviour {
             gM.FillOut();
         }
 
+        // If we're playing team survival mode
         if (_gameManager.gameMode == GAME_MODE.TEAMSURVIVAL) {
+            // Gotta turn off all the stuff in the upper center wall area
             foreach(GameMarker gM in _gameMarkers) {
                 gM.gameObject.SetActive(false);
             }
+            GetComponentInChildren<Canvas>().gameObject.SetActive(false);
         } else {
             if (_gameManager.leftTeamGames > 0) {
                 FillInGameMarker(0);

@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour {
 
     public GameSettings gameSettings;
 
+    public SceneTransition sceneTransition;
+
     public bool isPaused;
 
     public bool demoMode;
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour {
         if (_alive) {
             playerManager = GetComponent<PlayerManager>();
             gameSettings = GetComponent<GameSettings>();
+            sceneTransition = GetComponentInChildren<SceneTransition>();
 
             //QualitySettings.vSyncCount = 0;
             //Application.targetFrameRate = 200;
@@ -310,7 +313,7 @@ public class GameManager : MonoBehaviour {
         // If the new position is further than the player has gotten so far
         if ((newLevelInt >= furthestLevel && newWorldInt >= furthestWorld) || (newWorldInt > furthestWorld)) {
             // Update the story progress
-            ES3.Save<string>("StoryProgress", newStoryPos);
+            ES3.Save<int[]>("StoryProgress", newStoryPos);
         }
     }
 
@@ -369,7 +372,8 @@ public class GameManager : MonoBehaviour {
 
         prevLevel = "";
 
-        SceneManager.LoadScene("VillageScene");
+        sceneTransition.StartTransition("VillageScene");
+        //SceneManager.LoadScene("VillageScene");
     }
 
     public void BoardEditorButton() {
