@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuSlider : MenuOption {
+    public int slideAmount = 5;
 
     protected Slider _slider;
 
@@ -28,7 +29,7 @@ public class MenuSlider : MenuOption {
         // Right
         if (_player.GetButtonRepeating("Right")) {
             // Mode slider right
-            _slider.value += 5;
+            _slider.value += slideAmount;
             if (_slider.value > 100) {
                 _slider.value = 100;
             }
@@ -36,7 +37,7 @@ public class MenuSlider : MenuOption {
         // Left
         if (_player.GetButtonRepeating("Left")) {
             // Move slider left
-            _slider.value -= 5;
+            _slider.value -= slideAmount;
             if (_slider.value < 0) {
                 _slider.value = 0;
             }

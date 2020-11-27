@@ -71,7 +71,7 @@ public class MenuOption : MonoBehaviour {
             _player = ReInput.players.GetPlayer(0);
         }
 
-        _allOtherOptions = FindObjectsOfType<MenuOption>();
+        _allOtherOptions = FindObjectsOfType<MenuOption>(true);
 
         if (searchForAdj) {
             FindAdjOptions();
