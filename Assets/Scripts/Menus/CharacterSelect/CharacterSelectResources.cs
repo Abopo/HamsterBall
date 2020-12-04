@@ -11,6 +11,9 @@ public class CharaSelectInfo {
 public class CharacterSelectResources : MonoBehaviour {
     public CharacterSelector[] charaSelectors;
 
+    public Sprite lockedBacker;
+    public Sprite unlockedBacker;
+
     List<CharaSelectInfo>[] _charaInfo = new List<CharaSelectInfo>[(int)CHARACTERS.NUM_CHARACTERS];
     List<Sprite>[] _charaPortraits = new List<Sprite>[(int)CHARACTERS.NUM_CHARACTERS];
 

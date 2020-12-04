@@ -44,7 +44,7 @@ public class VillageManager : MonoBehaviour {
         int stage = storyProgress[1];
 
         switch (chapter) {
-            case 1:
+            case 1: // Forest
                 if(stage == 1) { // Start of the game
                     villageIndex = 0;
                 } else if(stage >= 2 && stage < 6) { // First stage finished
@@ -53,26 +53,49 @@ public class VillageManager : MonoBehaviour {
                     villageIndex = 2;
                 }
                 break;
-            case 2:
+            case 2: // Mountain
                 if(stage < 7) { // Start of Mountain (forest finished)
                     villageIndex = 3;
                 } else if(stage >= 7) { // Middle of mountain (fought goat)
                     villageIndex = 4;
                 }
                 break;
-            case 3:
-                if (stage >= 3) { // Skull hamster
-                    villageIndex = 6;
-                } else if (stage >= 1) { // Mountain finished 
+            case 3: // Beach
+                if(stage < 3) { // Mountain finished
                     villageIndex = 5;
-                }
-                break;
-            case 4:
-                if(stage >= 1) { // Beach finished
+                } else if (stage >= 3 && stage < 6) { // Skull hamster
+                    villageIndex = 6;
+                } else if (stage >= 6) { // Beach half
                     villageIndex = 7;
                 }
                 break;
-            // TODO: Finish this switch statement
+            case 4: // City
+                if(stage < 2) { // Beach finished
+                    villageIndex = 8;
+                } else if(stage >= 2 && stage < 5) { // Bomb Hamster
+                    villageIndex = 9;
+                } else if(stage >= 5) { // City half
+                    villageIndex = 10;
+                }
+                break;
+            case 5: // Corporation
+                if(stage < 2) { // City finished
+                    villageIndex = 11;
+                } else if (stage >= 2 && stage < 5) { // Plasma Hamster
+                    villageIndex = 12;
+                } else if (stage >= 5) { // Corporation half
+                    villageIndex = 13;
+                }
+                break;
+            case 6: // Airship
+                if (stage < 5) { // Corporation finished
+                    villageIndex = 13;
+                } else if(stage >= 5 && stage < 10) { // Airship half
+                    villageIndex = 14;
+                } else { // Game finished
+                    villageIndex = 15;
+                }
+                break;
         }
     }
 

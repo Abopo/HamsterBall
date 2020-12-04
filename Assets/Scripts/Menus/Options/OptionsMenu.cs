@@ -8,6 +8,9 @@ public class OptionsMenu : MonoBehaviour {
 
     public PopupWindow[] popups;
 
+    public ArrowButton leftArrow;
+    public ArrowButton rightArrow;
+
     int _curPageIndex;
     int _curPopupIndex;
 

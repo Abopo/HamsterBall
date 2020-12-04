@@ -318,6 +318,9 @@ public class CharacterSelector : MonoBehaviour {
             SetColor(charaColor);
         }
 
+        // Change animator to correct character
+        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaInfo[(int)curCharacterIcon.charaName][0].animator;
+
         charaWindow.pullDownWindow.Show();
 
         // Play a sound
@@ -372,8 +375,6 @@ public class CharacterSelector : MonoBehaviour {
 
         // Change portrait to correct character
         charaWindow.charaPortrait.sprite = _resources.CharaPortraits[(int)charaIcon.charaName][0];
-        // Change animator to correct character
-        charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaInfo[(int)charaIcon.charaName][0].animator;
         // Change name to correct character
         charaWindow.charaName.GetComponentInChildren<SuperTextMesh>().text = _resources.CharaNames[(int)charaIcon.charaName];
 
@@ -470,8 +471,10 @@ public class CharacterSelector : MonoBehaviour {
         if (curCharacterIcon.charaName == CHARACTERS.LACKEY) {
             // Change animator to correct character
             charaWindow.CharaAnimator.runtimeAnimatorController = _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].animator;
+            // Also make sure the outline is turned off
+            charaWindow.CharaAnimator.GetComponentInChildren<LinesSprite>().turnOff = true;
         }
-    
+
         // Change material to correct color
         charaWindow.PlayerController.SpriteRenderer.material = _resources.CharaInfo[(int)curCharacterIcon.charaName][charaColor - 1].material;
 

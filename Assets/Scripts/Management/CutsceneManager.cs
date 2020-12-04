@@ -96,6 +96,9 @@ public class CutsceneManager : MonoBehaviour {
     }
 
     void Start() {
+        // Make sure we're not showing any text
+        dialoguetext.text = "";
+
         if (fileToLoad == null || fileToLoad == "") {
             //fileToLoad = "World1/1-1/ExampleCutscene";
         } else {
@@ -108,6 +111,10 @@ public class CutsceneManager : MonoBehaviour {
         //_gameManager.FullPause();
 
         // Make sure scene is visible
+        // All the main cutscene objects are contained in one parent
+        leftChara1.transform.parent.gameObject.SetActive(true);
+
+        /*
         //titleText.gameObject.SetActive(true);
         leftChara1.gameObject.SetActive(true);
         leftChara2.gameObject.SetActive(true);
@@ -118,6 +125,10 @@ public class CutsceneManager : MonoBehaviour {
         backgroundSprite.gameObject.SetActive(true);
         textBacker.gameObject.SetActive(true);
         dialoguetext.gameObject.SetActive(true);
+        dialoguetext.text = "";
+        */
+
+        // Make sure we're not showing any text yet
         dialoguetext.text = "";
 
         _textAsset = Resources.Load<TextAsset>("Text/" + textPath);
@@ -141,6 +152,10 @@ public class CutsceneManager : MonoBehaviour {
 
     void EndCutscene() {
         // Turn off objects in the scene
+        // All the main cutscene objects are contained in one parent
+        leftChara1.transform.parent.gameObject.SetActive(false);
+
+        /*
         //titleText.gameObject.SetActive(false);
         leftChara1.gameObject.SetActive(false);
         leftChara2.gameObject.SetActive(false);
@@ -151,6 +166,7 @@ public class CutsceneManager : MonoBehaviour {
         backgroundSprite.gameObject.SetActive(false);
         textBacker.gameObject.SetActive(false);
         dialoguetext.gameObject.SetActive(false);
+        */
 
         // Move characters off screen as well
         leftChara1.GoOffscreen();
@@ -193,7 +209,7 @@ public class CutsceneManager : MonoBehaviour {
             ReadEscapeCharacter();
         }
 
-        if(_player.GetButtonDown("Pause") && _isPlaying) {
+        if(_player.GetButtonDown("Cancel") && _isPlaying) {
             if(!skipCutsceneWindow.activeSelf) {
                 // Turn on the skip cutscene window
                 skipCutsceneWindow.SetActive(true);
@@ -204,18 +220,6 @@ public class CutsceneManager : MonoBehaviour {
                 // Pause the text writer
                 _textWriter.paused = true;
             } else {
-                // Turn off the skip cutscene window
-                skipCutsceneWindow.SetActive(false);
-
-                // Turn on cutscene controls
-                _ready = true;
-
-                // Unpause the text writer
-                _textWriter.paused = false;
-            }
-        }
-        if(_player.GetButtonDown("Cancel")) {
-            if(skipCutsceneWindow.activeSelf) {
                 // Turn off the skip cutscene window
                 skipCutsceneWindow.SetActive(false);
 

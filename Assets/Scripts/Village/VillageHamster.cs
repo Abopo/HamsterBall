@@ -12,7 +12,9 @@ public class VillageHamster : MonoBehaviour {
 
     // I'm thinking there might need to be a despawnIndex as well?
 
+    // Hamster dialogue has a limit of ~77 characters
     public DialogueDictionary dialogueDictionary;
+
     public string demoDialogue;
 
     int _villageIndex; // The current index of the village

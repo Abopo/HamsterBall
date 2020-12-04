@@ -8,7 +8,7 @@ public class ResultsScreen : MonoBehaviour {
     public SuperTextMesh winningTeamText;
     public Image winningTeamSprite;
     public MenuButton mainMenuButton;
-    public SpriteRenderer flower;
+    public Image flower;
     public Sprite[] flowerSprites; // These are the "stars" players earn depending on how good they did
     public bool isContinue;
 
@@ -106,7 +106,7 @@ public class ResultsScreen : MonoBehaviour {
             _gameManager = GameManager.instance;
         }
 
-        if (_gameManager.IsStoryLevel()) {
+        if (_gameManager.gameMode != GAME_MODE.MP_VERSUS) {
             SetSinglePlayerResultsText(result);
 
             // If this is the last level and the player won
@@ -117,6 +117,7 @@ public class ResultsScreen : MonoBehaviour {
             SetSinglePlayerResultsText(result);
 
             flower.sprite = flowerSprites[2];
+            flower.SetNativeSize();
         } else {
             SetWinningTeamText(result);
         }
@@ -169,6 +170,7 @@ public class ResultsScreen : MonoBehaviour {
 
         // Set the flower sprite
         flower.sprite = flowerSprites[flowerCount-1];
+        flower.SetNativeSize();
 
         // Save the flower count (if it's better!)
         if (_gameManager.isCoop) {

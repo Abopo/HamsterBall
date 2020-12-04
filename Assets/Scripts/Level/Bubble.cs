@@ -397,10 +397,13 @@ public class Bubble : MonoBehaviour {
         if(other.gameObject.tag == "Ceiling" && !locked) {
             CollisionWithBoard(other.transform.GetComponent<Ceiling>().bubbleManager);
         }
-        if (other.gameObject.tag == "Bottom") {
-            HandleDrop();
-		}
 	}
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.tag == "Bottom") {
+            HandleDrop();
+        }
+    }
 
     void HandleDrop() {
         // Determine drop strength

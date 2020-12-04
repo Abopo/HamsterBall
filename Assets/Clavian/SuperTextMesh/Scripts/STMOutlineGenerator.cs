@@ -73,9 +73,13 @@ public class STMOutlineGenerator : MonoBehaviour {
     }
     public void RefreshOutlines() {
         for (int i = 0; i < detailLevel; i++) {
-            if (superTextMesh.uiMode) {
+            if(allRenderers[i] == null) {
+                continue;
+            }
+
+            if (superTextMesh.uiMode && allRenderers[i].canvasRenderer !=  null) {
                 allRenderers[i].canvasRenderer.SetMesh(superTextMesh.textMesh);
-            } else {
+            } else if (allRenderers[i].meshFilter != null) {
                 CloneTextMesh();
                 allRenderers[i].meshFilter.sharedMesh = sharedOutlineMesh;
             }
@@ -157,7 +161,11 @@ public class STMOutlineGenerator : MonoBehaviour {
 
                     newRenderer.meshFilter = newRenderer.gameObject.AddComponent<MeshFilter>();
                     newRenderer.meshRenderer = newRenderer.gameObject.AddComponent<MeshRenderer>();
-
+                    
+                    // If this text has a sorting order component
+                    if(GetComponent<STMChangeSortingOrder>() != null) {
+                        newRenderer.meshRenderer.sortingOrder = GetComponent<STMChangeSortingOrder>().sortingOrder;
+                    }
 
                     if (sharedOutlineMesh == null) {
                         CloneTextMesh();

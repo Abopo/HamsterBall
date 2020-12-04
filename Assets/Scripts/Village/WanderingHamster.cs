@@ -29,8 +29,13 @@ public class WanderingHamster : MonoBehaviour {
         }
 
         // Choose a type at random
-        _type = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
-        _animator.SetInteger("Type", _type);
+        //_type = Random.Range(0, (int)HAMSTER_TYPES.NUM_NORM_TYPES);
+        //_animator.SetInteger("Type", _type);
+    }
+
+    public void SetType(int type) {
+        _type = type;
+        _animator.SetInteger("Type", type);
     }
 
     public void ChooseRoom() {

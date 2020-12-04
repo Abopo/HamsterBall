@@ -36,7 +36,7 @@ public class TutorialManager : MonoBehaviour {
             _aiController.GetComponent<AIController>().enabled = false;
         }
 
-        tutorialInfoText.gameObject.SetActive(false);
+        tutorialInfoText.transform.parent.gameObject.SetActive(false);
 
         _tutorialTime = 0.5f;
 
@@ -185,7 +185,7 @@ public class TutorialManager : MonoBehaviour {
         }
 
         // Hide the info text during cutscenes
-        tutorialInfoText.gameObject.SetActive(false);
+        tutorialInfoText.transform.parent.gameObject.SetActive(false);
 
         _gameManager.FullPause();
     }
@@ -199,7 +199,8 @@ public class TutorialManager : MonoBehaviour {
     }
 
     void CutsceneEnded() {
-        tutorialInfoText.gameObject.SetActive(true);
+        tutorialInfoText.transform.parent.gameObject.SetActive(true);
+
         _levelManager.GameStart();
     }
 

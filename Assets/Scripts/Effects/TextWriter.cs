@@ -46,7 +46,7 @@ public class TextWriter : MonoBehaviour {
 
                 _index++;
                 _writeTimer = 0f;
-                if(_displayString == _textToWrite) {
+                if(_displayString == _textToWrite || _index >= _textToWrite.Length) {
                     done = true;
                     _done = true;
                 }
@@ -85,5 +85,35 @@ public class TextWriter : MonoBehaviour {
     public void ClearText() {
         _displayString = "";
         displayText.text = _displayString;
+    }
+
+    public void GetButton(string eventString, STMTextInfo textInfo) {
+        Player player = ReInput.players.GetPlayer(0);
+        ActionElementMap aeMap = null;
+
+        switch (eventString) {
+            case "Jump":
+                Debug.Log("Find Jump key");
+                aeMap = player.controllers.maps.GetFirstButtonMapWithAction(2, true);
+                break;
+            case "Catch":
+                aeMap = player.controllers.maps.GetFirstButtonMapWithAction(3, true);
+                break;
+            case "Attack":
+                aeMap = player.controllers.maps.GetFirstButtonMapWithAction(4, true);
+                break;
+            case "Swap":
+                aeMap = player.controllers.maps.GetFirstButtonMapWithAction(5, true);
+                break;
+        }
+
+        if (aeMap != null) {
+            // If we haven't inserted the button yet
+            char blah = _displayString[textInfo.rawIndex];
+            if (blah == '?') {
+                _displayString = _displayString.Remove(textInfo.rawIndex, 1);
+                _displayString = _displayString.Insert(textInfo.rawIndex, aeMap.elementIdentifierName);
+            }
+        }
     }
 }

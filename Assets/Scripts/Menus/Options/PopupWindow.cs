@@ -5,6 +5,9 @@ using UnityEngine;
 public class PopupWindow : Menu {
     public Menu parentMenu;
 
+
+    RectTransform _rectTransform;
+
     float _slideSpd = 1500f;
     int _slideDir;
     bool _sliding;
@@ -12,6 +15,8 @@ public class PopupWindow : Menu {
     // Start is called before the first frame update
     protected override void Start() {
         base.Start();
+
+        _rectTransform = GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
@@ -19,7 +24,7 @@ public class PopupWindow : Menu {
         base.Update();
 
         if(_sliding) {
-            transform.Translate(_slideSpd * _slideDir * Time.deltaTime, 0f, 0f);
+            _rectTransform.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x + _slideSpd * _slideDir * Time.deltaTime, 0f);
             CheckSlidePos();
         } else {
             if(InputState.GetButtonOnAnyControllerPressed("Cancel")) {

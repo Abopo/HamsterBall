@@ -23,12 +23,12 @@ public class DataManager : MonoBehaviour {
     void InitPlayerPrefs() {
         // These prefs are only reset on the first launch of the game.
         if (ES3.Load<int>("FirstTimePlaying", 0) == 0) {
-            int[] storyProgress = new int[2] { 5, 3 };
+            int[] storyProgress = new int[2] { 1, 6 };
             ES3.Save<int[]>("StoryProgress", storyProgress); // How far into the story the player is (used to lock/unlock story levels and determine the village index)
-            int[] storyPos = new int[2] { 4, 1 };
+            int[] storyPos = new int[2] { 1, 2 };
             ES3.Save<int[]>("StoryPos", storyPos); // Last place in the story the player was on (used to position the selector in the story select scene)
 
-            // Stages
+            // Stage Unlocks
             ES3.Save<int>("Forest", 1);
             ES3.Save<int>("Mountain", 1);
             ES3.Save<int>("Beach", 1);
@@ -38,6 +38,10 @@ public class DataManager : MonoBehaviour {
             ES3.Save<int>("Airship", 1);
             ES3.Save<int>("Crashed Ship", 1);
 
+            // Character Unlocks
+            ES3.Save<bool>("Lackey", true);
+            ES3.Save<bool>("Croc", false);
+
             // Chosen players
             ES3.Save<int>("Player1Character", CHARACTERS.BOY);
             ES3.Save<int>("Player1Color", 1);
@@ -45,7 +49,7 @@ public class DataManager : MonoBehaviour {
             ES3.Save<int>("Player2Color", 1);
 
             // Currency
-            ES3.Save<int>("Currency", 200);
+            ES3.Save<int>("Currency", 0);
 
             // Highscores
             HighscorePrefs();

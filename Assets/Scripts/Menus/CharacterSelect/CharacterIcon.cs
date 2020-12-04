@@ -6,6 +6,7 @@ public class CharacterIcon : MenuOption {
 
     public CHARACTERS charaName;
     public bool isLocked;
+    public SpriteRenderer icon;
     public SpriteRenderer backer;
 
     SpriteRenderer[] _sprites;
@@ -26,9 +27,22 @@ public class CharacterIcon : MenuOption {
     protected override void Start() {
         base.Start();
 
-        isLocked = false;
+        if(isLocked) {
+            // Check if we should unlock
+            switch(charaName) {
+                case CHARACTERS.LACKEY:
+                    if(ES3.Load("Lackey", false)) {
+                        isLocked = false;
+                    }
+                    break;
+                case CHARACTERS.CROC:
+                    if(ES3.Load("Croc", false)) {
+                        isLocked = false;
+                    }
+                    break;
+            }
 
-        if(!IsReady) {
+            // If we're still locked
             Lock();
         }
     }
@@ -52,22 +66,36 @@ public class CharacterIcon : MenuOption {
     public override void Highlight() {
         isHighlighted = true;
 
-        if (backer != null) {
+        if (backer != null && !isLocked) {
             backer.sprite = _backerHighlighted;
         }
     }
 
     public void Lock() {
         isLocked = true;
-        foreach(SpriteRenderer sr in _sprites) {
-            sr.color = new Color32(128, 128, 128, 255);
-        }
+
+        // Turn off icon
+        icon.enabled = false;
+
+        // replace backer with locked
+        backer.sprite = FindObjectOfType<CharacterSelectResources>().lockedBacker;
+
+        //foreach(SpriteRenderer sr in _sprites) {
+        //    sr.color = new Color32(128, 128, 128, 255);
+        //}
     }
 
     public void Unlock() {
         isLocked = false;
-        foreach (SpriteRenderer sr in _sprites) {
-            sr.color = new Color32(255, 255, 255, 255);
-        }
+
+        // Turn on icon
+        icon.enabled = true;
+
+        // replace backer
+        backer.sprite = FindObjectOfType<CharacterSelectResources>().unlockedBacker;
+
+        //foreach (SpriteRenderer sr in _sprites) {
+        //    sr.color = new Color32(255, 255, 255, 255);
+        //}
     }
 }

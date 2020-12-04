@@ -59,24 +59,26 @@ public class Menu : MonoBehaviour {
             }
 
             // If we don't have anything selected
-            if (_eventSystem.currentSelectedGameObject == null) {
-                // And we get a controller input
-                if (InputState.GetButtonOnAnyControllerPressed("Up") ||
-                    InputState.GetButtonOnAnyControllerPressed("Down")) {
-                    // Select an option
-
-                    if(selectedOption != null) {
+            //if (_eventSystem.currentSelectedGameObject == null) {
+            // If we get a controller input
+            if (InputState.GetButtonOnAnyControllerPressed("Up") ||
+                InputState.GetButtonOnAnyControllerPressed("Down")) {
+                // And there are no options highlighted
+                if(!IsAnyOptionHighlighted()) {
+                    // Select an option                
+                    if (selectedOption != null) {
                         selectedOption.Highlight();
-                    } else if(_menuOptions != null) {
+                    } else if (_menuOptions != null) {
                         // Find the firstSelection
                         foreach (MenuOption mO in _menuOptions) {
-                            if(mO.isFirstSelection) {
+                            if (mO.isFirstSelection) {
                                 mO.Highlight();
                             }
                         }
                     }
                 }
             }
+            //}
         }
     }
 
@@ -206,5 +208,19 @@ public class Menu : MonoBehaviour {
                 }
             }
         }
+    }
+
+    bool IsAnyOptionHighlighted() {
+        bool foundHighlighted = false;
+
+        MenuOption[] allMenuOptions = FindObjectsOfType<MenuOption>();
+        foreach(MenuOption mOption in allMenuOptions) {
+            if(mOption.isHighlighted) {
+                foundHighlighted = true;
+                break;
+            }
+        }
+
+        return foundHighlighted;
     }
 }

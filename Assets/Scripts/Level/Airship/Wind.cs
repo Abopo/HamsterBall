@@ -27,11 +27,13 @@ public class Wind : MonoBehaviour {
     }
 
     private void Awake() {
-        mainCamera = FindObjectOfType<Camera>().GetComponent<ShakeableTransform>();
+        //mainCamera = FindObjectOfType<Camera>().GetComponent<ShakeableTransform>();
     }
     // Start is called before the first frame update
     void Start() {
         _windBlowing = false;
+
+        mainCamera = FindObjectOfType<Camera>().GetComponent<ShakeableTransform>();
 
         _allPlayers = FindObjectsOfType<PlayerController>();
     }
@@ -67,6 +69,9 @@ public class Wind : MonoBehaviour {
 
         _windBlowTimer = 0f;
 
+        if(mainCamera == null) {
+            mainCamera = FindObjectOfType<Camera>().GetComponent<ShakeableTransform>();
+        }
         mainCamera.StartShake(_windBlowTime, 8f, new Vector2(0.05f, 0.05f));
     }
 
