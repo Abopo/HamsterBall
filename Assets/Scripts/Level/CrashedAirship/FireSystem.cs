@@ -8,6 +8,8 @@ public class FireSystem : MonoBehaviour {
     public FireHitbox fireHitbox;
     public ParticleSystem fireEffect;
 
+    public FMOD.Studio.EventInstance FireSoundEvent;
+
     float _fireStartTime = 0.5f;
     float _fireStartTimer = 0f;
     bool _fireActive;
@@ -36,6 +38,9 @@ public class FireSystem : MonoBehaviour {
     }
 
     public void StartFire() {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/Fire Button");
+        FireSoundEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Stages/Fire");
+        FireSoundEvent.start();
         _fireActive = true;
         _fireTimer = 0f;
 
@@ -43,6 +48,8 @@ public class FireSystem : MonoBehaviour {
         fireHitbox.FireStart();
     }
     void StopFire() {
+        FireSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        FireSoundEvent.release();
         _fireActive = false;
 
         fireHitbox.FireEnd();

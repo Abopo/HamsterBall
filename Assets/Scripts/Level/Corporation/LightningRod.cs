@@ -16,6 +16,8 @@ public class LightningRod : MonoBehaviour {
     float _activeTimer = 0f;
     float _activeTime = 5f;
 
+    FMOD.Studio.EventInstance electricityMeterEvent;
+
     private void Awake() {
         _collider = transform.GetComponentInChildren<BoxCollider2D>(true).gameObject;
         _animator = transform.GetComponentInChildren<Animator>();
@@ -26,18 +28,22 @@ public class LightningRod : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log(_activeTimer);
         if(_sparking) {
             _sparkTimer += Time.deltaTime;
             if(_sparkTimer >= _sparkTime) {
                 // Play one spark
                 _animator.Play("ElectricGatePrepStart");
                 _sparkTimer = 0f;
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/Electric Spark");
 
                 // Spark 3 times, then move into a looping spark
                 _sparkCount++;
                 if(_sparkCount >= 3) {
                     _animator.SetInteger("State", 2);
                     _sparking = false;
+                    electricityMeterEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Stages/Electricity Loop");
+                    electricityMeterEvent.start();
                 }
             }
         }
@@ -49,9 +55,12 @@ public class LightningRod : MonoBehaviour {
         _sparkCount = 0;
         _animator.SetInteger("State", 0);
         _animator.Play("ElectricGatePrepStart");
+        electricityMeterEvent.setParameterValue("ElectricityBuildUp", 0);
     }
 
     public void Activate() {
+        electricityMeterEvent.setParameterValue("ElectricityBuildUp", 1);
+        Debug.Log("Gate On");
         _isActive = true;
         _activeTimer = 0f;
         _collider.SetActive(true);
@@ -59,6 +68,9 @@ public class LightningRod : MonoBehaviour {
     }
 
     public void Deactivate() {
+        electricityMeterEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        electricityMeterEvent.release();
+        Debug.Log("Deactivate Gates");
         _isActive = false;
         _collider.SetActive(false);
 

@@ -33,7 +33,6 @@ public class FireButton : MonoBehaviour {
 
     public void Press() {
         pressed = true;
-
         // Turn on the FIRE
         _fireSystem.StartFire();
     }

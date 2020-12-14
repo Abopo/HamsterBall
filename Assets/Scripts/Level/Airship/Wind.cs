@@ -9,6 +9,8 @@ public class Wind : MonoBehaviour {
     public float playerPushForce;
     public float ballPushForce;
 
+    public FMOD.Studio.EventInstance WindEvent;
+
     ShakeableTransform mainCamera;
 
     bool _windBlowing;
@@ -59,7 +61,10 @@ public class Wind : MonoBehaviour {
     void StartBlowing() {
         _windBlowing = true;
 
-        if(_windBlowingDir == -1) {
+        WindEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Stages/Wind");
+        WindEvent.start();
+        WindEvent.setParameterValue("Wind", 0);
+        if (_windBlowingDir == -1) {
             _windBlowingDir = 1;
             rightwardWind.Play();
         } else {
@@ -76,6 +81,7 @@ public class Wind : MonoBehaviour {
     }
 
     void StopBlowing() {
+        WindEvent.setParameterValue("Wind", 1);
         _windBlowing = false;
 
         rightwardWind.Stop();

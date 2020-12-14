@@ -101,11 +101,6 @@ public class Bubble : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-		BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
-
-        BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
     }
 
     public void Initialize(HAMSTER_TYPES inType) {
@@ -542,8 +537,10 @@ public class Bubble : MonoBehaviour {
         }
 
         // Set 3d attributes for sound effects
+        BubbleDropEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BubbleDrop);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BubbleDropEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
         BubbleDropEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
-        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
 
         _homeBubbleManager.LastBubbleAdded = this;
     }
@@ -793,6 +790,12 @@ public class Bubble : MonoBehaviour {
 		_homeBubbleManager.RemoveBubble (node);
 		popped = true;
         _popping = false;
+
+        BallBreakEvent = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BallBreak);
+
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(BallBreakEvent, GetComponent<Transform>(), GetComponent<Rigidbody>());
+
+        BallBreakEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject, _rigidbody));
 
         if (_popIndex <= 10){
         	BallBreakEvent.setParameterValue("PoppedCount", _popIndex);
