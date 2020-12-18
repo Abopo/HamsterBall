@@ -9,6 +9,8 @@ public class StageMusic : MonoBehaviour {
 
     bool _lateStart = true;
 
+    private float musicStartTimer = 0.5f;
+
     DividerFlash[] _dividers;
     bool _dangerTime;
 
@@ -26,7 +28,7 @@ public class StageMusic : MonoBehaviour {
 
         _gameManager.gameOverEvent.AddListener(GameEnd);
 
-        SetStageMusic();
+        //SetStageMusic();
     }
 
     void SetStageMusic() {
@@ -39,9 +41,10 @@ public class StageMusic : MonoBehaviour {
         switch (_gameManager.selectedBoard) {
             case BOARDS.FOREST:
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestMusic);
-                _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
-                _stageMusic.setParameterValue("RowDanger", 1f);
                 _stageMusic.start();
+                //FMODUnity.RuntimeManager.PlayOneShot("event:/The Forest Music");
+
+                _stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.ForestAmbience);
                 _stageAmbience.start();
 
                 break;
@@ -63,7 +66,7 @@ public class StageMusic : MonoBehaviour {
                 break;
             case BOARDS.CITY:
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CityMusic);
-                //_stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+                _stageAmbience = FMODUnity.RuntimeManager.CreateInstance("event:/Ambiences/Airship");
                 _stageMusic.setParameterValue("RowDanger", 1f);
                 _stageMusic.start();
                 _stageAmbience.start();
@@ -71,7 +74,7 @@ public class StageMusic : MonoBehaviour {
                 break;
             case BOARDS.CORPORATION:
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.CorpMusic);
-                //_stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+                _stageAmbience = FMODUnity.RuntimeManager.CreateInstance("event:/Ambiences/Corporation Ambience");
                 _stageMusic.setParameterValue("RowDanger", 1f);
                 _stageMusic.start();
                 _stageAmbience.start();
@@ -79,13 +82,15 @@ public class StageMusic : MonoBehaviour {
                 break;
             case BOARDS.LABORATORY:
                 _stageMusic = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.LabMusic);
-                //_stageAmbience = FMODUnity.RuntimeManager.CreateInstance(SoundManager.mainAudio.BeachAmbience);
+                _stageAmbience = FMODUnity.RuntimeManager.CreateInstance("event:/Ambiences/Laboratory Ambience");
                 _stageMusic.setParameterValue("RowDanger", 1f);
                 _stageMusic.start();
                 _stageAmbience.start();
 
                 break;
             case BOARDS.AIRSHIP:
+                _stageAmbience = FMODUnity.RuntimeManager.CreateInstance("event:/Ambiences/Airship Ambience");
+                _stageAmbience.start();
                 break;
         }
 
@@ -93,8 +98,13 @@ public class StageMusic : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(_lateStart) {
+        if (musicStartTimer > 0) {
+            musicStartTimer -= Time.deltaTime;
+            return;
+        }
+        if(_lateStart && musicStartTimer <= 0) {
             SetStageMusic();
+            Debug.Log("Scene Starting and Music Starting");
             _lateStart = false;                
         }
 
@@ -136,6 +146,7 @@ public class StageMusic : MonoBehaviour {
     }
 
     private void OnDestroy() {
+        Debug.Log("DESTROYED");
         _stageAmbience.release();
         _stageMusic.release();
     }

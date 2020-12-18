@@ -14,6 +14,8 @@ public class SceneTransition : MonoBehaviour {
 
     Camera _oldCamera;
 
+    public FMOD.Studio.EventInstance WheelSqueakEvent;
+
     private void Awake() {
         _animator = GetComponent<Animator>();
         _hamster = GetComponentInChildren<LoadingHamster>();
@@ -34,6 +36,8 @@ public class SceneTransition : MonoBehaviour {
     }
 
     public void StartTransition(string scene) {
+
+        
         // Save the current scene to unload later
         _curScene = SceneManager.GetActiveScene();
 
@@ -44,6 +48,9 @@ public class SceneTransition : MonoBehaviour {
 
         _animator.SetBool("End", false);
         _animator.Play("SceneTransStart");
+
+        //WheelSqueakEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Menu Sounds/Hamster Wheel");
+        //WheelSqueakEvent.start();
     }
 
     public void TransitionFilled() {
@@ -94,6 +101,7 @@ public class SceneTransition : MonoBehaviour {
 
     void EndTransition(Scene scene) {
         // Play end transition
+        //WheelSqueakEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         _animator.SetBool("End", true);
     }
 }

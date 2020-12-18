@@ -30,6 +30,9 @@ public class LevelManager : MonoBehaviour {
     float _pushTime = 30;
     bool _gameOver = false;
 
+
+    public FMOD.Studio.EventInstance LevelMusicEvent;
+
     GameManager _gameManager;
     BubbleManager _bubbleManager;
     LevelUI _levelUI;
@@ -43,7 +46,7 @@ public class LevelManager : MonoBehaviour {
         get { return _gameOver; }
         set { _gameOver = value; }
     }
-
+    
 
     private void Awake() {
         pauseMenu = FindObjectOfType<PauseMenu>();
@@ -89,6 +92,8 @@ public class LevelManager : MonoBehaviour {
 
         switch (board) {
             case BOARDS.FOREST:
+               
+                
                 prefabPath += "ForestBoard";
                 break;
             case BOARDS.MOUNTAIN:

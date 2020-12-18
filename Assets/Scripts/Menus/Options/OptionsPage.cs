@@ -121,6 +121,8 @@ public class OptionsPage : Menu {
     }
 
     void MovePageRight() {
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/Page Turn");
         // If we are changing to the next page on the right, we need to close to the left
         ClosePageLeft();
         // And open our right page to the left
@@ -136,6 +138,8 @@ public class OptionsPage : Menu {
     }
 
     void MovePageLeft() {
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/Page Turn");
         // If we are changing to the next page on the left, we need to close to the right
         ClosePageRight();
         // And open our left page to the right

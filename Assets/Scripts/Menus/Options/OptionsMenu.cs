@@ -17,10 +17,10 @@ public class OptionsMenu : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _curPageIndex = 0;
-
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/Book Open");
         // Find the control remapper canvas from the game manager
         //_controlMapper = GameManager.instance.GetComponentInChildren<ControlMapper>();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -40,6 +40,7 @@ public class OptionsMenu : MonoBehaviour {
     void MovePageRight() {
         //pages[_curPageIndex].Deactivate();
 
+
         // If we are chaning to the next page on the right, we need to close to the left
         pages[_curPageIndex].ClosePageLeft();
 
@@ -55,7 +56,6 @@ public class OptionsMenu : MonoBehaviour {
 
     void MovePageLeft() {
         //pages[_curPageIndex].Deactivate();
-
         // If we are chaning to the next page on the left, we need to close to the right
         pages[_curPageIndex].ClosePageRight();
 
