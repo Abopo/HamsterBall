@@ -37,7 +37,7 @@ public class SceneTransition : MonoBehaviour {
 
     public void StartTransition(string scene) {
 
-        
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/TransitionScreen_In");
         // Save the current scene to unload later
         _curScene = SceneManager.GetActiveScene();
 
@@ -102,6 +102,9 @@ public class SceneTransition : MonoBehaviour {
     void EndTransition(Scene scene) {
         // Play end transition
         //WheelSqueakEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/TransitionScreen_Out");
+
         _animator.SetBool("End", true);
     }
 }

@@ -29,11 +29,25 @@ public class ChemicalContainer : MonoBehaviour {
             if(collision.transform.position.y > transform.position.y && collision.GetComponent<PlayerController>().CurState == PLAYER_STATE.WALK) {
                 // Wiggle
                 if (collision.transform.position.x < transform.position.x) {
+                    Debug.Log("Wiggle Chemicals");
+                    PlayVialShake();
                     Wiggle(true);
                 } else {
                     Wiggle(false);
                 }
+                Debug.Log(this.gameObject.name);
             }
+        }
+
+
+    }
+
+    private void PlayVialShake()
+    {
+        int randomNumber = Random.Range(0, 2);
+        if (randomNumber == 0)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/VialShake");
         }
     }
 
@@ -41,6 +55,7 @@ public class ChemicalContainer : MonoBehaviour {
         if(_wiggling) {
             return;
         }
+       
 
         _wiggling = true;
 

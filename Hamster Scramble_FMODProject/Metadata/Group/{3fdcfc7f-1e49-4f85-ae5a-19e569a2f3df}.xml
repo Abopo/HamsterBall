@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="MixerGroup" id="{3fdcfc7f-1e49-4f85-ae5a-19e569a2f3df}">
+        <property name="name">
+            <value>SeedsPouring</value>
+        </property>
+        <relationship name="effectChain">
+            <destination>{27cbf352-0881-4b94-a21b-86dae00a749f}</destination>
+        </relationship>
+        <relationship name="panner">
+            <destination>{1b87f0b1-cdc3-4993-b06f-3c09724e087b}</destination>
+        </relationship>
+        <relationship name="output">
+            <destination>{316f6283-94e3-4b54-9743-ad345693be77}</destination>
+        </relationship>
+    </object>
+    <object class="MixerBusEffectChain" id="{27cbf352-0881-4b94-a21b-86dae00a749f}">
+        <relationship name="effects">
+            <destination>{d1e04b65-20d0-4683-8643-1472bbb3454e}</destination>
+        </relationship>
+    </object>
+    <object class="MixerBusPanner" id="{1b87f0b1-cdc3-4993-b06f-3c09724e087b}"/>
+    <object class="MixerBusFader" id="{d1e04b65-20d0-4683-8643-1472bbb3454e}"/>
+</objects>

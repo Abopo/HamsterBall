@@ -16,6 +16,8 @@ public class NumberTick : MonoBehaviour {
     float _tickTime = 0.01f;
     float _tickRate; // based on the initial difference between the start/end values
 
+    public FMOD.Studio.EventInstance SeedsEvent;
+
     private void Awake() {
         _valueText = GetComponent<SuperTextMesh>();
     }
@@ -56,6 +58,9 @@ public class NumberTick : MonoBehaviour {
             return;
         }
 
+        SeedsEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Menu Sounds/SeedsPourRing");
+        SeedsEvent.start();
+
         _value = startValue;
         _endValue = endValue;
 
@@ -69,6 +74,7 @@ public class NumberTick : MonoBehaviour {
     }
 
     void EndTick() {
+        SeedsEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         _value = _endValue;
         _ticking = false;
     }

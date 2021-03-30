@@ -34,7 +34,8 @@ public class InteractIcon : MonoBehaviour {
     public void Activate() {
         _icon.gameObject.SetActive(true);
     }
-    public void Deactivate() {
+    public void Deactivate()
+    {
         _icon.gameObject.SetActive(false);
     }
 }

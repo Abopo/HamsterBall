@@ -89,7 +89,9 @@ public class StageMusic : MonoBehaviour {
 
                 break;
             case BOARDS.AIRSHIP:
+                _stageMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Airship Music");
                 _stageAmbience = FMODUnity.RuntimeManager.CreateInstance("event:/Ambiences/Airship Ambience");
+                _stageMusic.start();
                 _stageAmbience.start();
                 break;
         }

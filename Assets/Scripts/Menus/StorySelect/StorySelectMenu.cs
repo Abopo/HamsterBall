@@ -233,7 +233,7 @@ public class StorySelectMenu : MonoBehaviour {
             // Setup move variables
             _worldDif = dir;
             _movingWorld = true;
-
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/Page Turn");
             // Place the next world in correct location
             if (dir > 0) {
                 worlds[_curWorld + dir].transform.localPosition = new Vector3(750, _worldYPos, 0);

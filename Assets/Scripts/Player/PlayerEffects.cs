@@ -182,6 +182,16 @@ public class PlayerEffects : MonoBehaviour {
             footstepString1 = "event:/Footsteps/ConcreteFootstepEvent";
             footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
         }
+        else if (_gameManager.selectedBoard == BOARDS.CORPORATION || _gameManager.selectedBoard == BOARDS.LABORATORY)
+        {
+            footstepString1 = "event:/Footsteps/MetalFootstep";
+            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+        }
+        else if (_gameManager.selectedBoard == BOARDS.AIRSHIP)
+        {
+            footstepString1 = "event:/Footsteps/ConcreteFootstepEvent";
+            footstepEvent1 = FMODUnity.RuntimeManager.CreateInstance(footstepString1);
+        }
         else
         {
             footstepParticles1 = null;

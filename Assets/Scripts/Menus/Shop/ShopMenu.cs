@@ -105,6 +105,7 @@ public class ShopMenu : MonoBehaviour {
 
             if (InputState.GetButtonOnAnyControllerPressed("PageLeft")) {
                 // Move page left
+                
                 MovePageLeft();
             }
             if (InputState.GetButtonOnAnyControllerPressed("PageRight")) {
@@ -143,7 +144,7 @@ public class ShopMenu : MonoBehaviour {
     void UpdatePage() {
         // Hide the curpage
         _curPage.HideContent();
-
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/Page Turn");
         // Change to new page
         _curPage = _allPages[_curPageIndex];
         _curPage.TakeFocus();
@@ -153,7 +154,7 @@ public class ShopMenu : MonoBehaviour {
         _curPage.PurchaseCurItem();
 
         currencyText.GetComponent<NumberTick>().StartTick(playerCurrency, playerCurrency - _curPage.CurItem.ItemInfo.price);
-
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Menu Sounds/Buy Item");
         // Reduce player currency by the cost
         playerCurrency -= _curPage.CurItem.ItemInfo.price;
         ES3.Save<int>("Currency", playerCurrency);

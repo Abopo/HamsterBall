@@ -615,6 +615,7 @@ public class PlayerController : Entity {
 
         // If we've fallen through the airship hole
         if(collider.gameObject.name == "Fall Zone") {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Stages/PlayerFall");
             _freeze = true;
             _freezeTimer = 0f;
             _freezeTime = 2f;
